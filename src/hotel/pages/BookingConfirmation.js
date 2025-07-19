@@ -158,7 +158,9 @@ const ActionButtons = styled.div`
   flex-wrap: wrap;
 `;
 
-const ActionButton = styled.button`
+const ActionButton = styled.button.withConfig({
+  shouldForwardProp: (prop) => prop !== "primary",
+})`
   background: ${(props) =>
     props.primary ? theme.colors.primary : theme.colors.white};
   color: ${(props) =>
