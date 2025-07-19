@@ -261,7 +261,6 @@ const FallbackButton = styled.button`
 const EcommerceMain = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const params = useParams();
 
   const [cartItems, setCartItems] = useState([]);
   const [featuredProducts, setFeaturedProducts] = useState([]);
