@@ -7,24 +7,51 @@ export const Card = styled.div`
   box-shadow: ${theme.shadows.md};
   overflow: hidden;
   transition: all 0.3s ease;
+  width: 100%;
 
   &:hover {
     transform: translateY(-2px);
     box-shadow: ${theme.shadows.lg};
   }
+
+  ${media.mobile} {
+    border-radius: ${theme.borderRadius.md};
+    box-shadow: ${theme.shadows.sm};
+
+    &:hover {
+      transform: none;
+      box-shadow: ${theme.shadows.md};
+    }
+  }
 `;
 
 export const CardImage = styled.div`
   width: 100%;
-  height: ${(props) => props.height || "200px"};
+  height: ${(props) => props.height || "12.5rem"};
   background-image: url(${(props) => props.src});
   background-size: cover;
   background-position: center;
   position: relative;
+
+  ${media.mobile} {
+    height: ${(props) => props.height || "10rem"};
+  }
+
+  ${media.tablet} {
+    height: ${(props) => props.height || "11.25rem"};
+  }
 `;
 
 export const CardContent = styled.div`
   padding: ${theme.spacing.lg};
+
+  ${media.mobile} {
+    padding: ${theme.spacing.md};
+  }
+
+  ${media.tablet} {
+    padding: ${theme.spacing.lg};
+  }
 `;
 
 export const CardTitle = styled.h3`
@@ -32,18 +59,41 @@ export const CardTitle = styled.h3`
   font-weight: 600;
   margin-bottom: ${theme.spacing.sm};
   color: ${theme.colors.gray900};
+  line-height: 1.3;
+
+  ${media.mobile} {
+    font-size: 1.125rem;
+    margin-bottom: ${theme.spacing.xs};
+  }
+
+  ${media.tablet} {
+    font-size: 1.1875rem;
+  }
 `;
 
 export const CardSubtitle = styled.p`
   color: ${theme.colors.gray600};
   margin-bottom: ${theme.spacing.md};
   font-size: 0.875rem;
+  line-height: 1.4;
+
+  ${media.mobile} {
+    font-size: 0.8125rem;
+    margin-bottom: ${theme.spacing.sm};
+  }
 `;
 
 export const CardDescription = styled.p`
   color: ${theme.colors.gray700};
   line-height: 1.5;
   margin-bottom: ${theme.spacing.md};
+  font-size: 0.875rem;
+
+  ${media.mobile} {
+    font-size: 0.8125rem;
+    line-height: 1.4;
+    margin-bottom: ${theme.spacing.sm};
+  }
 `;
 
 export const CardFooter = styled.div`
@@ -54,12 +104,34 @@ export const CardFooter = styled.div`
   align-items: center;
   justify-content: space-between;
   gap: ${theme.spacing.md};
+
+  ${media.mobile} {
+    padding: ${theme.spacing.sm} ${theme.spacing.md};
+    gap: ${theme.spacing.sm};
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  ${media.tablet} {
+    flex-direction: row;
+    align-items: center;
+  }
 `;
 
 export const CardActions = styled.div`
   display: flex;
   gap: ${theme.spacing.sm};
   margin-top: ${theme.spacing.md};
+
+  ${media.mobile} {
+    gap: ${theme.spacing.xs};
+    margin-top: ${theme.spacing.sm};
+    flex-direction: column;
+  }
+
+  ${media.tablet} {
+    flex-direction: row;
+  }
 `;
 
 export const Badge = styled.span`
