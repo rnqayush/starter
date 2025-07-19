@@ -477,7 +477,7 @@ const HotelDetail = () => {
                   <FaStar />
                   Starting Price
                 </h3>
-                <p>₹{hotel.startingPrice.toLocaleString()} per night</p>
+                <p>���{hotel.startingPrice.toLocaleString()} per night</p>
               </InfoCard>
             </InfoGrid>
           </Section>
@@ -488,7 +488,12 @@ const HotelDetail = () => {
             <SectionTitle>Available Rooms</SectionTitle>
             <RoomsGrid>
               {hotel.rooms?.map((room) => (
-                <RoomCard key={room.id} room={room} hotelId={hotel.id} />
+                <RoomCard
+                  key={room.id}
+                  room={room}
+                  hotelId={hotel.id}
+                  hotelSlug={hotel.slug}
+                />
               ))}
             </RoomsGrid>
           </Section>
