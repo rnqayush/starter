@@ -1,13 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import styled from "styled-components";
-import {
-  FaFilter,
-  FaSortAmountDown,
-  FaGrid,
-  FaList,
-  FaTimes,
-} from "react-icons/fa";
+import { FaTh, FaList, FaTimes } from "react-icons/fa";
 import { theme } from "../../styles/GlobalStyle";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -399,7 +393,7 @@ const Products = () => {
                 onClick={() => setView("grid")}
                 title="Grid View"
               >
-                <FaGrid />
+                <FaTh />
               </ViewButton>
               <ViewButton
                 active={view === "list"}
