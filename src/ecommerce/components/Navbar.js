@@ -95,7 +95,9 @@ const SearchContainer = styled.div`
   }
 `;
 
-const SearchInput = styled.input`
+const SearchInput = styled.input.withConfig({
+  shouldForwardProp: (prop) => prop !== "theme",
+})`
   padding: ${theme.spacing.sm} ${theme.spacing.md};
   padding-left: 2.5rem;
   border: 2px solid ${theme.colors.gray200};
@@ -127,7 +129,9 @@ const NavActions = styled.div`
   gap: ${theme.spacing.lg};
 `;
 
-const CartButton = styled.button`
+const CartButton = styled.button.withConfig({
+  shouldForwardProp: (prop) => prop !== "theme",
+})`
   position: relative;
   background: none;
   color: ${theme.colors.gray700};
@@ -139,7 +143,9 @@ const CartButton = styled.button`
   }
 `;
 
-const CartBadge = styled.span`
+const CartBadge = styled.span.withConfig({
+  shouldForwardProp: (prop) => prop !== "theme",
+})`
   position: absolute;
   top: -8px;
   right: -8px;
@@ -155,7 +161,9 @@ const CartBadge = styled.span`
   font-weight: 600;
 `;
 
-const UserButton = styled.button`
+const UserButton = styled.button.withConfig({
+  shouldForwardProp: (prop) => prop !== "theme",
+})`
   background: none;
   color: ${theme.colors.gray700};
   font-size: 1.2rem;
