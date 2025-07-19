@@ -82,7 +82,9 @@ const StatsLabel = styled.p`
   margin: 0 0 ${theme.spacing.sm} 0;
 `;
 
-const StatsChange = styled.div`
+const StatsChange = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "positive",
+})`
   display: flex;
   align-items: center;
   gap: ${theme.spacing.xs};
