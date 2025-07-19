@@ -284,9 +284,15 @@ const PlatformHomePage = () => {
     if (service.id === "hotels") {
       // Navigate to the existing hotel page (keeping the current design)
       navigate("/hotels");
-    } else {
-      // For other services, show coming soon or navigate to their respective pages
-      alert(`${service.title} website builder coming soon!`);
+    } else if (service.id === "ecommerce") {
+      // Navigate to ecommerce stores listing
+      navigate("/ecommerce-stores");
+    } else if (service.id === "weddings") {
+      // Navigate to wedding vendors listing
+      navigate("/wedding-vendors");
+    } else if (service.id === "automobiles") {
+      // Navigate to auto dealers listing
+      navigate("/auto-dealers");
     }
   };
 
@@ -327,7 +333,7 @@ const PlatformHomePage = () => {
                   <ServiceTitle>{service.title}</ServiceTitle>
                   <ServiceDescription>{service.description}</ServiceDescription>
                   <ServiceButton gradient={service.gradient}>
-                    {service.id === "hotels" ? "Explore" : "Coming Soon"}
+                    Explore
                     <FaArrowRight />
                   </ServiceButton>
                 </ServiceCard>

@@ -6,12 +6,10 @@ import { AppContext } from "./context/AppContext";
 
 // User Components
 import PlatformHomePage from "./components/user/PlatformHomePage";
-import HomePage from "./components/user/HomePage";
-import HotelPage from "./components/user/HotelPage";
-import RoomPage from "./components/user/RoomPage";
-import BookingPage from "./components/user/BookingPage";
-import MyBookingsPage from "./components/user/MyBookingsPage";
 import LoginPage from "./components/auth/LoginPage";
+
+// Hotel Module
+import HotelModule from "./hotel";
 
 // Hotel Owner Components
 import OwnerDashboard from "./components/owner/OwnerDashboard";
@@ -22,7 +20,19 @@ import BookingsReceivedPage from "./components/owner/BookingsReceivedPage";
 import ProfileSettingsPage from "./components/owner/ProfileSettingsPage";
 
 // Mock data
-import { mockHotels, mockBookings, mockOwnerHotels } from "./data/mockData";
+import {
+  hotels as hotelModuleData,
+  bookings as hotelBookings,
+  ownerHotels as hotelOwnerData,
+} from "./hotel/data/hotels";
+
+// Modules
+import EcommerceModule from "./ecommerce";
+
+// Store Listing Pages
+import EcommerceStoresListing from "./ecommerce/pages/StoresListing";
+import WeddingVendorsListing from "./weddings/pages/StoresListing";
+import AutoDealersListing from "./automobiles/pages/StoresListing";
 
 const AppContainer = styled.div`
   min-height: 100vh;
@@ -32,9 +42,9 @@ const AppContainer = styled.div`
 function App() {
   const [user, setUser] = useState(null);
   const [userType, setUserType] = useState("customer"); // 'customer' or 'owner'
-  const [hotels, setHotels] = useState(mockHotels);
-  const [bookings, setBookings] = useState(mockBookings);
-  const [ownerHotels, setOwnerHotels] = useState(mockOwnerHotels);
+  const [hotels, setHotels] = useState(hotelModuleData);
+  const [bookings, setBookings] = useState(hotelBookings);
+  const [ownerHotels, setOwnerHotels] = useState(hotelOwnerData);
 
   const contextValue = {
     user,
@@ -55,14 +65,31 @@ function App() {
         <AppContainer>
           <GlobalStyle />
           <Routes>
-            {/* User Routes */}
+            {/* Main Routes */}
             <Route path="/" element={<PlatformHomePage />} />
-            <Route path="/hotels" element={<HomePage />} />
-            <Route path="/hotel/:id" element={<HotelPage />} />
-            <Route path="/room/:hotelId/:roomId" element={<RoomPage />} />
-            <Route path="/booking/:hotelId/:roomId" element={<BookingPage />} />
-            <Route path="/my-bookings" element={<MyBookingsPage />} />
             <Route path="/login" element={<LoginPage />} />
+
+            {/* Hotel Routes */}
+            <Route path="/hotels" element={<HotelModule />} />
+            <Route path="/hotel/:id" element={<HotelModule />} />
+            <Route path="/room/:hotelId/:roomId" element={<HotelModule />} />
+            <Route path="/booking/:hotelId/:roomId" element={<HotelModule />} />
+            <Route path="/booking-confirmation" element={<HotelModule />} />
+            <Route path="/my-bookings" element={<HotelModule />} />
+
+            {/* Store Listing Routes */}
+            <Route
+              path="/ecommerce-stores"
+              element={<EcommerceStoresListing />}
+            />
+            <Route
+              path="/wedding-vendors"
+              element={<WeddingVendorsListing />}
+            />
+            <Route path="/auto-dealers" element={<AutoDealersListing />} />
+
+            {/* Ecommerce Routes */}
+            <Route path="/ecommerce/*" element={<EcommerceModule />} />
 
             {/* Hotel Owner Routes */}
             <Route path="/owner/dashboard" element={<OwnerDashboard />} />
