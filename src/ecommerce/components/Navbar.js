@@ -221,7 +221,12 @@ const MobileSearchInput = styled.input`
   }
 `;
 
-const Navbar = ({ cartItemsCount = 0, storeName = "" }) => {
+const Navbar = ({
+  cartItemsCount = 0,
+  storeName = "",
+  storeLogo = "",
+  theme: vendorTheme = {},
+}) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
