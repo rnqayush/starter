@@ -239,6 +239,7 @@ const Navbar = ({
   cartItemsCount = 0,
   storeName = "",
   storeLogo = "",
+  storeSlug = "",
   theme: vendorTheme = {},
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
