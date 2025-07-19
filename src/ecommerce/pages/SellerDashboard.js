@@ -94,9 +94,21 @@ const SellerDashboard = () => {
         return "Manage your product catalog and inventory";
       case "add-product":
         return "Add a new product to your store";
+      case "categories":
+        return "Organize your products into categories";
+      case "bulk-import":
+        return "Import multiple products via CSV file";
       case "orders":
         return "Track and manage customer orders";
-      case "insights":
+      case "discounts":
+        return "Create and manage discount codes";
+      case "customers":
+        return "View and manage your customer base";
+      case "store-settings":
+        return "Configure your store settings and preferences";
+      case "appearance":
+        return "Customize your store's look and feel";
+      case "analytics":
         return "Analyze your business data and trends";
       default:
         return "";
