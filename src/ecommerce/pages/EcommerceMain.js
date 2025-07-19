@@ -460,7 +460,7 @@ const EcommerceMain = () => {
           </Section>
         )}
 
-        <Footer theme={vendorTheme} />
+        <Footer storeSlug={selectedVendor.slug} theme={vendorTheme} />
       </PageContainer>
     </>
   );
