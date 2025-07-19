@@ -16,7 +16,7 @@ import {
 import { theme } from "../../styles/GlobalStyle";
 import HotelNavbar from "../components/HotelNavbar";
 import HotelFooter from "../components/HotelFooter";
-import { getHotelById, getRoomById } from "../data/hotels";
+import { getHotelByIdOrSlug, getRoomById } from "../data/hotels";
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -307,7 +307,7 @@ const BookButton = styled.button`
 `;
 
 const RoomDetail = () => {
-  const { hotelId, roomId } = useParams();
+  const { hotelSlug, roomId } = useParams();
   const navigate = useNavigate();
   const [hotel, setHotel] = useState(null);
   const [room, setRoom] = useState(null);
@@ -319,11 +319,11 @@ const RoomDetail = () => {
   });
 
   useEffect(() => {
-    const foundHotel = getHotelById(hotelId);
-    const foundRoom = getRoomById(hotelId, roomId);
+    const foundHotel = getHotelByIdOrSlug(hotelSlug);
+    const foundRoom = foundHotel ? getRoomById(foundHotel.id, roomId) : null;
     setHotel(foundHotel);
     setRoom(foundRoom);
-  }, [hotelId, roomId]);
+  }, [hotelSlug, roomId]);
 
   const getAmenityIcon = (amenity) => {
     const iconMap = {
@@ -361,7 +361,7 @@ const RoomDetail = () => {
 
   const handleBooking = (e) => {
     e.preventDefault();
-    navigate(`/booking/${hotelId}/${roomId}`, {
+    navigate(`/${hotelSlug}/booking/${roomId}`, {
       state: { bookingData },
     });
   };

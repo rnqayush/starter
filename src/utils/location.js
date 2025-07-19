@@ -131,3 +131,12 @@ export const getDefaultLocation = () => ({
   lng: -122.4194,
   isDefault: true,
 });
+
+// Utility function to generate URL-friendly slugs from text
+export const generateSlug = (text) => {
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/[\s\W-]+/g, "-") // Replace spaces and special characters with hyphens
+    .replace(/^-+|-+$/g, ""); // Remove leading/trailing hyphens
+};

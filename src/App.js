@@ -11,6 +11,7 @@ import RegisterPage from "./components/auth/RegisterPage";
 
 // Shared Components
 import ScrollToTop from "./components/shared/ScrollToTop";
+import SmartRouter from "./components/SmartRouter";
 
 // Hotel Module
 import HotelModule from "./hotel";
@@ -78,9 +79,6 @@ function App() {
 
             {/* Hotel Routes */}
             <Route path="/hotels" element={<HotelModule />} />
-            <Route path="/hotel/:id" element={<HotelModule />} />
-            <Route path="/room/:hotelId/:roomId" element={<HotelModule />} />
-            <Route path="/booking/:hotelId/:roomId" element={<HotelModule />} />
             <Route path="/booking-confirmation" element={<HotelModule />} />
             <Route path="/my-bookings" element={<HotelModule />} />
 
@@ -97,6 +95,30 @@ function App() {
 
             {/* Ecommerce Routes */}
             <Route path="/ecommerce/*" element={<EcommerceModule />} />
+
+            {/* Store-specific Routes (more specific routes first) */}
+            <Route path="/:storeSlug/products" element={<EcommerceModule />} />
+            <Route
+              path="/:storeSlug/product/:id"
+              element={<EcommerceModule />}
+            />
+            <Route path="/:storeSlug/cart" element={<EcommerceModule />} />
+            <Route path="/:storeSlug/checkout" element={<EcommerceModule />} />
+            <Route
+              path="/:storeSlug/order-confirmation"
+              element={<EcommerceModule />}
+            />
+
+            {/* Hotel-specific Routes (more specific routes first) */}
+            <Route path="/:hotelSlug/rooms/:roomId" element={<HotelModule />} />
+            <Route
+              path="/:hotelSlug/booking/:roomId"
+              element={<HotelModule />}
+            />
+            <Route path="/:hotelSlug/booking" element={<HotelModule />} />
+
+            {/* Generic slug routes - SmartRouter determines hotel vs store */}
+            <Route path="/:slug" element={<SmartRouter />} />
 
             {/* Seller Dashboard Demo */}
             <Route

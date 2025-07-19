@@ -246,7 +246,9 @@ const PaymentIcon = styled.div`
   font-weight: 600;
 `;
 
-const Footer = () => {
+const Footer = ({ storeSlug = "" }) => {
+  const getBaseUrl = () => (storeSlug ? `/${storeSlug}` : "/ecommerce");
+
   const handleNewsletterSubmit = (e) => {
     e.preventDefault();
     // Handle newsletter subscription
@@ -335,23 +337,27 @@ const Footer = () => {
           <FooterSection>
             <h3>Shop</h3>
             <FooterLinks>
-              <FooterLink to="/ecommerce/products">All Products</FooterLink>
-              <FooterLink to="/ecommerce/products?category=electronics">
+              <FooterLink to={`${getBaseUrl()}/products`}>
+                All Products
+              </FooterLink>
+              <FooterLink to={`${getBaseUrl()}/products?category=electronics`}>
                 Electronics
               </FooterLink>
-              <FooterLink to="/ecommerce/products?category=fashion">
+              <FooterLink to={`${getBaseUrl()}/products?category=fashion`}>
                 Fashion
               </FooterLink>
-              <FooterLink to="/ecommerce/products?category=home-garden">
+              <FooterLink to={`${getBaseUrl()}/products?category=home-garden`}>
                 Home & Garden
               </FooterLink>
-              <FooterLink to="/ecommerce/products?category=sports">
+              <FooterLink to={`${getBaseUrl()}/products?category=sports`}>
                 Sports
               </FooterLink>
-              <FooterLink to="/ecommerce/products?featured=true">
+              <FooterLink to={`${getBaseUrl()}/products?featured=true`}>
                 Featured Products
               </FooterLink>
-              <FooterLink to="/ecommerce/products?sale=true">Sale</FooterLink>
+              <FooterLink to={`${getBaseUrl()}/products?sale=true`}>
+                Sale
+              </FooterLink>
             </FooterLinks>
           </FooterSection>
 

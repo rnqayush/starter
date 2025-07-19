@@ -2,6 +2,7 @@ export const hotels = [
   {
     id: 1,
     name: "Grand Luxury Resort",
+    slug: "grand-luxury-resort",
     location: "Mumbai, Maharashtra",
     address: "Marine Drive, Mumbai",
     city: "Mumbai",
@@ -71,6 +72,7 @@ export const hotels = [
   {
     id: 2,
     name: "Mountain View Lodge",
+    slug: "mountain-view-lodge",
     location: "Manali, Himachal Pradesh",
     address: "Old Manali Road, Manali",
     city: "Manali",
@@ -108,6 +110,7 @@ export const hotels = [
   {
     id: 3,
     name: "Heritage Palace Hotel",
+    slug: "heritage-palace-hotel",
     location: "Jaipur, Rajasthan",
     address: "City Palace Road, Jaipur",
     city: "Jaipur",
@@ -238,6 +241,19 @@ export const amenitiesList = [
 // Helper functions
 export const getHotelById = (id) => {
   return hotels.find((hotel) => hotel.id === parseInt(id));
+};
+
+export const getHotelBySlug = (slug) => {
+  return hotels.find((hotel) => hotel.slug === slug);
+};
+
+export const getHotelByIdOrSlug = (identifier) => {
+  // First try to find by slug
+  const hotelBySlug = getHotelBySlug(identifier);
+  if (hotelBySlug) return hotelBySlug;
+
+  // If not found by slug, try by ID
+  return getHotelById(identifier);
 };
 
 export const getRoomById = (hotelId, roomId) => {

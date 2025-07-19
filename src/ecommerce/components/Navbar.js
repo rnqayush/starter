@@ -239,17 +239,21 @@ const Navbar = ({
   cartItemsCount = 0,
   storeName = "",
   storeLogo = "",
+  storeSlug = "",
   theme: vendorTheme = {},
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
 
+  const getBaseUrl = () => (storeSlug ? `/${storeSlug}` : "/ecommerce");
+
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchQuery.trim()) {
+      const baseUrl = storeSlug ? `/${storeSlug}` : "/ecommerce";
       navigate(
-        `/ecommerce/products?search=${encodeURIComponent(searchQuery.trim())}`,
+        `${baseUrl}/products?search=${encodeURIComponent(searchQuery.trim())}`,
       );
       setSearchQuery("");
       setIsMenuOpen(false);
@@ -279,31 +283,34 @@ const Navbar = ({
         </Logo>
 
         <NavLinks>
-          <NavLink to="/ecommerce" theme={vendorTheme}>
+          <NavLink to={getBaseUrl()} theme={vendorTheme}>
             Home
           </NavLink>
-          <NavLink to="/ecommerce/products" theme={vendorTheme}>
+          <NavLink to={`${getBaseUrl()}/products`} theme={vendorTheme}>
             Products
           </NavLink>
           <NavLink
-            to="/ecommerce/products?category=electronics"
+            to={`${getBaseUrl()}/products?category=electronics`}
             theme={vendorTheme}
           >
             Electronics
           </NavLink>
           <NavLink
-            to="/ecommerce/products?category=fashion"
+            to={`${getBaseUrl()}/products?category=fashion`}
             theme={vendorTheme}
           >
             Fashion
           </NavLink>
           <NavLink
-            to="/ecommerce/products?category=home-garden"
+            to={`${getBaseUrl()}/products?category=home-garden`}
             theme={vendorTheme}
           >
             Home & Garden
           </NavLink>
-          <NavLink to="/ecommerce/products?category=sports" theme={vendorTheme}>
+          <NavLink
+            to={`${getBaseUrl()}/products?category=sports`}
+            theme={vendorTheme}
+          >
             Sports
           </NavLink>
         </NavLinks>
@@ -332,7 +339,7 @@ const Navbar = ({
             <FaUser />
           </UserButton>
 
-          <Link to="/ecommerce/cart">
+          <Link to={`${getBaseUrl()}/cart`}>
             <CartButton theme={vendorTheme}>
               <FaShoppingCart />
               {cartItemsCount > 0 && (
@@ -348,23 +355,23 @@ const Navbar = ({
       </NavbarContent>
 
       <MobileMenu isOpen={isMenuOpen}>
-        <MobileNavLink to="/ecommerce" onClick={() => setIsMenuOpen(false)}>
+        <MobileNavLink to={getBaseUrl()} onClick={() => setIsMenuOpen(false)}>
           Home
         </MobileNavLink>
         <MobileNavLink
-          to="/ecommerce/products"
+          to={`${getBaseUrl()}/products`}
           onClick={() => setIsMenuOpen(false)}
         >
           All Products
         </MobileNavLink>
         <MobileNavLink
-          to="/ecommerce/products?category=electronics"
+          to={`${getBaseUrl()}/products?category=electronics`}
           onClick={() => setIsMenuOpen(false)}
         >
           Electronics
         </MobileNavLink>
         <MobileNavLink
-          to="/ecommerce/products?category=fashion"
+          to={`${getBaseUrl()}/products?category=fashion`}
           onClick={() => setIsMenuOpen(false)}
         >
           Fashion

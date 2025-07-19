@@ -11,7 +11,7 @@ import {
 import { theme } from "../../styles/GlobalStyle";
 import HotelNavbar from "../components/HotelNavbar";
 import HotelFooter from "../components/HotelFooter";
-import { getHotelById, getRoomById } from "../data/hotels";
+import { getHotelByIdOrSlug, getRoomById } from "../data/hotels";
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -267,7 +267,7 @@ const SecurityNote = styled.div`
 `;
 
 const Booking = () => {
-  const { hotelId, roomId } = useParams();
+  const { hotelSlug, roomId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
   const [hotel, setHotel] = useState(null);
@@ -300,11 +300,11 @@ const Booking = () => {
   });
 
   useEffect(() => {
-    const foundHotel = getHotelById(hotelId);
-    const foundRoom = getRoomById(hotelId, roomId);
+    const foundHotel = getHotelByIdOrSlug(hotelSlug);
+    const foundRoom = foundHotel ? getRoomById(foundHotel.id, roomId) : null;
     setHotel(foundHotel);
     setRoom(foundRoom);
-  }, [hotelId, roomId]);
+  }, [hotelSlug, roomId]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;

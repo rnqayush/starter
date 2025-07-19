@@ -14,16 +14,17 @@ const HotelModule = () => {
   // Route based on URL path
   if (path === "/hotels") {
     return <HotelHome />;
-  } else if (path.startsWith("/hotel/") && !path.includes("/room")) {
-    return <HotelDetail />;
-  } else if (path.startsWith("/room/")) {
-    return <RoomDetail />;
-  } else if (path.startsWith("/booking/") && !path.includes("confirmation")) {
-    return <Booking />;
   } else if (path === "/booking-confirmation") {
     return <BookingConfirmation />;
   } else if (path === "/my-bookings") {
     return <MyBookings />;
+  } else if (path.includes("/rooms/")) {
+    return <RoomDetail />;
+  } else if (path.includes("/booking")) {
+    return <Booking />;
+  } else if (path.match(/^\/[^\/]+$/)) {
+    // Single segment path like "/grand-luxury-resort" - hotel detail
+    return <HotelDetail />;
   } else {
     return <HotelHome />;
   }
