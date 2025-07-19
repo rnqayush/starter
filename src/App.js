@@ -77,6 +77,17 @@ function App() {
             <Route path="/booking-confirmation" element={<HotelModule />} />
             <Route path="/my-bookings" element={<HotelModule />} />
 
+            {/* Store Listing Routes */}
+            <Route
+              path="/ecommerce-stores"
+              element={<EcommerceStoresListing />}
+            />
+            <Route
+              path="/wedding-vendors"
+              element={<WeddingVendorsListing />}
+            />
+            <Route path="/auto-dealers" element={<AutoDealersListing />} />
+
             {/* Ecommerce Routes */}
             <Route path="/ecommerce/*" element={<EcommerceModule />} />
 
