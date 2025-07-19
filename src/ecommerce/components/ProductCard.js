@@ -38,7 +38,9 @@ const ProductImage = styled.img`
   }
 `;
 
-const Badge = styled.div`
+const Badge = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "type",
+})`
   position: absolute;
   top: ${theme.spacing.md};
   left: ${theme.spacing.md};
