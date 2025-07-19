@@ -200,6 +200,11 @@ const ForgotPasswordLink = styled(Link)`
   &:hover {
     text-decoration: underline;
   }
+
+  ${media.mobile} {
+    font-size: 0.8125rem;
+    text-align: center;
+  }
 `;
 
 const LoginButton = styled(Button)`
@@ -258,6 +263,15 @@ const Divider = styled.div`
     padding: 0 ${theme.spacing.md};
     font-size: 0.9rem;
   }
+
+  ${media.mobile} {
+    margin: ${theme.spacing.md} 0;
+
+    span {
+      font-size: 0.8125rem;
+      padding: 0 ${theme.spacing.sm};
+    }
+  }
 `;
 
 const RegisterLink = styled.div`
@@ -274,6 +288,10 @@ const RegisterLink = styled.div`
       text-decoration: underline;
     }
   }
+
+  ${media.mobile} {
+    font-size: 0.8125rem;
+  }
 `;
 
 const BackToHome = styled(Link)`
@@ -287,6 +305,12 @@ const BackToHome = styled(Link)`
 
   &:hover {
     text-decoration: underline;
+  }
+
+  ${media.mobile} {
+    font-size: 0.8125rem;
+    margin-bottom: ${theme.spacing.md};
+    gap: ${theme.spacing.xs};
   }
 `;
 
