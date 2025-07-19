@@ -255,8 +255,12 @@ const Navbar = ({
   return (
     <NavbarContainer>
       <NavbarContent>
-        <Logo to="/ecommerce">
-          <FaShoppingCart />
+        <Logo to="/ecommerce" theme={vendorTheme}>
+          {storeLogo ? (
+            <LogoImage src={storeLogo} alt={`${storeName} logo`} />
+          ) : (
+            <FaShoppingCart />
+          )}
           {storeName || "ShopMart"}
         </Logo>
 
