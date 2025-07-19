@@ -11,16 +11,33 @@ const HeaderContainer = styled.header`
   position: sticky;
   top: 0;
   z-index: 100;
+  width: 100%;
 `;
 
 const HeaderContent = styled.div`
+  width: 100%;
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 ${theme.spacing.md};
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 70px;
+  min-height: 4.375rem;
+
+  ${media.mobile} {
+    padding: 0 ${theme.spacing.sm};
+    min-height: 3.75rem;
+  }
+
+  ${media.tablet} {
+    padding: 0 ${theme.spacing.lg};
+    min-height: 4rem;
+  }
+
+  ${media.desktop} {
+    padding: 0 ${theme.spacing.xl};
+    min-height: 4.375rem;
+  }
 `;
 
 const Logo = styled(Link)`
@@ -31,6 +48,24 @@ const Logo = styled(Link)`
   font-weight: 700;
   color: ${theme.colors.primary};
   text-decoration: none;
+  flex-shrink: 0;
+
+  ${media.mobile} {
+    font-size: 1.25rem;
+    gap: ${theme.spacing.xs};
+  }
+
+  ${media.tablet} {
+    font-size: 1.375rem;
+  }
+
+  svg {
+    font-size: 1.25rem;
+
+    ${media.mobile} {
+      font-size: 1rem;
+    }
+  }
 `;
 
 const Nav = styled.nav.withConfig({
@@ -40,9 +75,9 @@ const Nav = styled.nav.withConfig({
   align-items: center;
   gap: ${theme.spacing.xl};
 
-  @media (max-width: ${theme.breakpoints.mobile}) {
+  ${media.mobileDown} {
     position: fixed;
-    top: 70px;
+    top: 3.75rem;
     left: 0;
     right: 0;
     background: ${theme.colors.white};
@@ -51,8 +86,17 @@ const Nav = styled.nav.withConfig({
     box-shadow: ${theme.shadows.lg};
     transform: translateY(${(props) => (props.isOpen ? "0" : "-100%")});
     opacity: ${(props) => (props.isOpen ? "1" : "0")};
+    visibility: ${(props) => (props.isOpen ? "visible" : "hidden")};
     transition: all 0.3s ease;
     z-index: 99;
+    max-height: calc(100vh - 3.75rem);
+    overflow-y: auto;
+    gap: ${theme.spacing.lg};
+    align-items: stretch;
+  }
+
+  ${media.tablet} {
+    gap: ${theme.spacing.lg};
   }
 `;
 
