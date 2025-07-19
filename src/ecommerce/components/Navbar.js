@@ -246,6 +246,8 @@ const Navbar = ({
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
 
+  const getBaseUrl = () => (storeSlug ? `/${storeSlug}` : "/ecommerce");
+
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchQuery.trim()) {
