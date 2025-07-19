@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { FaHotel, FaBars, FaTimes, FaChevronDown } from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
+import { theme, media } from "../../styles/GlobalStyle";
 import { Button } from "./Button";
 
 const HeaderContainer = styled.header`
@@ -11,16 +11,33 @@ const HeaderContainer = styled.header`
   position: sticky;
   top: 0;
   z-index: 100;
+  width: 100%;
 `;
 
 const HeaderContent = styled.div`
+  width: 100%;
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 ${theme.spacing.md};
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 70px;
+  min-height: 4.375rem;
+
+  ${media.mobile} {
+    padding: 0 ${theme.spacing.sm};
+    min-height: 3.75rem;
+  }
+
+  ${media.tablet} {
+    padding: 0 ${theme.spacing.lg};
+    min-height: 4rem;
+  }
+
+  ${media.desktop} {
+    padding: 0 ${theme.spacing.xl};
+    min-height: 4.375rem;
+  }
 `;
 
 const Logo = styled(Link)`
@@ -31,6 +48,24 @@ const Logo = styled(Link)`
   font-weight: 700;
   color: ${theme.colors.primary};
   text-decoration: none;
+  flex-shrink: 0;
+
+  ${media.mobile} {
+    font-size: 1.25rem;
+    gap: ${theme.spacing.xs};
+  }
+
+  ${media.tablet} {
+    font-size: 1.375rem;
+  }
+
+  svg {
+    font-size: 1.25rem;
+
+    ${media.mobile} {
+      font-size: 1rem;
+    }
+  }
 `;
 
 const Nav = styled.nav.withConfig({
@@ -40,9 +75,9 @@ const Nav = styled.nav.withConfig({
   align-items: center;
   gap: ${theme.spacing.xl};
 
-  @media (max-width: ${theme.breakpoints.mobile}) {
+  ${media.mobileDown} {
     position: fixed;
-    top: 70px;
+    top: 3.75rem;
     left: 0;
     right: 0;
     background: ${theme.colors.white};
@@ -51,8 +86,17 @@ const Nav = styled.nav.withConfig({
     box-shadow: ${theme.shadows.lg};
     transform: translateY(${(props) => (props.isOpen ? "0" : "-100%")});
     opacity: ${(props) => (props.isOpen ? "1" : "0")};
+    visibility: ${(props) => (props.isOpen ? "visible" : "hidden")};
     transition: all 0.3s ease;
     z-index: 99;
+    max-height: calc(100vh - 3.75rem);
+    overflow-y: auto;
+    gap: ${theme.spacing.lg};
+    align-items: stretch;
+  }
+
+  ${media.tablet} {
+    gap: ${theme.spacing.lg};
   }
 `;
 
@@ -63,6 +107,9 @@ const NavLink = styled(Link)`
   padding: ${theme.spacing.sm} ${theme.spacing.md};
   border-radius: ${theme.borderRadius.md};
   transition: all 0.2s ease;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
 
   &:hover {
     color: ${theme.colors.primary};
@@ -73,11 +120,28 @@ const NavLink = styled(Link)`
     color: ${theme.colors.primary};
     background: ${theme.colors.gray50};
   }
+
+  ${media.mobileDown} {
+    padding: ${theme.spacing.md} ${theme.spacing.lg};
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+    font-size: 1.125rem;
+  }
+
+  ${media.tablet} {
+    padding: ${theme.spacing.sm} ${theme.spacing.sm};
+    font-size: 0.875rem;
+  }
 `;
 
 const DropdownContainer = styled.div`
   position: relative;
   display: inline-block;
+
+  ${media.mobileDown} {
+    width: 100%;
+  }
 `;
 
 const DropdownButton = styled.button.withConfig({
@@ -85,6 +149,7 @@ const DropdownButton = styled.button.withConfig({
 })`
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: ${theme.spacing.sm};
   color: ${theme.colors.gray700};
   font-weight: 500;
@@ -94,6 +159,8 @@ const DropdownButton = styled.button.withConfig({
   border-radius: ${theme.borderRadius.md};
   transition: all 0.2s ease;
   cursor: pointer;
+  white-space: nowrap;
+  font-size: 1rem;
 
   &:hover {
     color: ${theme.colors.primary};
@@ -103,6 +170,17 @@ const DropdownButton = styled.button.withConfig({
   svg {
     transition: transform 0.2s ease;
     transform: ${(props) => (props.isOpen ? "rotate(180deg)" : "rotate(0deg)")};
+  }
+
+  ${media.mobileDown} {
+    padding: ${theme.spacing.md} ${theme.spacing.lg};
+    width: 100%;
+    font-size: 1.125rem;
+  }
+
+  ${media.tablet} {
+    padding: ${theme.spacing.sm} ${theme.spacing.sm};
+    font-size: 0.875rem;
   }
 `;
 
@@ -116,14 +194,14 @@ const DropdownMenu = styled.div.withConfig({
   border-radius: ${theme.borderRadius.lg};
   box-shadow: ${theme.shadows.xl};
   border: 1px solid ${theme.colors.gray200};
-  min-width: 200px;
+  min-width: 12.5rem;
   z-index: 1000;
   opacity: ${(props) => (props.isOpen ? "1" : "0")};
   visibility: ${(props) => (props.isOpen ? "visible" : "hidden")};
-  transform: translateY(${(props) => (props.isOpen ? "0" : "-10px")});
+  transform: translateY(${(props) => (props.isOpen ? "0" : "-0.625rem")});
   transition: all 0.2s ease;
 
-  @media (max-width: ${theme.breakpoints.mobile}) {
+  ${media.mobileDown} {
     position: static;
     box-shadow: none;
     border: none;
@@ -132,6 +210,12 @@ const DropdownMenu = styled.div.withConfig({
     opacity: 1;
     visibility: visible;
     transform: none;
+    border-radius: ${theme.borderRadius.md};
+    width: 100%;
+  }
+
+  ${media.tablet} {
+    min-width: 10rem;
   }
 `;
 
@@ -142,6 +226,7 @@ const DropdownItem = styled(Link)`
   text-decoration: none;
   transition: all 0.2s ease;
   border-bottom: 1px solid ${theme.colors.gray100};
+  font-size: 0.875rem;
 
   &:last-child {
     border-bottom: none;
@@ -161,12 +246,37 @@ const DropdownItem = styled(Link)`
     border-bottom-left-radius: ${theme.borderRadius.lg};
     border-bottom-right-radius: ${theme.borderRadius.lg};
   }
+
+  ${media.mobileDown} {
+    padding: ${theme.spacing.md};
+    text-align: center;
+    font-size: 1rem;
+    border-bottom: 1px solid ${theme.colors.gray200};
+
+    &:first-child,
+    &:last-child {
+      border-radius: 0;
+    }
+  }
 `;
 
 const UserSection = styled.div`
   display: flex;
   align-items: center;
   gap: ${theme.spacing.md};
+  flex-shrink: 0;
+
+  ${media.mobileDown} {
+    position: absolute;
+    top: 0;
+    right: ${theme.spacing.sm};
+    height: 100%;
+    gap: ${theme.spacing.sm};
+  }
+
+  ${media.tablet} {
+    gap: ${theme.spacing.sm};
+  }
 `;
 
 const LoginButton = styled(Link)`
@@ -176,10 +286,22 @@ const LoginButton = styled(Link)`
   padding: ${theme.spacing.sm} ${theme.spacing.md};
   border-radius: ${theme.borderRadius.md};
   transition: all 0.2s ease;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
 
   &:hover {
     color: ${theme.colors.primary};
     background: ${theme.colors.gray50};
+  }
+
+  ${media.mobileDown} {
+    display: none;
+  }
+
+  ${media.tablet} {
+    padding: ${theme.spacing.sm};
+    font-size: 0.875rem;
   }
 `;
 
@@ -191,10 +313,20 @@ const RegisterButton = styled(Button)`
   border-radius: ${theme.borderRadius.md};
   font-weight: 500;
   transition: all 0.2s ease;
+  white-space: nowrap;
 
   &:hover {
-    background: ${theme.colors.secondary};
+    background: ${theme.colors.primaryDark};
     transform: translateY(-1px);
+  }
+
+  ${media.mobileDown} {
+    display: none;
+  }
+
+  ${media.tablet} {
+    padding: ${theme.spacing.sm} ${theme.spacing.md};
+    font-size: 0.875rem;
   }
 `;
 
@@ -205,9 +337,68 @@ const MobileMenuButton = styled.button`
   color: ${theme.colors.gray700};
   font-size: 1.25rem;
   padding: ${theme.spacing.sm};
+  cursor: pointer;
+  border-radius: ${theme.borderRadius.sm};
+  transition: all 0.2s ease;
 
-  @media (max-width: ${theme.breakpoints.mobile}) {
-    display: block;
+  &:hover {
+    background: ${theme.colors.gray50};
+    color: ${theme.colors.primary};
+  }
+
+  &:active {
+    background: ${theme.colors.gray100};
+  }
+
+  ${media.mobileDown} {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+`;
+
+const MobileAuthButtons = styled.div`
+  display: none;
+
+  ${media.mobileDown} {
+    display: flex;
+    flex-direction: column;
+    gap: ${theme.spacing.md};
+    padding: ${theme.spacing.lg} 0;
+    border-top: 1px solid ${theme.colors.gray200};
+    margin-top: ${theme.spacing.lg};
+    width: 100%;
+  }
+`;
+
+const MobileAuthButton = styled(Link)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: ${theme.spacing.md} ${theme.spacing.lg};
+  border-radius: ${theme.borderRadius.md};
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  font-size: 1rem;
+
+  &.login {
+    color: ${theme.colors.gray700};
+    background: ${theme.colors.gray100};
+
+    &:hover {
+      background: ${theme.colors.gray200};
+      color: ${theme.colors.primary};
+    }
+  }
+
+  &.register {
+    color: ${theme.colors.white};
+    background: ${theme.colors.primary};
+
+    &:hover {
+      background: ${theme.colors.primaryDark};
+    }
   }
 `;
 
@@ -307,6 +498,23 @@ const Header = ({ isOwnerView = false }) => {
               </DropdownContainer>
             </>
           )}
+
+          <MobileAuthButtons>
+            <MobileAuthButton
+              to="/login"
+              className="login"
+              onClick={closeMobileMenu}
+            >
+              Login
+            </MobileAuthButton>
+            <MobileAuthButton
+              to="/register"
+              className="register"
+              onClick={closeMobileMenu}
+            >
+              Register
+            </MobileAuthButton>
+          </MobileAuthButtons>
         </Nav>
 
         <UserSection>

@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import { Card, CardContent, Badge } from "../shared/Card";
 import { Button } from "../shared/Button";
-import { theme } from "../../styles/GlobalStyle";
+import { theme, media } from "../../styles/GlobalStyle";
 import { useAppContext } from "../../context/AppContext";
 
 const DashboardContainer = styled.div`
@@ -16,18 +16,35 @@ const DashboardContainer = styled.div`
 
 const MainContent = styled.main`
   flex: 1;
-  margin-left: 280px;
+  margin-left: 17.5rem;
   padding: ${theme.spacing.xxl};
 
-  @media (max-width: ${theme.breakpoints.tablet}) {
+  ${media.tabletDown} {
     margin-left: 0;
     padding: ${theme.spacing.xl} ${theme.spacing.md};
-    padding-top: 80px;
+    padding-top: 5rem;
+  }
+
+  ${media.mobile} {
+    padding: ${theme.spacing.lg} ${theme.spacing.sm};
+    padding-top: 4rem;
+  }
+
+  ${media.desktop} {
+    padding: ${theme.spacing.xxl} ${theme.spacing.xl};
   }
 `;
 
 const DashboardHeader = styled.div`
   margin-bottom: ${theme.spacing.xxl};
+
+  ${media.mobile} {
+    margin-bottom: ${theme.spacing.xl};
+  }
+
+  ${media.tablet} {
+    margin-bottom: ${theme.spacing.xxl};
+  }
 `;
 
 const WelcomeTitle = styled.h1`
@@ -35,18 +52,45 @@ const WelcomeTitle = styled.h1`
   font-weight: 700;
   margin-bottom: ${theme.spacing.sm};
   color: ${theme.colors.gray900};
+
+  ${media.mobile} {
+    font-size: 1.875rem;
+  }
+
+  ${media.tablet} {
+    font-size: 2.125rem;
+  }
 `;
 
 const WelcomeSubtitle = styled.p`
   font-size: 1.125rem;
   color: ${theme.colors.gray600};
+
+  ${media.mobile} {
+    font-size: 1rem;
+  }
 `;
 
 const StatsGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(15.625rem, 1fr));
   gap: ${theme.spacing.xl};
   margin-bottom: ${theme.spacing.xxl};
+
+  ${media.mobile} {
+    grid-template-columns: 1fr;
+    gap: ${theme.spacing.md};
+    margin-bottom: ${theme.spacing.xl};
+  }
+
+  ${media.tablet} {
+    grid-template-columns: repeat(2, 1fr);
+    gap: ${theme.spacing.lg};
+  }
+
+  ${media.desktop} {
+    grid-template-columns: repeat(4, 1fr);
+  }
 `;
 
 const StatCard = styled(Card)`
@@ -57,8 +101,8 @@ const StatCard = styled(Card)`
 const StatIcon = styled.div.withConfig({
   shouldForwardProp: (prop) => !["iconBg", "iconColor"].includes(prop),
 })`
-  width: 60px;
-  height: 60px;
+  width: 3.75rem;
+  height: 3.75rem;
   border-radius: ${theme.borderRadius.lg};
   background: ${(props) => props.iconBg || theme.colors.primary}20;
   color: ${(props) => props.iconColor || theme.colors.primary};
@@ -67,17 +111,45 @@ const StatIcon = styled.div.withConfig({
   justify-content: center;
   font-size: 1.5rem;
   margin-bottom: ${theme.spacing.md};
+  flex-shrink: 0;
+
+  ${media.mobile} {
+    width: 3rem;
+    height: 3rem;
+    font-size: 1.25rem;
+    margin-bottom: ${theme.spacing.sm};
+  }
+
+  ${media.tablet} {
+    width: 3.5rem;
+    height: 3.5rem;
+    font-size: 1.375rem;
+  }
 `;
 
 const StatValue = styled.div`
   font-size: 2.5rem;
   font-weight: 700;
   margin-bottom: ${theme.spacing.xs};
+  line-height: 1;
+
+  ${media.mobile} {
+    font-size: 2rem;
+  }
+
+  ${media.tablet} {
+    font-size: 2.25rem;
+  }
 `;
 
 const StatLabel = styled.div`
   font-size: 0.875rem;
   opacity: 0.8;
+  line-height: 1.3;
+
+  ${media.mobile} {
+    font-size: 0.8125rem;
+  }
   font-weight: 500;
 `;
 

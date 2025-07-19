@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { theme } from "../../styles/GlobalStyle";
+import { theme, media } from "../../styles/GlobalStyle";
 
 export const Button = styled.button`
   display: inline-flex;
@@ -24,6 +24,44 @@ export const Button = styled.button`
   cursor: pointer;
   transition: all 0.2s ease;
   text-decoration: none;
+  min-height: ${(props) =>
+    props.size === "large"
+      ? "3rem"
+      : props.size === "small"
+        ? "2rem"
+        : "2.5rem"};
+  white-space: nowrap;
+
+  ${media.mobile} {
+    padding: ${(props) =>
+      props.size === "large"
+        ? `${theme.spacing.md} ${theme.spacing.xl}`
+        : props.size === "small"
+          ? `${theme.spacing.xs} ${theme.spacing.sm}`
+          : `${theme.spacing.sm} ${theme.spacing.lg}`};
+    font-size: ${(props) =>
+      props.size === "large"
+        ? "1rem"
+        : props.size === "small"
+          ? "0.75rem"
+          : "0.875rem"};
+    min-height: ${(props) =>
+      props.size === "large"
+        ? "2.75rem"
+        : props.size === "small"
+          ? "1.75rem"
+          : "2.25rem"};
+    gap: ${theme.spacing.xs};
+  }
+
+  ${media.tablet} {
+    font-size: ${(props) =>
+      props.size === "large"
+        ? "1.0625rem"
+        : props.size === "small"
+          ? "0.8125rem"
+          : "0.9375rem"};
+  }
 
   ${(props) => {
     switch (props.variant) {
@@ -93,4 +131,18 @@ export const Button = styled.button`
 export const IconButton = styled(Button)`
   padding: ${theme.spacing.md};
   min-width: auto;
+  min-height: 2.5rem;
+  width: 2.5rem;
+
+  ${media.mobile} {
+    padding: ${theme.spacing.sm};
+    min-height: 2rem;
+    width: 2rem;
+    font-size: 0.875rem;
+  }
+
+  ${media.tablet} {
+    min-height: 2.25rem;
+    width: 2.25rem;
+  }
 `;

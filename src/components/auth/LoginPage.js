@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
+import { theme, media } from "../../styles/GlobalStyle";
 import { Button } from "../shared/Button";
 import { Input } from "../shared/Input";
 
@@ -13,6 +13,16 @@ const PageContainer = styled.div`
   align-items: center;
   justify-content: center;
   padding: ${theme.spacing.lg};
+
+  ${media.mobile} {
+    padding: ${theme.spacing.md};
+    align-items: flex-start;
+    padding-top: ${theme.spacing.xl};
+  }
+
+  ${media.tablet} {
+    padding: ${theme.spacing.lg};
+  }
 `;
 
 const LoginCard = styled.div`
@@ -21,7 +31,19 @@ const LoginCard = styled.div`
   padding: ${theme.spacing.xxl};
   box-shadow: ${theme.shadows.xl};
   width: 100%;
-  max-width: 400px;
+  max-width: 25rem;
+
+  ${media.mobile} {
+    padding: ${theme.spacing.lg};
+    border-radius: ${theme.borderRadius.lg};
+    max-width: 100%;
+    box-shadow: ${theme.shadows.lg};
+  }
+
+  ${media.tablet} {
+    padding: ${theme.spacing.xl};
+    max-width: 22rem;
+  }
 `;
 
 const Logo = styled.div`
@@ -34,11 +56,23 @@ const LogoText = styled.h1`
   font-weight: 700;
   color: ${theme.colors.primary};
   margin-bottom: ${theme.spacing.sm};
+
+  ${media.mobile} {
+    font-size: 1.5rem;
+  }
+
+  ${media.tablet} {
+    font-size: 1.75rem;
+  }
 `;
 
 const LogoSubtext = styled.p`
   color: ${theme.colors.gray600};
   font-size: 0.9rem;
+
+  ${media.mobile} {
+    font-size: 0.8125rem;
+  }
 `;
 
 const Title = styled.h2`
@@ -47,12 +81,25 @@ const Title = styled.h2`
   color: ${theme.colors.gray900};
   text-align: center;
   margin-bottom: ${theme.spacing.xl};
+
+  ${media.mobile} {
+    font-size: 1.375rem;
+    margin-bottom: ${theme.spacing.lg};
+  }
+
+  ${media.tablet} {
+    font-size: 1.5rem;
+  }
 `;
 
 const Form = styled.form`
   display: flex;
   flex-direction: column;
   gap: ${theme.spacing.lg};
+
+  ${media.mobile} {
+    gap: ${theme.spacing.md};
+  }
 `;
 
 const FormGroup = styled.div`
@@ -64,6 +111,12 @@ const Label = styled.label`
   font-weight: 500;
   color: ${theme.colors.gray700};
   margin-bottom: ${theme.spacing.sm};
+  font-size: 0.875rem;
+
+  ${media.mobile} {
+    font-size: 0.8125rem;
+    margin-bottom: ${theme.spacing.xs};
+  }
 `;
 
 const InputContainer = styled.div`
@@ -77,6 +130,12 @@ const InputIcon = styled.div`
   transform: translateY(-50%);
   color: ${theme.colors.gray400};
   font-size: 1rem;
+  z-index: 1;
+
+  ${media.mobile} {
+    left: ${theme.spacing.sm};
+    font-size: 0.875rem;
+  }
 `;
 
 const StyledInput = styled(Input)`
@@ -86,6 +145,7 @@ const StyledInput = styled(Input)`
   border-radius: ${theme.borderRadius.lg};
   font-size: 1rem;
   transition: all 0.2s ease;
+  min-height: 3rem;
 
   &:focus {
     outline: none;
@@ -95,6 +155,13 @@ const StyledInput = styled(Input)`
 
   &::placeholder {
     color: ${theme.colors.gray400};
+  }
+
+  ${media.mobile} {
+    padding: ${theme.spacing.sm} ${theme.spacing.sm} ${theme.spacing.sm} 2.5rem;
+    font-size: 1rem;
+    min-height: 2.75rem;
+    border-radius: ${theme.borderRadius.md};
   }
 `;
 
@@ -109,9 +176,16 @@ const PasswordToggle = styled.button`
   cursor: pointer;
   font-size: 1rem;
   padding: ${theme.spacing.xs};
+  z-index: 1;
 
   &:hover {
     color: ${theme.colors.gray600};
+  }
+
+  ${media.mobile} {
+    right: ${theme.spacing.sm};
+    font-size: 0.875rem;
+    padding: ${theme.spacing.xs};
   }
 `;
 
@@ -126,6 +200,11 @@ const ForgotPasswordLink = styled(Link)`
   &:hover {
     text-decoration: underline;
   }
+
+  ${media.mobile} {
+    font-size: 0.8125rem;
+    text-align: center;
+  }
 `;
 
 const LoginButton = styled(Button)`
@@ -138,9 +217,10 @@ const LoginButton = styled(Button)`
   border: none;
   border-radius: ${theme.borderRadius.lg};
   transition: all 0.2s ease;
+  min-height: 3rem;
 
   &:hover {
-    background: ${theme.colors.secondary};
+    background: ${theme.colors.primaryDark};
     transform: translateY(-1px);
     box-shadow: ${theme.shadows.lg};
   }
@@ -149,6 +229,16 @@ const LoginButton = styled(Button)`
     background: ${theme.colors.gray300};
     cursor: not-allowed;
     transform: none;
+  }
+
+  ${media.mobile} {
+    min-height: 2.75rem;
+    font-size: 1rem;
+    border-radius: ${theme.borderRadius.md};
+
+    &:hover {
+      transform: none;
+    }
   }
 `;
 
@@ -173,6 +263,15 @@ const Divider = styled.div`
     padding: 0 ${theme.spacing.md};
     font-size: 0.9rem;
   }
+
+  ${media.mobile} {
+    margin: ${theme.spacing.md} 0;
+
+    span {
+      font-size: 0.8125rem;
+      padding: 0 ${theme.spacing.sm};
+    }
+  }
 `;
 
 const RegisterLink = styled.div`
@@ -189,6 +288,10 @@ const RegisterLink = styled.div`
       text-decoration: underline;
     }
   }
+
+  ${media.mobile} {
+    font-size: 0.8125rem;
+  }
 `;
 
 const BackToHome = styled(Link)`
@@ -202,6 +305,12 @@ const BackToHome = styled(Link)`
 
   &:hover {
     text-decoration: underline;
+  }
+
+  ${media.mobile} {
+    font-size: 0.8125rem;
+    margin-bottom: ${theme.spacing.md};
+    gap: ${theme.spacing.xs};
   }
 `;
 

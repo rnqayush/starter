@@ -1,8 +1,12 @@
 import styled from "styled-components";
-import { theme } from "../../styles/GlobalStyle";
+import { theme, media } from "../../styles/GlobalStyle";
 
 export const FormGroup = styled.div`
   margin-bottom: ${theme.spacing.lg};
+
+  ${media.mobile} {
+    margin-bottom: ${theme.spacing.md};
+  }
 `;
 
 export const Label = styled.label`
@@ -11,6 +15,11 @@ export const Label = styled.label`
   color: ${theme.colors.gray700};
   margin-bottom: ${theme.spacing.sm};
   font-size: 0.875rem;
+
+  ${media.mobile} {
+    font-size: 0.8125rem;
+    margin-bottom: ${theme.spacing.xs};
+  }
 `;
 
 export const Input = styled.input`
@@ -21,6 +30,7 @@ export const Input = styled.input`
   font-size: 1rem;
   transition: all 0.2s ease;
   background: ${theme.colors.white};
+  min-height: 2.75rem;
 
   &:focus {
     outline: none;
@@ -36,6 +46,16 @@ export const Input = styled.input`
     background: ${theme.colors.gray100};
     cursor: not-allowed;
   }
+
+  ${media.mobile} {
+    padding: ${theme.spacing.sm} ${theme.spacing.md};
+    font-size: 1rem;
+    min-height: 2.5rem;
+  }
+
+  ${media.tablet} {
+    font-size: 0.9375rem;
+  }
 `;
 
 export const TextArea = styled.textarea`
@@ -46,7 +66,7 @@ export const TextArea = styled.textarea`
   font-size: 1rem;
   font-family: inherit;
   resize: vertical;
-  min-height: 100px;
+  min-height: 6.25rem;
   transition: all 0.2s ease;
   background: ${theme.colors.white};
 
@@ -59,6 +79,17 @@ export const TextArea = styled.textarea`
   &::placeholder {
     color: ${theme.colors.gray400};
   }
+
+  ${media.mobile} {
+    padding: ${theme.spacing.sm} ${theme.spacing.md};
+    font-size: 1rem;
+    min-height: 5rem;
+  }
+
+  ${media.tablet} {
+    font-size: 0.9375rem;
+    min-height: 5.625rem;
+  }
 `;
 
 export const Select = styled.select`
@@ -70,11 +101,22 @@ export const Select = styled.select`
   background: ${theme.colors.white};
   cursor: pointer;
   transition: all 0.2s ease;
+  min-height: 2.75rem;
 
   &:focus {
     outline: none;
     border-color: ${theme.colors.primary};
     box-shadow: 0 0 0 3px ${theme.colors.primary}20;
+  }
+
+  ${media.mobile} {
+    padding: ${theme.spacing.sm} ${theme.spacing.md};
+    font-size: 1rem;
+    min-height: 2.5rem;
+  }
+
+  ${media.tablet} {
+    font-size: 0.9375rem;
   }
 `;
 
@@ -82,6 +124,7 @@ export const SearchInput = styled.div`
   position: relative;
   display: flex;
   align-items: center;
+  width: 100%;
 `;
 
 export const SearchIcon = styled.div`
@@ -89,12 +132,21 @@ export const SearchIcon = styled.div`
   left: ${theme.spacing.md};
   color: ${theme.colors.gray400};
   pointer-events: none;
+  z-index: 1;
+
+  ${media.mobile} {
+    left: ${theme.spacing.sm};
+  }
 `;
 
 export const SearchField = styled(Input).withConfig({
   shouldForwardProp: (prop) => prop !== "hasIcon",
 })`
   padding-left: ${(props) => (props.hasIcon ? "2.5rem" : theme.spacing.md)};
+
+  ${media.mobile} {
+    padding-left: ${(props) => (props.hasIcon ? "2.25rem" : theme.spacing.sm)};
+  }
 `;
 
 export const InputGroup = styled.div`
@@ -102,8 +154,13 @@ export const InputGroup = styled.div`
   grid-template-columns: ${(props) => props.columns || "1fr 1fr"};
   gap: ${theme.spacing.md};
 
-  @media (max-width: ${theme.breakpoints.mobile}) {
+  ${media.mobileDown} {
     grid-template-columns: 1fr;
+    gap: ${theme.spacing.sm};
+  }
+
+  ${media.tablet} {
+    gap: ${theme.spacing.lg};
   }
 `;
 
@@ -112,6 +169,11 @@ export const CheckboxGroup = styled.div`
   flex-wrap: wrap;
   gap: ${theme.spacing.md};
   margin-top: ${theme.spacing.sm};
+
+  ${media.mobile} {
+    gap: ${theme.spacing.sm};
+    margin-top: ${theme.spacing.xs};
+  }
 `;
 
 export const CheckboxItem = styled.label`
@@ -122,6 +184,7 @@ export const CheckboxItem = styled.label`
   padding: ${theme.spacing.sm};
   border-radius: ${theme.borderRadius.md};
   transition: background-color 0.2s ease;
+  font-size: 0.875rem;
 
   &:hover {
     background: ${theme.colors.gray50};
@@ -129,6 +192,17 @@ export const CheckboxItem = styled.label`
 
   input[type="checkbox"] {
     margin: 0;
+    transform: scale(1.1);
+  }
+
+  ${media.mobile} {
+    padding: ${theme.spacing.xs} ${theme.spacing.sm};
+    font-size: 0.8125rem;
+    gap: ${theme.spacing.xs};
+
+    input[type="checkbox"] {
+      transform: scale(1);
+    }
   }
 `;
 
@@ -140,6 +214,7 @@ export const FileInput = styled.input`
   background: ${theme.colors.gray50};
   cursor: pointer;
   transition: all 0.2s ease;
+  font-size: 0.875rem;
 
   &:hover {
     border-color: ${theme.colors.primary};
@@ -149,5 +224,10 @@ export const FileInput = styled.input`
   &:focus {
     outline: none;
     border-color: ${theme.colors.primary};
+  }
+
+  ${media.mobile} {
+    padding: ${theme.spacing.sm};
+    font-size: 0.8125rem;
   }
 `;

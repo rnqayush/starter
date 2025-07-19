@@ -13,7 +13,7 @@ import {
   FaGlobe,
   FaShoppingBag,
 } from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
+import { theme, media } from "../../styles/GlobalStyle";
 import { Button } from "../shared/Button";
 import { Input } from "../shared/Input";
 
@@ -24,6 +24,16 @@ const PageContainer = styled.div`
   align-items: center;
   justify-content: center;
   padding: ${theme.spacing.lg};
+
+  ${media.mobile} {
+    padding: ${theme.spacing.sm};
+    align-items: flex-start;
+    padding-top: ${theme.spacing.lg};
+  }
+
+  ${media.tablet} {
+    padding: ${theme.spacing.lg};
+  }
 `;
 
 const RegisterCard = styled.div`
@@ -32,9 +42,36 @@ const RegisterCard = styled.div`
   padding: ${theme.spacing.xxl};
   box-shadow: ${theme.shadows.xl};
   width: 100%;
-  max-width: 500px;
+  max-width: 31.25rem;
   max-height: 90vh;
   overflow-y: auto;
+
+  ${media.mobile} {
+    padding: ${theme.spacing.lg};
+    border-radius: ${theme.borderRadius.lg};
+    max-width: 100%;
+    max-height: 95vh;
+    box-shadow: ${theme.shadows.lg};
+  }
+
+  ${media.tablet} {
+    padding: ${theme.spacing.xl};
+    max-width: 28rem;
+  }
+
+  /* Custom scrollbar */
+  &::-webkit-scrollbar {
+    width: 0.25rem;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: ${theme.colors.gray100};
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: ${theme.colors.gray300};
+    border-radius: ${theme.borderRadius.sm};
+  }
 `;
 
 const Logo = styled.div`
@@ -47,11 +84,23 @@ const LogoText = styled.h1`
   font-weight: 700;
   color: ${theme.colors.primary};
   margin-bottom: ${theme.spacing.sm};
+
+  ${media.mobile} {
+    font-size: 1.5rem;
+  }
+
+  ${media.tablet} {
+    font-size: 1.75rem;
+  }
 `;
 
 const LogoSubtext = styled.p`
   color: ${theme.colors.gray600};
   font-size: 0.9rem;
+
+  ${media.mobile} {
+    font-size: 0.8125rem;
+  }
 `;
 
 const Title = styled.h2`
@@ -60,6 +109,15 @@ const Title = styled.h2`
   color: ${theme.colors.gray900};
   text-align: center;
   margin-bottom: ${theme.spacing.lg};
+
+  ${media.mobile} {
+    font-size: 1.375rem;
+    margin-bottom: ${theme.spacing.md};
+  }
+
+  ${media.tablet} {
+    font-size: 1.5rem;
+  }
 `;
 
 const ToggleContainer = styled.div`
@@ -68,6 +126,11 @@ const ToggleContainer = styled.div`
   border-radius: ${theme.borderRadius.lg};
   padding: ${theme.spacing.xs};
   margin-bottom: ${theme.spacing.xl};
+
+  ${media.mobile} {
+    margin-bottom: ${theme.spacing.lg};
+    border-radius: ${theme.borderRadius.md};
+  }
 `;
 
 const ToggleButton = styled.button.withConfig({
@@ -80,6 +143,12 @@ const ToggleButton = styled.button.withConfig({
   font-weight: 500;
   transition: all 0.2s ease;
   cursor: pointer;
+  font-size: 0.875rem;
+
+  ${media.mobile} {
+    padding: ${theme.spacing.sm};
+    font-size: 0.8125rem;
+  }
 
   ${(props) =>
     props.active
@@ -102,6 +171,10 @@ const Form = styled.form`
   display: flex;
   flex-direction: column;
   gap: ${theme.spacing.lg};
+
+  ${media.mobile} {
+    gap: ${theme.spacing.md};
+  }
 `;
 
 const FormRow = styled.div`
@@ -109,8 +182,13 @@ const FormRow = styled.div`
   grid-template-columns: 1fr 1fr;
   gap: ${theme.spacing.md};
 
-  @media (max-width: ${theme.breakpoints.mobile}) {
+  ${media.mobileDown} {
     grid-template-columns: 1fr;
+    gap: ${theme.spacing.sm};
+  }
+
+  ${media.tablet} {
+    gap: ${theme.spacing.lg};
   }
 `;
 
@@ -123,6 +201,12 @@ const Label = styled.label`
   font-weight: 500;
   color: ${theme.colors.gray700};
   margin-bottom: ${theme.spacing.sm};
+  font-size: 0.875rem;
+
+  ${media.mobile} {
+    font-size: 0.8125rem;
+    margin-bottom: ${theme.spacing.xs};
+  }
 `;
 
 const InputContainer = styled.div`
@@ -136,6 +220,12 @@ const InputIcon = styled.div`
   transform: translateY(-50%);
   color: ${theme.colors.gray400};
   font-size: 1rem;
+  z-index: 1;
+
+  ${media.mobile} {
+    left: ${theme.spacing.sm};
+    font-size: 0.875rem;
+  }
 `;
 
 const StyledInput = styled(Input)`

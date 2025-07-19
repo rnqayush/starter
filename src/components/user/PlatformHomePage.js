@@ -22,7 +22,7 @@ import {
 } from "react-icons/fa";
 import Header from "../shared/Header";
 import { Button } from "../shared/Button";
-import { theme } from "../../styles/GlobalStyle";
+import { theme, media } from "../../styles/GlobalStyle";
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -37,6 +37,9 @@ const HeroSection = styled.section`
   text-align: center;
   position: relative;
   overflow: hidden;
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
 
   &::before {
     content: "";
@@ -48,14 +51,37 @@ const HeroSection = styled.section`
     background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><polygon fill="%23ffffff08" points="0,0 1000,300 1000,1000 0,700"/></svg>');
     background-size: cover;
   }
+
+  ${media.mobile} {
+    padding: ${theme.spacing.xl} 0;
+    min-height: 70vh;
+  }
+
+  ${media.tablet} {
+    padding: ${theme.spacing.xxl} 0;
+    min-height: 75vh;
+  }
 `;
 
 const HeroContent = styled.div`
+  width: 100%;
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 ${theme.spacing.md};
   position: relative;
   z-index: 1;
+
+  ${media.mobile} {
+    padding: 0 ${theme.spacing.sm};
+  }
+
+  ${media.tablet} {
+    padding: 0 ${theme.spacing.lg};
+  }
+
+  ${media.desktop} {
+    padding: 0 ${theme.spacing.xl};
+  }
 `;
 
 const HeroTitle = styled.h1`
@@ -66,9 +92,19 @@ const HeroTitle = styled.h1`
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  line-height: 1.1;
 
-  @media (max-width: ${theme.breakpoints.mobile}) {
+  ${media.mobile} {
     font-size: 2.5rem;
+    margin-bottom: ${theme.spacing.md};
+  }
+
+  ${media.tablet} {
+    font-size: 3.25rem;
+  }
+
+  ${media.desktop} {
+    font-size: 4.5rem;
   }
 `;
 

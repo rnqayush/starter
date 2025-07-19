@@ -12,7 +12,7 @@ import {
   FaBars,
   FaTimes,
 } from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
+import { theme, media } from "../../styles/GlobalStyle";
 
 const SidebarContainer = styled.aside.withConfig({
   shouldForwardProp: (prop) => prop !== "isOpen",
@@ -20,22 +20,50 @@ const SidebarContainer = styled.aside.withConfig({
   position: fixed;
   top: 0;
   left: 0;
-  width: 280px;
+  width: 17.5rem;
   height: 100vh;
   background: ${theme.colors.white};
   border-right: 1px solid ${theme.colors.gray200};
   overflow-y: auto;
+  overflow-x: hidden;
   transition: transform 0.3s ease;
   z-index: 20;
 
-  @media (max-width: ${theme.breakpoints.tablet}) {
+  ${media.tabletDown} {
+    width: 16rem;
     transform: translateX(${(props) => (props.isOpen ? "0" : "-100%")});
+  }
+
+  ${media.mobile} {
+    width: 15rem;
+  }
+
+  /* Custom scrollbar */
+  &::-webkit-scrollbar {
+    width: 0.25rem;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: ${theme.colors.gray100};
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: ${theme.colors.gray300};
+    border-radius: ${theme.borderRadius.sm};
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: ${theme.colors.gray400};
   }
 `;
 
 const SidebarHeader = styled.div`
   padding: ${theme.spacing.xl};
   border-bottom: 1px solid ${theme.colors.gray200};
+
+  ${media.mobile} {
+    padding: ${theme.spacing.lg};
+  }
 `;
 
 const Logo = styled.div`
@@ -45,14 +73,39 @@ const Logo = styled.div`
   font-size: 1.5rem;
   font-weight: 700;
   color: ${theme.colors.primary};
+
+  ${media.mobile} {
+    font-size: 1.25rem;
+    gap: ${theme.spacing.xs};
+  }
+
+  svg {
+    font-size: 1.25rem;
+
+    ${media.mobile} {
+      font-size: 1rem;
+    }
+  }
 `;
 
 const SidebarNav = styled.nav`
   padding: ${theme.spacing.lg} 0;
+
+  ${media.mobile} {
+    padding: ${theme.spacing.md} 0;
+  }
 `;
 
 const NavSection = styled.div`
   margin-bottom: ${theme.spacing.lg};
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  ${media.mobile} {
+    margin-bottom: ${theme.spacing.md};
+  }
 `;
 
 const SectionTitle = styled.h3`
@@ -62,6 +115,11 @@ const SectionTitle = styled.h3`
   color: ${theme.colors.gray500};
   text-transform: uppercase;
   letter-spacing: 0.05em;
+
+  ${media.mobile} {
+    padding: 0 ${theme.spacing.lg} ${theme.spacing.xs};
+    font-size: 0.75rem;
+  }
 `;
 
 const NavItem = styled(Link).withConfig({
@@ -77,6 +135,7 @@ const NavItem = styled(Link).withConfig({
   font-weight: 500;
   transition: all 0.2s ease;
   position: relative;
+  font-size: 0.875rem;
 
   &:hover {
     color: ${theme.colors.primary};
@@ -89,12 +148,34 @@ const NavItem = styled(Link).withConfig({
     background: ${theme.colors.primary}10;
     border-right: 3px solid ${theme.colors.primary};
   `}
+
+  ${media.mobile} {
+    padding: ${theme.spacing.sm} ${theme.spacing.lg};
+    gap: ${theme.spacing.sm};
+    font-size: 0.8125rem;
+  }
 `;
 
 const NavIcon = styled.div`
-  width: 20px;
+  width: 1.25rem;
+  height: 1.25rem;
   display: flex;
   justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+
+  ${media.mobile} {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  svg {
+    font-size: 1rem;
+
+    ${media.mobile} {
+      font-size: 0.875rem;
+    }
+  }
 `;
 
 const MobileToggle = styled.button`
@@ -110,9 +191,35 @@ const MobileToggle = styled.button`
   cursor: pointer;
   box-shadow: ${theme.shadows.md};
   display: none;
+  transition: all 0.2s ease;
 
-  @media (max-width: ${theme.breakpoints.tablet}) {
-    display: block;
+  &:hover {
+    background: ${theme.colors.gray50};
+    color: ${theme.colors.primary};
+  }
+
+  &:active {
+    background: ${theme.colors.gray100};
+  }
+
+  ${media.tabletDown} {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  ${media.mobile} {
+    top: ${theme.spacing.md};
+    left: ${theme.spacing.md};
+    padding: ${theme.spacing.xs};
+  }
+
+  svg {
+    font-size: 1rem;
+
+    ${media.mobile} {
+      font-size: 0.875rem;
+    }
   }
 `;
 
@@ -127,9 +234,12 @@ const Overlay = styled.div.withConfig({
   background: rgba(0, 0, 0, 0.5);
   z-index: 15;
   display: none;
+  opacity: ${(props) => (props.isOpen ? "1" : "0")};
+  visibility: ${(props) => (props.isOpen ? "visible" : "hidden")};
+  transition: all 0.3s ease;
 
-  @media (max-width: ${theme.breakpoints.tablet}) {
-    display: ${(props) => (props.isOpen ? "block" : "none")};
+  ${media.tabletDown} {
+    display: block;
   }
 `;
 
