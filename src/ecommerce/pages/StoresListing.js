@@ -324,10 +324,6 @@ const StoresListing = () => {
   const [sortBy, setSortBy] = useState("distance");
   const [locationLoading, setLocationLoading] = useState(false);
 
-  useEffect(() => {
-    initializeLocation();
-  }, [initializeLocation]);
-
   const loadStoresForLocation = useCallback((location) => {
     const vendorsWithDistance = updateVendorsWithDistance(
       ecommerceVendors,
@@ -417,6 +413,10 @@ const StoresListing = () => {
 
     setFilteredStores(filtered);
   }, [stores, activeFilter, sortBy]);
+
+  useEffect(() => {
+    initializeLocation();
+  }, [initializeLocation]);
 
   useEffect(() => {
     applyFilters();
