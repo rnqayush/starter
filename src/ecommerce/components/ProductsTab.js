@@ -260,7 +260,9 @@ const ActionButtons = styled.div`
   gap: ${theme.spacing.sm};
 `;
 
-const ActionButton = styled.button`
+const ActionButton = styled.button.withConfig({
+  shouldForwardProp: (prop) => prop !== "color",
+})`
   width: 32px;
   height: 32px;
   display: flex;
