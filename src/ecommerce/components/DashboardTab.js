@@ -320,7 +320,7 @@ const DashboardTab = () => {
         <StatsCard>
           <StatsHeader>
             <StatsIcon gradient="linear-gradient(135deg, #9C27B0, #7B1FA2)">
-              <FaTrendUp />
+              <FaArrowUp />
             </StatsIcon>
           </StatsHeader>
           <StatsContent>
@@ -330,9 +330,9 @@ const DashboardTab = () => {
             <StatsLabel>Average Order Value</StatsLabel>
             <StatsChange positive={dashboardStats.averageOrderValue.change > 0}>
               {dashboardStats.averageOrderValue.change > 0 ? (
-                <FaTrendUp />
+                <FaArrowUp />
               ) : (
-                <FaTrendDown />
+                <FaArrowDown />
               )}
               {Math.abs(dashboardStats.averageOrderValue.change)}%{" "}
               {dashboardStats.averageOrderValue.period}
