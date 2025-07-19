@@ -153,7 +153,9 @@ const Timeline = styled.div`
   margin-bottom: ${theme.spacing.xl};
 `;
 
-const TimelineItem = styled.div`
+const TimelineItem = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "completed",
+})`
   display: flex;
   gap: ${theme.spacing.lg};
   margin-bottom: ${theme.spacing.lg};
@@ -171,7 +173,9 @@ const TimelineItem = styled.div`
   }
 `;
 
-const TimelineIcon = styled.div`
+const TimelineIcon = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "completed",
+})`
   width: 24px;
   height: 24px;
   border-radius: 50%;
@@ -213,7 +217,9 @@ const ActionButtons = styled.div`
   flex-wrap: wrap;
 `;
 
-const ActionButton = styled.button`
+const ActionButton = styled.button.withConfig({
+  shouldForwardProp: (prop) => prop !== "primary",
+})`
   background: ${(props) =>
     props.primary ? theme.colors.primary : theme.colors.white};
   color: ${(props) =>
