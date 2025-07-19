@@ -12,7 +12,9 @@ import SellerDashboard from "./pages/SellerDashboard";
 
 const EcommerceModule = () => {
   return (
-    <Routes>
+    <>
+      <ScrollToTop />
+      <Routes>
       {/* Main ecommerce route with dynamic vendor */}
       <Route path="/" element={<EcommerceMain />} />
       <Route path="/products" element={<Products />} />
