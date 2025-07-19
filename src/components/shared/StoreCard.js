@@ -280,15 +280,8 @@ const StoreCard = ({ store, category }) => {
 
   const currentStatus = getCurrentStatus();
 
-      if (category === "ecommerce") {
-    return (
-      <Card as="div" onClick={handleStoreClick} style={{ cursor: "pointer" }}>
-        <CardImage image={store.image}>
-    );
-  }
-
-  return (
-    <Card to={getStoreLink()}>
+  const cardContent = (
+    <>
       <CardImage image={store.image}>
         <ImageOverlay />
         {store.featured && <FeaturedBadge>Featured</FeaturedBadge>}
@@ -354,8 +347,18 @@ const StoreCard = ({ store, category }) => {
           </div>
         </StoreInfo>
       </CardContent>
-    </Card>
+    </>
   );
+
+  if (category === "ecommerce") {
+    return (
+      <Card as="div" onClick={handleStoreClick} style={{ cursor: "pointer" }}>
+        {cardContent}
+      </Card>
+    );
+  }
+
+  return <Card to={getStoreLink()}>{cardContent}</Card>;
 };
 
 export default StoreCard;
