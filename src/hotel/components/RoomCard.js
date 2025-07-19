@@ -277,7 +277,7 @@ const BookButton = styled(Link)`
   }
 `;
 
-const RoomCard = ({ room, hotelId }) => {
+const RoomCard = ({ room, hotelId, hotelSlug }) => {
   const getAmenityIcon = (amenity) => {
     const iconMap = {
       WiFi: FaWifi,
