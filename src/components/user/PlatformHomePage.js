@@ -18,8 +18,6 @@ import {
   FaPalette,
   FaMobile,
   FaHeadset,
-  FaStar,
-  FaQuoteLeft,
   FaRocket,
 } from "react-icons/fa";
 import Header from "../shared/Header";
