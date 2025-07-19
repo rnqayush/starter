@@ -249,8 +249,9 @@ const Navbar = ({
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchQuery.trim()) {
+      const baseUrl = storeSlug ? `/${storeSlug}` : "/ecommerce";
       navigate(
-        `/ecommerce/products?search=${encodeURIComponent(searchQuery.trim())}`,
+        `${baseUrl}/products?search=${encodeURIComponent(searchQuery.trim())}`,
       );
       setSearchQuery("");
       setIsMenuOpen(false);
