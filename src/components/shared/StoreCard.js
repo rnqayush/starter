@@ -210,6 +210,24 @@ const ActionButton = styled.button`
 `;
 
 const StoreCard = ({ store, category }) => {
+  // Map vendor stores to existing ecommerce categories
+  const getStoreLink = () => {
+    if (category === "ecommerce") {
+      // Map different vendor types to ecommerce categories
+      const vendorToCategory = {
+        "tech-mart": "electronics",
+        "fashion-forward": "fashion",
+        "home-essentials": "home-garden",
+        "sports-zone": "sports",
+      };
+
+      const categorySlug = vendorToCategory[store.id] || "electronics";
+      return `/ecommerce/products?category=${categorySlug}`;
+    }
+
+    // For other categories, return the original link format
+    return `/${category}/${store.id}`;
+  };
   const renderStars = (rating) => {
     const stars = [];
     const fullStars = Math.floor(rating);
