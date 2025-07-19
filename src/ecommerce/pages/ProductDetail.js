@@ -622,11 +622,11 @@ const ProductDetail = () => {
         </BackButton>
 
         <Breadcrumb>
-          <Link to="/ecommerce">Home</Link>
+          <Link to={getBaseUrl()}>Home</Link>
           <span>/</span>
-          <Link to="/ecommerce/products">Products</Link>
+          <Link to={`${getBaseUrl()}/products`}>Products</Link>
           <span>/</span>
-          <Link to={`/ecommerce/products?category=${product.category}`}>
+          <Link to={`${getBaseUrl()}/products?category=${product.category}`}>
             {product.category.replace("-", " ")}
           </Link>
           <span>/</span>
