@@ -101,8 +101,8 @@ const StatCard = styled(Card)`
 const StatIcon = styled.div.withConfig({
   shouldForwardProp: (prop) => !["iconBg", "iconColor"].includes(prop),
 })`
-  width: 60px;
-  height: 60px;
+  width: 3.75rem;
+  height: 3.75rem;
   border-radius: ${theme.borderRadius.lg};
   background: ${(props) => props.iconBg || theme.colors.primary}20;
   color: ${(props) => props.iconColor || theme.colors.primary};
@@ -111,17 +111,45 @@ const StatIcon = styled.div.withConfig({
   justify-content: center;
   font-size: 1.5rem;
   margin-bottom: ${theme.spacing.md};
+  flex-shrink: 0;
+
+  ${media.mobile} {
+    width: 3rem;
+    height: 3rem;
+    font-size: 1.25rem;
+    margin-bottom: ${theme.spacing.sm};
+  }
+
+  ${media.tablet} {
+    width: 3.5rem;
+    height: 3.5rem;
+    font-size: 1.375rem;
+  }
 `;
 
 const StatValue = styled.div`
   font-size: 2.5rem;
   font-weight: 700;
   margin-bottom: ${theme.spacing.xs};
+  line-height: 1;
+
+  ${media.mobile} {
+    font-size: 2rem;
+  }
+
+  ${media.tablet} {
+    font-size: 2.25rem;
+  }
 `;
 
 const StatLabel = styled.div`
   font-size: 0.875rem;
   opacity: 0.8;
+  line-height: 1.3;
+
+  ${media.mobile} {
+    font-size: 0.8125rem;
+  }
   font-weight: 500;
 `;
 
