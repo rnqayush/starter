@@ -1,6 +1,6 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
+import EcommerceMain from "./pages/EcommerceMain";
 import Products from "./pages/Products";
 import ProductDetail from "./pages/ProductDetail";
 import Cart from "./pages/Cart";
@@ -11,14 +11,15 @@ import StoreHome from "./pages/StoreHome";
 const EcommerceModule = () => {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
+      {/* Main ecommerce route with dynamic vendor */}
+      <Route path="/" element={<EcommerceMain />} />
       <Route path="/products" element={<Products />} />
       <Route path="/product/:id" element={<ProductDetail />} />
       <Route path="/cart" element={<Cart />} />
       <Route path="/checkout" element={<Checkout />} />
       <Route path="/order-confirmation" element={<OrderConfirmation />} />
 
-      {/* Store-specific routes */}
+      {/* Legacy store-specific routes (for backward compatibility) */}
       <Route path="/:storeId" element={<StoreHome />} />
       <Route path="/:storeId/products" element={<Products />} />
       <Route path="/:storeId/product/:id" element={<ProductDetail />} />
