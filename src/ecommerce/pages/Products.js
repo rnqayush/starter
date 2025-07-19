@@ -214,6 +214,7 @@ const Products = () => {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [storeSlug, setStoreSlug] = useState("");
+  const [vendor, setVendor] = useState(null);
 
   // Detect store slug from URL
   useEffect(() => {
