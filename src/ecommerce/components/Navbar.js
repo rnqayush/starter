@@ -32,10 +32,17 @@ const NavbarContent = styled.div`
 const Logo = styled(Link)`
   font-size: 1.8rem;
   font-weight: 700;
-  color: ${theme.colors.primary};
+  color: ${(props) => props.theme?.primaryColor || theme.colors.primary};
   display: flex;
   align-items: center;
   gap: ${theme.spacing.sm};
+`;
+
+const LogoImage = styled.img`
+  width: 40px;
+  height: 40px;
+  border-radius: ${theme.borderRadius.md};
+  object-fit: cover;
 `;
 
 const NavLinks = styled.div`
