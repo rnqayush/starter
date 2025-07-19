@@ -333,7 +333,9 @@ const RoomCard = ({ room, hotelId, hotelSlug }) => {
           ))}
         </Amenities>
 
-        <BookButton to={`/booking/${hotelId}/${room.id}`}>Book Now</BookButton>
+        <BookButton to={`/${hotelSlug}/booking/${room.id}`}>
+          Book Now
+        </BookButton>
       </CardContent>
     </Card>
   );
