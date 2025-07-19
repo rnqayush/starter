@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import {
   FaMapMarkerAlt,
   FaSearch,
-  FaFilter,
-  FaSortAmountDown,
   FaLocationArrow,
   FaHome,
   FaRing,
@@ -329,9 +327,19 @@ const WeddingStoresListing = () => {
 
   useEffect(() => {
     initializeLocation();
+  }, [initializeLocation]);
+
+  const loadStoresForLocation = useCallback((location) => {
+    const vendorsWithDistance = updateVendorsWithDistance(
+      weddingVendors,
+      location,
+    );
+    setStores(vendorsWithDistance);
+    setFilteredStores(vendorsWithDistance);
+    setLoading(false);
   }, []);
 
-  const initializeLocation = async () => {
+  const initializeLocation = useCallback(async () => {
     setLoading(true);
     try {
       const location = await getCurrentLocation();
@@ -343,17 +351,7 @@ const WeddingStoresListing = () => {
       setCurrentLocation(defaultLocation);
       loadStoresForLocation(defaultLocation);
     }
-  };
-
-  const loadStoresForLocation = (location) => {
-    const vendorsWithDistance = updateVendorsWithDistance(
-      weddingVendors,
-      location,
-    );
-    setStores(vendorsWithDistance);
-    setFilteredStores(vendorsWithDistance);
-    setLoading(false);
-  };
+  }, [loadStoresForLocation]);
 
   const handleLocationSearch = async (e) => {
     e.preventDefault();
@@ -394,7 +392,7 @@ const WeddingStoresListing = () => {
     }
   };
 
-  const applyFilters = () => {
+  const applyFilters = useCallback(() => {
     let filtered = [...stores];
 
     if (activeFilter === "featured") {
@@ -416,11 +414,11 @@ const WeddingStoresListing = () => {
     }
 
     setFilteredStores(filtered);
-  };
+  }, [stores, activeFilter, sortBy]);
 
   useEffect(() => {
     applyFilters();
-  }, [stores, activeFilter, sortBy]);
+  }, [applyFilters]);
 
   if (loading) {
     return (
