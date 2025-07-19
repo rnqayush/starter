@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { theme } from "../../styles/GlobalStyle";
+import { theme, media } from "../../styles/GlobalStyle";
 
 export const Card = styled.div`
   background: ${theme.colors.white};
