@@ -80,7 +80,9 @@ const DropdownContainer = styled.div`
   display: inline-block;
 `;
 
-const DropdownButton = styled.button`
+const DropdownButton = styled.button.withConfig({
+  shouldForwardProp: (prop) => prop !== "isOpen",
+})`
   display: flex;
   align-items: center;
   gap: ${theme.spacing.sm};
