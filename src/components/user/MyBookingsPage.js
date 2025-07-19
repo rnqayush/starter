@@ -1,12 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import {
-  FaCalendarAlt,
-  FaMapMarkerAlt,
-  FaUsers,
-  FaEye,
-  FaTimes,
-} from "react-icons/fa";
+import { FaCalendarAlt, FaUsers, FaEye, FaTimes } from "react-icons/fa";
 import Header from "../shared/Header";
 import { Button } from "../shared/Button";
 import { Card, CardContent, Badge } from "../shared/Card";
