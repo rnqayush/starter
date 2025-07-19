@@ -29,13 +29,22 @@ const NavbarContent = styled.div`
   height: 70px;
 `;
 
-const Logo = styled(Link)`
+const Logo = styled(Link).withConfig({
+  shouldForwardProp: (prop) => prop !== "theme",
+})`
   font-size: 1.8rem;
   font-weight: 700;
-  color: ${theme.colors.primary};
+  color: ${(props) => props.theme?.primaryColor || theme.colors.primary};
   display: flex;
   align-items: center;
   gap: ${theme.spacing.sm};
+`;
+
+const LogoImage = styled.img`
+  width: 40px;
+  height: 40px;
+  border-radius: ${theme.borderRadius.md};
+  object-fit: cover;
 `;
 
 const NavLinks = styled.div`
@@ -48,18 +57,20 @@ const NavLinks = styled.div`
   }
 `;
 
-const NavLink = styled(Link)`
+const NavLink = styled(Link).withConfig({
+  shouldForwardProp: (prop) => prop !== "theme",
+})`
   color: ${theme.colors.gray700};
   font-weight: 500;
   transition: color 0.2s ease;
   position: relative;
 
   &:hover {
-    color: ${theme.colors.primary};
+    color: ${(props) => props.theme?.primaryColor || theme.colors.primary};
   }
 
   &.active {
-    color: ${theme.colors.primary};
+    color: ${(props) => props.theme?.primaryColor || theme.colors.primary};
 
     &::after {
       content: "";
@@ -68,7 +79,8 @@ const NavLink = styled(Link)`
       left: 0;
       right: 0;
       height: 2px;
-      background: ${theme.colors.primary};
+      background: ${(props) =>
+        props.theme?.primaryColor || theme.colors.primary};
     }
   }
 `;
@@ -83,7 +95,9 @@ const SearchContainer = styled.div`
   }
 `;
 
-const SearchInput = styled.input`
+const SearchInput = styled.input.withConfig({
+  shouldForwardProp: (prop) => prop !== "theme",
+})`
   padding: ${theme.spacing.sm} ${theme.spacing.md};
   padding-left: 2.5rem;
   border: 2px solid ${theme.colors.gray200};
@@ -93,7 +107,8 @@ const SearchInput = styled.input`
   transition: border-color 0.2s ease;
 
   &:focus {
-    border-color: ${theme.colors.primary};
+    border-color: ${(props) =>
+      props.theme?.primaryColor || theme.colors.primary};
   }
 
   @media (max-width: ${theme.breakpoints.tablet}) {
@@ -114,7 +129,9 @@ const NavActions = styled.div`
   gap: ${theme.spacing.lg};
 `;
 
-const CartButton = styled.button`
+const CartButton = styled.button.withConfig({
+  shouldForwardProp: (prop) => prop !== "theme",
+})`
   position: relative;
   background: none;
   color: ${theme.colors.gray700};
@@ -122,15 +139,17 @@ const CartButton = styled.button`
   transition: color 0.2s ease;
 
   &:hover {
-    color: ${theme.colors.primary};
+    color: ${(props) => props.theme?.primaryColor || theme.colors.primary};
   }
 `;
 
-const CartBadge = styled.span`
+const CartBadge = styled.span.withConfig({
+  shouldForwardProp: (prop) => prop !== "theme",
+})`
   position: absolute;
   top: -8px;
   right: -8px;
-  background: ${theme.colors.error};
+  background: ${(props) => props.theme?.primaryColor || theme.colors.error};
   color: ${theme.colors.white};
   border-radius: 50%;
   width: 18px;
@@ -142,14 +161,16 @@ const CartBadge = styled.span`
   font-weight: 600;
 `;
 
-const UserButton = styled.button`
+const UserButton = styled.button.withConfig({
+  shouldForwardProp: (prop) => prop !== "theme",
+})`
   background: none;
   color: ${theme.colors.gray700};
   font-size: 1.2rem;
   transition: color 0.2s ease;
 
   &:hover {
-    color: ${theme.colors.primary};
+    color: ${(props) => props.theme?.primaryColor || theme.colors.primary};
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
@@ -214,7 +235,12 @@ const MobileSearchInput = styled.input`
   }
 `;
 
-const Navbar = ({ cartItemsCount = 0, storeName = "" }) => {
+const Navbar = ({
+  cartItemsCount = 0,
+  storeName = "",
+  storeLogo = "",
+  theme: vendorTheme = {},
+}) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
@@ -243,22 +269,43 @@ const Navbar = ({ cartItemsCount = 0, storeName = "" }) => {
   return (
     <NavbarContainer>
       <NavbarContent>
-        <Logo to="/ecommerce">
-          <FaShoppingCart />
+        <Logo to="/ecommerce" theme={vendorTheme}>
+          {storeLogo ? (
+            <LogoImage src={storeLogo} alt={`${storeName} logo`} />
+          ) : (
+            <FaShoppingCart />
+          )}
           {storeName || "ShopMart"}
         </Logo>
 
         <NavLinks>
-          <NavLink to="/ecommerce">Home</NavLink>
-          <NavLink to="/ecommerce/products">Products</NavLink>
-          <NavLink to="/ecommerce/products?category=electronics">
+          <NavLink to="/ecommerce" theme={vendorTheme}>
+            Home
+          </NavLink>
+          <NavLink to="/ecommerce/products" theme={vendorTheme}>
+            Products
+          </NavLink>
+          <NavLink
+            to="/ecommerce/products?category=electronics"
+            theme={vendorTheme}
+          >
             Electronics
           </NavLink>
-          <NavLink to="/ecommerce/products?category=fashion">Fashion</NavLink>
-          <NavLink to="/ecommerce/products?category=home-garden">
+          <NavLink
+            to="/ecommerce/products?category=fashion"
+            theme={vendorTheme}
+          >
+            Fashion
+          </NavLink>
+          <NavLink
+            to="/ecommerce/products?category=home-garden"
+            theme={vendorTheme}
+          >
             Home & Garden
           </NavLink>
-          <NavLink to="/ecommerce/products?category=sports">Sports</NavLink>
+          <NavLink to="/ecommerce/products?category=sports" theme={vendorTheme}>
+            Sports
+          </NavLink>
         </NavLinks>
 
         <SearchContainer>
@@ -269,25 +316,28 @@ const Navbar = ({ cartItemsCount = 0, storeName = "" }) => {
               placeholder="Search products..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
+              theme={vendorTheme}
             />
           </form>
         </SearchContainer>
 
         <NavActions>
           <Link to="/">
-            <UserButton title="Back to Main Site">
+            <UserButton title="Back to Main Site" theme={vendorTheme}>
               <FaHome />
             </UserButton>
           </Link>
 
-          <UserButton>
+          <UserButton theme={vendorTheme}>
             <FaUser />
           </UserButton>
 
           <Link to="/ecommerce/cart">
-            <CartButton>
+            <CartButton theme={vendorTheme}>
               <FaShoppingCart />
-              {cartItemsCount > 0 && <CartBadge>{cartItemsCount}</CartBadge>}
+              {cartItemsCount > 0 && (
+                <CartBadge theme={vendorTheme}>{cartItemsCount}</CartBadge>
+              )}
             </CartButton>
           </Link>
 

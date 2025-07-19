@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import {
   FaStar,
@@ -210,10 +210,23 @@ const ActionButton = styled.button`
 `;
 
 const StoreCard = ({ store, category }) => {
+  const navigate = useNavigate();
+
+  const handleStoreClick = (e) => {
+    e.preventDefault();
+    if (category === "ecommerce") {
+      // Navigate to /ecommerce with vendor data in state
+      navigate("/ecommerce", { state: { selectedVendor: store } });
+    } else {
+      // For other categories, navigate normally
+      navigate(`/${category}/${store.id}`);
+    }
+  };
+
   const getStoreLink = () => {
     if (category === "ecommerce") {
-      // Link to individual store homepage
-      return `/ecommerce/${store.id}`;
+      // Return # since we're handling navigation via onClick
+      return "#";
     }
 
     // For other categories, return the original link format
@@ -231,11 +244,6 @@ const StoreCard = ({ store, category }) => {
   const getCurrentStatus = () => {
     const now = new Date();
     const currentDay = now.toLocaleDateString("en-US", { weekday: "long" });
-    const currentTime = now.toLocaleTimeString("en-US", {
-      hour12: false,
-      hour: "2-digit",
-      minute: "2-digit",
-    });
 
     const todayHours = store.hours[currentDay];
 
@@ -267,8 +275,8 @@ const StoreCard = ({ store, category }) => {
 
   const currentStatus = getCurrentStatus();
 
-  return (
-    <Card to={getStoreLink()}>
+  const cardContent = (
+    <>
       <CardImage image={store.image}>
         <ImageOverlay />
         {store.featured && <FeaturedBadge>Featured</FeaturedBadge>}
@@ -334,8 +342,18 @@ const StoreCard = ({ store, category }) => {
           </div>
         </StoreInfo>
       </CardContent>
-    </Card>
+    </>
   );
+
+  if (category === "ecommerce") {
+    return (
+      <Card as="div" onClick={handleStoreClick} style={{ cursor: "pointer" }}>
+        {cardContent}
+      </Card>
+    );
+  }
+
+  return <Card to={getStoreLink()}>{cardContent}</Card>;
 };
 
 export default StoreCard;
