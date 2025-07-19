@@ -259,7 +259,7 @@ const HotelCard = ({ hotel }) => {
   const topAmenities = hotel.amenities.slice(0, 4);
 
   return (
-    <Card to={`/hotel/${hotel.id}`}>
+    <Card to={`/hotel/${hotel.slug}`}>
       <CardImage image={hotel.image}>
         <ImageOverlay />
         <StarRating>
