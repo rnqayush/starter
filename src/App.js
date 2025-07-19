@@ -7,6 +7,7 @@ import { AppContext } from "./context/AppContext";
 // User Components
 import PlatformHomePage from "./components/user/PlatformHomePage";
 import LoginPage from "./components/auth/LoginPage";
+import RegisterPage from "./components/auth/RegisterPage";
 
 // Hotel Module
 import HotelModule from "./hotel";
@@ -69,6 +70,7 @@ function App() {
             {/* Main Routes */}
             <Route path="/" element={<PlatformHomePage />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
 
             {/* Hotel Routes */}
             <Route path="/hotels" element={<HotelModule />} />

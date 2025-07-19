@@ -1,66 +1,72 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { FaHotel, FaUser, FaLock } from "react-icons/fa";
-import { Button } from "../shared/Button";
-import { Card, CardContent } from "../shared/Card";
-import { Input, FormGroup, Label } from "../shared/Input";
+import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 import { theme } from "../../styles/GlobalStyle";
-import { useAppContext } from "../../context/AppContext";
+import { Button } from "../shared/Button";
+import { Input } from "../shared/Input";
 
 const PageContainer = styled.div`
   min-height: 100vh;
-  background: linear-gradient(
-    135deg,
-    ${theme.colors.primary},
-    ${theme.colors.primaryLight}
-  );
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: ${theme.spacing.md};
+  padding: ${theme.spacing.lg};
 `;
 
-const LoginCard = styled(Card)`
+const LoginCard = styled.div`
+  background: ${theme.colors.white};
+  border-radius: ${theme.borderRadius.xl};
+  padding: ${theme.spacing.xxl};
+  box-shadow: ${theme.shadows.xl};
   width: 100%;
   max-width: 400px;
-  box-shadow: ${theme.shadows.xl};
-`;
-
-const LoginHeader = styled.div`
-  text-align: center;
-  margin-bottom: ${theme.spacing.xxl};
 `;
 
 const Logo = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: ${theme.spacing.sm};
+  text-align: center;
+  margin-bottom: ${theme.spacing.xl};
+`;
+
+const LogoText = styled.h1`
   font-size: 2rem;
   font-weight: 700;
   color: ${theme.colors.primary};
-  margin-bottom: ${theme.spacing.lg};
+  margin-bottom: ${theme.spacing.sm};
 `;
 
-const LoginTitle = styled.h1`
+const LogoSubtext = styled.p`
+  color: ${theme.colors.gray600};
+  font-size: 0.9rem;
+`;
+
+const Title = styled.h2`
   font-size: 1.75rem;
   font-weight: 600;
-  margin-bottom: ${theme.spacing.sm};
   color: ${theme.colors.gray900};
+  text-align: center;
+  margin-bottom: ${theme.spacing.xl};
 `;
 
-const LoginSubtitle = styled.p`
-  color: ${theme.colors.gray600};
-`;
-
-const LoginForm = styled.form`
+const Form = styled.form`
   display: flex;
   flex-direction: column;
   gap: ${theme.spacing.lg};
 `;
 
-const InputWithIcon = styled.div`
+const FormGroup = styled.div`
+  position: relative;
+`;
+
+const Label = styled.label`
+  display: block;
+  font-weight: 500;
+  color: ${theme.colors.gray700};
+  margin-bottom: ${theme.spacing.sm};
+`;
+
+const InputContainer = styled.div`
   position: relative;
 `;
 
@@ -70,172 +76,235 @@ const InputIcon = styled.div`
   top: 50%;
   transform: translateY(-50%);
   color: ${theme.colors.gray400};
+  font-size: 1rem;
 `;
 
 const StyledInput = styled(Input)`
-  padding-left: 2.5rem;
-`;
-
-const UserTypeToggle = styled.div`
-  display: flex;
-  background: ${theme.colors.gray100};
-  border-radius: ${theme.borderRadius.md};
-  padding: ${theme.spacing.xs};
-  margin-bottom: ${theme.spacing.lg};
-`;
-
-const ToggleOption = styled.button.withConfig({
-  shouldForwardProp: (prop) => prop !== "active",
-})`
-  flex: 1;
-  padding: ${theme.spacing.sm} ${theme.spacing.md};
-  border: none;
-  background: ${(props) => (props.active ? theme.colors.white : "transparent")};
-  color: ${(props) =>
-    props.active ? theme.colors.primary : theme.colors.gray600};
-  border-radius: ${theme.borderRadius.sm};
-  font-weight: 500;
-  cursor: pointer;
+  width: 100%;
+  padding: ${theme.spacing.md} ${theme.spacing.md} ${theme.spacing.md} 3rem;
+  border: 2px solid ${theme.colors.gray200};
+  border-radius: ${theme.borderRadius.lg};
+  font-size: 1rem;
   transition: all 0.2s ease;
 
-  &:hover {
-    color: ${theme.colors.primary};
+  &:focus {
+    outline: none;
+    border-color: ${theme.colors.primary};
+    box-shadow: 0 0 0 3px ${theme.colors.primary}20;
+  }
+
+  &::placeholder {
+    color: ${theme.colors.gray400};
   }
 `;
 
-const LoginFooter = styled.div`
-  text-align: center;
-  margin-top: ${theme.spacing.xl};
-  color: ${theme.colors.gray600};
+const PasswordToggle = styled.button`
+  position: absolute;
+  right: ${theme.spacing.md};
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: ${theme.colors.gray400};
+  cursor: pointer;
+  font-size: 1rem;
+  padding: ${theme.spacing.xs};
+
+  &:hover {
+    color: ${theme.colors.gray600};
+  }
 `;
 
-const DemoInfo = styled.div`
-  background: ${theme.colors.gray50};
+const ForgotPasswordLink = styled(Link)`
+  color: ${theme.colors.primary};
+  text-decoration: none;
+  font-size: 0.9rem;
+  text-align: right;
+  display: block;
+  margin-top: ${theme.spacing.sm};
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
+const LoginButton = styled(Button)`
+  width: 100%;
   padding: ${theme.spacing.md};
-  border-radius: ${theme.borderRadius.md};
-  margin-top: ${theme.spacing.lg};
-  font-size: 0.875rem;
+  font-size: 1rem;
+  font-weight: 600;
+  background: ${theme.colors.primary};
+  color: ${theme.colors.white};
+  border: none;
+  border-radius: ${theme.borderRadius.lg};
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: ${theme.colors.secondary};
+    transform: translateY(-1px);
+    box-shadow: ${theme.shadows.lg};
+  }
+
+  &:disabled {
+    background: ${theme.colors.gray300};
+    cursor: not-allowed;
+    transform: none;
+  }
+`;
+
+const Divider = styled.div`
+  text-align: center;
+  margin: ${theme.spacing.lg} 0;
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: ${theme.colors.gray200};
+  }
+
+  span {
+    background: ${theme.colors.white};
+    color: ${theme.colors.gray500};
+    padding: 0 ${theme.spacing.md};
+    font-size: 0.9rem;
+  }
+`;
+
+const RegisterLink = styled.div`
+  text-align: center;
   color: ${theme.colors.gray600};
+  font-size: 0.9rem;
+
+  a {
+    color: ${theme.colors.primary};
+    text-decoration: none;
+    font-weight: 500;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+`;
+
+const BackToHome = styled(Link)`
+  display: inline-flex;
+  align-items: center;
+  gap: ${theme.spacing.sm};
+  color: ${theme.colors.primary};
+  text-decoration: none;
+  font-size: 0.9rem;
+  margin-bottom: ${theme.spacing.lg};
+
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const { setUser, userType, setUserType } = useAppContext();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+  const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleInputChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
-    // Mock login - in real app, this would authenticate with backend
-    const mockUser = {
-      id: userType === "customer" ? "user123" : "owner123",
-      email: formData.email,
-      name: userType === "customer" ? "John Doe" : "Hotel Owner",
-      type: userType,
-    };
-
-    setUser(mockUser);
-
-    // Redirect based on user type
-    if (userType === "customer") {
+    // Simulate login process
+    setTimeout(() => {
+      setIsLoading(false);
+      // Navigate to dashboard or home page
       navigate("/");
-    } else {
-      navigate("/owner/dashboard");
-    }
+    }, 1500);
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   return (
     <PageContainer>
       <LoginCard>
-        <CardContent>
-          <LoginHeader>
-            <Logo>
-              <FaHotel />
-              StayEase
-            </Logo>
-            <LoginTitle>Welcome Back</LoginTitle>
-            <LoginSubtitle>Sign in to your account</LoginSubtitle>
-          </LoginHeader>
+        <BackToHome to="/">← Back to Home</BackToHome>
 
-          <UserTypeToggle>
-            <ToggleOption
-              type="button"
-              active={userType === "customer"}
-              onClick={() => setUserType("customer")}
-            >
-              Customer
-            </ToggleOption>
-            <ToggleOption
-              type="button"
-              active={userType === "owner"}
-              onClick={() => setUserType("owner")}
-            >
-              Hotel Owner
-            </ToggleOption>
-          </UserTypeToggle>
+        <Logo>
+          <LogoText>StoreBuilder</LogoText>
+          <LogoSubtext>Launch your online store without coding</LogoSubtext>
+        </Logo>
 
-          <LoginForm onSubmit={handleSubmit}>
-            <FormGroup>
-              <Label>Email Address</Label>
-              <InputWithIcon>
-                <InputIcon>
-                  <FaUser />
-                </InputIcon>
-                <StyledInput
-                  type="email"
-                  name="email"
-                  placeholder="Enter your email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  required
-                />
-              </InputWithIcon>
-            </FormGroup>
+        <Title>Welcome Back</Title>
 
-            <FormGroup>
-              <Label>Password</Label>
-              <InputWithIcon>
-                <InputIcon>
-                  <FaLock />
-                </InputIcon>
-                <StyledInput
-                  type="password"
-                  name="password"
-                  placeholder="Enter your password"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                  required
-                />
-              </InputWithIcon>
-            </FormGroup>
+        <Form onSubmit={handleSubmit}>
+          <FormGroup>
+            <Label htmlFor="email">Email Address</Label>
+            <InputContainer>
+              <InputIcon>
+                <FaEnvelope />
+              </InputIcon>
+              <StyledInput
+                type="email"
+                id="email"
+                name="email"
+                placeholder="Enter your email"
+                value={formData.email}
+                onChange={handleInputChange}
+                required
+              />
+            </InputContainer>
+          </FormGroup>
 
-            <Button type="submit" size="large" style={{ width: "100%" }}>
-              Sign In
-            </Button>
-          </LoginForm>
+          <FormGroup>
+            <Label htmlFor="password">Password</Label>
+            <InputContainer>
+              <InputIcon>
+                <FaLock />
+              </InputIcon>
+              <StyledInput
+                type={showPassword ? "text" : "password"}
+                id="password"
+                name="password"
+                placeholder="Enter your password"
+                value={formData.password}
+                onChange={handleInputChange}
+                required
+              />
+              <PasswordToggle type="button" onClick={togglePasswordVisibility}>
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </PasswordToggle>
+            </InputContainer>
+            <ForgotPasswordLink to="/forgot-password">
+              Forgot your password?
+            </ForgotPasswordLink>
+          </FormGroup>
 
-          <DemoInfo>
-            <strong>Demo Mode:</strong> Use any email and password to sign in.
-            This is a demonstration app with mock authentication.
-          </DemoInfo>
+          <LoginButton type="submit" disabled={isLoading}>
+            {isLoading ? "Signing In..." : "Sign In"}
+          </LoginButton>
+        </Form>
 
-          <LoginFooter>
-            Don't have an account?{" "}
-            <strong style={{ color: theme.colors.primary, cursor: "pointer" }}>
-              Sign up
-            </strong>
-          </LoginFooter>
-        </CardContent>
+        <Divider>
+          <span>or</span>
+        </Divider>
+
+        <RegisterLink>
+          Don't have an account? <Link to="/register">Create one here</Link>
+        </RegisterLink>
       </LoginCard>
     </PageContainer>
   );
