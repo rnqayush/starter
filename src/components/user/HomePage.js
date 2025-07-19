@@ -366,7 +366,7 @@ const HomePage = () => {
           <SectionTitle>Popular Hotels</SectionTitle>
           <HotelsGrid>
             {hotels.map((hotel) => (
-              <Link key={hotel.id} to={`/hotel/${hotel.id}`}>
+              <Link key={hotel.id} to={`/${hotel.slug}`}>
                 <HotelCard>
                   <CardImage src={hotel.image} height="250px" />
                   <CardContent>
