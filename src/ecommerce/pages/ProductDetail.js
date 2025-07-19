@@ -576,7 +576,7 @@ const ProductDetail = () => {
           )}
         />
         <LoadingSpinner fullPage text="Loading product..." />
-        <Footer />
+        <Footer storeSlug={storeSlug} theme={vendor?.theme || {}} />
       </PageContainer>
     );
   }
@@ -604,7 +604,7 @@ const ProductDetail = () => {
             </Link>
           </div>
         </Container>
-        <Footer />
+        <Footer storeSlug={storeSlug} theme={vendor?.theme || {}} />
       </PageContainer>
     );
   }
@@ -819,7 +819,7 @@ const ProductDetail = () => {
         )}
       </Container>
 
-      <Footer />
+      <Footer storeSlug={storeSlug} theme={vendor?.theme || {}} />
     </PageContainer>
   );
 };
