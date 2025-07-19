@@ -141,6 +141,12 @@ export const Badge = styled.span`
   font-size: 0.75rem;
   font-weight: 500;
   border-radius: ${theme.borderRadius.sm};
+  white-space: nowrap;
+
+  ${media.mobile} {
+    font-size: 0.6875rem;
+    padding: ${theme.spacing.xs} ${theme.spacing.xs};
+  }
 
   ${(props) => {
     switch (props.variant) {
@@ -177,10 +183,25 @@ export const Price = styled.div`
   font-size: 1.25rem;
   font-weight: 700;
   color: ${theme.colors.primary};
+  display: flex;
+  align-items: baseline;
+  gap: ${theme.spacing.xs};
+
+  ${media.mobile} {
+    font-size: 1.125rem;
+  }
+
+  ${media.tablet} {
+    font-size: 1.1875rem;
+  }
 `;
 
 export const PriceUnit = styled.span`
   font-size: 0.875rem;
   font-weight: 400;
   color: ${theme.colors.gray600};
+
+  ${media.mobile} {
+    font-size: 0.8125rem;
+  }
 `;
