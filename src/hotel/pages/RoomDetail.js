@@ -90,7 +90,9 @@ const ThumbnailGrid = styled.div`
   gap: ${theme.spacing.md};
 `;
 
-const Thumbnail = styled.img`
+const Thumbnail = styled.img.withConfig({
+  shouldForwardProp: (prop) => prop !== "active",
+})`
   width: 100%;
   height: 80px;
   object-fit: cover;
