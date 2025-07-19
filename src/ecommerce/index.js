@@ -27,7 +27,7 @@ const EcommerceModule = () => {
     return <Checkout />;
   } else if (path.includes("/order-confirmation")) {
     return <OrderConfirmation />;
-  } else if (path.match(/^\/[^\/]+$/)) {
+  } else if (path.match(/^\/[^/]+$/)) {
     // Single segment path like "/techmart-downtown" - store home
     return <EcommerceMain />;
   } else {
