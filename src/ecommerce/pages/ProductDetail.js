@@ -597,7 +597,7 @@ const ProductDetail = () => {
               The product you're looking for doesn't exist.
             </p>
             <Link
-              to="/ecommerce/products"
+              to={`${getBaseUrl()}/products`}
               style={{ color: theme.colors.primary }}
             >
               Back to Products
