@@ -245,7 +245,7 @@ const Navbar = ({ cartItemsCount = 0, storeName = "" }) => {
       <NavbarContent>
         <Logo to="/ecommerce">
           <FaShoppingCart />
-          ShopMart
+          {storeName || "ShopMart"}
         </Logo>
 
         <NavLinks>
