@@ -118,17 +118,49 @@ const SellerDashboard = () => {
   const renderContent = () => {
     switch (activeTab) {
       case "dashboard":
-        return <DashboardTab />;
+        return <DashboardTabEnhanced />;
       case "products":
         return <ProductsTab />;
       case "add-product":
         return <AddProductTab />;
+      case "categories":
+        return <CategoriesTab />;
+      case "bulk-import":
+        return (
+          <div style={{ padding: "2rem", textAlign: "center" }}>
+            <h3>Bulk Import - Coming Soon</h3>
+            <p>CSV import functionality will be available soon.</p>
+          </div>
+        );
       case "orders":
         return <OrdersTab />;
-      case "insights":
+      case "discounts":
+        return <DiscountsTab />;
+      case "customers":
+        return (
+          <div style={{ padding: "2rem", textAlign: "center" }}>
+            <h3>Customer Management - Coming Soon</h3>
+            <p>Customer management features will be available soon.</p>
+          </div>
+        );
+      case "store-settings":
+        return (
+          <div style={{ padding: "2rem", textAlign: "center" }}>
+            <h3>Store Settings - Coming Soon</h3>
+            <p>Store configuration features will be available soon.</p>
+          </div>
+        );
+      case "appearance":
+        return (
+          <div style={{ padding: "2rem", textAlign: "center" }}>
+            <h3>Store Appearance - Coming Soon</h3>
+            <p>Theme customization features will be available soon.</p>
+          </div>
+        );
+      case "analytics":
         return <InsightsTab />;
       default:
-        return <DashboardTab />;
+        return <DashboardTabEnhanced />;
     }
   };
 
