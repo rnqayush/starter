@@ -157,7 +157,9 @@ const RemoveFilterButton = styled.button`
   }
 `;
 
-const ProductsGrid = styled.div`
+const ProductsGrid = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "view",
+})`
   display: grid;
   grid-template-columns: ${(props) =>
     props.view === "list" ? "1fr" : "repeat(auto-fill, minmax(280px, 1fr))"};
