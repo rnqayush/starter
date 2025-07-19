@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import { Card, CardContent, Badge } from "../shared/Card";
 import { Button } from "../shared/Button";
-import { theme } from "../../styles/GlobalStyle";
+import { theme, media } from "../../styles/GlobalStyle";
 import { useAppContext } from "../../context/AppContext";
 
 const DashboardContainer = styled.div`
