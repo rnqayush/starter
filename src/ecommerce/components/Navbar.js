@@ -267,16 +267,33 @@ const Navbar = ({
         </Logo>
 
         <NavLinks>
-          <NavLink to="/ecommerce">Home</NavLink>
-          <NavLink to="/ecommerce/products">Products</NavLink>
-          <NavLink to="/ecommerce/products?category=electronics">
+          <NavLink to="/ecommerce" theme={vendorTheme}>
+            Home
+          </NavLink>
+          <NavLink to="/ecommerce/products" theme={vendorTheme}>
+            Products
+          </NavLink>
+          <NavLink
+            to="/ecommerce/products?category=electronics"
+            theme={vendorTheme}
+          >
             Electronics
           </NavLink>
-          <NavLink to="/ecommerce/products?category=fashion">Fashion</NavLink>
-          <NavLink to="/ecommerce/products?category=home-garden">
+          <NavLink
+            to="/ecommerce/products?category=fashion"
+            theme={vendorTheme}
+          >
+            Fashion
+          </NavLink>
+          <NavLink
+            to="/ecommerce/products?category=home-garden"
+            theme={vendorTheme}
+          >
             Home & Garden
           </NavLink>
-          <NavLink to="/ecommerce/products?category=sports">Sports</NavLink>
+          <NavLink to="/ecommerce/products?category=sports" theme={vendorTheme}>
+            Sports
+          </NavLink>
         </NavLinks>
 
         <SearchContainer>
