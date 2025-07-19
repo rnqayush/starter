@@ -78,7 +78,7 @@ function App() {
 
             {/* Hotel Routes */}
             <Route path="/hotels" element={<HotelModule />} />
-            <Route path="/hotel/:id" element={<HotelModule />} />
+            <Route path="/hotel/:slug" element={<HotelModule />} />
             <Route path="/room/:hotelId/:roomId" element={<HotelModule />} />
             <Route path="/booking/:hotelId/:roomId" element={<HotelModule />} />
             <Route path="/booking-confirmation" element={<HotelModule />} />
