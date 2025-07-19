@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { FaHotel, FaBars, FaTimes, FaChevronDown } from "react-icons/fa";
 import { theme } from "../../styles/GlobalStyle";
-import { useAppContext } from "../../context/AppContext";
 import { Button } from "./Button";
 
 const HeaderContainer = styled.header`
