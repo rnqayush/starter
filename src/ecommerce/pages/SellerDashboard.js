@@ -133,7 +133,7 @@ const SellerDashboard = () => {
           </div>
         );
       case "orders":
-        return <OrdersTab />;
+        return <OrdersTabEnhanced />;
       case "discounts":
         return <DiscountsTab />;
       case "customers":
