@@ -124,6 +124,7 @@ export const SearchInput = styled.div`
   position: relative;
   display: flex;
   align-items: center;
+  width: 100%;
 `;
 
 export const SearchIcon = styled.div`
@@ -131,12 +132,21 @@ export const SearchIcon = styled.div`
   left: ${theme.spacing.md};
   color: ${theme.colors.gray400};
   pointer-events: none;
+  z-index: 1;
+
+  ${media.mobile} {
+    left: ${theme.spacing.sm};
+  }
 `;
 
 export const SearchField = styled(Input).withConfig({
   shouldForwardProp: (prop) => prop !== "hasIcon",
 })`
   padding-left: ${(props) => (props.hasIcon ? "2.5rem" : theme.spacing.md)};
+
+  ${media.mobile} {
+    padding-left: ${(props) => (props.hasIcon ? "2.25rem" : theme.spacing.sm)};
+  }
 `;
 
 export const InputGroup = styled.div`
@@ -144,8 +154,13 @@ export const InputGroup = styled.div`
   grid-template-columns: ${(props) => props.columns || "1fr 1fr"};
   gap: ${theme.spacing.md};
 
-  @media (max-width: ${theme.breakpoints.mobile}) {
+  ${media.mobileDown} {
     grid-template-columns: 1fr;
+    gap: ${theme.spacing.sm};
+  }
+
+  ${media.tablet} {
+    gap: ${theme.spacing.lg};
   }
 `;
 
@@ -154,6 +169,11 @@ export const CheckboxGroup = styled.div`
   flex-wrap: wrap;
   gap: ${theme.spacing.md};
   margin-top: ${theme.spacing.sm};
+
+  ${media.mobile} {
+    gap: ${theme.spacing.sm};
+    margin-top: ${theme.spacing.xs};
+  }
 `;
 
 export const CheckboxItem = styled.label`
@@ -164,6 +184,7 @@ export const CheckboxItem = styled.label`
   padding: ${theme.spacing.sm};
   border-radius: ${theme.borderRadius.md};
   transition: background-color 0.2s ease;
+  font-size: 0.875rem;
 
   &:hover {
     background: ${theme.colors.gray50};
@@ -171,6 +192,17 @@ export const CheckboxItem = styled.label`
 
   input[type="checkbox"] {
     margin: 0;
+    transform: scale(1.1);
+  }
+
+  ${media.mobile} {
+    padding: ${theme.spacing.xs} ${theme.spacing.sm};
+    font-size: 0.8125rem;
+    gap: ${theme.spacing.xs};
+
+    input[type="checkbox"] {
+      transform: scale(1);
+    }
   }
 `;
 
@@ -182,6 +214,7 @@ export const FileInput = styled.input`
   background: ${theme.colors.gray50};
   cursor: pointer;
   transition: all 0.2s ease;
+  font-size: 0.875rem;
 
   &:hover {
     border-color: ${theme.colors.primary};
@@ -191,5 +224,10 @@ export const FileInput = styled.input`
   &:focus {
     outline: none;
     border-color: ${theme.colors.primary};
+  }
+
+  ${media.mobile} {
+    padding: ${theme.spacing.sm};
+    font-size: 0.8125rem;
   }
 `;
