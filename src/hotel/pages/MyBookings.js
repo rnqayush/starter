@@ -204,7 +204,9 @@ const TotalPrice = styled.div`
   color: ${theme.colors.primary};
 `;
 
-const ActionButton = styled.button`
+const ActionButton = styled.button.withConfig({
+  shouldForwardProp: (prop) => prop !== "variant",
+})`
   background: ${(props) =>
     props.variant === "primary" ? theme.colors.primary : theme.colors.white};
   color: ${(props) =>
