@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import styled, { createGlobalStyle } from "styled-components";
 import { FaArrowRight, FaShoppingBag, FaHome } from "react-icons/fa";
 import { theme } from "../../styles/GlobalStyle";
