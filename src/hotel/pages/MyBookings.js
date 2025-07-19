@@ -141,7 +141,9 @@ const RoomName = styled.p`
   margin-bottom: ${theme.spacing.md};
 `;
 
-const StatusBadge = styled.span`
+const StatusBadge = styled.span.withConfig({
+  shouldForwardProp: (prop) => prop !== "status",
+})`
   display: inline-flex;
   align-items: center;
   gap: ${theme.spacing.xs};
