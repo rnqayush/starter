@@ -22,7 +22,9 @@ const PageContainer = styled.div`
   background: ${theme.colors.gray50};
 `;
 
-const StoreHeroSection = styled.section`
+const StoreHeroSection = styled.section.withConfig({
+  shouldForwardProp: (prop) => prop !== "bgImage",
+})`
   background-image:
     linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
     url(${(props) => props.bgImage});
