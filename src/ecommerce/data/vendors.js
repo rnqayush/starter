@@ -2,6 +2,7 @@ export const ecommerceVendors = [
   {
     id: "techmart-downtown",
     name: "TechMart Downtown",
+    slug: "techmart-downtown",
     category: "ecommerce",
     logo: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=200&q=80",
     image:
@@ -40,6 +41,7 @@ export const ecommerceVendors = [
   {
     id: "fashion-forward",
     name: "Fashion Forward",
+    slug: "fashion-forward",
     category: "ecommerce",
     logo: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=200&q=80",
     image:
@@ -78,6 +80,7 @@ export const ecommerceVendors = [
   {
     id: "home-essentials",
     name: "Home Essentials",
+    slug: "home-essentials",
     category: "ecommerce",
     logo: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=200&q=80",
     image:
@@ -116,6 +119,7 @@ export const ecommerceVendors = [
   {
     id: "sports-zone",
     name: "Sports Zone",
+    slug: "sports-zone",
     category: "ecommerce",
     logo: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=200&q=80",
     image:
@@ -168,6 +172,19 @@ export const getVendorsByLocation = (city, state) => {
 
 export const getVendorById = (id) => {
   return ecommerceVendors.find((vendor) => vendor.id === id);
+};
+
+export const getVendorBySlug = (slug) => {
+  return ecommerceVendors.find((vendor) => vendor.slug === slug);
+};
+
+export const getVendorByIdOrSlug = (identifier) => {
+  // First try to find by slug
+  const vendorBySlug = getVendorBySlug(identifier);
+  if (vendorBySlug) return vendorBySlug;
+
+  // If not found by slug, try by ID
+  return getVendorById(identifier);
 };
 
 export const getFeaturedVendors = () => {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, useNavigate, Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import {
   FaStar,
@@ -20,6 +20,7 @@ import Footer from "../components/Footer";
 import ProductCard from "../components/ProductCard";
 import LoadingSpinner from "../components/LoadingSpinner";
 import { getProductById, products } from "../data/products";
+import { getVendorByIdOrSlug } from "../data/vendors";
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -453,6 +454,7 @@ const RelatedGrid = styled.div`
 const ProductDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const [product, setProduct] = useState(null);
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
@@ -460,6 +462,23 @@ const ProductDetail = () => {
   const [cartItems, setCartItems] = useState([]);
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [storeSlug, setStoreSlug] = useState("");
+  const [vendor, setVendor] = useState(null);
+
+  // Detect store slug from URL
+  useEffect(() => {
+    const path = location.pathname;
+    if (path !== `/ecommerce/product/${id}`) {
+      // Extract store slug from URL like "/techmart-downtown/product/4"
+      const pathSegments = path.split("/").filter(Boolean);
+      const slug = pathSegments[0];
+      const foundVendor = getVendorByIdOrSlug(slug);
+      if (foundVendor) {
+        setStoreSlug(foundVendor.slug);
+        setVendor(foundVendor);
+      }
+    }
+  }, [location.pathname, id]);
 
   useEffect(() => {
     setLoading(true);
@@ -486,6 +505,8 @@ const ProductDetail = () => {
 
     setLoading(false);
   }, [id]);
+
+  const getBaseUrl = () => (storeSlug ? `/${storeSlug}` : "/ecommerce");
 
   const handleAddToCart = () => {
     if (!product) return;
@@ -553,9 +574,13 @@ const ProductDetail = () => {
             (sum, item) => sum + item.quantity,
             0,
           )}
+          storeName={vendor?.name || ""}
+          storeLogo={vendor?.logo || ""}
+          storeSlug={storeSlug}
+          theme={vendor?.theme || {}}
         />
         <LoadingSpinner fullPage text="Loading product..." />
-        <Footer />
+        <Footer storeSlug={storeSlug} theme={vendor?.theme || {}} />
       </PageContainer>
     );
   }
@@ -568,6 +593,10 @@ const ProductDetail = () => {
             (sum, item) => sum + item.quantity,
             0,
           )}
+          storeName={vendor?.name || ""}
+          storeLogo={vendor?.logo || ""}
+          storeSlug={storeSlug}
+          theme={vendor?.theme || {}}
         />
         <Container>
           <div style={{ textAlign: "center", padding: "4rem 0" }}>
@@ -576,14 +605,14 @@ const ProductDetail = () => {
               The product you're looking for doesn't exist.
             </p>
             <Link
-              to="/ecommerce/products"
+              to={`${getBaseUrl()}/products`}
               style={{ color: theme.colors.primary }}
             >
               Back to Products
             </Link>
           </div>
         </Container>
-        <Footer />
+        <Footer storeSlug={storeSlug} theme={vendor?.theme || {}} />
       </PageContainer>
     );
   }
@@ -592,6 +621,10 @@ const ProductDetail = () => {
     <PageContainer>
       <Navbar
         cartItemsCount={cartItems.reduce((sum, item) => sum + item.quantity, 0)}
+        storeName={vendor?.name || ""}
+        storeLogo={vendor?.logo || ""}
+        storeSlug={storeSlug}
+        theme={vendor?.theme || {}}
       />
 
       <Container>
@@ -601,11 +634,11 @@ const ProductDetail = () => {
         </BackButton>
 
         <Breadcrumb>
-          <Link to="/ecommerce">Home</Link>
+          <Link to={getBaseUrl()}>Home</Link>
           <span>/</span>
-          <Link to="/ecommerce/products">Products</Link>
+          <Link to={`${getBaseUrl()}/products`}>Products</Link>
           <span>/</span>
-          <Link to={`/ecommerce/products?category=${product.category}`}>
+          <Link to={`${getBaseUrl()}/products?category=${product.category}`}>
             {product.category.replace("-", " ")}
           </Link>
           <span>/</span>
@@ -771,6 +804,7 @@ const ProductDetail = () => {
                 <ProductCard
                   key={relatedProduct.id}
                   product={relatedProduct}
+                  storeSlug={storeSlug}
                   onAddToCart={() => {
                     setCartItems((prev) => {
                       const existingItem = prev.find(
@@ -794,7 +828,7 @@ const ProductDetail = () => {
         )}
       </Container>
 
-      <Footer />
+      <Footer storeSlug={storeSlug} theme={vendor?.theme || {}} />
     </PageContainer>
   );
 };

@@ -223,7 +223,7 @@ const RoomPage = () => {
       <Header />
 
       <Container>
-        <BackButton to={`/hotel/${hotelId}`}>
+        <BackButton to={`/${hotel.slug}`}>
           <FaArrowLeft />
           Back to {hotel.name}
         </BackButton>

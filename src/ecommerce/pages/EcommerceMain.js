@@ -12,6 +12,7 @@ import {
   getFeaturedProducts,
   getOnSaleProducts,
 } from "../data/products";
+import { getVendorByIdOrSlug } from "../data/vendors";
 
 // Dynamic theme styles that override global styles
 const DynamicGlobalStyle = createGlobalStyle`
@@ -267,13 +268,26 @@ const EcommerceMain = () => {
   const [selectedVendor, setSelectedVendor] = useState(null);
 
   useEffect(() => {
-    // Get vendor data from navigation state or URL params
-    const vendorFromState = location.state?.selectedVendor;
+    // Get vendor data from URL slug or navigation state (fallback)
+    const path = location.pathname;
+    let vendor = null;
 
-    if (vendorFromState) {
-      setSelectedVendor(vendorFromState);
+    if (path !== "/ecommerce") {
+      // Extract store slug from URL like "/techmart-downtown"
+      const pathSegments = path.split("/").filter(Boolean);
+      const storeSlug = pathSegments[0];
+      vendor = getVendorByIdOrSlug(storeSlug);
+    }
+
+    // Fallback to location state if no vendor found by slug
+    if (!vendor) {
+      vendor = location.state?.selectedVendor;
+    }
+
+    if (vendor) {
+      setSelectedVendor(vendor);
     } else {
-      // If no vendor in state, redirect to store listing
+      // If no vendor found, redirect to store listing
       navigate("/ecommerce-stores");
       return;
     }
@@ -281,7 +295,7 @@ const EcommerceMain = () => {
     // Load products (these would be filtered by vendor in a real app)
     setFeaturedProducts(getFeaturedProducts());
     setSaleProducts(getOnSaleProducts());
-  }, [location.state, navigate]);
+  }, [location.pathname, location.state, navigate]);
 
   const handleAddToCart = (product) => {
     setCartItems((prev) => {
@@ -344,6 +358,7 @@ const EcommerceMain = () => {
           )}
           storeName={selectedVendor.name}
           storeLogo={selectedVendor.logo}
+          storeSlug={selectedVendor.slug}
           theme={vendorTheme}
         />
 
@@ -388,7 +403,11 @@ const EcommerceMain = () => {
             </SectionHeader>
             <Grid minWidth="250px">
               {categories.map((category) => (
-                <CategoryCard key={category.id} category={category} />
+                <CategoryCard
+                  key={category.id}
+                  category={category}
+                  storeSlug={selectedVendor.slug}
+                />
               ))}
             </Grid>
           </Container>
@@ -413,6 +432,7 @@ const EcommerceMain = () => {
                   key={product.id}
                   product={product}
                   onAddToCart={handleAddToCart}
+                  storeSlug={selectedVendor.slug}
                 />
               ))}
             </Grid>
@@ -437,6 +457,7 @@ const EcommerceMain = () => {
                     key={product.id}
                     product={product}
                     onAddToCart={handleAddToCart}
+                    storeSlug={selectedVendor.slug}
                   />
                 ))}
               </Grid>
@@ -444,7 +465,7 @@ const EcommerceMain = () => {
           </Section>
         )}
 
-        <Footer theme={vendorTheme} />
+        <Footer storeSlug={selectedVendor.slug} theme={vendorTheme} />
       </PageContainer>
     </>
   );

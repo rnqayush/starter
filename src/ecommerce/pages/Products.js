@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { FaTh, FaList, FaTimes } from "react-icons/fa";
 import { theme } from "../../styles/GlobalStyle";
@@ -8,6 +8,7 @@ import Footer from "../components/Footer";
 import ProductCard from "../components/ProductCard";
 import LoadingSpinner from "../components/LoadingSpinner";
 import { products, categories, getProductsByCategory } from "../data/products";
+import { getVendorByIdOrSlug } from "../data/vendors";
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -206,11 +207,29 @@ const ClearFiltersButton = styled.button`
 
 const Products = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const location = useLocation();
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [sortBy, setSortBy] = useState("name");
   const [view, setView] = useState("grid");
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [storeSlug, setStoreSlug] = useState("");
+  const [vendor, setVendor] = useState(null);
+
+  // Detect store slug from URL
+  useEffect(() => {
+    const path = location.pathname;
+    if (path !== "/ecommerce/products") {
+      // Extract store slug from URL like "/techmart-downtown/products"
+      const pathSegments = path.split("/").filter(Boolean);
+      const slug = pathSegments[0];
+      const foundVendor = getVendorByIdOrSlug(slug);
+      if (foundVendor) {
+        setStoreSlug(foundVendor.slug);
+        setVendor(foundVendor);
+      }
+    }
+  }, [location.pathname]);
 
   // Get URL parameters
   const category = searchParams.get("category");
@@ -341,9 +360,13 @@ const Products = () => {
             (sum, item) => sum + item.quantity,
             0,
           )}
+          storeName={vendor?.name || ""}
+          storeLogo={vendor?.logo || ""}
+          storeSlug={storeSlug}
+          theme={vendor?.theme || {}}
         />
         <LoadingSpinner fullPage text="Loading products..." />
-        <Footer />
+        <Footer storeSlug={storeSlug} theme={vendor?.theme || {}} />
       </PageContainer>
     );
   }
@@ -352,6 +375,10 @@ const Products = () => {
     <PageContainer>
       <Navbar
         cartItemsCount={cartItems.reduce((sum, item) => sum + item.quantity, 0)}
+        storeName={vendor?.name || ""}
+        storeLogo={vendor?.logo || ""}
+        storeSlug={storeSlug}
+        theme={vendor?.theme || {}}
       />
 
       <Container>
@@ -433,6 +460,7 @@ const Products = () => {
                 key={product.id}
                 product={product}
                 onAddToCart={handleAddToCart}
+                storeSlug={storeSlug}
               />
             ))}
           </ProductsGrid>
@@ -447,7 +475,7 @@ const Products = () => {
         )}
       </Container>
 
-      <Footer />
+      <Footer storeSlug={storeSlug} theme={vendor?.theme || {}} />
     </PageContainer>
   );
 };

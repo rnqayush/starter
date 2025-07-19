@@ -277,7 +277,7 @@ const BookButton = styled(Link)`
   }
 `;
 
-const RoomCard = ({ room, hotelId }) => {
+const RoomCard = ({ room, hotelId, hotelSlug }) => {
   const getAmenityIcon = (amenity) => {
     const iconMap = {
       WiFi: FaWifi,
@@ -333,7 +333,9 @@ const RoomCard = ({ room, hotelId }) => {
           ))}
         </Amenities>
 
-        <BookButton to={`/booking/${hotelId}/${room.id}`}>Book Now</BookButton>
+        <BookButton to={`/${hotelSlug}/booking/${room.id}`}>
+          Book Now
+        </BookButton>
       </CardContent>
     </Card>
   );

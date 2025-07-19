@@ -336,6 +336,7 @@ const ProductCard = ({
   onAddToCart,
   onToggleWishlist,
   isInWishlist = false,
+  storeSlug = "",
 }) => {
   const renderStars = (rating) => {
     const stars = [];
@@ -361,8 +362,10 @@ const ProductCard = ({
     onToggleWishlist?.(product);
   };
 
+  const getBaseUrl = () => (storeSlug ? `/${storeSlug}` : "/ecommerce");
+
   return (
-    <Link to={`/ecommerce/product/${product.id}`}>
+    <Link to={`${getBaseUrl()}/product/${product.id}`}>
       <Card>
         <ImageContainer>
           <ProductImage src={product.image} alt={product.name} />
