@@ -135,7 +135,9 @@ const NavSectionTitle = styled.h3`
   padding: 0 ${theme.spacing.xl};
 `;
 
-const NavItem = styled.button`
+const NavItem = styled.button.withConfig({
+  shouldForwardProp: (prop) => prop !== "active",
+})`
   width: 100%;
   display: flex;
   align-items: center;
