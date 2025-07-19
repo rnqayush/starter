@@ -62,7 +62,9 @@ const SectionTitle = styled.h3`
   letter-spacing: 0.05em;
 `;
 
-const NavItem = styled(Link)`
+const NavItem = styled(Link).withConfig({
+  shouldForwardProp: (prop) => prop !== "active",
+})`
   display: flex;
   align-items: center;
   gap: ${theme.spacing.md};
