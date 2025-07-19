@@ -326,7 +326,7 @@ const StoresListing = () => {
 
   useEffect(() => {
     initializeLocation();
-  }, []);
+  }, [initializeLocation]);
 
   const initializeLocation = async () => {
     setLoading(true);
@@ -420,7 +420,7 @@ const StoresListing = () => {
 
   useEffect(() => {
     applyFilters();
-  }, [stores, activeFilter, sortBy]);
+  }, [stores, activeFilter, sortBy, applyFilters]);
 
   if (loading) {
     return (
