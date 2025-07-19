@@ -23,14 +23,19 @@ const DynamicGlobalStyle = createGlobalStyle`
   }
 `;
 
-const PageContainer = styled.div`
+const PageContainer = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "backgroundColor",
+})`
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   background: ${(props) => props.backgroundColor || theme.colors.gray50};
 `;
 
-const HeroSection = styled.section`
+const HeroSection = styled.section.withConfig({
+  shouldForwardProp: (prop) =>
+    !["primaryColor", "secondaryColor"].includes(prop),
+})`
   background: linear-gradient(
     135deg,
     ${(props) => props.primaryColor || "#667eea"} 0%,
@@ -112,7 +117,9 @@ const HeroActions = styled.div`
   flex-wrap: wrap;
 `;
 
-const HeroButton = styled.button`
+const HeroButton = styled.button.withConfig({
+  shouldForwardProp: (prop) => prop !== "primaryColor",
+})`
   background: ${theme.colors.white};
   color: ${(props) => props.primaryColor || theme.colors.primary};
   padding: ${theme.spacing.md} ${theme.spacing.xl};
@@ -155,7 +162,9 @@ const SectionHeader = styled.div`
   margin-bottom: ${theme.spacing.xxl};
 `;
 
-const SectionTitle = styled.h2`
+const SectionTitle = styled.h2.withConfig({
+  shouldForwardProp: (prop) => prop !== "textColor",
+})`
   font-size: 2.5rem;
   font-weight: 600;
   color: ${(props) => props.textColor || theme.colors.gray900};
@@ -169,7 +178,9 @@ const SectionSubtitle = styled.p`
   margin: 0 auto;
 `;
 
-const Grid = styled.div`
+const Grid = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "minWidth",
+})`
   display: grid;
   grid-template-columns: repeat(
     auto-fit,
