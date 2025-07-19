@@ -54,7 +54,9 @@ const StatCard = styled(Card)`
   color: ${(props) => props.textColor || theme.colors.gray900};
 `;
 
-const StatIcon = styled.div`
+const StatIcon = styled.div.withConfig({
+  shouldForwardProp: (prop) => !["iconBg", "iconColor"].includes(prop),
+})`
   width: 60px;
   height: 60px;
   border-radius: ${theme.borderRadius.lg};
