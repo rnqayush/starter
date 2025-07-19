@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { theme } from "../../styles/GlobalStyle";
+import { theme, media } from "../../styles/GlobalStyle";
 
 export const FormGroup = styled.div`
   margin-bottom: ${theme.spacing.lg};
