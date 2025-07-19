@@ -174,6 +174,19 @@ export const getVendorById = (id) => {
   return ecommerceVendors.find((vendor) => vendor.id === id);
 };
 
+export const getVendorBySlug = (slug) => {
+  return ecommerceVendors.find((vendor) => vendor.slug === slug);
+};
+
+export const getVendorByIdOrSlug = (identifier) => {
+  // First try to find by slug
+  const vendorBySlug = getVendorBySlug(identifier);
+  if (vendorBySlug) return vendorBySlug;
+
+  // If not found by slug, try by ID
+  return getVendorById(identifier);
+};
+
 export const getFeaturedVendors = () => {
   return ecommerceVendors.filter((vendor) => vendor.featured);
 };
