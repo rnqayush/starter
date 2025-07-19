@@ -110,7 +110,9 @@ const ThumbnailContainer = styled.div`
   padding-bottom: ${theme.spacing.sm};
 `;
 
-const Thumbnail = styled.img`
+const Thumbnail = styled.img.withConfig({
+  shouldForwardProp: (prop) => prop !== "active",
+})`
   width: 80px;
   height: 80px;
   object-fit: cover;
