@@ -13,7 +13,7 @@ import {
   FaGlobe,
   FaShoppingBag,
 } from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
+import { theme, media } from "../../styles/GlobalStyle";
 import { Button } from "../shared/Button";
 import { Input } from "../shared/Input";
 
