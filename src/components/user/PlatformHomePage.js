@@ -14,7 +14,7 @@ import {
   FaPhone,
   FaEnvelope,
   FaMapMarkerAlt,
-  FaDrag,
+  FaHandPaper,
   FaPalette,
   FaMobile,
   FaHeadset,
@@ -499,7 +499,7 @@ const PlatformHomePage = () => {
 
   const benefits = [
     {
-      icon: FaDrag,
+      icon: FaHandPaper,
       title: "No Tech Headache",
       description: "Just drag & drop",
     },
