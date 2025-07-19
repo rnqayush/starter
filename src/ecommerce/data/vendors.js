@@ -2,6 +2,7 @@ export const ecommerceVendors = [
   {
     id: "techmart-downtown",
     name: "TechMart Downtown",
+    slug: "techmart-downtown",
     category: "ecommerce",
     logo: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=200&q=80",
     image:
