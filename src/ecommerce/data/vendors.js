@@ -41,6 +41,7 @@ export const ecommerceVendors = [
   {
     id: "fashion-forward",
     name: "Fashion Forward",
+    slug: "fashion-forward",
     category: "ecommerce",
     logo: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=200&q=80",
     image:
