@@ -20,7 +20,6 @@ import BookingsReceivedPage from "./components/owner/BookingsReceivedPage";
 import ProfileSettingsPage from "./components/owner/ProfileSettingsPage";
 
 // Mock data
-import { mockHotels, mockBookings, mockOwnerHotels } from "./data/mockData";
 import {
   hotels as hotelModuleData,
   bookings as hotelBookings,
