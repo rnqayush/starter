@@ -804,6 +804,7 @@ const ProductDetail = () => {
                 <ProductCard
                   key={relatedProduct.id}
                   product={relatedProduct}
+                  storeSlug={storeSlug}
                   onAddToCart={() => {
                     setCartItems((prev) => {
                       const existingItem = prev.find(
