@@ -12,7 +12,6 @@ import {
   getFeaturedProducts,
   getOnSaleProducts,
 } from "../data/products";
-import { getVendorById } from "../data/vendors";
 
 // Dynamic theme styles that override global styles
 const DynamicGlobalStyle = createGlobalStyle`
