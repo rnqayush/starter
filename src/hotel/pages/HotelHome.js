@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { theme } from "../../styles/GlobalStyle";
+import { theme, media } from "../../styles/GlobalStyle";
 import HotelNavbar from "../components/HotelNavbar";
 import HotelFooter from "../components/HotelFooter";
 import HotelCard from "../components/HotelCard";
