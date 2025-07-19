@@ -275,7 +275,9 @@ const VariantOption = styled.button`
   }
 `;
 
-const StockInfo = styled.div`
+const StockInfo = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "inStock",
+})`
   display: flex;
   align-items: center;
   gap: ${theme.spacing.sm};
