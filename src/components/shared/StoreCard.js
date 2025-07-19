@@ -221,7 +221,7 @@ const StoreCard = ({ store, category }) => {
 
   const getCurrentStatus = () => {
     const now = new Date();
-    const currentDay = now.toLocaleLowerCase("en-US", { weekday: "long" });
+    const currentDay = now.toLocaleDateString("en-US", { weekday: "long" });
     const currentTime = now.toLocaleTimeString("en-US", {
       hour12: false,
       hour: "2-digit",
