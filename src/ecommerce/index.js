@@ -7,6 +7,7 @@ import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import OrderConfirmation from "./pages/OrderConfirmation";
 import StoreHome from "./pages/StoreHome";
+import SellerDashboard from "./pages/SellerDashboard";
 
 const EcommerceModule = () => {
   return (
