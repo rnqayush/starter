@@ -359,6 +359,7 @@ const EcommerceMain = () => {
           )}
           storeName={selectedVendor.name}
           storeLogo={selectedVendor.logo}
+          storeSlug={selectedVendor.slug}
           theme={vendorTheme}
         />
 
