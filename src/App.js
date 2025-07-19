@@ -9,6 +9,9 @@ import PlatformHomePage from "./components/user/PlatformHomePage";
 import LoginPage from "./components/auth/LoginPage";
 import RegisterPage from "./components/auth/RegisterPage";
 
+// Shared Components
+import ScrollToTop from "./components/shared/ScrollToTop";
+
 // Hotel Module
 import HotelModule from "./hotel";
 
