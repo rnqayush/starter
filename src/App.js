@@ -5,6 +5,7 @@ import { GlobalStyle } from "./styles/GlobalStyle";
 import { AppContext } from "./context/AppContext";
 
 // User Components
+import PlatformHomePage from "./components/user/PlatformHomePage";
 import HomePage from "./components/user/HomePage";
 import HotelPage from "./components/user/HotelPage";
 import RoomPage from "./components/user/RoomPage";
