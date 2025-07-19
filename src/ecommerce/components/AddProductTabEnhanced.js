@@ -62,10 +62,6 @@ const FormGrid = styled.div`
   }
 `;
 
-
-
-
-
 const ImageUploadArea = styled.div`
   border: 2px dashed ${theme.colors.gray300};
   border-radius: ${theme.borderRadius.lg};
@@ -180,22 +176,6 @@ const VariantTitle = styled.h5`
   font-weight: 500;
   color: ${theme.colors.gray900};
   margin: 0;
-`;
-
-
-
-
-
-
-
-
-  cursor: pointer;
-
-  &:focus {
-    outline: none;
-    border-color: ${theme.colors.primary};
-    box-shadow: 0 0 0 3px ${theme.colors.primary}20;
-  }
 `;
 
 const FormActions = styled.div`
