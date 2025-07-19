@@ -122,7 +122,7 @@ const SellerDashboard = () => {
       case "products":
         return <ProductsTab />;
       case "add-product":
-        return <AddProductTab />;
+        return <AddProductTabEnhanced />;
       case "categories":
         return <CategoriesTab />;
       case "bulk-import":
