@@ -281,7 +281,10 @@ const StoreCard = ({ store, category }) => {
   const currentStatus = getCurrentStatus();
 
   return (
-    <Card to={getStoreLink()}>
+    <Card
+      to={getStoreLink()}
+      onClick={category === "ecommerce" ? handleStoreClick : undefined}
+    >
       <CardImage image={store.image}>
         <ImageOverlay />
         {store.featured && <FeaturedBadge>Featured</FeaturedBadge>}
