@@ -355,23 +355,23 @@ const Navbar = ({
       </NavbarContent>
 
       <MobileMenu isOpen={isMenuOpen}>
-        <MobileNavLink to="/ecommerce" onClick={() => setIsMenuOpen(false)}>
+        <MobileNavLink to={getBaseUrl()} onClick={() => setIsMenuOpen(false)}>
           Home
         </MobileNavLink>
         <MobileNavLink
-          to="/ecommerce/products"
+          to={`${getBaseUrl()}/products`}
           onClick={() => setIsMenuOpen(false)}
         >
           All Products
         </MobileNavLink>
         <MobileNavLink
-          to="/ecommerce/products?category=electronics"
+          to={`${getBaseUrl()}/products?category=electronics`}
           onClick={() => setIsMenuOpen(false)}
         >
           Electronics
         </MobileNavLink>
         <MobileNavLink
-          to="/ecommerce/products?category=fashion"
+          to={`${getBaseUrl()}/products?category=fashion`}
           onClick={() => setIsMenuOpen(false)}
         >
           Fashion
