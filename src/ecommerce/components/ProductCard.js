@@ -336,6 +336,7 @@ const ProductCard = ({
   onAddToCart,
   onToggleWishlist,
   isInWishlist = false,
+  storeSlug = "",
 }) => {
   const renderStars = (rating) => {
     const stars = [];
