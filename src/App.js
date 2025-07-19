@@ -117,8 +117,8 @@ function App() {
             />
             <Route path="/:hotelSlug/booking" element={<HotelModule />} />
 
-            {/* Generic slug routes - need smart routing to determine hotel vs store */}
-            <Route path="/:slug" element={<EcommerceModule />} />
+            {/* Generic slug routes - SmartRouter determines hotel vs store */}
+            <Route path="/:slug" element={<SmartRouter />} />
 
             {/* Seller Dashboard Demo */}
             <Route
