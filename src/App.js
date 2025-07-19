@@ -21,6 +21,11 @@ import ProfileSettingsPage from "./components/owner/ProfileSettingsPage";
 
 // Mock data
 import { mockHotels, mockBookings, mockOwnerHotels } from "./data/mockData";
+import {
+  hotels as hotelModuleData,
+  bookings as hotelBookings,
+  ownerHotels as hotelOwnerData,
+} from "./hotel/data/hotels";
 
 // Modules
 import EcommerceModule from "./ecommerce";
@@ -33,9 +38,9 @@ const AppContainer = styled.div`
 function App() {
   const [user, setUser] = useState(null);
   const [userType, setUserType] = useState("customer"); // 'customer' or 'owner'
-  const [hotels, setHotels] = useState(mockHotels);
-  const [bookings, setBookings] = useState(mockBookings);
-  const [ownerHotels, setOwnerHotels] = useState(mockOwnerHotels);
+  const [hotels, setHotels] = useState(hotelModuleData);
+  const [bookings, setBookings] = useState(hotelBookings);
+  const [ownerHotels, setOwnerHotels] = useState(hotelOwnerData);
 
   const contextValue = {
     user,
