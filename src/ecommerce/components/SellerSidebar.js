@@ -22,6 +22,15 @@ const SidebarContainer = styled.div`
   box-shadow: ${theme.shadows.sm};
   z-index: 1000;
   overflow-y: auto;
+  transition: transform 0.3s ease;
+
+  @media (max-width: 1024px) {
+    transform: translateX(-100%);
+  }
+
+  &.mobile-open {
+    transform: translateX(0);
+  }
 `;
 
 const SidebarHeader = styled.div`
