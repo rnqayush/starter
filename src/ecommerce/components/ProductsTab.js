@@ -199,7 +199,9 @@ const Price = styled.span`
   color: ${theme.colors.gray900};
 `;
 
-const StatusBadge = styled.span`
+const StatusBadge = styled.span.withConfig({
+  shouldForwardProp: (prop) => prop !== "status",
+})`
   padding: ${theme.spacing.xs} ${theme.spacing.sm};
   border-radius: ${theme.borderRadius.sm};
   font-size: 0.75rem;
