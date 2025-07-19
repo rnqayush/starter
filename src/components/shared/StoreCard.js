@@ -210,19 +210,10 @@ const ActionButton = styled.button`
 `;
 
 const StoreCard = ({ store, category }) => {
-  // Map vendor stores to existing ecommerce categories
   const getStoreLink = () => {
     if (category === "ecommerce") {
-      // Map different vendor types to ecommerce categories
-      const vendorToCategory = {
-        "techmart-downtown": "electronics",
-        "fashion-forward": "fashion",
-        "home-essentials": "home-garden",
-        "sports-zone": "sports",
-      };
-
-      const categorySlug = vendorToCategory[store.id] || "electronics";
-      return `/ecommerce/products?category=${categorySlug}`;
+      // Link to individual store homepage
+      return `/ecommerce/${store.id}`;
     }
 
     // For other categories, return the original link format
