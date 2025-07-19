@@ -17,13 +17,85 @@ export const dashboardStats = {
     change: 5.1,
     period: "vs last month",
   },
+  totalCustomers: {
+    value: 1248,
+    change: 15.3,
+    period: "vs last month",
+  },
   averageOrderValue: {
     value: 132.46,
     currency: "USD",
     change: -2.1,
     period: "vs last month",
   },
+  storeViews: {
+    value: 8967,
+    change: 23.1,
+    period: "vs last month",
+  },
 };
+
+export const storeStatus = {
+  isLive: true,
+  lastToggled: "2024-01-15 10:30 AM",
+};
+
+export const lowStockAlerts = [
+  {
+    id: 1,
+    productName: "Premium Wireless Headphones",
+    currentStock: 3,
+    threshold: 5,
+    image:
+      "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=100&q=80",
+  },
+  {
+    id: 2,
+    productName: "Classic Denim Jacket",
+    currentStock: 1,
+    threshold: 5,
+    image:
+      "https://images.unsplash.com/photo-1544022613-e87ca75a784a?w=100&q=80",
+  },
+  {
+    id: 3,
+    productName: "Luxury Leather Handbag",
+    currentStock: 2,
+    threshold: 5,
+    image:
+      "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=100&q=80",
+  },
+];
+
+export const topPerformingProducts = [
+  {
+    id: 1,
+    name: "Premium Wireless Headphones",
+    sales: 156,
+    revenue: 46798.44,
+    growth: 23.5,
+    image:
+      "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=100&q=80",
+  },
+  {
+    id: 2,
+    name: "Smart Fitness Watch",
+    sales: 89,
+    revenue: 17799.11,
+    growth: 15.2,
+    image:
+      "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=100&q=80",
+  },
+  {
+    id: 3,
+    name: "Yoga Exercise Mat",
+    sales: 134,
+    revenue: 4688.66,
+    growth: 8.7,
+    image:
+      "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=100&q=80",
+  },
+];
 
 export const salesTrendData = [
   { date: "2024-01-01", sales: 1200, orders: 15 },
