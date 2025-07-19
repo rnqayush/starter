@@ -450,6 +450,7 @@ const Products = () => {
                 key={product.id}
                 product={product}
                 onAddToCart={handleAddToCart}
+                storeSlug={storeSlug}
               />
             ))}
           </ProductsGrid>
