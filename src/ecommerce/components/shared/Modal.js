@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { FaTimes } from "react-icons/fa";
-import { theme } from "../../../styles/GlobalStyle";
+import { theme, media } from "../../../styles/GlobalStyle";
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -15,6 +15,17 @@ const ModalOverlay = styled.div`
   justify-content: center;
   z-index: 10000;
   padding: ${theme.spacing.lg};
+
+  ${media.mobile} {
+    padding: ${theme.spacing.sm};
+    align-items: flex-start;
+    padding-top: ${theme.spacing.lg};
+  }
+
+  ${media.tablet} {
+    padding: ${theme.spacing.md};
+    align-items: center;
+  }
 `;
 
 const ModalContent = styled.div.withConfig({
@@ -40,9 +51,34 @@ const ModalContent = styled.div.withConfig({
     }
   }};
 
-  @media (max-width: 768px) {
-    max-width: 95vw;
+  ${media.mobile} {
+    max-width: 100%;
     max-height: 95vh;
+    border-radius: ${theme.borderRadius.md};
+    margin: ${theme.spacing.sm};
+  }
+
+  ${media.tablet} {
+    max-width: 90vw;
+    max-height: 90vh;
+  }
+
+  ${media.desktop} {
+    max-height: 85vh;
+  }
+
+  /* Custom scrollbar */
+  &::-webkit-scrollbar {
+    width: 0.25rem;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: ${theme.colors.gray100};
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: ${theme.colors.gray300};
+    border-radius: ${theme.borderRadius.sm};
   }
 `;
 
@@ -51,7 +87,15 @@ const ModalHeader = styled.div`
   border-bottom: 1px solid ${theme.colors.gray200};
   display: flex;
   align-items: center;
-  justify-content: between;
+  justify-content: space-between;
+
+  ${media.mobile} {
+    padding: ${theme.spacing.lg};
+  }
+
+  ${media.tablet} {
+    padding: ${theme.spacing.xl};
+  }
 `;
 
 const ModalTitle = styled.h2`
@@ -60,6 +104,14 @@ const ModalTitle = styled.h2`
   color: ${theme.colors.gray900};
   margin: 0;
   flex: 1;
+
+  ${media.mobile} {
+    font-size: 1.25rem;
+  }
+
+  ${media.tablet} {
+    font-size: 1.375rem;
+  }
 `;
 
 const CloseButton = styled.button`
@@ -70,15 +122,40 @@ const CloseButton = styled.button`
   padding: ${theme.spacing.sm};
   border-radius: ${theme.borderRadius.sm};
   transition: all 0.2s ease;
+  min-width: 2.5rem;
+  min-height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   &:hover {
     background: ${theme.colors.gray100};
     color: ${theme.colors.gray700};
   }
+
+  ${media.mobile} {
+    padding: ${theme.spacing.xs};
+    min-width: 2.25rem;
+    min-height: 2.25rem;
+    font-size: 0.875rem;
+  }
+
+  ${media.tablet} {
+    min-width: 2.375rem;
+    min-height: 2.375rem;
+  }
 `;
 
 const ModalBody = styled.div`
   padding: ${theme.spacing.xl};
+
+  ${media.mobile} {
+    padding: ${theme.spacing.lg};
+  }
+
+  ${media.tablet} {
+    padding: ${theme.spacing.xl};
+  }
 `;
 
 const ModalFooter = styled.div`
@@ -86,8 +163,22 @@ const ModalFooter = styled.div`
   border-top: 1px solid ${theme.colors.gray200};
   display: flex;
   align-items: center;
-  justify-content: end;
+  justify-content: flex-end;
   gap: ${theme.spacing.md};
+
+  ${media.mobile} {
+    padding: ${theme.spacing.lg};
+    flex-direction: column;
+    align-items: stretch;
+    gap: ${theme.spacing.sm};
+  }
+
+  ${media.tablet} {
+    padding: ${theme.spacing.xl};
+    flex-direction: row;
+    align-items: center;
+    gap: ${theme.spacing.md};
+  }
 `;
 
 const Modal = ({ isOpen, onClose, title, children, footer, size = "md" }) => {

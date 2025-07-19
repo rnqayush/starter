@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { FaStar, FaHeart, FaShoppingCart } from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
+import { theme, media } from "../../styles/GlobalStyle";
 
 const Card = styled.div`
   background: ${theme.colors.white};
@@ -19,12 +19,35 @@ const Card = styled.div`
     transform: translateY(-4px);
     box-shadow: ${theme.shadows.lg};
   }
+
+  ${media.mobile} {
+    border-radius: ${theme.borderRadius.md};
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: ${theme.shadows.md};
+    }
+  }
+
+  ${media.tablet} {
+    &:hover {
+      transform: translateY(-3px);
+    }
+  }
 `;
 
 const ImageContainer = styled.div`
   position: relative;
   overflow: hidden;
   height: 240px;
+
+  ${media.mobile} {
+    height: 200px;
+  }
+
+  ${media.tablet} {
+    height: 220px;
+  }
 `;
 
 const ProductImage = styled.img`
@@ -52,6 +75,13 @@ const Badge = styled.div.withConfig({
   font-size: 0.8rem;
   font-weight: 600;
   text-transform: uppercase;
+
+  ${media.mobile} {
+    top: ${theme.spacing.sm};
+    left: ${theme.spacing.sm};
+    padding: ${theme.spacing.xs} ${theme.spacing.xs};
+    font-size: 0.7rem;
+  }
 `;
 
 const WishlistButton = styled.button`
@@ -77,6 +107,23 @@ const WishlistButton = styled.button`
     color: ${theme.colors.error};
     transform: scale(1.1);
   }
+
+  ${media.mobile} {
+    top: ${theme.spacing.sm};
+    right: ${theme.spacing.sm};
+    width: 32px;
+    height: 32px;
+    opacity: 1;
+
+    &:hover {
+      transform: none;
+    }
+  }
+
+  ${media.tablet} {
+    width: 34px;
+    height: 34px;
+  }
 `;
 
 const CardContent = styled.div`
@@ -84,6 +131,14 @@ const CardContent = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
+
+  ${media.mobile} {
+    padding: ${theme.spacing.md};
+  }
+
+  ${media.tablet} {
+    padding: ${theme.spacing.lg};
+  }
 `;
 
 const Category = styled.span`
@@ -92,6 +147,10 @@ const Category = styled.span`
   text-transform: uppercase;
   letter-spacing: 0.5px;
   margin-bottom: ${theme.spacing.xs};
+
+  ${media.mobile} {
+    font-size: 0.7rem;
+  }
 `;
 
 const ProductName = styled.h3`
@@ -104,6 +163,11 @@ const ProductName = styled.h3`
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+
+  ${media.mobile} {
+    font-size: 1rem;
+    margin-bottom: ${theme.spacing.xs};
+  }
 `;
 
 const Description = styled.p`
@@ -116,6 +180,12 @@ const Description = styled.p`
   -webkit-box-orient: vertical;
   overflow: hidden;
   flex: 1;
+
+  ${media.mobile} {
+    font-size: 0.8rem;
+    margin-bottom: ${theme.spacing.sm};
+    -webkit-line-clamp: 3;
+  }
 `;
 
 const RatingContainer = styled.div`
@@ -123,6 +193,11 @@ const RatingContainer = styled.div`
   align-items: center;
   gap: ${theme.spacing.sm};
   margin-bottom: ${theme.spacing.md};
+
+  ${media.mobile} {
+    gap: ${theme.spacing.xs};
+    margin-bottom: ${theme.spacing.sm};
+  }
 `;
 
 const StarRating = styled.div`
@@ -140,6 +215,10 @@ const Star = styled(FaStar).withConfig({
 const ReviewCount = styled.span`
   color: ${theme.colors.gray500};
   font-size: 0.8rem;
+
+  ${media.mobile} {
+    font-size: 0.7rem;
+  }
 `;
 
 const PriceContainer = styled.div`
@@ -147,18 +226,36 @@ const PriceContainer = styled.div`
   align-items: center;
   gap: ${theme.spacing.sm};
   margin-bottom: ${theme.spacing.lg};
+
+  ${media.mobile} {
+    gap: ${theme.spacing.xs};
+    margin-bottom: ${theme.spacing.md};
+    flex-wrap: wrap;
+  }
 `;
 
 const CurrentPrice = styled.span`
   font-size: 1.3rem;
   font-weight: 700;
   color: ${theme.colors.primary};
+
+  ${media.mobile} {
+    font-size: 1.1rem;
+  }
+
+  ${media.tablet} {
+    font-size: 1.2rem;
+  }
 `;
 
 const OriginalPrice = styled.span`
   font-size: 1rem;
   color: ${theme.colors.gray500};
   text-decoration: line-through;
+
+  ${media.mobile} {
+    font-size: 0.9rem;
+  }
 `;
 
 const Discount = styled.span`
@@ -168,11 +265,20 @@ const Discount = styled.span`
   border-radius: ${theme.borderRadius.sm};
   font-size: 0.7rem;
   font-weight: 600;
+
+  ${media.mobile} {
+    font-size: 0.65rem;
+    padding: 1px 4px;
+  }
 `;
 
 const ActionButtons = styled.div`
   display: flex;
   gap: ${theme.spacing.sm};
+
+  ${media.mobile} {
+    gap: ${theme.spacing.xs};
+  }
 `;
 
 const AddToCartButton = styled.button`
@@ -198,6 +304,16 @@ const AddToCartButton = styled.button`
     cursor: not-allowed;
     transform: none;
   }
+
+  ${media.mobile} {
+    padding: ${theme.spacing.sm};
+    gap: ${theme.spacing.xs};
+    font-size: 0.875rem;
+
+    &:hover {
+      transform: none;
+    }
+  }
 `;
 
 const StockIndicator = styled.div.withConfig({
@@ -208,6 +324,11 @@ const StockIndicator = styled.div.withConfig({
   font-size: 0.8rem;
   font-weight: 600;
   margin-bottom: ${theme.spacing.sm};
+
+  ${media.mobile} {
+    font-size: 0.7rem;
+    margin-bottom: ${theme.spacing.xs};
+  }
 `;
 
 const ProductCard = ({

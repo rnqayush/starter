@@ -1,9 +1,13 @@
 import React from "react";
 import styled from "styled-components";
-import { theme } from "../../../styles/GlobalStyle";
+import { theme, media } from "../../../styles/GlobalStyle";
 
 const FieldContainer = styled.div`
   margin-bottom: ${theme.spacing.lg};
+
+  ${media.mobile} {
+    margin-bottom: ${theme.spacing.md};
+  }
 `;
 
 const Label = styled.label`
@@ -12,6 +16,11 @@ const Label = styled.label`
   font-weight: 500;
   color: ${theme.colors.gray700};
   margin-bottom: ${theme.spacing.sm};
+
+  ${media.mobile} {
+    font-size: 0.85rem;
+    margin-bottom: ${theme.spacing.xs};
+  }
 `;
 
 const RequiredMark = styled.span`
@@ -30,6 +39,7 @@ const Input = styled.input.withConfig({
   font-size: 0.9rem;
   background: ${theme.colors.white};
   transition: all 0.2s ease;
+  min-height: 2.75rem;
 
   &:focus {
     outline: none;
@@ -46,6 +56,16 @@ const Input = styled.input.withConfig({
     background: ${theme.colors.gray100};
     color: ${theme.colors.gray500};
     cursor: not-allowed;
+  }
+
+  ${media.mobile} {
+    padding: ${theme.spacing.sm} ${theme.spacing.md};
+    font-size: 1rem;
+    min-height: 2.5rem;
+  }
+
+  ${media.tablet} {
+    font-size: 0.9rem;
   }
 `;
 
@@ -80,6 +100,17 @@ const Textarea = styled.textarea.withConfig({
     color: ${theme.colors.gray500};
     cursor: not-allowed;
   }
+
+  ${media.mobile} {
+    padding: ${theme.spacing.sm} ${theme.spacing.md};
+    font-size: 1rem;
+    min-height: 80px;
+  }
+
+  ${media.tablet} {
+    font-size: 0.9rem;
+    min-height: 90px;
+  }
 `;
 
 const Select = styled.select.withConfig({
@@ -94,6 +125,7 @@ const Select = styled.select.withConfig({
   background: ${theme.colors.white};
   cursor: pointer;
   transition: all 0.2s ease;
+  min-height: 2.75rem;
 
   &:focus {
     outline: none;
@@ -111,6 +143,16 @@ const Select = styled.select.withConfig({
     color: ${theme.colors.gray500};
     cursor: not-allowed;
   }
+
+  ${media.mobile} {
+    padding: ${theme.spacing.sm} ${theme.spacing.md};
+    font-size: 1rem;
+    min-height: 2.5rem;
+  }
+
+  ${media.tablet} {
+    font-size: 0.9rem;
+  }
 `;
 
 const ErrorMessage = styled.span`
@@ -118,6 +160,10 @@ const ErrorMessage = styled.span`
   font-size: 0.8rem;
   color: ${theme.colors.error};
   margin-top: ${theme.spacing.xs};
+
+  ${media.mobile} {
+    font-size: 0.75rem;
+  }
 `;
 
 const HelpText = styled.span`
@@ -125,6 +171,10 @@ const HelpText = styled.span`
   font-size: 0.8rem;
   color: ${theme.colors.gray500};
   margin-top: ${theme.spacing.xs};
+
+  ${media.mobile} {
+    font-size: 0.75rem;
+  }
 `;
 
 const FormField = ({

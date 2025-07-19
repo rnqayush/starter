@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { FaArrowRight } from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
+import { theme, media } from "../../styles/GlobalStyle";
 
 const Card = styled(Link)`
   display: block;
@@ -17,6 +17,24 @@ const Card = styled(Link)`
   &:hover {
     transform: translateY(-8px);
     box-shadow: ${theme.shadows.xl};
+  }
+
+  ${media.mobile} {
+    height: 200px;
+    border-radius: ${theme.borderRadius.lg};
+
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: ${theme.shadows.lg};
+    }
+  }
+
+  ${media.tablet} {
+    height: 225px;
+
+    &:hover {
+      transform: translateY(-6px);
+    }
   }
 `;
 
@@ -57,6 +75,15 @@ const Overlay = styled.div`
   ${Card}:hover & {
     opacity: 1;
   }
+
+  ${media.mobile} {
+    opacity: 0.7;
+    background: linear-gradient(
+      45deg,
+      rgba(0, 0, 0, 0.3) 0%,
+      rgba(0, 0, 0, 0.1) 100%
+    );
+  }
 `;
 
 const ViewButton = styled.div`
@@ -74,6 +101,18 @@ const ViewButton = styled.div`
   ${Card}:hover & {
     transform: translateY(0);
   }
+
+  ${media.mobile} {
+    padding: ${theme.spacing.xs} ${theme.spacing.md};
+    font-size: 0.875rem;
+    border-radius: ${theme.borderRadius.md};
+    transform: translateY(0);
+    gap: ${theme.spacing.xs};
+  }
+
+  ${media.tablet} {
+    padding: ${theme.spacing.sm} ${theme.spacing.lg};
+  }
 `;
 
 const CardContent = styled.div`
@@ -82,6 +121,16 @@ const CardContent = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+
+  ${media.mobile} {
+    padding: ${theme.spacing.md};
+    height: 35%;
+  }
+
+  ${media.tablet} {
+    padding: ${theme.spacing.lg};
+    height: 32%;
+  }
 `;
 
 const CategoryName = styled.h3`
@@ -90,6 +139,15 @@ const CategoryName = styled.h3`
   color: ${theme.colors.gray900};
   margin-bottom: ${theme.spacing.xs};
   text-align: center;
+
+  ${media.mobile} {
+    font-size: 1rem;
+    margin-bottom: ${theme.spacing.xs};
+  }
+
+  ${media.tablet} {
+    font-size: 1.125rem;
+  }
 `;
 
 const CategoryDescription = styled.p`
@@ -97,6 +155,19 @@ const CategoryDescription = styled.p`
   font-size: 0.9rem;
   text-align: center;
   line-height: 1.4;
+
+  ${media.mobile} {
+    font-size: 0.8rem;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  ${media.tablet} {
+    font-size: 0.875rem;
+  }
 `;
 
 const CategoryCard = ({ category }) => {

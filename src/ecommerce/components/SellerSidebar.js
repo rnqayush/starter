@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import {
   FaHome,
@@ -17,10 +17,14 @@ import {
   FaToggleOn,
   FaClipboardList,
   FaGift,
+  FaBars,
+  FaTimes,
 } from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
+import { theme, media } from "../../styles/GlobalStyle";
 
-const SidebarContainer = styled.div`
+const SidebarContainer = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "isOpen",
+})`
   position: fixed;
   left: 0;
   top: 0;
@@ -33,18 +37,38 @@ const SidebarContainer = styled.div`
   overflow-y: auto;
   transition: transform 0.3s ease;
 
-  @media (max-width: 1024px) {
-    transform: translateX(-100%);
+  ${media.tabletDown} {
+    width: 260px;
+    transform: translateX(${(props) => (props.isOpen ? "0" : "-100%")});
+    z-index: 1001;
   }
 
-  &.mobile-open {
-    transform: translateX(0);
+  ${media.mobile} {
+    width: 240px;
+  }
+
+  /* Custom scrollbar */
+  &::-webkit-scrollbar {
+    width: 0.25rem;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: ${theme.colors.gray100};
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: ${theme.colors.gray300};
+    border-radius: ${theme.borderRadius.sm};
   }
 `;
 
 const SidebarHeader = styled.div`
   padding: ${theme.spacing.xl};
   border-bottom: 1px solid ${theme.colors.gray200};
+
+  ${media.mobile} {
+    padding: ${theme.spacing.lg};
+  }
 `;
 
 const StoreBranding = styled.div`
@@ -52,6 +76,11 @@ const StoreBranding = styled.div`
   align-items: center;
   gap: ${theme.spacing.md};
   margin-bottom: ${theme.spacing.lg};
+
+  ${media.mobile} {
+    gap: ${theme.spacing.sm};
+    margin-bottom: ${theme.spacing.md};
+  }
 `;
 
 const StoreLogo = styled.div`
@@ -69,6 +98,12 @@ const StoreLogo = styled.div`
   color: ${theme.colors.white};
   font-size: 1.5rem;
   font-weight: 600;
+
+  ${media.mobile} {
+    width: 40px;
+    height: 40px;
+    font-size: 1.25rem;
+  }
 `;
 
 const StoreInfo = styled.div`
@@ -80,12 +115,20 @@ const StoreName = styled.h2`
   font-weight: 600;
   color: ${theme.colors.gray900};
   margin: 0 0 ${theme.spacing.xs} 0;
+
+  ${media.mobile} {
+    font-size: 1rem;
+  }
 `;
 
 const StoreType = styled.p`
   font-size: 0.85rem;
   color: ${theme.colors.gray600};
   margin: 0;
+
+  ${media.mobile} {
+    font-size: 0.8rem;
+  }
 `;
 
 const SellerProfile = styled.div`
@@ -95,6 +138,11 @@ const SellerProfile = styled.div`
   padding: ${theme.spacing.md};
   background: ${theme.colors.gray50};
   border-radius: ${theme.borderRadius.md};
+
+  ${media.mobile} {
+    padding: ${theme.spacing.sm};
+    gap: ${theme.spacing.xs};
+  }
 `;
 
 const ProfileAvatar = styled.div`
@@ -107,6 +155,12 @@ const ProfileAvatar = styled.div`
   justify-content: center;
   color: ${theme.colors.white};
   font-size: 0.9rem;
+
+  ${media.mobile} {
+    width: 28px;
+    height: 28px;
+    font-size: 0.8rem;
+  }
 `;
 
 const ProfileInfo = styled.div`
@@ -118,20 +172,36 @@ const ProfileName = styled.p`
   font-weight: 500;
   color: ${theme.colors.gray900};
   margin: 0;
+
+  ${media.mobile} {
+    font-size: 0.85rem;
+  }
 `;
 
 const ProfileRole = styled.p`
   font-size: 0.75rem;
   color: ${theme.colors.gray600};
   margin: 0;
+
+  ${media.mobile} {
+    font-size: 0.7rem;
+  }
 `;
 
 const Navigation = styled.nav`
   padding: ${theme.spacing.lg} 0;
+
+  ${media.mobile} {
+    padding: ${theme.spacing.md} 0;
+  }
 `;
 
 const NavSection = styled.div`
   margin-bottom: ${theme.spacing.lg};
+
+  ${media.mobile} {
+    margin-bottom: ${theme.spacing.md};
+  }
 `;
 
 const NavSectionTitle = styled.h3`
@@ -142,6 +212,12 @@ const NavSectionTitle = styled.h3`
   letter-spacing: 0.5px;
   margin: 0 0 ${theme.spacing.md} 0;
   padding: 0 ${theme.spacing.xl};
+
+  ${media.mobile} {
+    padding: 0 ${theme.spacing.lg};
+    font-size: 0.7rem;
+    margin-bottom: ${theme.spacing.sm};
+  }
 `;
 
 const NavItem = styled.button.withConfig({
@@ -176,6 +252,16 @@ const NavItem = styled.button.withConfig({
     font-size: 1.1rem;
     opacity: ${(props) => (props.active ? "1" : "0.7")};
   }
+
+  ${media.mobile} {
+    padding: ${theme.spacing.sm} ${theme.spacing.lg};
+    gap: ${theme.spacing.sm};
+    font-size: 0.875rem;
+
+    svg {
+      font-size: 1rem;
+    }
+  }
 `;
 
 const SidebarFooter = styled.div`
@@ -186,6 +272,10 @@ const SidebarFooter = styled.div`
   padding: ${theme.spacing.lg} ${theme.spacing.xl};
   border-top: 1px solid ${theme.colors.gray200};
   background: ${theme.colors.white};
+
+  ${media.mobile} {
+    padding: ${theme.spacing.md} ${theme.spacing.lg};
+  }
 `;
 
 const UpgradeCard = styled.div`
@@ -198,18 +288,31 @@ const UpgradeCard = styled.div`
   border-radius: ${theme.borderRadius.lg};
   color: ${theme.colors.white};
   text-align: center;
+
+  ${media.mobile} {
+    padding: ${theme.spacing.md};
+  }
 `;
 
 const UpgradeTitle = styled.h4`
   font-size: 0.9rem;
   font-weight: 600;
   margin: 0 0 ${theme.spacing.sm} 0;
+
+  ${media.mobile} {
+    font-size: 0.85rem;
+  }
 `;
 
 const UpgradeText = styled.p`
   font-size: 0.8rem;
   opacity: 0.9;
   margin: 0 0 ${theme.spacing.md} 0;
+
+  ${media.mobile} {
+    font-size: 0.75rem;
+    margin-bottom: ${theme.spacing.sm};
+  }
 `;
 
 const UpgradeButton = styled.button`
@@ -228,9 +331,88 @@ const UpgradeButton = styled.button`
     transform: translateY(-1px);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
+
+  ${media.mobile} {
+    padding: ${theme.spacing.xs} ${theme.spacing.sm};
+    font-size: 0.75rem;
+
+    &:hover {
+      transform: none;
+    }
+  }
+`;
+
+const MobileToggle = styled.button`
+  position: fixed;
+  top: ${theme.spacing.lg};
+  left: ${theme.spacing.lg};
+  z-index: 1002;
+  background: ${theme.colors.white};
+  border: 1px solid ${theme.colors.gray300};
+  border-radius: ${theme.borderRadius.md};
+  padding: ${theme.spacing.sm};
+  color: ${theme.colors.gray700};
+  cursor: pointer;
+  box-shadow: ${theme.shadows.md};
+  display: none;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: ${theme.colors.gray50};
+    color: ${theme.colors.primary};
+  }
+
+  ${media.tabletDown} {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  ${media.mobile} {
+    top: ${theme.spacing.md};
+    left: ${theme.spacing.md};
+    padding: ${theme.spacing.xs};
+  }
+
+  svg {
+    font-size: 1rem;
+
+    ${media.mobile} {
+      font-size: 0.875rem;
+    }
+  }
+`;
+
+const Overlay = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "isOpen",
+})`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  display: none;
+  opacity: ${(props) => (props.isOpen ? "1" : "0")};
+  visibility: ${(props) => (props.isOpen ? "visible" : "hidden")};
+  transition: all 0.3s ease;
+
+  ${media.tabletDown} {
+    display: block;
+  }
 `;
 
 const SellerSidebar = ({ activeTab, onTabChange }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleSidebar = () => setIsOpen(!isOpen);
+  const closeSidebar = () => setIsOpen(false);
+
+  const handleTabChange = (tabId) => {
+    onTabChange(tabId);
+    closeSidebar();
+  };
   const navItems = [
     {
       section: "Overview",
@@ -267,57 +449,65 @@ const SellerSidebar = ({ activeTab, onTabChange }) => {
   ];
 
   return (
-    <SidebarContainer>
-      <SidebarHeader>
-        <StoreBranding>
-          <StoreLogo>
-            <FaStore />
-          </StoreLogo>
-          <StoreInfo>
-            <StoreName>My Store</StoreName>
-            <StoreType>Premium Seller</StoreType>
-          </StoreInfo>
-        </StoreBranding>
+    <>
+      <MobileToggle onClick={toggleSidebar}>
+        {isOpen ? <FaTimes /> : <FaBars />}
+      </MobileToggle>
 
-        <SellerProfile>
-          <ProfileAvatar>
-            <FaUser />
-          </ProfileAvatar>
-          <ProfileInfo>
-            <ProfileName>John Doe</ProfileName>
-            <ProfileRole>Store Owner</ProfileRole>
-          </ProfileInfo>
-        </SellerProfile>
-      </SidebarHeader>
+      <Overlay isOpen={isOpen} onClick={closeSidebar} />
 
-      <Navigation>
-        {navItems.map((section, sectionIndex) => (
-          <NavSection key={sectionIndex}>
-            <NavSectionTitle>{section.section}</NavSectionTitle>
-            {section.items.map((item) => (
-              <NavItem
-                key={item.id}
-                active={activeTab === item.id}
-                onClick={() => onTabChange(item.id)}
-              >
-                <item.icon />
-                {item.label}
-              </NavItem>
-            ))}
-          </NavSection>
-        ))}
-      </Navigation>
+      <SidebarContainer isOpen={isOpen}>
+        <SidebarHeader>
+          <StoreBranding>
+            <StoreLogo>
+              <FaStore />
+            </StoreLogo>
+            <StoreInfo>
+              <StoreName>My Store</StoreName>
+              <StoreType>Premium Seller</StoreType>
+            </StoreInfo>
+          </StoreBranding>
 
-      <SidebarFooter>
-        <UpgradeCard>
-          <UpgradeTitle>Upgrade to Pro</UpgradeTitle>
-          <UpgradeText>
-            Get advanced analytics and unlimited products
-          </UpgradeText>
-          <UpgradeButton>Upgrade Now</UpgradeButton>
-        </UpgradeCard>
-      </SidebarFooter>
-    </SidebarContainer>
+          <SellerProfile>
+            <ProfileAvatar>
+              <FaUser />
+            </ProfileAvatar>
+            <ProfileInfo>
+              <ProfileName>John Doe</ProfileName>
+              <ProfileRole>Store Owner</ProfileRole>
+            </ProfileInfo>
+          </SellerProfile>
+        </SidebarHeader>
+
+        <Navigation>
+          {navItems.map((section, sectionIndex) => (
+            <NavSection key={sectionIndex}>
+              <NavSectionTitle>{section.section}</NavSectionTitle>
+              {section.items.map((item) => (
+                <NavItem
+                  key={item.id}
+                  active={activeTab === item.id}
+                  onClick={() => handleTabChange(item.id)}
+                >
+                  <item.icon />
+                  {item.label}
+                </NavItem>
+              ))}
+            </NavSection>
+          ))}
+        </Navigation>
+
+        <SidebarFooter>
+          <UpgradeCard>
+            <UpgradeTitle>Upgrade to Pro</UpgradeTitle>
+            <UpgradeText>
+              Get advanced analytics and unlimited products
+            </UpgradeText>
+            <UpgradeButton>Upgrade Now</UpgradeButton>
+          </UpgradeCard>
+        </SidebarFooter>
+      </SidebarContainer>
+    </>
   );
 };
 

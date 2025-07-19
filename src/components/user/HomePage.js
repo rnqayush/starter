@@ -21,7 +21,7 @@ import {
   SearchField,
   SearchIcon,
 } from "../shared/Input";
-import { theme } from "../../styles/GlobalStyle";
+import { theme, media } from "../../styles/GlobalStyle";
 import { useAppContext } from "../../context/AppContext";
 
 const PageContainer = styled.div`
@@ -37,12 +37,32 @@ const HeroSection = styled.section`
   color: ${theme.colors.white};
   padding: ${theme.spacing.xxl} 0;
   text-align: center;
+
+  ${media.mobile} {
+    padding: ${theme.spacing.xl} 0;
+  }
+
+  ${media.tablet} {
+    padding: ${theme.spacing.xxl} 0;
+  }
 `;
 
 const HeroContent = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 ${theme.spacing.md};
+
+  ${media.mobile} {
+    padding: 0 ${theme.spacing.sm};
+  }
+
+  ${media.tablet} {
+    padding: 0 ${theme.spacing.lg};
+  }
+
+  ${media.desktop} {
+    padding: 0 ${theme.spacing.xl};
+  }
 `;
 
 const HeroTitle = styled.h1`
@@ -50,8 +70,13 @@ const HeroTitle = styled.h1`
   font-weight: 700;
   margin-bottom: ${theme.spacing.md};
 
-  @media (max-width: ${theme.breakpoints.mobile}) {
+  ${media.mobile} {
     font-size: 2rem;
+    margin-bottom: ${theme.spacing.sm};
+  }
+
+  ${media.tablet} {
+    font-size: 2.5rem;
   }
 `;
 
@@ -60,8 +85,13 @@ const HeroSubtitle = styled.p`
   margin-bottom: ${theme.spacing.xxl};
   opacity: 0.9;
 
-  @media (max-width: ${theme.breakpoints.mobile}) {
+  ${media.mobile} {
     font-size: 1rem;
+    margin-bottom: ${theme.spacing.xl};
+  }
+
+  ${media.tablet} {
+    font-size: 1.125rem;
   }
 `;
 
@@ -72,6 +102,17 @@ const SearchCard = styled(Card)`
   background: ${theme.colors.white};
   border-radius: ${theme.borderRadius.xl};
   box-shadow: ${theme.shadows.xl};
+
+  ${media.mobile} {
+    margin: 0 ${theme.spacing.sm};
+    padding: ${theme.spacing.md};
+    border-radius: ${theme.borderRadius.lg};
+  }
+
+  ${media.tablet} {
+    margin: 0 ${theme.spacing.lg};
+    padding: ${theme.spacing.lg};
+  }
 `;
 
 const SearchForm = styled.form`
@@ -80,13 +121,27 @@ const SearchForm = styled.form`
   gap: ${theme.spacing.md};
   align-items: end;
 
-  @media (max-width: ${theme.breakpoints.mobile}) {
+  ${media.mobile} {
     grid-template-columns: 1fr;
+    gap: ${theme.spacing.sm};
+  }
+
+  ${media.tablet} {
+    grid-template-columns: 1fr 1fr;
+    gap: ${theme.spacing.md};
+  }
+
+  ${media.desktop} {
+    grid-template-columns: 2fr 1fr 1fr 1fr auto;
   }
 `;
 
 const HotelsSection = styled.section`
   padding: ${theme.spacing.xxl} 0;
+
+  ${media.mobile} {
+    padding: ${theme.spacing.xl} 0;
+  }
 `;
 
 const SectionTitle = styled.h2`
@@ -95,6 +150,16 @@ const SectionTitle = styled.h2`
   text-align: center;
   margin-bottom: ${theme.spacing.xxl};
   color: ${theme.colors.gray900};
+
+  ${media.mobile} {
+    font-size: 1.5rem;
+    margin-bottom: ${theme.spacing.lg};
+  }
+
+  ${media.tablet} {
+    font-size: 1.75rem;
+    margin-bottom: ${theme.spacing.xl};
+  }
 `;
 
 const HotelsGrid = styled.div`
@@ -104,6 +169,23 @@ const HotelsGrid = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 ${theme.spacing.md};
+
+  ${media.mobile} {
+    grid-template-columns: 1fr;
+    gap: ${theme.spacing.lg};
+    padding: 0 ${theme.spacing.sm};
+  }
+
+  ${media.tablet} {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: ${theme.spacing.lg};
+    padding: 0 ${theme.spacing.lg};
+  }
+
+  ${media.desktop} {
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    padding: 0 ${theme.spacing.xl};
+  }
 `;
 
 const HotelCard = styled(Card)`
@@ -115,6 +197,17 @@ const HotelInfo = styled.div`
   justify-content: space-between;
   align-items: flex-start;
   margin-bottom: ${theme.spacing.md};
+
+  ${media.mobile} {
+    flex-direction: column;
+    align-items: stretch;
+    gap: ${theme.spacing.sm};
+  }
+
+  ${media.tablet} {
+    flex-direction: row;
+    align-items: flex-start;
+  }
 `;
 
 const HotelDetails = styled.div`
@@ -128,6 +221,11 @@ const LocationText = styled.div`
   color: ${theme.colors.gray600};
   font-size: 0.875rem;
   margin-bottom: ${theme.spacing.sm};
+
+  ${media.mobile} {
+    font-size: 0.8rem;
+    margin-bottom: ${theme.spacing.xs};
+  }
 `;
 
 const Rating = styled.div`
@@ -136,10 +234,24 @@ const Rating = styled.div`
   gap: ${theme.spacing.xs};
   color: ${theme.colors.accent};
   font-size: 0.875rem;
+
+  ${media.mobile} {
+    font-size: 0.8rem;
+  }
 `;
 
 const PriceSection = styled.div`
   text-align: right;
+
+  ${media.mobile} {
+    text-align: left;
+    margin-top: ${theme.spacing.sm};
+  }
+
+  ${media.tablet} {
+    text-align: right;
+    margin-top: 0;
+  }
 `;
 
 const HomePage = () => {

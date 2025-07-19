@@ -9,7 +9,7 @@ import {
   FaCar,
   FaUtensils,
 } from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
+import { theme, media } from "../../styles/GlobalStyle";
 
 const Card = styled(Link)`
   display: block;
@@ -25,6 +25,21 @@ const Card = styled(Link)`
     transform: translateY(-4px);
     box-shadow: ${theme.shadows.xl};
   }
+
+  ${media.mobile} {
+    border-radius: ${theme.borderRadius.md};
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: ${theme.shadows.lg};
+    }
+  }
+
+  ${media.tablet} {
+    &:hover {
+      transform: translateY(-3px);
+    }
+  }
 `;
 
 const CardImage = styled.div.withConfig({
@@ -36,6 +51,14 @@ const CardImage = styled.div.withConfig({
   background-size: cover;
   background-position: center;
   overflow: hidden;
+
+  ${media.mobile} {
+    height: 160px;
+  }
+
+  ${media.tablet} {
+    height: 180px;
+  }
 `;
 
 const ImageOverlay = styled.div`
@@ -65,6 +88,13 @@ const StarRating = styled.div`
   font-size: 0.8rem;
   font-weight: 600;
   color: ${theme.colors.gray900};
+
+  ${media.mobile} {
+    top: ${theme.spacing.sm};
+    right: ${theme.spacing.sm};
+    padding: ${theme.spacing.xs} ${theme.spacing.xs};
+    font-size: 0.7rem;
+  }
 `;
 
 const PriceBadge = styled.div`
@@ -76,10 +106,25 @@ const PriceBadge = styled.div`
   padding: ${theme.spacing.sm} ${theme.spacing.md};
   border-radius: ${theme.borderRadius.md};
   font-weight: 600;
+
+  ${media.mobile} {
+    bottom: ${theme.spacing.sm};
+    right: ${theme.spacing.sm};
+    padding: ${theme.spacing.xs} ${theme.spacing.sm};
+    font-size: 0.875rem;
+  }
 `;
 
 const CardContent = styled.div`
   padding: ${theme.spacing.lg};
+
+  ${media.mobile} {
+    padding: ${theme.spacing.md};
+  }
+
+  ${media.tablet} {
+    padding: ${theme.spacing.lg};
+  }
 `;
 
 const HotelName = styled.h3`
@@ -88,6 +133,15 @@ const HotelName = styled.h3`
   color: ${theme.colors.gray900};
   margin-bottom: ${theme.spacing.sm};
   line-height: 1.3;
+
+  ${media.mobile} {
+    font-size: 1.125rem;
+    margin-bottom: ${theme.spacing.xs};
+  }
+
+  ${media.tablet} {
+    font-size: 1.2rem;
+  }
 `;
 
 const Location = styled.div`
@@ -97,6 +151,12 @@ const Location = styled.div`
   color: ${theme.colors.gray600};
   font-size: 0.9rem;
   margin-bottom: ${theme.spacing.md};
+
+  ${media.mobile} {
+    font-size: 0.8rem;
+    gap: ${theme.spacing.xs};
+    margin-bottom: ${theme.spacing.sm};
+  }
 `;
 
 const Description = styled.p`
@@ -108,6 +168,12 @@ const Description = styled.p`
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+
+  ${media.mobile} {
+    font-size: 0.8rem;
+    margin-bottom: ${theme.spacing.sm};
+    -webkit-line-clamp: 3;
+  }
 `;
 
 const Amenities = styled.div`
@@ -115,6 +181,11 @@ const Amenities = styled.div`
   gap: ${theme.spacing.md};
   margin-bottom: ${theme.spacing.lg};
   flex-wrap: wrap;
+
+  ${media.mobile} {
+    gap: ${theme.spacing.sm};
+    margin-bottom: ${theme.spacing.md};
+  }
 `;
 
 const AmenityIcon = styled.div`
@@ -125,6 +196,15 @@ const AmenityIcon = styled.div`
   gap: ${theme.spacing.xs};
   font-size: 0.8rem;
   color: ${theme.colors.gray600};
+
+  ${media.mobile} {
+    font-size: 0.7rem;
+    gap: ${theme.spacing.xs};
+
+    svg {
+      font-size: 0.75rem;
+    }
+  }
 `;
 
 const Rating = styled.div`
@@ -133,6 +213,11 @@ const Rating = styled.div`
   gap: ${theme.spacing.sm};
   color: ${theme.colors.gray600};
   font-size: 0.9rem;
+
+  ${media.mobile} {
+    font-size: 0.8rem;
+    gap: ${theme.spacing.xs};
+  }
 `;
 
 const RatingStars = styled.div`
@@ -145,6 +230,10 @@ const Star = styled(FaStar).withConfig({
 })`
   color: ${(props) => (props.filled ? "#fbbf24" : theme.colors.gray300)};
   font-size: 0.8rem;
+
+  ${media.mobile} {
+    font-size: 0.7rem;
+  }
 `;
 
 const HotelCard = ({ hotel }) => {
