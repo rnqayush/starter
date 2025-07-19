@@ -264,6 +264,19 @@ const UserSection = styled.div`
   display: flex;
   align-items: center;
   gap: ${theme.spacing.md};
+  flex-shrink: 0;
+
+  ${media.mobileDown} {
+    position: absolute;
+    top: 0;
+    right: ${theme.spacing.sm};
+    height: 100%;
+    gap: ${theme.spacing.sm};
+  }
+
+  ${media.tablet} {
+    gap: ${theme.spacing.sm};
+  }
 `;
 
 const LoginButton = styled(Link)`
@@ -273,10 +286,22 @@ const LoginButton = styled(Link)`
   padding: ${theme.spacing.sm} ${theme.spacing.md};
   border-radius: ${theme.borderRadius.md};
   transition: all 0.2s ease;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
 
   &:hover {
     color: ${theme.colors.primary};
     background: ${theme.colors.gray50};
+  }
+
+  ${media.mobileDown} {
+    display: none;
+  }
+
+  ${media.tablet} {
+    padding: ${theme.spacing.sm};
+    font-size: 0.875rem;
   }
 `;
 
@@ -288,10 +313,20 @@ const RegisterButton = styled(Button)`
   border-radius: ${theme.borderRadius.md};
   font-weight: 500;
   transition: all 0.2s ease;
+  white-space: nowrap;
 
   &:hover {
-    background: ${theme.colors.secondary};
+    background: ${theme.colors.primaryDark};
     transform: translateY(-1px);
+  }
+
+  ${media.mobileDown} {
+    display: none;
+  }
+
+  ${media.tablet} {
+    padding: ${theme.spacing.sm} ${theme.spacing.md};
+    font-size: 0.875rem;
   }
 `;
 
@@ -302,9 +337,68 @@ const MobileMenuButton = styled.button`
   color: ${theme.colors.gray700};
   font-size: 1.25rem;
   padding: ${theme.spacing.sm};
+  cursor: pointer;
+  border-radius: ${theme.borderRadius.sm};
+  transition: all 0.2s ease;
 
-  @media (max-width: ${theme.breakpoints.mobile}) {
-    display: block;
+  &:hover {
+    background: ${theme.colors.gray50};
+    color: ${theme.colors.primary};
+  }
+
+  &:active {
+    background: ${theme.colors.gray100};
+  }
+
+  ${media.mobileDown} {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+`;
+
+const MobileAuthButtons = styled.div`
+  display: none;
+
+  ${media.mobileDown} {
+    display: flex;
+    flex-direction: column;
+    gap: ${theme.spacing.md};
+    padding: ${theme.spacing.lg} 0;
+    border-top: 1px solid ${theme.colors.gray200};
+    margin-top: ${theme.spacing.lg};
+    width: 100%;
+  }
+`;
+
+const MobileAuthButton = styled(Link)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: ${theme.spacing.md} ${theme.spacing.lg};
+  border-radius: ${theme.borderRadius.md};
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  font-size: 1rem;
+
+  &.login {
+    color: ${theme.colors.gray700};
+    background: ${theme.colors.gray100};
+
+    &:hover {
+      background: ${theme.colors.gray200};
+      color: ${theme.colors.primary};
+    }
+  }
+
+  &.register {
+    color: ${theme.colors.white};
+    background: ${theme.colors.primary};
+
+    &:hover {
+      background: ${theme.colors.primaryDark};
+    }
   }
 `;
 
