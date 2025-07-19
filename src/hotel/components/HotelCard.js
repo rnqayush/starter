@@ -27,7 +27,9 @@ const Card = styled(Link)`
   }
 `;
 
-const CardImage = styled.div`
+const CardImage = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "image",
+})`
   position: relative;
   height: 200px;
   background-image: url(${(props) => props.image});
