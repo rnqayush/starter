@@ -215,7 +215,9 @@ const SummaryTitle = styled.h2`
   margin-bottom: ${theme.spacing.lg};
 `;
 
-const SummaryRow = styled.div`
+const SummaryRow = styled.div.withConfig({
+  shouldForwardProp: (prop) => !["large", "bold"].includes(prop),
+})`
   display: flex;
   justify-content: space-between;
   align-items: center;
