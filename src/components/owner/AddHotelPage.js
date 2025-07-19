@@ -14,7 +14,6 @@ import {
   InputGroup,
   CheckboxGroup,
   CheckboxItem,
-  FileInput,
 } from "../shared/Input";
 import { theme } from "../../styles/GlobalStyle";
 import { useAppContext } from "../../context/AppContext";
@@ -123,7 +122,7 @@ const FormActions = styled.div`
 
 const AddHotelPage = () => {
   const navigate = useNavigate();
-  const { hotels, setHotels, ownerHotels, setOwnerHotels } = useAppContext();
+  const { setHotels, setOwnerHotels } = useAppContext();
 
   const [formData, setFormData] = useState({
     name: "",
