@@ -33,7 +33,9 @@ const Logo = styled(Link)`
   text-decoration: none;
 `;
 
-const Nav = styled.nav`
+const Nav = styled.nav.withConfig({
+  shouldForwardProp: (prop) => prop !== "isOpen",
+})`
   display: flex;
   align-items: center;
   gap: ${theme.spacing.xl};
