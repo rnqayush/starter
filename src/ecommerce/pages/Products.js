@@ -8,6 +8,7 @@ import Footer from "../components/Footer";
 import ProductCard from "../components/ProductCard";
 import LoadingSpinner from "../components/LoadingSpinner";
 import { products, categories, getProductsByCategory } from "../data/products";
+import { getVendorByIdOrSlug } from "../data/vendors";
 
 const PageContainer = styled.div`
   min-height: 100vh;
