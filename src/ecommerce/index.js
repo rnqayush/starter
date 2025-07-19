@@ -1,5 +1,6 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
+import ScrollToTop from "../components/shared/ScrollToTop";
 import EcommerceMain from "./pages/EcommerceMain";
 import Products from "./pages/Products";
 import ProductDetail from "./pages/ProductDetail";
