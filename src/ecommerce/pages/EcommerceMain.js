@@ -404,7 +404,11 @@ const EcommerceMain = () => {
             </SectionHeader>
             <Grid minWidth="250px">
               {categories.map((category) => (
-                <CategoryCard key={category.id} category={category} />
+                <CategoryCard
+                  key={category.id}
+                  category={category}
+                  storeSlug={selectedVendor.slug}
+                />
               ))}
             </Grid>
           </Container>
