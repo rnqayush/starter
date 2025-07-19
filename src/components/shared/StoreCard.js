@@ -210,10 +210,23 @@ const ActionButton = styled.button`
 `;
 
 const StoreCard = ({ store, category }) => {
+  const navigate = useNavigate();
+
+  const handleStoreClick = (e) => {
+    e.preventDefault();
+    if (category === "ecommerce") {
+      // Navigate to /ecommerce with vendor data in state
+      navigate("/ecommerce", { state: { selectedVendor: store } });
+    } else {
+      // For other categories, navigate normally
+      navigate(`/${category}/${store.id}`);
+    }
+  };
+
   const getStoreLink = () => {
     if (category === "ecommerce") {
-      // Link to individual store homepage
-      return `/ecommerce/${store.id}`;
+      // Return # since we're handling navigation via onClick
+      return "#";
     }
 
     // For other categories, return the original link format
