@@ -13,6 +13,16 @@ const PageContainer = styled.div`
   align-items: center;
   justify-content: center;
   padding: ${theme.spacing.lg};
+
+  ${media.mobile} {
+    padding: ${theme.spacing.md};
+    align-items: flex-start;
+    padding-top: ${theme.spacing.xl};
+  }
+
+  ${media.tablet} {
+    padding: ${theme.spacing.lg};
+  }
 `;
 
 const LoginCard = styled.div`
@@ -21,7 +31,19 @@ const LoginCard = styled.div`
   padding: ${theme.spacing.xxl};
   box-shadow: ${theme.shadows.xl};
   width: 100%;
-  max-width: 400px;
+  max-width: 25rem;
+
+  ${media.mobile} {
+    padding: ${theme.spacing.lg};
+    border-radius: ${theme.borderRadius.lg};
+    max-width: 100%;
+    box-shadow: ${theme.shadows.lg};
+  }
+
+  ${media.tablet} {
+    padding: ${theme.spacing.xl};
+    max-width: 22rem;
+  }
 `;
 
 const Logo = styled.div`
@@ -34,11 +56,23 @@ const LogoText = styled.h1`
   font-weight: 700;
   color: ${theme.colors.primary};
   margin-bottom: ${theme.spacing.sm};
+
+  ${media.mobile} {
+    font-size: 1.5rem;
+  }
+
+  ${media.tablet} {
+    font-size: 1.75rem;
+  }
 `;
 
 const LogoSubtext = styled.p`
   color: ${theme.colors.gray600};
   font-size: 0.9rem;
+
+  ${media.mobile} {
+    font-size: 0.8125rem;
+  }
 `;
 
 const Title = styled.h2`
@@ -47,12 +81,25 @@ const Title = styled.h2`
   color: ${theme.colors.gray900};
   text-align: center;
   margin-bottom: ${theme.spacing.xl};
+
+  ${media.mobile} {
+    font-size: 1.375rem;
+    margin-bottom: ${theme.spacing.lg};
+  }
+
+  ${media.tablet} {
+    font-size: 1.5rem;
+  }
 `;
 
 const Form = styled.form`
   display: flex;
   flex-direction: column;
   gap: ${theme.spacing.lg};
+
+  ${media.mobile} {
+    gap: ${theme.spacing.md};
+  }
 `;
 
 const FormGroup = styled.div`
