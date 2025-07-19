@@ -107,7 +107,9 @@ const HeroButton = styled(Link)`
   }
 `;
 
-const Section = styled.section`
+const Section = styled.section.withConfig({
+  shouldForwardProp: (prop) => prop !== "background",
+})`
   padding: ${theme.spacing.xxl} 0;
   background: ${(props) => props.background || theme.colors.white};
 `;
