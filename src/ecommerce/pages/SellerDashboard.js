@@ -65,10 +65,22 @@ const SellerDashboard = () => {
         return "Product Management";
       case "add-product":
         return "Add New Product";
+      case "categories":
+        return "Category Management";
+      case "bulk-import":
+        return "Bulk Import Products";
       case "orders":
         return "Order Management";
-      case "insights":
-        return "Business Insights";
+      case "discounts":
+        return "Discounts & Coupons";
+      case "customers":
+        return "Customer Management";
+      case "store-settings":
+        return "Store Settings";
+      case "appearance":
+        return "Store Appearance";
+      case "analytics":
+        return "Analytics & Reports";
       default:
         return "Dashboard";
     }
