@@ -246,7 +246,9 @@ const PaymentIcon = styled.div`
   font-weight: 600;
 `;
 
-const Footer = () => {
+const Footer = ({ storeSlug = "" }) => {
+  const getBaseUrl = () => (storeSlug ? `/${storeSlug}` : "/ecommerce");
+
   const handleNewsletterSubmit = (e) => {
     e.preventDefault();
     // Handle newsletter subscription
