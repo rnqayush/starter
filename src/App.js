@@ -92,6 +92,12 @@ function App() {
             {/* Ecommerce Routes */}
             <Route path="/ecommerce/*" element={<EcommerceModule />} />
 
+            {/* Seller Dashboard Demo */}
+            <Route
+              path="/seller-dashboard-demo"
+              element={<SellerDashboardDemo />}
+            />
+
             {/* Hotel Owner Routes */}
             <Route path="/owner/dashboard" element={<OwnerDashboard />} />
             <Route path="/owner/add-hotel" element={<AddHotelPage />} />
