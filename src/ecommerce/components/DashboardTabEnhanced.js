@@ -3,18 +3,14 @@ import styled from "styled-components";
 import {
   FaDollarSign,
   FaShoppingCart,
-  FaBox,
   FaArrowUp,
   FaArrowDown,
-  FaBell,
   FaUsers,
   FaExclamationTriangle,
   FaTrophy,
   FaToggleOn,
   FaToggleOff,
   FaEye,
-  FaChartLine,
-  FaClock,
 } from "react-icons/fa";
 import { theme } from "../../styles/GlobalStyle";
 import {

@@ -9,7 +9,6 @@ import {
   FaCheck,
   FaClock,
   FaTimes,
-  FaEdit,
   FaPrint,
   FaFileInvoiceDollar,
   FaShippingFast,

@@ -62,19 +62,6 @@ const FormGrid = styled.div`
   }
 `;
 
-const FormSection = styled.div`
-  margin-bottom: ${theme.spacing.xxl};
-`;
-
-const SectionTitle = styled.h4`
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: ${theme.colors.gray900};
-  margin: 0 0 ${theme.spacing.lg} 0;
-  padding-bottom: ${theme.spacing.md};
-  border-bottom: 2px solid ${theme.colors.gray200};
-`;
-
 const ImageUploadArea = styled.div`
   border: 2px dashed ${theme.colors.gray300};
   border-radius: ${theme.borderRadius.lg};
@@ -189,52 +176,6 @@ const VariantTitle = styled.h5`
   font-weight: 500;
   color: ${theme.colors.gray900};
   margin: 0;
-`;
-
-const PriceInputGroup = styled.div`
-  position: relative;
-`;
-
-const CurrencySymbol = styled.span`
-  position: absolute;
-  left: ${theme.spacing.md};
-  top: 50%;
-  transform: translateY(-50%);
-  color: ${theme.colors.gray500};
-  font-weight: 500;
-`;
-
-const PriceInput = styled.input`
-  width: 100%;
-  padding: ${theme.spacing.md} ${theme.spacing.md} ${theme.spacing.md}
-    ${theme.spacing.xxl};
-  border: 1px solid ${theme.colors.gray300};
-  border-radius: ${theme.borderRadius.md};
-  font-size: 0.9rem;
-  background: ${theme.colors.white};
-  transition: all 0.2s ease;
-
-  &:focus {
-    outline: none;
-    border-color: ${theme.colors.primary};
-    box-shadow: 0 0 0 3px ${theme.colors.primary}20;
-  }
-`;
-
-const StatusSelect = styled.select`
-  width: 100%;
-  padding: ${theme.spacing.md};
-  border: 1px solid ${theme.colors.gray300};
-  border-radius: ${theme.borderRadius.md};
-  font-size: 0.9rem;
-  background: ${theme.colors.white};
-  cursor: pointer;
-
-  &:focus {
-    outline: none;
-    border-color: ${theme.colors.primary};
-    box-shadow: 0 0 0 3px ${theme.colors.primary}20;
-  }
 `;
 
 const FormActions = styled.div`

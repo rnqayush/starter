@@ -1,22 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import {
   FaMapMarkerAlt,
   FaSearch,
-  FaFilter,
-  FaSortAmountDown,
   FaLocationArrow,
   FaHome,
 } from "react-icons/fa";
 import { theme } from "../../styles/GlobalStyle";
 import StoreCard from "../../components/shared/StoreCard";
-import {
-  ecommerceVendors,
-  getVendorsByLocation,
-  getFeaturedVendors,
-  searchVendors,
-} from "../data/vendors";
+import { ecommerceVendors } from "../data/vendors";
 import {
   getCurrentLocation,
   getLocationFromZip,
@@ -331,11 +324,17 @@ const StoresListing = () => {
   const [sortBy, setSortBy] = useState("distance");
   const [locationLoading, setLocationLoading] = useState(false);
 
-  useEffect(() => {
-    initializeLocation();
+  const loadStoresForLocation = useCallback((location) => {
+    const vendorsWithDistance = updateVendorsWithDistance(
+      ecommerceVendors,
+      location,
+    );
+    setStores(vendorsWithDistance);
+    setFilteredStores(vendorsWithDistance);
+    setLoading(false);
   }, []);
 
-  const initializeLocation = async () => {
+  const initializeLocation = useCallback(async () => {
     setLoading(true);
     try {
       const location = await getCurrentLocation();
@@ -347,17 +346,7 @@ const StoresListing = () => {
       setCurrentLocation(defaultLocation);
       loadStoresForLocation(defaultLocation);
     }
-  };
-
-  const loadStoresForLocation = (location) => {
-    const vendorsWithDistance = updateVendorsWithDistance(
-      ecommerceVendors,
-      location,
-    );
-    setStores(vendorsWithDistance);
-    setFilteredStores(vendorsWithDistance);
-    setLoading(false);
-  };
+  }, [loadStoresForLocation]);
 
   const handleLocationSearch = async (e) => {
     e.preventDefault();
@@ -399,7 +388,7 @@ const StoresListing = () => {
     }
   };
 
-  const applyFilters = () => {
+  const applyFilters = useCallback(() => {
     let filtered = [...stores];
 
     // Apply category filter
@@ -423,11 +412,15 @@ const StoresListing = () => {
     }
 
     setFilteredStores(filtered);
-  };
+  }, [stores, activeFilter, sortBy]);
+
+  useEffect(() => {
+    initializeLocation();
+  }, [initializeLocation]);
 
   useEffect(() => {
     applyFilters();
-  }, [stores, activeFilter, sortBy]);
+  }, [applyFilters]);
 
   if (loading) {
     return (

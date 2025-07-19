@@ -7,7 +7,6 @@ import {
   FaImage,
   FaGripVertical,
   FaFolder,
-  FaFolderOpen,
 } from "react-icons/fa";
 import { theme } from "../../styles/GlobalStyle";
 import Modal from "./shared/Modal";
