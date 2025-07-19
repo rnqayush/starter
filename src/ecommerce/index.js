@@ -20,6 +20,9 @@ const EcommerceModule = () => {
       <Route path="/checkout" element={<Checkout />} />
       <Route path="/order-confirmation" element={<OrderConfirmation />} />
 
+      {/* Seller Dashboard */}
+      <Route path="/seller-dashboard" element={<SellerDashboard />} />
+
       {/* Legacy store-specific routes (for backward compatibility) */}
       <Route path="/:storeId" element={<StoreHome />} />
       <Route path="/:storeId/products" element={<Products />} />
