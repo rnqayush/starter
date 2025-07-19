@@ -307,9 +307,9 @@ const DashboardTab = () => {
             <StatsLabel>Total Products</StatsLabel>
             <StatsChange positive={dashboardStats.totalProducts.change > 0}>
               {dashboardStats.totalProducts.change > 0 ? (
-                <FaTrendUp />
+                <FaArrowUp />
               ) : (
-                <FaTrendDown />
+                <FaArrowDown />
               )}
               {Math.abs(dashboardStats.totalProducts.change)}%{" "}
               {dashboardStats.totalProducts.period}
