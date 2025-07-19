@@ -1,13 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import {
-  FaSearch,
-  FaMapMarkerAlt,
-  FaStar,
-  FaUsers,
-  FaCalendarAlt,
-} from "react-icons/fa";
+import { FaSearch, FaMapMarkerAlt, FaStar } from "react-icons/fa";
 import Header from "../shared/Header";
 import { Button } from "../shared/Button";
 import {
@@ -15,7 +9,6 @@ import {
   CardImage,
   CardContent,
   CardTitle,
-  CardSubtitle,
   Price,
   PriceUnit,
 } from "../shared/Card";
