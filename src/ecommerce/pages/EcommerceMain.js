@@ -429,6 +429,7 @@ const EcommerceMain = () => {
                   key={product.id}
                   product={product}
                   onAddToCart={handleAddToCart}
+                  storeSlug={selectedVendor.slug}
                 />
               ))}
             </Grid>
@@ -453,6 +454,7 @@ const EcommerceMain = () => {
                     key={product.id}
                     product={product}
                     onAddToCart={handleAddToCart}
+                    storeSlug={selectedVendor.slug}
                   />
                 ))}
               </Grid>
