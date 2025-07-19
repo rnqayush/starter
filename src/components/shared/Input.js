@@ -91,7 +91,9 @@ export const SearchIcon = styled.div`
   pointer-events: none;
 `;
 
-export const SearchField = styled(Input)`
+export const SearchField = styled(Input).withConfig({
+  shouldForwardProp: (prop) => prop !== "hasIcon",
+})`
   padding-left: ${(props) => (props.hasIcon ? "2.5rem" : theme.spacing.md)};
 `;
 
