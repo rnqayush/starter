@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { theme } from "../../styles/GlobalStyle";
 import SellerSidebar from "../components/SellerSidebar";
-import DashboardTab from "../components/DashboardTab";
+import DashboardTabEnhanced from "../components/DashboardTabEnhanced";
 import ProductsTab from "../components/ProductsTab";
 import AddProductTab from "../components/AddProductTab";
+import CategoriesTab from "../components/CategoriesTab";
 import OrdersTab from "../components/OrdersTab";
+import DiscountsTab from "../components/DiscountsTab";
 import InsightsTab from "../components/InsightsTab";
 
 const DashboardContainer = styled.div`
