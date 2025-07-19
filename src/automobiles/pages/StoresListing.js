@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import {
@@ -329,7 +329,17 @@ const AutomobileStoresListing = () => {
     initializeLocation();
   }, [initializeLocation]);
 
-  const initializeLocation = async () => {
+  const loadStoresForLocation = useCallback((location) => {
+    const vendorsWithDistance = updateVendorsWithDistance(
+      automobileVendors,
+      location,
+    );
+    setStores(vendorsWithDistance);
+    setFilteredStores(vendorsWithDistance);
+    setLoading(false);
+  }, []);
+
+  const initializeLocation = useCallback(async () => {
     setLoading(true);
     try {
       const location = await getCurrentLocation();
@@ -341,17 +351,7 @@ const AutomobileStoresListing = () => {
       setCurrentLocation(defaultLocation);
       loadStoresForLocation(defaultLocation);
     }
-  };
-
-  const loadStoresForLocation = (location) => {
-    const vendorsWithDistance = updateVendorsWithDistance(
-      automobileVendors,
-      location,
-    );
-    setStores(vendorsWithDistance);
-    setFilteredStores(vendorsWithDistance);
-    setLoading(false);
-  };
+  }, [loadStoresForLocation]);
 
   const handleLocationSearch = async (e) => {
     e.preventDefault();
@@ -392,7 +392,7 @@ const AutomobileStoresListing = () => {
     }
   };
 
-  const applyFilters = () => {
+  const applyFilters = useCallback(() => {
     let filtered = [...stores];
 
     if (activeFilter === "featured") {
@@ -414,11 +414,11 @@ const AutomobileStoresListing = () => {
     }
 
     setFilteredStores(filtered);
-  };
+  }, [stores, activeFilter, sortBy]);
 
   useEffect(() => {
     applyFilters();
-  }, [stores, activeFilter, sortBy, applyFilters]);
+  }, [applyFilters]);
 
   if (loading) {
     return (
