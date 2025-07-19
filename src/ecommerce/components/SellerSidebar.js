@@ -241,13 +241,27 @@ const SellerSidebar = ({ activeTab, onTabChange }) => {
       items: [
         { id: "products", label: "Products", icon: FaBox },
         { id: "add-product", label: "Add Product", icon: FaPlus },
+        { id: "categories", label: "Categories", icon: FaTags },
+        { id: "bulk-import", label: "Bulk Import", icon: FaFileImport },
       ],
     },
     {
       section: "Sales",
       items: [
         { id: "orders", label: "Orders", icon: FaShoppingCart },
-        { id: "insights", label: "Insights", icon: FaChartLine },
+        { id: "discounts", label: "Discounts & Coupons", icon: FaPercent },
+      ],
+    },
+    {
+      section: "Customers",
+      items: [{ id: "customers", label: "Customer List", icon: FaUsers }],
+    },
+    {
+      section: "Store Management",
+      items: [
+        { id: "store-settings", label: "Store Settings", icon: FaCog },
+        { id: "appearance", label: "Appearance", icon: FaPalette },
+        { id: "analytics", label: "Analytics", icon: FaChartLine },
       ],
     },
   ];
