@@ -239,7 +239,9 @@ const StockInfo = styled.div`
   gap: ${theme.spacing.xs};
 `;
 
-const StockNumber = styled.span`
+const StockNumber = styled.span.withConfig({
+  shouldForwardProp: (prop) => prop !== "low",
+})`
   font-weight: 500;
   color: ${(props) =>
     props.low ? theme.colors.warning : theme.colors.gray900};
