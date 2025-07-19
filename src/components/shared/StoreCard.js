@@ -216,9 +216,9 @@ const StoreCard = ({ store, category }) => {
       // Map different vendor types to ecommerce categories
       const vendorToCategory = {
         "techmart-downtown": "electronics",
-        "fashion-forward-boutique": "fashion",
-        "home-essentials-store": "home-garden",
-        "sports-zone-outlet": "sports",
+        "fashion-forward": "fashion",
+        "home-essentials": "home-garden",
+        "sports-zone": "sports",
       };
 
       const categorySlug = vendorToCategory[store.id] || "electronics";
