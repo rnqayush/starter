@@ -311,19 +311,21 @@ const Navbar = ({
 
         <NavActions>
           <Link to="/">
-            <UserButton title="Back to Main Site">
+            <UserButton title="Back to Main Site" theme={vendorTheme}>
               <FaHome />
             </UserButton>
           </Link>
 
-          <UserButton>
+          <UserButton theme={vendorTheme}>
             <FaUser />
           </UserButton>
 
           <Link to="/ecommerce/cart">
-            <CartButton>
+            <CartButton theme={vendorTheme}>
               <FaShoppingCart />
-              {cartItemsCount > 0 && <CartBadge>{cartItemsCount}</CartBadge>}
+              {cartItemsCount > 0 && (
+                <CartBadge theme={vendorTheme}>{cartItemsCount}</CartBadge>
+              )}
             </CartButton>
           </Link>
 
