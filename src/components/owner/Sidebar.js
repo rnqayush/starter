@@ -12,7 +12,7 @@ import {
   FaBars,
   FaTimes,
 } from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
+import { theme, media } from "../../styles/GlobalStyle";
 
 const SidebarContainer = styled.aside.withConfig({
   shouldForwardProp: (prop) => prop !== "isOpen",
