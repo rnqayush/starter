@@ -574,6 +574,10 @@ const ProductDetail = () => {
             (sum, item) => sum + item.quantity,
             0,
           )}
+          storeName={vendor?.name || ""}
+          storeLogo={vendor?.logo || ""}
+          storeSlug={storeSlug}
+          theme={vendor?.theme || {}}
         />
         <LoadingSpinner fullPage text="Loading product..." />
         <Footer storeSlug={storeSlug} theme={vendor?.theme || {}} />
@@ -589,6 +593,10 @@ const ProductDetail = () => {
             (sum, item) => sum + item.quantity,
             0,
           )}
+          storeName={vendor?.name || ""}
+          storeLogo={vendor?.logo || ""}
+          storeSlug={storeSlug}
+          theme={vendor?.theme || {}}
         />
         <Container>
           <div style={{ textAlign: "center", padding: "4rem 0" }}>
