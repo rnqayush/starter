@@ -62,11 +62,11 @@ const NavLink = styled(Link)`
   position: relative;
 
   &:hover {
-    color: ${theme.colors.primary};
+    color: ${(props) => props.theme?.primaryColor || theme.colors.primary};
   }
 
   &.active {
-    color: ${theme.colors.primary};
+    color: ${(props) => props.theme?.primaryColor || theme.colors.primary};
 
     &::after {
       content: "";
@@ -75,7 +75,8 @@ const NavLink = styled(Link)`
       left: 0;
       right: 0;
       height: 2px;
-      background: ${theme.colors.primary};
+      background: ${(props) =>
+        props.theme?.primaryColor || theme.colors.primary};
     }
   }
 `;
