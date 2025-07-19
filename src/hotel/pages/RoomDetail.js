@@ -361,7 +361,7 @@ const RoomDetail = () => {
 
   const handleBooking = (e) => {
     e.preventDefault();
-    navigate(`/booking/${hotelId}/${roomId}`, {
+    navigate(`/${hotelSlug}/booking/${roomId}`, {
       state: { bookingData },
     });
   };
