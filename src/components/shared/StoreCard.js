@@ -277,7 +277,7 @@ const StoreCard = ({ store, category }) => {
   const currentStatus = getCurrentStatus();
 
   return (
-    <Card to={`/${category}/${store.id}`}>
+    <Card to={getStoreLink()}>
       <CardImage image={store.image}>
         <ImageOverlay />
         {store.featured && <FeaturedBadge>Featured</FeaturedBadge>}
