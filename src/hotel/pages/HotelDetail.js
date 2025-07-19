@@ -315,10 +315,10 @@ const HotelDetail = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const foundHotel = getHotelByIdOrSlug(hotelSlug);
+    const foundHotel = getHotelByIdOrSlug(slugParam);
     setHotel(foundHotel);
     setLoading(false);
-  }, [hotelSlug]);
+  }, [slugParam]);
 
   const getAmenityIcon = (amenity) => {
     const iconMap = {
