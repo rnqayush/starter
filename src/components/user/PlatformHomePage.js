@@ -285,11 +285,14 @@ const PlatformHomePage = () => {
       // Navigate to the existing hotel page (keeping the current design)
       navigate("/hotels");
     } else if (service.id === "ecommerce") {
-      // Navigate to the ecommerce module
-      navigate("/ecommerce");
-    } else {
-      // For other services, show coming soon or navigate to their respective pages
-      alert(`${service.title} website builder coming soon!`);
+      // Navigate to ecommerce stores listing
+      navigate("/ecommerce-stores");
+    } else if (service.id === "weddings") {
+      // Navigate to wedding vendors listing
+      navigate("/wedding-vendors");
+    } else if (service.id === "automobiles") {
+      // Navigate to auto dealers listing
+      navigate("/auto-dealers");
     }
   };
 
