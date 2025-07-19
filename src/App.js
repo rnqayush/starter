@@ -69,6 +69,7 @@ function App() {
       <Router>
         <AppContainer>
           <GlobalStyle />
+          <ScrollToTop />
           <Routes>
             {/* Main Routes */}
             <Route path="/" element={<PlatformHomePage />} />
