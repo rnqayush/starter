@@ -131,7 +131,7 @@ const CartButton = styled.button`
   transition: color 0.2s ease;
 
   &:hover {
-    color: ${theme.colors.primary};
+    color: ${(props) => props.theme?.primaryColor || theme.colors.primary};
   }
 `;
 
@@ -139,7 +139,7 @@ const CartBadge = styled.span`
   position: absolute;
   top: -8px;
   right: -8px;
-  background: ${theme.colors.error};
+  background: ${(props) => props.theme?.primaryColor || theme.colors.error};
   color: ${theme.colors.white};
   border-radius: 50%;
   width: 18px;
@@ -158,7 +158,7 @@ const UserButton = styled.button`
   transition: color 0.2s ease;
 
   &:hover {
-    color: ${theme.colors.primary};
+    color: ${(props) => props.theme?.primaryColor || theme.colors.primary};
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
