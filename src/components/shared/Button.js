@@ -131,4 +131,18 @@ export const Button = styled.button`
 export const IconButton = styled(Button)`
   padding: ${theme.spacing.md};
   min-width: auto;
+  min-height: 2.5rem;
+  width: 2.5rem;
+
+  ${media.mobile} {
+    padding: ${theme.spacing.sm};
+    min-height: 2rem;
+    width: 2rem;
+    font-size: 0.875rem;
+  }
+
+  ${media.tablet} {
+    min-height: 2.25rem;
+    width: 2.25rem;
+  }
 `;
