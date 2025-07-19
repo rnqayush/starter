@@ -327,7 +327,7 @@ const WeddingStoresListing = () => {
 
   useEffect(() => {
     initializeLocation();
-  }, []);
+  }, [initializeLocation]);
 
   const initializeLocation = async () => {
     setLoading(true);
@@ -418,7 +418,7 @@ const WeddingStoresListing = () => {
 
   useEffect(() => {
     applyFilters();
-  }, [stores, activeFilter, sortBy]);
+  }, [stores, activeFilter, sortBy, applyFilters]);
 
   if (loading) {
     return (
