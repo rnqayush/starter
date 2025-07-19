@@ -179,7 +179,9 @@ const LegendItem = styled.div`
   gap: ${theme.spacing.sm};
 `;
 
-const LegendColor = styled.div`
+const LegendColor = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "color",
+})`
   width: 12px;
   height: 12px;
   border-radius: 2px;
