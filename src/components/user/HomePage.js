@@ -9,7 +9,6 @@ import {
   CardImage,
   CardContent,
   CardTitle,
-  CardSubtitle,
   Price,
   PriceUnit,
 } from "../shared/Card";
