@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { FaHotel, FaUser, FaBed, FaCalendarAlt, FaHome } from "react-icons/fa";
+import { FaHotel, FaUser, FaCalendarAlt, FaHome } from "react-icons/fa";
 import { theme } from "../../styles/GlobalStyle";
 
 const NavbarContainer = styled.nav`
