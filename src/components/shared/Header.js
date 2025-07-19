@@ -211,8 +211,6 @@ const MobileMenuButton = styled.button`
 `;
 
 const Header = ({ isOwnerView = false }) => {
-  const navigate = useNavigate();
-  const { userType, setUserType } = useAppContext();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
