@@ -7,6 +7,12 @@ import {
   FaArrowUp,
   FaArrowDown,
   FaBell,
+  FaUsers,
+  FaExclamationTriangle,
+  FaTrophy,
+  FaToggleOn,
+  FaToggleOff,
+  FaEye,
 } from "react-icons/fa";
 import { theme } from "../../styles/GlobalStyle";
 import {
