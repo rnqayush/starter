@@ -107,6 +107,9 @@ const NavLink = styled(Link)`
   padding: ${theme.spacing.sm} ${theme.spacing.md};
   border-radius: ${theme.borderRadius.md};
   transition: all 0.2s ease;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
 
   &:hover {
     color: ${theme.colors.primary};
@@ -117,11 +120,28 @@ const NavLink = styled(Link)`
     color: ${theme.colors.primary};
     background: ${theme.colors.gray50};
   }
+
+  ${media.mobileDown} {
+    padding: ${theme.spacing.md} ${theme.spacing.lg};
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+    font-size: 1.125rem;
+  }
+
+  ${media.tablet} {
+    padding: ${theme.spacing.sm} ${theme.spacing.sm};
+    font-size: 0.875rem;
+  }
 `;
 
 const DropdownContainer = styled.div`
   position: relative;
   display: inline-block;
+
+  ${media.mobileDown} {
+    width: 100%;
+  }
 `;
 
 const DropdownButton = styled.button.withConfig({
@@ -129,6 +149,7 @@ const DropdownButton = styled.button.withConfig({
 })`
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: ${theme.spacing.sm};
   color: ${theme.colors.gray700};
   font-weight: 500;
@@ -138,6 +159,8 @@ const DropdownButton = styled.button.withConfig({
   border-radius: ${theme.borderRadius.md};
   transition: all 0.2s ease;
   cursor: pointer;
+  white-space: nowrap;
+  font-size: 1rem;
 
   &:hover {
     color: ${theme.colors.primary};
@@ -147,6 +170,17 @@ const DropdownButton = styled.button.withConfig({
   svg {
     transition: transform 0.2s ease;
     transform: ${(props) => (props.isOpen ? "rotate(180deg)" : "rotate(0deg)")};
+  }
+
+  ${media.mobileDown} {
+    padding: ${theme.spacing.md} ${theme.spacing.lg};
+    width: 100%;
+    font-size: 1.125rem;
+  }
+
+  ${media.tablet} {
+    padding: ${theme.spacing.sm} ${theme.spacing.sm};
+    font-size: 0.875rem;
   }
 `;
 
@@ -160,14 +194,14 @@ const DropdownMenu = styled.div.withConfig({
   border-radius: ${theme.borderRadius.lg};
   box-shadow: ${theme.shadows.xl};
   border: 1px solid ${theme.colors.gray200};
-  min-width: 200px;
+  min-width: 12.5rem;
   z-index: 1000;
   opacity: ${(props) => (props.isOpen ? "1" : "0")};
   visibility: ${(props) => (props.isOpen ? "visible" : "hidden")};
-  transform: translateY(${(props) => (props.isOpen ? "0" : "-10px")});
+  transform: translateY(${(props) => (props.isOpen ? "0" : "-0.625rem")});
   transition: all 0.2s ease;
 
-  @media (max-width: ${theme.breakpoints.mobile}) {
+  ${media.mobileDown} {
     position: static;
     box-shadow: none;
     border: none;
@@ -176,6 +210,12 @@ const DropdownMenu = styled.div.withConfig({
     opacity: 1;
     visibility: visible;
     transform: none;
+    border-radius: ${theme.borderRadius.md};
+    width: 100%;
+  }
+
+  ${media.tablet} {
+    min-width: 10rem;
   }
 `;
 
@@ -186,6 +226,7 @@ const DropdownItem = styled(Link)`
   text-decoration: none;
   transition: all 0.2s ease;
   border-bottom: 1px solid ${theme.colors.gray100};
+  font-size: 0.875rem;
 
   &:last-child {
     border-bottom: none;
@@ -204,6 +245,18 @@ const DropdownItem = styled(Link)`
   &:last-child {
     border-bottom-left-radius: ${theme.borderRadius.lg};
     border-bottom-right-radius: ${theme.borderRadius.lg};
+  }
+
+  ${media.mobileDown} {
+    padding: ${theme.spacing.md};
+    text-align: center;
+    font-size: 1rem;
+    border-bottom: 1px solid ${theme.colors.gray200};
+
+    &:first-child,
+    &:last-child {
+      border-radius: 0;
+    }
   }
 `;
 
