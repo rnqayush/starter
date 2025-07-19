@@ -89,7 +89,9 @@ const SectionTitle = styled.h2`
   gap: ${theme.spacing.sm};
 `;
 
-const FormGrid = styled.div`
+const FormGrid = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "columns",
+})`
   display: grid;
   grid-template-columns: ${(props) => props.columns || "1fr"};
   gap: ${theme.spacing.lg};
@@ -169,7 +171,9 @@ const PaymentMethods = styled.div`
   margin-bottom: ${theme.spacing.lg};
 `;
 
-const PaymentMethod = styled.div`
+const PaymentMethod = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "selected",
+})`
   border: 2px solid
     ${(props) => (props.selected ? theme.colors.primary : theme.colors.gray200)};
   border-radius: ${theme.borderRadius.md};
@@ -259,7 +263,9 @@ const ItemDetails = styled.div`
   }
 `;
 
-const SummaryRow = styled.div`
+const SummaryRow = styled.div.withConfig({
+  shouldForwardProp: (prop) => !["large", "bold"].includes(prop),
+})`
   display: flex;
   justify-content: space-between;
   align-items: center;
