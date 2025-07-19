@@ -319,11 +319,11 @@ const RoomDetail = () => {
   });
 
   useEffect(() => {
-    const foundHotel = getHotelById(hotelId);
-    const foundRoom = getRoomById(hotelId, roomId);
+    const foundHotel = getHotelByIdOrSlug(hotelSlug);
+    const foundRoom = foundHotel ? getRoomById(foundHotel.id, roomId) : null;
     setHotel(foundHotel);
     setRoom(foundRoom);
-  }, [hotelId, roomId]);
+  }, [hotelSlug, roomId]);
 
   const getAmenityIcon = (amenity) => {
     const iconMap = {
