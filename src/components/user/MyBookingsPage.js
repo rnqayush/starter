@@ -149,7 +149,9 @@ const FilterTabs = styled.div`
   border-bottom: 1px solid ${theme.colors.gray200};
 `;
 
-const FilterTab = styled.button`
+const FilterTab = styled.button.withConfig({
+  shouldForwardProp: (prop) => prop !== "active",
+})`
   padding: ${theme.spacing.md} ${theme.spacing.lg};
   border: none;
   background: none;
