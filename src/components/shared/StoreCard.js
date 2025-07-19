@@ -8,7 +8,7 @@ import {
   FaPhone,
   FaDirections,
 } from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
+import { theme, media } from "../../styles/GlobalStyle";
 
 const Card = styled(Link)`
   display: block;
@@ -26,6 +26,21 @@ const Card = styled(Link)`
     box-shadow: ${theme.shadows.xl};
     border-color: ${theme.colors.primary};
   }
+
+  ${media.mobile} {
+    border-radius: ${theme.borderRadius.md};
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: ${theme.shadows.lg};
+    }
+  }
+
+  ${media.tablet} {
+    &:hover {
+      transform: translateY(-3px);
+    }
+  }
 `;
 
 const CardImage = styled.div.withConfig({
@@ -37,6 +52,14 @@ const CardImage = styled.div.withConfig({
   background-size: cover;
   background-position: center;
   overflow: hidden;
+
+  ${media.mobile} {
+    height: 160px;
+  }
+
+  ${media.tablet} {
+    height: 180px;
+  }
 `;
 
 const ImageOverlay = styled.div`
@@ -64,6 +87,13 @@ const FeaturedBadge = styled.div`
   font-size: 0.8rem;
   font-weight: 600;
   text-transform: uppercase;
+
+  ${media.mobile} {
+    top: ${theme.spacing.sm};
+    left: ${theme.spacing.sm};
+    padding: ${theme.spacing.xs} ${theme.spacing.xs};
+    font-size: 0.7rem;
+  }
 `;
 
 const DistanceBadge = styled.div`
@@ -77,6 +107,13 @@ const DistanceBadge = styled.div`
   font-size: 0.8rem;
   font-weight: 600;
   backdrop-filter: blur(10px);
+
+  ${media.mobile} {
+    top: ${theme.spacing.sm};
+    right: ${theme.spacing.sm};
+    padding: ${theme.spacing.xs} ${theme.spacing.xs};
+    font-size: 0.7rem;
+  }
 `;
 
 const LogoContainer = styled.div`
@@ -90,6 +127,19 @@ const LogoContainer = styled.div`
   border: 2px solid ${theme.colors.white};
   box-shadow: ${theme.shadows.md};
   overflow: hidden;
+
+  ${media.mobile} {
+    bottom: ${theme.spacing.sm};
+    left: ${theme.spacing.sm};
+    width: 50px;
+    height: 50px;
+    border-radius: ${theme.borderRadius.md};
+  }
+
+  ${media.tablet} {
+    width: 55px;
+    height: 55px;
+  }
 `;
 
 const Logo = styled.img`
@@ -100,6 +150,14 @@ const Logo = styled.img`
 
 const CardContent = styled.div`
   padding: ${theme.spacing.lg};
+
+  ${media.mobile} {
+    padding: ${theme.spacing.md};
+  }
+
+  ${media.tablet} {
+    padding: ${theme.spacing.lg};
+  }
 `;
 
 const StoreHeader = styled.div`
@@ -112,6 +170,15 @@ const StoreName = styled.h3`
   color: ${theme.colors.gray900};
   margin-bottom: ${theme.spacing.sm};
   line-height: 1.3;
+
+  ${media.mobile} {
+    font-size: 1.125rem;
+    margin-bottom: ${theme.spacing.xs};
+  }
+
+  ${media.tablet} {
+    font-size: 1.2rem;
+  }
 `;
 
 const StoreRating = styled.div`
@@ -129,11 +196,19 @@ const StarContainer = styled.div`
 const Star = styled(FaStar)`
   color: #fbbf24;
   font-size: 0.9rem;
+
+  ${media.mobile} {
+    font-size: 0.8rem;
+  }
 `;
 
 const RatingText = styled.span`
   color: ${theme.colors.gray600};
   font-size: 0.9rem;
+
+  ${media.mobile} {
+    font-size: 0.8rem;
+  }
 `;
 
 const StoreAddress = styled.div`
@@ -144,6 +219,12 @@ const StoreAddress = styled.div`
   font-size: 0.9rem;
   margin-bottom: ${theme.spacing.md};
   line-height: 1.4;
+
+  ${media.mobile} {
+    font-size: 0.8rem;
+    gap: ${theme.spacing.xs};
+    margin-bottom: ${theme.spacing.sm};
+  }
 `;
 
 const Description = styled.p`
@@ -155,6 +236,12 @@ const Description = styled.p`
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+
+  ${media.mobile} {
+    font-size: 0.8rem;
+    margin-bottom: ${theme.spacing.sm};
+    -webkit-line-clamp: 3;
+  }
 `;
 
 const Specialties = styled.div`
@@ -162,6 +249,11 @@ const Specialties = styled.div`
   flex-wrap: wrap;
   gap: ${theme.spacing.xs};
   margin-bottom: ${theme.spacing.md};
+
+  ${media.mobile} {
+    gap: ${theme.spacing.xs};
+    margin-bottom: ${theme.spacing.sm};
+  }
 `;
 
 const SpecialtyTag = styled.span`
@@ -171,6 +263,11 @@ const SpecialtyTag = styled.span`
   border-radius: ${theme.borderRadius.md};
   font-size: 0.8rem;
   font-weight: 500;
+
+  ${media.mobile} {
+    padding: ${theme.spacing.xs} ${theme.spacing.xs};
+    font-size: 0.7rem;
+  }
 `;
 
 const StoreInfo = styled.div`
@@ -179,6 +276,19 @@ const StoreInfo = styled.div`
   align-items: center;
   padding-top: ${theme.spacing.md};
   border-top: 1px solid ${theme.colors.gray200};
+
+  ${media.mobile} {
+    flex-direction: column;
+    align-items: stretch;
+    gap: ${theme.spacing.sm};
+    padding-top: ${theme.spacing.sm};
+  }
+
+  ${media.tablet} {
+    flex-direction: row;
+    align-items: center;
+    gap: 0;
+  }
 `;
 
 const Hours = styled.div`
@@ -187,6 +297,15 @@ const Hours = styled.div`
   gap: ${theme.spacing.xs};
   color: ${theme.colors.gray600};
   font-size: 0.8rem;
+
+  ${media.mobile} {
+    font-size: 0.75rem;
+    justify-content: center;
+  }
+
+  ${media.tablet} {
+    justify-content: flex-start;
+  }
 `;
 
 const ActionButton = styled.button`
@@ -206,6 +325,16 @@ const ActionButton = styled.button`
   &:hover {
     background: ${theme.colors.gray100};
     transform: translateX(2px);
+  }
+
+  ${media.mobile} {
+    font-size: 0.8rem;
+    padding: ${theme.spacing.xs};
+    gap: ${theme.spacing.xs};
+
+    &:hover {
+      transform: none;
+    }
   }
 `;
 
@@ -330,7 +459,13 @@ const StoreCard = ({ store, category }) => {
             </span>
           </Hours>
 
-          <div style={{ display: "flex", gap: theme.spacing.sm }}>
+          <div
+            style={{
+              display: "flex",
+              gap: theme.spacing.sm,
+              justifyContent: "center",
+            }}
+          >
             <ActionButton onClick={handleCall} title="Call Store">
               <FaPhone />
               Call
