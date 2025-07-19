@@ -22,7 +22,7 @@ import {
 } from "react-icons/fa";
 import Header from "../shared/Header";
 import { Button } from "../shared/Button";
-import { theme } from "../../styles/GlobalStyle";
+import { theme, media } from "../../styles/GlobalStyle";
 
 const PageContainer = styled.div`
   min-height: 100vh;
