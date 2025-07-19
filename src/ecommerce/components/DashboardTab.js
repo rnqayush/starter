@@ -4,8 +4,8 @@ import {
   FaDollarSign,
   FaShoppingCart,
   FaBox,
-  FaTrendUp,
-  FaTrendDown,
+  FaArrowUp,
+  FaArrowDown,
   FaBell,
 } from "react-icons/fa";
 import { theme } from "../../styles/GlobalStyle";
