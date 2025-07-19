@@ -80,6 +80,7 @@ export const ecommerceVendors = [
   {
     id: "home-essentials",
     name: "Home Essentials",
+    slug: "home-essentials",
     category: "ecommerce",
     logo: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=200&q=80",
     image:
