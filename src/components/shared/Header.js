@@ -498,6 +498,23 @@ const Header = ({ isOwnerView = false }) => {
               </DropdownContainer>
             </>
           )}
+
+          <MobileAuthButtons>
+            <MobileAuthButton
+              to="/login"
+              className="login"
+              onClick={closeMobileMenu}
+            >
+              Login
+            </MobileAuthButton>
+            <MobileAuthButton
+              to="/register"
+              className="register"
+              onClick={closeMobileMenu}
+            >
+              Register
+            </MobileAuthButton>
+          </MobileAuthButtons>
         </Nav>
 
         <UserSection>
