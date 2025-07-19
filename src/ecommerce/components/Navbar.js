@@ -304,6 +304,7 @@ const Navbar = ({
               placeholder="Search products..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
+              theme={vendorTheme}
             />
           </form>
         </SearchContainer>
