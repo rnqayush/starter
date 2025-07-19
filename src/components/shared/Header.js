@@ -1,7 +1,13 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { FaHotel, FaUser, FaBars, FaTimes } from "react-icons/fa";
+import {
+  FaHotel,
+  FaUser,
+  FaBars,
+  FaTimes,
+  FaChevronDown,
+} from "react-icons/fa";
 import { theme } from "../../styles/GlobalStyle";
 import { useAppContext } from "../../context/AppContext";
 import { Button } from "./Button";
@@ -76,26 +82,124 @@ const NavLink = styled(Link)`
   }
 `;
 
+const DropdownContainer = styled.div`
+  position: relative;
+  display: inline-block;
+`;
+
+const DropdownButton = styled.button`
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.sm};
+  color: ${theme.colors.gray700};
+  font-weight: 500;
+  background: none;
+  border: none;
+  padding: ${theme.spacing.sm} ${theme.spacing.md};
+  border-radius: ${theme.borderRadius.md};
+  transition: all 0.2s ease;
+  cursor: pointer;
+
+  &:hover {
+    color: ${theme.colors.primary};
+    background: ${theme.colors.gray50};
+  }
+
+  svg {
+    transition: transform 0.2s ease;
+    transform: ${(props) => (props.isOpen ? "rotate(180deg)" : "rotate(0deg)")};
+  }
+`;
+
+const DropdownMenu = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "isOpen",
+})`
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: ${theme.colors.white};
+  border-radius: ${theme.borderRadius.lg};
+  box-shadow: ${theme.shadows.xl};
+  border: 1px solid ${theme.colors.gray200};
+  min-width: 200px;
+  z-index: 1000;
+  opacity: ${(props) => (props.isOpen ? "1" : "0")};
+  visibility: ${(props) => (props.isOpen ? "visible" : "hidden")};
+  transform: translateY(${(props) => (props.isOpen ? "0" : "-10px")});
+  transition: all 0.2s ease;
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    position: static;
+    box-shadow: none;
+    border: none;
+    background: ${theme.colors.gray50};
+    margin-top: ${theme.spacing.sm};
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
+`;
+
+const DropdownItem = styled(Link)`
+  display: block;
+  padding: ${theme.spacing.md} ${theme.spacing.lg};
+  color: ${theme.colors.gray700};
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border-bottom: 1px solid ${theme.colors.gray100};
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    background: ${theme.colors.gray50};
+    color: ${theme.colors.primary};
+  }
+
+  &:first-child {
+    border-top-left-radius: ${theme.borderRadius.lg};
+    border-top-right-radius: ${theme.borderRadius.lg};
+  }
+
+  &:last-child {
+    border-bottom-left-radius: ${theme.borderRadius.lg};
+    border-bottom-right-radius: ${theme.borderRadius.lg};
+  }
+`;
+
 const UserSection = styled.div`
   display: flex;
   align-items: center;
   gap: ${theme.spacing.md};
 `;
 
-const UserTypeToggle = styled.button`
-  display: flex;
-  align-items: center;
-  gap: ${theme.spacing.sm};
-  padding: ${theme.spacing.sm} ${theme.spacing.md};
-  background: ${theme.colors.gray100};
-  border: none;
-  border-radius: ${theme.borderRadius.md};
+const LoginButton = styled(Link)`
   color: ${theme.colors.gray700};
+  font-weight: 500;
+  text-decoration: none;
+  padding: ${theme.spacing.sm} ${theme.spacing.md};
+  border-radius: ${theme.borderRadius.md};
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: ${theme.colors.primary};
+    background: ${theme.colors.gray50};
+  }
+`;
+
+const RegisterButton = styled(Button)`
+  background: ${theme.colors.primary};
+  color: ${theme.colors.white};
+  border: none;
+  padding: ${theme.spacing.sm} ${theme.spacing.lg};
+  border-radius: ${theme.borderRadius.md};
   font-weight: 500;
   transition: all 0.2s ease;
 
   &:hover {
-    background: ${theme.colors.gray200};
+    background: ${theme.colors.secondary};
+    transform: translateY(-1px);
   }
 `;
 
@@ -115,21 +219,34 @@ const MobileMenuButton = styled.button`
 const Header = ({ isOwnerView = false }) => {
   const navigate = useNavigate();
   const { userType, setUserType } = useAppContext();
-  const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
-
-  const toggleUserType = () => {
-    const newUserType = userType === "customer" ? "owner" : "customer";
-    setUserType(newUserType);
-
-    if (newUserType === "owner") {
-      navigate("/owner/dashboard");
-    } else {
-      navigate("/");
-    }
-    setMobileMenuOpen(false);
-  };
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
   const closeMobileMenu = () => setMobileMenuOpen(false);
+
+  const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
+
+  const closeDropdown = () => setDropdownOpen(false);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        closeDropdown();
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const handleDropdownItemClick = () => {
+    closeDropdown();
+    closeMobileMenu();
+  };
 
   return (
     <HeaderContainer>
@@ -163,41 +280,54 @@ const Header = ({ isOwnerView = false }) => {
               <NavLink to="/" onClick={closeMobileMenu}>
                 Home
               </NavLink>
-              <NavLink to="/hotels" onClick={closeMobileMenu}>
-                Hotels
-              </NavLink>
-              <NavLink to="/ecommerce-stores" onClick={closeMobileMenu}>
-                Ecommerce
-              </NavLink>
-              <NavLink to="/wedding-vendors" onClick={closeMobileMenu}>
-                Weddings
-              </NavLink>
-              <NavLink to="/auto-dealers" onClick={closeMobileMenu}>
-                Automobiles
-              </NavLink>
-              <NavLink to="/features" onClick={closeMobileMenu}>
-                Features
-              </NavLink>
               <NavLink to="/pricing" onClick={closeMobileMenu}>
                 Pricing
               </NavLink>
+              <DropdownContainer ref={dropdownRef}>
+                <DropdownButton onClick={toggleDropdown} isOpen={dropdownOpen}>
+                  Explore Stores
+                  <FaChevronDown />
+                </DropdownButton>
+                <DropdownMenu isOpen={dropdownOpen}>
+                  <DropdownItem to="/hotels" onClick={handleDropdownItemClick}>
+                    🏨 Hotels
+                  </DropdownItem>
+                  <DropdownItem
+                    to="/ecommerce"
+                    onClick={handleDropdownItemClick}
+                  >
+                    🛍 Ecommerce
+                  </DropdownItem>
+                  <DropdownItem
+                    to="/weddings"
+                    onClick={handleDropdownItemClick}
+                  >
+                    💍 Weddings
+                  </DropdownItem>
+                  <DropdownItem
+                    to="/automobiles"
+                    onClick={handleDropdownItemClick}
+                  >
+                    🚗 Automobiles
+                  </DropdownItem>
+                </DropdownMenu>
+              </DropdownContainer>
             </>
           )}
         </Nav>
 
         <UserSection>
-          <NavLink to="/login" onClick={closeMobileMenu}>
+          <LoginButton to="/login" onClick={closeMobileMenu}>
             Login
-          </NavLink>
-          <Button
+          </LoginButton>
+          <RegisterButton
             as={Link}
-            to="/create-store"
-            variant="primary"
-            style={{ textDecoration: "none", marginLeft: theme.spacing.sm }}
+            to="/register"
             onClick={closeMobileMenu}
+            style={{ textDecoration: "none" }}
           >
-            Create Store
-          </Button>
+            Register
+          </RegisterButton>
 
           <MobileMenuButton onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
             {mobileMenuOpen ? <FaTimes /> : <FaBars />}
