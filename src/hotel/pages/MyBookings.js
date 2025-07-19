@@ -79,7 +79,9 @@ const BookingsGrid = styled.div`
   gap: ${theme.spacing.xl};
 `;
 
-const BookingCard = styled.div`
+const BookingCard = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "status",
+})`
   background: ${theme.colors.white};
   border-radius: ${theme.borderRadius.lg};
   padding: ${theme.spacing.xl};
