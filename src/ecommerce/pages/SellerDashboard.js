@@ -19,6 +19,15 @@ const MainContent = styled.div`
   margin-left: 280px;
   padding: ${theme.spacing.xl};
   min-height: 100vh;
+
+  @media (max-width: 1024px) {
+    margin-left: 0;
+    padding: ${theme.spacing.lg};
+  }
+
+  @media (max-width: 768px) {
+    padding: ${theme.spacing.md};
+  }
 `;
 
 const ContentWrapper = styled.div`
