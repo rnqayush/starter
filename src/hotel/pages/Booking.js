@@ -4,13 +4,9 @@ import styled from "styled-components";
 import {
   FaArrowLeft,
   FaUser,
-  FaEnvelope,
-  FaPhone,
   FaCalendarAlt,
-  FaUsers,
   FaCreditCard,
   FaLock,
-  FaCheckCircle,
 } from "react-icons/fa";
 import { theme } from "../../styles/GlobalStyle";
 import HotelNavbar from "../components/HotelNavbar";
