@@ -78,11 +78,17 @@ function App() {
 
             {/* Hotel Routes */}
             <Route path="/hotels" element={<HotelModule />} />
-            <Route path="/hotel/:slug" element={<HotelModule />} />
-            <Route path="/room/:hotelId/:roomId" element={<HotelModule />} />
-            <Route path="/booking/:hotelId/:roomId" element={<HotelModule />} />
             <Route path="/booking-confirmation" element={<HotelModule />} />
             <Route path="/my-bookings" element={<HotelModule />} />
+
+            {/* Hotel-specific Routes */}
+            <Route path="/:hotelSlug" element={<HotelModule />} />
+            <Route path="/:hotelSlug/rooms/:roomId" element={<HotelModule />} />
+            <Route
+              path="/:hotelSlug/booking/:roomId"
+              element={<HotelModule />}
+            />
+            <Route path="/:hotelSlug/booking" element={<HotelModule />} />
 
             {/* Store Listing Routes */}
             <Route
