@@ -8,6 +8,15 @@ import {
   FaChartLine,
   FaStore,
   FaUser,
+  FaTags,
+  FaPercent,
+  FaCog,
+  FaUsers,
+  FaFileImport,
+  FaPalette,
+  FaToggleOn,
+  FaClipboardList,
+  FaGift,
 } from "react-icons/fa";
 import { theme } from "../../styles/GlobalStyle";
 
