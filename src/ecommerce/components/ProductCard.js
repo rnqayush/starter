@@ -198,7 +198,9 @@ const AddToCartButton = styled.button`
   }
 `;
 
-const StockIndicator = styled.div`
+const StockIndicator = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "inStock",
+})`
   color: ${(props) =>
     props.inStock ? theme.colors.success : theme.colors.error};
   font-size: 0.8rem;
