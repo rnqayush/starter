@@ -158,7 +158,9 @@ const StarRating = styled.div`
   gap: 2px;
 `;
 
-const Star = styled(FaStar)`
+const Star = styled(FaStar).withConfig({
+  shouldForwardProp: (prop) => prop !== "filled",
+})`
   color: ${(props) => (props.filled ? "#fbbf24" : theme.colors.gray300)};
   font-size: 1rem;
 `;
