@@ -274,7 +274,7 @@ const PlatformHomePage = () => {
       icon: FaShoppingBag,
       title: "Ecommerce",
       description:
-        "Launch complete online stores with product catalogs, shopping carts, and secure payment processing.",
+        "Launch complete online stores with product catalogs, shopping carts, and secure payment processing. Includes seller dashboard.",
       gradient: "linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)",
       path: "/ecommerce",
     },
