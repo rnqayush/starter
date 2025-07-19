@@ -168,7 +168,9 @@ const MobileMenuButton = styled.button`
   }
 `;
 
-const MobileMenu = styled.div`
+const MobileMenu = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "isOpen",
+})`
   display: none;
   position: absolute;
   top: 100%;
