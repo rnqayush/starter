@@ -4,7 +4,7 @@ import { theme } from "../../styles/GlobalStyle";
 import SellerSidebar from "../components/SellerSidebar";
 import DashboardTabEnhanced from "../components/DashboardTabEnhanced";
 import ProductsTab from "../components/ProductsTab";
-import AddProductTab from "../components/AddProductTab";
+import AddProductTabEnhanced from "../components/AddProductTabEnhanced";
 import CategoriesTab from "../components/CategoriesTab";
 import OrdersTab from "../components/OrdersTab";
 import DiscountsTab from "../components/DiscountsTab";
