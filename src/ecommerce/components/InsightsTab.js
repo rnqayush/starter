@@ -4,7 +4,6 @@ import {
   FaChartPie,
   FaChartBar,
   FaChartLine,
-  FaTrendUp,
   FaDownload,
 } from "react-icons/fa";
 import { theme } from "../../styles/GlobalStyle";
