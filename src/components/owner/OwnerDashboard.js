@@ -54,13 +54,6 @@ const StatCard = styled(Card)`
   color: ${(props) => props.textColor || theme.colors.gray900};
 `;
 
-const StatHeader = styled.div`
-  display: flex;
-  justify-content: between;
-  align-items: flex-start;
-  margin-bottom: ${theme.spacing.lg};
-`;
-
 const StatIcon = styled.div`
   width: 60px;
   height: 60px;
