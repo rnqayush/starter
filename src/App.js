@@ -6,12 +6,10 @@ import { AppContext } from "./context/AppContext";
 
 // User Components
 import PlatformHomePage from "./components/user/PlatformHomePage";
-import HomePage from "./components/user/HomePage";
-import HotelPage from "./components/user/HotelPage";
-import RoomPage from "./components/user/RoomPage";
-import BookingPage from "./components/user/BookingPage";
-import MyBookingsPage from "./components/user/MyBookingsPage";
 import LoginPage from "./components/auth/LoginPage";
+
+// Hotel Module
+import HotelModule from "./hotel";
 
 // Hotel Owner Components
 import OwnerDashboard from "./components/owner/OwnerDashboard";
@@ -24,7 +22,7 @@ import ProfileSettingsPage from "./components/owner/ProfileSettingsPage";
 // Mock data
 import { mockHotels, mockBookings, mockOwnerHotels } from "./data/mockData";
 
-// Ecommerce Module
+// Modules
 import EcommerceModule from "./ecommerce";
 
 const AppContainer = styled.div`
@@ -58,14 +56,16 @@ function App() {
         <AppContainer>
           <GlobalStyle />
           <Routes>
-            {/* User Routes */}
+            {/* Main Routes */}
             <Route path="/" element={<PlatformHomePage />} />
-            <Route path="/hotels" element={<HomePage />} />
-            <Route path="/hotel/:id" element={<HotelPage />} />
-            <Route path="/room/:hotelId/:roomId" element={<RoomPage />} />
-            <Route path="/booking/:hotelId/:roomId" element={<BookingPage />} />
-            <Route path="/my-bookings" element={<MyBookingsPage />} />
             <Route path="/login" element={<LoginPage />} />
+
+            {/* Hotel Routes */}
+            <Route path="/hotels/*" element={<HotelModule />} />
+            <Route path="/hotel/*" element={<HotelModule />} />
+            <Route path="/room/*" element={<HotelModule />} />
+            <Route path="/booking/*" element={<HotelModule />} />
+            <Route path="/my-bookings" element={<HotelModule />} />
 
             {/* Ecommerce Routes */}
             <Route path="/ecommerce/*" element={<EcommerceModule />} />
