@@ -9,7 +9,6 @@ import {
   FaApplePay,
   FaGooglePay,
   FaShieldAlt,
-  FaCheck,
 } from "react-icons/fa";
 import { theme } from "../../styles/GlobalStyle";
 import Navbar from "../components/Navbar";
