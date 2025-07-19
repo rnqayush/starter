@@ -24,6 +24,9 @@ import ProfileSettingsPage from "./components/owner/ProfileSettingsPage";
 // Mock data
 import { mockHotels, mockBookings, mockOwnerHotels } from "./data/mockData";
 
+// Ecommerce Module
+import EcommerceModule from "./ecommerce";
+
 const AppContainer = styled.div`
   min-height: 100vh;
   background-color: #f8fafc;
@@ -63,6 +66,9 @@ function App() {
             <Route path="/booking/:hotelId/:roomId" element={<BookingPage />} />
             <Route path="/my-bookings" element={<MyBookingsPage />} />
             <Route path="/login" element={<LoginPage />} />
+
+            {/* Ecommerce Routes */}
+            <Route path="/ecommerce/*" element={<EcommerceModule />} />
 
             {/* Hotel Owner Routes */}
             <Route path="/owner/dashboard" element={<OwnerDashboard />} />
