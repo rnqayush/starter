@@ -15,24 +15,25 @@ const EcommerceModule = () => {
     <>
       <ScrollToTop />
       <Routes>
-      {/* Main ecommerce route with dynamic vendor */}
-      <Route path="/" element={<EcommerceMain />} />
-      <Route path="/products" element={<Products />} />
-      <Route path="/product/:id" element={<ProductDetail />} />
-      <Route path="/cart" element={<Cart />} />
-      <Route path="/checkout" element={<Checkout />} />
-      <Route path="/order-confirmation" element={<OrderConfirmation />} />
+        {/* Main ecommerce route with dynamic vendor */}
+        <Route path="/" element={<EcommerceMain />} />
+        <Route path="/products" element={<Products />} />
+        <Route path="/product/:id" element={<ProductDetail />} />
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/order-confirmation" element={<OrderConfirmation />} />
 
-      {/* Seller Dashboard */}
-      <Route path="/seller-dashboard" element={<SellerDashboard />} />
+        {/* Seller Dashboard */}
+        <Route path="/seller-dashboard" element={<SellerDashboard />} />
 
-      {/* Legacy store-specific routes (for backward compatibility) */}
-      <Route path="/:storeId" element={<StoreHome />} />
-      <Route path="/:storeId/products" element={<Products />} />
-      <Route path="/:storeId/product/:id" element={<ProductDetail />} />
-      <Route path="/:storeId/cart" element={<Cart />} />
-      <Route path="/:storeId/checkout" element={<Checkout />} />
-    </Routes>
+        {/* Legacy store-specific routes (for backward compatibility) */}
+        <Route path="/:storeId" element={<StoreHome />} />
+        <Route path="/:storeId/products" element={<Products />} />
+        <Route path="/:storeId/product/:id" element={<ProductDetail />} />
+        <Route path="/:storeId/cart" element={<Cart />} />
+        <Route path="/:storeId/checkout" element={<Checkout />} />
+      </Routes>
+    </>
   );
 };
 
