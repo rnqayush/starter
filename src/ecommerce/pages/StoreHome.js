@@ -230,7 +230,7 @@ const StoreHome = () => {
 
   useEffect(() => {
     // Find the store
-    const foundStore = vendors.find((v) => v.id === storeId);
+    const foundStore = ecommerceVendors.find((v) => v.id === storeId);
     setStore(foundStore);
 
     // Generate mock products for this store based on its specialties
