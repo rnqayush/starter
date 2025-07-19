@@ -360,6 +360,10 @@ const Products = () => {
             (sum, item) => sum + item.quantity,
             0,
           )}
+          storeName={vendor?.name || ""}
+          storeLogo={vendor?.logo || ""}
+          storeSlug={storeSlug}
+          theme={vendor?.theme || {}}
         />
         <LoadingSpinner fullPage text="Loading products..." />
         <Footer />
@@ -371,6 +375,10 @@ const Products = () => {
     <PageContainer>
       <Navbar
         cartItemsCount={cartItems.reduce((sum, item) => sum + item.quantity, 0)}
+        storeName={vendor?.name || ""}
+        storeLogo={vendor?.logo || ""}
+        storeSlug={storeSlug}
+        theme={vendor?.theme || {}}
       />
 
       <Container>
