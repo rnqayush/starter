@@ -29,7 +29,9 @@ const NavbarContent = styled.div`
   height: 70px;
 `;
 
-const Logo = styled(Link)`
+const Logo = styled(Link).withConfig({
+  shouldForwardProp: (prop) => prop !== "theme",
+})`
   font-size: 1.8rem;
   font-weight: 700;
   color: ${(props) => props.theme?.primaryColor || theme.colors.primary};
@@ -55,7 +57,9 @@ const NavLinks = styled.div`
   }
 `;
 
-const NavLink = styled(Link)`
+const NavLink = styled(Link).withConfig({
+  shouldForwardProp: (prop) => prop !== "theme",
+})`
   color: ${theme.colors.gray700};
   font-weight: 500;
   transition: color 0.2s ease;
