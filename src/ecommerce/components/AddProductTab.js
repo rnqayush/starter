@@ -1,12 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import {
-  FaUpload,
-  FaImage,
-  FaTimes,
-  FaSave,
-  FaArrowLeft,
-} from "react-icons/fa";
+import { FaUpload, FaTimes, FaSave, FaArrowLeft } from "react-icons/fa";
 import { theme } from "../../styles/GlobalStyle";
 import { productCategories } from "../data/sellerData";
 
