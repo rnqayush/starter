@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { FaArrowRight, FaStar, FaShoppingBag } from "react-icons/fa";
+import { FaArrowRight, FaShoppingBag } from "react-icons/fa";
 import { theme } from "../../styles/GlobalStyle";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
