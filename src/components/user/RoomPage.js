@@ -70,7 +70,9 @@ const ThumbnailRow = styled.div`
   overflow-x: auto;
 `;
 
-const Thumbnail = styled.img`
+const Thumbnail = styled.img.withConfig({
+  shouldForwardProp: (prop) => prop !== "active",
+})`
   width: 80px;
   height: 60px;
   object-fit: cover;
