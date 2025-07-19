@@ -10,7 +10,6 @@ import {
   FaTimesCircle,
   FaEye,
   FaPhone,
-  FaEnvelope,
 } from "react-icons/fa";
 import { theme } from "../../styles/GlobalStyle";
 import HotelNavbar from "../components/HotelNavbar";
