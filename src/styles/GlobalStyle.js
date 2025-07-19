@@ -7,6 +7,23 @@ export const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
   }
 
+  html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+
+    @media (max-width: 768px) {
+      font-size: 14px;
+    }
+
+    @media (min-width: 769px) and (max-width: 1024px) {
+      font-size: 15px;
+    }
+
+    @media (min-width: 1025px) {
+      font-size: 16px;
+    }
+  }
+
   body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
       'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -16,6 +33,7 @@ export const GlobalStyle = createGlobalStyle`
     line-height: 1.6;
     color: #1f2937;
     background-color: #f8fafc;
+    font-size: 1rem;
   }
 
   a {
@@ -33,6 +51,7 @@ export const GlobalStyle = createGlobalStyle`
   input, textarea, select {
     font-family: inherit;
     outline: none;
+    font-size: 1rem;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -40,20 +59,137 @@ export const GlobalStyle = createGlobalStyle`
     line-height: 1.2;
   }
 
-  img {
+  h1 {
+    font-size: 2.5rem;
+
+    @media (max-width: 768px) {
+      font-size: 2rem;
+    }
+
+    @media (min-width: 769px) and (max-width: 1024px) {
+      font-size: 2.25rem;
+    }
+  }
+
+  h2 {
+    font-size: 2rem;
+
+    @media (max-width: 768px) {
+      font-size: 1.5rem;
+    }
+
+    @media (min-width: 769px) and (max-width: 1024px) {
+      font-size: 1.75rem;
+    }
+  }
+
+  h3 {
+    font-size: 1.5rem;
+
+    @media (max-width: 768px) {
+      font-size: 1.25rem;
+    }
+  }
+
+  h4 {
+    font-size: 1.25rem;
+
+    @media (max-width: 768px) {
+      font-size: 1.125rem;
+    }
+  }
+
+  h5 {
+    font-size: 1.125rem;
+
+    @media (max-width: 768px) {
+      font-size: 1rem;
+    }
+  }
+
+  h6 {
+    font-size: 1rem;
+
+    @media (max-width: 768px) {
+      font-size: 0.875rem;
+    }
+  }
+
+  img, video {
     max-width: 100%;
     height: auto;
+    display: block;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+
+    @media (max-width: 768px) {
+      display: block;
+      overflow-x: auto;
+      white-space: nowrap;
+      border: 1px solid #e2e8f0;
+      border-radius: 0.5rem;
+    }
   }
 
   .container {
+    width: 100%;
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 1rem;
+
+    @media (max-width: 768px) {
+      padding: 0 0.75rem;
+    }
+
+    @media (min-width: 769px) and (max-width: 1024px) {
+      padding: 0 1.5rem;
+    }
+
+    @media (min-width: 1025px) {
+      padding: 0 2rem;
+    }
   }
 
-  @media (max-width: 768px) {
-    .container {
-      padding: 0 0.75rem;
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* Responsive grid utility classes */
+  .grid-responsive {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 1fr;
+
+    @media (min-width: 769px) and (max-width: 1024px) {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+
+    @media (min-width: 1025px) {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+  }
+
+  .flex-responsive {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    @media (min-width: 769px) {
+      flex-direction: row;
+      gap: 1.5rem;
     }
   }
 `;
