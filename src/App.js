@@ -11,6 +11,7 @@ import RegisterPage from "./components/auth/RegisterPage";
 
 // Shared Components
 import ScrollToTop from "./components/shared/ScrollToTop";
+import SmartRouter from "./components/SmartRouter";
 
 // Hotel Module
 import HotelModule from "./hotel";
