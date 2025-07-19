@@ -4,19 +4,12 @@ import styled from "styled-components";
 import {
   FaMapMarkerAlt,
   FaSearch,
-  FaFilter,
-  FaSortAmountDown,
   FaLocationArrow,
   FaHome,
 } from "react-icons/fa";
 import { theme } from "../../styles/GlobalStyle";
 import StoreCard from "../../components/shared/StoreCard";
-import {
-  ecommerceVendors,
-  getVendorsByLocation,
-  getFeaturedVendors,
-  searchVendors,
-} from "../data/vendors";
+import { ecommerceVendors } from "../data/vendors";
 import {
   getCurrentLocation,
   getLocationFromZip,
