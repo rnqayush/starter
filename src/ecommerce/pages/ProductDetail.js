@@ -257,7 +257,9 @@ const VariantOptions = styled.div`
   flex-wrap: wrap;
 `;
 
-const VariantOption = styled.button`
+const VariantOption = styled.button.withConfig({
+  shouldForwardProp: (prop) => prop !== "selected",
+})`
   padding: ${theme.spacing.sm} ${theme.spacing.md};
   border: 2px solid
     ${(props) => (props.selected ? theme.colors.primary : theme.colors.gray200)};
