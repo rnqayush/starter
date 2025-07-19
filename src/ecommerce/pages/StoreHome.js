@@ -7,7 +7,6 @@ import {
   FaStar,
   FaMapMarkerAlt,
   FaPhone,
-  FaClock,
 } from "react-icons/fa";
 import { theme } from "../../styles/GlobalStyle";
 import Navbar from "../components/Navbar";
