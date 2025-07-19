@@ -307,7 +307,8 @@ const PolicyItem = styled.div`
 `;
 
 const HotelDetail = () => {
-  const { hotelSlug } = useParams();
+  const { hotelSlug, slug } = useParams();
+  const slugParam = hotelSlug || slug;
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("overview");
   const [hotel, setHotel] = useState(null);
