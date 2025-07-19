@@ -101,7 +101,9 @@ const Tabs = styled.div`
   overflow-x: auto;
 `;
 
-const Tab = styled.button`
+const Tab = styled.button.withConfig({
+  shouldForwardProp: (prop) => prop !== "active",
+})`
   padding: ${theme.spacing.lg} ${theme.spacing.xl};
   border: none;
   background: none;
