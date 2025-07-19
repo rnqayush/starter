@@ -126,6 +126,11 @@ const ToggleContainer = styled.div`
   border-radius: ${theme.borderRadius.lg};
   padding: ${theme.spacing.xs};
   margin-bottom: ${theme.spacing.xl};
+
+  ${media.mobile} {
+    margin-bottom: ${theme.spacing.lg};
+    border-radius: ${theme.borderRadius.md};
+  }
 `;
 
 const ToggleButton = styled.button.withConfig({
