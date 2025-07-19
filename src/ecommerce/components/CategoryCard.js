@@ -170,9 +170,11 @@ const CategoryDescription = styled.p`
   }
 `;
 
-const CategoryCard = ({ category }) => {
+const CategoryCard = ({ category, storeSlug = "" }) => {
+  const getBaseUrl = () => (storeSlug ? `/${storeSlug}` : "/ecommerce");
+
   return (
-    <Card to={`/ecommerce/products?category=${category.slug}`}>
+    <Card to={`${getBaseUrl()}/products?category=${category.slug}`}>
       <ImageContainer>
         <CategoryImage src={category.image} alt={category.name} />
         <Overlay>
