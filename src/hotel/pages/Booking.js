@@ -267,7 +267,7 @@ const SecurityNote = styled.div`
 `;
 
 const Booking = () => {
-  const { hotelId, roomId } = useParams();
+  const { hotelSlug, roomId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
   const [hotel, setHotel] = useState(null);
