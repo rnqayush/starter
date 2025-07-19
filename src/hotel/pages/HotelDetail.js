@@ -175,7 +175,9 @@ const Tabs = styled.div`
   padding: 0 ${theme.spacing.md};
 `;
 
-const Tab = styled.button`
+const Tab = styled.button.withConfig({
+  shouldForwardProp: (prop) => prop !== "active",
+})`
   background: none;
   border: none;
   padding: ${theme.spacing.lg} ${theme.spacing.xl};
