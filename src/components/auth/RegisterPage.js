@@ -143,6 +143,12 @@ const ToggleButton = styled.button.withConfig({
   font-weight: 500;
   transition: all 0.2s ease;
   cursor: pointer;
+  font-size: 0.875rem;
+
+  ${media.mobile} {
+    padding: ${theme.spacing.sm};
+    font-size: 0.8125rem;
+  }
 
   ${(props) =>
     props.active
