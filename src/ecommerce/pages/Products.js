@@ -223,9 +223,10 @@ const Products = () => {
       // Extract store slug from URL like "/techmart-downtown/products"
       const pathSegments = path.split("/").filter(Boolean);
       const slug = pathSegments[0];
-      const vendor = getVendorByIdOrSlug(slug);
-      if (vendor) {
-        setStoreSlug(vendor.slug);
+      const foundVendor = getVendorByIdOrSlug(slug);
+      if (foundVendor) {
+        setStoreSlug(foundVendor.slug);
+        setVendor(foundVendor);
       }
     }
   }, [location.pathname]);
