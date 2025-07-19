@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { FaHotel, FaBars, FaTimes, FaChevronDown } from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
+import { theme, media } from "../../styles/GlobalStyle";
 import { Button } from "./Button";
 
 const HeaderContainer = styled.header`
