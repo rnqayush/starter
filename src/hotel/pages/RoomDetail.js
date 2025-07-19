@@ -307,7 +307,7 @@ const BookButton = styled.button`
 `;
 
 const RoomDetail = () => {
-  const { hotelId, roomId } = useParams();
+  const { hotelSlug, roomId } = useParams();
   const navigate = useNavigate();
   const [hotel, setHotel] = useState(null);
   const [room, setRoom] = useState(null);
