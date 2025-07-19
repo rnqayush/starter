@@ -284,6 +284,9 @@ const PlatformHomePage = () => {
     if (service.id === "hotels") {
       // Navigate to the existing hotel page (keeping the current design)
       navigate("/hotels");
+    } else if (service.id === "ecommerce") {
+      // Navigate to the ecommerce module
+      navigate("/ecommerce");
     } else {
       // For other services, show coming soon or navigate to their respective pages
       alert(`${service.title} website builder coming soon!`);
@@ -327,7 +330,9 @@ const PlatformHomePage = () => {
                   <ServiceTitle>{service.title}</ServiceTitle>
                   <ServiceDescription>{service.description}</ServiceDescription>
                   <ServiceButton gradient={service.gradient}>
-                    {service.id === "hotels" ? "Explore" : "Coming Soon"}
+                    {service.id === "hotels" || service.id === "ecommerce"
+                      ? "Explore"
+                      : "Coming Soon"}
                     <FaArrowRight />
                   </ServiceButton>
                 </ServiceCard>
