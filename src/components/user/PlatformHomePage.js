@@ -333,9 +333,7 @@ const PlatformHomePage = () => {
                   <ServiceTitle>{service.title}</ServiceTitle>
                   <ServiceDescription>{service.description}</ServiceDescription>
                   <ServiceButton gradient={service.gradient}>
-                    {service.id === "hotels" || service.id === "ecommerce"
-                      ? "Explore"
-                      : "Coming Soon"}
+                    Explore
                     <FaArrowRight />
                   </ServiceButton>
                 </ServiceCard>
