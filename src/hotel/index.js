@@ -10,9 +10,9 @@ import MyBookings from "./pages/MyBookings";
 const HotelModule = () => {
   return (
     <Routes>
-      <Route path="/" element={<HotelHome />} />
-      <Route path="/hotel/:id" element={<HotelDetail />} />
-      <Route path="/room/:hotelId/:roomId" element={<RoomDetail />} />
+      <Route path="/*" element={<HotelHome />} />
+      <Route path="/:id" element={<HotelDetail />} />
+      <Route path="/:hotelId/:roomId" element={<RoomDetail />} />
       <Route path="/booking/:hotelId/:roomId" element={<Booking />} />
       <Route path="/booking-confirmation" element={<BookingConfirmation />} />
       <Route path="/my-bookings" element={<MyBookings />} />
