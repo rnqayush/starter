@@ -107,7 +107,9 @@ const ViewToggle = styled.div`
   overflow: hidden;
 `;
 
-const ViewButton = styled.button`
+const ViewButton = styled.button.withConfig({
+  shouldForwardProp: (prop) => prop !== "active",
+})`
   padding: ${theme.spacing.sm} ${theme.spacing.md};
   background: ${(props) =>
     props.active ? theme.colors.primary : theme.colors.white};
