@@ -61,10 +61,11 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
 
             {/* Hotel Routes */}
-            <Route path="/hotels/*" element={<HotelModule />} />
-            <Route path="/hotel/*" element={<HotelModule />} />
-            <Route path="/room/*" element={<HotelModule />} />
-            <Route path="/booking/*" element={<HotelModule />} />
+            <Route path="/hotels" element={<HotelModule />} />
+            <Route path="/hotel/:id" element={<HotelModule />} />
+            <Route path="/room/:hotelId/:roomId" element={<HotelModule />} />
+            <Route path="/booking/:hotelId/:roomId" element={<HotelModule />} />
+            <Route path="/booking-confirmation" element={<HotelModule />} />
             <Route path="/my-bookings" element={<HotelModule />} />
 
             {/* Ecommerce Routes */}
