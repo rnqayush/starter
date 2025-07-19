@@ -215,10 +215,10 @@ const StoreCard = ({ store, category }) => {
     if (category === "ecommerce") {
       // Map different vendor types to ecommerce categories
       const vendorToCategory = {
-        "tech-mart": "electronics",
-        "fashion-forward": "fashion",
-        "home-essentials": "home-garden",
-        "sports-zone": "sports",
+        "techmart-downtown": "electronics",
+        "fashion-forward-boutique": "fashion",
+        "home-essentials-store": "home-garden",
+        "sports-zone-outlet": "sports",
       };
 
       const categorySlug = vendorToCategory[store.id] || "electronics";
