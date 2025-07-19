@@ -111,6 +111,12 @@ const Label = styled.label`
   font-weight: 500;
   color: ${theme.colors.gray700};
   margin-bottom: ${theme.spacing.sm};
+  font-size: 0.875rem;
+
+  ${media.mobile} {
+    font-size: 0.8125rem;
+    margin-bottom: ${theme.spacing.xs};
+  }
 `;
 
 const InputContainer = styled.div`
@@ -124,6 +130,12 @@ const InputIcon = styled.div`
   transform: translateY(-50%);
   color: ${theme.colors.gray400};
   font-size: 1rem;
+  z-index: 1;
+
+  ${media.mobile} {
+    left: ${theme.spacing.sm};
+    font-size: 0.875rem;
+  }
 `;
 
 const StyledInput = styled(Input)`
@@ -133,6 +145,7 @@ const StyledInput = styled(Input)`
   border-radius: ${theme.borderRadius.lg};
   font-size: 1rem;
   transition: all 0.2s ease;
+  min-height: 3rem;
 
   &:focus {
     outline: none;
@@ -142,6 +155,13 @@ const StyledInput = styled(Input)`
 
   &::placeholder {
     color: ${theme.colors.gray400};
+  }
+
+  ${media.mobile} {
+    padding: ${theme.spacing.sm} ${theme.spacing.sm} ${theme.spacing.sm} 2.5rem;
+    font-size: 1rem;
+    min-height: 2.75rem;
+    border-radius: ${theme.borderRadius.md};
   }
 `;
 
@@ -156,9 +176,16 @@ const PasswordToggle = styled.button`
   cursor: pointer;
   font-size: 1rem;
   padding: ${theme.spacing.xs};
+  z-index: 1;
 
   &:hover {
     color: ${theme.colors.gray600};
+  }
+
+  ${media.mobile} {
+    right: ${theme.spacing.sm};
+    font-size: 0.875rem;
+    padding: ${theme.spacing.xs};
   }
 `;
 
@@ -185,9 +212,10 @@ const LoginButton = styled(Button)`
   border: none;
   border-radius: ${theme.borderRadius.lg};
   transition: all 0.2s ease;
+  min-height: 3rem;
 
   &:hover {
-    background: ${theme.colors.secondary};
+    background: ${theme.colors.primaryDark};
     transform: translateY(-1px);
     box-shadow: ${theme.shadows.lg};
   }
@@ -196,6 +224,16 @@ const LoginButton = styled(Button)`
     background: ${theme.colors.gray300};
     cursor: not-allowed;
     transform: none;
+  }
+
+  ${media.mobile} {
+    min-height: 2.75rem;
+    font-size: 1rem;
+    border-radius: ${theme.borderRadius.md};
+
+    &:hover {
+      transform: none;
+    }
   }
 `;
 
