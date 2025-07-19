@@ -101,7 +101,8 @@ const SearchInput = styled.input`
   transition: border-color 0.2s ease;
 
   &:focus {
-    border-color: ${theme.colors.primary};
+    border-color: ${(props) =>
+      props.theme?.primaryColor || theme.colors.primary};
   }
 
   @media (max-width: ${theme.breakpoints.tablet}) {
