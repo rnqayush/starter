@@ -4,8 +4,6 @@ import styled from "styled-components";
 import {
   FaMapMarkerAlt,
   FaSearch,
-  FaFilter,
-  FaSortAmountDown,
   FaLocationArrow,
   FaHome,
   FaCar,
