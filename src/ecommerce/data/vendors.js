@@ -119,6 +119,7 @@ export const ecommerceVendors = [
   {
     id: "sports-zone",
     name: "Sports Zone",
+    slug: "sports-zone",
     category: "ecommerce",
     logo: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=200&q=80",
     image:
