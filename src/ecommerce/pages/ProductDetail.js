@@ -20,6 +20,7 @@ import Footer from "../components/Footer";
 import ProductCard from "../components/ProductCard";
 import LoadingSpinner from "../components/LoadingSpinner";
 import { getProductById, products } from "../data/products";
+import { getVendorByIdOrSlug } from "../data/vendors";
 
 const PageContainer = styled.div`
   min-height: 100vh;
