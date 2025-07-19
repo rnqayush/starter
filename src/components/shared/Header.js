@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { FaHotel, FaUser, FaBars, FaTimes } from "react-icons/fa";
 import { theme } from "../../styles/GlobalStyle";
 import { useAppContext } from "../../context/AppContext";
+import { Button } from "./Button";
 
 const HeaderContainer = styled.header`
   background: ${theme.colors.white};
@@ -138,7 +139,7 @@ const Header = ({ isOwnerView = false }) => {
           onClick={closeMobileMenu}
         >
           <FaHotel />
-          StayEase
+          StoreBuilder
         </Logo>
 
         <Nav isOpen={mobileMenuOpen}>
@@ -162,18 +163,41 @@ const Header = ({ isOwnerView = false }) => {
               <NavLink to="/" onClick={closeMobileMenu}>
                 Home
               </NavLink>
-              <NavLink to="/my-bookings" onClick={closeMobileMenu}>
-                My Bookings
+              <NavLink to="/hotels" onClick={closeMobileMenu}>
+                Hotels
+              </NavLink>
+              <NavLink to="/ecommerce-stores" onClick={closeMobileMenu}>
+                Ecommerce
+              </NavLink>
+              <NavLink to="/wedding-vendors" onClick={closeMobileMenu}>
+                Weddings
+              </NavLink>
+              <NavLink to="/auto-dealers" onClick={closeMobileMenu}>
+                Automobiles
+              </NavLink>
+              <NavLink to="/features" onClick={closeMobileMenu}>
+                Features
+              </NavLink>
+              <NavLink to="/pricing" onClick={closeMobileMenu}>
+                Pricing
               </NavLink>
             </>
           )}
         </Nav>
 
         <UserSection>
-          <UserTypeToggle onClick={toggleUserType}>
-            <FaUser />
-            {userType === "customer" ? "Switch to Owner" : "Switch to Customer"}
-          </UserTypeToggle>
+          <NavLink to="/login" onClick={closeMobileMenu}>
+            Login
+          </NavLink>
+          <Button
+            as={Link}
+            to="/create-store"
+            variant="primary"
+            style={{ textDecoration: "none", marginLeft: theme.spacing.sm }}
+            onClick={closeMobileMenu}
+          >
+            Create Store
+          </Button>
 
           <MobileMenuButton onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
             {mobileMenuOpen ? <FaTimes /> : <FaBars />}
