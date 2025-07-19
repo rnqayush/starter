@@ -137,7 +137,9 @@ const SectionSubtitle = styled.p`
   margin: 0 auto;
 `;
 
-const Grid = styled.div`
+const Grid = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "minWidth",
+})`
   display: grid;
   grid-template-columns: repeat(
     auto-fit,
