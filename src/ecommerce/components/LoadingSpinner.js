@@ -7,7 +7,9 @@ const spin = keyframes`
   100% { transform: rotate(360deg); }
 `;
 
-const SpinnerContainer = styled.div`
+const SpinnerContainer = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "fullPage",
+})`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -15,7 +17,9 @@ const SpinnerContainer = styled.div`
   min-height: ${(props) => (props.fullPage ? "200px" : "auto")};
 `;
 
-const Spinner = styled.div`
+const Spinner = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "size",
+})`
   width: ${(props) => props.size || "40px"};
   height: ${(props) => props.size || "40px"};
   border: 3px solid ${theme.colors.gray200};
