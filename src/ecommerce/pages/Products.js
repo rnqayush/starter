@@ -207,11 +207,27 @@ const ClearFiltersButton = styled.button`
 
 const Products = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const location = useLocation();
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [sortBy, setSortBy] = useState("name");
   const [view, setView] = useState("grid");
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [storeSlug, setStoreSlug] = useState("");
+
+  // Detect store slug from URL
+  useEffect(() => {
+    const path = location.pathname;
+    if (path !== "/ecommerce/products") {
+      // Extract store slug from URL like "/techmart-downtown/products"
+      const pathSegments = path.split("/").filter(Boolean);
+      const slug = pathSegments[0];
+      const vendor = getVendorByIdOrSlug(slug);
+      if (vendor) {
+        setStoreSlug(vendor.slug);
+      }
+    }
+  }, [location.pathname]);
 
   // Get URL parameters
   const category = searchParams.get("category");
