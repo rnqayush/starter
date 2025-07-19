@@ -84,7 +84,9 @@ const UserTypeToggle = styled.div`
   margin-bottom: ${theme.spacing.lg};
 `;
 
-const ToggleOption = styled.button`
+const ToggleOption = styled.button.withConfig({
+  shouldForwardProp: (prop) => prop !== "active",
+})`
   flex: 1;
   padding: ${theme.spacing.sm} ${theme.spacing.md};
   border: none;
