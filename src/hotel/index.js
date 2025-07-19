@@ -22,6 +22,7 @@ const HotelModule = () => {
     return <RoomDetail />;
   } else if (path.includes("/booking")) {
     return <Booking />;
+  // eslint-disable-next-line no-useless-escape
   } else if (path.match(/^\/[^\/]+$/)) {
     // Single segment path like "/grand-luxury-resort" - hotel detail
     return <HotelDetail />;
