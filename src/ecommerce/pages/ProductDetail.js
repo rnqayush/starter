@@ -454,6 +454,7 @@ const RelatedGrid = styled.div`
 const ProductDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const [product, setProduct] = useState(null);
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
@@ -461,6 +462,23 @@ const ProductDetail = () => {
   const [cartItems, setCartItems] = useState([]);
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [storeSlug, setStoreSlug] = useState("");
+  const [vendor, setVendor] = useState(null);
+
+  // Detect store slug from URL
+  useEffect(() => {
+    const path = location.pathname;
+    if (path !== `/ecommerce/product/${id}`) {
+      // Extract store slug from URL like "/techmart-downtown/product/4"
+      const pathSegments = path.split("/").filter(Boolean);
+      const slug = pathSegments[0];
+      const foundVendor = getVendorByIdOrSlug(slug);
+      if (foundVendor) {
+        setStoreSlug(foundVendor.slug);
+        setVendor(foundVendor);
+      }
+    }
+  }, [location.pathname, id]);
 
   useEffect(() => {
     setLoading(true);
