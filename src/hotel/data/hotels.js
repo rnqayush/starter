@@ -72,6 +72,7 @@ export const hotels = [
   {
     id: 2,
     name: "Mountain View Lodge",
+    slug: "mountain-view-lodge",
     location: "Manali, Himachal Pradesh",
     address: "Old Manali Road, Manali",
     city: "Manali",
