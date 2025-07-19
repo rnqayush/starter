@@ -7,6 +7,7 @@ import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import OrderConfirmation from "./pages/OrderConfirmation";
 import StoreHome from "./pages/StoreHome";
+import SellerDashboard from "./pages/SellerDashboard";
 
 const EcommerceModule = () => {
   return (
@@ -18,6 +19,9 @@ const EcommerceModule = () => {
       <Route path="/cart" element={<Cart />} />
       <Route path="/checkout" element={<Checkout />} />
       <Route path="/order-confirmation" element={<OrderConfirmation />} />
+
+      {/* Seller Dashboard */}
+      <Route path="/seller-dashboard" element={<SellerDashboard />} />
 
       {/* Legacy store-specific routes (for backward compatibility) */}
       <Route path="/:storeId" element={<StoreHome />} />

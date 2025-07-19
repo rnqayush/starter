@@ -28,6 +28,7 @@ import {
 
 // Modules
 import EcommerceModule from "./ecommerce";
+import SellerDashboardDemo from "./ecommerce/pages/SellerDashboardDemo";
 
 // Store Listing Pages
 import EcommerceStoresListing from "./ecommerce/pages/StoresListing";
@@ -90,6 +91,12 @@ function App() {
 
             {/* Ecommerce Routes */}
             <Route path="/ecommerce/*" element={<EcommerceModule />} />
+
+            {/* Seller Dashboard Demo */}
+            <Route
+              path="/seller-dashboard-demo"
+              element={<SellerDashboardDemo />}
+            />
 
             {/* Hotel Owner Routes */}
             <Route path="/owner/dashboard" element={<OwnerDashboard />} />

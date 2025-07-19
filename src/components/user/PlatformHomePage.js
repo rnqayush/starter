@@ -274,7 +274,7 @@ const PlatformHomePage = () => {
       icon: FaShoppingBag,
       title: "Ecommerce",
       description:
-        "Launch complete online stores with product catalogs, shopping carts, and secure payment processing.",
+        "Launch complete online stores with product catalogs, shopping carts, and secure payment processing. Includes seller dashboard.",
       gradient: "linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)",
       path: "/ecommerce",
     },
@@ -340,6 +340,59 @@ const PlatformHomePage = () => {
               );
             })}
           </ServicesGrid>
+
+          {/* Demo Section */}
+          <div
+            style={{
+              textAlign: "center",
+              marginTop: "4rem",
+              padding: "2rem",
+              background: "#f8fafc",
+              borderRadius: "1rem",
+            }}
+          >
+            <h3
+              style={{
+                fontSize: "1.5rem",
+                fontWeight: "600",
+                marginBottom: "1rem",
+                color: "#1a202c",
+              }}
+            >
+              🚀 Try Our Seller Dashboard Demo
+            </h3>
+            <p
+              style={{
+                color: "#718096",
+                marginBottom: "2rem",
+                maxWidth: "600px",
+                margin: "0 auto 2rem",
+              }}
+            >
+              Experience a full-featured ecommerce seller dashboard with
+              analytics, product management, order tracking, and business
+              insights.
+            </p>
+            <Button
+              onClick={() => navigate("/seller-dashboard-demo")}
+              style={{
+                background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                color: "white",
+                border: "none",
+                padding: "12px 24px",
+                borderRadius: "8px",
+                fontSize: "1rem",
+                fontWeight: "500",
+                cursor: "pointer",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "8px",
+              }}
+            >
+              View Seller Dashboard Demo
+              <FaArrowRight />
+            </Button>
+          </div>
         </ServicesContainer>
       </ServicesSection>
 
