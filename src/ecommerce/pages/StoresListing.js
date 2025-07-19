@@ -224,7 +224,9 @@ const FilterGroup = styled.div`
   flex-wrap: wrap;
 `;
 
-const FilterButton = styled.button`
+const FilterButton = styled.button.withConfig({
+  shouldForwardProp: (prop) => prop !== "active",
+})`
   background: ${(props) =>
     props.active ? theme.colors.primary : theme.colors.white};
   color: ${(props) =>
