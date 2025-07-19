@@ -3,6 +3,10 @@ import { theme, media } from "../../styles/GlobalStyle";
 
 export const FormGroup = styled.div`
   margin-bottom: ${theme.spacing.lg};
+
+  ${media.mobile} {
+    margin-bottom: ${theme.spacing.md};
+  }
 `;
 
 export const Label = styled.label`
@@ -11,6 +15,11 @@ export const Label = styled.label`
   color: ${theme.colors.gray700};
   margin-bottom: ${theme.spacing.sm};
   font-size: 0.875rem;
+
+  ${media.mobile} {
+    font-size: 0.8125rem;
+    margin-bottom: ${theme.spacing.xs};
+  }
 `;
 
 export const Input = styled.input`
@@ -21,6 +30,7 @@ export const Input = styled.input`
   font-size: 1rem;
   transition: all 0.2s ease;
   background: ${theme.colors.white};
+  min-height: 2.75rem;
 
   &:focus {
     outline: none;
@@ -36,6 +46,16 @@ export const Input = styled.input`
     background: ${theme.colors.gray100};
     cursor: not-allowed;
   }
+
+  ${media.mobile} {
+    padding: ${theme.spacing.sm} ${theme.spacing.md};
+    font-size: 1rem;
+    min-height: 2.5rem;
+  }
+
+  ${media.tablet} {
+    font-size: 0.9375rem;
+  }
 `;
 
 export const TextArea = styled.textarea`
@@ -46,7 +66,7 @@ export const TextArea = styled.textarea`
   font-size: 1rem;
   font-family: inherit;
   resize: vertical;
-  min-height: 100px;
+  min-height: 6.25rem;
   transition: all 0.2s ease;
   background: ${theme.colors.white};
 
@@ -59,6 +79,17 @@ export const TextArea = styled.textarea`
   &::placeholder {
     color: ${theme.colors.gray400};
   }
+
+  ${media.mobile} {
+    padding: ${theme.spacing.sm} ${theme.spacing.md};
+    font-size: 1rem;
+    min-height: 5rem;
+  }
+
+  ${media.tablet} {
+    font-size: 0.9375rem;
+    min-height: 5.625rem;
+  }
 `;
 
 export const Select = styled.select`
@@ -70,11 +101,22 @@ export const Select = styled.select`
   background: ${theme.colors.white};
   cursor: pointer;
   transition: all 0.2s ease;
+  min-height: 2.75rem;
 
   &:focus {
     outline: none;
     border-color: ${theme.colors.primary};
     box-shadow: 0 0 0 3px ${theme.colors.primary}20;
+  }
+
+  ${media.mobile} {
+    padding: ${theme.spacing.sm} ${theme.spacing.md};
+    font-size: 1rem;
+    min-height: 2.5rem;
+  }
+
+  ${media.tablet} {
+    font-size: 0.9375rem;
   }
 `;
 
