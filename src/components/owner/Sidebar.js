@@ -14,7 +14,9 @@ import {
 } from "react-icons/fa";
 import { theme } from "../../styles/GlobalStyle";
 
-const SidebarContainer = styled.aside`
+const SidebarContainer = styled.aside.withConfig({
+  shouldForwardProp: (prop) => prop !== "isOpen",
+})`
   position: fixed;
   top: 0;
   left: 0;
@@ -114,7 +116,9 @@ const MobileToggle = styled.button`
   }
 `;
 
-const Overlay = styled.div`
+const Overlay = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "isOpen",
+})`
   position: fixed;
   top: 0;
   left: 0;
