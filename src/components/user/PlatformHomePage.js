@@ -14,16 +14,13 @@ import {
   FaPhone,
   FaEnvelope,
   FaMapMarkerAlt,
-  FaCode,
-  FaMobile,
-  FaBolt,
+  FaDrag,
   FaPalette,
-  FaUserPlus,
-  FaEdit,
-  FaRocket,
+  FaMobile,
+  FaHeadset,
   FaStar,
-  FaCheck,
   FaQuoteLeft,
+  FaRocket,
 } from "react-icons/fa";
 import Header from "../shared/Header";
 import { Button } from "../shared/Button";
@@ -50,7 +47,7 @@ const HeroSection = styled.section`
     left: 0;
     right: 0;
     bottom: 0;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><polygon fill="%23ffffff05" points="0,0 1000,300 1000,1000 0,700"/></svg>');
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><polygon fill="%23ffffff08" points="0,0 1000,300 1000,1000 0,700"/></svg>');
     background-size: cover;
   }
 `;
@@ -81,7 +78,7 @@ const HeroSubtitle = styled.p`
   font-size: 1.5rem;
   margin-bottom: ${theme.spacing.xl};
   opacity: 0.9;
-  max-width: 600px;
+  max-width: 700px;
   margin-left: auto;
   margin-right: auto;
 
@@ -99,12 +96,12 @@ const HeroCTAContainer = styled.div`
   margin-top: ${theme.spacing.xl};
 `;
 
-const PrimaryCTA = styled(Button)`
+const CreateStoreCTA = styled(Button)`
   padding: ${theme.spacing.lg} ${theme.spacing.xl};
   font-size: 1.2rem;
   font-weight: 600;
-  background: ${theme.colors.white};
-  color: ${theme.colors.primary};
+  background: #10b981;
+  color: ${theme.colors.white};
   border: none;
   border-radius: ${theme.borderRadius.lg};
   display: flex;
@@ -113,35 +110,39 @@ const PrimaryCTA = styled(Button)`
   transition: all 0.3s ease;
 
   &:hover {
+    background: #059669;
     transform: translateY(-2px);
     box-shadow: ${theme.shadows.xl};
   }
 `;
 
-const SecondaryCTA = styled(Button)`
+const ExploreStoreCTA = styled(Button)`
   padding: ${theme.spacing.lg} ${theme.spacing.xl};
   font-size: 1.2rem;
   font-weight: 600;
-  background: transparent;
+  background: #8b5cf6;
   color: ${theme.colors.white};
-  border: 2px solid ${theme.colors.white};
+  border: none;
   border-radius: ${theme.borderRadius.lg};
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.sm};
   transition: all 0.3s ease;
 
   &:hover {
-    background: ${theme.colors.white};
-    color: ${theme.colors.primary};
+    background: #7c3aed;
     transform: translateY(-2px);
+    box-shadow: ${theme.shadows.xl};
   }
 `;
 
-// Benefits Section Styles
-const BenefitsSection = styled.section`
+// Explore Stores Section Styles
+const ExploreStoresSection = styled.section`
   padding: ${theme.spacing.xxl} 0;
   background: ${theme.colors.gray50};
 `;
 
-const BenefitsContainer = styled.div`
+const ExploreStoresContainer = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 ${theme.spacing.md};
@@ -160,9 +161,116 @@ const SectionSubtitle = styled.p`
   text-align: center;
   color: ${theme.colors.gray600};
   margin-bottom: ${theme.spacing.xxl};
-  max-width: 600px;
+  max-width: 800px;
   margin-left: auto;
   margin-right: auto;
+  line-height: 1.6;
+`;
+
+const StoreCardsGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: ${theme.spacing.xl};
+`;
+
+const StoreCard = styled.div`
+  background: ${theme.colors.white};
+  border-radius: ${theme.borderRadius.xl};
+  overflow: hidden;
+  box-shadow: ${theme.shadows.lg};
+  border: 1px solid ${theme.colors.gray200};
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: ${theme.shadows.xl};
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: ${(props) => props.gradient};
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+  }
+
+  &:hover::before {
+    transform: scaleX(1);
+  }
+`;
+
+const StoreCardImage = styled.div`
+  height: 200px;
+  background: ${(props) => props.gradient};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: ${theme.colors.white};
+  font-size: 3rem;
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      45deg,
+      transparent 30%,
+      rgba(255, 255, 255, 0.1) 50%,
+      transparent 70%
+    );
+  }
+`;
+
+const StoreCardContent = styled.div`
+  padding: ${theme.spacing.xl};
+`;
+
+const StoreCardTitle = styled.h3`
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: ${theme.spacing.md};
+  color: ${theme.colors.gray900};
+`;
+
+const StoreCardDescription = styled.p`
+  color: ${theme.colors.gray600};
+  margin-bottom: ${theme.spacing.lg};
+  line-height: 1.6;
+`;
+
+const ViewStoresButton = styled(Button)`
+  width: 100%;
+  background: ${(props) => props.gradient};
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: ${theme.spacing.sm};
+  transition: all 0.3s ease;
+
+  &:hover {
+    opacity: 0.9;
+    transform: none;
+  }
+`;
+
+// Why Choose Us Section Styles
+const WhyChooseUsSection = styled.section`
+  padding: ${theme.spacing.xxl} 0;
+  background: ${theme.colors.white};
+`;
+
+const WhyChooseUsContainer = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 ${theme.spacing.md};
 `;
 
 const BenefitsGrid = styled.div`
@@ -172,17 +280,18 @@ const BenefitsGrid = styled.div`
 `;
 
 const BenefitCard = styled.div`
-  background: ${theme.colors.white};
+  background: ${theme.colors.gray50};
   border-radius: ${theme.borderRadius.xl};
   padding: ${theme.spacing.xl};
   text-align: center;
-  box-shadow: ${theme.shadows.md};
-  border: 1px solid ${theme.colors.gray200};
   transition: all 0.3s ease;
+  border: 2px solid transparent;
 
   &:hover {
-    transform: translateY(-8px);
-    box-shadow: ${theme.shadows.xl};
+    transform: translateY(-4px);
+    border-color: ${theme.colors.primary};
+    background: ${theme.colors.white};
+    box-shadow: ${theme.shadows.lg};
   }
 `;
 
@@ -211,33 +320,12 @@ const BenefitDescription = styled.p`
   line-height: 1.6;
 `;
 
-// Categories Section Styles
-const CategoriesSection = styled.section`
+// CTA Banner Section Styles
+const CTABannerSection = styled.section`
   padding: ${theme.spacing.xxl} 0;
-  background: ${theme.colors.white};
-`;
-
-const CategoriesContainer = styled.div`
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 ${theme.spacing.md};
-`;
-
-const CategoriesGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: ${theme.spacing.xl};
-`;
-
-const CategoryCard = styled.div`
-  background: ${theme.colors.white};
-  border-radius: ${theme.borderRadius.xl};
-  padding: ${theme.spacing.xl};
+  background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+  color: ${theme.colors.white};
   text-align: center;
-  box-shadow: ${theme.shadows.lg};
-  border: 1px solid ${theme.colors.gray200};
-  transition: all 0.3s ease;
-  cursor: pointer;
   position: relative;
   overflow: hidden;
 
@@ -247,226 +335,37 @@ const CategoryCard = styled.div`
     top: 0;
     left: 0;
     right: 0;
-    height: 4px;
-    background: ${(props) => props.gradient};
-    transform: scaleX(0);
-    transition: transform 0.3s ease;
-  }
-
-  &:hover {
-    transform: translateY(-8px);
-    box-shadow: ${theme.shadows.xl};
-
-    &::before {
-      transform: scaleX(1);
-    }
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><circle fill="%23ffffff03" cx="200" cy="200" r="100"/><circle fill="%23ffffff03" cx="800" cy="400" r="150"/><circle fill="%23ffffff03" cx="400" cy="700" r="80"/></svg>');
+    background-size: cover;
   }
 `;
 
-const CategoryIcon = styled.div`
-  width: 80px;
-  height: 80px;
-  margin: 0 auto ${theme.spacing.lg};
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2rem;
-  color: ${theme.colors.white};
-  background: ${(props) => props.gradient};
-  box-shadow: ${theme.shadows.lg};
-`;
-
-const CategoryTitle = styled.h3`
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin-bottom: ${theme.spacing.md};
-  color: ${theme.colors.gray900};
-`;
-
-const CategoryDescription = styled.p`
-  color: ${theme.colors.gray600};
-  margin-bottom: ${theme.spacing.lg};
-  line-height: 1.6;
-`;
-
-const CategoryButton = styled(Button)`
-  background: ${(props) => props.gradient};
-  border: none;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: ${theme.spacing.sm};
-
-  &:hover {
-    opacity: 0.9;
-    transform: none;
-  }
-`;
-
-// How It Works Section Styles
-const HowItWorksSection = styled.section`
-  padding: ${theme.spacing.xxl} 0;
-  background: ${theme.colors.gray50};
-`;
-
-const HowItWorksContainer = styled.div`
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 ${theme.spacing.md};
-`;
-
-const StepsGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: ${theme.spacing.xl};
-  position: relative;
-`;
-
-const StepCard = styled.div`
-  background: ${theme.colors.white};
-  border-radius: ${theme.borderRadius.xl};
-  padding: ${theme.spacing.xl};
-  text-align: center;
-  box-shadow: ${theme.shadows.md};
-  position: relative;
-`;
-
-const StepNumber = styled.div`
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background: ${theme.colors.primary};
-  color: ${theme.colors.white};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin: 0 auto ${theme.spacing.lg};
-`;
-
-const StepTitle = styled.h3`
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-bottom: ${theme.spacing.md};
-  color: ${theme.colors.gray900};
-`;
-
-const StepDescription = styled.p`
-  color: ${theme.colors.gray600};
-  line-height: 1.6;
-`;
-
-// Testimonials Section Styles
-const TestimonialsSection = styled.section`
-  padding: ${theme.spacing.xxl} 0;
-  background: ${theme.colors.white};
-`;
-
-const TestimonialsContainer = styled.div`
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 ${theme.spacing.md};
-`;
-
-const TestimonialsGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: ${theme.spacing.xl};
-`;
-
-const TestimonialCard = styled.div`
-  background: ${theme.colors.gray50};
-  border-radius: ${theme.borderRadius.xl};
-  padding: ${theme.spacing.xl};
-  position: relative;
-`;
-
-const TestimonialQuote = styled.p`
-  color: ${theme.colors.gray700};
-  font-style: italic;
-  margin-bottom: ${theme.spacing.lg};
-  line-height: 1.6;
-`;
-
-const TestimonialAuthor = styled.div`
-  display: flex;
-  align-items: center;
-  gap: ${theme.spacing.md};
-`;
-
-const AuthorAvatar = styled.div`
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background: ${theme.colors.primary};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: ${theme.colors.white};
-  font-weight: 600;
-`;
-
-const AuthorInfo = styled.div``;
-
-const AuthorName = styled.p`
-  font-weight: 600;
-  color: ${theme.colors.gray900};
-  margin-bottom: 2px;
-`;
-
-const AuthorTitle = styled.p`
-  color: ${theme.colors.gray600};
-  font-size: 0.9rem;
-`;
-
-const QuoteIcon = styled.div`
-  position: absolute;
-  top: ${theme.spacing.lg};
-  right: ${theme.spacing.lg};
-  color: ${theme.colors.primary};
-  opacity: 0.3;
-  font-size: 2rem;
-`;
-
-// Final CTA Section Styles
-const FinalCTASection = styled.section`
-  padding: ${theme.spacing.xxl} 0;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: ${theme.colors.white};
-  text-align: center;
-`;
-
-const FinalCTAContainer = styled.div`
+const CTABannerContainer = styled.div`
   max-width: 800px;
   margin: 0 auto;
   padding: 0 ${theme.spacing.md};
+  position: relative;
+  z-index: 1;
 `;
 
-const FinalCTATitle = styled.h2`
+const CTABannerTitle = styled.h2`
   font-size: 2.5rem;
   font-weight: 700;
   margin-bottom: ${theme.spacing.lg};
+  line-height: 1.2;
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     font-size: 2rem;
   }
 `;
 
-const FinalCTADescription = styled.p`
-  font-size: 1.2rem;
-  margin-bottom: ${theme.spacing.xl};
-  opacity: 0.9;
-`;
-
-const FinalCTAButton = styled(Button)`
+const CTABannerButton = styled(Button)`
   padding: ${theme.spacing.lg} ${theme.spacing.xxl};
   font-size: 1.2rem;
   font-weight: 600;
-  background: ${theme.colors.white};
-  color: ${theme.colors.primary};
+  background: #10b981;
+  color: ${theme.colors.white};
   border: none;
   border-radius: ${theme.borderRadius.lg};
   display: inline-flex;
@@ -475,6 +374,7 @@ const FinalCTAButton = styled(Button)`
   transition: all 0.3s ease;
 
   &:hover {
+    background: #059669;
     transform: translateY(-2px);
     box-shadow: ${theme.shadows.xl};
   }
@@ -558,40 +458,13 @@ const FooterBottom = styled.div`
 const PlatformHomePage = () => {
   const navigate = useNavigate();
 
-  const benefits = [
-    {
-      icon: FaCode,
-      title: "No Coding Required",
-      description:
-        "Build professional stores without any technical knowledge. Our drag-and-drop interface makes it simple.",
-    },
-    {
-      icon: FaMobile,
-      title: "Mobile Optimized",
-      description:
-        "Every store is automatically optimized for mobile devices, ensuring great experience on all screens.",
-    },
-    {
-      icon: FaBolt,
-      title: "Fast & Secure",
-      description:
-        "Lightning-fast loading times and enterprise-grade security to keep your business safe.",
-    },
-    {
-      icon: FaPalette,
-      title: "Theme Customization",
-      description:
-        "Choose from dozens of beautiful themes and customize them to match your brand perfectly.",
-    },
-  ];
-
-  const categories = [
+  const storeCategories = [
     {
       id: "hotels",
       icon: FaHotel,
       title: "Hotels",
       description:
-        "Create stunning hotel booking websites with reservation systems, room management, and customer reviews.",
+        "Boutique hotels, resorts, and bed & breakfasts showcase their rooms and services with stunning booking systems.",
       gradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
       path: "/hotels",
     },
@@ -600,83 +473,55 @@ const PlatformHomePage = () => {
       icon: FaShoppingBag,
       title: "Ecommerce",
       description:
-        "Launch complete online stores with product catalogs, shopping carts, and secure payment processing.",
+        "Fashion brands, electronics stores, and artisan shops sell products with beautiful catalogs and secure checkout.",
       gradient: "linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)",
-      path: "/ecommerce-stores",
+      path: "/ecommerce",
     },
     {
       id: "weddings",
       icon: FaRing,
       title: "Weddings",
       description:
-        "Design beautiful wedding websites with RSVP systems, photo galleries, and event planning tools.",
+        "Wedding planners, photographers, and venues share their portfolios and book clients with elegant galleries.",
       gradient: "linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)",
-      path: "/wedding-vendors",
+      path: "/weddings",
     },
     {
       id: "automobiles",
       icon: FaCar,
       title: "Automobiles",
       description:
-        "Build professional car dealership websites with inventory management and financing options.",
+        "Car dealerships, rental companies, and mechanics display inventory and connect with customers online.",
       gradient: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
-      path: "/auto-dealers",
+      path: "/automobiles",
     },
   ];
 
-  const steps = [
+  const benefits = [
     {
-      number: 1,
-      icon: FaUserPlus,
-      title: "Sign Up",
-      description: "Create your account in seconds and choose your industry",
+      icon: FaDrag,
+      title: "No Tech Headache",
+      description: "Just drag & drop",
     },
     {
-      number: 2,
       icon: FaPalette,
-      title: "Choose Layout",
-      description: "Pick from our professionally designed templates",
+      title: "Custom Designs",
+      description: "Look different, sell better",
     },
     {
-      number: 3,
-      icon: FaEdit,
-      title: "Customize",
-      description: "Add your content, images, and brand colors",
+      icon: FaMobile,
+      title: "Fast Performance",
+      description: "Optimized for mobile",
     },
     {
-      number: 4,
-      icon: FaRocket,
-      title: "Launch",
-      description: "Go live with your professional store in minutes",
+      icon: FaHeadset,
+      title: "24x7 Support",
+      description: "We grow with you",
     },
   ];
 
-  const testimonials = [
-    {
-      quote:
-        "StoreBuilder transformed my small hotel business. I went from taking phone bookings to having a professional online presence in just one day!",
-      author: "Sarah Johnson",
-      title: "Hotel Owner",
-      avatar: "SJ",
-    },
-    {
-      quote:
-        "The ecommerce features are incredible. I've increased my sales by 300% since launching my online store with StoreBuilder.",
-      author: "Mike Chen",
-      title: "Boutique Owner",
-      avatar: "MC",
-    },
-    {
-      quote:
-        "As a wedding planner, having a beautiful website was crucial. StoreBuilder gave me exactly what I needed without the hassle.",
-      author: "Emily Davis",
-      title: "Wedding Planner",
-      avatar: "ED",
-    },
-  ];
-
-  const handleCategoryClick = (category) => {
-    navigate(category.path);
+  const handleStoreClick = (store) => {
+    navigate(store.path);
   };
 
   const handleCreateStore = () => {
@@ -684,10 +529,10 @@ const PlatformHomePage = () => {
   };
 
   const handleExploreStores = () => {
-    // Scroll to categories section
-    const categoriesSection = document.getElementById("categories");
-    if (categoriesSection) {
-      categoriesSection.scrollIntoView({ behavior: "smooth" });
+    // Scroll to explore stores section
+    const exploreSection = document.getElementById("explore-stores");
+    if (exploreSection) {
+      exploreSection.scrollIntoView({ behavior: "smooth" });
     }
   };
 
@@ -698,29 +543,65 @@ const PlatformHomePage = () => {
       {/* Hero Section */}
       <HeroSection>
         <HeroContent>
-          <HeroTitle>Build Your Store. Sell Anything. Anywhere.</HeroTitle>
+          <HeroTitle>Launch Your Online Store Without Coding</HeroTitle>
           <HeroSubtitle>
-            Join 10,000+ businesses who started their journey with us.
+            From hotels to ecommerce, go live in minutes — mobile-ready,
+            customizable, and built for growth.
           </HeroSubtitle>
           <HeroCTAContainer>
-            <PrimaryCTA onClick={handleCreateStore}>
-              Create Your Store
+            <CreateStoreCTA onClick={handleCreateStore}>
+              🟢 Create My Store
+              <FaRocket />
+            </CreateStoreCTA>
+            <ExploreStoreCTA onClick={handleExploreStores}>
+              🟣 Explore Live Stores
               <FaArrowRight />
-            </PrimaryCTA>
-            <SecondaryCTA onClick={handleExploreStores}>
-              Explore Stores
-            </SecondaryCTA>
+            </ExploreStoreCTA>
           </HeroCTAContainer>
         </HeroContent>
       </HeroSection>
 
-      {/* Why Build with Us Section */}
-      <BenefitsSection>
-        <BenefitsContainer>
-          <SectionTitle>Why Build with Us?</SectionTitle>
+      {/* Explore Stores Section */}
+      <ExploreStoresSection id="explore-stores">
+        <ExploreStoresContainer>
+          <SectionTitle>See How Others Are Succeeding</SectionTitle>
           <SectionSubtitle>
-            Everything you need to create and grow your online business
+            Hotels, fashion, weddings, cars – discover how business owners like
+            you have built stunning online storefronts.
           </SectionSubtitle>
+          <StoreCardsGrid>
+            {storeCategories.map((store) => {
+              const IconComponent = store.icon;
+              return (
+                <StoreCard
+                  key={store.id}
+                  gradient={store.gradient}
+                  onClick={() => handleStoreClick(store)}
+                >
+                  <StoreCardImage gradient={store.gradient}>
+                    <IconComponent />
+                  </StoreCardImage>
+                  <StoreCardContent>
+                    <StoreCardTitle>{store.title}</StoreCardTitle>
+                    <StoreCardDescription>
+                      {store.description}
+                    </StoreCardDescription>
+                    <ViewStoresButton gradient={store.gradient}>
+                      View {store.title} Stores
+                      <FaArrowRight />
+                    </ViewStoresButton>
+                  </StoreCardContent>
+                </StoreCard>
+              );
+            })}
+          </StoreCardsGrid>
+        </ExploreStoresContainer>
+      </ExploreStoresSection>
+
+      {/* Why Choose Us Section */}
+      <WhyChooseUsSection>
+        <WhyChooseUsContainer>
+          <SectionTitle>Why Smart Sellers Choose Our Platform</SectionTitle>
           <BenefitsGrid>
             {benefits.map((benefit, index) => {
               const IconComponent = benefit.icon;
@@ -735,103 +616,21 @@ const PlatformHomePage = () => {
               );
             })}
           </BenefitsGrid>
-        </BenefitsContainer>
-      </BenefitsSection>
+        </WhyChooseUsContainer>
+      </WhyChooseUsSection>
 
-      {/* Category Navigation Section */}
-      <CategoriesSection id="categories">
-        <CategoriesContainer>
-          <SectionTitle>Explore What's Possible</SectionTitle>
-          <SectionSubtitle>
-            Choose your industry and see what successful stores look like
-          </SectionSubtitle>
-          <CategoriesGrid>
-            {categories.map((category) => {
-              const IconComponent = category.icon;
-              return (
-                <CategoryCard
-                  key={category.id}
-                  gradient={category.gradient}
-                  onClick={() => handleCategoryClick(category)}
-                >
-                  <CategoryIcon gradient={category.gradient}>
-                    <IconComponent />
-                  </CategoryIcon>
-                  <CategoryTitle>{category.title}</CategoryTitle>
-                  <CategoryDescription>
-                    {category.description}
-                  </CategoryDescription>
-                  <CategoryButton gradient={category.gradient}>
-                    Explore {category.title}
-                    <FaArrowRight />
-                  </CategoryButton>
-                </CategoryCard>
-              );
-            })}
-          </CategoriesGrid>
-        </CategoriesContainer>
-      </CategoriesSection>
-
-      {/* How It Works Section */}
-      <HowItWorksSection>
-        <HowItWorksContainer>
-          <SectionTitle>How It Works</SectionTitle>
-          <SectionSubtitle>
-            Get your professional store up and running in 4 simple steps
-          </SectionSubtitle>
-          <StepsGrid>
-            {steps.map((step) => (
-              <StepCard key={step.number}>
-                <StepNumber>{step.number}</StepNumber>
-                <StepTitle>{step.title}</StepTitle>
-                <StepDescription>{step.description}</StepDescription>
-              </StepCard>
-            ))}
-          </StepsGrid>
-        </HowItWorksContainer>
-      </HowItWorksSection>
-
-      {/* Success Stories / Testimonials Section */}
-      <TestimonialsSection>
-        <TestimonialsContainer>
-          <SectionTitle>Success Stories</SectionTitle>
-          <SectionSubtitle>
-            See what our happy customers have to say about their experience
-          </SectionSubtitle>
-          <TestimonialsGrid>
-            {testimonials.map((testimonial, index) => (
-              <TestimonialCard key={index}>
-                <QuoteIcon>
-                  <FaQuoteLeft />
-                </QuoteIcon>
-                <TestimonialQuote>"{testimonial.quote}"</TestimonialQuote>
-                <TestimonialAuthor>
-                  <AuthorAvatar>{testimonial.avatar}</AuthorAvatar>
-                  <AuthorInfo>
-                    <AuthorName>{testimonial.author}</AuthorName>
-                    <AuthorTitle>{testimonial.title}</AuthorTitle>
-                  </AuthorInfo>
-                </TestimonialAuthor>
-              </TestimonialCard>
-            ))}
-          </TestimonialsGrid>
-        </TestimonialsContainer>
-      </TestimonialsSection>
-
-      {/* Final CTA Section */}
-      <FinalCTASection>
-        <FinalCTAContainer>
-          <FinalCTATitle>Start Selling Today</FinalCTATitle>
-          <FinalCTADescription>
-            Join thousands of successful businesses. Create your professional
-            store in minutes.
-          </FinalCTADescription>
-          <FinalCTAButton onClick={handleCreateStore}>
-            Launch My Store Now
+      {/* CTA Banner Section */}
+      <CTABannerSection>
+        <CTABannerContainer>
+          <CTABannerTitle>
+            Don't Just Watch Others Succeed – Be the Next Big Brand
+          </CTABannerTitle>
+          <CTABannerButton onClick={handleCreateStore}>
+            Start My Online Store
             <FaRocket />
-          </FinalCTAButton>
-        </FinalCTAContainer>
-      </FinalCTASection>
+          </CTABannerButton>
+        </CTABannerContainer>
+      </CTABannerSection>
 
       {/* Footer */}
       <Footer>
@@ -861,15 +660,14 @@ const PlatformHomePage = () => {
           <FooterSection>
             <h3>Industries</h3>
             <FooterLink href="/hotels">Hotels</FooterLink>
-            <FooterLink href="/ecommerce-stores">Ecommerce</FooterLink>
-            <FooterLink href="/wedding-vendors">Weddings</FooterLink>
-            <FooterLink href="/auto-dealers">Automobiles</FooterLink>
+            <FooterLink href="/ecommerce">Ecommerce</FooterLink>
+            <FooterLink href="/weddings">Weddings</FooterLink>
+            <FooterLink href="/automobiles">Automobiles</FooterLink>
           </FooterSection>
 
           <FooterSection>
             <h3>Company</h3>
             <FooterLink href="/about">About Us</FooterLink>
-            <FooterLink href="/features">Features</FooterLink>
             <FooterLink href="/pricing">Pricing</FooterLink>
             <FooterLink href="/faq">FAQ</FooterLink>
           </FooterSection>
