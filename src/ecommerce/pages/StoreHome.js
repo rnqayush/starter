@@ -13,7 +13,7 @@ import { theme } from "../../styles/GlobalStyle";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import ProductCard from "../components/ProductCard";
-import { vendors } from "../data/vendors";
+import { ecommerceVendors } from "../data/vendors";
 
 const PageContainer = styled.div`
   min-height: 100vh;
