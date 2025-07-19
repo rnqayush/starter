@@ -314,7 +314,7 @@ const HotelDetail = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const foundHotel = getHotelById(id);
+    const foundHotel = getHotelByIdOrSlug(id);
     setHotel(foundHotel);
     setLoading(false);
   }, [id]);
