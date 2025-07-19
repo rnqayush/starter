@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { FaUpload, FaCheck, FaArrowLeft } from "react-icons/fa";
+import { FaArrowLeft } from "react-icons/fa";
 import Sidebar from "./Sidebar";
 import { Card, CardContent } from "../shared/Card";
 import { Button } from "../shared/Button";
@@ -100,7 +100,7 @@ const FormActions = styled.div`
 const AddRoomPage = () => {
   const { hotelId } = useParams();
   const navigate = useNavigate();
-  const { hotels, setHotels, ownerHotels, setOwnerHotels } = useAppContext();
+  const { hotels, setHotels, setOwnerHotels } = useAppContext();
 
   const [formData, setFormData] = useState({
     name: "",
