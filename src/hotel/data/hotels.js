@@ -243,6 +243,19 @@ export const getHotelById = (id) => {
   return hotels.find((hotel) => hotel.id === parseInt(id));
 };
 
+export const getHotelBySlug = (slug) => {
+  return hotels.find((hotel) => hotel.slug === slug);
+};
+
+export const getHotelByIdOrSlug = (identifier) => {
+  // First try to find by slug
+  const hotelBySlug = getHotelBySlug(identifier);
+  if (hotelBySlug) return hotelBySlug;
+
+  // If not found by slug, try by ID
+  return getHotelById(identifier);
+};
+
 export const getRoomById = (hotelId, roomId) => {
   const hotel = getHotelById(hotelId);
   return hotel?.rooms.find((room) => room.id === parseInt(roomId));
