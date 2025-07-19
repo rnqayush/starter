@@ -2,6 +2,7 @@ export const hotels = [
   {
     id: 1,
     name: "Grand Luxury Resort",
+    slug: "grand-luxury-resort",
     location: "Mumbai, Maharashtra",
     address: "Marine Drive, Mumbai",
     city: "Mumbai",
