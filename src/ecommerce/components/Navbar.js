@@ -339,7 +339,7 @@ const Navbar = ({
             <FaUser />
           </UserButton>
 
-          <Link to="/ecommerce/cart">
+          <Link to={`${getBaseUrl()}/cart`}>
             <CartButton theme={vendorTheme}>
               <FaShoppingCart />
               {cartItemsCount > 0 && (
