@@ -354,8 +354,8 @@ const StoreCard = ({ store, category }) => {
 
   const getStoreLink = () => {
     if (category === "ecommerce") {
-      // Return # since we're handling navigation via onClick
-      return "#";
+      // Return the store slug link
+      return `/${store.slug}`;
     }
 
     // For other categories, return the original link format
