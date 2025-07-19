@@ -506,6 +506,8 @@ const ProductDetail = () => {
     setLoading(false);
   }, [id]);
 
+  const getBaseUrl = () => (storeSlug ? `/${storeSlug}` : "/ecommerce");
+
   const handleAddToCart = () => {
     if (!product) return;
 
