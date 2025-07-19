@@ -113,7 +113,7 @@ const MobileMenuButton = styled.button`
 
 const Header = ({ isOwnerView = false }) => {
   const navigate = useNavigate();
-  const { userType, setUserType, user } = useAppContext();
+  const { userType, setUserType } = useAppContext();
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
 
   const toggleUserType = () => {
