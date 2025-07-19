@@ -171,6 +171,10 @@ const Form = styled.form`
   display: flex;
   flex-direction: column;
   gap: ${theme.spacing.lg};
+
+  ${media.mobile} {
+    gap: ${theme.spacing.md};
+  }
 `;
 
 const FormRow = styled.div`
@@ -178,8 +182,13 @@ const FormRow = styled.div`
   grid-template-columns: 1fr 1fr;
   gap: ${theme.spacing.md};
 
-  @media (max-width: ${theme.breakpoints.mobile}) {
+  ${media.mobileDown} {
     grid-template-columns: 1fr;
+    gap: ${theme.spacing.sm};
+  }
+
+  ${media.tablet} {
+    gap: ${theme.spacing.lg};
   }
 `;
 
@@ -192,6 +201,12 @@ const Label = styled.label`
   font-weight: 500;
   color: ${theme.colors.gray700};
   margin-bottom: ${theme.spacing.sm};
+  font-size: 0.875rem;
+
+  ${media.mobile} {
+    font-size: 0.8125rem;
+    margin-bottom: ${theme.spacing.xs};
+  }
 `;
 
 const InputContainer = styled.div`
@@ -205,6 +220,12 @@ const InputIcon = styled.div`
   transform: translateY(-50%);
   color: ${theme.colors.gray400};
   font-size: 1rem;
+  z-index: 1;
+
+  ${media.mobile} {
+    left: ${theme.spacing.sm};
+    font-size: 0.875rem;
+  }
 `;
 
 const StyledInput = styled(Input)`
