@@ -344,8 +344,8 @@ const StoreCard = ({ store, category }) => {
   const handleStoreClick = (e) => {
     e.preventDefault();
     if (category === "ecommerce") {
-      // Navigate to /ecommerce with vendor data in state
-      navigate("/ecommerce", { state: { selectedVendor: store } });
+      // Navigate to /{store.slug} for ecommerce stores
+      navigate(`/${store.slug}`);
     } else {
       // For other categories, navigate normally
       navigate(`/${category}/${store.id}`);
