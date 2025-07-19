@@ -70,6 +70,7 @@ function App() {
             {/* Main Routes */}
             <Route path="/" element={<PlatformHomePage />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
 
             {/* Hotel Routes */}
             <Route path="/hotels" element={<HotelModule />} />
