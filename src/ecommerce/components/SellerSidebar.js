@@ -14,9 +14,6 @@ import {
   FaUsers,
   FaFileImport,
   FaPalette,
-  FaToggleOn,
-  FaClipboardList,
-  FaGift,
   FaBars,
   FaTimes,
 } from "react-icons/fa";
