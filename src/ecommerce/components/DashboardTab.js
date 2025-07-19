@@ -237,7 +237,7 @@ const DashboardTab = () => {
       case "payment":
         return FaDollarSign;
       case "review":
-        return FaTrendUp;
+        return FaArrowUp;
       default:
         return FaBell;
     }
