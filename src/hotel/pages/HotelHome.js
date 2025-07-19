@@ -23,12 +23,37 @@ const HeroSection = styled.section`
   padding: ${theme.spacing.xxl} 0;
   text-align: center;
   position: relative;
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+
+  ${media.mobile} {
+    padding: ${theme.spacing.xl} 0;
+    min-height: 70vh;
+  }
+
+  ${media.tablet} {
+    min-height: 75vh;
+  }
 `;
 
 const HeroContent = styled.div`
+  width: 100%;
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 ${theme.spacing.md};
+
+  ${media.mobile} {
+    padding: 0 ${theme.spacing.sm};
+  }
+
+  ${media.tablet} {
+    padding: 0 ${theme.spacing.lg};
+  }
+
+  ${media.desktop} {
+    padding: 0 ${theme.spacing.xl};
+  }
 `;
 
 const HeroTitle = styled.h1`
@@ -36,9 +61,19 @@ const HeroTitle = styled.h1`
   font-weight: 700;
   margin-bottom: ${theme.spacing.md};
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  line-height: 1.1;
 
-  @media (max-width: ${theme.breakpoints.mobile}) {
+  ${media.mobile} {
     font-size: 2.5rem;
+    margin-bottom: ${theme.spacing.sm};
+  }
+
+  ${media.tablet} {
+    font-size: 3rem;
+  }
+
+  ${media.desktop} {
+    font-size: 4rem;
   }
 `;
 
@@ -47,15 +82,33 @@ const HeroSubtitle = styled.p`
   margin-bottom: ${theme.spacing.xxl};
   opacity: 0.95;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  line-height: 1.4;
+  max-width: 50rem;
+  margin-left: auto;
+  margin-right: auto;
 
-  @media (max-width: ${theme.breakpoints.mobile}) {
+  ${media.mobile} {
     font-size: 1.1rem;
+    margin-bottom: ${theme.spacing.xl};
+    max-width: 90%;
+  }
+
+  ${media.tablet} {
+    font-size: 1.2rem;
   }
 `;
 
 const HotelsSection = styled.section`
   padding: ${theme.spacing.xxl} 0;
   flex: 1;
+
+  ${media.mobile} {
+    padding: ${theme.spacing.xl} 0;
+  }
+
+  ${media.tablet} {
+    padding: ${theme.spacing.xxl} 0;
+  }
 `;
 
 const Container = styled.div`
