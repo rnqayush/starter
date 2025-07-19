@@ -110,6 +110,7 @@ export const hotels = [
   {
     id: 3,
     name: "Heritage Palace Hotel",
+    slug: "heritage-palace-hotel",
     location: "Jaipur, Rajasthan",
     address: "City Palace Road, Jaipur",
     city: "Jaipur",
