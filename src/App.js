@@ -29,6 +29,11 @@ import {
 // Modules
 import EcommerceModule from "./ecommerce";
 
+// Store Listing Pages
+import EcommerceStoresListing from "./ecommerce/pages/StoresListing";
+import WeddingVendorsListing from "./weddings/pages/StoresListing";
+import AutoDealersListing from "./automobiles/pages/StoresListing";
+
 const AppContainer = styled.div`
   min-height: 100vh;
   background-color: #f8fafc;
