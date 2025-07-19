@@ -56,7 +56,8 @@ function App() {
           <GlobalStyle />
           <Routes>
             {/* User Routes */}
-            <Route path="/" element={<HomePage />} />
+            <Route path="/" element={<PlatformHomePage />} />
+            <Route path="/hotels" element={<HomePage />} />
             <Route path="/hotel/:id" element={<HotelPage />} />
             <Route path="/room/:hotelId/:roomId" element={<RoomPage />} />
             <Route path="/booking/:hotelId/:roomId" element={<BookingPage />} />
