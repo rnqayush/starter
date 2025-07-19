@@ -70,7 +70,9 @@ const ToggleContainer = styled.div`
   margin-bottom: ${theme.spacing.xl};
 `;
 
-const ToggleButton = styled.button`
+const ToggleButton = styled.button.withConfig({
+  shouldForwardProp: (prop) => prop !== "active",
+})`
   flex: 1;
   padding: ${theme.spacing.md};
   border: none;
