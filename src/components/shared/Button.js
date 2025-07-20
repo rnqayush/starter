@@ -5,19 +5,19 @@ export const Button = styled.button`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: ${theme.spacing.sm};
+    gap: ${theme.spacing.xs};
   padding: ${(props) =>
     props.size === "large"
-      ? `${theme.spacing.lg} ${theme.spacing.xxl}`
+      ? `${theme.spacing.md} ${theme.spacing.xl}`
       : props.size === "small"
-        ? `${theme.spacing.sm} ${theme.spacing.md}`
-        : `${theme.spacing.md} ${theme.spacing.xl}`};
+        ? `${theme.spacing.xs} ${theme.spacing.sm}`
+        : `${theme.spacing.sm} ${theme.spacing.lg}`};
   font-size: ${(props) =>
     props.size === "large"
-      ? "1.125rem"
+      ? "1rem"
       : props.size === "small"
-        ? "0.875rem"
-        : "1rem"};
+        ? "0.8125rem"
+        : "0.875rem"};
   font-weight: 600;
   border-radius: ${theme.borderRadius.md};
   border: 2px solid transparent;
@@ -26,41 +26,41 @@ export const Button = styled.button`
   text-decoration: none;
   min-height: ${(props) =>
     props.size === "large"
-      ? "3rem"
+      ? "2.5rem"
       : props.size === "small"
-        ? "2rem"
-        : "2.5rem"};
+        ? "1.75rem"
+        : "2.125rem"};
   white-space: nowrap;
 
-  ${media.mobile} {
+    ${media.mobile} {
     padding: ${(props) =>
       props.size === "large"
-        ? `${theme.spacing.md} ${theme.spacing.xl}`
+        ? `${theme.spacing.sm} ${theme.spacing.lg}`
         : props.size === "small"
           ? `${theme.spacing.xs} ${theme.spacing.sm}`
-          : `${theme.spacing.sm} ${theme.spacing.lg}`};
+          : `${theme.spacing.xs} ${theme.spacing.md}`};
     font-size: ${(props) =>
       props.size === "large"
-        ? "1rem"
+        ? "0.9375rem"
         : props.size === "small"
           ? "0.75rem"
-          : "0.875rem"};
+          : "0.8125rem"};
     min-height: ${(props) =>
       props.size === "large"
-        ? "2.75rem"
+        ? "2.25rem"
         : props.size === "small"
-          ? "1.75rem"
-          : "2.25rem"};
+          ? "1.625rem"
+          : "1.875rem"};
     gap: ${theme.spacing.xs};
   }
 
-  ${media.tablet} {
+    ${media.tablet} {
     font-size: ${(props) =>
       props.size === "large"
-        ? "1.0625rem"
+        ? "0.9375rem"
         : props.size === "small"
-          ? "0.8125rem"
-          : "0.9375rem"};
+          ? "0.78125rem"
+          : "0.8125rem"};
   }
 
   ${(props) => {
@@ -129,20 +129,20 @@ export const Button = styled.button`
 `;
 
 export const IconButton = styled(Button)`
-  padding: ${theme.spacing.md};
+  padding: ${theme.spacing.sm};
   min-width: auto;
-  min-height: 2.5rem;
-  width: 2.5rem;
+  min-height: 2.125rem;
+  width: 2.125rem;
 
   ${media.mobile} {
-    padding: ${theme.spacing.sm};
-    min-height: 2rem;
-    width: 2rem;
-    font-size: 0.875rem;
+    padding: ${theme.spacing.xs};
+    min-height: 1.875rem;
+    width: 1.875rem;
+    font-size: 0.8125rem;
   }
 
   ${media.tablet} {
-    min-height: 2.25rem;
-    width: 2.25rem;
+    min-height: 2rem;
+    width: 2rem;
   }
 `;
