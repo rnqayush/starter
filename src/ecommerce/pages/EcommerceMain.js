@@ -277,6 +277,18 @@ const SectionSubtitle = styled.p`
   color: ${theme.colors.gray600};
   max-width: 600px;
   margin: 0 auto;
+  line-height: 1.6;
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    font-size: 1rem;
+    max-width: 500px;
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    font-size: 0.95rem;
+    max-width: 100%;
+    padding: 0 ${theme.spacing.sm};
+  }
 `;
 
 const Grid = styled.div.withConfig({
