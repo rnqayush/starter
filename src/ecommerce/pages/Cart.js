@@ -677,9 +677,9 @@ const Cart = () => {
               <span>${calculateTotal().toFixed(2)}</span>
             </SummaryRow>
 
-            <CheckoutButton onClick={handleCheckout}>
-              Proceed to Checkout
-              <FaArrowLeft style={{ transform: "rotate(180deg)" }} />
+                        <CheckoutButton onClick={handleEnquireAll}>
+              Enquire About All Items
+              <FaEnvelope />
             </CheckoutButton>
 
             <div
