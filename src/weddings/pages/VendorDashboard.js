@@ -1048,7 +1048,7 @@ const VendorDashboard = () => {
           </ContentSection>
         );
 
-      case 'services':
+            case 'services':
         return (
           <ContentSection>
             <SectionTitle>
@@ -1057,34 +1057,117 @@ const VendorDashboard = () => {
             </SectionTitle>
             <ServiceList>
               {services.map((service) => (
-                <ServiceItem key={service.id}>
-                  <ServiceContent>
-                    <ServiceName>
-                      <FormInput
-                        value={service.name}
-                        onChange={(e) => updateService(service.id, 'name', e.target.value)}
-                        style={{ marginBottom: theme.spacing.xs }}
-                      />
-                    </ServiceName>
-                    <ServiceDescription>
-                      <FormTextarea
-                        value={service.description}
-                        onChange={(e) => updateService(service.id, 'description', e.target.value)}
-                        style={{ minHeight: '80px' }}
-                      />
-                    </ServiceDescription>
-                  </ServiceContent>
-                  <ServiceActions>
+                <ServiceItem key={service.id} style={{ flexDirection: 'column', alignItems: 'stretch' }}>
+                  <div style={{ display: 'flex', gap: theme.spacing.lg, marginBottom: theme.spacing.lg }}>
+                    {/* Service Cover Image */}
+                    <div style={{ minWidth: '200px' }}>
+                      <h4 style={{ margin: `0 0 ${theme.spacing.sm} 0`, fontSize: '0.9rem', fontWeight: 600 }}>Cover Image</h4>
+                      {service.image && (
+                        <img
+                          src={service.image}
+                          alt={service.name}
+                          style={{
+                            width: '200px',
+                            height: '120px',
+                            objectFit: 'cover',
+                            borderRadius: theme.borderRadius.md,
+                            border: `2px solid ${theme.colors.gray200}`,
+                            marginBottom: theme.spacing.sm
+                          }}
+                        />
+                      )}
+                      <div style={{ position: 'relative' }}>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => {
+                            const file = e.target.files[0];
+                            if (file) {
+                              const reader = new FileReader();
+                              reader.onload = (event) => {
+                                updateService(service.id, 'image', event.target.result);
+                              };
+                              reader.readAsDataURL(file);
+                            }
+                          }}
+                          id={`service-image-${service.id}`}
+                          style={{ display: 'none' }}
+                        />
+                        <label
+                          htmlFor={`service-image-${service.id}`}
+                          style={{
+                            display: 'block',
+                            padding: theme.spacing.sm,
+                            border: `2px dashed ${theme.colors.gray300}`,
+                            borderRadius: theme.borderRadius.md,
+                            textAlign: 'center',
+                            cursor: 'pointer',
+                            fontSize: '0.8rem',
+                            color: theme.colors.gray600,
+                            transition: 'all 0.2s ease'
+                          }}
+                        >
+                          <FaUpload style={{ marginBottom: theme.spacing.xs }} />
+                          <br />
+                          {service.image ? 'Change Image' : 'Upload Image'}
+                        </label>
+                      </div>
+                    </div>
+
+                    {/* Service Details */}
+                    <ServiceContent style={{ flex: 1 }}>
+                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 80px', gap: theme.spacing.md, marginBottom: theme.spacing.md }}>
+                        <FormGroup>
+                          <FormLabel>Service Name</FormLabel>
+                          <FormInput
+                            value={service.name}
+                            onChange={(e) => updateService(service.id, 'name', e.target.value)}
+                            placeholder="Wedding Planning, Photography, etc."
+                          />
+                        </FormGroup>
+                        <FormGroup>
+                          <FormLabel>Icon</FormLabel>
+                          <FormInput
+                            value={service.icon || ''}
+                            onChange={(e) => updateService(service.id, 'icon', e.target.value)}
+                            placeholder="💍"
+                            style={{ textAlign: 'center', fontSize: '1.2rem' }}
+                          />
+                        </FormGroup>
+                      </div>
+                      <FormGroup>
+                        <FormLabel>Service Description</FormLabel>
+                        <FormTextarea
+                          value={service.description}
+                          onChange={(e) => updateService(service.id, 'description', e.target.value)}
+                          placeholder="Detailed description of this service..."
+                          style={{ minHeight: '100px' }}
+                        />
+                      </FormGroup>
+                    </ServiceContent>
+                  </div>
+
+                  <ServiceActions style={{ alignSelf: 'flex-end', marginTop: theme.spacing.md }}>
                     <ActionButton variant="danger" onClick={() => removeService(service.id)}>
                       <FaTrash />
+                      Remove Service
                     </ActionButton>
                   </ServiceActions>
                 </ServiceItem>
               ))}
             </ServiceList>
+
+            {services.length === 0 && (
+              <EmptyState>
+                <FaServicestack style={{ fontSize: '3rem', marginBottom: theme.spacing.lg, color: theme.colors.gray400 }} />
+                <h3>No services added yet</h3>
+                <p>Start by adding the services you offer to potential clients</p>
+              </EmptyState>
+            )}
+
             <ActionButton onClick={addService} style={{ marginTop: theme.spacing.lg }}>
               <FaPlus />
-              Add Service
+              Add New Service
             </ActionButton>
           </ContentSection>
         );
