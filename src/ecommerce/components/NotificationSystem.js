@@ -232,10 +232,10 @@ const BellIcon = styled.div.withConfig({
 const NotificationItem = ({ notification, onClose, onAction }) => {
   const [isVisible, setIsVisible] = useState(false);
 
-  const handleClose = () => {
+    const handleClose = useCallback(() => {
     setIsVisible(false);
     setTimeout(() => onClose(notification.id), 300);
-  };
+  }, [onClose, notification.id]);
 
   useEffect(() => {
     // Trigger animation
