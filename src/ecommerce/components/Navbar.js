@@ -53,10 +53,17 @@ const Logo = styled(Link).withConfig({
 `;
 
 const LogoImage = styled.img`
-  width: 40px;
-  height: 40px;
-  border-radius: ${theme.borderRadius.md};
+  width: 50px;
+  height: 50px;
+  border-radius: ${theme.borderRadius.lg};
   object-fit: cover;
+  border: 2px solid ${theme.colors.gray200};
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: scale(1.05);
+    border-color: ${(props) => props.theme?.primaryColor || theme.colors.primary};
+  }
 `;
 
 const NavLinks = styled.div`
