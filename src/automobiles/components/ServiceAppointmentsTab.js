@@ -373,7 +373,9 @@ const ActionButtons = styled.div`
   flex-wrap: wrap;
 `;
 
-const ActionButtonSmall = styled.button`
+const ActionButtonSmall = styled.button.withConfig({
+  shouldForwardProp: (prop) => prop !== "variant",
+})`
   background: ${(props) => 
     props.variant === 'confirm' ? theme.colors.primary : 
     props.variant === 'complete' ? theme.colors.success : 
