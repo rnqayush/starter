@@ -873,7 +873,7 @@ const BusinessWebsitePage = () => {
           >
             <FaEdit />
                         Owner Dashboard
-          </EditButton>
+                    </OwnerLink>
         </NavContainer>
       </Navbar>
 
