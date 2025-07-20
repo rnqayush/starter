@@ -872,7 +872,7 @@ const BusinessWebsitePage = () => {
             onClick={toggleEditMode}
           >
             <FaEdit />
-            {isEditing ? 'Exit Edit' : 'Edit Website'}
+                        Owner Dashboard
           </EditButton>
         </NavContainer>
       </Navbar>
