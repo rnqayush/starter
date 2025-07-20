@@ -424,7 +424,7 @@ const Navbar = ({
             <FaCar />
             Classic Cars
           </MobileNavLink>
-          <MobileNavLink to="#" onClick={closeMobileMenu}>
+                    <MobileNavLink to={`${getBaseUrl()}/wishlist`} onClick={closeMobileMenu}>
             <FaHeart />
             Wishlist
           </MobileNavLink>
