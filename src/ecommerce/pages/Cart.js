@@ -6,10 +6,11 @@ import {
   FaPlus,
   FaTrash,
   FaShoppingCart,
-  FaArrowLeft,
+    FaArrowLeft,
   FaTruck,
   FaTags,
   FaTimes,
+  FaEnvelope,
 } from "react-icons/fa";
 import { theme } from "../../styles/GlobalStyle";
 import Navbar from "../components/Navbar";
