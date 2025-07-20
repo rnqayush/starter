@@ -1320,9 +1320,9 @@ const VendorDashboard = () => {
                         Add Highlight
                       </ActionButton>
                     </div>
-                    <ServiceHighlightList>
+                                        <ServiceHighlightList>
                       {portfolioForm.highlights.map((highlight, index) => (
-                        <ServiceHighlightItem key={index}>
+                        <ServiceHighlightItem key={`highlight-${index}-${highlight.slice(0, 10)}`}>
                           <FormInput
                             value={highlight}
                             onChange={(e) => updatePortfolioHighlight(index, e.target.value)}
