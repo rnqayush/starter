@@ -149,7 +149,9 @@ const BackToListButton = styled.button`
 `;
 
 // Hero Section Styles
-const HeroSection = styled.section`
+const HeroSection = styled.section.withConfig({
+  shouldForwardProp: (prop) => prop !== 'primaryColor',
+})`
   background: linear-gradient(
     135deg,
     ${props => props.primaryColor + '20'} 0%,
@@ -201,7 +203,9 @@ const HeroSubtitle = styled.p`
   line-height: 1.6;
 `;
 
-const HeroCTA = styled.button`
+const HeroCTA = styled.button.withConfig({
+  shouldForwardProp: (prop) => prop !== 'primaryColor',
+})`
   background: ${props => props.primaryColor || theme.colors.primary};
   color: ${theme.colors.white};
   padding: ${theme.spacing.lg} ${theme.spacing.xxl};
