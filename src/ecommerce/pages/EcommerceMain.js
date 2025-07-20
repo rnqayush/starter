@@ -336,11 +336,7 @@ const EcommerceMain = () => {
           Back to Stores
         </BackButton>
 
-        <Navbar
-          cartItemsCount={cartItems.reduce(
-            (sum, item) => sum + item.quantity,
-            0,
-          )}
+                <Navbar
           storeName={selectedVendor.name}
           storeLogo={selectedVendor.logo}
           storeSlug={selectedVendor.slug}
