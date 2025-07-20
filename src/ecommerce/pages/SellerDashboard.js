@@ -7,7 +7,9 @@ import ProductsTab from "../components/ProductsTab";
 import AddProductTabEnhanced from "../components/AddProductTabEnhanced";
 import CategoriesTab from "../components/CategoriesTab";
 import OrdersTabEnhanced from "../components/OrdersTabEnhanced";
+import EnquiriesTab from "../components/EnquiriesTab";
 import DiscountsTab from "../components/DiscountsTab";
+import ShopSettingsTab from "../components/ShopSettingsTab";
 import InsightsTab from "../components/InsightsTab";
 
 const DashboardContainer = styled.div`
@@ -57,7 +59,7 @@ const PageSubtitle = styled.p`
 const SellerDashboard = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
 
-  const getPageTitle = () => {
+    const getPageTitle = () => {
     switch (activeTab) {
       case "dashboard":
         return "Dashboard Overview";
@@ -71,6 +73,8 @@ const SellerDashboard = () => {
         return "Bulk Import Products";
       case "orders":
         return "Order Management";
+      case "enquiries":
+        return "Enquiry Management";
       case "discounts":
         return "Discounts & Coupons";
       case "customers":
@@ -86,7 +90,7 @@ const SellerDashboard = () => {
     }
   };
 
-  const getPageSubtitle = () => {
+    const getPageSubtitle = () => {
     switch (activeTab) {
       case "dashboard":
         return "Monitor your store performance and key metrics";
@@ -100,6 +104,8 @@ const SellerDashboard = () => {
         return "Import multiple products via CSV file";
       case "orders":
         return "Track and manage customer orders";
+      case "enquiries":
+        return "Manage customer enquiries and communications";
       case "discounts":
         return "Create and manage discount codes";
       case "customers":
@@ -115,7 +121,7 @@ const SellerDashboard = () => {
     }
   };
 
-  const renderContent = () => {
+    const renderContent = () => {
     switch (activeTab) {
       case "dashboard":
         return <DashboardTabEnhanced />;
@@ -134,6 +140,8 @@ const SellerDashboard = () => {
         );
       case "orders":
         return <OrdersTabEnhanced />;
+      case "enquiries":
+        return <EnquiriesTab />;
       case "discounts":
         return <DiscountsTab />;
       case "customers":
@@ -143,13 +151,8 @@ const SellerDashboard = () => {
             <p>Customer management features will be available soon.</p>
           </div>
         );
-      case "store-settings":
-        return (
-          <div style={{ padding: "2rem", textAlign: "center" }}>
-            <h3>Store Settings - Coming Soon</h3>
-            <p>Store configuration features will be available soon.</p>
-          </div>
-        );
+            case "store-settings":
+        return <ShopSettingsTab />;
       case "appearance":
         return (
           <div style={{ padding: "2rem", textAlign: "center" }}>

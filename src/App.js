@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import styled from "styled-components";
 import { GlobalStyle } from "./styles/GlobalStyle";
 import { AppContext } from "./context/AppContext";
+import { AuthProvider } from "./context/AuthContext";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 // User Components
 import PlatformHomePage from "./components/user/PlatformHomePage";
@@ -65,13 +67,15 @@ function App() {
     setOwnerHotels,
   };
 
-  return (
-    <AppContext.Provider value={contextValue}>
-      <Router>
-        <AppContainer>
-          <GlobalStyle />
-          <ScrollToTop />
-          <Routes>
+          return (
+    <ErrorBoundary>
+      <AuthProvider>
+        <AppContext.Provider value={contextValue}>
+          <Router>
+            <AppContainer>
+              <GlobalStyle />
+              <ScrollToTop />
+              <Routes>
             {/* Main Routes */}
             <Route path="/" element={<PlatformHomePage />} />
             <Route path="/login" element={<LoginPage />} />
@@ -96,12 +100,14 @@ function App() {
             {/* Ecommerce Routes */}
             <Route path="/ecommerce/*" element={<EcommerceModule />} />
 
-            {/* Store-specific Routes (more specific routes first) */}
+                        {/* Store-specific Routes (more specific routes first) */}
             <Route path="/:storeSlug/products" element={<EcommerceModule />} />
             <Route
               path="/:storeSlug/product/:id"
               element={<EcommerceModule />}
             />
+            <Route path="/:storeSlug/seller-dashboard" element={<EcommerceModule />} />
+            <Route path="/:storeSlug/my-enquiries" element={<EcommerceModule />} />
             <Route path="/:storeSlug/cart" element={<EcommerceModule />} />
             <Route path="/:storeSlug/checkout" element={<EcommerceModule />} />
             <Route
@@ -134,9 +140,11 @@ function App() {
             <Route path="/owner/bookings" element={<BookingsReceivedPage />} />
             <Route path="/owner/profile" element={<ProfileSettingsPage />} />
           </Routes>
-        </AppContainer>
+                                        </AppContainer>
       </Router>
-    </AppContext.Provider>
+      </AppContext.Provider>
+    </AuthProvider>
+    </ErrorBoundary>
   );
 }
 

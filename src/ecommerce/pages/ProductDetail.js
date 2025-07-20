@@ -4,22 +4,24 @@ import styled from "styled-components";
 import {
   FaStar,
   FaHeart,
-  FaShoppingCart,
-  FaMinus,
-  FaPlus,
+  FaEnvelope,
   FaShare,
   FaArrowLeft,
   FaCheck,
   FaTruck,
   FaUndoAlt,
   FaShieldAlt,
+  FaUser,
+  FaStore,
+    FaMapMarkerAlt,
 } from "react-icons/fa";
 import { theme } from "../../styles/GlobalStyle";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import ProductCard from "../components/ProductCard";
 import LoadingSpinner from "../components/LoadingSpinner";
-import { getProductById, products } from "../data/products";
+import EnquiryModal from "../components/EnquiryModal";
+import { getProductById, products, getAvailabilityStatus, getAvailabilityLabel } from "../data/products";
 import { getVendorByIdOrSlug } from "../data/vendors";
 
 const PageContainer = styled.div`
@@ -290,58 +292,7 @@ const StockInfo = styled.div.withConfig({
   font-weight: 600;
 `;
 
-const QuantitySection = styled.div`
-  display: flex;
-  align-items: center;
-  gap: ${theme.spacing.lg};
-  margin-bottom: ${theme.spacing.xl};
-`;
 
-const QuantityLabel = styled.span`
-  font-weight: 600;
-  color: ${theme.colors.gray900};
-`;
-
-const QuantityControls = styled.div`
-  display: flex;
-  align-items: center;
-  border: 2px solid ${theme.colors.gray200};
-  border-radius: ${theme.borderRadius.md};
-  overflow: hidden;
-`;
-
-const QuantityButton = styled.button`
-  background: ${theme.colors.gray100};
-  border: none;
-  padding: ${theme.spacing.sm};
-  color: ${theme.colors.gray700};
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  &:hover {
-    background: ${theme.colors.gray200};
-  }
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-`;
-
-const QuantityInput = styled.input`
-  border: none;
-  padding: ${theme.spacing.sm} ${theme.spacing.md};
-  text-align: center;
-  width: 60px;
-  font-weight: 600;
-
-  &:focus {
-    outline: none;
-  }
-`;
 
 const ActionButtons = styled.div`
   display: flex;
@@ -353,7 +304,7 @@ const ActionButtons = styled.div`
   }
 `;
 
-const AddToCartButton = styled.button`
+const EnquireButton = styled.button`
   flex: 1;
   background: ${theme.colors.primary};
   color: ${theme.colors.white};
@@ -451,19 +402,75 @@ const RelatedGrid = styled.div`
   gap: ${theme.spacing.xl};
 `;
 
+const SellerInfo = styled.div`
+  background: ${theme.colors.gray50};
+  padding: ${theme.spacing.lg};
+  border-radius: ${theme.borderRadius.md};
+  margin-bottom: ${theme.spacing.lg};
+`;
+
+const SellerHeader = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.md};
+  margin-bottom: ${theme.spacing.md};
+`;
+
+const SellerLogo = styled.img`
+  width: 60px;
+  height: 60px;
+  border-radius: ${theme.borderRadius.md};
+  object-fit: cover;
+`;
+
+const SellerDetails = styled.div`
+  flex: 1;
+`;
+
+const SellerName = styled.h4`
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: ${theme.colors.gray900};
+  margin: 0 0 ${theme.spacing.xs} 0;
+`;
+
+const SellerBadge = styled.span`
+  background: ${theme.colors.success};
+  color: ${theme.colors.white};
+  padding: 2px 8px;
+  border-radius: ${theme.borderRadius.sm};
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+`;
+
+const SellerMeta = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: ${theme.spacing.md};
+  margin-top: ${theme.spacing.md};
+`;
+
+const SellerMetaItem = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.sm};
+  font-size: 0.9rem;
+  color: ${theme.colors.gray600};
+`;
+
 const ProductDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
   const [product, setProduct] = useState(null);
   const [selectedImage, setSelectedImage] = useState(0);
-  const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState("");
-  const [cartItems, setCartItems] = useState([]);
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [storeSlug, setStoreSlug] = useState("");
   const [vendor, setVendor] = useState(null);
+  const [isEnquiryModalOpen, setIsEnquiryModalOpen] = useState(false);
 
   // Detect store slug from URL
   useEffect(() => {
@@ -506,39 +513,10 @@ const ProductDetail = () => {
     setLoading(false);
   }, [id]);
 
-  const getBaseUrl = () => (storeSlug ? `/${storeSlug}` : "/ecommerce");
+    const getBaseUrl = () => (storeSlug ? `/${storeSlug}` : "/ecommerce");
 
-  const handleAddToCart = () => {
-    if (!product) return;
-
-    const cartItem = {
-      ...product,
-      quantity,
-      selectedSize: selectedSize || undefined,
-    };
-
-    setCartItems((prev) => {
-      const existingItem = prev.find(
-        (item) => item.id === product.id && item.selectedSize === selectedSize,
-      );
-
-      if (existingItem) {
-        return prev.map((item) =>
-          item.id === product.id && item.selectedSize === selectedSize
-            ? { ...item, quantity: item.quantity + quantity }
-            : item,
-        );
-      }
-
-      return [...prev, cartItem];
-    });
-
-    alert(`${product.name} added to cart!`);
-  };
-
-  const handleQuantityChange = (value) => {
-    const newQuantity = Math.max(1, Math.min(product?.stock || 1, value));
-    setQuantity(newQuantity);
+  const handleEnquireClick = () => {
+    setIsEnquiryModalOpen(true);
   };
 
   const handleShare = () => {
@@ -568,12 +546,8 @@ const ProductDetail = () => {
 
   if (loading) {
     return (
-      <PageContainer>
+            <PageContainer>
         <Navbar
-          cartItemsCount={cartItems.reduce(
-            (sum, item) => sum + item.quantity,
-            0,
-          )}
           storeName={vendor?.name || ""}
           storeLogo={vendor?.logo || ""}
           storeSlug={storeSlug}
@@ -587,12 +561,8 @@ const ProductDetail = () => {
 
   if (!product) {
     return (
-      <PageContainer>
+            <PageContainer>
         <Navbar
-          cartItemsCount={cartItems.reduce(
-            (sum, item) => sum + item.quantity,
-            0,
-          )}
           storeName={vendor?.name || ""}
           storeLogo={vendor?.logo || ""}
           storeSlug={storeSlug}
@@ -618,9 +588,8 @@ const ProductDetail = () => {
   }
 
   return (
-    <PageContainer>
+        <PageContainer>
       <Navbar
-        cartItemsCount={cartItems.reduce((sum, item) => sum + item.quantity, 0)}
         storeName={vendor?.name || ""}
         storeLogo={vendor?.logo || ""}
         storeSlug={storeSlug}
@@ -723,52 +692,55 @@ const ProductDetail = () => {
               </VariantSection>
             )}
 
-            <StockInfo inStock={product.stock > 0}>
+                                    <StockInfo inStock={getAvailabilityStatus(product) !== "out_of_stock"}>
               <FaCheck />
-              {product.stock > 0
-                ? `${product.stock} items in stock`
-                : "Out of stock"}
+              {getAvailabilityLabel(getAvailabilityStatus(product))}
+              {getAvailabilityStatus(product) === "in_stock" && product.stock > 0 && (
+                <span style={{ marginLeft: "8px", fontSize: "0.9rem", opacity: 0.8 }}>
+                  ({product.stock} units available)
+                </span>
+              )}
             </StockInfo>
 
-            {product.stock > 0 && (
-              <QuantitySection>
-                <QuantityLabel>Quantity:</QuantityLabel>
-                <QuantityControls>
-                  <QuantityButton
-                    onClick={() => handleQuantityChange(quantity - 1)}
-                    disabled={quantity <= 1}
-                  >
-                    <FaMinus />
-                  </QuantityButton>
-                  <QuantityInput
-                    type="number"
-                    value={quantity}
-                    onChange={(e) =>
-                      handleQuantityChange(parseInt(e.target.value) || 1)
-                    }
-                    min="1"
-                    max={product.stock}
-                  />
-                  <QuantityButton
-                    onClick={() => handleQuantityChange(quantity + 1)}
-                    disabled={quantity >= product.stock}
-                  >
-                    <FaPlus />
-                  </QuantityButton>
-                </QuantityControls>
-              </QuantitySection>
-            )}
+            <SellerInfo>
+              <SellerHeader>
+                <SellerLogo
+                  src={vendor?.logo || "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=80&h=80&fit=crop&crop=center"}
+                  alt={vendor?.name || "Seller"}
+                />
+                <SellerDetails>
+                  <SellerName>{vendor?.name || "TechMart Downtown"}</SellerName>
+                  <SellerBadge>Verified Seller</SellerBadge>
+                </SellerDetails>
+              </SellerHeader>
+              <SellerMeta>
+                <SellerMetaItem>
+                  <FaStore />
+                  <span>Electronics Store</span>
+                </SellerMetaItem>
+                <SellerMetaItem>
+                  <FaMapMarkerAlt />
+                  <span>Downtown Area</span>
+                </SellerMetaItem>
+                <SellerMetaItem>
+                  <FaUser />
+                  <span>500+ Products</span>
+                </SellerMetaItem>
+                <SellerMetaItem>
+                  <FaStar />
+                  <span>4.8 Rating</span>
+                </SellerMetaItem>
+              </SellerMeta>
+            </SellerInfo>
 
             <ActionButtons>
-              <AddToCartButton
-                onClick={handleAddToCart}
-                disabled={
-                  product.stock === 0 || (product.sizes && !selectedSize)
-                }
+                            <EnquireButton
+                onClick={handleEnquireClick}
+                disabled={getAvailabilityStatus(product) === "out_of_stock" || (product.sizes && !selectedSize)}
               >
-                <FaShoppingCart />
-                {product.stock > 0 ? "Add to Cart" : "Out of Stock"}
-              </AddToCartButton>
+                <FaEnvelope />
+                {getAvailabilityStatus(product) === "out_of_stock" ? "Not Available" : "Enquire Now"}
+              </EnquireButton>
 
               <WishlistButton title="Add to Wishlist">
                 <FaHeart />
@@ -796,7 +768,7 @@ const ProductDetail = () => {
           </ProductInfo>
         </ProductContainer>
 
-        {relatedProducts.length > 0 && (
+                {relatedProducts.length > 0 && (
           <RelatedSection>
             <SectionTitle>Related Products</SectionTitle>
             <RelatedGrid>
@@ -805,28 +777,18 @@ const ProductDetail = () => {
                   key={relatedProduct.id}
                   product={relatedProduct}
                   storeSlug={storeSlug}
-                  onAddToCart={() => {
-                    setCartItems((prev) => {
-                      const existingItem = prev.find(
-                        (item) => item.id === relatedProduct.id,
-                      );
-                      if (existingItem) {
-                        return prev.map((item) =>
-                          item.id === relatedProduct.id
-                            ? { ...item, quantity: item.quantity + 1 }
-                            : item,
-                        );
-                      }
-                      return [...prev, { ...relatedProduct, quantity: 1 }];
-                    });
-                    alert(`${relatedProduct.name} added to cart!`);
-                  }}
                 />
               ))}
             </RelatedGrid>
           </RelatedSection>
         )}
       </Container>
+
+      <EnquiryModal
+        isOpen={isEnquiryModalOpen}
+        onClose={() => setIsEnquiryModalOpen(false)}
+        product={product}
+      />
 
       <Footer storeSlug={storeSlug} theme={vendor?.theme || {}} />
     </PageContainer>

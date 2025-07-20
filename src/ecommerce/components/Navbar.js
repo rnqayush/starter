@@ -1,13 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { useAuth } from "../../context/AuthContext";
+import AuthModal from "../../components/auth/AuthModal";
+import UserProfile from "../../components/user/UserProfile";
 import {
   FaShoppingCart,
   FaUser,
   FaSearch,
   FaBars,
   FaTimes,
-  FaHome,
+    FaHome,
+  FaEnvelope,
+  FaStore,
+  FaChevronDown,
+  FaHeart,
+  FaBell,
 } from "react-icons/fa";
 import { theme } from "../../styles/GlobalStyle";
 
@@ -17,6 +25,8 @@ const NavbarContainer = styled.nav`
   position: sticky;
   top: 0;
   z-index: 100;
+  border-bottom: 1px solid ${theme.colors.gray100};
+  backdrop-filter: blur(10px);
 `;
 
 const NavbarContent = styled.div`
@@ -26,7 +36,11 @@ const NavbarContent = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 70px;
+  height: 80px;
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    height: 70px;
+  }
 `;
 
 const Logo = styled(Link).withConfig({
@@ -41,10 +55,17 @@ const Logo = styled(Link).withConfig({
 `;
 
 const LogoImage = styled.img`
-  width: 40px;
-  height: 40px;
-  border-radius: ${theme.borderRadius.md};
+  width: 50px;
+  height: 50px;
+  border-radius: ${theme.borderRadius.lg};
   object-fit: cover;
+  border: 2px solid ${theme.colors.gray200};
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: scale(1.05);
+    border-color: ${(props) => props.theme?.primaryColor || theme.colors.primary};
+  }
 `;
 
 const NavLinks = styled.div`
@@ -61,26 +82,34 @@ const NavLink = styled(Link).withConfig({
   shouldForwardProp: (prop) => prop !== "theme",
 })`
   color: ${theme.colors.gray700};
-  font-weight: 500;
-  transition: color 0.2s ease;
+  font-weight: 600;
+  transition: all 0.3s ease;
   position: relative;
+  padding: ${theme.spacing.sm} ${theme.spacing.md};
+  border-radius: ${theme.borderRadius.md};
+  font-size: 0.95rem;
 
   &:hover {
     color: ${(props) => props.theme?.primaryColor || theme.colors.primary};
+    background: ${(props) => props.theme?.primaryColor || theme.colors.primary}10;
+    transform: translateY(-1px);
   }
 
   &.active {
     color: ${(props) => props.theme?.primaryColor || theme.colors.primary};
+    background: ${(props) => props.theme?.primaryColor || theme.colors.primary}15;
 
     &::after {
       content: "";
       position: absolute;
-      bottom: -8px;
-      left: 0;
-      right: 0;
-      height: 2px;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 6px;
+      height: 6px;
       background: ${(props) =>
         props.theme?.primaryColor || theme.colors.primary};
+      border-radius: 50%;
     }
   }
 `;
@@ -235,6 +264,181 @@ const MobileSearchInput = styled.input`
   }
 `;
 
+const UserDropdown = styled.div`
+  position: relative;
+  display: inline-block;
+`;
+
+const UserDropdownButton = styled.button.withConfig({
+  shouldForwardProp: (prop) => prop !== "theme",
+})`
+  background: none;
+  color: ${theme.colors.gray700};
+  font-size: 1rem;
+  transition: color 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.xs};
+  padding: ${theme.spacing.sm};
+  border-radius: ${theme.borderRadius.md};
+
+  &:hover {
+    color: ${(props) => props.theme?.primaryColor || theme.colors.primary};
+    background: ${theme.colors.gray50};
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    display: none;
+  }
+`;
+
+const DropdownMenu = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "isOpen",
+})`
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: ${theme.colors.white};
+  border: 1px solid ${theme.colors.gray200};
+  border-radius: ${theme.borderRadius.md};
+  box-shadow: ${theme.shadows.lg};
+  min-width: 200px;
+  z-index: 1000;
+  display: ${(props) => (props.isOpen ? "block" : "none")};
+  overflow: hidden;
+`;
+
+const DropdownItem = styled(Link)`
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.sm};
+  padding: ${theme.spacing.md};
+  color: ${theme.colors.gray700};
+  transition: all 0.2s ease;
+  border-bottom: 1px solid ${theme.colors.gray100};
+
+  &:hover {
+    background: ${theme.colors.gray50};
+    color: ${theme.colors.primary};
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+`;
+
+const DropdownDivider = styled.div`
+  height: 1px;
+  background: ${theme.colors.gray200};
+  margin: ${theme.spacing.xs} 0;
+`;
+
+const DropdownButton = styled.button`
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.sm};
+  padding: ${theme.spacing.md};
+  color: ${theme.colors.gray700};
+  transition: all 0.2s ease;
+  border-bottom: 1px solid ${theme.colors.gray100};
+  width: 100%;
+  text-align: left;
+  background: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  cursor: pointer;
+
+  &:hover {
+    background: ${theme.colors.gray50};
+    color: ${theme.colors.primary};
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+`;
+
+const UserAvatar = styled.img`
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid ${theme.colors.gray200};
+`;
+
+const UserInfo = styled.div`
+  .name {
+    font-weight: 600;
+    color: ${theme.colors.gray900};
+    font-size: 0.9rem;
+  }
+
+  .role {
+    font-size: 0.75rem;
+    color: ${theme.colors.gray500};
+    text-transform: capitalize;
+  }
+`;
+
+const LoginButton = styled.button`
+  background: ${theme.colors.primary};
+  color: white;
+  padding: ${theme.spacing.sm} ${theme.spacing.md};
+  border: none;
+  border-radius: ${theme.borderRadius.md};
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: ${theme.colors.primaryDark};
+  }
+`;
+
+const Modal = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  backdrop-filter: blur(4px);
+`;
+
+const ModalContent = styled.div`
+  background: white;
+  border-radius: 16px;
+  max-width: 900px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+`;
+
+const ModalCloseButton = styled.button`
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: ${theme.colors.gray500};
+  cursor: pointer;
+  border-radius: 8px;
+  padding: 0.5rem;
+  z-index: 1;
+
+  &:hover {
+    background: ${theme.colors.gray100};
+    color: ${theme.colors.gray700};
+  }
+`;
+
 const Navbar = ({
   cartItemsCount = 0,
   storeName = "",
@@ -242,11 +446,31 @@ const Navbar = ({
   storeSlug = "",
   theme: vendorTheme = {},
 }) => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+      const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
+  const [authModalTab, setAuthModalTab] = useState("login");
   const navigate = useNavigate();
+  const dropdownRef = useRef(null);
+  const { user, isAuthenticated, logout, canAccessSeller } = useAuth();
 
   const getBaseUrl = () => (storeSlug ? `/${storeSlug}` : "/ecommerce");
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsUserDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -329,15 +553,100 @@ const Navbar = ({
         </SearchContainer>
 
         <NavActions>
-          <Link to="/">
+                              <Link to="/">
             <UserButton title="Back to Main Site" theme={vendorTheme}>
               <FaHome />
             </UserButton>
           </Link>
 
-          <UserButton theme={vendorTheme}>
-            <FaUser />
+          <UserButton title="Wishlist" theme={vendorTheme}>
+            <FaHeart />
           </UserButton>
+
+          <UserButton title="Notifications" theme={vendorTheme}>
+            <FaBell />
+          </UserButton>
+
+                              {isAuthenticated ? (
+            <UserDropdown ref={dropdownRef}>
+              <UserDropdownButton
+                onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)}
+                theme={vendorTheme}
+              >
+                <UserAvatar src={user.avatar} alt={user.name} />
+                <UserInfo>
+                  <div className="name">{user.name}</div>
+                  <div className="role">{user.role}</div>
+                </UserInfo>
+                <FaChevronDown />
+              </UserDropdownButton>
+
+              <DropdownMenu isOpen={isUserDropdownOpen}>
+                <DropdownButton
+                  onClick={() => {
+                    setShowProfile(true);
+                    setIsUserDropdownOpen(false);
+                  }}
+                >
+                  <FaUser />
+                  My Profile
+                </DropdownButton>
+
+                <DropdownItem
+                  to={`${getBaseUrl()}/my-enquiries`}
+                  onClick={() => setIsUserDropdownOpen(false)}
+                >
+                  <FaEnvelope />
+                  My Enquiries
+                </DropdownItem>
+
+                {canAccessSeller() && (
+                  <>
+                    <DropdownDivider />
+                    <DropdownItem
+                      to={`${getBaseUrl()}/seller-dashboard`}
+                      onClick={() => setIsUserDropdownOpen(false)}
+                    >
+                      <FaStore />
+                      Seller Dashboard
+                    </DropdownItem>
+                  </>
+                )}
+
+                <DropdownDivider />
+
+                <DropdownButton
+                  onClick={() => {
+                    logout();
+                    setIsUserDropdownOpen(false);
+                  }}
+                >
+                  <FaTimes />
+                  Sign Out
+                </DropdownButton>
+              </DropdownMenu>
+            </UserDropdown>
+          ) : (
+            <div style={{ display: "flex", gap: "0.5rem" }}>
+              <LoginButton
+                onClick={() => {
+                  setAuthModalTab("login");
+                  setShowAuthModal(true);
+                }}
+              >
+                Sign In
+              </LoginButton>
+              <LoginButton
+                style={{ background: "transparent", color: vendorTheme?.primaryColor || theme.colors.primary, border: `2px solid ${vendorTheme?.primaryColor || theme.colors.primary}` }}
+                onClick={() => {
+                  setAuthModalTab("register");
+                  setShowAuthModal(true);
+                }}
+              >
+                Sign Up
+              </LoginButton>
+            </div>
+          )}
 
           <Link to={`${getBaseUrl()}/cart`}>
             <CartButton theme={vendorTheme}>
@@ -382,14 +691,78 @@ const Navbar = ({
         >
           Home & Garden
         </MobileNavLink>
-        <MobileNavLink
+                <MobileNavLink
           to="/ecommerce/products?category=sports"
           onClick={() => setIsMenuOpen(false)}
         >
           Sports
         </MobileNavLink>
 
-        <form onSubmit={handleSearch}>
+                {isAuthenticated ? (
+          <>
+            <MobileNavLink
+              to="#"
+              onClick={() => {
+                setShowProfile(true);
+                setIsMenuOpen(false);
+              }}
+            >
+              👤 My Profile
+            </MobileNavLink>
+
+            <MobileNavLink
+              to={`${getBaseUrl()}/my-enquiries`}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              📧 My Enquiries
+            </MobileNavLink>
+
+            {canAccessSeller() && (
+              <MobileNavLink
+                to={`${getBaseUrl()}/seller-dashboard`}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                🏪 Seller Dashboard
+              </MobileNavLink>
+            )}
+
+            <MobileNavLink
+              to="#"
+              onClick={() => {
+                logout();
+                setIsMenuOpen(false);
+              }}
+            >
+              🚪 Sign Out
+            </MobileNavLink>
+          </>
+        ) : (
+          <>
+            <MobileNavLink
+              to="#"
+              onClick={() => {
+                setAuthModalTab("login");
+                setShowAuthModal(true);
+                setIsMenuOpen(false);
+              }}
+            >
+              🔑 Sign In
+            </MobileNavLink>
+
+            <MobileNavLink
+              to="#"
+              onClick={() => {
+                setAuthModalTab("register");
+                setShowAuthModal(true);
+                setIsMenuOpen(false);
+              }}
+            >
+              📝 Sign Up
+            </MobileNavLink>
+          </>
+        )}
+
+                <form onSubmit={handleSearch}>
           <MobileSearchInput
             type="text"
             placeholder="Search products..."
@@ -401,6 +774,25 @@ const Navbar = ({
           />
         </form>
       </MobileMenu>
+
+      {/* Authentication Modal */}
+      <AuthModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        defaultTab={authModalTab}
+      />
+
+      {/* Profile Modal */}
+      {showProfile && (
+        <Modal onClick={() => setShowProfile(false)}>
+          <ModalContent onClick={(e) => e.stopPropagation()}>
+            <ModalCloseButton onClick={() => setShowProfile(false)}>
+              <FaTimes />
+            </ModalCloseButton>
+            <UserProfile onClose={() => setShowProfile(false)} />
+          </ModalContent>
+        </Modal>
+      )}
     </NavbarContainer>
   );
 };

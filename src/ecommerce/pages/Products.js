@@ -211,8 +211,7 @@ const Products = () => {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [sortBy, setSortBy] = useState("name");
   const [view, setView] = useState("grid");
-  const [cartItems, setCartItems] = useState([]);
-  const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(true);
   const [storeSlug, setStoreSlug] = useState("");
   const [vendor, setVendor] = useState(null);
 
@@ -287,21 +286,7 @@ const Products = () => {
     setLoading(false);
   }, [category, searchQuery, featured, sale, sortBy]);
 
-  const handleAddToCart = (product) => {
-    setCartItems((prev) => {
-      const existingItem = prev.find((item) => item.id === product.id);
-      if (existingItem) {
-        return prev.map((item) =>
-          item.id === product.id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item,
-        );
-      }
-      return [...prev, { ...product, quantity: 1 }];
-    });
-
-    alert(`${product.name} added to cart!`);
-  };
+  
 
   const getPageTitle = () => {
     if (searchQuery) return `Search Results for "${searchQuery}"`;
@@ -354,12 +339,8 @@ const Products = () => {
 
   if (loading) {
     return (
-      <PageContainer>
+            <PageContainer>
         <Navbar
-          cartItemsCount={cartItems.reduce(
-            (sum, item) => sum + item.quantity,
-            0,
-          )}
           storeName={vendor?.name || ""}
           storeLogo={vendor?.logo || ""}
           storeSlug={storeSlug}
@@ -372,9 +353,8 @@ const Products = () => {
   }
 
   return (
-    <PageContainer>
+        <PageContainer>
       <Navbar
-        cartItemsCount={cartItems.reduce((sum, item) => sum + item.quantity, 0)}
         storeName={vendor?.name || ""}
         storeLogo={vendor?.logo || ""}
         storeSlug={storeSlug}
@@ -454,12 +434,11 @@ const Products = () => {
         )}
 
         {filteredProducts.length > 0 ? (
-          <ProductsGrid view={view}>
+                    <ProductsGrid view={view}>
             {filteredProducts.map((product) => (
               <ProductCard
                 key={product.id}
                 product={product}
-                onAddToCart={handleAddToCart}
                 storeSlug={storeSlug}
               />
             ))}

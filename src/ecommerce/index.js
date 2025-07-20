@@ -1,38 +1,53 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
 import EcommerceMain from "./pages/EcommerceMain";
+import StoresListing from "./pages/StoresListing";
 import Products from "./pages/Products";
 import ProductDetail from "./pages/ProductDetail";
+import MyEnquiries from "./pages/MyEnquiries";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import OrderConfirmation from "./pages/OrderConfirmation";
 import SellerDashboard from "./pages/SellerDashboard";
+import { NotificationProvider } from "./components/NotificationSystem";
 
 const EcommerceModule = () => {
   const location = useLocation();
   const path = location.pathname;
 
-  // Route based on URL path
+  // Determine which component to render
+  let ComponentToRender;
+
   if (path === "/ecommerce") {
-    return <EcommerceMain />;
+    ComponentToRender = StoresListing;
+  } else if (path === "/ecommerce-stores") {
+    ComponentToRender = StoresListing;
   } else if (path.includes("/seller-dashboard")) {
-    return <SellerDashboard />;
+    ComponentToRender = SellerDashboard;
+  } else if (path.includes("/my-enquiries")) {
+    ComponentToRender = MyEnquiries;
   } else if (path.includes("/products") && !path.includes("/product/")) {
-    return <Products />;
+    ComponentToRender = Products;
   } else if (path.includes("/product/")) {
-    return <ProductDetail />;
+    ComponentToRender = ProductDetail;
   } else if (path.includes("/cart")) {
-    return <Cart />;
+    ComponentToRender = Cart;
   } else if (path.includes("/checkout")) {
-    return <Checkout />;
+    ComponentToRender = Checkout;
   } else if (path.includes("/order-confirmation")) {
-    return <OrderConfirmation />;
+    ComponentToRender = OrderConfirmation;
   } else if (path.match(/^\/[^/]+$/)) {
     // Single segment path like "/techmart-downtown" - store home
-    return <EcommerceMain />;
+    ComponentToRender = EcommerceMain;
   } else {
-    return <EcommerceMain />;
+    ComponentToRender = StoresListing;
   }
+
+  return (
+    <NotificationProvider>
+      <ComponentToRender />
+    </NotificationProvider>
+  );
 };
 
 export default EcommerceModule;
