@@ -476,8 +476,9 @@ const Cart = () => {
     return calculateSubtotal() - calculateDiscount() + calculateShipping();
   };
 
-  const handleCheckout = () => {
-    navigate("/ecommerce/checkout");
+    const handleEnquireAll = () => {
+    // Since this is an enquiry system, we'll convert cart to enquiries
+    navigate("/ecommerce/my-enquiries");
   };
 
   if (cartItems.length === 0) {
