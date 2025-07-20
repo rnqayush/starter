@@ -793,7 +793,9 @@ const SocialLinks = styled.div`
   gap: ${theme.spacing.md};
 `;
 
-const SocialLink = styled.a`
+const SocialLink = styled.a.withConfig({
+  shouldForwardProp: (prop) => !['primaryColor'].includes(prop),
+})`
   background: ${props => props.primaryColor || theme.colors.primary};
   color: white;
   padding: ${theme.spacing.sm};
