@@ -755,8 +755,8 @@ const PlatformHomePage = () => {
       title: "Enterprise-Grade Infrastructure",
       description: "Built on reliable cloud infrastructure with 99.9% uptime and lightning-fast loading speeds.",
     },
-    {
-      icon: FaShield,
+        {
+      icon: FaLock,
       title: "Secure & Compliant",
       description: "Bank-level security with SSL certificates, PCI compliance, and automated backups included.",
     },
