@@ -764,7 +764,7 @@ const ProductDetail = () => {
           </ProductInfo>
         </ProductContainer>
 
-        {relatedProducts.length > 0 && (
+                {relatedProducts.length > 0 && (
           <RelatedSection>
             <SectionTitle>Related Products</SectionTitle>
             <RelatedGrid>
@@ -773,28 +773,18 @@ const ProductDetail = () => {
                   key={relatedProduct.id}
                   product={relatedProduct}
                   storeSlug={storeSlug}
-                  onAddToCart={() => {
-                    setCartItems((prev) => {
-                      const existingItem = prev.find(
-                        (item) => item.id === relatedProduct.id,
-                      );
-                      if (existingItem) {
-                        return prev.map((item) =>
-                          item.id === relatedProduct.id
-                            ? { ...item, quantity: item.quantity + 1 }
-                            : item,
-                        );
-                      }
-                      return [...prev, { ...relatedProduct, quantity: 1 }];
-                    });
-                    alert(`${relatedProduct.name} added to cart!`);
-                  }}
                 />
               ))}
             </RelatedGrid>
           </RelatedSection>
         )}
       </Container>
+
+      <EnquiryModal
+        isOpen={isEnquiryModalOpen}
+        onClose={() => setIsEnquiryModalOpen(false)}
+        product={product}
+      />
 
       <Footer storeSlug={storeSlug} theme={vendor?.theme || {}} />
     </PageContainer>
