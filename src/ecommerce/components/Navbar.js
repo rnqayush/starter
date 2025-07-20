@@ -234,7 +234,7 @@ const CartBadge = styled.span.withConfig({
 `;
 
 const UserButton = styled.button.withConfig({
-  shouldForwardProp: (prop) => prop !== "theme",
+  shouldForwardProp: (prop) => prop !== "theme" && prop !== "hideOnTablet" && prop !== "hideOnSmallDesktop",
 })`
   background: none;
   color: ${theme.colors.gray700};
@@ -261,6 +261,11 @@ const UserButton = styled.button.withConfig({
     font-size: 1rem;
     min-width: 1.8rem;
     height: 1.8rem;
+    ${(props) => props.hideOnTablet && 'display: none;'}
+  }
+
+  @media (max-width: 1200px) {
+    ${(props) => props.hideOnSmallDesktop && 'display: none;'}
   }
 `;
 
