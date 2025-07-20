@@ -881,13 +881,30 @@ const BusinessWebsitePage = () => {
         sectionName="Hero Section"
         onClick={() => handleSectionClick('hero')}
       >
-        <HeroSection id="home" primaryColor={businessData.primaryColor}>
+                <HeroSection id="hero" primaryColor={businessData.primaryColor}>
           <HeroContent>
             <HeroTitle>{content.hero.title}</HeroTitle>
             <HeroSubtitle>{content.hero.subtitle}</HeroSubtitle>
-            <HeroCTA primaryColor={businessData.primaryColor}>
-              Book Appointment
-            </HeroCTA>
+            <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap', marginTop: '2rem' }}>
+              <HeroCTA primaryColor={businessData.primaryColor}>
+                {businessData.slug === 'restaurant' ? 'Reserve Table' :
+                 businessData.slug === 'gym' ? 'Start Free Trial' :
+                 businessData.slug === 'salon' ? 'Book Appointment' : 'Get Started'}
+              </HeroCTA>
+              <button style={{
+                padding: '1rem 2rem',
+                fontSize: '1.2rem',
+                fontWeight: '600',
+                background: 'transparent',
+                color: businessData.primaryColor,
+                border: `2px solid ${businessData.primaryColor}`,
+                borderRadius: '8px',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease'
+              }}>
+                Learn More
+              </button>
+            </div>
           </HeroContent>
         </HeroSection>
       </EditableSection>
