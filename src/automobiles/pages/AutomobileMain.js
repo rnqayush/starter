@@ -4,6 +4,7 @@ import styled, { createGlobalStyle } from "styled-components";
 import { FaArrowRight, FaCar, FaHome } from "react-icons/fa";
 import { theme } from "../../styles/GlobalStyle";
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 import VehicleCard from "../components/VehicleCard";
 import CategoryCard from "../components/CategoryCard";
 import {
