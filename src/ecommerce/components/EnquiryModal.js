@@ -266,6 +266,7 @@ const EnquiryModal = ({
   product, 
   userInfo = {} 
 }) => {
+  const { showSuccessNotification, showEnquiryNotification } = useNotifications();
   const [formData, setFormData] = useState({
     name: userInfo.name || "",
     phone: userInfo.phone || "",
