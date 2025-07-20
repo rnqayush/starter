@@ -774,62 +774,8 @@ const BusinessWebsitePage = () => {
     navigate("/business-websites");
   };
 
-  const toggleEditMode = () => {
-    setIsEditing(!isEditing);
-  };
-
-    const handleSectionClick = (sectionId) => {
-    if (isEditing) {
-      // Enhanced visual feedback for editing
-      const sectionElement = document.getElementById(sectionId);
-      if (sectionElement) {
-        sectionElement.style.transform = 'scale(1.02)';
-        sectionElement.style.transition = 'transform 0.2s ease';
-        setTimeout(() => {
-          sectionElement.style.transform = 'scale(1)';
-        }, 200);
-      }
-
-      // Show a more professional edit dialog
-      const editDialog = document.createElement('div');
-      editDialog.style.cssText = `
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background: white;
-        padding: 2rem;
-        border-radius: 12px;
-        box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-        z-index: 1000;
-        max-width: 400px;
-        text-align: center;
-        border: 2px solid ${businessData.primaryColor};
-      `;
-
-      editDialog.innerHTML = `
-        <h3 style="margin: 0 0 1rem 0; color: ${businessData.primaryColor};">✏️ Edit ${sectionId.charAt(0).toUpperCase() + sectionId.slice(1)} Section</h3>
-        <p style="margin: 0 0 1.5rem 0; color: #666; line-height: 1.5;">In a real application, this would open a visual editor where you can modify content, images, and styling for this section.</p>
-        <button onclick="this.parentElement.remove()" style="
-          background: ${businessData.primaryColor};
-          color: white;
-          border: none;
-          padding: 0.75rem 1.5rem;
-          border-radius: 6px;
-          cursor: pointer;
-          font-weight: 600;
-        ">Got it!</button>
-      `;
-
-      document.body.appendChild(editDialog);
-
-      // Auto-remove after 3 seconds
-      setTimeout(() => {
-        if (editDialog.parentElement) {
-          editDialog.remove();
-        }
-      }, 3000);
-    }
+    const handleOwnerClick = () => {
+    navigate(`/business/${businessData.slug}/owner`);
   };
 
   // Sample data based on business type
