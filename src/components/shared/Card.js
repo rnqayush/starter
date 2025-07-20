@@ -27,87 +27,87 @@ export const Card = styled.div`
 
 export const CardImage = styled.div`
   width: 100%;
-  height: ${(props) => props.height || "12.5rem"};
+  height: ${(props) => props.height || "10rem"};
   background-image: url(${(props) => props.src});
   background-size: cover;
   background-position: center;
   position: relative;
 
   ${media.mobile} {
-    height: ${(props) => props.height || "10rem"};
+    height: ${(props) => props.height || "9rem"};
   }
 
   ${media.tablet} {
-    height: ${(props) => props.height || "11.25rem"};
+    height: ${(props) => props.height || "9.5rem"};
   }
 `;
 
 export const CardContent = styled.div`
-  padding: ${theme.spacing.lg};
+  padding: ${theme.spacing.md};
 
   ${media.mobile} {
-    padding: ${theme.spacing.md};
+    padding: ${theme.spacing.sm};
   }
 
   ${media.tablet} {
-    padding: ${theme.spacing.lg};
+    padding: ${theme.spacing.md};
   }
 `;
 
 export const CardTitle = styled.h3`
-  font-size: 1.25rem;
+  font-size: 1.125rem;
   font-weight: 600;
-  margin-bottom: ${theme.spacing.sm};
+  margin-bottom: ${theme.spacing.xs};
   color: ${theme.colors.gray900};
   line-height: 1.3;
 
   ${media.mobile} {
-    font-size: 1.125rem;
+    font-size: 1rem;
     margin-bottom: ${theme.spacing.xs};
   }
 
   ${media.tablet} {
-    font-size: 1.1875rem;
+    font-size: 1.0625rem;
   }
 `;
 
 export const CardSubtitle = styled.p`
   color: ${theme.colors.gray600};
-  margin-bottom: ${theme.spacing.md};
-  font-size: 0.875rem;
+  margin-bottom: ${theme.spacing.sm};
+  font-size: 0.8125rem;
   line-height: 1.4;
 
   ${media.mobile} {
-    font-size: 0.8125rem;
-    margin-bottom: ${theme.spacing.sm};
+    font-size: 0.75rem;
+    margin-bottom: ${theme.spacing.xs};
   }
 `;
 
 export const CardDescription = styled.p`
   color: ${theme.colors.gray700};
   line-height: 1.5;
-  margin-bottom: ${theme.spacing.md};
-  font-size: 0.875rem;
+  margin-bottom: ${theme.spacing.sm};
+  font-size: 0.8125rem;
 
   ${media.mobile} {
-    font-size: 0.8125rem;
+    font-size: 0.75rem;
     line-height: 1.4;
-    margin-bottom: ${theme.spacing.sm};
+    margin-bottom: ${theme.spacing.xs};
   }
 `;
 
 export const CardFooter = styled.div`
-  padding: ${theme.spacing.md} ${theme.spacing.lg};
+  padding: ${theme.spacing.sm} ${theme.spacing.md};
   border-top: 1px solid ${theme.colors.gray200};
   background: ${theme.colors.gray50};
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: ${theme.spacing.md};
+  gap: ${theme.spacing.sm};
 
   ${media.mobile} {
-    padding: ${theme.spacing.sm} ${theme.spacing.md};
-    gap: ${theme.spacing.sm};
+    padding: ${theme.spacing.xs} ${theme.spacing.sm};
+    gap: ${theme.spacing.xs};
     flex-direction: column;
     align-items: stretch;
   }
@@ -120,12 +120,12 @@ export const CardFooter = styled.div`
 
 export const CardActions = styled.div`
   display: flex;
-  gap: ${theme.spacing.sm};
-  margin-top: ${theme.spacing.md};
+  gap: ${theme.spacing.xs};
+  margin-top: ${theme.spacing.sm};
 
   ${media.mobile} {
     gap: ${theme.spacing.xs};
-    margin-top: ${theme.spacing.sm};
+    margin-top: ${theme.spacing.xs};
     flex-direction: column;
   }
 
@@ -180,7 +180,7 @@ export const Badge = styled.span`
 `;
 
 export const Price = styled.div`
-  font-size: 1.25rem;
+  font-size: 1.125rem;
   font-weight: 700;
   color: ${theme.colors.primary};
   display: flex;
@@ -188,20 +188,20 @@ export const Price = styled.div`
   gap: ${theme.spacing.xs};
 
   ${media.mobile} {
-    font-size: 1.125rem;
+    font-size: 1rem;
   }
 
   ${media.tablet} {
-    font-size: 1.1875rem;
+    font-size: 1.0625rem;
   }
 `;
 
 export const PriceUnit = styled.span`
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   font-weight: 400;
   color: ${theme.colors.gray600};
 
   ${media.mobile} {
-    font-size: 0.8125rem;
+    font-size: 0.75rem;
   }
 `;
