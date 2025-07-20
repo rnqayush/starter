@@ -189,7 +189,9 @@ const NavContent = styled.div`
   align-items: center;
 `;
 
-const NavLogo = styled.div`
+const NavLogo = styled.div.withConfig({
+  shouldForwardProp: (prop) => !['scrolled'].includes(prop),
+})`
   font-size: 1.5rem;
   font-weight: 700;
   color: ${props => props.scrolled ? theme.colors.gray900 : 'white'};
