@@ -19,6 +19,8 @@ import {
   FaLeaf,
     FaGem,
   FaCheck,
+  FaBars,
+  FaTimes,
 } from "react-icons/fa";
 import { theme } from "../../styles/GlobalStyle";
 import { weddingVendors } from "../data/vendors";
@@ -53,6 +55,11 @@ const NavContent = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: relative;
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.md};
+  }
 `;
 
 const Logo = styled.div`
@@ -62,6 +69,57 @@ const Logo = styled.div`
   font-size: 1.5rem;
   font-weight: 700;
   color: ${theme.colors.primary};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    font-size: 1.25rem;
+  }
+`;
+
+const MobileMenuButton = styled.button`
+  display: none;
+  background: none;
+  border: none;
+  color: ${theme.colors.gray700};
+  font-size: 1.5rem;
+  padding: ${theme.spacing.sm};
+  cursor: pointer;
+  border-radius: ${theme.borderRadius.md};
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: ${theme.colors.gray100};
+    color: ${theme.colors.primary};
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+`;
+
+const NavActions = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "isOpen",
+})`
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.md};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: ${theme.colors.white};
+    flex-direction: column;
+    justify-content: center;
+    gap: ${theme.spacing.xl};
+    z-index: 1000;
+    transform: translateX(${(props) => (props.isOpen ? "0" : "100%")});
+    transition: transform 0.3s ease;
+    padding: ${theme.spacing.xl};
+  }
 `;
 
 const BackButton = styled.button`
@@ -80,6 +138,34 @@ const BackButton = styled.button`
   &:hover {
     border-color: ${theme.colors.primary};
     color: ${theme.colors.primary};
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.md} ${theme.spacing.lg};
+    font-size: 1.1rem;
+    justify-content: center;
+    min-width: 200px;
+  }
+`;
+
+const MobileMenuOverlay = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "isOpen",
+})`
+  display: none;
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    opacity: ${(props) => (props.isOpen ? "1" : "0")};
+    visibility: ${(props) => (props.isOpen ? "visible" : "hidden")};
+    transition: all 0.3s ease;
+    backdrop-filter: blur(4px);
   }
 `;
 
