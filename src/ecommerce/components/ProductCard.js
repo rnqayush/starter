@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { FaStar, FaHeart, FaEnvelope } from "react-icons/fa";
 import { theme, media } from "../../styles/GlobalStyle";
 import EnquiryModal from "./EnquiryModal";
+import { getAvailabilityStatus, getAvailabilityLabel, getAvailabilityColor } from "../data/products";
 
 const Card = styled.div`
   background: ${theme.colors.white};
