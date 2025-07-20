@@ -786,9 +786,16 @@ const BusinessWebsitePage = () => {
 
   const content = getBusinessContent(businessData.slug);
 
-  return (
+    return (
     <PageContainer>
       <EditModeOverlay isEditing={isEditing} />
+      <EditModeBanner isEditing={isEditing} primaryColor={businessData.primaryColor}>
+        <div className="edit-instructions">
+          <span className="icon">✏️</span>
+          <span>Edit Mode Active - Click on any section to customize</span>
+          <span className="icon">👆</span>
+        </div>
+      </EditModeBanner>
       
       {/* Navbar */}
       <Navbar>
