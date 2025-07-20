@@ -682,8 +682,8 @@ const EditableSection = styled.div.withConfig({
   shouldForwardProp: (prop) => prop !== 'isEditing' && prop !== 'primaryColor' && prop !== 'sectionName',
 })`
   position: relative;
-  outline: ${props => props.isEditing ? `2px dashed ${props.primaryColor || theme.colors.primary}` : 'none'};
-  outline-offset: 4px;
+    outline: ${props => props.isEditing ? `3px dashed ${props.primaryColor || theme.colors.primary}` : 'none'};
+  outline-offset: 8px;
   cursor: ${props => props.isEditing ? 'pointer' : 'default'};
   
   &:hover {
