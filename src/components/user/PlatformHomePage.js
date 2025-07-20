@@ -105,39 +105,69 @@ const HeroContent = styled.div`
 `;
 
 const HeroTitle = styled.h1`
-  font-size: 4rem;
-  font-weight: 700;
+  font-size: 4.5rem;
+  font-weight: 800;
   margin-bottom: ${theme.spacing.lg};
-  background: linear-gradient(45deg, #ffffff, #f0f8ff);
+  background: linear-gradient(135deg, #ffffff 0%, #e0e7ff 50%, #c7d2fe 100%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   line-height: 1.1;
+  letter-spacing: -0.02em;
 
   ${media.mobile} {
-    font-size: 2.5rem;
+    font-size: 2.75rem;
     margin-bottom: ${theme.spacing.md};
   }
 
   ${media.tablet} {
-    font-size: 3.25rem;
+    font-size: 3.5rem;
   }
 
   ${media.desktop} {
-    font-size: 4.5rem;
+    font-size: 5rem;
   }
 `;
 
 const HeroSubtitle = styled.p`
-  font-size: 1.5rem;
-  margin-bottom: ${theme.spacing.xl};
-  opacity: 0.9;
-  max-width: 700px;
+  font-size: 1.4rem;
+  margin-bottom: ${theme.spacing.lg};
+  opacity: 0.95;
+  max-width: 750px;
   margin-left: auto;
   margin-right: auto;
+  line-height: 1.6;
+  font-weight: 400;
+  color: #e2e8f0;
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    font-size: 1.2rem;
+    font-size: 1.15rem;
+  }
+`;
+
+const TrustIndicators = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: ${theme.spacing.xl};
+  margin-bottom: ${theme.spacing.xl};
+  flex-wrap: wrap;
+  opacity: 0.8;
+
+  ${media.mobile} {
+    gap: ${theme.spacing.lg};
+  }
+`;
+
+const TrustItem = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.sm};
+  font-size: 0.95rem;
+  color: #cbd5e1;
+
+  svg {
+    color: #10b981;
   }
 `;
 
