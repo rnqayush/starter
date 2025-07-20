@@ -952,8 +952,8 @@ const PlatformHomePage = () => {
       {/* CTA Banner Section */}
       <CTABannerSection>
         <CTABannerContainer>
-          <CTABannerTitle>
-            Don't Just Watch Others Succeed – Be the Next Big Brand
+                  <CTABannerTitle>
+            Ready to Transform Your Business?
           </CTABannerTitle>
           <CTABannerButton onClick={handleCreateStore}>
             Start My Online Store
