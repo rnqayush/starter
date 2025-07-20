@@ -4,6 +4,7 @@ import WeddingHome from "./pages/WeddingHome";
 import VendorDetail from "./pages/VendorDetail";
 import VendorPage from "./pages/VendorPage";
 import VendorPortfolio from "./pages/VendorPortfolio";
+import VendorDashboard from "./pages/VendorDashboard";
 import BookingPage from "./pages/BookingPage";
 import BookingConfirmation from "./pages/BookingConfirmation";
 import MyBookings from "./pages/MyBookings";
