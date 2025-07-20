@@ -245,13 +245,15 @@ const HeroTitle = styled.h1`
 `;
 
 const HeroSubtitle = styled.p`
-  font-size: 1.3rem;
-  color: ${theme.colors.gray600};
+  font-size: 1.4rem;
+  color: ${theme.colors.white};
   margin-bottom: ${theme.spacing.xxl};
-  max-width: 600px;
+  max-width: 700px;
   margin-left: auto;
   margin-right: auto;
   line-height: 1.6;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+  opacity: 0.95;
 `;
 
 const HeroCTA = styled.button.withConfig({
