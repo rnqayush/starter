@@ -139,15 +139,20 @@ function App() {
               element={<AutomobileModule />}
             />
 
-                        {/* Wedding vendor-specific Routes (more specific routes first) */}
+                                    {/* Wedding vendor-specific Routes (more specific routes first) */}
+            <Route path="/:vendorSlug/portfolio" element={<WeddingModule />} />
             <Route path="/:vendorSlug/booking" element={<WeddingModule />} />
             <Route path="/:vendorSlug/booking/:serviceId" element={<WeddingModule />} />
 
             {/* Individual wedding vendor pages */}
             <Route path="/elegant-events" element={<WeddingModule />} />
+            <Route path="/elegant-events/portfolio" element={<WeddingModule />} />
             <Route path="/bloom-bridal" element={<WeddingModule />} />
+            <Route path="/bloom-bridal/portfolio" element={<WeddingModule />} />
             <Route path="/enchanted-venues" element={<WeddingModule />} />
+            <Route path="/enchanted-venues/portfolio" element={<WeddingModule />} />
             <Route path="/sweet-celebrations" element={<WeddingModule />} />
+            <Route path="/sweet-celebrations/portfolio" element={<WeddingModule />} />
 
             {/* Hotel-specific Routes (more specific routes first) */}
             <Route path="/:hotelSlug/rooms/:roomId" element={<HotelModule />} />
