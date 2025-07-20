@@ -420,18 +420,18 @@ const Vehicles = () => {
               Filter & Search
             </FilterTitle>
             <ViewToggle>
-              <ViewButton
+                            <ViewButton
                 active={viewMode === "grid"}
                 onClick={() => setViewMode("grid")}
               >
-                <FaGridAlt />
+                <FaTh />
                 Grid
               </ViewButton>
               <ViewButton
                 active={viewMode === "list"}
                 onClick={() => setViewMode("list")}
               >
-                <FaListAlt />
+                <FaList />
                 List
               </ViewButton>
             </ViewToggle>
