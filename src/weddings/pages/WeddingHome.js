@@ -19,6 +19,8 @@ import {
   FaLeaf,
     FaGem,
   FaCheck,
+  FaBars,
+  FaTimes,
 } from "react-icons/fa";
 import { theme } from "../../styles/GlobalStyle";
 import { weddingVendors } from "../data/vendors";
@@ -53,6 +55,11 @@ const NavContent = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: relative;
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.md};
+  }
 `;
 
 const Logo = styled.div`
@@ -62,6 +69,85 @@ const Logo = styled.div`
   font-size: 1.5rem;
   font-weight: 700;
   color: ${theme.colors.primary};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    font-size: 1.25rem;
+  }
+`;
+
+const MobileMenuButton = styled.button`
+  display: none;
+  background: none;
+  border: none;
+  color: ${theme.colors.gray700};
+  font-size: 1.5rem;
+  padding: ${theme.spacing.sm};
+  cursor: pointer;
+  border-radius: ${theme.borderRadius.md};
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: ${theme.colors.gray100};
+    color: ${theme.colors.primary};
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+`;
+
+const NavActions = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "isOpen",
+})`
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.md};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: ${theme.colors.white};
+    flex-direction: column;
+    justify-content: center;
+    gap: ${theme.spacing.xl};
+    z-index: 1001;
+    transform: translateX(${(props) => (props.isOpen ? "0" : "100%")});
+    transition: transform 0.3s ease;
+    padding: ${theme.spacing.xl};
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+  }
+`;
+
+const MobileCloseButton = styled.button`
+  display: none;
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    display: flex;
+    position: absolute;
+    top: ${theme.spacing.lg};
+    right: ${theme.spacing.lg};
+    background: none;
+    border: none;
+    color: ${theme.colors.gray700};
+    font-size: 2rem;
+    cursor: pointer;
+    z-index: 1002;
+    padding: ${theme.spacing.sm};
+    border-radius: ${theme.borderRadius.md};
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: ${theme.colors.gray100};
+      color: ${theme.colors.primary};
+    }
+  }
 `;
 
 const BackButton = styled.button`
@@ -80,6 +166,33 @@ const BackButton = styled.button`
   &:hover {
     border-color: ${theme.colors.primary};
     color: ${theme.colors.primary};
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.md} ${theme.spacing.lg};
+    font-size: 1.1rem;
+    justify-content: center;
+    min-width: 200px;
+  }
+`;
+
+const MobileMenuOverlay = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "isOpen",
+})`
+  display: none;
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    opacity: ${(props) => (props.isOpen ? "1" : "0")};
+    visibility: ${(props) => (props.isOpen ? "visible" : "hidden")};
+    transition: opacity 0.3s ease, visibility 0.3s ease;
   }
 `;
 
@@ -577,7 +690,8 @@ const WeddingHome = () => {
     const [activeFilter, setActiveFilter] = useState("all");
   const [sortBy, setSortBy] = useState("distance");
   const [locationLoading, setLocationLoading] = useState(false);
-  const [selectedCategories, setSelectedCategories] = useState(["venue"]); // Default to venues checked
+    const [selectedCategories, setSelectedCategories] = useState(["venue"]); // Default to venues checked
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const categories = [
     { name: "Venues", icon: FaLeaf, count: 15, filter: "venue" },
@@ -704,7 +818,7 @@ const WeddingHome = () => {
     navigate(`/${vendor.id}`);
   };
 
-    const handleCategoryClick = (category) => {
+      const handleCategoryClick = (category) => {
     const categoryFilter = category.filter;
     setSelectedCategories(prev => {
       if (prev.includes(categoryFilter)) {
@@ -717,6 +831,33 @@ const WeddingHome = () => {
     });
   };
 
+  const closeMobileMenu = () => setMobileMenuOpen(false);
+
+  // Close mobile menu on escape key
+  useEffect(() => {
+    const handleEscapeKey = (event) => {
+      if (event.key === "Escape" && mobileMenuOpen) {
+        closeMobileMenu();
+      }
+    };
+
+    document.addEventListener("keydown", handleEscapeKey);
+    return () => document.removeEventListener("keydown", handleEscapeKey);
+  }, [mobileMenuOpen]);
+
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [mobileMenuOpen]);
+
   useEffect(() => {
     initializeLocation();
   }, [initializeLocation]);
@@ -728,15 +869,24 @@ const WeddingHome = () => {
   if (loading) {
     return (
       <PageContainer>
-        <NavHeader>
+                <NavHeader>
+          <MobileMenuOverlay isOpen={mobileMenuOpen} onClick={closeMobileMenu} />
           <NavContent>
             <Logo>
               <FaRing /> Wedding Vendors
             </Logo>
-            <BackButton onClick={() => navigate("/")}>
-              <FaHome />
-              Back to Home
-            </BackButton>
+            <NavActions isOpen={mobileMenuOpen}>
+              <BackButton onClick={() => { navigate("/"); closeMobileMenu(); }}>
+                <FaHome />
+                Back to Home
+              </BackButton>
+            </NavActions>
+            <MobileMenuButton
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+            >
+              {mobileMenuOpen ? <FaTimes /> : <FaBars />}
+            </MobileMenuButton>
           </NavContent>
         </NavHeader>
         <LoadingState>
@@ -749,16 +899,28 @@ const WeddingHome = () => {
   }
 
   return (
-    <PageContainer>
+        <PageContainer>
       <NavHeader>
+        <MobileMenuOverlay isOpen={mobileMenuOpen} onClick={closeMobileMenu} />
         <NavContent>
           <Logo>
             <FaRing /> Wedding Vendors
           </Logo>
-          <BackButton onClick={() => navigate("/")}>
-            <FaHome />
-            Back to Home
-          </BackButton>
+                    <NavActions isOpen={mobileMenuOpen}>
+            <MobileCloseButton onClick={closeMobileMenu}>
+              <FaTimes />
+            </MobileCloseButton>
+            <BackButton onClick={() => { navigate("/"); closeMobileMenu(); }}>
+              <FaHome />
+              Back to Home
+            </BackButton>
+          </NavActions>
+          <MobileMenuButton
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+          >
+            {mobileMenuOpen ? <FaTimes /> : <FaBars />}
+          </MobileMenuButton>
         </NavContent>
       </NavHeader>
 

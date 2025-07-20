@@ -24,7 +24,9 @@ import {
   FaSpinner,
         FaArrowLeft,
   FaImages,
-  FaCog
+  FaCog,
+  FaBars,
+  FaTimes
 } from "react-icons/fa";
 import { theme } from "../../styles/GlobalStyle";
 import { getVendorById } from "../data/vendors";
@@ -204,17 +206,100 @@ const NavLogo = styled.div.withConfig({
   color: ${props => props.scrolled ? theme.colors.gray900 : 'white'};
 `;
 
-const NavActions = styled.div`
+const MobileMenuButton = styled.button.withConfig({
+  shouldForwardProp: (prop) => !['scrolled'].includes(prop),
+})`
+  display: none;
+  background: none;
+  border: none;
+  color: ${props => props.scrolled ? theme.colors.gray700 : 'white'};
+  font-size: 1.5rem;
+  padding: ${theme.spacing.sm};
+  cursor: pointer;
+  border-radius: ${theme.borderRadius.md};
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+`;
+
+const MobileMenuOverlay = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "isOpen",
+})`
+  display: none;
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.2);
+    z-index: 1001;
+    opacity: ${(props) => (props.isOpen ? "1" : "0")};
+    visibility: ${(props) => (props.isOpen ? "visible" : "hidden")};
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+`;
+
+const NavActions = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "isOpen",
+})`
   display: flex;
   gap: ${theme.spacing.md};
   align-items: center;
   flex-wrap: wrap;
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    gap: ${theme.spacing.sm};
-    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: ${theme.colors.white};
+    flex-direction: column;
     justify-content: center;
-    margin-top: ${theme.spacing.sm};
+    gap: ${theme.spacing.lg};
+    z-index: 1002;
+    transform: translateX(${(props) => (props.isOpen ? "0" : "100%")});
+    transition: transform 0.3s ease;
+    padding: ${theme.spacing.xl};
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+  }
+`;
+
+const MobileCloseButton = styled.button`
+  display: none;
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    display: flex;
+    position: absolute;
+    top: ${theme.spacing.lg};
+    right: ${theme.spacing.lg};
+    background: none;
+    border: none;
+    color: ${theme.colors.gray700};
+    font-size: 2rem;
+    cursor: pointer;
+    z-index: 1003;
+    padding: ${theme.spacing.sm};
+    border-radius: ${theme.borderRadius.md};
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: ${theme.colors.gray100};
+      color: ${theme.colors.primary};
+    }
   }
 `;
 
@@ -238,8 +323,18 @@ const NavButton = styled.button.withConfig({
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    padding: ${theme.spacing.xs} ${theme.spacing.sm};
-    font-size: 0.9rem;
+    padding: ${theme.spacing.md} ${theme.spacing.lg};
+    font-size: 1.1rem;
+    justify-content: center;
+    min-width: 200px;
+    color: ${props => props.primary ? 'white' : theme.colors.gray700};
+    border-color: ${props => props.primary ? 'none' : theme.colors.gray300};
+    background: ${props => props.primary ? (props.primaryColor || theme.colors.primary) : theme.colors.white};
+
+    &:hover {
+      background: ${props => props.primary ? (props.primaryColor || theme.colors.primary) : theme.colors.gray50};
+      transform: none;
+    }
   }
 `;
 
@@ -891,8 +986,9 @@ const VendorPage = () => {
 
   const [vendor, setVendor] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [scrolled, setScrolled] = useState(false);
+    const [scrolled, setScrolled] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeGalleryTab, setActiveGalleryTab] = useState('decor');
   const [openFaq, setOpenFaq] = useState(null);
   const [contactForm, setContactForm] = useState({
@@ -933,12 +1029,40 @@ const VendorPage = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const scrollToSection = (sectionId) => {
+    const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
+    setMobileMenuOpen(false); // Close mobile menu after navigation
   };
+
+  const closeMobileMenu = () => setMobileMenuOpen(false);
+
+  // Close mobile menu on escape key
+  useEffect(() => {
+    const handleEscapeKey = (event) => {
+      if (event.key === "Escape" && mobileMenuOpen) {
+        closeMobileMenu();
+      }
+    };
+
+    document.addEventListener("keydown", handleEscapeKey);
+    return () => document.removeEventListener("keydown", handleEscapeKey);
+  }, [mobileMenuOpen]);
+
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [mobileMenuOpen]);
 
   const handleContactSubmit = async (e) => {
     e.preventDefault();
@@ -990,36 +1114,47 @@ const VendorPage = () => {
 
   return (
     <PageContainer>
-      {/* Navigation */}
+            {/* Navigation */}
+      <MobileMenuOverlay isOpen={mobileMenuOpen} onClick={closeMobileMenu} />
       <NavBar scrolled={scrolled}>
         <NavContent>
           <NavLogo scrolled={scrolled}>{vendor.name}</NavLogo>
-          <NavActions>
-            <NavButton onClick={() => navigate('/weddings')} scrolled={scrolled}>
+                    <NavActions isOpen={mobileMenuOpen}>
+            <MobileCloseButton onClick={closeMobileMenu}>
+              <FaTimes />
+            </MobileCloseButton>
+            <NavButton onClick={() => { navigate('/weddings'); closeMobileMenu(); }} scrolled={scrolled}>
               <FaArrowLeft />
               Back
             </NavButton>
-            <NavButton scrolled={scrolled}>
+                        <NavButton onClick={() => { alert('Vendor saved to your favorites!'); closeMobileMenu(); }} scrolled={scrolled}>
               <FaHeart />
               Save
             </NavButton>
-                        <NavButton scrolled={scrolled}>
+            <NavButton onClick={() => { navigator.share ? navigator.share({title: vendor.name, url: window.location.href}) : alert('Share: ' + window.location.href); closeMobileMenu(); }} scrolled={scrolled}>
               <FaShare />
               Share
             </NavButton>
-                        <NavButton onClick={() => navigate(`/${vendorId}/portfolio`)} scrolled={scrolled}>
+            <NavButton onClick={() => { navigate(`/${vendorId}/portfolio`); closeMobileMenu(); }} scrolled={scrolled}>
               <FaImages />
               Portfolio
             </NavButton>
-                        <NavButton onClick={() => navigate(`/${vendorId}/dashboard`)} scrolled={scrolled}>
+            <NavButton onClick={() => { navigate(`/${vendorId}/dashboard`); closeMobileMenu(); }} scrolled={scrolled}>
               <FaCog />
               Dashboard
             </NavButton>
-            <NavButton primary primaryColor={primaryColor} onClick={() => scrollToSection('contact')}>
+                        <NavButton primary primaryColor={primaryColor} onClick={() => { scrollToSection('contact'); closeMobileMenu(); }}>
               <FaCalendarAlt />
               Enquire Now
             </NavButton>
           </NavActions>
+          <MobileMenuButton
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            scrolled={scrolled}
+            aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+          >
+            {mobileMenuOpen ? <FaTimes /> : <FaBars />}
+          </MobileMenuButton>
         </NavContent>
       </NavBar>
 

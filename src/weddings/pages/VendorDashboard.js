@@ -27,7 +27,8 @@ import {
   FaMapMarkerAlt,
   FaStar,
   FaChevronRight,
-  FaCheck
+  FaCheck,
+  FaBars
 } from "react-icons/fa";
 import { theme } from "../../styles/GlobalStyle";
 import { getVendorById } from "../data/vendors";
@@ -39,7 +40,35 @@ const DashboardContainer = styled.div`
   display: flex;
 `;
 
-const Sidebar = styled.div`
+const MobileSidebarCloseButton = styled.button`
+  display: none;
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    display: flex;
+    position: absolute;
+    top: ${theme.spacing.lg};
+    right: ${theme.spacing.lg};
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    z-index: 1001;
+    padding: ${theme.spacing.sm};
+    border-radius: ${theme.borderRadius.md};
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+  }
+`;
+
+const Sidebar = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "mobileOpen",
+})`
   width: 280px;
   background: ${theme.colors.white};
   border-right: 1px solid ${theme.colors.gray200};
@@ -55,8 +84,15 @@ const Sidebar = styled.div`
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     width: 100%;
-    position: relative;
-    height: auto;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 1000;
+    transform: translateX(${(props) => (props.mobileOpen ? "0" : "-100%")});
+    transition: transform 0.3s ease;
+    overflow-y: auto;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
   }
 `;
 
@@ -125,10 +161,59 @@ const NavItem = styled.button.withConfig({
   }
 `;
 
+const MobileMenuButton = styled.button`
+  display: none;
+  position: fixed;
+  top: ${theme.spacing.lg};
+  left: ${theme.spacing.lg};
+  z-index: 1001;
+  background: ${theme.colors.primary};
+  color: white;
+  border: none;
+  border-radius: ${theme.borderRadius.md};
+  padding: ${theme.spacing.sm};
+  font-size: 1.25rem;
+  cursor: pointer;
+  box-shadow: ${theme.shadows.md};
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: ${theme.colors.primaryDark};
+    transform: scale(1.05);
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+`;
+
+const MobileSidebarOverlay = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "isOpen",
+})`
+  display: none;
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.2);
+    z-index: 999;
+    opacity: ${(props) => (props.isOpen ? "1" : "0")};
+    visibility: ${(props) => (props.isOpen ? "visible" : "hidden")};
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+`;
+
 const MainContent = styled.div`
   flex: 1;
   margin-left: 280px;
   padding: ${theme.spacing.xl};
+  min-height: 100vh;
 
   @media (max-width: ${theme.breakpoints.tablet}) {
     margin-left: 260px;
@@ -138,6 +223,7 @@ const MainContent = styled.div`
   @media (max-width: ${theme.breakpoints.mobile}) {
     margin-left: 0;
     padding: ${theme.spacing.md};
+    padding-top: 4rem; /* Account for mobile menu button */
   }
 `;
 
@@ -209,9 +295,20 @@ const ActionButton = styled.button.withConfig({
     box-shadow: ${theme.shadows.md};
   }
 
-  &:disabled {
+    &:disabled {
     opacity: 0.6;
     cursor: not-allowed;
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.xs} ${theme.spacing.md};
+    font-size: 0.9rem;
+    gap: ${theme.spacing.xs};
+    white-space: nowrap;
+
+    &:hover {
+      transform: none;
+    }
   }
 `;
 
@@ -221,6 +318,12 @@ const ContentSection = styled.div`
   padding: ${theme.spacing.xxl};
   box-shadow: ${theme.shadows.sm};
   margin-bottom: ${theme.spacing.xl};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.lg};
+    margin-bottom: ${theme.spacing.lg};
+    border-radius: ${theme.borderRadius.md};
+  }
 `;
 
 const SectionTitle = styled.h2`
@@ -240,6 +343,11 @@ const FormGrid = styled.div`
 
   @media (max-width: ${theme.breakpoints.tablet}) {
     grid-template-columns: 1fr;
+    gap: ${theme.spacing.md};
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    gap: ${theme.spacing.sm};
   }
 `;
 
@@ -379,6 +487,11 @@ const PortfolioGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: ${theme.spacing.lg};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    grid-template-columns: 1fr;
+    gap: ${theme.spacing.md};
+  }
 `;
 
 const PortfolioCard = styled.div`
@@ -450,11 +563,13 @@ const PortfolioFormModal = styled.div`
   justify-content: center;
   z-index: 1000;
   padding: ${theme.spacing.lg};
+  overflow-y: auto;
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    padding: ${theme.spacing.sm};
+    padding: ${theme.spacing.xs};
     align-items: flex-start;
-    padding-top: ${theme.spacing.md};
+    padding-top: ${theme.spacing.sm};
+    padding-bottom: ${theme.spacing.sm};
   }
 `;
 
@@ -466,10 +581,14 @@ const PortfolioFormContent = styled.div`
   max-height: 90vh;
   overflow-y: auto;
   padding: ${theme.spacing.xxl};
+  margin: auto;
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    padding: ${theme.spacing.lg};
-    max-height: 95vh;
+    padding: ${theme.spacing.md};
+    max-height: 98vh;
+    border-radius: ${theme.borderRadius.md};
+    margin: ${theme.spacing.xs};
+    width: calc(100% - ${theme.spacing.sm});
   }
 `;
 
@@ -517,6 +636,39 @@ const ServiceHighlightItem = styled.div`
   display: flex;
   gap: ${theme.spacing.sm};
   align-items: center;
+`;
+
+const StatsGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: ${theme.spacing.lg};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    grid-template-columns: 1fr;
+    gap: ${theme.spacing.md};
+  }
+`;
+
+const StatCard = styled.div.withConfig({
+  shouldForwardProp: (prop) => !['bgColor'].includes(prop),
+})`
+  padding: ${theme.spacing.lg};
+  background: ${props => props.bgColor};
+  border-radius: ${theme.borderRadius.md};
+  transition: all 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: ${theme.shadows.md};
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.md};
+
+    &:hover {
+      transform: none;
+    }
+  }
 `;
 
 const SmallButton = styled.button`
@@ -605,7 +757,8 @@ const VendorDashboard = () => {
     highlights: [],
     editing: false
   });
-  const [showPortfolioForm, setShowPortfolioForm] = useState(false);
+    const [showPortfolioForm, setShowPortfolioForm] = useState(false);
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [packages, setPackages] = useState([]);
   const [testimonials, setTestimonials] = useState([]);
   const [faq, setFaq] = useState([]);
@@ -846,12 +999,39 @@ const VendorDashboard = () => {
     }));
   };
 
-  const removePortfolioHighlight = (index) => {
+    const removePortfolioHighlight = (index) => {
     setPortfolioForm(prev => ({
       ...prev,
       highlights: prev.highlights.filter((_, i) => i !== index)
     }));
   };
+
+  const closeMobileSidebar = () => setMobileSidebarOpen(false);
+
+  // Close mobile sidebar on escape key
+  useEffect(() => {
+    const handleEscapeKey = (event) => {
+      if (event.key === "Escape" && mobileSidebarOpen) {
+        closeMobileSidebar();
+      }
+    };
+
+    document.addEventListener("keydown", handleEscapeKey);
+    return () => document.removeEventListener("keydown", handleEscapeKey);
+  }, [mobileSidebarOpen]);
+
+  // Prevent body scroll when mobile sidebar is open
+  useEffect(() => {
+    if (mobileSidebarOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [mobileSidebarOpen]);
 
   const renderContent = () => {
     switch (activeSection) {
@@ -862,7 +1042,7 @@ const VendorDashboard = () => {
               <FaUser />
               Dashboard Overview
             </SectionTitle>
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: theme.spacing.lg }}>
+                                    <StatsGrid>
               {[
                 {
                   id: 'profile-views',
@@ -895,13 +1075,13 @@ const VendorDashboard = () => {
                   subtitleColor: theme.colors.purple600
                 }
               ].map((stat) => (
-                <div key={stat.id} style={{ padding: theme.spacing.lg, background: stat.bgColor, borderRadius: theme.borderRadius.md }}>
+                <StatCard key={stat.id} bgColor={stat.bgColor}>
                   <h3 style={{ margin: '0 0 8px 0', color: stat.titleColor }}>{stat.title}</h3>
                   <p style={{ margin: 0, fontSize: '2rem', fontWeight: 'bold', color: stat.valueColor }}>{stat.value}</p>
                   <p style={{ margin: 0, fontSize: '0.9rem', color: stat.subtitleColor }}>{stat.subtitle}</p>
-                </div>
+                </StatCard>
               ))}
-            </div>
+            </StatsGrid>
           </ContentSection>
         );
 
@@ -1515,10 +1695,20 @@ const VendorDashboard = () => {
     return acc;
   }, {});
 
-  return (
+    return (
     <DashboardContainer>
-      <Sidebar>
+      <MobileSidebarOverlay isOpen={mobileSidebarOpen} onClick={closeMobileSidebar} />
+      <MobileMenuButton
+        onClick={() => setMobileSidebarOpen(!mobileSidebarOpen)}
+        aria-label={mobileSidebarOpen ? "Close menu" : "Open menu"}
+      >
+        {mobileSidebarOpen ? <FaTimes /> : <FaBars />}
+      </MobileMenuButton>
+            <Sidebar mobileOpen={mobileSidebarOpen}>
         <SidebarHeader>
+          <MobileSidebarCloseButton onClick={closeMobileSidebar}>
+            <FaTimes />
+          </MobileSidebarCloseButton>
           <VendorName>{vendor.name}</VendorName>
           <VendorRole>Wedding Vendor Dashboard</VendorRole>
         </SidebarHeader>
@@ -1528,10 +1718,13 @@ const VendorDashboard = () => {
             <NavSection key={section}>
               <NavSectionTitle>{section}</NavSectionTitle>
                             {items.map((item) => (
-                                <NavItem
+                                                                <NavItem
                   key={item.id}
                   active={activeSection === item.id}
-                  onClick={() => setActiveSection(item.id)}
+                  onClick={() => {
+                    setActiveSection(item.id);
+                    closeMobileSidebar();
+                  }}
                 >
                   <item.icon />
                   {item.label}
