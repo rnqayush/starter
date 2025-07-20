@@ -402,15 +402,41 @@ const Navbar = ({
         </SearchContainer>
 
         <NavActions>
-          <Link to="/">
+                    <Link to="/">
             <UserButton title="Back to Main Site" theme={vendorTheme}>
               <FaHome />
             </UserButton>
           </Link>
 
-          <UserButton theme={vendorTheme}>
-            <FaUser />
-          </UserButton>
+          <UserDropdown>
+            <UserDropdownButton
+              onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)}
+              theme={vendorTheme}
+            >
+              <FaUser />
+              <FaChevronDown />
+            </UserDropdownButton>
+
+            <DropdownMenu isOpen={isUserDropdownOpen}>
+              <DropdownItem
+                to={`${getBaseUrl()}/my-enquiries`}
+                onClick={() => setIsUserDropdownOpen(false)}
+              >
+                <FaEnvelope />
+                My Enquiries
+              </DropdownItem>
+
+              <DropdownDivider />
+
+              <DropdownItem
+                to={`${getBaseUrl()}/seller-dashboard`}
+                onClick={() => setIsUserDropdownOpen(false)}
+              >
+                <FaStore />
+                Seller Dashboard
+              </DropdownItem>
+            </DropdownMenu>
+          </UserDropdown>
 
           <Link to={`${getBaseUrl()}/cart`}>
             <CartButton theme={vendorTheme}>
