@@ -663,7 +663,8 @@ const WeddingHome = () => {
     const [activeFilter, setActiveFilter] = useState("all");
   const [sortBy, setSortBy] = useState("distance");
   const [locationLoading, setLocationLoading] = useState(false);
-  const [selectedCategories, setSelectedCategories] = useState(["venue"]); // Default to venues checked
+    const [selectedCategories, setSelectedCategories] = useState(["venue"]); // Default to venues checked
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const categories = [
     { name: "Venues", icon: FaLeaf, count: 15, filter: "venue" },
@@ -790,7 +791,7 @@ const WeddingHome = () => {
     navigate(`/${vendor.id}`);
   };
 
-    const handleCategoryClick = (category) => {
+      const handleCategoryClick = (category) => {
     const categoryFilter = category.filter;
     setSelectedCategories(prev => {
       if (prev.includes(categoryFilter)) {
@@ -803,6 +804,33 @@ const WeddingHome = () => {
     });
   };
 
+  const closeMobileMenu = () => setMobileMenuOpen(false);
+
+  // Close mobile menu on escape key
+  useEffect(() => {
+    const handleEscapeKey = (event) => {
+      if (event.key === "Escape" && mobileMenuOpen) {
+        closeMobileMenu();
+      }
+    };
+
+    document.addEventListener("keydown", handleEscapeKey);
+    return () => document.removeEventListener("keydown", handleEscapeKey);
+  }, [mobileMenuOpen]);
+
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [mobileMenuOpen]);
+
   useEffect(() => {
     initializeLocation();
   }, [initializeLocation]);
@@ -814,15 +842,24 @@ const WeddingHome = () => {
   if (loading) {
     return (
       <PageContainer>
-        <NavHeader>
+                <NavHeader>
+          <MobileMenuOverlay isOpen={mobileMenuOpen} onClick={closeMobileMenu} />
           <NavContent>
             <Logo>
               <FaRing /> Wedding Vendors
             </Logo>
-            <BackButton onClick={() => navigate("/")}>
-              <FaHome />
-              Back to Home
-            </BackButton>
+            <NavActions isOpen={mobileMenuOpen}>
+              <BackButton onClick={() => { navigate("/"); closeMobileMenu(); }}>
+                <FaHome />
+                Back to Home
+              </BackButton>
+            </NavActions>
+            <MobileMenuButton
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+            >
+              {mobileMenuOpen ? <FaTimes /> : <FaBars />}
+            </MobileMenuButton>
           </NavContent>
         </NavHeader>
         <LoadingState>
@@ -835,16 +872,25 @@ const WeddingHome = () => {
   }
 
   return (
-    <PageContainer>
+        <PageContainer>
       <NavHeader>
+        <MobileMenuOverlay isOpen={mobileMenuOpen} onClick={closeMobileMenu} />
         <NavContent>
           <Logo>
             <FaRing /> Wedding Vendors
           </Logo>
-          <BackButton onClick={() => navigate("/")}>
-            <FaHome />
-            Back to Home
-          </BackButton>
+          <NavActions isOpen={mobileMenuOpen}>
+            <BackButton onClick={() => { navigate("/"); closeMobileMenu(); }}>
+              <FaHome />
+              Back to Home
+            </BackButton>
+          </NavActions>
+          <MobileMenuButton
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+          >
+            {mobileMenuOpen ? <FaTimes /> : <FaBars />}
+          </MobileMenuButton>
         </NavContent>
       </NavHeader>
 
