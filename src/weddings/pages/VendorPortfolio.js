@@ -624,7 +624,12 @@ const VendorPortfolio = () => {
               </CloseButton>
             </ModalHeader>
             <ModalBody>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: theme.spacing.xl, marginBottom: theme.spacing.xl }}>
+                            <div style={{
+                display: 'grid',
+                gridTemplateColumns: window.innerWidth <= 768 ? '1fr' : '1fr 1fr',
+                gap: theme.spacing.xl,
+                marginBottom: theme.spacing.xl
+              }}>
                 <div>
                   <h4 style={{ margin: `0 0 ${theme.spacing.md} 0`, color: theme.colors.gray900 }}>Wedding Details</h4>
                   <LocationDetails style={{ gap: theme.spacing.sm }}>
