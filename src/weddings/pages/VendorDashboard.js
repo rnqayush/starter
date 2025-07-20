@@ -604,9 +604,11 @@ const VendorDashboard = () => {
         banner: vendorData.image,
         gallery: vendorData.portfolioImages || []
       });
-            setServices((vendorData.services || []).map((service, index) => ({
+                  setServices((vendorData.services || []).map((service, index) => ({
         ...service,
-        id: service.id || `service-${index}-${Date.now()}`
+        id: service.id || `service-${index}-${Date.now()}`,
+        image: service.image || '',
+        icon: service.icon || '⭐'
       })));
                   setPortfolio((vendorData.locationPortfolio || []).map((item, index) => ({
         ...item,
