@@ -589,8 +589,8 @@ KMHL14JA8MA123456,2021,Hyundai,Elantra,Limited,Sedan,CVT,2.0L,Gasoline,FWD,White
               accept=".csv"
               onChange={handleFileChange}
             />
-            <UploadIcon>
-              <FaCloudUpload />
+                        <UploadIcon>
+              <FaCloud />
             </UploadIcon>
             <UploadText>
               {isDragOver ? "Drop your CSV file here" : "Click to select or drag & drop your CSV file"}
