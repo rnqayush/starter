@@ -14,29 +14,37 @@ const EcommerceModule = () => {
   const location = useLocation();
   const path = location.pathname;
 
-    // Route based on URL path
+  // Determine which component to render
+  let ComponentToRender;
+
   if (path === "/ecommerce") {
-    return <EcommerceMain />;
+    ComponentToRender = EcommerceMain;
   } else if (path.includes("/seller-dashboard")) {
-    return <SellerDashboard />;
+    ComponentToRender = SellerDashboard;
   } else if (path.includes("/my-enquiries")) {
-    return <MyEnquiries />;
+    ComponentToRender = MyEnquiries;
   } else if (path.includes("/products") && !path.includes("/product/")) {
-    return <Products />;
+    ComponentToRender = Products;
   } else if (path.includes("/product/")) {
-    return <ProductDetail />;
+    ComponentToRender = ProductDetail;
   } else if (path.includes("/cart")) {
-    return <Cart />;
+    ComponentToRender = Cart;
   } else if (path.includes("/checkout")) {
-    return <Checkout />;
+    ComponentToRender = Checkout;
   } else if (path.includes("/order-confirmation")) {
-    return <OrderConfirmation />;
+    ComponentToRender = OrderConfirmation;
   } else if (path.match(/^\/[^/]+$/)) {
     // Single segment path like "/techmart-downtown" - store home
-    return <EcommerceMain />;
+    ComponentToRender = EcommerceMain;
   } else {
-    return <EcommerceMain />;
+    ComponentToRender = EcommerceMain;
   }
+
+  return (
+    <NotificationProvider>
+      <ComponentToRender />
+    </NotificationProvider>
+  );
 };
 
 export default EcommerceModule;
