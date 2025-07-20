@@ -310,6 +310,112 @@ const DropdownDivider = styled.div`
   margin: ${theme.spacing.xs} 0;
 `;
 
+const DropdownButton = styled.button`
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.sm};
+  padding: ${theme.spacing.md};
+  color: ${theme.colors.gray700};
+  transition: all 0.2s ease;
+  border-bottom: 1px solid ${theme.colors.gray100};
+  width: 100%;
+  text-align: left;
+  background: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  cursor: pointer;
+
+  &:hover {
+    background: ${theme.colors.gray50};
+    color: ${theme.colors.primary};
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+`;
+
+const UserAvatar = styled.img`
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid ${theme.colors.gray200};
+`;
+
+const UserInfo = styled.div`
+  .name {
+    font-weight: 600;
+    color: ${theme.colors.gray900};
+    font-size: 0.9rem;
+  }
+
+  .role {
+    font-size: 0.75rem;
+    color: ${theme.colors.gray500};
+    text-transform: capitalize;
+  }
+`;
+
+const LoginButton = styled.button`
+  background: ${theme.colors.primary};
+  color: white;
+  padding: ${theme.spacing.sm} ${theme.spacing.md};
+  border: none;
+  border-radius: ${theme.borderRadius.md};
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: ${theme.colors.primaryDark};
+  }
+`;
+
+const Modal = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  backdrop-filter: blur(4px);
+`;
+
+const ModalContent = styled.div`
+  background: white;
+  border-radius: 16px;
+  max-width: 900px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+`;
+
+const ModalCloseButton = styled.button`
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: ${theme.colors.gray500};
+  cursor: pointer;
+  border-radius: 8px;
+  padding: 0.5rem;
+  z-index: 1;
+
+  &:hover {
+    background: ${theme.colors.gray100};
+    color: ${theme.colors.gray700};
+  }
+`;
+
 const Navbar = ({
   cartItemsCount = 0,
   storeName = "",
