@@ -457,7 +457,9 @@ const PackageName = styled.h3`
   color: ${theme.colors.gray900};
 `;
 
-const PackagePrice = styled.div`
+const PackagePrice = styled.div.withConfig({
+  shouldForwardProp: (prop) => !['primaryColor'].includes(prop),
+})`
   font-size: 2rem;
   font-weight: 700;
   color: ${props => props.primaryColor || theme.colors.primary};
