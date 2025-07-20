@@ -30,16 +30,26 @@ const NavbarContainer = styled.nav`
 `;
 
 const NavbarContent = styled.div`
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 0 ${theme.spacing.md};
+  padding: 0 ${theme.spacing.sm};
   display: flex;
   align-items: center;
   justify-content: space-between;
   height: 80px;
+  overflow: hidden;
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     height: 70px;
+    padding: 0 ${theme.spacing.xs};
+  }
+
+  @media (min-width: 769px) and (max-width: 1024px) {
+    padding: 0 ${theme.spacing.sm};
+  }
+
+  @media (min-width: 1025px) {
+    padding: 0 ${theme.spacing.md};
   }
 `;
 
@@ -71,10 +81,20 @@ const LogoImage = styled.img`
 const NavLinks = styled.div`
   display: flex;
   align-items: center;
-  gap: ${theme.spacing.xl};
+  gap: ${theme.spacing.md};
+  flex-shrink: 1;
+  overflow: hidden;
 
   @media (max-width: ${theme.breakpoints.tablet}) {
     display: none;
+  }
+
+  @media (min-width: 1025px) and (max-width: 1200px) {
+    gap: ${theme.spacing.sm};
+  }
+
+  @media (min-width: 1201px) {
+    gap: ${theme.spacing.lg};
   }
 `;
 
@@ -118,8 +138,14 @@ const SearchContainer = styled.div`
   position: relative;
   display: flex;
   align-items: center;
+  flex-shrink: 1;
+  min-width: 0;
 
   @media (max-width: ${theme.breakpoints.mobile}) {
+    display: none;
+  }
+
+  @media (max-width: 1024px) {
     display: none;
   }
 `;
@@ -131,7 +157,9 @@ const SearchInput = styled.input.withConfig({
   padding-left: 2.5rem;
   border: 2px solid ${theme.colors.gray200};
   border-radius: ${theme.borderRadius.lg};
-  width: 300px;
+  width: 100%;
+  max-width: 280px;
+  min-width: 200px;
   font-size: 0.9rem;
   transition: border-color 0.2s ease;
 
@@ -140,8 +168,14 @@ const SearchInput = styled.input.withConfig({
       props.theme?.primaryColor || theme.colors.primary};
   }
 
-  @media (max-width: ${theme.breakpoints.tablet}) {
-    width: 200px;
+  @media (min-width: 1025px) and (max-width: 1200px) {
+    max-width: 220px;
+    min-width: 180px;
+  }
+
+  @media (min-width: 1201px) {
+    max-width: 300px;
+    min-width: 240px;
   }
 `;
 
@@ -155,7 +189,16 @@ const SearchIcon = styled(FaSearch)`
 const NavActions = styled.div`
   display: flex;
   align-items: center;
-  gap: ${theme.spacing.lg};
+  gap: ${theme.spacing.sm};
+  flex-shrink: 0;
+
+  @media (min-width: 1025px) and (max-width: 1200px) {
+    gap: ${theme.spacing.xs};
+  }
+
+  @media (min-width: 1201px) {
+    gap: ${theme.spacing.md};
+  }
 `;
 
 const CartButton = styled.button.withConfig({
@@ -195,15 +238,29 @@ const UserButton = styled.button.withConfig({
 })`
   background: none;
   color: ${theme.colors.gray700};
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   transition: color 0.2s ease;
+  padding: ${theme.spacing.xs};
+  border-radius: ${theme.borderRadius.sm};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2rem;
+  height: 2rem;
 
   &:hover {
     color: ${(props) => props.theme?.primaryColor || theme.colors.primary};
+    background: ${theme.colors.gray50};
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     display: none;
+  }
+
+  @media (max-width: 1024px) {
+    font-size: 1rem;
+    min-width: 1.8rem;
+    height: 1.8rem;
   }
 `;
 
@@ -390,9 +447,21 @@ const LoginButton = styled.button`
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
+  white-space: nowrap;
+  font-size: 0.875rem;
 
   &:hover {
     background: ${theme.colors.primaryDark};
+    transform: translateY(-1px);
+  }
+
+  @media (max-width: 1024px) {
+    padding: ${theme.spacing.xs} ${theme.spacing.sm};
+    font-size: 0.8rem;
+  }
+
+  @media (max-width: 1200px) {
+    padding: ${theme.spacing.sm};
   }
 `;
 
