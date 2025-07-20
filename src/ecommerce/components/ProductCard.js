@@ -334,11 +334,12 @@ const StockIndicator = styled.div.withConfig({
 
 const ProductCard = ({
   product,
-  onAddToCart,
   onToggleWishlist,
   isInWishlist = false,
   storeSlug = "",
 }) => {
+  const [isEnquiryModalOpen, setIsEnquiryModalOpen] = useState(false);
+
   const renderStars = (rating) => {
     const stars = [];
     for (let i = 1; i <= 5; i++) {
@@ -351,10 +352,10 @@ const ProductCard = ({
     return Math.round(((original - current) / original) * 100);
   };
 
-  const handleAddToCart = (e) => {
+  const handleEnquireClick = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    onAddToCart?.(product);
+    setIsEnquiryModalOpen(true);
   };
 
   const handleWishlistToggle = (e) => {
