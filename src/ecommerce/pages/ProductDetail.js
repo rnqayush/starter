@@ -693,52 +693,50 @@ const ProductDetail = () => {
               </VariantSection>
             )}
 
-            <StockInfo inStock={product.stock > 0}>
+                        <StockInfo inStock={product.stock > 0}>
               <FaCheck />
-              {product.stock > 0
-                ? `${product.stock} items in stock`
-                : "Out of stock"}
+              {product.stock > 0 ? "Available" : "Not Available"}
             </StockInfo>
 
-            {product.stock > 0 && (
-              <QuantitySection>
-                <QuantityLabel>Quantity:</QuantityLabel>
-                <QuantityControls>
-                  <QuantityButton
-                    onClick={() => handleQuantityChange(quantity - 1)}
-                    disabled={quantity <= 1}
-                  >
-                    <FaMinus />
-                  </QuantityButton>
-                  <QuantityInput
-                    type="number"
-                    value={quantity}
-                    onChange={(e) =>
-                      handleQuantityChange(parseInt(e.target.value) || 1)
-                    }
-                    min="1"
-                    max={product.stock}
-                  />
-                  <QuantityButton
-                    onClick={() => handleQuantityChange(quantity + 1)}
-                    disabled={quantity >= product.stock}
-                  >
-                    <FaPlus />
-                  </QuantityButton>
-                </QuantityControls>
-              </QuantitySection>
-            )}
+            <SellerInfo>
+              <SellerHeader>
+                <SellerLogo
+                  src={vendor?.logo || "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=80&h=80&fit=crop&crop=center"}
+                  alt={vendor?.name || "Seller"}
+                />
+                <SellerDetails>
+                  <SellerName>{vendor?.name || "TechMart Downtown"}</SellerName>
+                  <SellerBadge>Verified Seller</SellerBadge>
+                </SellerDetails>
+              </SellerHeader>
+              <SellerMeta>
+                <SellerMetaItem>
+                  <FaStore />
+                  <span>Electronics Store</span>
+                </SellerMetaItem>
+                <SellerMetaItem>
+                  <FaMapMarkerAlt />
+                  <span>Downtown Area</span>
+                </SellerMetaItem>
+                <SellerMetaItem>
+                  <FaUser />
+                  <span>500+ Products</span>
+                </SellerMetaItem>
+                <SellerMetaItem>
+                  <FaStar />
+                  <span>4.8 Rating</span>
+                </SellerMetaItem>
+              </SellerMeta>
+            </SellerInfo>
 
             <ActionButtons>
-              <AddToCartButton
-                onClick={handleAddToCart}
-                disabled={
-                  product.stock === 0 || (product.sizes && !selectedSize)
-                }
+              <EnquireButton
+                onClick={handleEnquireClick}
+                disabled={product.stock === 0 || (product.sizes && !selectedSize)}
               >
-                <FaShoppingCart />
-                {product.stock > 0 ? "Add to Cart" : "Out of Stock"}
-              </AddToCartButton>
+                <FaEnvelope />
+                {product.stock > 0 ? "Enquire Now" : "Not Available"}
+              </EnquireButton>
 
               <WishlistButton title="Add to Wishlist">
                 <FaHeart />
