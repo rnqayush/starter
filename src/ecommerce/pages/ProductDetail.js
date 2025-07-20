@@ -4,21 +4,24 @@ import styled from "styled-components";
 import {
   FaStar,
   FaHeart,
-  FaShoppingCart,
-  FaMinus,
-  FaPlus,
+  FaEnvelope,
   FaShare,
   FaArrowLeft,
   FaCheck,
   FaTruck,
   FaUndoAlt,
   FaShieldAlt,
+  FaUser,
+  FaStore,
+  FaPhone,
+  FaMapMarkerAlt,
 } from "react-icons/fa";
 import { theme } from "../../styles/GlobalStyle";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import ProductCard from "../components/ProductCard";
 import LoadingSpinner from "../components/LoadingSpinner";
+import EnquiryModal from "../components/EnquiryModal";
 import { getProductById, products } from "../data/products";
 import { getVendorByIdOrSlug } from "../data/vendors";
 
