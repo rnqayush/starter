@@ -8,6 +8,9 @@ import {
   FaBars,
   FaTimes,
   FaHome,
+  FaEnvelope,
+  FaStore,
+  FaChevronDown,
 } from "react-icons/fa";
 import { theme } from "../../styles/GlobalStyle";
 
