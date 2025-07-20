@@ -352,7 +352,16 @@ const EnquiryModal = ({
         id: Date.now(),
         ...enquiryData
       };
-      localStorage.setItem("userEnquiries", JSON.stringify([...existingEnquiries, newEnquiry]));
+            localStorage.setItem("userEnquiries", JSON.stringify([...existingEnquiries, newEnquiry]));
+
+      // Show success notification
+      showSuccessNotification(
+        "Enquiry Sent Successfully!",
+        `Your enquiry for ${product.name} has been sent to the seller.`
+      );
+
+      // Trigger enquiry notification for seller (simulated)
+      showEnquiryNotification(newEnquiry);
 
       setIsSuccess(true);
     } catch (error) {
