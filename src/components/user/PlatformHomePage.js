@@ -14,21 +14,14 @@ import {
   FaPhone,
   FaEnvelope,
   FaMapMarkerAlt,
-  FaHandPaper,
   FaPalette,
-  FaMobile,
-  FaHeadset,
   FaRocket,
   FaCheck,
   FaStar,
   FaQuoteLeft,
-  FaUsers,
-  FaStore,
-  FaChartLine,
-  FaClock,
-  FaShield,
   FaCode,
   FaCloud,
+  FaLock,
 } from "react-icons/fa";
 import Header from "../shared/Header";
 import { Button } from "../shared/Button";
