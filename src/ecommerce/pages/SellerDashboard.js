@@ -7,6 +7,7 @@ import ProductsTab from "../components/ProductsTab";
 import AddProductTabEnhanced from "../components/AddProductTabEnhanced";
 import CategoriesTab from "../components/CategoriesTab";
 import OrdersTabEnhanced from "../components/OrdersTabEnhanced";
+import EnquiriesTab from "../components/EnquiriesTab";
 import DiscountsTab from "../components/DiscountsTab";
 import InsightsTab from "../components/InsightsTab";
 
