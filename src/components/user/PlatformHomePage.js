@@ -722,7 +722,7 @@ const PlatformHomePage = () => {
       gradient: "linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)",
       path: "/weddings",
     },
-        {
+                {
       id: "automobiles",
       icon: FaCar,
       title: "Automobiles",
@@ -730,6 +730,15 @@ const PlatformHomePage = () => {
         "Car dealerships, rental companies, and mechanics display inventory and connect with customers online.",
       gradient: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
       path: "/auto-dealers",
+    },
+    {
+      id: "business-websites",
+      icon: FaGlobe,
+      title: "Business Websites",
+      description:
+        "Professional websites for salons, gyms, restaurants, consultants, and more. Showcase services with elegant templates.",
+      gradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+      path: "/business-websites",
     },
   ];
 
