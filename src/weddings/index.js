@@ -13,15 +13,17 @@ const WeddingModule = () => {
   const location = useLocation();
   const pathSegments = location.pathname.split("/").filter(Boolean);
 
-      // When accessed from SmartRouter (direct vendor URL like /elegant-events)
+        // When accessed from SmartRouter (direct vendor URL like /elegant-events)
   // the path will be just "/", so we need to check if we're in a vendor context
   const isDirectVendorAccess = pathSegments.length === 1 && pathSegments[0] !== "weddings";
   const isVendorPortfolioAccess = pathSegments.length === 2 && pathSegments[1] === "portfolio";
+  const isVendorDashboardAccess = pathSegments.length === 2 && pathSegments[1] === "dashboard";
 
   return (
     <Routes>
       {/* Main wedding routes */}
       <Route path="/" element={
+        isVendorDashboardAccess ? <VendorDashboard /> :
         isVendorPortfolioAccess ? <VendorPortfolio /> :
         isDirectVendorAccess ? <VendorPage /> :
         <WeddingHome />
