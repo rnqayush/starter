@@ -379,10 +379,10 @@ const QuickNavItem = styled(Link)`
 `;
 
 const StoreInfo = styled.div`
-  background: ${theme.colors.white};
-  padding: ${theme.spacing.xl};
-  border-radius: ${theme.borderRadius.lg};
-  box-shadow: ${theme.shadows.sm};
+  background: ${theme.colors.gray50};
+  padding: ${theme.spacing.lg};
+  border-radius: ${theme.borderRadius.md};
+  border: 1px solid ${theme.colors.gray200};
   margin-bottom: ${theme.spacing.xl};
 `;
 
