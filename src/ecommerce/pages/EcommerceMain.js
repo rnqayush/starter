@@ -427,6 +427,43 @@ const StatItem = styled.div`
   }
 `;
 
+const Breadcrumb = styled.div`
+  background: ${theme.colors.white};
+  padding: ${theme.spacing.md} 0;
+  border-bottom: 1px solid ${theme.colors.gray100};
+`;
+
+const BreadcrumbNav = styled.nav`
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 ${theme.spacing.md};
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.sm};
+  font-size: 0.9rem;
+  color: ${theme.colors.gray600};
+
+  a {
+    color: ${theme.colors.primary};
+    text-decoration: none;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: ${theme.colors.primaryDark};
+      text-decoration: underline;
+    }
+  }
+
+  .separator {
+    color: ${theme.colors.gray400};
+  }
+
+  .current {
+    color: ${theme.colors.gray900};
+    font-weight: 600;
+  }
+`;
+
 const EcommerceMain = () => {
   const location = useLocation();
   const navigate = useNavigate();
