@@ -7,8 +7,7 @@ import {
   FaClock, 
   FaCheck, 
   FaEye,
-  FaFilter,
-  FaSearch,
+  
   FaExclamationCircle,
   FaInbox
 } from "react-icons/fa";
