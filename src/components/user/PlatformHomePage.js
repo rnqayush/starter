@@ -22,6 +22,7 @@ import {
   FaCode,
   FaCloud,
   FaLock,
+  FaGlobe,
 } from "react-icons/fa";
 import Header from "../shared/Header";
 import { Button } from "../shared/Button";
