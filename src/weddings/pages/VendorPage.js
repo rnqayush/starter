@@ -846,7 +846,7 @@ const VendorPage = () => {
         email: user.email || ''
       }));
     }
-  }, [vendorSlug, user]);
+    }, [vendorId, user]);
 
   useEffect(() => {
     const handleScroll = () => {
