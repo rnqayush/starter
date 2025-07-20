@@ -361,8 +361,8 @@ const Navbar = ({
             >
               <FaHeart />
             </IconButton>
-            <IconButton title="Contact">
-              <aEnvelope />
+                        <IconButton title="Contact">
+              <FaEnvelope />
             </IconButton>
             <IconButton title="Account">
               <FaUser />
