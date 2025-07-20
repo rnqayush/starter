@@ -624,18 +624,17 @@ const EcommerceMain = () => {
           </StoreInfo>
         </Container>
 
-        <Section>
+                <Section>
           <Container>
             <SectionHeader>
               <SectionTitle textColor={vendorTheme.textColor}>
                 Shop by Category
               </SectionTitle>
               <SectionSubtitle>
-                Explore our diverse range of products across different
-                categories
+                Explore our diverse range of products across different categories
               </SectionSubtitle>
             </SectionHeader>
-            <Grid minWidth="250px">
+            <Grid minWidth="280px">
               {categories.map((category) => (
                 <CategoryCard
                   key={category.id}
