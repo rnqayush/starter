@@ -243,6 +243,15 @@ const Container = styled.div`
 const SectionHeader = styled.div`
   text-align: center;
   margin-bottom: ${theme.spacing.xxl};
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    margin-bottom: ${theme.spacing.xl};
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    margin-bottom: ${theme.spacing.lg};
+    padding: 0 ${theme.spacing.sm};
+  }
 `;
 
 const SectionTitle = styled.h2.withConfig({
