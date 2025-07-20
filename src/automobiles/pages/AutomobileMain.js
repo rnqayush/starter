@@ -618,9 +618,11 @@ const AutomobileMain = () => {
                   />
                 ))}
               </Grid>
-            </Container>
+                        </Container>
           </Section>
         )}
+
+        <Footer dealerSlug={selectedDealer.slug} dealer={selectedDealer} theme={dealerTheme} />
       </PageContainer>
     </>
   );
