@@ -9,7 +9,7 @@ import {
   FaSpinner,
   FaExclamationTriangle,
   FaInfoCircle,
-  FaCloudUpload,
+    FaCloud,
   FaFileCsv,
   FaTable,
   FaEye,
