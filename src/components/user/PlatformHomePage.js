@@ -291,11 +291,16 @@ const ExploreStoresContainer = styled.div`
 `;
 
 const SectionTitle = styled.h2`
-  font-size: 2.5rem;
-  font-weight: 700;
+  font-size: 2.8rem;
+  font-weight: 800;
   text-align: center;
   margin-bottom: ${theme.spacing.md};
   color: ${theme.colors.gray900};
+  letter-spacing: -0.02em;
+
+  ${media.mobile} {
+    font-size: 2.2rem;
+  }
 `;
 
 const SectionSubtitle = styled.p`
