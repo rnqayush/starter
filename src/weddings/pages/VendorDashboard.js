@@ -132,21 +132,28 @@ const MainContent = styled.div`
 
   @media (max-width: ${theme.breakpoints.tablet}) {
     margin-left: 260px;
+    padding: ${theme.spacing.lg};
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     margin-left: 0;
-    padding: ${theme.spacing.lg};
+    padding: ${theme.spacing.md};
   }
 `;
 
 const ContentHeader = styled.div`
   display: flex;
-  justify-content: between;
+  justify-content: space-between;
   align-items: center;
   margin-bottom: ${theme.spacing.xxl};
   padding-bottom: ${theme.spacing.lg};
   border-bottom: 1px solid ${theme.colors.gray200};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: ${theme.spacing.md};
+  }
 `;
 
 const PageTitle = styled.h1`
@@ -161,6 +168,12 @@ const PageActions = styled.div`
   display: flex;
   gap: ${theme.spacing.md};
   align-items: center;
+  flex-wrap: wrap;
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    width: 100%;
+    justify-content: flex-start;
+  }
 `;
 
 const ActionButton = styled.button.withConfig({
@@ -437,6 +450,12 @@ const PortfolioFormModal = styled.div`
   justify-content: center;
   z-index: 1000;
   padding: ${theme.spacing.lg};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.sm};
+    align-items: flex-start;
+    padding-top: ${theme.spacing.md};
+  }
 `;
 
 const PortfolioFormContent = styled.div`
@@ -447,6 +466,11 @@ const PortfolioFormContent = styled.div`
   max-height: 90vh;
   overflow-y: auto;
   padding: ${theme.spacing.xxl};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.lg};
+    max-height: 95vh;
+  }
 `;
 
 const PortfolioFormHeader = styled.div`
