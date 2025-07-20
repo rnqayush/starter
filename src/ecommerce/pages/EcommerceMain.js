@@ -314,15 +314,12 @@ const FallbackButton = styled.button`
 
 const QuickNavigation = styled.div`
   background: ${theme.colors.white};
-  box-shadow: ${theme.shadows.md};
-  border-radius: ${theme.borderRadius.lg};
-  padding: ${theme.spacing.xl};
-  margin: -${theme.spacing.xxl} auto ${theme.spacing.xxl};
-  max-width: 1200px;
-  position: relative;
-  z-index: 10;
-  margin-left: ${theme.spacing.md};
-  margin-right: ${theme.spacing.md};
+  border-bottom: 1px solid ${theme.colors.gray200};
+  padding: ${theme.spacing.lg} 0;
+  position: sticky;
+  top: 80px;
+  z-index: 90;
+  box-shadow: ${theme.shadows.sm};
 `;
 
 const QuickNavGrid = styled.div`
