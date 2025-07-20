@@ -425,6 +425,113 @@ const EmptyState = styled.div`
   color: ${theme.colors.gray500};
 `;
 
+const PortfolioFormModal = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: ${theme.spacing.lg};
+`;
+
+const PortfolioFormContent = styled.div`
+  background: ${theme.colors.white};
+  border-radius: ${theme.borderRadius.lg};
+  width: 100%;
+  max-width: 800px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: ${theme.spacing.xxl};
+`;
+
+const PortfolioFormHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: ${theme.spacing.xl};
+  padding-bottom: ${theme.spacing.lg};
+  border-bottom: 1px solid ${theme.colors.gray200};
+`;
+
+const PortfolioFormTitle = styled.h2`
+  margin: 0;
+  color: ${theme.colors.gray900};
+  font-size: 1.5rem;
+  font-weight: 600;
+`;
+
+const GalleryImageCard = styled.div`
+  border: 1px solid ${theme.colors.gray200};
+  border-radius: ${theme.borderRadius.md};
+  overflow: hidden;
+  background: ${theme.colors.white};
+  margin-bottom: ${theme.spacing.lg};
+`;
+
+const GalleryImagePreview = styled.img`
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+`;
+
+const GalleryImageForm = styled.div`
+  padding: ${theme.spacing.lg};
+`;
+
+const ServiceHighlightList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${theme.spacing.sm};
+`;
+
+const ServiceHighlightItem = styled.div`
+  display: flex;
+  gap: ${theme.spacing.sm};
+  align-items: center;
+`;
+
+const SmallButton = styled.button`
+  background: ${theme.colors.gray100};
+  border: 1px solid ${theme.colors.gray200};
+  border-radius: ${theme.borderRadius.sm};
+  padding: ${theme.spacing.xs};
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: ${theme.colors.gray200};
+  }
+
+  &.danger {
+    background: ${theme.colors.red100};
+    border-color: ${theme.colors.red200};
+    color: ${theme.colors.red700};
+
+    &:hover {
+      background: ${theme.colors.red200};
+    }
+  }
+
+  &.success {
+    background: ${theme.colors.green100};
+    border-color: ${theme.colors.green200};
+    color: ${theme.colors.green700};
+
+    &:hover {
+      background: ${theme.colors.green200};
+    }
+  }
+`;
+
 const VendorDashboard = () => {
   const { vendorSlug } = useParams();
   const navigate = useNavigate();
