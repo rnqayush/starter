@@ -188,6 +188,12 @@ const NavContent = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: 0 ${theme.spacing.sm};
+    flex-wrap: wrap;
+    gap: ${theme.spacing.sm};
+  }
 `;
 
 const NavLogo = styled.div.withConfig({
@@ -202,9 +208,13 @@ const NavActions = styled.div`
   display: flex;
   gap: ${theme.spacing.md};
   align-items: center;
+  flex-wrap: wrap;
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     gap: ${theme.spacing.sm};
+    width: 100%;
+    justify-content: center;
+    margin-top: ${theme.spacing.sm};
   }
 `;
 
@@ -244,6 +254,11 @@ const Section = styled.section.withConfig({
 const Container = styled.div`
   max-width: 1200px;
   margin: 0 auto;
+  padding: 0 ${theme.spacing.md};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: 0 ${theme.spacing.sm};
+  }
 `;
 
 const SectionTitle = styled.h2`
@@ -295,6 +310,10 @@ const AboutStats = styled.div`
   grid-template-columns: repeat(3, 1fr);
   gap: ${theme.spacing.md};
   margin-top: ${theme.spacing.lg};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 const StatCard = styled.div`
@@ -387,6 +406,13 @@ const GalleryTabs = styled.div`
   gap: ${theme.spacing.md};
   margin-bottom: ${theme.spacing.xl};
   flex-wrap: wrap;
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    gap: ${theme.spacing.sm};
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding-bottom: ${theme.spacing.sm};
+  }
 `;
 
 const GalleryTab = styled.button.withConfig({
@@ -411,6 +437,11 @@ const GalleryGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: ${theme.spacing.md};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: ${theme.spacing.sm};
+  }
 `;
 
 const GalleryItem = styled.img`
