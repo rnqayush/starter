@@ -339,3 +339,76 @@ export const getFeaturedProducts = () => {
 export const getOnSaleProducts = () => {
   return products.filter((product) => product.onSale);
 };
+
+export const getProductsByAvailability = (availability) => {
+  return products.filter((product) => product.availability === availability);
+};
+
+export const updateProductAvailability = (productId, availability) => {
+  const productIndex = products.findIndex((product) => product.id === productId);
+  if (productIndex !== -1) {
+    products[productIndex].availability = availability;
+    // Auto-update stock based on availability
+    switch (availability) {
+      case "out_of_stock":
+        products[productIndex].stock = 0;
+        break;
+      case "limited_stock":
+        if (products[productIndex].stock > 10) {
+          products[productIndex].stock = Math.floor(Math.random() * 10) + 1;
+        }
+        break;
+      case "pre_order":
+        products[productIndex].stock = 0;
+        break;
+      default:
+        break;
+    }
+    return products[productIndex];
+  }
+  return null;
+};
+
+export const getAvailabilityStatus = (product) => {
+  if (!product) return "unknown";
+
+  if (product.availability === "out_of_stock" || product.stock === 0) {
+    return "out_of_stock";
+  } else if (product.availability === "limited_stock" || product.stock <= 10) {
+    return "limited_stock";
+  } else if (product.availability === "pre_order") {
+    return "pre_order";
+  } else {
+    return "in_stock";
+  }
+};
+
+export const getAvailabilityLabel = (availability) => {
+  switch (availability) {
+    case "in_stock":
+      return "In Stock";
+    case "out_of_stock":
+      return "Out of Stock";
+    case "limited_stock":
+      return "Limited Stock";
+    case "pre_order":
+      return "Pre Order";
+    default:
+      return "Unknown";
+  }
+};
+
+export const getAvailabilityColor = (availability) => {
+  switch (availability) {
+    case "in_stock":
+      return "#10b981"; // green
+    case "out_of_stock":
+      return "#ef4444"; // red
+    case "limited_stock":
+      return "#f59e0b"; // yellow
+    case "pre_order":
+      return "#3b82f6"; // blue
+    default:
+      return "#6b7280"; // gray
+  }
+};
