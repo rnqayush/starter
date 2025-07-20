@@ -254,6 +254,22 @@ const Grid = styled.div.withConfig({
     minmax(${(props) => props.minWidth || "280px"}, 1fr)
   );
   gap: ${theme.spacing.xl};
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: ${theme.spacing.lg};
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: ${theme.spacing.md};
+    padding: 0 ${theme.spacing.sm};
+  }
+
+  @media (max-width: 320px) {
+    grid-template-columns: 1fr;
+    gap: ${theme.spacing.md};
+  }
 `;
 
 const BackButton = styled.button`
