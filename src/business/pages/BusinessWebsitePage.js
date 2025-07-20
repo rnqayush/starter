@@ -60,14 +60,18 @@ const NavContainer = styled.div`
   height: 70px;
 `;
 
-const Logo = styled.div`
+const Logo = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'primaryColor',
+})`
   font-size: 1.8rem;
   font-weight: 800;
   color: ${props => props.primaryColor || theme.colors.primary};
   flex: 1;
 `;
 
-const NavLinks = styled.div`
+const NavLinks = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'primaryColor',
+})`
   display: flex;
   gap: ${theme.spacing.xl};
   flex: 2;
@@ -106,7 +110,9 @@ const NavLinks = styled.div`
   }
 `;
 
-const EditButton = styled.button`
+const EditButton = styled.button.withConfig({
+  shouldForwardProp: (prop) => prop !== 'primaryColor',
+})`
   background: ${props => props.primaryColor || theme.colors.primary};
   color: ${theme.colors.white};
   padding: ${theme.spacing.sm} ${theme.spacing.lg};
