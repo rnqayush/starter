@@ -459,7 +459,22 @@ const VendorDashboard = () => {
   });
 
   const [services, setServices] = useState([]);
-  const [portfolio, setPortfolio] = useState([]);
+    const [portfolio, setPortfolio] = useState([]);
+  const [portfolioForm, setPortfolioForm] = useState({
+    id: '',
+    location: '',
+    city: '',
+    state: '',
+    weddingDate: '',
+    coupleNames: '',
+    description: '',
+    coverImage: '',
+    gallery: [],
+    services: [],
+    highlights: [],
+    editing: false
+  });
+  const [showPortfolioForm, setShowPortfolioForm] = useState(false);
   const [packages, setPackages] = useState([]);
   const [testimonials, setTestimonials] = useState([]);
   const [faq, setFaq] = useState([]);
