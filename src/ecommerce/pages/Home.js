@@ -259,10 +259,8 @@ const Home = () => {
   };
 
   return (
-    <PageContainer>
-      <Navbar
-        cartItemsCount={cartItems.reduce((sum, item) => sum + item.quantity, 0)}
-      />
+        <PageContainer>
+      <Navbar />
 
       <HeroSection>
         <HeroContent>
