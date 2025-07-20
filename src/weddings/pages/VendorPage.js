@@ -34,7 +34,9 @@ const PageContainer = styled.div`
   background: ${theme.colors.gray50};
 `;
 
-const BackToTopButton = styled.button`
+const BackToTopButton = styled.button.withConfig({
+  shouldForwardProp: (prop) => !['primaryColor', 'visible'].includes(prop),
+})`
   position: fixed;
   bottom: 20px;
   right: 20px;
@@ -139,7 +141,9 @@ const HeroTagline = styled.p`
   }
 `;
 
-const HeroButton = styled.button`
+const HeroButton = styled.button.withConfig({
+  shouldForwardProp: (prop) => !['primaryColor'].includes(prop),
+})`
   background: ${props => props.primaryColor || theme.colors.primary};
   color: white;
   border: none;
@@ -161,7 +165,9 @@ const HeroButton = styled.button`
   }
 `;
 
-const NavBar = styled.nav`
+const NavBar = styled.nav.withConfig({
+  shouldForwardProp: (prop) => !['scrolled'].includes(prop),
+})`
   position: fixed;
   top: 0;
   left: 0;
