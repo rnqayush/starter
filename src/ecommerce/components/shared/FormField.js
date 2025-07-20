@@ -190,6 +190,7 @@ const FormField = ({
   disabled = false,
   options = [],
   rows,
+  children,
   ...props
 }) => {
   const renderInput = () => {
