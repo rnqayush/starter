@@ -501,6 +501,27 @@ const MobileAuthButton = styled(Link)`
   }
 `;
 
+const MobileMenuOverlay = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "isOpen",
+})`
+  display: none;
+
+  ${media.mobileDown} {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 998;
+    opacity: ${(props) => (props.isOpen ? "1" : "0")};
+    visibility: ${(props) => (props.isOpen ? "visible" : "hidden")};
+    transition: all 0.3s ease;
+    backdrop-filter: blur(4px);
+  }
+`;
+
 const Header = ({ isOwnerView = false }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -573,7 +594,7 @@ const Header = ({ isOwnerView = false }) => {
                 </DropdownButton>
                 <DropdownMenu isOpen={dropdownOpen}>
                   <DropdownItem to="/hotels" onClick={handleDropdownItemClick}>
-                    🏨 Hotels
+                    �� Hotels
                   </DropdownItem>
                   <DropdownItem
                     to="/ecommerce"
