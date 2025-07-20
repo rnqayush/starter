@@ -344,38 +344,36 @@ const QuickNavGrid = styled.div`
 const QuickNavItem = styled(Link)`
   display: flex;
   align-items: center;
-  gap: ${theme.spacing.md};
-  padding: ${theme.spacing.lg};
-  border-radius: ${theme.borderRadius.md};
-  background: ${theme.colors.gray50};
+  gap: ${theme.spacing.sm};
+  padding: ${theme.spacing.md} ${theme.spacing.lg};
+  border-radius: ${theme.borderRadius.lg};
+  background: transparent;
   text-decoration: none;
   color: ${theme.colors.gray700};
   transition: all 0.3s ease;
-  border: 2px solid transparent;
+  border: 2px solid ${theme.colors.gray200};
+  font-weight: 600;
+  white-space: nowrap;
 
   &:hover {
-    background: ${theme.colors.primary}10;
+    background: ${theme.colors.primary};
     border-color: ${theme.colors.primary};
+    color: ${theme.colors.white};
     transform: translateY(-2px);
     box-shadow: ${theme.shadows.md};
   }
 
   .icon {
-    font-size: 1.5rem;
-    color: ${theme.colors.primary};
+    font-size: 1.2rem;
   }
 
-  .content {
-    h3 {
-      margin: 0 0 ${theme.spacing.xs} 0;
-      font-weight: 600;
-      color: ${theme.colors.gray900};
-    }
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    justify-content: center;
+    padding: ${theme.spacing.sm} ${theme.spacing.md};
+    font-size: 0.9rem;
 
-    p {
-      margin: 0;
-      font-size: 0.9rem;
-      color: ${theme.colors.gray600};
+    .icon {
+      font-size: 1rem;
     }
   }
 `;
