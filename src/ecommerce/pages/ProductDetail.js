@@ -293,58 +293,7 @@ const StockInfo = styled.div.withConfig({
   font-weight: 600;
 `;
 
-const QuantitySection = styled.div`
-  display: flex;
-  align-items: center;
-  gap: ${theme.spacing.lg};
-  margin-bottom: ${theme.spacing.xl};
-`;
 
-const QuantityLabel = styled.span`
-  font-weight: 600;
-  color: ${theme.colors.gray900};
-`;
-
-const QuantityControls = styled.div`
-  display: flex;
-  align-items: center;
-  border: 2px solid ${theme.colors.gray200};
-  border-radius: ${theme.borderRadius.md};
-  overflow: hidden;
-`;
-
-const QuantityButton = styled.button`
-  background: ${theme.colors.gray100};
-  border: none;
-  padding: ${theme.spacing.sm};
-  color: ${theme.colors.gray700};
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  &:hover {
-    background: ${theme.colors.gray200};
-  }
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-`;
-
-const QuantityInput = styled.input`
-  border: none;
-  padding: ${theme.spacing.sm} ${theme.spacing.md};
-  text-align: center;
-  width: 60px;
-  font-weight: 600;
-
-  &:focus {
-    outline: none;
-  }
-`;
 
 const ActionButtons = styled.div`
   display: flex;
