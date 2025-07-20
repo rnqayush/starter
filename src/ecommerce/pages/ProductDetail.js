@@ -454,6 +454,63 @@ const RelatedGrid = styled.div`
   gap: ${theme.spacing.xl};
 `;
 
+const SellerInfo = styled.div`
+  background: ${theme.colors.gray50};
+  padding: ${theme.spacing.lg};
+  border-radius: ${theme.borderRadius.md};
+  margin-bottom: ${theme.spacing.lg};
+`;
+
+const SellerHeader = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.md};
+  margin-bottom: ${theme.spacing.md};
+`;
+
+const SellerLogo = styled.img`
+  width: 60px;
+  height: 60px;
+  border-radius: ${theme.borderRadius.md};
+  object-fit: cover;
+`;
+
+const SellerDetails = styled.div`
+  flex: 1;
+`;
+
+const SellerName = styled.h4`
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: ${theme.colors.gray900};
+  margin: 0 0 ${theme.spacing.xs} 0;
+`;
+
+const SellerBadge = styled.span`
+  background: ${theme.colors.success};
+  color: ${theme.colors.white};
+  padding: 2px 8px;
+  border-radius: ${theme.borderRadius.sm};
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+`;
+
+const SellerMeta = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: ${theme.spacing.md};
+  margin-top: ${theme.spacing.md};
+`;
+
+const SellerMetaItem = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.sm};
+  font-size: 0.9rem;
+  color: ${theme.colors.gray600};
+`;
+
 const ProductDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
