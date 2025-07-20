@@ -5,6 +5,7 @@ import StoresListing from "./pages/StoresListing";
 import Vehicles from "./pages/Vehicles";
 import VehicleDetail from "./pages/VehicleDetail";
 import Wishlist from "./pages/Wishlist";
+import DealerDashboard from "./pages/DealerDashboard";
 
 const AutomobileModule = () => {
   const location = useLocation();
