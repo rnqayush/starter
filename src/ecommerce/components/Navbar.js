@@ -626,18 +626,18 @@ const Navbar = ({
           </form>
         </SearchContainer>
 
-                <NavActions>
+                        <NavActions>
           <Link to="/">
             <UserButton title="Back to Main Site" theme={vendorTheme}>
               <FaHome />
             </UserButton>
           </Link>
 
-          <UserButton title="Wishlist" theme={vendorTheme} style={{ display: window.innerWidth < 1024 ? 'none' : 'flex' }}>
+          <UserButton title="Wishlist" theme={vendorTheme} hideOnTablet>
             <FaHeart />
           </UserButton>
 
-          <UserButton title="Notifications" theme={vendorTheme} style={{ display: window.innerWidth < 1200 ? 'none' : 'flex' }}>
+          <UserButton title="Notifications" theme={vendorTheme} hideOnSmallDesktop>
             <FaBell />
           </UserButton>
 
