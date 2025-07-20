@@ -59,9 +59,10 @@ export const products = [
       "Premium comfort fit",
       "Bluetooth 5.0",
     ],
-    rating: 4.8,
+        rating: 4.8,
     reviews: 245,
     stock: 15,
+    availability: "in_stock", // in_stock, out_of_stock, limited_stock, pre_order
     featured: true,
     onSale: true,
   },
@@ -88,9 +89,10 @@ export const products = [
       "7-day battery life",
       "Sleep tracking",
     ],
-    rating: 4.6,
+        rating: 4.6,
     reviews: 189,
     stock: 23,
+    availability: "in_stock",
     featured: true,
   },
   {
@@ -114,9 +116,10 @@ export const products = [
       "Non-slip design",
       "Universal compatibility",
     ],
-    rating: 4.4,
+        rating: 4.4,
     reviews: 76,
     stock: 45,
+    availability: "in_stock",
   },
 
   // Fashion
@@ -142,9 +145,10 @@ export const products = [
       "Durable construction",
       "Machine washable",
     ],
-    rating: 4.7,
+        rating: 4.7,
     reviews: 134,
     stock: 28,
+    availability: "in_stock",
     featured: true,
     sizes: ["XS", "S", "M", "L", "XL", "XXL"],
   },
@@ -171,9 +175,10 @@ export const products = [
       "Gold-tone hardware",
       "Dust bag included",
     ],
-    rating: 4.9,
+        rating: 4.9,
     reviews: 87,
     stock: 12,
+    availability: "limited_stock",
     onSale: true,
   },
   {
@@ -198,9 +203,10 @@ export const products = [
       "Slip-resistant sole",
       "Available in multiple colors",
     ],
-    rating: 4.5,
+        rating: 4.5,
     reviews: 203,
     stock: 34,
+    availability: "in_stock",
     sizes: ["6", "7", "8", "9", "10", "11", "12"],
   },
 
@@ -227,9 +233,10 @@ export const products = [
       "LED bulb included",
       "Modern design",
     ],
-    rating: 4.6,
+        rating: 4.6,
     reviews: 98,
     stock: 19,
+    availability: "in_stock",
     featured: true,
   },
   {
@@ -254,9 +261,10 @@ export const products = [
       "Easy to clean",
       "Various sizes",
     ],
-    rating: 4.3,
+        rating: 4.3,
     reviews: 156,
     stock: 41,
+    availability: "in_stock",
   },
 
   // Sports
@@ -282,9 +290,10 @@ export const products = [
       "Carrying strap included",
       "Easy to clean",
     ],
-    rating: 4.7,
+        rating: 4.7,
     reviews: 267,
     stock: 52,
+    availability: "in_stock",
     featured: true,
   },
   {
@@ -308,9 +317,10 @@ export const products = [
       "Ankle straps",
       "Carrying bag",
     ],
-    rating: 4.4,
+        rating: 4.4,
     reviews: 189,
     stock: 67,
+    availability: "in_stock",
   },
 ];
 
@@ -328,4 +338,77 @@ export const getFeaturedProducts = () => {
 
 export const getOnSaleProducts = () => {
   return products.filter((product) => product.onSale);
+};
+
+export const getProductsByAvailability = (availability) => {
+  return products.filter((product) => product.availability === availability);
+};
+
+export const updateProductAvailability = (productId, availability) => {
+  const productIndex = products.findIndex((product) => product.id === productId);
+  if (productIndex !== -1) {
+    products[productIndex].availability = availability;
+    // Auto-update stock based on availability
+    switch (availability) {
+      case "out_of_stock":
+        products[productIndex].stock = 0;
+        break;
+      case "limited_stock":
+        if (products[productIndex].stock > 10) {
+          products[productIndex].stock = Math.floor(Math.random() * 10) + 1;
+        }
+        break;
+      case "pre_order":
+        products[productIndex].stock = 0;
+        break;
+      default:
+        break;
+    }
+    return products[productIndex];
+  }
+  return null;
+};
+
+export const getAvailabilityStatus = (product) => {
+  if (!product) return "unknown";
+
+  if (product.availability === "out_of_stock" || product.stock === 0) {
+    return "out_of_stock";
+  } else if (product.availability === "limited_stock" || product.stock <= 10) {
+    return "limited_stock";
+  } else if (product.availability === "pre_order") {
+    return "pre_order";
+  } else {
+    return "in_stock";
+  }
+};
+
+export const getAvailabilityLabel = (availability) => {
+  switch (availability) {
+    case "in_stock":
+      return "In Stock";
+    case "out_of_stock":
+      return "Out of Stock";
+    case "limited_stock":
+      return "Limited Stock";
+    case "pre_order":
+      return "Pre Order";
+    default:
+      return "Unknown";
+  }
+};
+
+export const getAvailabilityColor = (availability) => {
+  switch (availability) {
+    case "in_stock":
+      return "#10b981"; // green
+    case "out_of_stock":
+      return "#ef4444"; // red
+    case "limited_stock":
+      return "#f59e0b"; // yellow
+    case "pre_order":
+      return "#3b82f6"; // blue
+    default:
+      return "#6b7280"; // gray
+  }
 };

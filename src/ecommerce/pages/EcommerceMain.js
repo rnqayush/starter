@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, Link } from "react-router-dom";
 import styled, { createGlobalStyle } from "styled-components";
 import { FaArrowRight, FaShoppingBag, FaHome } from "react-icons/fa";
 import { theme } from "../../styles/GlobalStyle";
@@ -7,6 +7,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import ProductCard from "../components/ProductCard";
 import CategoryCard from "../components/CategoryCard";
+import BackToTop from "../components/BackToTop";
 import {
   categories,
   getFeaturedProducts,
@@ -35,18 +36,24 @@ const PageContainer = styled.div.withConfig({
 
 const HeroSection = styled.section.withConfig({
   shouldForwardProp: (prop) =>
-    !["primaryColor", "secondaryColor"].includes(prop),
+    !["primaryColor", "secondaryColor", "heroImage"].includes(prop),
 })`
-  background: linear-gradient(
-    135deg,
-    ${(props) => props.primaryColor || "#667eea"} 0%,
-    ${(props) => props.secondaryColor || "#764ba2"} 100%
-  );
+  background:
+    linear-gradient(135deg,
+      ${(props) => props.primaryColor || "#667eea"}dd 0%,
+      ${(props) => props.secondaryColor || "#764ba2"}dd 100%),
+    ${(props) => props.heroImage ? `url("${props.heroImage}")` : 'none'};
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
   color: ${theme.colors.white};
   padding: ${theme.spacing.xxl} 0;
   text-align: center;
   position: relative;
   overflow: hidden;
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
 
   &::before {
     content: "";
@@ -55,8 +62,13 @@ const HeroSection = styled.section.withConfig({
     left: 0;
     right: 0;
     bottom: 0;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
-    opacity: 0.1;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 1;
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    min-height: 50vh;
+    background-attachment: scroll;
   }
 `;
 
@@ -65,7 +77,8 @@ const HeroContent = styled.div`
   margin: 0 auto;
   padding: 0 ${theme.spacing.md};
   position: relative;
-  z-index: 1;
+  z-index: 2;
+  width: 100%;
 `;
 
 const StoreHeader = styled.div`
@@ -74,40 +87,71 @@ const StoreHeader = styled.div`
   justify-content: center;
   gap: ${theme.spacing.md};
   margin-bottom: ${theme.spacing.lg};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    flex-direction: column;
+    gap: ${theme.spacing.sm};
+    text-align: center;
+  }
 `;
 
 const StoreLogo = styled.img`
-  width: 80px;
-  height: 80px;
-  border-radius: ${theme.borderRadius.lg};
-  border: 3px solid ${theme.colors.white};
+  width: 120px;
+  height: 120px;
+  border-radius: ${theme.borderRadius.xl};
+  border: 4px solid ${theme.colors.white};
   object-fit: cover;
+  box-shadow: ${theme.shadows.xl};
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    width: 100px;
+    height: 100px;
+  }
 `;
 
 const HeroTitle = styled.h1`
-  font-size: 3.5rem;
-  font-weight: 700;
+  font-size: 4rem;
+  font-weight: 800;
   margin-bottom: ${theme.spacing.lg};
   background: linear-gradient(45deg, #ffffff, #f0f8ff);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  letter-spacing: -1px;
+  line-height: 1.1;
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    font-size: 3rem;
+  }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    font-size: 2.5rem;
+    font-size: 2.2rem;
   }
 `;
 
 const HeroSubtitle = styled.p`
-  font-size: 1.3rem;
-  margin-bottom: ${theme.spacing.xxl};
-  opacity: 0.9;
-  max-width: 600px;
+  font-size: 1.4rem;
+  margin-bottom: ${theme.spacing.xl};
+  opacity: 0.95;
+  max-width: 700px;
   margin-left: auto;
   margin-right: auto;
+  font-weight: 300;
+  line-height: 1.6;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    font-size: 1.2rem;
+  }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
 `;
 
@@ -116,6 +160,12 @@ const HeroActions = styled.div`
   gap: ${theme.spacing.lg};
   justify-content: center;
   flex-wrap: wrap;
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    flex-direction: column;
+    align-items: center;
+    gap: ${theme.spacing.md};
+  }
 `;
 
 const HeroButton = styled.button.withConfig({
@@ -123,44 +173,85 @@ const HeroButton = styled.button.withConfig({
 })`
   background: ${theme.colors.white};
   color: ${(props) => props.primaryColor || theme.colors.primary};
-  padding: ${theme.spacing.md} ${theme.spacing.xl};
+  padding: ${theme.spacing.lg} ${theme.spacing.xxl};
   border: none;
-  border-radius: ${theme.borderRadius.lg};
-  font-weight: 600;
+  border-radius: ${theme.borderRadius.xl};
+  font-weight: 700;
+  font-size: 1.1rem;
   text-decoration: none;
   display: flex;
   align-items: center;
-  gap: ${theme.spacing.sm};
+  gap: ${theme.spacing.md};
   transition: all 0.3s ease;
-  box-shadow: ${theme.shadows.lg};
+  box-shadow: ${theme.shadows.xl};
   cursor: pointer;
+  min-width: 200px;
+  justify-content: center;
 
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: ${theme.shadows.xl};
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    background: ${theme.colors.gray50};
   }
 
   &.secondary {
-    background: transparent;
+    background: rgba(255, 255, 255, 0.1);
     color: ${theme.colors.white};
     border: 2px solid ${theme.colors.white};
+    backdrop-filter: blur(10px);
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-3px);
+    }
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.md} ${theme.spacing.xl};
+    min-width: 180px;
+    font-size: 1rem;
   }
 `;
 
 const Section = styled.section`
   padding: ${theme.spacing.xxl} 0;
   background: ${(props) => props.background || theme.colors.white};
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    padding: ${theme.spacing.xl} 0;
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.lg} 0;
+  }
 `;
 
 const Container = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 ${theme.spacing.md};
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    padding: 0 ${theme.spacing.md};
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: 0 ${theme.spacing.sm};
+  }
 `;
 
 const SectionHeader = styled.div`
   text-align: center;
   margin-bottom: ${theme.spacing.xxl};
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    margin-bottom: ${theme.spacing.xl};
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    margin-bottom: ${theme.spacing.lg};
+    padding: 0 ${theme.spacing.sm};
+  }
 `;
 
 const SectionTitle = styled.h2.withConfig({
@@ -170,6 +261,15 @@ const SectionTitle = styled.h2.withConfig({
   font-weight: 600;
   color: ${(props) => props.textColor || theme.colors.gray900};
   margin-bottom: ${theme.spacing.md};
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    font-size: 2rem;
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    font-size: 1.75rem;
+    margin-bottom: ${theme.spacing.sm};
+  }
 `;
 
 const SectionSubtitle = styled.p`
@@ -177,6 +277,18 @@ const SectionSubtitle = styled.p`
   color: ${theme.colors.gray600};
   max-width: 600px;
   margin: 0 auto;
+  line-height: 1.6;
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    font-size: 1rem;
+    max-width: 500px;
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    font-size: 0.95rem;
+    max-width: 100%;
+    padding: 0 ${theme.spacing.sm};
+  }
 `;
 
 const Grid = styled.div.withConfig({
@@ -188,6 +300,22 @@ const Grid = styled.div.withConfig({
     minmax(${(props) => props.minWidth || "280px"}, 1fr)
   );
   gap: ${theme.spacing.xl};
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: ${theme.spacing.lg};
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: ${theme.spacing.md};
+    padding: 0 ${theme.spacing.sm};
+  }
+
+  @media (max-width: 320px) {
+    grid-template-columns: 1fr;
+    gap: ${theme.spacing.md};
+  }
 `;
 
 const BackButton = styled.button`
@@ -258,14 +386,181 @@ const FallbackButton = styled.button`
   }
 `;
 
+const QuickNavigation = styled.div`
+  background: ${theme.colors.white};
+  border-bottom: 1px solid ${theme.colors.gray200};
+  padding: ${theme.spacing.lg} 0;
+  position: sticky;
+  top: 80px;
+  z-index: 90;
+  box-shadow: ${theme.shadows.sm};
+`;
+
+const QuickNavGrid = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 ${theme.spacing.md};
+  display: flex;
+  justify-content: center;
+  gap: ${theme.spacing.xl};
+  flex-wrap: wrap;
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    gap: ${theme.spacing.md};
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    flex-direction: column;
+    gap: ${theme.spacing.sm};
+  }
+`;
+
+const QuickNavItem = styled(Link)`
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.sm};
+  padding: ${theme.spacing.md} ${theme.spacing.lg};
+  border-radius: ${theme.borderRadius.lg};
+  background: transparent;
+  text-decoration: none;
+  color: ${theme.colors.gray700};
+  transition: all 0.3s ease;
+  border: 2px solid ${theme.colors.gray200};
+  font-weight: 600;
+  white-space: nowrap;
+
+  &:hover {
+    background: ${theme.colors.primary};
+    border-color: ${theme.colors.primary};
+    color: ${theme.colors.white};
+    transform: translateY(-2px);
+    box-shadow: ${theme.shadows.md};
+  }
+
+  .icon {
+    font-size: 1.2rem;
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    justify-content: center;
+    padding: ${theme.spacing.sm} ${theme.spacing.md};
+    font-size: 0.9rem;
+
+    .icon {
+      font-size: 1rem;
+    }
+  }
+`;
+
+const StoreInfo = styled.div`
+  background: ${theme.colors.gray50};
+  padding: ${theme.spacing.lg};
+  border-radius: ${theme.borderRadius.md};
+  border: 1px solid ${theme.colors.gray200};
+  margin-bottom: ${theme.spacing.xl};
+`;
+
+const StoreInfoGrid = styled.div`
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: ${theme.spacing.xl};
+  align-items: center;
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    grid-template-columns: 1fr;
+    gap: ${theme.spacing.lg};
+    text-align: center;
+  }
+`;
+
+const StoreContact = styled.div`
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: ${theme.spacing.sm};
+    margin-bottom: ${theme.spacing.md};
+    color: ${theme.colors.gray700};
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    .icon {
+      color: ${theme.colors.primary};
+      width: 20px;
+    }
+  }
+`;
+
+const StoreStats = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: ${theme.spacing.lg};
+  text-align: center;
+`;
+
+const StatItem = styled.div`
+  .number {
+    font-size: 2rem;
+    font-weight: 700;
+    color: ${theme.colors.primary};
+    margin-bottom: ${theme.spacing.xs};
+  }
+
+  .label {
+    font-size: 0.9rem;
+    color: ${theme.colors.gray600};
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+`;
+
+const Breadcrumb = styled.div`
+  background: ${theme.colors.white};
+  padding: ${theme.spacing.md} 0;
+  border-bottom: 1px solid ${theme.colors.gray100};
+`;
+
+const BreadcrumbNav = styled.nav`
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 ${theme.spacing.md};
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.sm};
+  font-size: 0.9rem;
+  color: ${theme.colors.gray600};
+
+  a {
+    color: ${theme.colors.primary};
+    text-decoration: none;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: ${theme.colors.primaryDark};
+      text-decoration: underline;
+    }
+  }
+
+  .separator {
+    color: ${theme.colors.gray400};
+  }
+
+  .current {
+    color: ${theme.colors.gray900};
+    font-weight: 600;
+  }
+`;
+
 const EcommerceMain = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const [cartItems, setCartItems] = useState([]);
-  const [featuredProducts, setFeaturedProducts] = useState([]);
+      const [featuredProducts, setFeaturedProducts] = useState([]);
   const [saleProducts, setSaleProducts] = useState([]);
   const [selectedVendor, setSelectedVendor] = useState(null);
+
+  const getBaseUrl = () => selectedVendor ? `/${selectedVendor.slug}` : "/ecommerce";
 
   useEffect(() => {
     // Get vendor data from URL slug or navigation state (fallback)
@@ -297,21 +592,7 @@ const EcommerceMain = () => {
     setSaleProducts(getOnSaleProducts());
   }, [location.pathname, location.state, navigate]);
 
-  const handleAddToCart = (product) => {
-    setCartItems((prev) => {
-      const existingItem = prev.find((item) => item.id === product.id);
-      if (existingItem) {
-        return prev.map((item) =>
-          item.id === product.id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item,
-        );
-      }
-      return [...prev, { ...product, quantity: 1 }];
-    });
-
-    alert(`${product.name} added to cart!`);
-  };
+  
 
   const handleBackToStores = () => {
     navigate("/ecommerce-stores");
@@ -351,20 +632,25 @@ const EcommerceMain = () => {
           Back to Stores
         </BackButton>
 
-        <Navbar
-          cartItemsCount={cartItems.reduce(
-            (sum, item) => sum + item.quantity,
-            0,
-          )}
+                        <Navbar
           storeName={selectedVendor.name}
           storeLogo={selectedVendor.logo}
           storeSlug={selectedVendor.slug}
           theme={vendorTheme}
         />
 
-        <HeroSection
+        <Breadcrumb>
+          <BreadcrumbNav>
+            <Link to="/ecommerce-stores">All Stores</Link>
+            <span className="separator">›</span>
+            <span className="current">{selectedVendor.name}</span>
+          </BreadcrumbNav>
+        </Breadcrumb>
+
+                <HeroSection
           primaryColor={vendorTheme.primaryColor}
           secondaryColor={vendorTheme.secondaryColor}
+          heroImage={selectedVendor.image}
         >
           <HeroContent>
             <StoreHeader>
@@ -378,11 +664,17 @@ const EcommerceMain = () => {
             </StoreHeader>
             <HeroSubtitle>{selectedVendor.description}</HeroSubtitle>
             <HeroActions>
-              <HeroButton primaryColor={vendorTheme.primaryColor}>
+              <HeroButton
+                primaryColor={vendorTheme.primaryColor}
+                onClick={() => navigate(`${getBaseUrl()}/products`)}
+              >
                 <FaShoppingBag />
                 Shop Now
               </HeroButton>
-              <HeroButton className="secondary">
+              <HeroButton
+                className="secondary"
+                onClick={() => navigate(`${getBaseUrl()}/products?category=electronics`)}
+              >
                 View Categories
                 <FaArrowRight />
               </HeroButton>
@@ -390,18 +682,19 @@ const EcommerceMain = () => {
           </HeroContent>
         </HeroSection>
 
-        <Section>
+                
+
+                <Section>
           <Container>
             <SectionHeader>
               <SectionTitle textColor={vendorTheme.textColor}>
                 Shop by Category
               </SectionTitle>
               <SectionSubtitle>
-                Explore our diverse range of products across different
-                categories
+                Explore our diverse range of products across different categories
               </SectionSubtitle>
             </SectionHeader>
-            <Grid minWidth="250px">
+            <Grid minWidth="280px">
               {categories.map((category) => (
                 <CategoryCard
                   key={category.id}
@@ -426,12 +719,11 @@ const EcommerceMain = () => {
                 the most
               </SectionSubtitle>
             </SectionHeader>
-            <Grid>
+                        <Grid>
               {featuredProducts.slice(0, 4).map((product) => (
                 <ProductCard
                   key={product.id}
                   product={product}
-                  onAddToCart={handleAddToCart}
                   storeSlug={selectedVendor.slug}
                 />
               ))}
@@ -451,12 +743,11 @@ const EcommerceMain = () => {
                   to miss
                 </SectionSubtitle>
               </SectionHeader>
-              <Grid>
+                            <Grid>
                 {saleProducts.slice(0, 4).map((product) => (
                   <ProductCard
                     key={product.id}
                     product={product}
-                    onAddToCart={handleAddToCart}
                     storeSlug={selectedVendor.slug}
                   />
                 ))}
@@ -465,7 +756,8 @@ const EcommerceMain = () => {
           </Section>
         )}
 
-        <Footer storeSlug={selectedVendor.slug} theme={vendorTheme} />
+                <Footer storeSlug={selectedVendor.slug} theme={vendorTheme} />
+        <BackToTop />
       </PageContainer>
     </>
   );

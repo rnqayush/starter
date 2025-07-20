@@ -1,23 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { FaStar, FaHeart, FaShoppingCart } from "react-icons/fa";
+import { FaStar, FaHeart, FaEnvelope } from "react-icons/fa";
 import { theme, media } from "../../styles/GlobalStyle";
+import EnquiryModal from "./EnquiryModal";
+import { getAvailabilityStatus, getAvailabilityLabel, getAvailabilityColor } from "../data/products";
 
 const Card = styled.div`
   background: ${theme.colors.white};
-  border-radius: ${theme.borderRadius.lg};
+  border-radius: ${theme.borderRadius.xl};
   overflow: hidden;
   box-shadow: ${theme.shadows.sm};
-  transition: all 0.3s ease;
+  transition: all 0.4s ease;
   position: relative;
   height: 100%;
   display: flex;
   flex-direction: column;
+  border: 1px solid ${theme.colors.gray100};
 
   &:hover {
-    transform: translateY(-4px);
-    box-shadow: ${theme.shadows.lg};
+    transform: translateY(-8px);
+    box-shadow: ${theme.shadows.xl};
+    border-color: ${theme.colors.primary}20;
   }
 
   ${media.mobile} {
@@ -281,28 +285,35 @@ const ActionButtons = styled.div`
   }
 `;
 
-const AddToCartButton = styled.button`
+const EnquireButton = styled.button`
   flex: 1;
-  background: ${theme.colors.primary};
+  background: linear-gradient(135deg, ${theme.colors.primary} 0%, ${theme.colors.primaryDark} 100%);
   color: ${theme.colors.white};
-  padding: ${theme.spacing.sm} ${theme.spacing.md};
-  border-radius: ${theme.borderRadius.md};
-  font-weight: 600;
+  padding: ${theme.spacing.md} ${theme.spacing.lg};
+  border-radius: ${theme.borderRadius.lg};
+  font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: ${theme.spacing.sm};
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 0.9rem;
 
   &:hover {
-    background: ${theme.colors.primaryDark};
-    transform: translateY(-2px);
+    background: linear-gradient(135deg, ${theme.colors.primaryDark} 0%, ${theme.colors.primary} 100%);
+    transform: translateY(-3px);
+    box-shadow: ${theme.shadows.lg};
   }
 
   &:disabled {
     background: ${theme.colors.gray400};
     cursor: not-allowed;
     transform: none;
+    box-shadow: none;
   }
 
   ${media.mobile} {
@@ -317,10 +328,9 @@ const AddToCartButton = styled.button`
 `;
 
 const StockIndicator = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "inStock",
+  shouldForwardProp: (prop) => !["availability", "color"].includes(prop),
 })`
-  color: ${(props) =>
-    props.inStock ? theme.colors.success : theme.colors.error};
+  color: ${(props) => props.color || theme.colors.gray600};
   font-size: 0.8rem;
   font-weight: 600;
   margin-bottom: ${theme.spacing.sm};
@@ -333,11 +343,12 @@ const StockIndicator = styled.div.withConfig({
 
 const ProductCard = ({
   product,
-  onAddToCart,
   onToggleWishlist,
   isInWishlist = false,
   storeSlug = "",
 }) => {
+  const [isEnquiryModalOpen, setIsEnquiryModalOpen] = useState(false);
+
   const renderStars = (rating) => {
     const stars = [];
     for (let i = 1; i <= 5; i++) {
@@ -350,10 +361,10 @@ const ProductCard = ({
     return Math.round(((original - current) / original) * 100);
   };
 
-  const handleAddToCart = (e) => {
+  const handleEnquireClick = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    onAddToCart?.(product);
+    setIsEnquiryModalOpen(true);
   };
 
   const handleWishlistToggle = (e) => {
@@ -362,7 +373,11 @@ const ProductCard = ({
     onToggleWishlist?.(product);
   };
 
-  const getBaseUrl = () => (storeSlug ? `/${storeSlug}` : "/ecommerce");
+    const getBaseUrl = () => (storeSlug ? `/${storeSlug}` : "/ecommerce");
+
+  const availabilityStatus = getAvailabilityStatus(product);
+  const availabilityLabel = getAvailabilityLabel(availabilityStatus);
+  const availabilityColor = getAvailabilityColor(availabilityStatus);
 
   return (
     <Link to={`${getBaseUrl()}/product/${product.id}`}>
@@ -412,21 +427,32 @@ const ProductCard = ({
             )}
           </PriceContainer>
 
-          <StockIndicator inStock={product.stock > 0}>
-            {product.stock > 0 ? `${product.stock} in stock` : "Out of stock"}
+                    <StockIndicator
+            availability={availabilityStatus}
+            color={availabilityColor}
+          >
+            {availabilityStatus === "in_stock" && product.stock > 0
+              ? `${product.stock} in stock`
+              : availabilityLabel}
           </StockIndicator>
 
           <ActionButtons>
-            <AddToCartButton
-              onClick={handleAddToCart}
-              disabled={product.stock === 0}
+            <EnquireButton
+              onClick={handleEnquireClick}
+              disabled={availabilityStatus === "out_of_stock"}
             >
-              <FaShoppingCart />
-              {product.stock > 0 ? "Add to Cart" : "Out of Stock"}
-            </AddToCartButton>
+              <FaEnvelope />
+              {availabilityStatus === "out_of_stock" ? "Not Available" : "Enquire Now"}
+            </EnquireButton>
           </ActionButtons>
         </CardContent>
       </Card>
+
+      <EnquiryModal
+        isOpen={isEnquiryModalOpen}
+        onClose={() => setIsEnquiryModalOpen(false)}
+        product={product}
+      />
     </Link>
   );
 };

@@ -6,10 +6,11 @@ import {
   FaPlus,
   FaTrash,
   FaShoppingCart,
-  FaArrowLeft,
+    FaArrowLeft,
   FaTruck,
   FaTags,
   FaTimes,
+  FaEnvelope,
 } from "react-icons/fa";
 import { theme } from "../../styles/GlobalStyle";
 import Navbar from "../components/Navbar";
@@ -476,8 +477,9 @@ const Cart = () => {
     return calculateSubtotal() - calculateDiscount() + calculateShipping();
   };
 
-  const handleCheckout = () => {
-    navigate("/ecommerce/checkout");
+    const handleEnquireAll = () => {
+    // Since this is an enquiry system, we'll convert cart to enquiries
+    navigate("/ecommerce/my-enquiries");
   };
 
   if (cartItems.length === 0) {
@@ -676,9 +678,9 @@ const Cart = () => {
               <span>${calculateTotal().toFixed(2)}</span>
             </SummaryRow>
 
-            <CheckoutButton onClick={handleCheckout}>
-              Proceed to Checkout
-              <FaArrowLeft style={{ transform: "rotate(180deg)" }} />
+                        <CheckoutButton onClick={handleEnquireAll}>
+              Enquire About All Items
+              <FaEnvelope />
             </CheckoutButton>
 
             <div
