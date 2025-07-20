@@ -721,14 +721,14 @@ const PlatformHomePage = () => {
       gradient: "linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)",
       path: "/weddings",
     },
-    {
+        {
       id: "automobiles",
       icon: FaCar,
       title: "Automobiles",
       description:
         "Car dealerships, rental companies, and mechanics display inventory and connect with customers online.",
       gradient: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
-      path: "/automobiles",
+      path: "/auto-dealers",
     },
   ];
 

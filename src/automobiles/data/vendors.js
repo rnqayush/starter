@@ -2,6 +2,7 @@ export const automobileVendors = [
   {
     id: "luxury-auto-gallery",
     name: "Luxury Auto Gallery",
+    slug: "luxury-auto-gallery",
     category: "automobiles",
     logo: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=200&q=80",
     image:
@@ -48,9 +49,10 @@ export const automobileVendors = [
       { type: "Electric Vehicles", count: 15 },
     ],
   },
-  {
+    {
     id: "family-first-motors",
     name: "Family First Motors",
+    slug: "family-first-motors",
     category: "automobiles",
     logo: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=200&q=80",
     image:
@@ -92,9 +94,10 @@ export const automobileVendors = [
       { type: "Hatchbacks", count: 31 },
     ],
   },
-  {
+    {
     id: "electric-future",
     name: "Electric Future",
+    slug: "electric-future",
     category: "automobiles",
     logo: "https://images.unsplash.com/photo-1593941707882-a5bac6861d75?w=200&q=80",
     image:
@@ -141,9 +144,10 @@ export const automobileVendors = [
       { type: "Electric Trucks", count: 12 },
     ],
   },
-  {
+    {
     id: "classic-car-collection",
     name: "Classic Car Collection",
+    slug: "classic-car-collection",
     category: "automobiles",
     logo: "https://images.unsplash.com/photo-1502877338535-766e1452684a?w=200&q=80",
     image:
@@ -202,6 +206,19 @@ export const getVendorsByLocation = (city, state) => {
 
 export const getVendorById = (id) => {
   return automobileVendors.find((vendor) => vendor.id === id);
+};
+
+export const getVendorBySlug = (slug) => {
+  return automobileVendors.find((vendor) => vendor.slug === slug);
+};
+
+export const getVendorByIdOrSlug = (identifier) => {
+  // First try to find by slug
+  const vendorBySlug = getVendorBySlug(identifier);
+  if (vendorBySlug) return vendorBySlug;
+
+  // If not found by slug, try by ID
+  return getVendorById(identifier);
 };
 
 export const getFeaturedVendors = () => {

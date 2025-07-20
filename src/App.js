@@ -35,6 +35,7 @@ import {
 
 // Modules
 import EcommerceModule from "./ecommerce";
+import AutomobileModule from "./automobiles";
 import SellerDashboardDemo from "./ecommerce/pages/SellerDashboardDemo";
 
 // Store Listing Pages
@@ -97,10 +98,13 @@ function App() {
             />
             <Route path="/auto-dealers" element={<AutoDealersListing />} />
 
-            {/* Ecommerce Routes */}
+                        {/* Ecommerce Routes */}
             <Route path="/ecommerce/*" element={<EcommerceModule />} />
 
-                        {/* Store-specific Routes (more specific routes first) */}
+            {/* Automobile Routes */}
+            <Route path="/automobiles/*" element={<AutomobileModule />} />
+
+                                    {/* Store-specific Routes (more specific routes first) */}
             <Route path="/:storeSlug/products" element={<EcommerceModule />} />
             <Route
               path="/:storeSlug/product/:id"
@@ -113,6 +117,22 @@ function App() {
             <Route
               path="/:storeSlug/order-confirmation"
               element={<EcommerceModule />}
+            />
+
+                        {/* Dealer-specific Routes (more specific routes first) */}
+            <Route path="/:dealerSlug/vehicles" element={<AutomobileModule />} />
+            <Route
+              path="/:dealerSlug/vehicle/:id"
+              element={<AutomobileModule />}
+            />
+            <Route path="/:dealerSlug/wishlist" element={<AutomobileModule />} />
+            <Route path="/:dealerSlug/dealer-dashboard" element={<AutomobileModule />} />
+            <Route path="/:dealerSlug/my-enquiries" element={<AutomobileModule />} />
+            <Route path="/:dealerSlug/inventory" element={<AutomobileModule />} />
+            <Route path="/:dealerSlug/financing" element={<AutomobileModule />} />
+            <Route
+              path="/:dealerSlug/trade-in"
+              element={<AutomobileModule />}
             />
 
             {/* Hotel-specific Routes (more specific routes first) */}

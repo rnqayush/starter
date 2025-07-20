@@ -2,8 +2,10 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import HotelModule from "../hotel";
 import EcommerceModule from "../ecommerce";
+import AutomobileModule from "../automobiles";
 import { getHotelBySlug } from "../hotel/data/hotels";
 import { getVendorBySlug } from "../ecommerce/data/vendors";
+import { getVendorBySlug as getAutomobileVendorBySlug } from "../automobiles/data/vendors";
 
 const SmartRouter = () => {
   const { slug } = useParams();
@@ -14,10 +16,16 @@ const SmartRouter = () => {
     return <HotelModule />;
   }
 
-  // Check if this slug belongs to an ecommerce store
+    // Check if this slug belongs to an ecommerce store
   const vendor = getVendorBySlug(slug);
   if (vendor) {
     return <EcommerceModule />;
+  }
+
+  // Check if this slug belongs to an automobile dealer
+  const automobileDealer = getAutomobileVendorBySlug(slug);
+  if (automobileDealer) {
+    return <AutomobileModule />;
   }
 
   // If no match found, show 404 or default behavior

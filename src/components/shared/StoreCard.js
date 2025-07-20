@@ -341,10 +341,10 @@ const ActionButton = styled.button`
 const StoreCard = ({ store, category }) => {
   const navigate = useNavigate();
 
-  const handleStoreClick = (e) => {
+    const handleStoreClick = (e) => {
     e.preventDefault();
-    if (category === "ecommerce") {
-      // Navigate to /{store.slug} for ecommerce stores
+    if (category === "ecommerce" || category === "automobiles") {
+      // Navigate to /{store.slug} for ecommerce stores and automobile dealers
       navigate(`/${store.slug}`);
     } else {
       // For other categories, navigate normally
@@ -353,8 +353,8 @@ const StoreCard = ({ store, category }) => {
   };
 
   const getStoreLink = () => {
-    if (category === "ecommerce") {
-      // Return the store slug link
+    if (category === "ecommerce" || category === "automobiles") {
+      // Return the store slug link for ecommerce and automobiles
       return `/${store.slug}`;
     }
 
@@ -480,7 +480,7 @@ const StoreCard = ({ store, category }) => {
     </>
   );
 
-  if (category === "ecommerce") {
+    if (category === "ecommerce" || category === "automobiles") {
     return (
       <Card as="div" onClick={handleStoreClick} style={{ cursor: "pointer" }}>
         {cardContent}
