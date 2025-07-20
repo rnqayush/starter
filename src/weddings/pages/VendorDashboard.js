@@ -1078,43 +1078,278 @@ const VendorDashboard = () => {
           </ContentSection>
         );
 
-      case 'portfolio':
+            case 'portfolio':
         return (
-          <ContentSection>
-            <SectionTitle>
-              <FaBriefcase />
-              Portfolio & Work
-            </SectionTitle>
-            {portfolio.length > 0 ? (
-              <PortfolioGrid>
-                {portfolio.map((item, index) => (
-                  <PortfolioCard key={index}>
-                    <PortfolioImage src={item.coverImage} alt={item.location} />
-                    <PortfolioInfo>
-                      <PortfolioTitle>{item.location}</PortfolioTitle>
-                      <PortfolioMeta>
-                        {item.city}, {item.state} • {item.weddingDate}
-                      </PortfolioMeta>
-                      <StatusBadge status="published">
-                        <FaCheck />
-                        Published
-                      </StatusBadge>
-                    </PortfolioInfo>
-                  </PortfolioCard>
-                ))}
-              </PortfolioGrid>
-            ) : (
-              <EmptyState>
-                <FaBriefcase style={{ fontSize: '3rem', marginBottom: theme.spacing.lg, color: theme.colors.gray400 }} />
-                <h3>No portfolio items yet</h3>
-                <p>Start showcasing your work by adding portfolio items</p>
-                <ActionButton variant="primary">
+          <>
+            <ContentSection>
+              <SectionTitle>
+                <FaBriefcase />
+                Portfolio & Work
+              </SectionTitle>
+
+              <div style={{ marginBottom: theme.spacing.xl }}>
+                <ActionButton variant="primary" onClick={addPortfolioItem}>
                   <FaPlus />
-                  Add Portfolio Item
+                  Add New Portfolio Item
                 </ActionButton>
-              </EmptyState>
+              </div>
+
+              {portfolio.length > 0 ? (
+                <PortfolioGrid>
+                  {portfolio.map((item, index) => (
+                    <PortfolioCard key={item.id || index}>
+                      <PortfolioImage src={item.coverImage || 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=400&q=80'} alt={item.location} />
+                      <PortfolioInfo>
+                        <PortfolioTitle>{item.location}</PortfolioTitle>
+                        <PortfolioMeta>
+                          {item.city}, {item.state} • {item.weddingDate}
+                        </PortfolioMeta>
+                        <div style={{ margin: `${theme.spacing.sm} 0` }}>
+                          <StatusBadge status="published">
+                            <FaCheck />
+                            Published
+                          </StatusBadge>
+                        </div>
+                        <div style={{ display: 'flex', gap: theme.spacing.sm, marginTop: theme.spacing.md }}>
+                          <ActionButton onClick={() => editPortfolioItem(item)}>
+                            <FaEdit />
+                            Edit
+                          </ActionButton>
+                          <ActionButton variant="danger" onClick={() => deletePortfolioItem(item.id)}>
+                            <FaTrash />
+                            Delete
+                          </ActionButton>
+                        </div>
+                      </PortfolioInfo>
+                    </PortfolioCard>
+                  ))}
+                </PortfolioGrid>
+              ) : (
+                <EmptyState>
+                  <FaBriefcase style={{ fontSize: '3rem', marginBottom: theme.spacing.lg, color: theme.colors.gray400 }} />
+                  <h3>No portfolio items yet</h3>
+                  <p>Start showcasing your work by adding portfolio items</p>
+                  <ActionButton variant="primary" onClick={addPortfolioItem}>
+                    <FaPlus />
+                    Add Portfolio Item
+                  </ActionButton>
+                </EmptyState>
+              )}
+            </ContentSection>
+
+            {showPortfolioForm && (
+              <PortfolioFormModal onClick={(e) => e.target === e.currentTarget && setShowPortfolioForm(false)}>
+                <PortfolioFormContent>
+                  <PortfolioFormHeader>
+                    <PortfolioFormTitle>
+                      {portfolioForm.editing ? 'Edit Portfolio Item' : 'Add New Portfolio Item'}
+                    </PortfolioFormTitle>
+                    <ActionButton onClick={() => setShowPortfolioForm(false)}>
+                      <FaTimes />
+                    </ActionButton>
+                  </PortfolioFormHeader>
+
+                  <FormGrid>
+                    <FormGroup>
+                      <FormLabel>Event Location/Venue Name</FormLabel>
+                      <FormInput
+                        value={portfolioForm.location}
+                        onChange={(e) => updatePortfolioForm('location', e.target.value)}
+                        placeholder="Napa Valley Vineyard"
+                      />
+                    </FormGroup>
+                    <FormGroup>
+                      <FormLabel>City</FormLabel>
+                      <FormInput
+                        value={portfolioForm.city}
+                        onChange={(e) => updatePortfolioForm('city', e.target.value)}
+                        placeholder="Napa Valley"
+                      />
+                    </FormGroup>
+                    <FormGroup>
+                      <FormLabel>State</FormLabel>
+                      <FormInput
+                        value={portfolioForm.state}
+                        onChange={(e) => updatePortfolioForm('state', e.target.value)}
+                        placeholder="CA"
+                      />
+                    </FormGroup>
+                    <FormGroup>
+                      <FormLabel>Wedding Date</FormLabel>
+                      <FormInput
+                        value={portfolioForm.weddingDate}
+                        onChange={(e) => updatePortfolioForm('weddingDate', e.target.value)}
+                        placeholder="September 2023"
+                      />
+                    </FormGroup>
+                    <FormGroup>
+                      <FormLabel>Couple Names</FormLabel>
+                      <FormInput
+                        value={portfolioForm.coupleNames}
+                        onChange={(e) => updatePortfolioForm('coupleNames', e.target.value)}
+                        placeholder="Sarah & Michael"
+                      />
+                    </FormGroup>
+                    <FormGroup style={{ gridColumn: '1 / -1' }}>
+                      <FormLabel>Description</FormLabel>
+                      <FormTextarea
+                        value={portfolioForm.description}
+                        onChange={(e) => updatePortfolioForm('description', e.target.value)}
+                        placeholder="Describe this wedding event, the theme, special moments, and what made it unique..."
+                      />
+                    </FormGroup>
+                  </FormGrid>
+
+                  <div style={{ marginTop: theme.spacing.xl }}>
+                    <h3 style={{ marginBottom: theme.spacing.lg }}>Cover Image</h3>
+                    <div style={{ display: 'flex', gap: theme.spacing.lg, alignItems: 'center' }}>
+                      {portfolioForm.coverImage && (
+                        <img src={portfolioForm.coverImage} alt="Cover" style={{ width: '200px', height: '120px', objectFit: 'cover', borderRadius: theme.borderRadius.md }} />
+                      )}
+                      <ImageUploadArea>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => {
+                            const file = e.target.files[0];
+                            if (file) {
+                              const reader = new FileReader();
+                              reader.onload = (event) => {
+                                updatePortfolioForm('coverImage', event.target.result);
+                              };
+                              reader.readAsDataURL(file);
+                            }
+                          }}
+                          id="cover-upload"
+                        />
+                        <label htmlFor="cover-upload">
+                          <FaUpload style={{ fontSize: '2rem', marginBottom: theme.spacing.sm, color: theme.colors.gray400 }} />
+                          <p style={{ margin: 0, color: theme.colors.gray600 }}>Click to upload cover image</p>
+                        </label>
+                      </ImageUploadArea>
+                    </div>
+                  </div>
+
+                  <div style={{ marginTop: theme.spacing.xl }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: theme.spacing.lg }}>
+                      <h3 style={{ margin: 0 }}>Photo Gallery</h3>
+                      <ActionButton onClick={() => document.getElementById('portfolio-gallery-upload').click()}>
+                        <FaPlus />
+                        Add Photos
+                      </ActionButton>
+                    </div>
+
+                    <input
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      onChange={addPortfolioGalleryImage}
+                      id="portfolio-gallery-upload"
+                      style={{ display: 'none' }}
+                    />
+
+                    {portfolioForm.gallery.map((image) => (
+                      <GalleryImageCard key={image.id}>
+                        <GalleryImagePreview src={image.src} alt={image.title || 'Gallery image'} />
+                        <GalleryImageForm>
+                          <FormGrid>
+                            <FormGroup>
+                              <FormLabel>Photo Title</FormLabel>
+                              <FormInput
+                                value={image.title}
+                                onChange={(e) => updatePortfolioGalleryImage(image.id, 'title', e.target.value)}
+                                placeholder="Ceremony setup, Reception decor, etc."
+                              />
+                            </FormGroup>
+                            <FormGroup>
+                              <FormLabel>Description</FormLabel>
+                              <FormInput
+                                value={image.description}
+                                onChange={(e) => updatePortfolioGalleryImage(image.id, 'description', e.target.value)}
+                                placeholder="Describe this photo..."
+                              />
+                            </FormGroup>
+                          </FormGrid>
+                          <div style={{ marginTop: theme.spacing.md, textAlign: 'right' }}>
+                            <SmallButton className="danger" onClick={() => removePortfolioGalleryImage(image.id)}>
+                              <FaTrash />
+                            </SmallButton>
+                          </div>
+                        </GalleryImageForm>
+                      </GalleryImageCard>
+                    ))}
+
+                    {portfolioForm.gallery.length === 0 && (
+                      <div style={{ textAlign: 'center', padding: theme.spacing.xl, color: theme.colors.gray500 }}>
+                        <FaCamera style={{ fontSize: '2rem', marginBottom: theme.spacing.sm }} />
+                        <p>No photos added yet. Click "Add Photos" to start building your gallery.</p>
+                      </div>
+                    )}
+                  </div>
+
+                  <div style={{ marginTop: theme.spacing.xl }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: theme.spacing.lg }}>
+                      <h3 style={{ margin: 0 }}>Services Provided</h3>
+                      <ActionButton onClick={addPortfolioService}>
+                        <FaPlus />
+                        Add Service
+                      </ActionButton>
+                    </div>
+                    <ServiceHighlightList>
+                      {portfolioForm.services.map((service, index) => (
+                        <ServiceHighlightItem key={index}>
+                          <FormInput
+                            value={service}
+                            onChange={(e) => updatePortfolioService(index, e.target.value)}
+                            placeholder="Full Wedding Planning, Floral Design, etc."
+                            style={{ flex: 1 }}
+                          />
+                          <SmallButton className="danger" onClick={() => removePortfolioService(index)}>
+                            <FaTrash />
+                          </SmallButton>
+                        </ServiceHighlightItem>
+                      ))}
+                    </ServiceHighlightList>
+                  </div>
+
+                  <div style={{ marginTop: theme.spacing.xl }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: theme.spacing.lg }}>
+                      <h3 style={{ margin: 0 }}>Event Highlights</h3>
+                      <ActionButton onClick={addPortfolioHighlight}>
+                        <FaPlus />
+                        Add Highlight
+                      </ActionButton>
+                    </div>
+                    <ServiceHighlightList>
+                      {portfolioForm.highlights.map((highlight, index) => (
+                        <ServiceHighlightItem key={index}>
+                          <FormInput
+                            value={highlight}
+                            onChange={(e) => updatePortfolioHighlight(index, e.target.value)}
+                            placeholder="Custom vineyard ceremony setup, Sunset photography session, etc."
+                            style={{ flex: 1 }}
+                          />
+                          <SmallButton className="danger" onClick={() => removePortfolioHighlight(index)}>
+                            <FaTrash />
+                          </SmallButton>
+                        </ServiceHighlightItem>
+                      ))}
+                    </ServiceHighlightList>
+                  </div>
+
+                  <div style={{ marginTop: theme.spacing.xxl, paddingTop: theme.spacing.lg, borderTop: `1px solid ${theme.colors.gray200}`, display: 'flex', gap: theme.spacing.md, justifyContent: 'flex-end' }}>
+                    <ActionButton onClick={() => setShowPortfolioForm(false)}>
+                      Cancel
+                    </ActionButton>
+                    <ActionButton variant="success" onClick={savePortfolioItem}>
+                      <FaSave />
+                      {portfolioForm.editing ? 'Update Portfolio Item' : 'Save Portfolio Item'}
+                    </ActionButton>
+                  </div>
+                </PortfolioFormContent>
+              </PortfolioFormModal>
             )}
-          </ContentSection>
+          </>
         );
 
       default:
