@@ -13,11 +13,13 @@ const EcommerceModule = () => {
   const location = useLocation();
   const path = location.pathname;
 
-  // Route based on URL path
+    // Route based on URL path
   if (path === "/ecommerce") {
     return <EcommerceMain />;
   } else if (path.includes("/seller-dashboard")) {
     return <SellerDashboard />;
+  } else if (path.includes("/my-enquiries")) {
+    return <MyEnquiries />;
   } else if (path.includes("/products") && !path.includes("/product/")) {
     return <Products />;
   } else if (path.includes("/product/")) {
