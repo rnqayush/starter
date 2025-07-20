@@ -691,6 +691,63 @@ const EditableSection = styled.div.withConfig({
   }
 `;
 
+// Floating Edit Button for mobile/better UX
+const FloatingEditButton = styled.button.withConfig({
+  shouldForwardProp: (prop) => prop !== 'isEditing' && prop !== 'primaryColor',
+})`
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: ${props => props.primaryColor || theme.colors.primary};
+  color: ${theme.colors.white};
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  box-shadow: ${theme.shadows.xl};
+  transition: all 0.3s ease;
+  z-index: 45;
+  display: ${props => props.isEditing ? 'none' : 'flex'};
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    bottom: 1rem;
+    right: 1rem;
+    width: 50px;
+    height: 50px;
+    font-size: 1.2rem;
+  }
+`;
+
+// Professional Badge/Watermark
+const ProfessionalBadge = styled.div`
+  position: fixed;
+  bottom: 1rem;
+  left: 1rem;
+  background: rgba(255, 255, 255, 0.95);
+  padding: ${theme.spacing.sm} ${theme.spacing.md};
+  border-radius: ${theme.borderRadius.lg};
+  font-size: 0.75rem;
+  color: ${theme.colors.gray600};
+  font-weight: 500;
+  box-shadow: ${theme.shadows.sm};
+  backdrop-filter: blur(10px);
+  border: 1px solid ${theme.colors.gray200};
+  z-index: 45;
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    display: none;
+  }
+`;
+
 const BusinessWebsitePage = () => {
   const { businessSlug } = useParams();
   const navigate = useNavigate();
