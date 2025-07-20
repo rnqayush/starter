@@ -296,8 +296,18 @@ const NavButton = styled.button.withConfig({
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    padding: ${theme.spacing.xs} ${theme.spacing.sm};
-    font-size: 0.9rem;
+    padding: ${theme.spacing.md} ${theme.spacing.lg};
+    font-size: 1.1rem;
+    justify-content: center;
+    min-width: 200px;
+    color: ${props => props.primary ? 'white' : theme.colors.gray700};
+    border-color: ${props => props.primary ? 'none' : theme.colors.gray300};
+    background: ${props => props.primary ? (props.primaryColor || theme.colors.primary) : theme.colors.white};
+
+    &:hover {
+      background: ${props => props.primary ? (props.primaryColor || theme.colors.primary) : theme.colors.gray50};
+      transform: none;
+    }
   }
 `;
 
