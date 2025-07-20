@@ -432,7 +432,9 @@ const PackagesGrid = styled.div`
   gap: ${theme.spacing.xl};
 `;
 
-const PackageCard = styled.div`
+const PackageCard = styled.div.withConfig({
+  shouldForwardProp: (prop) => !['primaryColor'].includes(prop),
+})`
   background: white;
   border-radius: ${theme.borderRadius.lg};
   padding: ${theme.spacing.xl};
