@@ -239,6 +239,45 @@ const ExploreStoreCTA = styled(Button)`
   }
 `;
 
+// Stats Section Styles
+const StatsSection = styled.section`
+  padding: ${theme.spacing.xxl} 0;
+  background: ${theme.colors.white};
+  border-bottom: 1px solid ${theme.colors.gray200};
+`;
+
+const StatsContainer = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 ${theme.spacing.md};
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: ${theme.spacing.xl};
+  text-align: center;
+`;
+
+const StatCard = styled.div`
+  padding: ${theme.spacing.lg};
+`;
+
+const StatNumber = styled.div`
+  font-size: 3rem;
+  font-weight: 800;
+  color: ${theme.colors.primary};
+  margin-bottom: ${theme.spacing.sm};
+  line-height: 1;
+
+  ${media.mobile} {
+    font-size: 2.5rem;
+  }
+`;
+
+const StatLabel = styled.div`
+  font-size: 1rem;
+  color: ${theme.colors.gray600};
+  font-weight: 500;
+`;
+
 // Explore Stores Section Styles
 const ExploreStoresSection = styled.section`
   padding: ${theme.spacing.xxl} 0;
