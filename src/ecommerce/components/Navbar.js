@@ -381,15 +381,18 @@ const DropdownMenu = styled.div.withConfig({
   shouldForwardProp: (prop) => prop !== "isOpen",
 })`
   position: absolute;
-  top: 100%;
+  top: calc(100% + 0.5rem);
   right: 0;
   background: ${theme.colors.white};
   border: 1px solid ${theme.colors.gray200};
   border-radius: ${theme.borderRadius.md};
-  box-shadow: ${theme.shadows.lg};
+  box-shadow: ${theme.shadows.xl};
   min-width: 200px;
-  z-index: 1000;
-  display: ${(props) => (props.isOpen ? "block" : "none")};
+  z-index: 9999;
+  opacity: ${(props) => (props.isOpen ? "1" : "0")};
+  visibility: ${(props) => (props.isOpen ? "visible" : "hidden")};
+  transform: translateY(${(props) => (props.isOpen ? "0" : "-10px")});
+  transition: all 0.2s ease;
   overflow: hidden;
 `;
 
