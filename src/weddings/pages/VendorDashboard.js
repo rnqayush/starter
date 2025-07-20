@@ -1252,8 +1252,8 @@ const VendorDashboard = () => {
                       <GalleryImageCard key={image.id}>
                         <GalleryImagePreview src={image.src} alt={image.title || 'Gallery image'} />
                         <GalleryImageForm>
-                          <FormGrid>
-                            <FormGroup>
+                                                    <FormGrid>
+                            <FormGroup key={`${image.id}-title`}>
                               <FormLabel>Photo Title</FormLabel>
                               <FormInput
                                 value={image.title}
@@ -1261,7 +1261,7 @@ const VendorDashboard = () => {
                                 placeholder="Ceremony setup, Reception decor, etc."
                               />
                             </FormGroup>
-                            <FormGroup>
+                            <FormGroup key={`${image.id}-description`}>
                               <FormLabel>Description</FormLabel>
                               <FormInput
                                 value={image.description}
