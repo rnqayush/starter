@@ -3,6 +3,7 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import WeddingHome from "./pages/WeddingHome";
 import VendorDetail from "./pages/VendorDetail";
 import VendorPage from "./pages/VendorPage";
+import VendorPortfolio from "./pages/VendorPortfolio";
 import BookingPage from "./pages/BookingPage";
 import BookingConfirmation from "./pages/BookingConfirmation";
 import MyBookings from "./pages/MyBookings";
