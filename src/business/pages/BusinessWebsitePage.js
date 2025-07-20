@@ -1200,9 +1200,24 @@ const BusinessWebsitePage = () => {
               <FaLinkedin />
             </SocialLink>
           </SocialLinks>
-          <p>&copy; 2024 {businessData.name}. All rights reserved.</p>
+                    <p>&copy; 2024 {businessData.name}. All rights reserved.</p>
         </FooterContent>
       </Footer>
+
+      {/* Floating Edit Button for better UX */}
+      <FloatingEditButton
+        isEditing={isEditing}
+        primaryColor={businessData.primaryColor}
+        onClick={toggleEditMode}
+        title="Toggle Edit Mode"
+      >
+        ✏️
+      </FloatingEditButton>
+
+      {/* Professional Badge */}
+      <ProfessionalBadge>
+        💼 Professional Website Template
+      </ProfessionalBadge>
     </PageContainer>
   );
 };
