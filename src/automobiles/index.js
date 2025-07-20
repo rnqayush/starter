@@ -14,10 +14,12 @@ const AutomobileModule = () => {
   // Determine which component to render
   let ComponentToRender;
 
-  if (path === "/automobiles") {
+    if (path === "/automobiles") {
     ComponentToRender = StoresListing;
   } else if (path === "/auto-dealers") {
     ComponentToRender = StoresListing;
+  } else if (path.includes("/dealer-dashboard")) {
+    ComponentToRender = DealerDashboard;
   } else if (path.includes("/vehicles") && !path.includes("/vehicle/")) {
     ComponentToRender = Vehicles;
   } else if (path.includes("/vehicle/")) {
