@@ -810,26 +810,52 @@ const PlatformHomePage = () => {
     <PageContainer>
       <Header />
 
-      {/* Hero Section */}
+            {/* Hero Section */}
       <HeroSection>
         <HeroContent>
-          <HeroTitle>Launch Your Online Store Without Coding</HeroTitle>
+          <HeroTitle>Build Professional Online Stores in Minutes</HeroTitle>
           <HeroSubtitle>
-            From hotels to ecommerce, go live in minutes — mobile-ready,
-            customizable, and built for growth.
+            Trusted by 50,000+ businesses worldwide. Create stunning, conversion-optimized
+            stores for any industry with our enterprise-grade no-code platform.
           </HeroSubtitle>
+          <TrustIndicators>
+            <TrustItem>
+              <FaCheck />
+              <span>No Credit Card Required</span>
+            </TrustItem>
+            <TrustItem>
+              <FaCheck />
+              <span>14-Day Free Trial</span>
+            </TrustItem>
+            <TrustItem>
+              <FaCheck />
+              <span>24/7 Expert Support</span>
+            </TrustItem>
+          </TrustIndicators>
           <HeroCTAContainer>
             <CreateStoreCTA onClick={handleCreateStore}>
-              🟢 Create My Store
+              Start Building Your Store
               <FaRocket />
             </CreateStoreCTA>
             <ExploreStoreCTA onClick={handleExploreStores}>
-              🟣 Explore Live Stores
+              View Live Examples
               <FaArrowRight />
             </ExploreStoreCTA>
           </HeroCTAContainer>
         </HeroContent>
       </HeroSection>
+
+      {/* Stats Section */}
+      <StatsSection>
+        <StatsContainer>
+          {stats.map((stat, index) => (
+            <StatCard key={index}>
+              <StatNumber>{stat.number}</StatNumber>
+              <StatLabel>{stat.label}</StatLabel>
+            </StatCard>
+          ))}
+        </StatsContainer>
+      </StatsSection>
 
       {/* Explore Stores Section */}
       <ExploreStoresSection id="explore-stores">
