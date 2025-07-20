@@ -23,6 +23,8 @@ const NavbarContainer = styled.nav`
   position: sticky;
   top: 0;
   z-index: 100;
+  border-bottom: 1px solid ${theme.colors.gray100};
+  backdrop-filter: blur(10px);
 `;
 
 const NavbarContent = styled.div`
