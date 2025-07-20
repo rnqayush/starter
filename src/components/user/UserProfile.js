@@ -697,7 +697,7 @@ const UserProfile = ({ onClose }) => {
       <TabContent active={activeTab === "security"}>
         <FormSection>
           <SectionTitle>
-            <FaShield />
+                          <FaLock />
             Security Settings
           </SectionTitle>
           <p style={{ color: "#6b7280", marginBottom: "2rem" }}>
