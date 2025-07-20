@@ -484,7 +484,9 @@ const PackageFeature = styled.li`
   }
 `;
 
-const PackageButton = styled.button`
+const PackageButton = styled.button.withConfig({
+  shouldForwardProp: (prop) => !['primaryColor'].includes(prop),
+})`
   background: ${props => props.primaryColor || theme.colors.primary};
   color: white;
   border: none;
