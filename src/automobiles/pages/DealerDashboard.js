@@ -183,13 +183,8 @@ const DealerDashboard = () => {
         return <TradeInsTab dealer={dealer} />;
       case "service":
         return <ServiceAppointmentsTab dealer={dealer} />;
-      case "promotions":
-        return (
-          <div style={{ padding: "2rem", textAlign: "center" }}>
-            <h3>Promotions & Deals - Coming Soon</h3>
-            <p>Promotional campaign management will be available soon.</p>
-          </div>
-        );
+            case "promotions":
+        return <PromotionsTab dealer={dealer} />;
       case "dealer-settings":
         return <DealerSettingsTab dealer={dealer} />;
       case "analytics":
