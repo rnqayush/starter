@@ -35,18 +35,24 @@ const PageContainer = styled.div.withConfig({
 
 const HeroSection = styled.section.withConfig({
   shouldForwardProp: (prop) =>
-    !["primaryColor", "secondaryColor"].includes(prop),
+    !["primaryColor", "secondaryColor", "heroImage"].includes(prop),
 })`
-  background: linear-gradient(
-    135deg,
-    ${(props) => props.primaryColor || "#667eea"} 0%,
-    ${(props) => props.secondaryColor || "#764ba2"} 100%
-  );
+  background:
+    linear-gradient(135deg,
+      ${(props) => props.primaryColor || "#667eea"}dd 0%,
+      ${(props) => props.secondaryColor || "#764ba2"}dd 100%),
+    ${(props) => props.heroImage ? `url("${props.heroImage}")` : 'none'};
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
   color: ${theme.colors.white};
   padding: ${theme.spacing.xxl} 0;
   text-align: center;
   position: relative;
   overflow: hidden;
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
 
   &::before {
     content: "";
@@ -55,8 +61,13 @@ const HeroSection = styled.section.withConfig({
     left: 0;
     right: 0;
     bottom: 0;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
-    opacity: 0.1;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 1;
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    min-height: 50vh;
+    background-attachment: scroll;
   }
 `;
 
@@ -65,7 +76,8 @@ const HeroContent = styled.div`
   margin: 0 auto;
   padding: 0 ${theme.spacing.md};
   position: relative;
-  z-index: 1;
+  z-index: 2;
+  width: 100%;
 `;
 
 const StoreHeader = styled.div`
@@ -77,37 +89,62 @@ const StoreHeader = styled.div`
 `;
 
 const StoreLogo = styled.img`
-  width: 80px;
-  height: 80px;
-  border-radius: ${theme.borderRadius.lg};
-  border: 3px solid ${theme.colors.white};
+  width: 120px;
+  height: 120px;
+  border-radius: ${theme.borderRadius.xl};
+  border: 4px solid ${theme.colors.white};
   object-fit: cover;
+  box-shadow: ${theme.shadows.xl};
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    width: 100px;
+    height: 100px;
+  }
 `;
 
 const HeroTitle = styled.h1`
-  font-size: 3.5rem;
-  font-weight: 700;
+  font-size: 4rem;
+  font-weight: 800;
   margin-bottom: ${theme.spacing.lg};
   background: linear-gradient(45deg, #ffffff, #f0f8ff);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  letter-spacing: -1px;
+  line-height: 1.1;
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    font-size: 3rem;
+  }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    font-size: 2.5rem;
+    font-size: 2.2rem;
   }
 `;
 
 const HeroSubtitle = styled.p`
-  font-size: 1.3rem;
-  margin-bottom: ${theme.spacing.xxl};
-  opacity: 0.9;
-  max-width: 600px;
+  font-size: 1.4rem;
+  margin-bottom: ${theme.spacing.xl};
+  opacity: 0.95;
+  max-width: 700px;
   margin-left: auto;
   margin-right: auto;
+  font-weight: 300;
+  line-height: 1.6;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    font-size: 1.2rem;
+  }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
 `;
 
@@ -123,27 +160,43 @@ const HeroButton = styled.button.withConfig({
 })`
   background: ${theme.colors.white};
   color: ${(props) => props.primaryColor || theme.colors.primary};
-  padding: ${theme.spacing.md} ${theme.spacing.xl};
+  padding: ${theme.spacing.lg} ${theme.spacing.xxl};
   border: none;
-  border-radius: ${theme.borderRadius.lg};
-  font-weight: 600;
+  border-radius: ${theme.borderRadius.xl};
+  font-weight: 700;
+  font-size: 1.1rem;
   text-decoration: none;
   display: flex;
   align-items: center;
-  gap: ${theme.spacing.sm};
+  gap: ${theme.spacing.md};
   transition: all 0.3s ease;
-  box-shadow: ${theme.shadows.lg};
+  box-shadow: ${theme.shadows.xl};
   cursor: pointer;
+  min-width: 200px;
+  justify-content: center;
 
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: ${theme.shadows.xl};
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    background: ${theme.colors.gray50};
   }
 
   &.secondary {
-    background: transparent;
+    background: rgba(255, 255, 255, 0.1);
     color: ${theme.colors.white};
     border: 2px solid ${theme.colors.white};
+    backdrop-filter: blur(10px);
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-3px);
+    }
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.md} ${theme.spacing.xl};
+    min-width: 180px;
+    font-size: 1rem;
   }
 `;
 
