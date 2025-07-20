@@ -1,55 +1,35 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { FaArrowRight, FaShoppingBag } from "react-icons/fa";
+import { FaShoppingBag, FaStore, FaSearch, FaHeart, FaUsers, FaCertificate } from "react-icons/fa";
 import { theme } from "../../styles/GlobalStyle";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import ProductCard from "../components/ProductCard";
-import CategoryCard from "../components/CategoryCard";
-import {
-  categories,
-  getFeaturedProducts,
-  getOnSaleProducts,
-} from "../data/products";
 
 const PageContainer = styled.div`
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: ${theme.colors.gray50};
-`;
-
-const HeroSection = styled.section`
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, ${theme.colors.primary} 0%, ${theme.colors.primaryDark} 100%);
   color: ${theme.colors.white};
-  padding: ${theme.spacing.xxl} 0;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-
-  &::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
-    opacity: 0.1;
-  }
 `;
 
-const HeroContent = styled.div`
+const Container = styled.div`
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 ${theme.spacing.md};
-  position: relative;
-  z-index: 1;
+  padding: ${theme.spacing.xxl} ${theme.spacing.md};
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 `;
 
-const HeroTitle = styled.h1`
-  font-size: 3.5rem;
+const HeroSection = styled.div`
+  margin-bottom: ${theme.spacing.xxl};
+`;
+
+const Title = styled.h1`
+  font-size: 4rem;
   font-weight: 700;
   margin-bottom: ${theme.spacing.lg};
   background: linear-gradient(45deg, #ffffff, #f0f8ff);
@@ -57,354 +37,213 @@ const HeroTitle = styled.h1`
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    font-size: 3rem;
+  }
+
   @media (max-width: ${theme.breakpoints.mobile}) {
     font-size: 2.5rem;
   }
 `;
 
-const HeroSubtitle = styled.p`
-  font-size: 1.3rem;
-  margin-bottom: ${theme.spacing.xxl};
+const Subtitle = styled.p`
+  font-size: 1.5rem;
   opacity: 0.9;
+  margin-bottom: ${theme.spacing.xxl};
   max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
   }
 `;
 
-const HeroActions = styled.div`
-  display: flex;
-  gap: ${theme.spacing.lg};
-  justify-content: center;
-  flex-wrap: wrap;
-`;
-
-const HeroButton = styled(Link)`
+const CTAButton = styled.button`
   background: ${theme.colors.white};
   color: ${theme.colors.primary};
-  padding: ${theme.spacing.md} ${theme.spacing.xl};
+  padding: ${theme.spacing.lg} ${theme.spacing.xxl};
+  border: none;
   border-radius: ${theme.borderRadius.lg};
+  font-size: 1.2rem;
   font-weight: 600;
-  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
   display: flex;
   align-items: center;
-  gap: ${theme.spacing.sm};
+  gap: ${theme.spacing.md};
+  box-shadow: ${theme.shadows.xl};
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: ${theme.shadows.xxl};
+    background: ${theme.colors.gray50};
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.md} ${theme.spacing.xl};
+    font-size: 1rem;
+  }
+`;
+
+const FeaturesGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: ${theme.spacing.xl};
+  margin-top: ${theme.spacing.xxl};
+  width: 100%;
+`;
+
+const FeatureCard = styled.div`
+  background: rgba(255, 255, 255, 0.1);
+  padding: ${theme.spacing.xl};
+  border-radius: ${theme.borderRadius.lg};
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   transition: all 0.3s ease;
-  box-shadow: ${theme.shadows.lg};
 
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: ${theme.shadows.xl};
-  }
-
-  &.secondary {
-    background: transparent;
-    color: ${theme.colors.white};
-    border: 2px solid ${theme.colors.white};
+    transform: translateY(-4px);
+    background: rgba(255, 255, 255, 0.15);
   }
 `;
 
-const Section = styled.section.withConfig({
-  shouldForwardProp: (prop) => prop !== "background",
-})`
-  padding: ${theme.spacing.xxl} 0;
-  background: ${(props) => props.background || theme.colors.white};
-`;
-
-const Container = styled.div`
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 ${theme.spacing.md};
-`;
-
-const SectionHeader = styled.div`
-  text-align: center;
-  margin-bottom: ${theme.spacing.xxl};
-`;
-
-const SectionTitle = styled.h2`
-  font-size: 2.5rem;
-  font-weight: 600;
-  color: ${theme.colors.gray900};
+const FeatureIcon = styled.div`
+  font-size: 3rem;
   margin-bottom: ${theme.spacing.md};
+  opacity: 0.9;
 `;
 
-const SectionSubtitle = styled.p`
-  font-size: 1.1rem;
-  color: ${theme.colors.gray600};
-  max-width: 600px;
-  margin: 0 auto;
-`;
-
-const Grid = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "minWidth",
-})`
-  display: grid;
-  grid-template-columns: repeat(
-    auto-fit,
-    minmax(${(props) => props.minWidth || "280px"}, 1fr)
-  );
-  gap: ${theme.spacing.xl};
-`;
-
-const ViewAllButton = styled(Link)`
-  display: inline-flex;
-  align-items: center;
-  gap: ${theme.spacing.sm};
-  color: ${theme.colors.primary};
+const FeatureTitle = styled.h3`
+  font-size: 1.3rem;
   font-weight: 600;
-  text-decoration: none;
-  margin-top: ${theme.spacing.xl};
-  transition: all 0.2s ease;
-
-  &:hover {
-    transform: translateX(4px);
-  }
+  margin-bottom: ${theme.spacing.sm};
 `;
 
-const StatsSection = styled.section`
-  background: ${theme.colors.primary};
-  color: ${theme.colors.white};
-  padding: ${theme.spacing.xxl} 0;
+const FeatureDescription = styled.p`
+  opacity: 0.8;
+  line-height: 1.6;
 `;
 
-const StatsGrid = styled.div`
+const StatsSection = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: ${theme.spacing.xl};
-  text-align: center;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: ${theme.spacing.lg};
+  margin-top: ${theme.spacing.xxl};
+  padding-top: ${theme.spacing.xxl};
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  width: 100%;
 `;
 
 const StatItem = styled.div`
-  h3 {
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin-bottom: ${theme.spacing.sm};
-  }
-
-  p {
-    font-size: 1.1rem;
-    opacity: 0.9;
-  }
-`;
-
-const NewsletterSection = styled.section`
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-  color: ${theme.colors.white};
-  padding: ${theme.spacing.xxl} 0;
   text-align: center;
 `;
 
-const NewsletterForm = styled.form`
-  max-width: 400px;
-  margin: ${theme.spacing.xl} auto 0;
-  display: flex;
-  gap: ${theme.spacing.sm};
-
-  @media (max-width: ${theme.breakpoints.mobile}) {
-    flex-direction: column;
-  }
+const StatNumber = styled.div`
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: ${theme.spacing.xs};
 `;
 
-const NewsletterInput = styled.input`
-  flex: 1;
-  padding: ${theme.spacing.md};
-  border: none;
-  border-radius: ${theme.borderRadius.md};
+const StatLabel = styled.div`
+  opacity: 0.8;
   font-size: 1rem;
-
-  &::placeholder {
-    color: ${theme.colors.gray500};
-  }
 `;
 
-const NewsletterButton = styled.button`
-  background: ${theme.colors.white};
-  color: ${theme.colors.primary};
-  padding: ${theme.spacing.md} ${theme.spacing.xl};
-  border: none;
-  border-radius: ${theme.borderRadius.md};
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: ${theme.shadows.lg};
-  }
-`;
-
-const Home = () => {
-  const [featuredProducts, setFeaturedProducts] = useState([]);
-  const [saleProducts, setSaleProducts] = useState([]);
+const EcommerceHome = () => {
+  const navigate = useNavigate();
 
   useEffect(() => {
-    setFeaturedProducts(getFeaturedProducts());
-    setSaleProducts(getOnSaleProducts());
-  }, []);
+    // Auto-redirect after 3 seconds if user doesn't interact
+    const timer = setTimeout(() => {
+      navigate("/ecommerce-stores");
+    }, 5000);
 
-  
+    return () => clearTimeout(timer);
+  }, [navigate]);
 
-  const handleNewsletterSubmit = (e) => {
-    e.preventDefault();
-    const email = e.target.email.value;
-    if (email) {
-      alert("Thank you for subscribing to our newsletter!");
-      e.target.reset();
-    }
+  const handleGetStarted = () => {
+    navigate("/ecommerce-stores");
   };
 
   return (
-        <PageContainer>
-      <Navbar />
+    <PageContainer>
+      <Container>
+        <HeroSection>
+          <Title>
+            <FaShoppingBag style={{ marginRight: "1rem", fontSize: "3rem" }} />
+            ShopMart Marketplace
+          </Title>
+          <Subtitle>
+            Discover amazing products from verified sellers in your area. Browse, enquire, and shop with confidence.
+          </Subtitle>
+          <CTAButton onClick={handleGetStarted}>
+            <FaStore />
+            Browse Stores
+          </CTAButton>
+        </HeroSection>
 
-      <HeroSection>
-        <HeroContent>
-          <HeroTitle>Discover Amazing Products</HeroTitle>
-          <HeroSubtitle>
-            Shop the latest trends and timeless classics from top brands at
-            unbeatable prices
-          </HeroSubtitle>
-          <HeroActions>
-            <HeroButton to="/ecommerce/products">
-              <FaShoppingBag />
-              Shop Now
-            </HeroButton>
-            <HeroButton
-              to="/ecommerce/products?sale=true"
-              className="secondary"
-            >
-              View Sale Items
-              <FaArrowRight />
-            </HeroButton>
-          </HeroActions>
-        </HeroContent>
-      </HeroSection>
+        <FeaturesGrid>
+          <FeatureCard>
+            <FeatureIcon>
+              <FaStore />
+            </FeatureIcon>
+            <FeatureTitle>Multiple Stores</FeatureTitle>
+            <FeatureDescription>
+              Choose from a variety of verified stores, each with their own unique products and specialties.
+            </FeatureDescription>
+          </FeatureCard>
 
-      <Section>
-        <Container>
-          <SectionHeader>
-            <SectionTitle>Shop by Category</SectionTitle>
-            <SectionSubtitle>
-              Explore our diverse range of products across different categories
-            </SectionSubtitle>
-          </SectionHeader>
-          <Grid minWidth="250px">
-            {categories.map((category) => (
-              <CategoryCard key={category.id} category={category} />
-            ))}
-          </Grid>
-        </Container>
-      </Section>
+          <FeatureCard>
+            <FeatureIcon>
+              <FaSearch />
+            </FeatureIcon>
+            <FeatureTitle>Easy Discovery</FeatureTitle>
+            <FeatureDescription>
+              Advanced search and filtering options help you find exactly what you're looking for quickly.
+            </FeatureDescription>
+          </FeatureCard>
 
-      <Section background={theme.colors.gray50}>
-        <Container>
-          <SectionHeader>
-            <SectionTitle>Featured Products</SectionTitle>
-            <SectionSubtitle>
-              Handpicked items that our customers love the most
-            </SectionSubtitle>
-          </SectionHeader>
-                    <Grid>
-            {featuredProducts.slice(0, 4).map((product) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-              />
-            ))}
-          </Grid>
-          <div style={{ textAlign: "center" }}>
-            <ViewAllButton to="/ecommerce/products?featured=true">
-              View All Featured Products
-              <FaArrowRight />
-            </ViewAllButton>
-          </div>
-        </Container>
-      </Section>
+          <FeatureCard>
+            <FeatureIcon>
+              <FaHeart />
+            </FeatureIcon>
+            <FeatureTitle>Enquiry System</FeatureTitle>
+            <FeatureDescription>
+              Connect directly with sellers through our secure enquiry system for personalized service.
+            </FeatureDescription>
+          </FeatureCard>
 
-      {saleProducts.length > 0 && (
-        <Section>
-          <Container>
-            <SectionHeader>
-              <SectionTitle>🔥 Hot Deals</SectionTitle>
-              <SectionSubtitle>
-                Limited time offers you don't want to miss
-              </SectionSubtitle>
-            </SectionHeader>
-                        <Grid>
-              {saleProducts.slice(0, 4).map((product) => (
-                <ProductCard
-                  key={product.id}
-                  product={product}
-                />
-              ))}
-            </Grid>
-            <div style={{ textAlign: "center" }}>
-              <ViewAllButton to="/ecommerce/products?sale=true">
-                View All Sale Items
-                <FaArrowRight />
-              </ViewAllButton>
-            </div>
-          </Container>
-        </Section>
-      )}
+          <FeatureCard>
+            <FeatureIcon>
+              <FaCertificate />
+            </FeatureIcon>
+            <FeatureTitle>Trusted Sellers</FeatureTitle>
+            <FeatureDescription>
+              All our sellers are verified and rated by customers for your peace of mind.
+            </FeatureDescription>
+          </FeatureCard>
+        </FeaturesGrid>
 
-      <StatsSection>
-        <Container>
-          <StatsGrid>
-            <StatItem>
-              <h3>10,000+</h3>
-              <p>Happy Customers</p>
-            </StatItem>
-            <StatItem>
-              <h3>5,000+</h3>
-              <p>Products</p>
-            </StatItem>
-            <StatItem>
-              <h3>50+</h3>
-              <p>Brands</p>
-            </StatItem>
-            <StatItem>
-              <h3>24/7</h3>
-              <p>Support</p>
-            </StatItem>
-          </StatsGrid>
-        </Container>
-      </StatsSection>
-
-      <NewsletterSection>
-        <Container>
-          <SectionTitle
-            style={{
-              color: theme.colors.white,
-              marginBottom: theme.spacing.md,
-            }}
-          >
-            Stay in the Loop
-          </SectionTitle>
-          <p style={{ fontSize: "1.1rem", marginBottom: 0 }}>
-            Get the latest updates, exclusive offers, and new arrivals straight
-            to your inbox
-          </p>
-          <NewsletterForm onSubmit={handleNewsletterSubmit}>
-            <NewsletterInput
-              type="email"
-              name="email"
-              placeholder="Enter your email address"
-              required
-            />
-            <NewsletterButton type="submit">Subscribe</NewsletterButton>
-          </NewsletterForm>
-        </Container>
-      </NewsletterSection>
-
-      <Footer />
+        <StatsSection>
+          <StatItem>
+            <StatNumber>500+</StatNumber>
+            <StatLabel>Products</StatLabel>
+          </StatItem>
+          <StatItem>
+            <StatNumber>50+</StatNumber>
+            <StatLabel>Stores</StatLabel>
+          </StatItem>
+          <StatItem>
+            <StatNumber>10K+</StatNumber>
+            <StatLabel>Happy Customers</StatLabel>
+          </StatItem>
+          <StatItem>
+            <StatNumber>4.8★</StatNumber>
+            <StatLabel>Average Rating</StatLabel>
+          </StatItem>
+        </StatsSection>
+      </Container>
     </PageContainer>
   );
 };
 
-export default Home;
+export default EcommerceHome;
