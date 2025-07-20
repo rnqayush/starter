@@ -612,6 +612,39 @@ const ServiceHighlightItem = styled.div`
   align-items: center;
 `;
 
+const StatsGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: ${theme.spacing.lg};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    grid-template-columns: 1fr;
+    gap: ${theme.spacing.md};
+  }
+`;
+
+const StatCard = styled.div.withConfig({
+  shouldForwardProp: (prop) => !['bgColor'].includes(prop),
+})`
+  padding: ${theme.spacing.lg};
+  background: ${props => props.bgColor};
+  border-radius: ${theme.borderRadius.md};
+  transition: all 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: ${theme.shadows.md};
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.md};
+
+    &:hover {
+      transform: none;
+    }
+  }
+`;
+
 const SmallButton = styled.button`
   background: ${theme.colors.gray100};
   border: 1px solid ${theme.colors.gray200};
@@ -983,7 +1016,7 @@ const VendorDashboard = () => {
               <FaUser />
               Dashboard Overview
             </SectionTitle>
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: theme.spacing.lg }}>
+                                    <StatsGrid>
               {[
                 {
                   id: 'profile-views',
@@ -1016,13 +1049,13 @@ const VendorDashboard = () => {
                   subtitleColor: theme.colors.purple600
                 }
               ].map((stat) => (
-                <div key={stat.id} style={{ padding: theme.spacing.lg, background: stat.bgColor, borderRadius: theme.borderRadius.md }}>
+                <StatCard key={stat.id} bgColor={stat.bgColor}>
                   <h3 style={{ margin: '0 0 8px 0', color: stat.titleColor }}>{stat.title}</h3>
                   <p style={{ margin: 0, fontSize: '2rem', fontWeight: 'bold', color: stat.valueColor }}>{stat.value}</p>
                   <p style={{ margin: 0, fontSize: '0.9rem', color: stat.subtitleColor }}>{stat.subtitle}</p>
-                </div>
+                </StatCard>
               ))}
-            </div>
+            </StatsGrid>
           </ContentSection>
         );
 
