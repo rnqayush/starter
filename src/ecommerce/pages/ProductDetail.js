@@ -356,7 +356,7 @@ const ActionButtons = styled.div`
   }
 `;
 
-const AddToCartButton = styled.button`
+const EnquireButton = styled.button`
   flex: 1;
   background: ${theme.colors.primary};
   color: ${theme.colors.white};
