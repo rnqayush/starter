@@ -28,17 +28,56 @@ const PageContainer = styled.div`
 `;
 
 // Edit Mode Overlay
-const EditModeOverlay = styled.div`
+const EditModeOverlay = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'isEditing',
+})`
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.1);
+  background: ${props => props.isEditing ? 'rgba(129, 140, 248, 0.15)' : 'transparent'};
   z-index: 50;
   pointer-events: ${props => props.isEditing ? 'auto' : 'none'};
   opacity: ${props => props.isEditing ? 1 : 0};
-  transition: opacity 0.3s ease;
+  transition: all 0.3s ease;
+  backdrop-filter: ${props => props.isEditing ? 'blur(1px)' : 'none'};
+`;
+
+// Edit Mode Banner
+const EditModeBanner = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'isEditing' && prop !== 'primaryColor',
+})`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(135deg, ${props => props.primaryColor || theme.colors.primary} 0%, ${props => props.primaryColor ? props.primaryColor + 'dd' : theme.colors.primaryDark} 100%);
+  color: ${theme.colors.white};
+  padding: ${theme.spacing.sm} ${theme.spacing.md};
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.9rem;
+  z-index: 60;
+  transform: translateY(${props => props.isEditing ? '0' : '-100%'});
+  transition: transform 0.3s ease;
+  box-shadow: ${theme.shadows.lg};
+
+  .edit-instructions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: ${theme.spacing.md};
+
+    .icon {
+      animation: pulse 2s infinite;
+    }
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+  }
 `;
 
 // Navbar Styles
