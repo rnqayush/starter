@@ -11,14 +11,14 @@ const WeddingModule = () => {
   const location = useLocation();
   const pathSegments = location.pathname.split("/").filter(Boolean);
 
-  // Handle different wedding routes
-  const isVendorRoute = pathSegments.length >= 2 && pathSegments[0] !== "weddings";
-  const vendorSlug = isVendorRoute ? pathSegments[0] : null;
+    // When accessed from SmartRouter (direct vendor URL like /elegant-events)
+  // the path will be just "/", so we need to check if we're in a vendor context
+  const isDirectVendorAccess = pathSegments.length === 1 && pathSegments[0] !== "weddings";
 
   return (
     <Routes>
       {/* Main wedding routes */}
-            <Route path="/" element={<WeddingHome />} />
+      <Route path="/" element={isDirectVendorAccess ? <VendorPage /> : <WeddingHome />} />
       <Route path="/booking/:vendorId" element={<BookingPage />} />
       <Route path="/booking-confirmation" element={<BookingConfirmation />} />
       <Route path="/my-bookings" element={<MyBookings />} />
