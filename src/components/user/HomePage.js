@@ -35,15 +35,15 @@ const HeroSection = styled.section`
     url("https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3")
       center/cover;
   color: ${theme.colors.white};
-  padding: ${theme.spacing.xxl} 0;
+  padding: ${theme.spacing.xl} 0;
   text-align: center;
 
   ${media.mobile} {
-    padding: ${theme.spacing.xl} 0;
+    padding: ${theme.spacing.lg} 0;
   }
 
   ${media.tablet} {
-    padding: ${theme.spacing.xxl} 0;
+    padding: ${theme.spacing.xl} 0;
   }
 `;
 
@@ -66,52 +66,52 @@ const HeroContent = styled.div`
 `;
 
 const HeroTitle = styled.h1`
-  font-size: 3rem;
+  font-size: 2.5rem;
   font-weight: 700;
-  margin-bottom: ${theme.spacing.md};
+  margin-bottom: ${theme.spacing.sm};
 
   ${media.mobile} {
-    font-size: 2rem;
-    margin-bottom: ${theme.spacing.sm};
+    font-size: 1.75rem;
+    margin-bottom: ${theme.spacing.xs};
   }
 
   ${media.tablet} {
-    font-size: 2.5rem;
+    font-size: 2rem;
   }
 `;
 
 const HeroSubtitle = styled.p`
-  font-size: 1.25rem;
-  margin-bottom: ${theme.spacing.xxl};
+  font-size: 1.125rem;
+  margin-bottom: ${theme.spacing.xl};
   opacity: 0.9;
 
   ${media.mobile} {
-    font-size: 1rem;
-    margin-bottom: ${theme.spacing.xl};
+    font-size: 0.9375rem;
+    margin-bottom: ${theme.spacing.lg};
   }
 
   ${media.tablet} {
-    font-size: 1.125rem;
+    font-size: 1rem;
   }
 `;
 
 const SearchCard = styled(Card)`
   max-width: 800px;
   margin: 0 auto;
-  padding: ${theme.spacing.xl};
+  padding: ${theme.spacing.lg};
   background: ${theme.colors.white};
   border-radius: ${theme.borderRadius.xl};
   box-shadow: ${theme.shadows.xl};
 
   ${media.mobile} {
     margin: 0 ${theme.spacing.sm};
-    padding: ${theme.spacing.md};
+    padding: ${theme.spacing.sm};
     border-radius: ${theme.borderRadius.lg};
   }
 
   ${media.tablet} {
     margin: 0 ${theme.spacing.lg};
-    padding: ${theme.spacing.lg};
+    padding: ${theme.spacing.md};
   }
 `;
 
@@ -137,54 +137,54 @@ const SearchForm = styled.form`
 `;
 
 const HotelsSection = styled.section`
-  padding: ${theme.spacing.xxl} 0;
+  padding: ${theme.spacing.xl} 0;
 
   ${media.mobile} {
-    padding: ${theme.spacing.xl} 0;
+    padding: ${theme.spacing.lg} 0;
   }
 `;
 
 const SectionTitle = styled.h2`
-  font-size: 2rem;
+  font-size: 1.75rem;
   font-weight: 600;
   text-align: center;
-  margin-bottom: ${theme.spacing.xxl};
+  margin-bottom: ${theme.spacing.xl};
   color: ${theme.colors.gray900};
 
   ${media.mobile} {
-    font-size: 1.5rem;
-    margin-bottom: ${theme.spacing.lg};
+    font-size: 1.375rem;
+    margin-bottom: ${theme.spacing.md};
   }
 
   ${media.tablet} {
-    font-size: 1.75rem;
-    margin-bottom: ${theme.spacing.xl};
+    font-size: 1.5rem;
+    margin-bottom: ${theme.spacing.lg};
   }
 `;
 
 const HotelsGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: ${theme.spacing.xl};
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: ${theme.spacing.lg};
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 ${theme.spacing.md};
 
   ${media.mobile} {
     grid-template-columns: 1fr;
-    gap: ${theme.spacing.lg};
+    gap: ${theme.spacing.md};
     padding: 0 ${theme.spacing.sm};
   }
 
   ${media.tablet} {
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: ${theme.spacing.lg};
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: ${theme.spacing.md};
     padding: 0 ${theme.spacing.lg};
   }
 
   ${media.desktop} {
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    padding: 0 ${theme.spacing.xl};
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    padding: 0 ${theme.spacing.lg};
   }
 `;
 
