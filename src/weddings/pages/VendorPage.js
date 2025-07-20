@@ -813,6 +813,12 @@ const VendorPage = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   
+  
+  // Get vendor ID from URL path if not available in params
+  const currentPath = window.location.pathname;
+  const pathSegments = currentPath.split('/').filter(Boolean);
+  const vendorId = vendorSlug || pathSegments[pathSegments.length - 1];
+
   const [vendor, setVendor] = useState(null);
   const [loading, setLoading] = useState(true);
   const [scrolled, setScrolled] = useState(false);
