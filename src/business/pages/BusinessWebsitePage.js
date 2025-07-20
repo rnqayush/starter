@@ -152,13 +152,11 @@ const NavLinks = styled.div.withConfig({
   }
 `;
 
-const EditButton = styled.button.withConfig({
-  shouldForwardProp: (prop) => prop !== 'primaryColor',
-})`
-  background: ${props => props.primaryColor || theme.colors.primary};
-  color: ${theme.colors.white};
+const OwnerLink = styled.button`
+  background: transparent;
+  color: ${theme.colors.gray700};
   padding: ${theme.spacing.sm} ${theme.spacing.lg};
-  border: none;
+  border: 2px solid ${theme.colors.gray300};
   border-radius: ${theme.borderRadius.md};
   font-weight: 600;
   cursor: pointer;
@@ -170,8 +168,8 @@ const EditButton = styled.button.withConfig({
   justify-content: flex-end;
 
   &:hover {
-    opacity: 0.9;
-    transform: translateY(-1px);
+    background: ${theme.colors.gray50};
+    border-color: ${theme.colors.gray400};
   }
 `;
 
