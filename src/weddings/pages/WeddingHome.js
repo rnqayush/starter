@@ -906,7 +906,10 @@ const WeddingHome = () => {
           <Logo>
             <FaRing /> Wedding Vendors
           </Logo>
-          <NavActions isOpen={mobileMenuOpen}>
+                    <NavActions isOpen={mobileMenuOpen}>
+            <MobileCloseButton onClick={closeMobileMenu}>
+              <FaTimes />
+            </MobileCloseButton>
             <BackButton onClick={() => { navigate("/"); closeMobileMenu(); }}>
               <FaHome />
               Back to Home
