@@ -290,16 +290,7 @@ const SecondaryButton = styled(Button)`
   }
 `;
 
-const DangerButton = styled(Button)`
-  background: ${theme.colors.error};
-  color: ${theme.colors.white};
-  border: 2px solid ${theme.colors.error};
 
-  &:hover:not(:disabled) {
-    background: ${theme.colors.errorDark || "#dc2626"};
-    border-color: ${theme.colors.errorDark || "#dc2626"};
-  }
-`;
 
 const HoursContainer = styled.div`
   display: flex;
