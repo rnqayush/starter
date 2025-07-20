@@ -27,7 +27,8 @@ import {
   FaMapMarkerAlt,
   FaStar,
   FaChevronRight,
-  FaCheck
+  FaCheck,
+  FaBars
 } from "react-icons/fa";
 import { theme } from "../../styles/GlobalStyle";
 import { getVendorById } from "../data/vendors";
@@ -1621,10 +1622,13 @@ const VendorDashboard = () => {
             <NavSection key={section}>
               <NavSectionTitle>{section}</NavSectionTitle>
                             {items.map((item) => (
-                                <NavItem
+                                                                <NavItem
                   key={item.id}
                   active={activeSection === item.id}
-                  onClick={() => setActiveSection(item.id)}
+                  onClick={() => {
+                    setActiveSection(item.id);
+                    closeMobileSidebar();
+                  }}
                 >
                   <item.icon />
                   {item.label}
