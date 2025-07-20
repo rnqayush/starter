@@ -795,8 +795,13 @@ const WeddingHome = () => {
           </SearchForm>
         </SearchSection>
 
-        <CategorySection>
-          <SectionTitle>Wedding Services</SectionTitle>
+                <CategorySection>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: theme.spacing.lg }}>
+            <SectionTitle>Wedding Services</SectionTitle>
+            <ActionButton onClick={() => setSelectedCategories([])}>
+              Clear All
+            </ActionButton>
+          </div>
           <CategoryGrid>
                         {categories.map((category, index) => {
               const isSelected = selectedCategories.includes(category.filter);
