@@ -36,11 +36,11 @@ const PageContainer = styled.div`
 const HeroSection = styled.section`
   background: linear-gradient(135deg, #0f172a 0%, #1e293b 35%, #334155 100%);
   color: ${theme.colors.white};
-  padding: ${theme.spacing.xxl} 0;
+  padding: ${theme.spacing.xl} 0;
   text-align: center;
   position: relative;
   overflow: hidden;
-  min-height: 85vh;
+  min-height: 75vh;
   display: flex;
   align-items: center;
 
@@ -65,14 +65,14 @@ const HeroSection = styled.section`
     background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse"><path d="M 50 0 L 0 0 0 50" fill="none" stroke="%23ffffff05" stroke-width="1"/></pattern></defs><rect width="100%" height="100%" fill="url(%23grid)"/></svg>');
   }
 
-  ${media.mobile} {
-    padding: ${theme.spacing.xl} 0;
-    min-height: 75vh;
+    ${media.mobile} {
+    padding: ${theme.spacing.lg} 0;
+    min-height: 65vh;
   }
 
   ${media.tablet} {
-    padding: ${theme.spacing.xxl} 0;
-    min-height: 80vh;
+    padding: ${theme.spacing.xl} 0;
+    min-height: 70vh;
   }
 `;
 
@@ -98,9 +98,9 @@ const HeroContent = styled.div`
 `;
 
 const HeroTitle = styled.h1`
-  font-size: 4.5rem;
+  font-size: 3rem;
   font-weight: 800;
-  margin-bottom: ${theme.spacing.lg};
+  margin-bottom: ${theme.spacing.sm};
   background: linear-gradient(135deg, #ffffff 0%, #e0e7ff 50%, #c7d2fe 100%);
   background-clip: text;
   -webkit-background-clip: text;
@@ -109,22 +109,22 @@ const HeroTitle = styled.h1`
   letter-spacing: -0.02em;
 
   ${media.mobile} {
-    font-size: 2.75rem;
-    margin-bottom: ${theme.spacing.md};
+    font-size: 2.25rem;
+    margin-bottom: ${theme.spacing.xs};
   }
 
   ${media.tablet} {
-    font-size: 3.5rem;
+    font-size: 2.75rem;
   }
 
   ${media.desktop} {
-    font-size: 5rem;
+    font-size: 3.25rem;
   }
 `;
 
 const HeroSubtitle = styled.p`
-  font-size: 1.4rem;
-  margin-bottom: ${theme.spacing.lg};
+  font-size: 1.125rem;
+  margin-bottom: ${theme.spacing.md};
   opacity: 0.95;
   max-width: 750px;
   margin-left: auto;
@@ -134,7 +134,7 @@ const HeroSubtitle = styled.p`
   color: #e2e8f0;
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    font-size: 1.15rem;
+    font-size: 1rem;
   }
 `;
 
@@ -142,13 +142,13 @@ const TrustIndicators = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: ${theme.spacing.xl};
-  margin-bottom: ${theme.spacing.xl};
+  gap: ${theme.spacing.lg};
+  margin-bottom: ${theme.spacing.lg};
   flex-wrap: wrap;
   opacity: 0.8;
 
   ${media.mobile} {
-    gap: ${theme.spacing.lg};
+    gap: ${theme.spacing.md};
   }
 `;
 
@@ -166,16 +166,16 @@ const TrustItem = styled.div`
 
 const HeroCTAContainer = styled.div`
   display: flex;
-  gap: ${theme.spacing.lg};
+  gap: ${theme.spacing.md};
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  margin-top: ${theme.spacing.xl};
+  margin-top: ${theme.spacing.lg};
 `;
 
 const CreateStoreCTA = styled(Button)`
-  padding: ${theme.spacing.lg} ${theme.spacing.xxl};
-  font-size: 1.15rem;
+  padding: ${theme.spacing.md} ${theme.spacing.xl};
+  font-size: 1rem;
   font-weight: 600;
   background: linear-gradient(135deg, #10b981 0%, #059669 100%);
   color: ${theme.colors.white};

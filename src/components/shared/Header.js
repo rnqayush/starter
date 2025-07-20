@@ -22,26 +22,26 @@ const HeaderContent = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-height: 4.375rem;
+  min-height: 3.75rem;
   position: relative;
 
   ${media.mobile} {
     padding: 0 ${theme.spacing.sm};
-    min-height: 3.75rem;
+    min-height: 3.5rem;
   }
 
   ${media.tablet} {
     padding: 0 ${theme.spacing.md};
-    min-height: 4rem;
+    min-height: 3.625rem;
   }
 
   ${media.desktop} {
     padding: 0 ${theme.spacing.lg};
-    min-height: 4.375rem;
+    min-height: 3.75rem;
   }
 
   @media (min-width: 1400px) {
-    padding: 0 ${theme.spacing.xl};
+    padding: 0 ${theme.spacing.lg};
   }
 `;
 
@@ -49,23 +49,23 @@ const Logo = styled(Link)`
   display: flex;
   align-items: center;
   gap: ${theme.spacing.sm};
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 700;
   color: ${theme.colors.primary};
   text-decoration: none;
   flex-shrink: 0;
 
   ${media.mobile} {
-    font-size: 1.25rem;
+    font-size: 1.125rem;
     gap: ${theme.spacing.xs};
   }
 
   ${media.tablet} {
-    font-size: 1.375rem;
+    font-size: 1.1875rem;
   }
 
   svg {
-    font-size: 1.25rem;
+    font-size: 1.125rem;
 
     ${media.mobile} {
       font-size: 1rem;
@@ -118,13 +118,14 @@ const NavLink = styled(Link)`
   color: ${theme.colors.gray700};
   font-weight: 500;
   text-decoration: none;
-  padding: ${theme.spacing.sm} ${theme.spacing.md};
+  padding: ${theme.spacing.xs} ${theme.spacing.sm};
   border-radius: ${theme.borderRadius.md};
   transition: all 0.2s ease;
   white-space: nowrap;
   display: flex;
   align-items: center;
   position: relative;
+  font-size: 0.875rem;
 
   &:hover {
     color: ${theme.colors.primary};
@@ -148,18 +149,18 @@ const NavLink = styled(Link)`
   }
 
   @media (min-width: 769px) and (max-width: 1024px) {
-    padding: ${theme.spacing.sm};
-    font-size: 0.875rem;
+    padding: ${theme.spacing.xs} ${theme.spacing.sm};
+    font-size: 0.8125rem;
   }
 
   @media (min-width: 1025px) and (max-width: 1200px) {
-    padding: ${theme.spacing.sm} ${theme.spacing.md};
-    font-size: 0.9rem;
+    padding: ${theme.spacing.xs} ${theme.spacing.sm};
+    font-size: 0.875rem;
   }
 
   @media (min-width: 1201px) {
-    padding: ${theme.spacing.sm} ${theme.spacing.md};
-    font-size: 1rem;
+    padding: ${theme.spacing.xs} ${theme.spacing.sm};
+    font-size: 0.875rem;
   }
 `;
 
@@ -178,17 +179,17 @@ const DropdownButton = styled.button.withConfig({
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: ${theme.spacing.sm};
+  gap: ${theme.spacing.xs};
   color: ${theme.colors.gray700};
   font-weight: 500;
   background: none;
   border: none;
-  padding: ${theme.spacing.sm} ${theme.spacing.md};
+  padding: ${theme.spacing.xs} ${theme.spacing.sm};
   border-radius: ${theme.borderRadius.md};
   transition: all 0.2s ease;
   cursor: pointer;
   white-space: nowrap;
-  font-size: 1rem;
+  font-size: 0.875rem;
 
   &:hover {
     color: ${theme.colors.primary};

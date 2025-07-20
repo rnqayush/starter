@@ -47,11 +47,11 @@ const HeroSection = styled.section.withConfig({
   background-position: center;
   background-attachment: fixed;
   color: ${theme.colors.white};
-  padding: ${theme.spacing.xxl} 0;
+    padding: ${theme.spacing.xl} 0;
   text-align: center;
   position: relative;
   overflow: hidden;
-  min-height: 60vh;
+  min-height: 55vh;
   display: flex;
   align-items: center;
 
@@ -66,9 +66,10 @@ const HeroSection = styled.section.withConfig({
     z-index: 1;
   }
 
-  @media (max-width: ${theme.breakpoints.mobile}) {
-    min-height: 50vh;
+    @media (max-width: ${theme.breakpoints.mobile}) {
+    min-height: 45vh;
     background-attachment: scroll;
+    padding: ${theme.spacing.lg} 0;
   }
 `;
 
@@ -96,10 +97,10 @@ const StoreHeader = styled.div`
 `;
 
 const StoreLogo = styled.img`
-  width: 120px;
-  height: 120px;
+  width: 80px;
+  height: 80px;
   border-radius: ${theme.borderRadius.xl};
-  border: 4px solid ${theme.colors.white};
+  border: 3px solid ${theme.colors.white};
   object-fit: cover;
   box-shadow: ${theme.shadows.xl};
   transition: transform 0.3s ease;
@@ -109,15 +110,15 @@ const StoreLogo = styled.img`
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    width: 100px;
-    height: 100px;
+    width: 70px;
+    height: 70px;
   }
 `;
 
 const HeroTitle = styled.h1`
-  font-size: 4rem;
+  font-size: 2.75rem;
   font-weight: 800;
-  margin-bottom: ${theme.spacing.lg};
+  margin-bottom: ${theme.spacing.md};
   background: linear-gradient(45deg, #ffffff, #f0f8ff);
   background-clip: text;
   -webkit-background-clip: text;
@@ -127,17 +128,17 @@ const HeroTitle = styled.h1`
   line-height: 1.1;
 
   @media (max-width: ${theme.breakpoints.tablet}) {
-    font-size: 3rem;
+    font-size: 2.25rem;
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    font-size: 2.2rem;
+    font-size: 1.875rem;
   }
 `;
 
 const HeroSubtitle = styled.p`
-  font-size: 1.4rem;
-  margin-bottom: ${theme.spacing.xl};
+  font-size: 1.125rem;
+  margin-bottom: ${theme.spacing.lg};
   opacity: 0.95;
   max-width: 700px;
   margin-left: auto;
@@ -147,7 +148,7 @@ const HeroSubtitle = styled.p`
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 
   @media (max-width: ${theme.breakpoints.tablet}) {
-    font-size: 1.2rem;
+    font-size: 1rem;
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
