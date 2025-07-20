@@ -22,8 +22,9 @@ import {
   FaClock,
   FaCheckCircle,
   FaSpinner,
-      FaArrowLeft,
-  FaImages
+        FaArrowLeft,
+  FaImages,
+  FaCog
 } from "react-icons/fa";
 import { theme } from "../../styles/GlobalStyle";
 import { getVendorById } from "../data/vendors";
