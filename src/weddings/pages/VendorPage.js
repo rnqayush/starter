@@ -472,7 +472,9 @@ const PackageFeatures = styled.ul`
   margin-bottom: ${theme.spacing.lg};
 `;
 
-const PackageFeature = styled.li`
+const PackageFeature = styled.li.withConfig({
+  shouldForwardProp: (prop) => !['primaryColor'].includes(prop),
+})`
   display: flex;
   align-items: center;
   gap: ${theme.spacing.sm};
