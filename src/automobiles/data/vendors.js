@@ -144,9 +144,10 @@ export const automobileVendors = [
       { type: "Electric Trucks", count: 12 },
     ],
   },
-  {
+    {
     id: "classic-car-collection",
     name: "Classic Car Collection",
+    slug: "classic-car-collection",
     category: "automobiles",
     logo: "https://images.unsplash.com/photo-1502877338535-766e1452684a?w=200&q=80",
     image:
