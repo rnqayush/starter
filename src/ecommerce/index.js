@@ -1,6 +1,8 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
+import EcommerceHome from "./pages/Home";
 import EcommerceMain from "./pages/EcommerceMain";
+import StoresListing from "./pages/StoresListing";
 import Products from "./pages/Products";
 import ProductDetail from "./pages/ProductDetail";
 import MyEnquiries from "./pages/MyEnquiries";
@@ -18,7 +20,9 @@ const EcommerceModule = () => {
   let ComponentToRender;
 
   if (path === "/ecommerce") {
-    ComponentToRender = EcommerceMain;
+    ComponentToRender = EcommerceHome;
+  } else if (path === "/ecommerce-stores") {
+    ComponentToRender = StoresListing;
   } else if (path.includes("/seller-dashboard")) {
     ComponentToRender = SellerDashboard;
   } else if (path.includes("/my-enquiries")) {
@@ -37,7 +41,7 @@ const EcommerceModule = () => {
     // Single segment path like "/techmart-downtown" - store home
     ComponentToRender = EcommerceMain;
   } else {
-    ComponentToRender = EcommerceMain;
+    ComponentToRender = EcommerceHome;
   }
 
   return (
