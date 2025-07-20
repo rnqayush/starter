@@ -1068,6 +1068,95 @@ const VendorPage = () => {
         </Container>
       </Section>
 
+            {/* Portfolio Preview Section */}
+      {vendor.locationPortfolio && vendor.locationPortfolio.length > 0 && (
+        <Section id="portfolio">
+          <Container>
+            <SectionTitle>Our Recent Work</SectionTitle>
+            <SectionSubtitle>
+              Explore some of our beautiful weddings across different venues and locations
+            </SectionSubtitle>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+              gap: theme.spacing.xl,
+              marginBottom: theme.spacing.xl
+            }}>
+              {vendor.locationPortfolio.slice(0, 3).map((portfolio) => (
+                <div key={portfolio.id} style={{
+                  background: theme.colors.white,
+                  borderRadius: theme.borderRadius.lg,
+                  overflow: 'hidden',
+                  boxShadow: theme.shadows.md,
+                  transition: 'all 0.3s ease',
+                  cursor: 'pointer'
+                }} onClick={() => navigate(`/${vendorId}/portfolio`)}>
+                  <img
+                    src={portfolio.coverImage}
+                    alt={portfolio.location}
+                    style={{
+                      width: '100%',
+                      height: '200px',
+                      objectFit: 'cover'
+                    }}
+                  />
+                  <div style={{ padding: theme.spacing.lg }}>
+                    <h4 style={{
+                      margin: `0 0 ${theme.spacing.sm} 0`,
+                      fontSize: '1.2rem',
+                      fontWeight: 600,
+                      color: theme.colors.gray900
+                    }}>
+                      {portfolio.location}
+                    </h4>
+                    <p style={{
+                      margin: `0 0 ${theme.spacing.sm} 0`,
+                      color: theme.colors.gray600,
+                      fontSize: '0.9rem'
+                    }}>
+                      {portfolio.city}, {portfolio.state} • {portfolio.weddingDate}
+                    </p>
+                    <p style={{
+                      margin: 0,
+                      color: theme.colors.gray700,
+                      fontSize: '0.9rem',
+                      lineHeight: 1.5
+                    }}>
+                      {portfolio.description.substring(0, 120)}...
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div style={{ textAlign: 'center' }}>
+              <button
+                onClick={() => navigate(`/${vendorId}/portfolio`)}
+                style={{
+                  background: primaryColor,
+                  color: 'white',
+                  border: 'none',
+                  padding: `${theme.spacing.md} ${theme.spacing.xl}`,
+                  borderRadius: theme.borderRadius.md,
+                  fontSize: '1.1rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: theme.spacing.sm,
+                  margin: '0 auto'
+                }}
+                onMouseOver={(e) => e.target.style.transform = 'translateY(-2px)'}
+                onMouseOut={(e) => e.target.style.transform = 'translateY(0)'}
+              >
+                <FaImages />
+                View Complete Portfolio
+              </button>
+            </div>
+          </Container>
+        </Section>
+      )}
+
       {/* Gallery Section */}
       <Section id="gallery" backgroundColor={theme.colors.gray50}>
         <Container>
