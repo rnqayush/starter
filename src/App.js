@@ -109,8 +109,9 @@ function App() {
                         {/* Wedding Routes */}
             <Route path="/weddings/*" element={<WeddingModule />} />
 
-            {/* Business Website Routes */}
+                        {/* Business Website Routes */}
             <Route path="/business-websites" element={<BusinessModule />} />
+            <Route path="/business/:businessSlug/owner" element={<BusinessModule />} />
             <Route path="/business/:businessSlug" element={<BusinessModule />} />
 
                                     {/* Store-specific Routes (more specific routes first) */}
