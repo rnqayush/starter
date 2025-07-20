@@ -87,6 +87,12 @@ const StoreHeader = styled.div`
   justify-content: center;
   gap: ${theme.spacing.md};
   margin-bottom: ${theme.spacing.lg};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    flex-direction: column;
+    gap: ${theme.spacing.sm};
+    text-align: center;
+  }
 `;
 
 const StoreLogo = styled.img`
