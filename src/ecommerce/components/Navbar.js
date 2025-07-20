@@ -10,10 +10,12 @@ import {
   FaSearch,
   FaBars,
   FaTimes,
-  FaHome,
+    FaHome,
   FaEnvelope,
   FaStore,
   FaChevronDown,
+  FaHeart,
+  FaBell,
 } from "react-icons/fa";
 import { theme } from "../../styles/GlobalStyle";
 
