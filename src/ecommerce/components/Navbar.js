@@ -536,35 +536,86 @@ const Navbar = ({
             </UserButton>
           </Link>
 
-                    <UserDropdown ref={dropdownRef}>
-            <UserDropdownButton
-              onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)}
-              theme={vendorTheme}
-            >
-              <FaUser />
-              <FaChevronDown />
-            </UserDropdownButton>
-
-            <DropdownMenu isOpen={isUserDropdownOpen}>
-              <DropdownItem
-                to={`${getBaseUrl()}/my-enquiries`}
-                onClick={() => setIsUserDropdownOpen(false)}
+                              {isAuthenticated ? (
+            <UserDropdown ref={dropdownRef}>
+              <UserDropdownButton
+                onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)}
+                theme={vendorTheme}
               >
-                <FaEnvelope />
-                My Enquiries
-              </DropdownItem>
+                <UserAvatar src={user.avatar} alt={user.name} />
+                <UserInfo>
+                  <div className="name">{user.name}</div>
+                  <div className="role">{user.role}</div>
+                </UserInfo>
+                <FaChevronDown />
+              </UserDropdownButton>
 
-              <DropdownDivider />
+              <DropdownMenu isOpen={isUserDropdownOpen}>
+                <DropdownButton
+                  onClick={() => {
+                    setShowProfile(true);
+                    setIsUserDropdownOpen(false);
+                  }}
+                >
+                  <FaUser />
+                  My Profile
+                </DropdownButton>
 
-              <DropdownItem
-                to={`${getBaseUrl()}/seller-dashboard`}
-                onClick={() => setIsUserDropdownOpen(false)}
+                <DropdownItem
+                  to={`${getBaseUrl()}/my-enquiries`}
+                  onClick={() => setIsUserDropdownOpen(false)}
+                >
+                  <FaEnvelope />
+                  My Enquiries
+                </DropdownItem>
+
+                {canAccessSeller() && (
+                  <>
+                    <DropdownDivider />
+                    <DropdownItem
+                      to={`${getBaseUrl()}/seller-dashboard`}
+                      onClick={() => setIsUserDropdownOpen(false)}
+                    >
+                      <FaStore />
+                      Seller Dashboard
+                    </DropdownItem>
+                  </>
+                )}
+
+                <DropdownDivider />
+
+                <DropdownButton
+                  onClick={() => {
+                    logout();
+                    setIsUserDropdownOpen(false);
+                  }}
+                >
+                  <FaTimes />
+                  Sign Out
+                </DropdownButton>
+              </DropdownMenu>
+            </UserDropdown>
+          ) : (
+            <div style={{ display: "flex", gap: "0.5rem" }}>
+              <LoginButton
+                onClick={() => {
+                  setAuthModalTab("login");
+                  setShowAuthModal(true);
+                }}
               >
-                <FaStore />
-                Seller Dashboard
-              </DropdownItem>
-            </DropdownMenu>
-          </UserDropdown>
+                Sign In
+              </LoginButton>
+              <LoginButton
+                style={{ background: "transparent", color: vendorTheme?.primaryColor || theme.colors.primary, border: `2px solid ${vendorTheme?.primaryColor || theme.colors.primary}` }}
+                onClick={() => {
+                  setAuthModalTab("register");
+                  setShowAuthModal(true);
+                }}
+              >
+                Sign Up
+              </LoginButton>
+            </div>
+          )}
 
           <Link to={`${getBaseUrl()}/cart`}>
             <CartButton theme={vendorTheme}>
