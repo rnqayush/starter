@@ -1097,11 +1097,11 @@ const VendorPage = () => {
               <FaArrowLeft />
               Back
             </NavButton>
-            <NavButton onClick={closeMobileMenu} scrolled={scrolled}>
+                        <NavButton onClick={() => { alert('Vendor saved to your favorites!'); closeMobileMenu(); }} scrolled={scrolled}>
               <FaHeart />
               Save
             </NavButton>
-            <NavButton onClick={closeMobileMenu} scrolled={scrolled}>
+            <NavButton onClick={() => { navigator.share ? navigator.share({title: vendor.name, url: window.location.href}) : alert('Share: ' + window.location.href); closeMobileMenu(); }} scrolled={scrolled}>
               <FaShare />
               Share
             </NavButton>
@@ -1113,7 +1113,7 @@ const VendorPage = () => {
               <FaCog />
               Dashboard
             </NavButton>
-            <NavButton primary primaryColor={primaryColor} onClick={() => scrollToSection('contact')}>
+                        <NavButton primary primaryColor={primaryColor} onClick={() => { scrollToSection('contact'); closeMobileMenu(); }}>
               <FaCalendarAlt />
               Enquire Now
             </NavButton>
