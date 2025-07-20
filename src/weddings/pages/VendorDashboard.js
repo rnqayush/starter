@@ -683,9 +683,137 @@ const VendorDashboard = () => {
     setHasChanges(true);
   };
 
-  const removeService = (id) => {
+    const removeService = (id) => {
     setServices(prev => prev.filter(service => service.id !== id));
     setHasChanges(true);
+  };
+
+  // Portfolio management functions
+  const addPortfolioItem = () => {
+    setPortfolioForm({
+      id: '',
+      location: '',
+      city: '',
+      state: '',
+      weddingDate: '',
+      coupleNames: '',
+      description: '',
+      coverImage: '',
+      gallery: [],
+      services: [],
+      highlights: [],
+      editing: false
+    });
+    setShowPortfolioForm(true);
+  };
+
+  const editPortfolioItem = (item) => {
+    setPortfolioForm({ ...item, editing: true });
+    setShowPortfolioForm(true);
+  };
+
+  const savePortfolioItem = () => {
+    if (portfolioForm.editing) {
+      setPortfolio(prev => prev.map(item =>
+        item.id === portfolioForm.id ? { ...portfolioForm, editing: false } : item
+      ));
+    } else {
+      const newItem = {
+        ...portfolioForm,
+        id: portfolioForm.id || Date.now().toString(),
+        editing: false
+      };
+      setPortfolio(prev => [...prev, newItem]);
+    }
+    setHasChanges(true);
+    setShowPortfolioForm(false);
+  };
+
+  const deletePortfolioItem = (id) => {
+    setPortfolio(prev => prev.filter(item => item.id !== id));
+    setHasChanges(true);
+  };
+
+  const updatePortfolioForm = (field, value) => {
+    setPortfolioForm(prev => ({ ...prev, [field]: value }));
+  };
+
+  const addPortfolioGalleryImage = (e) => {
+    const files = Array.from(e.target.files);
+    files.forEach(file => {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const imageData = {
+          id: Date.now() + Math.random(),
+          src: event.target.result,
+          title: '',
+          description: ''
+        };
+        setPortfolioForm(prev => ({
+          ...prev,
+          gallery: [...prev.gallery, imageData]
+        }));
+      };
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const updatePortfolioGalleryImage = (imageId, field, value) => {
+    setPortfolioForm(prev => ({
+      ...prev,
+      gallery: prev.gallery.map(img =>
+        img.id === imageId ? { ...img, [field]: value } : img
+      )
+    }));
+  };
+
+  const removePortfolioGalleryImage = (imageId) => {
+    setPortfolioForm(prev => ({
+      ...prev,
+      gallery: prev.gallery.filter(img => img.id !== imageId)
+    }));
+  };
+
+  const addPortfolioService = () => {
+    setPortfolioForm(prev => ({
+      ...prev,
+      services: [...prev.services, '']
+    }));
+  };
+
+  const updatePortfolioService = (index, value) => {
+    setPortfolioForm(prev => ({
+      ...prev,
+      services: prev.services.map((service, i) => i === index ? value : service)
+    }));
+  };
+
+  const removePortfolioService = (index) => {
+    setPortfolioForm(prev => ({
+      ...prev,
+      services: prev.services.filter((_, i) => i !== index)
+    }));
+  };
+
+  const addPortfolioHighlight = () => {
+    setPortfolioForm(prev => ({
+      ...prev,
+      highlights: [...prev.highlights, '']
+    }));
+  };
+
+  const updatePortfolioHighlight = (index, value) => {
+    setPortfolioForm(prev => ({
+      ...prev,
+      highlights: prev.highlights.map((highlight, i) => i === index ? value : highlight)
+    }));
+  };
+
+  const removePortfolioHighlight = (index) => {
+    setPortfolioForm(prev => ({
+      ...prev,
+      highlights: prev.highlights.filter((_, i) => i !== index)
+    }));
   };
 
   const renderContent = () => {
