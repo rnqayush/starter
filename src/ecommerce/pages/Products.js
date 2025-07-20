@@ -434,12 +434,11 @@ const Products = () => {
         )}
 
         {filteredProducts.length > 0 ? (
-          <ProductsGrid view={view}>
+                    <ProductsGrid view={view}>
             {filteredProducts.map((product) => (
               <ProductCard
                 key={product.id}
                 product={product}
-                onAddToCart={handleAddToCart}
                 storeSlug={storeSlug}
               />
             ))}
