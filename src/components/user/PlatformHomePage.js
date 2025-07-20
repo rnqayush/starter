@@ -860,10 +860,10 @@ const PlatformHomePage = () => {
       {/* Explore Stores Section */}
       <ExploreStoresSection id="explore-stores">
         <ExploreStoresContainer>
-          <SectionTitle>See How Others Are Succeeding</SectionTitle>
+                    <SectionTitle>Industry-Specific Solutions</SectionTitle>
           <SectionSubtitle>
-            Hotels, fashion, weddings, cars – discover how business owners like
-            you have built stunning online storefronts.
+            Explore our specialized templates and features designed for your industry.
+            Each solution comes with industry-specific tools and integrations.
           </SectionSubtitle>
           <StoreCardsGrid>
             {storeCategories.map((store) => {
