@@ -523,9 +523,10 @@ const WeddingHome = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentLocation, setCurrentLocation] = useState(null);
-  const [activeFilter, setActiveFilter] = useState("all");
+    const [activeFilter, setActiveFilter] = useState("all");
   const [sortBy, setSortBy] = useState("distance");
   const [locationLoading, setLocationLoading] = useState(false);
+  const [selectedCategories, setSelectedCategories] = useState(["venue"]); // Default to venues checked
 
   const categories = [
     { name: "Venues", icon: FaLeaf, count: 15, filter: "venue" },
