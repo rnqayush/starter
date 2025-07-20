@@ -425,10 +425,11 @@ const SellerSidebar = ({ activeTab, onTabChange }) => {
         { id: "bulk-import", label: "Bulk Import", icon: FaFileImport },
       ],
     },
-    {
+        {
       section: "Sales",
       items: [
         { id: "orders", label: "Orders", icon: FaShoppingCart },
+        { id: "enquiries", label: "Enquiries", icon: FaEnvelope },
         { id: "discounts", label: "Discounts & Coupons", icon: FaPercent },
       ],
     },
