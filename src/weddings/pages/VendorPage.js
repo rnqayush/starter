@@ -24,7 +24,9 @@ import {
   FaSpinner,
         FaArrowLeft,
   FaImages,
-  FaCog
+  FaCog,
+  FaBars,
+  FaTimes
 } from "react-icons/fa";
 import { theme } from "../../styles/GlobalStyle";
 import { getVendorById } from "../data/vendors";
@@ -204,17 +206,73 @@ const NavLogo = styled.div.withConfig({
   color: ${props => props.scrolled ? theme.colors.gray900 : 'white'};
 `;
 
-const NavActions = styled.div`
+const MobileMenuButton = styled.button.withConfig({
+  shouldForwardProp: (prop) => !['scrolled'].includes(prop),
+})`
+  display: none;
+  background: none;
+  border: none;
+  color: ${props => props.scrolled ? theme.colors.gray700 : 'white'};
+  font-size: 1.5rem;
+  padding: ${theme.spacing.sm};
+  cursor: pointer;
+  border-radius: ${theme.borderRadius.md};
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+`;
+
+const MobileMenuOverlay = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "isOpen",
+})`
+  display: none;
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1001;
+    opacity: ${(props) => (props.isOpen ? "1" : "0")};
+    visibility: ${(props) => (props.isOpen ? "visible" : "hidden")};
+    transition: all 0.3s ease;
+    backdrop-filter: blur(4px);
+  }
+`;
+
+const NavActions = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "isOpen",
+})`
   display: flex;
   gap: ${theme.spacing.md};
   align-items: center;
   flex-wrap: wrap;
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    gap: ${theme.spacing.sm};
-    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: ${theme.colors.white};
+    flex-direction: column;
     justify-content: center;
-    margin-top: ${theme.spacing.sm};
+    gap: ${theme.spacing.lg};
+    z-index: 1002;
+    transform: translateX(${(props) => (props.isOpen ? "0" : "100%")});
+    transition: transform 0.3s ease;
+    padding: ${theme.spacing.xl};
   }
 `;
 
