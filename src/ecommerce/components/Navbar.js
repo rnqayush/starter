@@ -481,11 +481,25 @@ const Navbar = ({
         >
           Home & Garden
         </MobileNavLink>
-        <MobileNavLink
+                <MobileNavLink
           to="/ecommerce/products?category=sports"
           onClick={() => setIsMenuOpen(false)}
         >
           Sports
+        </MobileNavLink>
+
+        <MobileNavLink
+          to={`${getBaseUrl()}/my-enquiries`}
+          onClick={() => setIsMenuOpen(false)}
+        >
+          📧 My Enquiries
+        </MobileNavLink>
+
+        <MobileNavLink
+          to={`${getBaseUrl()}/seller-dashboard`}
+          onClick={() => setIsMenuOpen(false)}
+        >
+          🏪 Seller Dashboard
         </MobileNavLink>
 
         <form onSubmit={handleSearch}>
