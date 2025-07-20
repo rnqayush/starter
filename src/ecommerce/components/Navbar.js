@@ -83,10 +83,21 @@ const LogoImage = styled.img`
   object-fit: cover;
   border: 2px solid ${theme.colors.gray200};
   transition: all 0.3s ease;
+  flex-shrink: 0;
 
   &:hover {
     transform: scale(1.05);
     border-color: ${(props) => props.theme?.primaryColor || theme.colors.primary};
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    width: 40px;
+    height: 40px;
+  }
+
+  @media (max-width: 1024px) {
+    width: 45px;
+    height: 45px;
   }
 `;
 
