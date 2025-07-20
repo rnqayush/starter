@@ -138,9 +138,10 @@ function App() {
             <Route path="/owner/bookings" element={<BookingsReceivedPage />} />
             <Route path="/owner/profile" element={<ProfileSettingsPage />} />
           </Routes>
-                        </AppContainer>
+                                </AppContainer>
       </Router>
-    </AppContext.Provider>
+      </AppContext.Provider>
+    </AuthProvider>
   );
 }
 
