@@ -134,7 +134,9 @@ const UploadSection = styled.div`
   margin-bottom: ${theme.spacing.xl};
 `;
 
-const UploadArea = styled.div`
+const UploadArea = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "isDragOver",
+})`
   border: 2px dashed ${(props) => props.isDragOver ? theme.colors.primary : theme.colors.gray300};
   border-radius: ${theme.borderRadius.lg};
   padding: ${theme.spacing.xxl};
