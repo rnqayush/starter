@@ -2,6 +2,7 @@ import React from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import WeddingHome from "./pages/WeddingHome";
 import VendorDetail from "./pages/VendorDetail";
+import VendorPage from "./pages/VendorPage";
 import BookingPage from "./pages/BookingPage";
 import BookingConfirmation from "./pages/BookingConfirmation";
 import MyBookings from "./pages/MyBookings";
@@ -22,10 +23,11 @@ const WeddingModule = () => {
       <Route path="/booking-confirmation" element={<BookingConfirmation />} />
       <Route path="/my-bookings" element={<MyBookings />} />
       
-      {/* Vendor-specific routes */}
-      <Route path="/:vendorSlug" element={<VendorDetail />} />
+            {/* Vendor-specific routes */}
+      <Route path="/:vendorSlug" element={<VendorPage />} />
       <Route path="/:vendorSlug/booking" element={<BookingPage />} />
       <Route path="/:vendorSlug/booking/:serviceId" element={<BookingPage />} />
+      <Route path="/:vendorSlug/detail" element={<VendorDetail />} />
     </Routes>
   );
 };
