@@ -978,8 +978,9 @@ const BusinessWebsitePage = () => {
 
       {/* About Section */}
       <EditableSection 
-        isEditing={isEditing}
+                isEditing={isEditing}
         primaryColor={businessData.primaryColor}
+        sectionName="About Section"
         onClick={() => handleSectionClick('about')}
       >
         <Section id="about" background={theme.colors.gray50}>
