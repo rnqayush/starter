@@ -20,7 +20,7 @@ import {
   FaRing,
   FaGem,
   FaLeaf,
-  FaCake,
+    FaBirthdayCake,
   FaMusic,
 } from "react-icons/fa";
 import { theme } from "../../styles/GlobalStyle";
