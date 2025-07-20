@@ -388,9 +388,15 @@ const StoreInfo = styled.div`
 
 const StoreInfoGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: 2fr 1fr;
   gap: ${theme.spacing.xl};
   align-items: center;
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    grid-template-columns: 1fr;
+    gap: ${theme.spacing.lg};
+    text-align: center;
+  }
 `;
 
 const StoreContact = styled.div`
