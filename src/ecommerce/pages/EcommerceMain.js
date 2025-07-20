@@ -261,6 +261,15 @@ const SectionTitle = styled.h2.withConfig({
   font-weight: 600;
   color: ${(props) => props.textColor || theme.colors.gray900};
   margin-bottom: ${theme.spacing.md};
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    font-size: 2rem;
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    font-size: 1.75rem;
+    margin-bottom: ${theme.spacing.sm};
+  }
 `;
 
 const SectionSubtitle = styled.p`
