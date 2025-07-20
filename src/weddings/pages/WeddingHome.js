@@ -821,7 +821,15 @@ const WeddingHome = () => {
         </CategorySection>
 
         <VendorsSection>
-          <SectionTitle>Featured Wedding Vendors Near You</SectionTitle>
+                    <SectionTitle>
+            {selectedCategories.length > 0
+              ? `${selectedCategories.map(cat => {
+                  const category = categories.find(c => c.filter === cat);
+                  return category ? category.name : cat;
+                }).join(', ')} Vendors Near You`
+              : 'Wedding Vendors Near You'
+            }
+          </SectionTitle>
           
           <FiltersRow>
             <FilterGroup>
