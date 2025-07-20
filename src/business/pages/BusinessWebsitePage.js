@@ -81,12 +81,15 @@ const EditModeBanner = styled.div.withConfig({
 `;
 
 // Navbar Styles
-const Navbar = styled.nav`
+const Navbar = styled.nav.withConfig({
+  shouldForwardProp: (prop) => prop !== 'isEditing',
+})`
   background: ${theme.colors.white};
   box-shadow: ${theme.shadows.sm};
   position: sticky;
-  top: 0;
+  top: ${props => props.isEditing ? '40px' : '0'};
   z-index: 40;
+  transition: top 0.3s ease;
 `;
 
 const NavContainer = styled.div`
