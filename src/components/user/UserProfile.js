@@ -264,7 +264,9 @@ const ToggleLabel = styled.div`
   }
 `;
 
-const ToggleIcon = styled.div`
+const ToggleIcon = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "enabled",
+})`
   font-size: 1.5rem;
   color: ${props => props.enabled ? '#10b981' : '#9ca3af'};
 `;
