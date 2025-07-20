@@ -232,7 +232,9 @@ const MobileMenuButton = styled.button.withConfig({
 
 const MobileMenuOverlay = styled.div.withConfig({
   shouldForwardProp: (prop) => prop !== "isOpen",
-})`
+})
+
+`
   display: none;
 
   @media (max-width: ${theme.breakpoints.mobile}) {
@@ -1114,8 +1116,6 @@ const VendorPage = () => {
 
   return (
     <PageContainer>
-            {/* Navigation */}
-      <MobileMenuOverlay isOpen={mobileMenuOpen} onClick={closeMobileMenu} />
       <NavBar scrolled={scrolled}>
         <NavContent>
           <NavLogo scrolled={scrolled}>{vendor.name}</NavLogo>
