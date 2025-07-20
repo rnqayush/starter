@@ -417,11 +417,11 @@ const ShopSettingsTab = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
-  useEffect(() => {
+    useEffect(() => {
     // Load settings from localStorage or API
     const savedSettings = localStorage.getItem("shopSettings");
     if (savedSettings) {
-      setSettings({ ...settings, ...JSON.parse(savedSettings) });
+      setSettings(prev => ({ ...prev, ...JSON.parse(savedSettings) }));
     }
   }, []);
 
