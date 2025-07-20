@@ -120,7 +120,7 @@ const SellerDashboard = () => {
     }
   };
 
-  const renderContent = () => {
+    const renderContent = () => {
     switch (activeTab) {
       case "dashboard":
         return <DashboardTabEnhanced />;
@@ -139,6 +139,8 @@ const SellerDashboard = () => {
         );
       case "orders":
         return <OrdersTabEnhanced />;
+      case "enquiries":
+        return <EnquiriesTab />;
       case "discounts":
         return <DiscountsTab />;
       case "customers":
