@@ -287,26 +287,33 @@ const ActionButtons = styled.div`
 
 const EnquireButton = styled.button`
   flex: 1;
-  background: ${theme.colors.primary};
+  background: linear-gradient(135deg, ${theme.colors.primary} 0%, ${theme.colors.primaryDark} 100%);
   color: ${theme.colors.white};
-  padding: ${theme.spacing.sm} ${theme.spacing.md};
-  border-radius: ${theme.borderRadius.md};
-  font-weight: 600;
+  padding: ${theme.spacing.md} ${theme.spacing.lg};
+  border-radius: ${theme.borderRadius.lg};
+  font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: ${theme.spacing.sm};
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 0.9rem;
 
   &:hover {
-    background: ${theme.colors.primaryDark};
-    transform: translateY(-2px);
+    background: linear-gradient(135deg, ${theme.colors.primaryDark} 0%, ${theme.colors.primary} 100%);
+    transform: translateY(-3px);
+    box-shadow: ${theme.shadows.lg};
   }
 
   &:disabled {
     background: ${theme.colors.gray400};
     cursor: not-allowed;
     transform: none;
+    box-shadow: none;
   }
 
   ${media.mobile} {
