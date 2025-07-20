@@ -676,7 +676,7 @@ const VendorDashboard = () => {
     setHasChanges(true);
   };
 
-  const addService = () => {
+    const addService = () => {
     setServices(prev => [...prev, {
       id: Date.now(),
       name: 'New Service',
