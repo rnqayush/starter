@@ -623,7 +623,8 @@ const AutomobileMain = () => {
           </Section>
         )}
 
-        <Footer dealerSlug={selectedDealer.slug} dealer={selectedDealer} theme={dealerTheme} />
+                <Footer dealerSlug={selectedDealer.slug} dealer={selectedDealer} theme={dealerTheme} />
+        <BackToTop />
       </PageContainer>
     </>
   );
