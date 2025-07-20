@@ -509,11 +509,13 @@ const PortfolioFormModal = styled.div`
   justify-content: center;
   z-index: 1000;
   padding: ${theme.spacing.lg};
+  overflow-y: auto;
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    padding: ${theme.spacing.sm};
+    padding: ${theme.spacing.xs};
     align-items: flex-start;
-    padding-top: ${theme.spacing.md};
+    padding-top: ${theme.spacing.sm};
+    padding-bottom: ${theme.spacing.sm};
   }
 `;
 
@@ -525,10 +527,14 @@ const PortfolioFormContent = styled.div`
   max-height: 90vh;
   overflow-y: auto;
   padding: ${theme.spacing.xxl};
+  margin: auto;
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    padding: ${theme.spacing.lg};
-    max-height: 95vh;
+    padding: ${theme.spacing.md};
+    max-height: 98vh;
+    border-radius: ${theme.borderRadius.md};
+    margin: ${theme.spacing.xs};
+    width: calc(100% - ${theme.spacing.sm});
   }
 `;
 
@@ -664,7 +670,8 @@ const VendorDashboard = () => {
     highlights: [],
     editing: false
   });
-  const [showPortfolioForm, setShowPortfolioForm] = useState(false);
+    const [showPortfolioForm, setShowPortfolioForm] = useState(false);
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [packages, setPackages] = useState([]);
   const [testimonials, setTestimonials] = useState([]);
   const [faq, setFaq] = useState([]);
