@@ -96,12 +96,14 @@ function App() {
             {/* Ecommerce Routes */}
             <Route path="/ecommerce/*" element={<EcommerceModule />} />
 
-            {/* Store-specific Routes (more specific routes first) */}
+                        {/* Store-specific Routes (more specific routes first) */}
             <Route path="/:storeSlug/products" element={<EcommerceModule />} />
             <Route
               path="/:storeSlug/product/:id"
               element={<EcommerceModule />}
             />
+            <Route path="/:storeSlug/seller-dashboard" element={<EcommerceModule />} />
+            <Route path="/:storeSlug/my-enquiries" element={<EcommerceModule />} />
             <Route path="/:storeSlug/cart" element={<EcommerceModule />} />
             <Route path="/:storeSlug/checkout" element={<EcommerceModule />} />
             <Route
