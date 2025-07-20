@@ -41,13 +41,13 @@ const PageContainer = styled.div`
 
 // Hero Section Styles
 const HeroSection = styled.section`
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 35%, #334155 100%);
   color: ${theme.colors.white};
   padding: ${theme.spacing.xxl} 0;
   text-align: center;
   position: relative;
   overflow: hidden;
-  min-height: 80vh;
+  min-height: 85vh;
   display: flex;
   align-items: center;
 
@@ -58,18 +58,28 @@ const HeroSection = styled.section`
     left: 0;
     right: 0;
     bottom: 0;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><polygon fill="%23ffffff08" points="0,0 1000,300 1000,1000 0,700"/></svg>');
-    background-size: cover;
+    background: radial-gradient(circle at 30% 40%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(168, 85, 247, 0.1) 0%, transparent 50%);
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse"><path d="M 50 0 L 0 0 0 50" fill="none" stroke="%23ffffff05" stroke-width="1"/></pattern></defs><rect width="100%" height="100%" fill="url(%23grid)"/></svg>');
   }
 
   ${media.mobile} {
     padding: ${theme.spacing.xl} 0;
-    min-height: 70vh;
+    min-height: 75vh;
   }
 
   ${media.tablet} {
     padding: ${theme.spacing.xxl} 0;
-    min-height: 75vh;
+    min-height: 80vh;
   }
 `;
 
