@@ -2,14 +2,11 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import {
   FaUser,
-  FaEnvelope,
-  FaPhone,
-  FaMapMarkerAlt,
   FaCamera,
   FaSave,
   FaEdit,
   FaBell,
-  FaShield,
+  FaLock,
   FaStore,
   FaToggleOn,
   FaToggleOff,
