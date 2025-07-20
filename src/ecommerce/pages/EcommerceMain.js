@@ -511,9 +511,10 @@ const EcommerceMain = () => {
           theme={vendorTheme}
         />
 
-        <HeroSection
+                <HeroSection
           primaryColor={vendorTheme.primaryColor}
           secondaryColor={vendorTheme.secondaryColor}
+          heroImage={selectedVendor.image}
         >
           <HeroContent>
             <StoreHeader>
@@ -527,17 +528,99 @@ const EcommerceMain = () => {
             </StoreHeader>
             <HeroSubtitle>{selectedVendor.description}</HeroSubtitle>
             <HeroActions>
-              <HeroButton primaryColor={vendorTheme.primaryColor}>
+              <HeroButton
+                primaryColor={vendorTheme.primaryColor}
+                onClick={() => navigate(`${getBaseUrl()}/products`)}
+              >
                 <FaShoppingBag />
                 Shop Now
               </HeroButton>
-              <HeroButton className="secondary">
+              <HeroButton
+                className="secondary"
+                onClick={() => navigate(`${getBaseUrl()}/products?category=electronics`)}
+              >
                 View Categories
                 <FaArrowRight />
               </HeroButton>
             </HeroActions>
           </HeroContent>
         </HeroSection>
+
+        <Container>
+          <QuickNavigation>
+            <QuickNavGrid>
+              <QuickNavItem to={`${getBaseUrl()}/products`}>
+                <div className="icon">🛍️</div>
+                <div className="content">
+                  <h3>All Products</h3>
+                  <p>Browse our complete catalog</p>
+                </div>
+              </QuickNavItem>
+              <QuickNavItem to={`${getBaseUrl()}/products?featured=true`}>
+                <div className="icon">⭐</div>
+                <div className="content">
+                  <h3>Featured Items</h3>
+                  <p>Handpicked bestsellers</p>
+                </div>
+              </QuickNavItem>
+              <QuickNavItem to={`${getBaseUrl()}/products?sale=true`}>
+                <div className="icon">🔥</div>
+                <div className="content">
+                  <h3>Hot Deals</h3>
+                  <p>Limited time offers</p>
+                </div>
+              </QuickNavItem>
+              <QuickNavItem to={`${getBaseUrl()}/my-enquiries`}>
+                <div className="icon">📧</div>
+                <div className="content">
+                  <h3>My Enquiries</h3>
+                  <p>Track your requests</p>
+                </div>
+              </QuickNavItem>
+            </QuickNavGrid>
+          </QuickNavigation>
+
+          <StoreInfo>
+            <StoreInfoGrid>
+              <StoreContact>
+                <div className="contact-item">
+                  <span className="icon">📍</span>
+                  <span>{selectedVendor.address}, {selectedVendor.city}, {selectedVendor.state}</span>
+                </div>
+                <div className="contact-item">
+                  <span className="icon">📞</span>
+                  <span>{selectedVendor.phone}</span>
+                </div>
+                <div className="contact-item">
+                  <span className="icon">✉️</span>
+                  <span>{selectedVendor.email}</span>
+                </div>
+                <div className="contact-item">
+                  <span className="icon">🌐</span>
+                  <span>{selectedVendor.website}</span>
+                </div>
+              </StoreContact>
+              <StoreStats>
+                <StatItem>
+                  <div className="number">{selectedVendor.rating}</div>
+                  <div className="label">Rating</div>
+                </StatItem>
+                <StatItem>
+                  <div className="number">{selectedVendor.reviewCount}</div>
+                  <div className="label">Reviews</div>
+                </StatItem>
+                <StatItem>
+                  <div className="number">500+</div>
+                  <div className="label">Products</div>
+                </StatItem>
+                <StatItem>
+                  <div className="number">24/7</div>
+                  <div className="label">Support</div>
+                </StatItem>
+              </StoreStats>
+            </StoreInfoGrid>
+          </StoreInfo>
+        </Container>
 
         <Section>
           <Container>
