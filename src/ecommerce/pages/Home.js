@@ -309,12 +309,11 @@ const Home = () => {
               Handpicked items that our customers love the most
             </SectionSubtitle>
           </SectionHeader>
-          <Grid>
+                    <Grid>
             {featuredProducts.slice(0, 4).map((product) => (
               <ProductCard
                 key={product.id}
                 product={product}
-                onAddToCart={handleAddToCart}
               />
             ))}
           </Grid>
