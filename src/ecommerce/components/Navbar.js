@@ -667,19 +667,69 @@ const Navbar = ({
           Sports
         </MobileNavLink>
 
-        <MobileNavLink
-          to={`${getBaseUrl()}/my-enquiries`}
-          onClick={() => setIsMenuOpen(false)}
-        >
-          📧 My Enquiries
-        </MobileNavLink>
+                {isAuthenticated ? (
+          <>
+            <MobileNavLink
+              to="#"
+              onClick={() => {
+                setShowProfile(true);
+                setIsMenuOpen(false);
+              }}
+            >
+              👤 My Profile
+            </MobileNavLink>
 
-        <MobileNavLink
-          to={`${getBaseUrl()}/seller-dashboard`}
-          onClick={() => setIsMenuOpen(false)}
-        >
-          🏪 Seller Dashboard
-        </MobileNavLink>
+            <MobileNavLink
+              to={`${getBaseUrl()}/my-enquiries`}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              📧 My Enquiries
+            </MobileNavLink>
+
+            {canAccessSeller() && (
+              <MobileNavLink
+                to={`${getBaseUrl()}/seller-dashboard`}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                🏪 Seller Dashboard
+              </MobileNavLink>
+            )}
+
+            <MobileNavLink
+              to="#"
+              onClick={() => {
+                logout();
+                setIsMenuOpen(false);
+              }}
+            >
+              🚪 Sign Out
+            </MobileNavLink>
+          </>
+        ) : (
+          <>
+            <MobileNavLink
+              to="#"
+              onClick={() => {
+                setAuthModalTab("login");
+                setShowAuthModal(true);
+                setIsMenuOpen(false);
+              }}
+            >
+              🔑 Sign In
+            </MobileNavLink>
+
+            <MobileNavLink
+              to="#"
+              onClick={() => {
+                setAuthModalTab("register");
+                setShowAuthModal(true);
+                setIsMenuOpen(false);
+              }}
+            >
+              📝 Sign Up
+            </MobileNavLink>
+          </>
+        )}
 
                 <form onSubmit={handleSearch}>
           <MobileSearchInput
