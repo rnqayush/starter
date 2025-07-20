@@ -14,7 +14,7 @@ import {
   FaCalendarAlt,
   FaUsers,
   FaCamera,
-  FaCake,
+    FaBirthdayCake,
   FaMusic,
   FaLeaf,
   FaGem,
