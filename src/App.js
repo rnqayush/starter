@@ -35,6 +35,7 @@ import {
 
 // Modules
 import EcommerceModule from "./ecommerce";
+import AutomobileModule from "./automobiles";
 import SellerDashboardDemo from "./ecommerce/pages/SellerDashboardDemo";
 
 // Store Listing Pages
