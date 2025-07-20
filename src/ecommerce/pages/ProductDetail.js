@@ -735,12 +735,12 @@ const ProductDetail = () => {
             </SellerInfo>
 
             <ActionButtons>
-              <EnquireButton
+                            <EnquireButton
                 onClick={handleEnquireClick}
-                disabled={product.stock === 0 || (product.sizes && !selectedSize)}
+                disabled={getAvailabilityStatus(product) === "out_of_stock" || (product.sizes && !selectedSize)}
               >
                 <FaEnvelope />
-                {product.stock > 0 ? "Enquire Now" : "Not Available"}
+                {getAvailabilityStatus(product) === "out_of_stock" ? "Not Available" : "Enquire Now"}
               </EnquireButton>
 
               <WishlistButton title="Add to Wishlist">
