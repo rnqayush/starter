@@ -314,7 +314,25 @@ const CategoryCheckbox = styled.div.withConfig({
     color: ${theme.colors.white};
     font-size: 0.8rem;
     opacity: ${(props) => props.checked ? 1 : 0};
-    transition: opacity 0.2s ease;
+        transition: opacity 0.2s ease;
+  }
+`;
+
+const ActionButton = styled.button`
+  background: ${theme.colors.white};
+  border: 2px solid ${theme.colors.gray300};
+  color: ${theme.colors.gray700};
+  padding: ${theme.spacing.sm} ${theme.spacing.md};
+  border-radius: ${theme.borderRadius.md};
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+
+  &:hover {
+    border-color: ${theme.colors.primary};
+    color: ${theme.colors.primary};
+    background: ${theme.colors.primary}05;
   }
 `;
 
