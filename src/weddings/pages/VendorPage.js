@@ -1119,7 +1119,10 @@ const VendorPage = () => {
       <NavBar scrolled={scrolled}>
         <NavContent>
           <NavLogo scrolled={scrolled}>{vendor.name}</NavLogo>
-          <NavActions isOpen={mobileMenuOpen}>
+                    <NavActions isOpen={mobileMenuOpen}>
+            <MobileCloseButton onClick={closeMobileMenu}>
+              <FaTimes />
+            </MobileCloseButton>
             <NavButton onClick={() => { navigate('/weddings'); closeMobileMenu(); }} scrolled={scrolled}>
               <FaArrowLeft />
               Back
