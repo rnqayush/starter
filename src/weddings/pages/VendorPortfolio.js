@@ -37,6 +37,13 @@ const NavContent = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.md} ${theme.spacing.sm};
+    flex-direction: column;
+    gap: ${theme.spacing.sm};
+    text-align: center;
+  }
 `;
 
 const BackButton = styled.button`
@@ -72,6 +79,10 @@ const Container = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   padding: ${theme.spacing.xl} ${theme.spacing.md};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.lg} ${theme.spacing.sm};
+  }
 `;
 
 const PageHeader = styled.div`
@@ -225,6 +236,10 @@ const ModalOverlay = styled.div`
   justify-content: center;
   z-index: 2000;
   padding: ${theme.spacing.lg};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.sm};
+  }
 `;
 
 const ModalContent = styled.div`
@@ -270,6 +285,10 @@ const CloseButton = styled.button`
 
 const ModalBody = styled.div`
   padding: ${theme.spacing.xl};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.lg};
+  }
 `;
 
 const WorkflowSection = styled.div`
@@ -291,6 +310,11 @@ const HighlightsList = styled.div`
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: ${theme.spacing.md};
   margin-bottom: ${theme.spacing.xl};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    grid-template-columns: 1fr;
+    gap: ${theme.spacing.sm};
+  }
 `;
 
 const HighlightItem = styled.div`
@@ -315,6 +339,11 @@ const GalleryGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: ${theme.spacing.md};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: ${theme.spacing.sm};
+  }
 `;
 
 const GalleryImage = styled.img`
