@@ -155,15 +155,7 @@ function App() {
 
             
 
-                        {/* Hotel-specific Routes (more specific routes first) */}
-            <Route path="/:hotelSlug/rooms/:roomId" element={<HotelModule />} />
-            <Route
-              path="/:hotelSlug/booking/:roomId"
-              element={<HotelModule />}
-            />
-            <Route path="/:hotelSlug/booking" element={<HotelModule />} />
-
-            {/* Generic slug routes - SmartRouter determines hotel vs store */}
+                                    {/* Generic slug routes - SmartRouter determines hotel vs store */}
             <Route path="/:slug" element={<SmartRouter />} />
 
             {/* Seller Dashboard Demo */}
