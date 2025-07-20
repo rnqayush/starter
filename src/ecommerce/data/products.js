@@ -59,9 +59,10 @@ export const products = [
       "Premium comfort fit",
       "Bluetooth 5.0",
     ],
-    rating: 4.8,
+        rating: 4.8,
     reviews: 245,
     stock: 15,
+    availability: "in_stock", // in_stock, out_of_stock, limited_stock, pre_order
     featured: true,
     onSale: true,
   },
