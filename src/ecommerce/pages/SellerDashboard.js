@@ -89,7 +89,7 @@ const SellerDashboard = () => {
     }
   };
 
-  const getPageSubtitle = () => {
+    const getPageSubtitle = () => {
     switch (activeTab) {
       case "dashboard":
         return "Monitor your store performance and key metrics";
@@ -103,6 +103,8 @@ const SellerDashboard = () => {
         return "Import multiple products via CSV file";
       case "orders":
         return "Track and manage customer orders";
+      case "enquiries":
+        return "Manage customer enquiries and communications";
       case "discounts":
         return "Create and manage discount codes";
       case "customers":
