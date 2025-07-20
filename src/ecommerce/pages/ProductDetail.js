@@ -517,13 +517,12 @@ const ProductDetail = () => {
   const location = useLocation();
   const [product, setProduct] = useState(null);
   const [selectedImage, setSelectedImage] = useState(0);
-  const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState("");
-  const [cartItems, setCartItems] = useState([]);
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [storeSlug, setStoreSlug] = useState("");
   const [vendor, setVendor] = useState(null);
+  const [isEnquiryModalOpen, setIsEnquiryModalOpen] = useState(false);
 
   // Detect store slug from URL
   useEffect(() => {
