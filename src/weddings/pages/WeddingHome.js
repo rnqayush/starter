@@ -294,6 +294,30 @@ const CategoryCount = styled.p`
   font-size: 0.9rem;
 `;
 
+const CategoryCheckbox = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "checked",
+})`
+  position: absolute;
+  top: ${theme.spacing.md};
+  right: ${theme.spacing.md};
+  width: 24px;
+  height: 24px;
+  border: 2px solid ${(props) => props.checked ? theme.colors.primary : theme.colors.gray300};
+  border-radius: 4px;
+  background: ${(props) => props.checked ? theme.colors.primary : theme.colors.white};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+
+  svg {
+    color: ${theme.colors.white};
+    font-size: 0.8rem;
+    opacity: ${(props) => props.checked ? 1 : 0};
+    transition: opacity 0.2s ease;
+  }
+`;
+
 const VendorsSection = styled.div`
   margin-bottom: ${theme.spacing.xl};
 `;
