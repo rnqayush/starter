@@ -49,9 +49,10 @@ export const automobileVendors = [
       { type: "Electric Vehicles", count: 15 },
     ],
   },
-  {
+    {
     id: "family-first-motors",
     name: "Family First Motors",
+    slug: "family-first-motors",
     category: "automobiles",
     logo: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=200&q=80",
     image:
