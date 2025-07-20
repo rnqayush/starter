@@ -67,14 +67,15 @@ function App() {
     setOwnerHotels,
   };
 
-        return (
-    <AuthProvider>
-      <AppContext.Provider value={contextValue}>
-        <Router>
-          <AppContainer>
-            <GlobalStyle />
-            <ScrollToTop />
-            <Routes>
+          return (
+    <ErrorBoundary>
+      <AuthProvider>
+        <AppContext.Provider value={contextValue}>
+          <Router>
+            <AppContainer>
+              <GlobalStyle />
+              <ScrollToTop />
+              <Routes>
             {/* Main Routes */}
             <Route path="/" element={<PlatformHomePage />} />
             <Route path="/login" element={<LoginPage />} />
