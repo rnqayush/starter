@@ -151,13 +151,8 @@ const SellerDashboard = () => {
             <p>Customer management features will be available soon.</p>
           </div>
         );
-      case "store-settings":
-        return (
-          <div style={{ padding: "2rem", textAlign: "center" }}>
-            <h3>Store Settings - Coming Soon</h3>
-            <p>Store configuration features will be available soon.</p>
-          </div>
-        );
+            case "store-settings":
+        return <ShopSettingsTab />;
       case "appearance":
         return (
           <div style={{ padding: "2rem", textAlign: "center" }}>
