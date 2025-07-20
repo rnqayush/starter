@@ -627,7 +627,9 @@ const FormLabel = styled.label`
   color: ${theme.colors.gray900};
 `;
 
-const FormInput = styled.input`
+const FormInput = styled.input.withConfig({
+  shouldForwardProp: (prop) => !['primaryColor'].includes(prop),
+})`
   padding: ${theme.spacing.md};
   border: 2px solid ${theme.colors.gray200};
   border-radius: ${theme.borderRadius.md};
