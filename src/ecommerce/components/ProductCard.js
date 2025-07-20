@@ -418,17 +418,22 @@ const ProductCard = ({
             )}
           </PriceContainer>
 
-          <StockIndicator inStock={product.stock > 0}>
-            {product.stock > 0 ? `${product.stock} in stock` : "Out of stock"}
+                    <StockIndicator
+            availability={availabilityStatus}
+            color={availabilityColor}
+          >
+            {availabilityStatus === "in_stock" && product.stock > 0
+              ? `${product.stock} in stock`
+              : availabilityLabel}
           </StockIndicator>
 
-                    <ActionButtons>
+          <ActionButtons>
             <EnquireButton
               onClick={handleEnquireClick}
-              disabled={product.stock === 0}
+              disabled={availabilityStatus === "out_of_stock"}
             >
               <FaEnvelope />
-              {product.stock > 0 ? "Enquire Now" : "Not Available"}
+              {availabilityStatus === "out_of_stock" ? "Not Available" : "Enquire Now"}
             </EnquireButton>
           </ActionButtons>
         </CardContent>
