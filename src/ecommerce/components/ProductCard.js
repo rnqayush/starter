@@ -418,17 +418,23 @@ const ProductCard = ({
             {product.stock > 0 ? `${product.stock} in stock` : "Out of stock"}
           </StockIndicator>
 
-          <ActionButtons>
-            <AddToCartButton
-              onClick={handleAddToCart}
+                    <ActionButtons>
+            <EnquireButton
+              onClick={handleEnquireClick}
               disabled={product.stock === 0}
             >
-              <FaShoppingCart />
-              {product.stock > 0 ? "Add to Cart" : "Out of Stock"}
-            </AddToCartButton>
+              <FaEnvelope />
+              {product.stock > 0 ? "Enquire Now" : "Not Available"}
+            </EnquireButton>
           </ActionButtons>
         </CardContent>
       </Card>
+
+      <EnquiryModal
+        isOpen={isEnquiryModalOpen}
+        onClose={() => setIsEnquiryModalOpen(false)}
+        product={product}
+      />
     </Link>
   );
 };
