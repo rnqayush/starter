@@ -238,6 +238,75 @@ const MobileSearchInput = styled.input`
   }
 `;
 
+const UserDropdown = styled.div`
+  position: relative;
+  display: inline-block;
+`;
+
+const UserDropdownButton = styled.button.withConfig({
+  shouldForwardProp: (prop) => prop !== "theme",
+})`
+  background: none;
+  color: ${theme.colors.gray700};
+  font-size: 1rem;
+  transition: color 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.xs};
+  padding: ${theme.spacing.sm};
+  border-radius: ${theme.borderRadius.md};
+
+  &:hover {
+    color: ${(props) => props.theme?.primaryColor || theme.colors.primary};
+    background: ${theme.colors.gray50};
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    display: none;
+  }
+`;
+
+const DropdownMenu = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "isOpen",
+})`
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: ${theme.colors.white};
+  border: 1px solid ${theme.colors.gray200};
+  border-radius: ${theme.borderRadius.md};
+  box-shadow: ${theme.shadows.lg};
+  min-width: 200px;
+  z-index: 1000;
+  display: ${(props) => (props.isOpen ? "block" : "none")};
+  overflow: hidden;
+`;
+
+const DropdownItem = styled(Link)`
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.sm};
+  padding: ${theme.spacing.md};
+  color: ${theme.colors.gray700};
+  transition: all 0.2s ease;
+  border-bottom: 1px solid ${theme.colors.gray100};
+
+  &:hover {
+    background: ${theme.colors.gray50};
+    color: ${theme.colors.primary};
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+`;
+
+const DropdownDivider = styled.div`
+  height: 1px;
+  background: ${theme.colors.gray200};
+  margin: ${theme.spacing.xs} 0;
+`;
+
 const Navbar = ({
   cartItemsCount = 0,
   storeName = "",
