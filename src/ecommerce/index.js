@@ -8,6 +8,7 @@ import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import OrderConfirmation from "./pages/OrderConfirmation";
 import SellerDashboard from "./pages/SellerDashboard";
+import { NotificationProvider } from "./components/NotificationSystem";
 
 const EcommerceModule = () => {
   const location = useLocation();
