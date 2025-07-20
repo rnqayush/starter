@@ -701,7 +701,9 @@ const ContactItem = styled.div`
   box-shadow: ${theme.shadows.sm};
 `;
 
-const ContactIcon = styled.div`
+const ContactIcon = styled.div.withConfig({
+  shouldForwardProp: (prop) => !['primaryColor'].includes(prop),
+})`
   background: ${props => props.primaryColor || theme.colors.primary};
   color: white;
   padding: ${theme.spacing.md};
