@@ -430,9 +430,11 @@ const EcommerceMain = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-    const [featuredProducts, setFeaturedProducts] = useState([]);
+      const [featuredProducts, setFeaturedProducts] = useState([]);
   const [saleProducts, setSaleProducts] = useState([]);
   const [selectedVendor, setSelectedVendor] = useState(null);
+
+  const getBaseUrl = () => selectedVendor ? `/${selectedVendor.slug}` : "/ecommerce";
 
   useEffect(() => {
     // Get vendor data from URL slug or navigation state (fallback)
