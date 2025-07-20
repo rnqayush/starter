@@ -833,8 +833,8 @@ const VendorPage = () => {
   });
   const [submitting, setSubmitting] = useState(false);
 
-  useEffect(() => {
-    const vendorData = getVendorById(vendorSlug);
+    useEffect(() => {
+    const vendorData = getVendorById(vendorId);
     setVendor(vendorData);
     setLoading(false);
 
