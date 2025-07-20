@@ -608,9 +608,14 @@ const VendorDashboard = () => {
         ...service,
         id: service.id || `service-${index}-${Date.now()}`
       })));
-            setPortfolio((vendorData.locationPortfolio || []).map((item, index) => ({
+                  setPortfolio((vendorData.locationPortfolio || []).map((item, index) => ({
         ...item,
-        id: item.id || `portfolio-${index}-${Date.now()}`
+        id: item.id || `portfolio-${index}-${Date.now()}`,
+        gallery: (item.gallery || []).map((img, imgIndex) =>
+          typeof img === 'string'
+            ? { id: `img-${imgIndex}-${Date.now()}`, src: img, title: '', description: '' }
+            : { ...img, id: img.id || `img-${imgIndex}-${Date.now()}` }
+        )
       })));
       setPackages(vendorData.packages || []);
       setTestimonials(vendorData.testimonials || []);
