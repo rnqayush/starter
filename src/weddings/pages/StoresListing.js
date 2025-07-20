@@ -42,6 +42,12 @@ const NavContent = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.md} ${theme.spacing.sm};
+    flex-direction: column;
+    gap: ${theme.spacing.sm};
+  }
 `;
 
 const Logo = styled.div`
@@ -77,6 +83,10 @@ const Container = styled.div`
   margin: 0 auto;
   padding: ${theme.spacing.xl} ${theme.spacing.md};
   flex: 1;
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.lg} ${theme.spacing.sm};
+  }
 `;
 
 const PageHeader = styled.div`
@@ -89,6 +99,10 @@ const PageTitle = styled.h1`
   font-weight: 700;
   color: ${theme.colors.gray900};
   margin-bottom: ${theme.spacing.md};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    font-size: 2rem;
+  }
 `;
 
 const PageSubtitle = styled.p`
@@ -112,6 +126,10 @@ const SearchSection = styled.div`
   border-radius: ${theme.borderRadius.lg};
   box-shadow: ${theme.shadows.md};
   margin-bottom: ${theme.spacing.xl};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.lg};
+  }
 `;
 
 const SearchForm = styled.form`
@@ -209,6 +227,12 @@ const FiltersSection = styled.div`
   margin-bottom: ${theme.spacing.xl};
   flex-wrap: wrap;
   gap: ${theme.spacing.md};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    flex-direction: column;
+    align-items: stretch;
+    gap: ${theme.spacing.lg};
+  }
 `;
 
 const FilterGroup = styled.div`

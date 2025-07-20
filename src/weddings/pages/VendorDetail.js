@@ -47,6 +47,12 @@ const NavContent = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.md} ${theme.spacing.sm};
+    flex-direction: column;
+    gap: ${theme.spacing.sm};
+  }
 `;
 
 const BackButton = styled.button`
@@ -98,6 +104,10 @@ const Container = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   padding: ${theme.spacing.xl} ${theme.spacing.md};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.lg} ${theme.spacing.sm};
+  }
 `;
 
 const HeroSection = styled.div`
@@ -151,6 +161,12 @@ const VendorMeta = styled.div`
   gap: ${theme.spacing.lg};
   margin-bottom: ${theme.spacing.md};
   align-items: center;
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    gap: ${theme.spacing.md};
+    flex-direction: column;
+    align-items: flex-start;
+  }
 `;
 
 const MetaItem = styled.div`
@@ -207,6 +223,11 @@ const ContactGrid = styled.div`
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: ${theme.spacing.lg};
   margin-bottom: ${theme.spacing.xl};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    grid-template-columns: 1fr;
+    gap: ${theme.spacing.md};
+  }
 `;
 
 const ContactCard = styled.div`
@@ -277,6 +298,11 @@ const GalleryGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: ${theme.spacing.md};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: ${theme.spacing.sm};
+  }
 `;
 
 const GalleryItem = styled.img`

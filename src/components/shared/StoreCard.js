@@ -341,11 +341,11 @@ const ActionButton = styled.button`
 const StoreCard = ({ store, category }) => {
   const navigate = useNavigate();
 
-    const handleStoreClick = (e) => {
+        const handleStoreClick = (e) => {
     e.preventDefault();
-    if (category === "ecommerce" || category === "automobiles") {
-      // Navigate to /{store.slug} for ecommerce stores and automobile dealers
-      navigate(`/${store.slug}`);
+    if (category === "ecommerce" || category === "automobiles" || category === "weddings") {
+      // Navigate to /{store.id} for ecommerce stores, automobile dealers, and wedding vendors
+      navigate(`/${store.id}`);
     } else {
       // For other categories, navigate normally
       navigate(`/${category}/${store.id}`);
@@ -353,9 +353,9 @@ const StoreCard = ({ store, category }) => {
   };
 
   const getStoreLink = () => {
-    if (category === "ecommerce" || category === "automobiles") {
-      // Return the store slug link for ecommerce and automobiles
-      return `/${store.slug}`;
+    if (category === "ecommerce" || category === "automobiles" || category === "weddings") {
+      // Return the store id link for ecommerce, automobiles, and weddings
+      return `/${store.id}`;
     }
 
     // For other categories, return the original link format
