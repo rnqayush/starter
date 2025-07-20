@@ -331,7 +331,9 @@ const ServicesGrid = styled.div`
   gap: ${theme.spacing.xl};
 `;
 
-const ServiceCard = styled.div`
+const ServiceCard = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'primaryColor',
+})`
   background: ${theme.colors.white};
   padding: ${theme.spacing.xl};
   border-radius: ${theme.borderRadius.xl};
@@ -392,7 +394,9 @@ const TeamCard = styled.div`
   }
 `;
 
-const TeamPhoto = styled.div`
+const TeamPhoto = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'primaryColor',
+})`
   height: 250px;
   background: ${props => props.primaryColor + '30'};
   display: flex;
@@ -402,7 +406,9 @@ const TeamPhoto = styled.div`
   color: ${props => props.primaryColor || theme.colors.primary};
 `;
 
-const TeamInfo = styled.div`
+const TeamInfo = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'primaryColor',
+})`
   padding: ${theme.spacing.xl};
 
   h3 {
