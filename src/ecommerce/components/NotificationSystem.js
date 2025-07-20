@@ -338,7 +338,7 @@ const NotificationItem = ({ notification, onClose, onAction }) => {
 const NotificationSystem = ({ children }) => {
   const [notifications, setNotifications] = useState([]);
 
-  const addNotification = (notification) => {
+    const addNotification = useCallback((notification) => {
     const id = Date.now() + Math.random();
     const newNotification = {
       id,
@@ -350,7 +350,7 @@ const NotificationSystem = ({ children }) => {
     setNotifications(prev => [newNotification, ...prev]);
 
     return id;
-  };
+  }, []);
 
   const removeNotification = (id) => {
     setNotifications(prev => prev.filter(n => n.id !== id));
