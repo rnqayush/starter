@@ -216,6 +216,14 @@ const HeroButton = styled.button.withConfig({
 const Section = styled.section`
   padding: ${theme.spacing.xxl} 0;
   background: ${(props) => props.background || theme.colors.white};
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    padding: ${theme.spacing.xl} 0;
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.lg} 0;
+  }
 `;
 
 const Container = styled.div`
