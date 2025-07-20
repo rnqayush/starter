@@ -208,6 +208,19 @@ export const getVendorById = (id) => {
   return automobileVendors.find((vendor) => vendor.id === id);
 };
 
+export const getVendorBySlug = (slug) => {
+  return automobileVendors.find((vendor) => vendor.slug === slug);
+};
+
+export const getVendorByIdOrSlug = (identifier) => {
+  // First try to find by slug
+  const vendorBySlug = getVendorBySlug(identifier);
+  if (vendorBySlug) return vendorBySlug;
+
+  // If not found by slug, try by ID
+  return getVendorById(identifier);
+};
+
 export const getFeaturedVendors = () => {
   return automobileVendors.filter((vendor) => vendor.featured);
 };
