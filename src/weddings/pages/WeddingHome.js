@@ -600,13 +600,38 @@ const WeddingHome = () => {
     }
   };
 
-  const applyFilters = useCallback(() => {
+    const applyFilters = useCallback(() => {
     let filtered = [...vendors];
 
+    // Filter by selected categories
+    if (selectedCategories.length > 0) {
+      filtered = filtered.filter((vendor) =>
+        vendor.specialties.some(specialty =>
+          selectedCategories.some(category => {
+            const categoryMap = {
+              "venue": ["venue", "wedding venue", "reception venue"],
+              "photography": ["photography", "photographer", "wedding photography"],
+              "catering": ["catering", "food", "wedding catering", "reception catering"],
+              "music": ["music", "dj", "band", "entertainment"],
+              "floral": ["floral", "flowers", "floral arrangements", "bouquet"],
+              "jewelry": ["jewelry", "rings", "wedding rings", "engagement rings"]
+            };
+
+            const categoryTerms = categoryMap[category] || [category];
+            return categoryTerms.some(term =>
+              specialty.toLowerCase().includes(term.toLowerCase())
+            );
+          })
+        )
+      );
+    }
+
+    // Filter by featured status
     if (activeFilter === "featured") {
       filtered = filtered.filter((vendor) => vendor.featured);
     }
 
+    // Sort vendors
     switch (sortBy) {
       case "distance":
         filtered.sort((a, b) => a.distance - b.distance);
@@ -622,7 +647,7 @@ const WeddingHome = () => {
     }
 
     setFilteredVendors(filtered);
-  }, [vendors, activeFilter, sortBy]);
+  }, [vendors, activeFilter, sortBy, selectedCategories]);
 
   const handleVendorClick = (vendor) => {
     navigate(`/${vendor.id}`);
