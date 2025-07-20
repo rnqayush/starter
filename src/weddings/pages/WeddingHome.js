@@ -798,15 +798,25 @@ const WeddingHome = () => {
         <CategorySection>
           <SectionTitle>Wedding Services</SectionTitle>
           <CategoryGrid>
-            {categories.map((category, index) => (
-              <CategoryCard key={index} onClick={() => handleCategoryClick(category)}>
-                <CategoryIcon>
-                  <category.icon />
-                </CategoryIcon>
-                <CategoryName>{category.name}</CategoryName>
-                <CategoryCount>{category.count} vendors available</CategoryCount>
-              </CategoryCard>
-            ))}
+                        {categories.map((category, index) => {
+              const isSelected = selectedCategories.includes(category.filter);
+              return (
+                <CategoryCard
+                  key={index}
+                  selected={isSelected}
+                  onClick={() => handleCategoryClick(category)}
+                >
+                  <CategoryCheckbox checked={isSelected}>
+                    <FaCheck />
+                  </CategoryCheckbox>
+                  <CategoryIcon>
+                    <category.icon />
+                  </CategoryIcon>
+                  <CategoryName>{category.name}</CategoryName>
+                  <CategoryCount>{category.count} vendors available</CategoryCount>
+                </CategoryCard>
+              );
+            })}
           </CategoryGrid>
         </CategorySection>
 
