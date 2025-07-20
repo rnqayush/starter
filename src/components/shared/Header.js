@@ -552,110 +552,130 @@ const Header = ({ isOwnerView = false }) => {
     closeMobileMenu();
   };
 
-  return (
-    <HeaderContainer>
-      <HeaderContent>
-        <Logo
-          to={isOwnerView ? "/owner/dashboard" : "/"}
-          onClick={closeMobileMenu}
-        >
-          <FaHotel />
-          StoreBuilder
-        </Logo>
+    return (
+    <>
+      <MobileMenuOverlay isOpen={mobileMenuOpen} onClick={closeMobileMenu} />
+      <HeaderContainer>
+        <HeaderContent>
+          <Logo
+            to={isOwnerView ? "/owner/dashboard" : "/"}
+            onClick={closeMobileMenu}
+          >
+            <FaHotel />
+            StoreBuilder
+          </Logo>
 
-        <Nav isOpen={mobileMenuOpen}>
-          {isOwnerView ? (
-            <>
-              <NavLink to="/owner/dashboard" onClick={closeMobileMenu}>
-                Dashboard
-              </NavLink>
-              <NavLink to="/owner/my-hotels" onClick={closeMobileMenu}>
-                My Hotels
-              </NavLink>
-              <NavLink to="/owner/bookings" onClick={closeMobileMenu}>
-                Bookings
-              </NavLink>
-              <NavLink to="/owner/profile" onClick={closeMobileMenu}>
-                Profile
-              </NavLink>
-            </>
-          ) : (
-            <>
-              <NavLink to="/" onClick={closeMobileMenu}>
-                Home
-              </NavLink>
-              <NavLink to="/pricing" onClick={closeMobileMenu}>
-                Pricing
-              </NavLink>
-              <DropdownContainer ref={dropdownRef}>
-                <DropdownButton onClick={toggleDropdown} isOpen={dropdownOpen}>
-                  Explore Stores
-                  <FaChevronDown />
-                </DropdownButton>
-                <DropdownMenu isOpen={dropdownOpen}>
-                  <DropdownItem to="/hotels" onClick={handleDropdownItemClick}>
-                    �� Hotels
-                  </DropdownItem>
-                  <DropdownItem
-                    to="/ecommerce"
-                    onClick={handleDropdownItemClick}
+          <Nav isOpen={mobileMenuOpen}>
+            {isOwnerView ? (
+              <>
+                <NavLink to="/owner/dashboard" onClick={closeMobileMenu}>
+                  Dashboard
+                </NavLink>
+                <NavLink to="/owner/my-hotels" onClick={closeMobileMenu}>
+                  My Hotels
+                </NavLink>
+                <NavLink to="/owner/bookings" onClick={closeMobileMenu}>
+                  Bookings
+                </NavLink>
+                <NavLink to="/owner/profile" onClick={closeMobileMenu}>
+                  Profile
+                </NavLink>
+              </>
+            ) : (
+              <>
+                <NavLink to="/" onClick={closeMobileMenu}>
+                  Home
+                </NavLink>
+                <NavLink to="/pricing" onClick={closeMobileMenu}>
+                  Pricing
+                </NavLink>
+                <DropdownContainer ref={dropdownRef}>
+                  <DropdownButton
+                    onClick={toggleDropdown}
+                    isOpen={dropdownOpen}
+                    aria-expanded={dropdownOpen}
+                    aria-haspopup="true"
+                    aria-label="Explore Stores menu"
                   >
-                    🛍 Ecommerce
-                  </DropdownItem>
-                  <DropdownItem
-                    to="/weddings"
-                    onClick={handleDropdownItemClick}
-                  >
-                    💍 Weddings
-                  </DropdownItem>
-                  <DropdownItem
-                    to="/automobiles"
-                    onClick={handleDropdownItemClick}
-                  >
-                    🚗 Automobiles
-                  </DropdownItem>
-                </DropdownMenu>
-              </DropdownContainer>
-            </>
-          )}
+                    Explore Stores
+                    <FaChevronDown />
+                  </DropdownButton>
+                  <DropdownMenu isOpen={dropdownOpen} role="menu">
+                    <DropdownItem
+                      to="/hotels"
+                      onClick={handleDropdownItemClick}
+                      role="menuitem"
+                    >
+                      🏨 Hotels
+                    </DropdownItem>
+                    <DropdownItem
+                      to="/ecommerce"
+                      onClick={handleDropdownItemClick}
+                      role="menuitem"
+                    >
+                      🛍 Ecommerce
+                    </DropdownItem>
+                    <DropdownItem
+                      to="/weddings"
+                      onClick={handleDropdownItemClick}
+                      role="menuitem"
+                    >
+                      💍 Weddings
+                    </DropdownItem>
+                    <DropdownItem
+                      to="/automobiles"
+                      onClick={handleDropdownItemClick}
+                      role="menuitem"
+                    >
+                      🚗 Automobiles
+                    </DropdownItem>
+                  </DropdownMenu>
+                </DropdownContainer>
+              </>
+            )}
 
-          <MobileAuthButtons>
-            <MobileAuthButton
-              to="/login"
-              className="login"
-              onClick={closeMobileMenu}
-            >
+            <MobileAuthButtons>
+              <MobileAuthButton
+                to="/login"
+                className="login"
+                onClick={closeMobileMenu}
+              >
+                Login
+              </MobileAuthButton>
+              <MobileAuthButton
+                to="/register"
+                className="register"
+                onClick={closeMobileMenu}
+              >
+                Register
+              </MobileAuthButton>
+            </MobileAuthButtons>
+          </Nav>
+
+          <UserSection>
+            <LoginButton to="/login" onClick={closeMobileMenu}>
               Login
-            </MobileAuthButton>
-            <MobileAuthButton
+            </LoginButton>
+            <RegisterButton
+              as={Link}
               to="/register"
-              className="register"
               onClick={closeMobileMenu}
+              style={{ textDecoration: "none" }}
             >
               Register
-            </MobileAuthButton>
-          </MobileAuthButtons>
-        </Nav>
+            </RegisterButton>
 
-        <UserSection>
-          <LoginButton to="/login" onClick={closeMobileMenu}>
-            Login
-          </LoginButton>
-          <RegisterButton
-            as={Link}
-            to="/register"
-            onClick={closeMobileMenu}
-            style={{ textDecoration: "none" }}
-          >
-            Register
-          </RegisterButton>
-
-          <MobileMenuButton onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-            {mobileMenuOpen ? <FaTimes /> : <FaBars />}
-          </MobileMenuButton>
-        </UserSection>
-      </HeaderContent>
-    </HeaderContainer>
+            <MobileMenuButton
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={mobileMenuOpen}
+            >
+              {mobileMenuOpen ? <FaTimes /> : <FaBars />}
+            </MobileMenuButton>
+          </UserSection>
+        </HeaderContent>
+      </HeaderContainer>
+    </>
   );
 };
 
