@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import styled from "styled-components";
 import { GlobalStyle } from "./styles/GlobalStyle";
 import { AppContext } from "./context/AppContext";
+import { AuthProvider } from "./context/AuthContext";
 
 // User Components
 import PlatformHomePage from "./components/user/PlatformHomePage";
