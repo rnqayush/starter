@@ -266,18 +266,7 @@ const EnquiryModal = ({
   product, 
   userInfo = {} 
 }) => {
-  // Use notifications if available, but don't fail if not
-  let showSuccessNotification, showEnquiryNotification;
-  try {
-    const notifications = useNotifications();
-    showSuccessNotification = notifications.showSuccessNotification;
-    showEnquiryNotification = notifications.showEnquiryNotification;
-  } catch (error) {
-    // Fallback if notifications not available
-    showSuccessNotification = () => {};
-    showEnquiryNotification = () => {};
-  }
-
+  const { showSuccessNotification, showEnquiryNotification } = useNotifications();
   const [formData, setFormData] = useState({
     name: userInfo.name || "",
     phone: userInfo.phone || "",
