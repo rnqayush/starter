@@ -34,7 +34,11 @@ const NavbarContent = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 70px;
+  height: 80px;
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    height: 70px;
+  }
 `;
 
 const Logo = styled(Link).withConfig({
