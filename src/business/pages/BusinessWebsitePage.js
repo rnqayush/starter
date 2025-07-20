@@ -750,7 +750,6 @@ const ProfessionalBadge = styled.div`
 const BusinessWebsitePage = () => {
   const { businessSlug } = useParams();
   const navigate = useNavigate();
-  const [isEditing, setIsEditing] = useState(false);
   const [businessData, setBusinessData] = useState(null);
 
   useEffect(() => {
