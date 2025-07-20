@@ -851,8 +851,8 @@ const BusinessWebsitePage = () => {
       return (
     <PageContainer>
       
-            {/* Navbar */}
-      <Navbar isEditing={isEditing}>
+                  {/* Navbar */}
+      <Navbar>
         <NavContainer>
           <BackToListButton onClick={handleBackToList}>
             <FaArrowLeft />
