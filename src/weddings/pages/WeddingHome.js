@@ -654,13 +654,13 @@ const WeddingHome = () => {
     const applyFilters = useCallback(() => {
     let filtered = [...vendors];
 
-    // Filter by selected categories
+        // Filter by selected categories (only if categories are selected)
     if (selectedCategories.length > 0) {
       filtered = filtered.filter((vendor) =>
         vendor.specialties.some(specialty =>
           selectedCategories.some(category => {
             const categoryMap = {
-              "venue": ["venue", "wedding venue", "reception venue"],
+              "venue": ["venue", "wedding venue", "reception venue", "wedding planning"],
               "photography": ["photography", "photographer", "wedding photography"],
               "catering": ["catering", "food", "wedding catering", "reception catering"],
               "music": ["music", "dj", "band", "entertainment"],
