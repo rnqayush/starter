@@ -384,7 +384,9 @@ const GalleryTabs = styled.div`
   flex-wrap: wrap;
 `;
 
-const GalleryTab = styled.button`
+const GalleryTab = styled.button.withConfig({
+  shouldForwardProp: (prop) => !['active', 'primaryColor'].includes(prop),
+})`
   background: ${props => props.active ? (props.primaryColor || theme.colors.primary) : 'transparent'};
   color: ${props => props.active ? 'white' : theme.colors.gray700};
   border: 2px solid ${props => props.primaryColor || theme.colors.primary};
