@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { GlobalStyle } from "./styles/GlobalStyle";
 import { AppContext } from "./context/AppContext";
 import { AuthProvider } from "./context/AuthContext";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 // User Components
 import PlatformHomePage from "./components/user/PlatformHomePage";
