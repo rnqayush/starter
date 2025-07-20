@@ -59,43 +59,43 @@ export const GlobalStyle = createGlobalStyle`
     line-height: 1.2;
   }
 
-  h1 {
-    font-size: 2.5rem;
-
-    @media (max-width: 768px) {
-      font-size: 2rem;
-    }
-
-    @media (min-width: 769px) and (max-width: 1024px) {
-      font-size: 2.25rem;
-    }
-  }
-
-  h2 {
+    h1 {
     font-size: 2rem;
 
     @media (max-width: 768px) {
-      font-size: 1.5rem;
+      font-size: 1.75rem;
     }
 
     @media (min-width: 769px) and (max-width: 1024px) {
-      font-size: 1.75rem;
+      font-size: 1.875rem;
     }
   }
 
-  h3 {
-    font-size: 1.5rem;
+    h2 {
+    font-size: 1.75rem;
 
     @media (max-width: 768px) {
-      font-size: 1.25rem;
+      font-size: 1.375rem;
+    }
+
+    @media (min-width: 769px) and (max-width: 1024px) {
+      font-size: 1.5rem;
     }
   }
 
-  h4 {
+    h3 {
     font-size: 1.25rem;
 
     @media (max-width: 768px) {
       font-size: 1.125rem;
+    }
+  }
+
+    h4 {
+    font-size: 1.125rem;
+
+    @media (max-width: 768px) {
+      font-size: 1rem;
     }
   }
 
@@ -134,7 +134,7 @@ export const GlobalStyle = createGlobalStyle`
     }
   }
 
-  .container {
+    .container {
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
@@ -145,11 +145,11 @@ export const GlobalStyle = createGlobalStyle`
     }
 
     @media (min-width: 769px) and (max-width: 1024px) {
-      padding: 0 1.5rem;
+      padding: 0 1.25rem;
     }
 
     @media (min-width: 1025px) {
-      padding: 0 2rem;
+      padding: 0 1.5rem;
     }
   }
 
@@ -165,7 +165,7 @@ export const GlobalStyle = createGlobalStyle`
     border: 0;
   }
 
-  /* Responsive grid utility classes */
+    /* Responsive grid utility classes */
   .grid-responsive {
     display: grid;
     gap: 1rem;
@@ -173,23 +173,23 @@ export const GlobalStyle = createGlobalStyle`
 
     @media (min-width: 769px) and (max-width: 1024px) {
       grid-template-columns: repeat(2, 1fr);
-      gap: 1.5rem;
+      gap: 1.25rem;
     }
 
     @media (min-width: 1025px) {
       grid-template-columns: repeat(3, 1fr);
-      gap: 2rem;
+      gap: 1.5rem;
     }
   }
 
-  .flex-responsive {
+    .flex-responsive {
     display: flex;
     flex-direction: column;
     gap: 1rem;
 
     @media (min-width: 769px) {
       flex-direction: row;
-      gap: 1.5rem;
+      gap: 1.25rem;
     }
   }
 `;
