@@ -435,9 +435,20 @@ const VehicleCard = ({
     setIsEnquiryModalOpen(true);
   };
 
-  const handleWishlistToggle = (e) => {
+    const handleWishlistToggle = (e) => {
     e.preventDefault();
     e.stopPropagation();
+
+    const wishlist = JSON.parse(localStorage.getItem("vehicleWishlist") || "[]");
+    let newWishlist;
+
+    if (isInWishlist) {
+      newWishlist = wishlist.filter(id => id !== vehicle.id);
+    } else {
+      newWishlist = [...wishlist, vehicle.id];
+    }
+
+    localStorage.setItem("vehicleWishlist", JSON.stringify(newWishlist));
     onToggleWishlist?.(vehicle);
   };
 
