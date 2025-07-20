@@ -486,4 +486,4 @@ export const NotificationBell = ({ onClick }) => {
 };
 
 export default NotificationSystem;
-export { NotificationProvider: NotificationSystem };
+export { NotificationSystem as NotificationProvider };
