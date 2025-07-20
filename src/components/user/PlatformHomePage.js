@@ -806,7 +806,7 @@ const PlatformHomePage = () => {
             {/* Hero Section */}
       <HeroSection>
         <HeroContent>
-          <HeroTitle>Build Professional Online Stores in Minutes</HeroTitle>
+          <HeroTitle>Your Business. Your Website. Live in 5 Minutes.</HeroTitle>
           <HeroSubtitle>
             Trusted by 50,000+ businesses worldwide. Create stunning, conversion-optimized
             stores for any industry with our enterprise-grade no-code platform.
