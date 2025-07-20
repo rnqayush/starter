@@ -317,11 +317,15 @@ const Navbar = ({
   storeSlug = "",
   theme: vendorTheme = {},
 }) => {
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
+      const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
+  const [authModalTab, setAuthModalTab] = useState("login");
   const navigate = useNavigate();
   const dropdownRef = useRef(null);
+  const { user, isAuthenticated, logout, canAccessSeller } = useAuth();
 
   const getBaseUrl = () => (storeSlug ? `/${storeSlug}` : "/ecommerce");
 
