@@ -828,8 +828,9 @@ const BusinessWebsitePage = () => {
 
       {/* Hero Section */}
       <EditableSection 
-        isEditing={isEditing}
+                isEditing={isEditing}
         primaryColor={businessData.primaryColor}
+        sectionName="Hero Section"
         onClick={() => handleSectionClick('hero')}
       >
         <HeroSection id="home" primaryColor={businessData.primaryColor}>
