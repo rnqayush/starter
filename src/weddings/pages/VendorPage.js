@@ -975,10 +975,16 @@ const VendorPage = () => {
               <FaShare />
               Share
             </NavButton>
-            <NavButton onClick={() => navigate(`/${vendorId}/portfolio`)} scrolled={scrolled}>
+                        <NavButton onClick={() => navigate(`/${vendorId}/portfolio`)} scrolled={scrolled}>
               <FaImages />
               Portfolio
             </NavButton>
+            {user && (
+              <NavButton onClick={() => navigate(`/${vendorId}/dashboard`)} scrolled={scrolled}>
+                <FaCog />
+                Dashboard
+              </NavButton>
+            )}
             <NavButton primary primaryColor={primaryColor} onClick={() => scrollToSection('contact')}>
               <FaCalendarAlt />
               Enquire Now
