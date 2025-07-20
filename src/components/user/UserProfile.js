@@ -137,7 +137,9 @@ const TabContainer = styled.div`
   border-bottom: 1px solid #e5e7eb;
 `;
 
-const Tab = styled.button`
+const Tab = styled.button.withConfig({
+  shouldForwardProp: (prop) => prop !== "active",
+})`
   padding: 1rem 1.5rem;
   background: none;
   border: none;
@@ -152,7 +154,9 @@ const Tab = styled.button`
   }
 `;
 
-const TabContent = styled.div`
+const TabContent = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "active",
+})`
   display: ${props => props.active ? 'block' : 'none'};
 `;
 
