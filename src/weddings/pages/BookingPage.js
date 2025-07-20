@@ -550,8 +550,25 @@ const BookingPage = () => {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 2000));
       
-      console.log("Booking Data:", { vendor: vendor.id, ...formData });
-      setSubmitted(true);
+            console.log("Booking Data:", { vendor: vendor.id, ...formData });
+
+      // Generate booking ID and redirect to confirmation
+      const bookingId = 'WED-' + Date.now().toString().slice(-6);
+      const confirmationParams = new URLSearchParams({
+        booking: bookingId,
+        vendor: vendor.id,
+        name: `${formData.firstName} ${formData.lastName}`,
+        email: formData.email,
+        phone: formData.phone,
+        date: formData.eventDate,
+        time: formData.eventTime,
+        guests: formData.guestCount,
+        type: formData.eventType,
+        services: formData.services.join(','),
+        message: formData.message,
+      });
+
+      navigate(`/weddings/booking-confirmation?${confirmationParams.toString()}`);
       
     } catch (error) {
       alert("Failed to submit booking request. Please try again.");
