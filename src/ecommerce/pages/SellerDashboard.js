@@ -58,7 +58,7 @@ const PageSubtitle = styled.p`
 const SellerDashboard = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
 
-  const getPageTitle = () => {
+    const getPageTitle = () => {
     switch (activeTab) {
       case "dashboard":
         return "Dashboard Overview";
@@ -72,6 +72,8 @@ const SellerDashboard = () => {
         return "Bulk Import Products";
       case "orders":
         return "Order Management";
+      case "enquiries":
+        return "Enquiry Management";
       case "discounts":
         return "Discounts & Coupons";
       case "customers":
