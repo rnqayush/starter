@@ -94,9 +94,10 @@ export const automobileVendors = [
       { type: "Hatchbacks", count: 31 },
     ],
   },
-  {
+    {
     id: "electric-future",
     name: "Electric Future",
+    slug: "electric-future",
     category: "automobiles",
     logo: "https://images.unsplash.com/photo-1593941707882-a5bac6861d75?w=200&q=80",
     image:
