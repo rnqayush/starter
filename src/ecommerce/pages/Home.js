@@ -239,7 +239,6 @@ const NewsletterButton = styled.button`
 `;
 
 const Home = () => {
-  const [cartItems, setCartItems] = useState([]);
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [saleProducts, setSaleProducts] = useState([]);
 
