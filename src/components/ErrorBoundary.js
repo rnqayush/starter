@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { FaExclamationTriangle, FaHome, FaRefreshCw } from "react-icons/fa";
+import { FaExclamationTriangle, FaHome, FaRedo } from "react-icons/fa";
 
 const ErrorContainer = styled.div`
   min-height: 100vh;
