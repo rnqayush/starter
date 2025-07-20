@@ -8,18 +8,20 @@ import { getAvailabilityStatus, getAvailabilityLabel, getAvailabilityColor } fro
 
 const Card = styled.div`
   background: ${theme.colors.white};
-  border-radius: ${theme.borderRadius.lg};
+  border-radius: ${theme.borderRadius.xl};
   overflow: hidden;
   box-shadow: ${theme.shadows.sm};
-  transition: all 0.3s ease;
+  transition: all 0.4s ease;
   position: relative;
   height: 100%;
   display: flex;
   flex-direction: column;
+  border: 1px solid ${theme.colors.gray100};
 
   &:hover {
-    transform: translateY(-4px);
-    box-shadow: ${theme.shadows.lg};
+    transform: translateY(-8px);
+    box-shadow: ${theme.shadows.xl};
+    border-color: ${theme.colors.primary}20;
   }
 
   ${media.mobile} {
