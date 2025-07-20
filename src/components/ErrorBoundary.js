@@ -166,7 +166,7 @@ class ErrorBoundary extends React.Component {
 
             <ButtonGroup>
               <PrimaryButton onClick={this.handleRefresh}>
-                <FaRefreshCw />
+                              <FaRedo />
                 Try Again
               </PrimaryButton>
               
