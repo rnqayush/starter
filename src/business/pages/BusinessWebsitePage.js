@@ -626,7 +626,9 @@ const SocialLink = styled.a.withConfig({
   }
 `;
 
-const EditableSection = styled.div`
+const EditableSection = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'isEditing' && prop !== 'primaryColor',
+})`
   position: relative;
   outline: ${props => props.isEditing ? `2px dashed ${props.primaryColor || theme.colors.primary}` : 'none'};
   outline-offset: 4px;
