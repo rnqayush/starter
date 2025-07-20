@@ -17,7 +17,8 @@ import {
     FaBirthdayCake,
   FaMusic,
   FaLeaf,
-  FaGem,
+    FaGem,
+  FaCheck,
 } from "react-icons/fa";
 import { theme } from "../../styles/GlobalStyle";
 import { weddingVendors } from "../data/vendors";
