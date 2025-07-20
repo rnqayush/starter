@@ -281,6 +281,12 @@ const ContentSection = styled.div`
   padding: ${theme.spacing.xxl};
   box-shadow: ${theme.shadows.sm};
   margin-bottom: ${theme.spacing.xl};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.lg};
+    margin-bottom: ${theme.spacing.lg};
+    border-radius: ${theme.borderRadius.md};
+  }
 `;
 
 const SectionTitle = styled.h2`
@@ -300,6 +306,11 @@ const FormGrid = styled.div`
 
   @media (max-width: ${theme.breakpoints.tablet}) {
     grid-template-columns: 1fr;
+    gap: ${theme.spacing.md};
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    gap: ${theme.spacing.sm};
   }
 `;
 
@@ -439,6 +450,11 @@ const PortfolioGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: ${theme.spacing.lg};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    grid-template-columns: 1fr;
+    gap: ${theme.spacing.md};
+  }
 `;
 
 const PortfolioCard = styled.div`
