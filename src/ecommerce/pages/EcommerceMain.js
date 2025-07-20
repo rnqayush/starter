@@ -262,8 +262,7 @@ const EcommerceMain = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const [cartItems, setCartItems] = useState([]);
-  const [featuredProducts, setFeaturedProducts] = useState([]);
+    const [featuredProducts, setFeaturedProducts] = useState([]);
   const [saleProducts, setSaleProducts] = useState([]);
   const [selectedVendor, setSelectedVendor] = useState(null);
 
