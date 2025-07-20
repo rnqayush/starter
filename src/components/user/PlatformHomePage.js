@@ -739,26 +739,54 @@ const PlatformHomePage = () => {
     },
   ];
 
+    const stats = [
+    { number: "50K+", label: "Active Stores" },
+    { number: "99.9%", label: "Uptime" },
+    { number: "24/7", label: "Expert Support" },
+    { number: "4.9/5", label: "Customer Rating" },
+  ];
+
   const benefits = [
     {
-      icon: FaHandPaper,
-      title: "No Tech Headache",
-      description: "Just drag & drop",
+      icon: FaCode,
+      title: "No-Code Platform",
+      description: "Build professional stores without writing a single line of code. Our drag-and-drop interface makes it simple.",
     },
     {
       icon: FaPalette,
-      title: "Custom Designs",
-      description: "Look different, sell better",
+      title: "Unlimited Customization",
+      description: "Design freedom with hundreds of templates and complete brand control. Make your store uniquely yours.",
     },
     {
-      icon: FaMobile,
-      title: "Fast Performance",
-      description: "Optimized for mobile",
+      icon: FaCloud,
+      title: "Enterprise-Grade Infrastructure",
+      description: "Built on reliable cloud infrastructure with 99.9% uptime and lightning-fast loading speeds.",
     },
     {
-      icon: FaHeadset,
-      title: "24x7 Support",
-      description: "We grow with you",
+      icon: FaShield,
+      title: "Secure & Compliant",
+      description: "Bank-level security with SSL certificates, PCI compliance, and automated backups included.",
+    },
+  ];
+
+  const testimonials = [
+    {
+      name: "Sarah Johnson",
+      role: "Hotel Owner",
+      text: "StoreBuilder transformed our booking process. We went from 20% to 85% online bookings in just 3 months.",
+      rating: 5,
+    },
+    {
+      name: "Mike Chen",
+      role: "E-commerce Entrepreneur",
+      text: "The platform paid for itself in the first month. Sales increased by 300% with their conversion-optimized templates.",
+      rating: 5,
+    },
+    {
+      name: "Emily Rodriguez",
+      role: "Wedding Planner",
+      text: "My clients love the professional portfolio gallery. I've booked more weddings this year than ever before.",
+      rating: 5,
     },
   ];
 
