@@ -311,6 +311,121 @@ const FallbackButton = styled.button`
   }
 `;
 
+const QuickNavigation = styled.div`
+  background: ${theme.colors.white};
+  box-shadow: ${theme.shadows.md};
+  border-radius: ${theme.borderRadius.lg};
+  padding: ${theme.spacing.xl};
+  margin: -${theme.spacing.xxl} auto ${theme.spacing.xxl};
+  max-width: 1200px;
+  position: relative;
+  z-index: 10;
+  margin-left: ${theme.spacing.md};
+  margin-right: ${theme.spacing.md};
+`;
+
+const QuickNavGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: ${theme.spacing.lg};
+`;
+
+const QuickNavItem = styled(Link)`
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.md};
+  padding: ${theme.spacing.lg};
+  border-radius: ${theme.borderRadius.md};
+  background: ${theme.colors.gray50};
+  text-decoration: none;
+  color: ${theme.colors.gray700};
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+
+  &:hover {
+    background: ${theme.colors.primary}10;
+    border-color: ${theme.colors.primary};
+    transform: translateY(-2px);
+    box-shadow: ${theme.shadows.md};
+  }
+
+  .icon {
+    font-size: 1.5rem;
+    color: ${theme.colors.primary};
+  }
+
+  .content {
+    h3 {
+      margin: 0 0 ${theme.spacing.xs} 0;
+      font-weight: 600;
+      color: ${theme.colors.gray900};
+    }
+
+    p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: ${theme.colors.gray600};
+    }
+  }
+`;
+
+const StoreInfo = styled.div`
+  background: ${theme.colors.white};
+  padding: ${theme.spacing.xl};
+  border-radius: ${theme.borderRadius.lg};
+  box-shadow: ${theme.shadows.sm};
+  margin-bottom: ${theme.spacing.xl};
+`;
+
+const StoreInfoGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: ${theme.spacing.xl};
+  align-items: center;
+`;
+
+const StoreContact = styled.div`
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: ${theme.spacing.sm};
+    margin-bottom: ${theme.spacing.md};
+    color: ${theme.colors.gray700};
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    .icon {
+      color: ${theme.colors.primary};
+      width: 20px;
+    }
+  }
+`;
+
+const StoreStats = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: ${theme.spacing.lg};
+  text-align: center;
+`;
+
+const StatItem = styled.div`
+  .number {
+    font-size: 2rem;
+    font-weight: 700;
+    color: ${theme.colors.primary};
+    margin-bottom: ${theme.spacing.xs};
+  }
+
+  .label {
+    font-size: 0.9rem;
+    color: ${theme.colors.gray600};
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+`;
+
 const EcommerceMain = () => {
   const location = useLocation();
   const navigate = useNavigate();
