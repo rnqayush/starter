@@ -544,12 +544,20 @@ const EcommerceMain = () => {
           Back to Stores
         </BackButton>
 
-                <Navbar
+                        <Navbar
           storeName={selectedVendor.name}
           storeLogo={selectedVendor.logo}
           storeSlug={selectedVendor.slug}
           theme={vendorTheme}
         />
+
+        <Breadcrumb>
+          <BreadcrumbNav>
+            <Link to="/ecommerce-stores">All Stores</Link>
+            <span className="separator">›</span>
+            <span className="current">{selectedVendor.name}</span>
+          </BreadcrumbNav>
+        </Breadcrumb>
 
                 <HeroSection
           primaryColor={vendorTheme.primaryColor}
