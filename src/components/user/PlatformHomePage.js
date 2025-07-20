@@ -464,7 +464,102 @@ const BenefitTitle = styled.h3`
 
 const BenefitDescription = styled.p`
   color: ${theme.colors.gray600};
-  line-height: 1.6;
+  line-height: 1.7;
+  font-size: 1rem;
+`;
+
+// Testimonials Section Styles
+const TestimonialsSection = styled.section`
+  padding: ${theme.spacing.xxl} 0;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+`;
+
+const TestimonialsContainer = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 ${theme.spacing.md};
+`;
+
+const TestimonialsGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: ${theme.spacing.xl};
+`;
+
+const TestimonialCard = styled.div`
+  background: ${theme.colors.white};
+  border-radius: ${theme.borderRadius.xl};
+  padding: ${theme.spacing.xl};
+  box-shadow: ${theme.shadows.md};
+  border: 1px solid ${theme.colors.gray200};
+  position: relative;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: ${theme.shadows.xl};
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6, #10b981);
+    border-radius: ${theme.borderRadius.xl};
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  &:hover::before {
+    opacity: 1;
+  }
+`;
+
+const TestimonialQuote = styled.div`
+  font-size: 2rem;
+  color: ${theme.colors.primary};
+  margin-bottom: ${theme.spacing.md};
+`;
+
+const TestimonialText = styled.p`
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: ${theme.colors.gray700};
+  margin-bottom: ${theme.spacing.lg};
+  font-style: italic;
+`;
+
+const TestimonialAuthor = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const AuthorInfo = styled.div`
+  h4 {
+    font-weight: 600;
+    color: ${theme.colors.gray900};
+    margin-bottom: ${theme.spacing.xs};
+  }
+
+  p {
+    color: ${theme.colors.gray600};
+    font-size: 0.9rem;
+  }
+`;
+
+const StarRating = styled.div`
+  display: flex;
+  gap: 2px;
+
+  svg {
+    color: #fbbf24;
+    font-size: 1.1rem;
+  }
 `;
 
 // CTA Banner Section Styles
