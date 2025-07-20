@@ -661,7 +661,9 @@ const FormTextarea = styled.textarea.withConfig({
   }
 `;
 
-const SubmitButton = styled.button`
+const SubmitButton = styled.button.withConfig({
+  shouldForwardProp: (prop) => !['primaryColor'].includes(prop),
+})`
   background: ${props => props.primaryColor || theme.colors.primary};
   color: white;
   border: none;
