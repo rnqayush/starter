@@ -97,7 +97,9 @@ const StepDescription = styled.p`
   line-height: 1.5;
 `;
 
-const ActionButton = styled.button`
+const ActionButton = styled.button.withConfig({
+  shouldForwardProp: (prop) => prop !== "primary",
+})`
   background: ${(props) => props.primary ? theme.colors.primary : theme.colors.white};
   color: ${(props) => props.primary ? theme.colors.white : theme.colors.primary};
   padding: ${theme.spacing.md} ${theme.spacing.lg};
