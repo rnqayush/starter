@@ -643,7 +643,9 @@ const FormInput = styled.input.withConfig({
   }
 `;
 
-const FormTextarea = styled.textarea`
+const FormTextarea = styled.textarea.withConfig({
+  shouldForwardProp: (prop) => !['primaryColor'].includes(prop),
+})`
   padding: ${theme.spacing.md};
   border: 2px solid ${theme.colors.gray200};
   border-radius: ${theme.borderRadius.md};
