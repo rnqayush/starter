@@ -282,7 +282,9 @@ const AboutContent = styled.div`
   }
 `;
 
-const AboutImage = styled.div`
+const AboutImage = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'primaryColor',
+})`
   height: 400px;
   background: ${props => props.primaryColor + '20'};
   border-radius: ${theme.borderRadius.xl};
@@ -300,7 +302,9 @@ const StatsGrid = styled.div`
   margin-top: ${theme.spacing.xxl};
 `;
 
-const StatCard = styled.div`
+const StatCard = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'primaryColor',
+})`
   text-align: center;
   padding: ${theme.spacing.lg};
   background: ${theme.colors.white};
