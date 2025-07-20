@@ -884,7 +884,7 @@ const BusinessWebsitePage = () => {
         sectionName="Hero Section"
         onClick={() => handleSectionClick('hero')}
       >
-                <HeroSection id="hero" primaryColor={businessData.primaryColor}>
+                                <HeroSection id="hero" primaryColor={businessData.primaryColor} businessType={businessData.slug}>
           <HeroContent>
             <HeroTitle>{content.hero.title}</HeroTitle>
             <HeroSubtitle>{content.hero.subtitle}</HeroSubtitle>
