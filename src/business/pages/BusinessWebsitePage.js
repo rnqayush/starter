@@ -539,7 +539,9 @@ const ContactForm = styled.form.withConfig({
   }
 `;
 
-const ContactInfo = styled.div`
+const ContactInfo = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'primaryColor',
+})`
   h3 {
     font-size: 1.5rem;
     font-weight: 600;
@@ -605,7 +607,9 @@ const SocialLinks = styled.div`
   margin-bottom: ${theme.spacing.xl};
 `;
 
-const SocialLink = styled.a`
+const SocialLink = styled.a.withConfig({
+  shouldForwardProp: (prop) => prop !== 'primaryColor',
+})`
   width: 40px;
   height: 40px;
   background: ${props => props.primaryColor || theme.colors.primary};
