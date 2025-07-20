@@ -99,11 +99,14 @@ function App() {
             />
             <Route path="/auto-dealers" element={<AutoDealersListing />} />
 
-                        {/* Ecommerce Routes */}
+                                    {/* Ecommerce Routes */}
             <Route path="/ecommerce/*" element={<EcommerceModule />} />
 
             {/* Automobile Routes */}
             <Route path="/automobiles/*" element={<AutomobileModule />} />
+
+            {/* Wedding Routes */}
+            <Route path="/weddings/*" element={<WeddingModule />} />
 
                                     {/* Store-specific Routes (more specific routes first) */}
             <Route path="/:storeSlug/products" element={<EcommerceModule />} />
