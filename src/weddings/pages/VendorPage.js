@@ -301,7 +301,9 @@ const StatCard = styled.div`
   border-radius: ${theme.borderRadius.md};
 `;
 
-const StatNumber = styled.div`
+const StatNumber = styled.div.withConfig({
+  shouldForwardProp: (prop) => !['primaryColor'].includes(prop),
+})`
   font-size: 2rem;
   font-weight: 700;
   color: ${props => props.primaryColor || theme.colors.primary};
