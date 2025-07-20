@@ -2,6 +2,7 @@ export const automobileVendors = [
   {
     id: "luxury-auto-gallery",
     name: "Luxury Auto Gallery",
+    slug: "luxury-auto-gallery",
     category: "automobiles",
     logo: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=200&q=80",
     image:
