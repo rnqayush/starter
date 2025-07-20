@@ -216,11 +216,13 @@ const HeroSection = styled.section.withConfig({
 `;
 
 const HeroContent = styled.div`
-  max-width: 1200px;
+  max-width: 1000px;
   margin: 0 auto;
   padding: 0 ${theme.spacing.md};
   position: relative;
   z-index: 1;
+  color: ${theme.colors.white};
+  text-align: center;
 `;
 
 const HeroTitle = styled.h1`
