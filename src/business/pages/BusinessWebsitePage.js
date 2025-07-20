@@ -867,7 +867,7 @@ const BusinessWebsitePage = () => {
             <a href="#team">Team</a>
             <a href="#contact">Contact</a>
           </NavLinks>
-          <EditButton 
+                    <OwnerLink 
             primaryColor={businessData.primaryColor}
             onClick={toggleEditMode}
           >
