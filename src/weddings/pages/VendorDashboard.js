@@ -40,6 +40,32 @@ const DashboardContainer = styled.div`
   display: flex;
 `;
 
+const MobileSidebarCloseButton = styled.button`
+  display: none;
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    display: flex;
+    position: absolute;
+    top: ${theme.spacing.lg};
+    right: ${theme.spacing.lg};
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    z-index: 1001;
+    padding: ${theme.spacing.sm};
+    border-radius: ${theme.borderRadius.md};
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+  }
+`;
+
 const Sidebar = styled.div.withConfig({
   shouldForwardProp: (prop) => prop !== "mobileOpen",
 })`
@@ -66,7 +92,7 @@ const Sidebar = styled.div.withConfig({
     transform: translateX(${(props) => (props.mobileOpen ? "0" : "-100%")});
     transition: transform 0.3s ease;
     overflow-y: auto;
-    box-shadow: ${theme.shadows.xl};
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
   }
 `;
 
@@ -175,11 +201,11 @@ const MobileSidebarOverlay = styled.div.withConfig({
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(0, 0, 0, 0.2);
     z-index: 999;
     opacity: ${(props) => (props.isOpen ? "1" : "0")};
     visibility: ${(props) => (props.isOpen ? "visible" : "hidden")};
-    transition: all 0.3s ease;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
   }
 `;
 
