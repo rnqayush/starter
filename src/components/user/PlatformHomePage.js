@@ -181,10 +181,10 @@ const HeroCTAContainer = styled.div`
 `;
 
 const CreateStoreCTA = styled(Button)`
-  padding: ${theme.spacing.lg} ${theme.spacing.xl};
-  font-size: 1.2rem;
+  padding: ${theme.spacing.lg} ${theme.spacing.xxl};
+  font-size: 1.15rem;
   font-weight: 600;
-  background: #10b981;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
   color: ${theme.colors.white};
   border: none;
   border-radius: ${theme.borderRadius.lg};
@@ -192,31 +192,50 @@ const CreateStoreCTA = styled(Button)`
   align-items: center;
   gap: ${theme.spacing.sm};
   transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+  }
+
+  &:hover::before {
+    left: 100%;
+  }
 
   &:hover {
-    background: #059669;
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
     transform: translateY(-2px);
-    box-shadow: ${theme.shadows.xl};
+    box-shadow: 0 20px 40px rgba(16, 185, 129, 0.4);
   }
 `;
 
 const ExploreStoreCTA = styled(Button)`
-  padding: ${theme.spacing.lg} ${theme.spacing.xl};
-  font-size: 1.2rem;
+  padding: ${theme.spacing.lg} ${theme.spacing.xxl};
+  font-size: 1.15rem;
   font-weight: 600;
-  background: #8b5cf6;
+  background: transparent;
   color: ${theme.colors.white};
-  border: none;
+  border: 2px solid rgba(255, 255, 255, 0.3);
   border-radius: ${theme.borderRadius.lg};
   display: flex;
   align-items: center;
   gap: ${theme.spacing.sm};
   transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
 
   &:hover {
-    background: #7c3aed;
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.5);
     transform: translateY(-2px);
-    box-shadow: ${theme.shadows.xl};
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
   }
 `;
 
