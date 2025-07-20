@@ -565,39 +565,10 @@ const ProductDetail = () => {
     setLoading(false);
   }, [id]);
 
-  const getBaseUrl = () => (storeSlug ? `/${storeSlug}` : "/ecommerce");
+    const getBaseUrl = () => (storeSlug ? `/${storeSlug}` : "/ecommerce");
 
-  const handleAddToCart = () => {
-    if (!product) return;
-
-    const cartItem = {
-      ...product,
-      quantity,
-      selectedSize: selectedSize || undefined,
-    };
-
-    setCartItems((prev) => {
-      const existingItem = prev.find(
-        (item) => item.id === product.id && item.selectedSize === selectedSize,
-      );
-
-      if (existingItem) {
-        return prev.map((item) =>
-          item.id === product.id && item.selectedSize === selectedSize
-            ? { ...item, quantity: item.quantity + quantity }
-            : item,
-        );
-      }
-
-      return [...prev, cartItem];
-    });
-
-    alert(`${product.name} added to cart!`);
-  };
-
-  const handleQuantityChange = (value) => {
-    const newQuantity = Math.max(1, Math.min(product?.stock || 1, value));
-    setQuantity(newQuantity);
+  const handleEnquireClick = () => {
+    setIsEnquiryModalOpen(true);
   };
 
   const handleShare = () => {
