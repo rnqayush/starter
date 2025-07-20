@@ -653,9 +653,17 @@ const WeddingHome = () => {
     navigate(`/${vendor.id}`);
   };
 
-  const handleCategoryClick = (category) => {
-    // Navigate to filtered view
-    navigate(`/wedding-vendors?category=${category.filter}`);
+    const handleCategoryClick = (category) => {
+    const categoryFilter = category.filter;
+    setSelectedCategories(prev => {
+      if (prev.includes(categoryFilter)) {
+        // If already selected, remove it (uncheck)
+        return prev.filter(cat => cat !== categoryFilter);
+      } else {
+        // If not selected, add it (check)
+        return [...prev, categoryFilter];
+      }
+    });
   };
 
   useEffect(() => {
