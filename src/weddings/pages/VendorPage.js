@@ -22,7 +22,8 @@ import {
   FaClock,
   FaCheckCircle,
   FaSpinner,
-  FaArrowLeft,
+    FaArrowLeft,
+  FaImages,
   FaImages
 } from "react-icons/fa";
 import { theme } from "../../styles/GlobalStyle";
