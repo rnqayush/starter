@@ -9,6 +9,7 @@ import CategoriesTab from "../components/CategoriesTab";
 import OrdersTabEnhanced from "../components/OrdersTabEnhanced";
 import EnquiriesTab from "../components/EnquiriesTab";
 import DiscountsTab from "../components/DiscountsTab";
+import ShopSettingsTab from "../components/ShopSettingsTab";
 import InsightsTab from "../components/InsightsTab";
 
 const DashboardContainer = styled.div`
