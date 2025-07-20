@@ -348,7 +348,10 @@ const Navbar = ({
           </SearchContainer>
 
           <ActionButtons>
-            <IconButton title="Wishlist">
+                        <IconButton
+              title="Wishlist"
+              onClick={() => navigate(`${getBaseUrl()}/wishlist`)}
+            >
               <FaHeart />
             </IconButton>
             <IconButton title="Contact">
