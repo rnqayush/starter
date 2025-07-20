@@ -575,22 +575,45 @@ const VendorDashboard = () => {
               <FaUser />
               Dashboard Overview
             </SectionTitle>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: theme.spacing.lg }}>
-              <div style={{ padding: theme.spacing.lg, background: theme.colors.blue50, borderRadius: theme.borderRadius.md }}>
-                <h3 style={{ margin: '0 0 8px 0', color: theme.colors.blue700 }}>Profile Views</h3>
-                <p style={{ margin: 0, fontSize: '2rem', fontWeight: 'bold', color: theme.colors.blue800 }}>1,234</p>
-                <p style={{ margin: 0, fontSize: '0.9rem', color: theme.colors.blue600 }}>Last 30 days</p>
-              </div>
-              <div style={{ padding: theme.spacing.lg, background: theme.colors.green50, borderRadius: theme.borderRadius.md }}>
-                <h3 style={{ margin: '0 0 8px 0', color: theme.colors.green700 }}>Enquiries</h3>
-                <p style={{ margin: 0, fontSize: '2rem', fontWeight: 'bold', color: theme.colors.green800 }}>47</p>
-                <p style={{ margin: 0, fontSize: '0.9rem', color: theme.colors.green600 }}>This month</p>
-              </div>
-              <div style={{ padding: theme.spacing.lg, background: theme.colors.purple50, borderRadius: theme.borderRadius.md }}>
-                <h3 style={{ margin: '0 0 8px 0', color: theme.colors.purple700 }}>Portfolio Views</h3>
-                <p style={{ margin: 0, fontSize: '2rem', fontWeight: 'bold', color: theme.colors.purple800 }}>892</p>
-                <p style={{ margin: 0, fontSize: '0.9rem', color: theme.colors.purple600 }}>Total</p>
-              </div>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: theme.spacing.lg }}>
+              {[
+                {
+                  id: 'profile-views',
+                  title: 'Profile Views',
+                  value: '1,234',
+                  subtitle: 'Last 30 days',
+                  bgColor: theme.colors.blue50,
+                  titleColor: theme.colors.blue700,
+                  valueColor: theme.colors.blue800,
+                  subtitleColor: theme.colors.blue600
+                },
+                {
+                  id: 'enquiries',
+                  title: 'Enquiries',
+                  value: '47',
+                  subtitle: 'This month',
+                  bgColor: theme.colors.green50,
+                  titleColor: theme.colors.green700,
+                  valueColor: theme.colors.green800,
+                  subtitleColor: theme.colors.green600
+                },
+                {
+                  id: 'portfolio-views',
+                  title: 'Portfolio Views',
+                  value: '892',
+                  subtitle: 'Total',
+                  bgColor: theme.colors.purple50,
+                  titleColor: theme.colors.purple700,
+                  valueColor: theme.colors.purple800,
+                  subtitleColor: theme.colors.purple600
+                }
+              ].map((stat) => (
+                <div key={stat.id} style={{ padding: theme.spacing.lg, background: stat.bgColor, borderRadius: theme.borderRadius.md }}>
+                  <h3 style={{ margin: '0 0 8px 0', color: stat.titleColor }}>{stat.title}</h3>
+                  <p style={{ margin: 0, fontSize: '2rem', fontWeight: 'bold', color: stat.valueColor }}>{stat.value}</p>
+                  <p style={{ margin: 0, fontSize: '0.9rem', color: stat.subtitleColor }}>{stat.subtitle}</p>
+                </div>
+              ))}
             </div>
           </ContentSection>
         );
