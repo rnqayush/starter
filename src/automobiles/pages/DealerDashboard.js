@@ -13,6 +13,7 @@ import CustomersTab from "../components/CustomersTab";
 import FinancingTab from "../components/FinancingTab";
 import TradeInsTab from "../components/TradeInsTab";
 import ServiceAppointmentsTab from "../components/ServiceAppointmentsTab";
+import PromotionsTab from "../components/PromotionsTab";
 import DealerSettingsTab from "../components/DealerSettingsTab";
 import AnalyticsTab from "../components/AnalyticsTab";
 import { getVendorByIdOrSlug } from "../data/vendors";
