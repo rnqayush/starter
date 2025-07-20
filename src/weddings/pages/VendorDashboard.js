@@ -1149,8 +1149,8 @@ const VendorDashboard = () => {
                     </ActionButton>
                   </PortfolioFormHeader>
 
-                  <FormGrid>
-                    <FormGroup>
+                                    <FormGrid>
+                    <FormGroup key="portfolio-location">
                       <FormLabel>Event Location/Venue Name</FormLabel>
                       <FormInput
                         value={portfolioForm.location}
@@ -1158,7 +1158,7 @@ const VendorDashboard = () => {
                         placeholder="Napa Valley Vineyard"
                       />
                     </FormGroup>
-                    <FormGroup>
+                    <FormGroup key="portfolio-city">
                       <FormLabel>City</FormLabel>
                       <FormInput
                         value={portfolioForm.city}
@@ -1166,7 +1166,7 @@ const VendorDashboard = () => {
                         placeholder="Napa Valley"
                       />
                     </FormGroup>
-                    <FormGroup>
+                    <FormGroup key="portfolio-state">
                       <FormLabel>State</FormLabel>
                       <FormInput
                         value={portfolioForm.state}
@@ -1174,7 +1174,7 @@ const VendorDashboard = () => {
                         placeholder="CA"
                       />
                     </FormGroup>
-                    <FormGroup>
+                    <FormGroup key="portfolio-date">
                       <FormLabel>Wedding Date</FormLabel>
                       <FormInput
                         value={portfolioForm.weddingDate}
@@ -1182,7 +1182,7 @@ const VendorDashboard = () => {
                         placeholder="September 2023"
                       />
                     </FormGroup>
-                    <FormGroup>
+                    <FormGroup key="portfolio-couple">
                       <FormLabel>Couple Names</FormLabel>
                       <FormInput
                         value={portfolioForm.coupleNames}
@@ -1190,7 +1190,7 @@ const VendorDashboard = () => {
                         placeholder="Sarah & Michael"
                       />
                     </FormGroup>
-                    <FormGroup style={{ gridColumn: '1 / -1' }}>
+                    <FormGroup key="portfolio-description" style={{ gridColumn: '1 / -1' }}>
                       <FormLabel>Description</FormLabel>
                       <FormTextarea
                         value={portfolioForm.description}
