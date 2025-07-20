@@ -744,7 +744,9 @@ const CitiesList = styled.div`
   margin-top: ${theme.spacing.lg};
 `;
 
-const CityTag = styled.span`
+const CityTag = styled.span.withConfig({
+  shouldForwardProp: (prop) => !['primaryColor'].includes(prop),
+})`
   background: ${props => props.primaryColor || theme.colors.primary}15;
   color: ${props => props.primaryColor || theme.colors.primary};
   padding: ${theme.spacing.sm} ${theme.spacing.md};
