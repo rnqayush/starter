@@ -480,7 +480,7 @@ const StoreCard = ({ store, category }) => {
     </>
   );
 
-  if (category === "ecommerce") {
+    if (category === "ecommerce" || category === "automobiles") {
     return (
       <Card as="div" onClick={handleStoreClick} style={{ cursor: "pointer" }}>
         {cardContent}
