@@ -625,8 +625,8 @@ const VendorDashboard = () => {
               <FaAddressCard />
               Basic Information
             </SectionTitle>
-            <FormGrid>
-              <FormGroup>
+                        <FormGrid>
+              <FormGroup key="business-name">
                 <FormLabel>Business Name</FormLabel>
                 <FormInput
                   value={basicInfo.name}
@@ -637,7 +637,7 @@ const VendorDashboard = () => {
                   placeholder="Your business name"
                 />
               </FormGroup>
-              <FormGroup>
+              <FormGroup key="tagline">
                 <FormLabel>Tagline</FormLabel>
                 <FormInput
                   value={basicInfo.tagline}
@@ -648,7 +648,7 @@ const VendorDashboard = () => {
                   placeholder="Your catchy tagline"
                 />
               </FormGroup>
-              <FormGroup style={{ gridColumn: '1 / -1' }}>
+              <FormGroup key="description" style={{ gridColumn: '1 / -1' }}>
                 <FormLabel>Description</FormLabel>
                 <FormTextarea
                   value={basicInfo.description}
@@ -659,7 +659,7 @@ const VendorDashboard = () => {
                   placeholder="Describe your business and what makes you special"
                 />
               </FormGroup>
-              <FormGroup>
+              <FormGroup key="phone">
                 <FormLabel>Phone</FormLabel>
                 <FormInput
                   value={basicInfo.phone}
@@ -670,7 +670,7 @@ const VendorDashboard = () => {
                   placeholder="+1 (555) 123-4567"
                 />
               </FormGroup>
-              <FormGroup>
+              <FormGroup key="email">
                 <FormLabel>Email</FormLabel>
                 <FormInput
                   type="email"
@@ -682,7 +682,7 @@ const VendorDashboard = () => {
                   placeholder="contact@yourbusiness.com"
                 />
               </FormGroup>
-              <FormGroup>
+              <FormGroup key="website">
                 <FormLabel>Website</FormLabel>
                 <FormInput
                   value={basicInfo.website}
@@ -693,7 +693,7 @@ const VendorDashboard = () => {
                   placeholder="www.yourbusiness.com"
                 />
               </FormGroup>
-              <FormGroup>
+              <FormGroup key="address">
                 <FormLabel>Address</FormLabel>
                 <FormInput
                   value={basicInfo.address}
