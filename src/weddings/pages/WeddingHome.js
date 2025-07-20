@@ -251,7 +251,9 @@ const CategoryGrid = styled.div`
   margin-bottom: ${theme.spacing.xl};
 `;
 
-const CategoryCard = styled.div`
+const CategoryCard = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "selected",
+})`
   background: ${theme.colors.white};
   padding: ${theme.spacing.xl};
   border-radius: ${theme.borderRadius.lg};
@@ -259,13 +261,19 @@ const CategoryCard = styled.div`
   text-align: center;
   cursor: pointer;
   transition: all 0.2s ease;
-  border: 2px solid transparent;
+  border: 2px solid ${(props) => props.selected ? theme.colors.primary : 'transparent'};
+  position: relative;
 
   &:hover {
     transform: translateY(-4px);
     box-shadow: ${theme.shadows.md};
     border-color: ${theme.colors.primary};
   }
+
+  ${(props) => props.selected && `
+    background: ${theme.colors.primary}10;
+    transform: translateY(-2px);
+  `}
 `;
 
 const CategoryIcon = styled.div`
