@@ -980,12 +980,10 @@ const VendorPage = () => {
               <FaImages />
               Portfolio
             </NavButton>
-            {user && (
-              <NavButton onClick={() => navigate(`/${vendorId}/dashboard`)} scrolled={scrolled}>
-                <FaCog />
-                Dashboard
-              </NavButton>
-            )}
+                        <NavButton onClick={() => navigate(`/${vendorId}/dashboard`)} scrolled={scrolled}>
+              <FaCog />
+              Dashboard
+            </NavButton>
             <NavButton primary primaryColor={primaryColor} onClick={() => scrollToSection('contact')}>
               <FaCalendarAlt />
               Enquire Now
