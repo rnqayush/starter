@@ -83,7 +83,9 @@ const TabContainer = styled.div`
   margin: 1.5rem 0 0 0;
 `;
 
-const Tab = styled.button`
+const Tab = styled.button.withConfig({
+  shouldForwardProp: (prop) => prop !== "active",
+})`
   flex: 1;
   padding: 0.75rem;
   background: none;
