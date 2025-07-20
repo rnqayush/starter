@@ -5,6 +5,7 @@ import {
   FaBox,
   FaPlus,
   FaShoppingCart,
+  FaEnvelope,
   FaChartLine,
   FaStore,
   FaUser,
