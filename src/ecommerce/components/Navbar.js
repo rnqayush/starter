@@ -681,7 +681,7 @@ const Navbar = ({
           🏪 Seller Dashboard
         </MobileNavLink>
 
-        <form onSubmit={handleSearch}>
+                <form onSubmit={handleSearch}>
           <MobileSearchInput
             type="text"
             placeholder="Search products..."
@@ -693,6 +693,25 @@ const Navbar = ({
           />
         </form>
       </MobileMenu>
+
+      {/* Authentication Modal */}
+      <AuthModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        defaultTab={authModalTab}
+      />
+
+      {/* Profile Modal */}
+      {showProfile && (
+        <Modal onClick={() => setShowProfile(false)}>
+          <ModalContent onClick={(e) => e.stopPropagation()}>
+            <ModalCloseButton onClick={() => setShowProfile(false)}>
+              <FaTimes />
+            </ModalCloseButton>
+            <UserProfile onClose={() => setShowProfile(false)} />
+          </ModalContent>
+        </Modal>
+      )}
     </NavbarContainer>
   );
 };
