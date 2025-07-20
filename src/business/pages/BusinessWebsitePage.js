@@ -13,11 +13,6 @@ import {
   FaInstagram,
   FaLinkedin,
   FaArrowLeft,
-  FaArrowRight,
-  FaCheck,
-  FaClock,
-  FaUsers,
-  FaAward,
 } from "react-icons/fa";
 import { theme } from "../../styles/GlobalStyle";
 import { getBusinessTemplate } from "../data/businessTemplates";
@@ -27,67 +22,12 @@ const PageContainer = styled.div`
   background: ${theme.colors.white};
 `;
 
-// Edit Mode Overlay
-const EditModeOverlay = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== 'isEditing',
-})`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: ${props => props.isEditing ? 'rgba(129, 140, 248, 0.15)' : 'transparent'};
-  z-index: 50;
-  pointer-events: ${props => props.isEditing ? 'auto' : 'none'};
-  opacity: ${props => props.isEditing ? 1 : 0};
-  transition: all 0.3s ease;
-  backdrop-filter: ${props => props.isEditing ? 'blur(1px)' : 'none'};
-`;
-
-// Edit Mode Banner
-const EditModeBanner = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== 'isEditing' && prop !== 'primaryColor',
-})`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  background: linear-gradient(135deg, ${props => props.primaryColor || theme.colors.primary} 0%, ${props => props.primaryColor ? props.primaryColor + 'dd' : theme.colors.primaryDark} 100%);
-  color: ${theme.colors.white};
-  padding: ${theme.spacing.sm} ${theme.spacing.md};
-  text-align: center;
-  font-weight: 600;
-  font-size: 0.9rem;
-  z-index: 60;
-  transform: translateY(${props => props.isEditing ? '0' : '-100%'});
-  transition: transform 0.3s ease;
-  box-shadow: ${theme.shadows.lg};
-
-  .edit-instructions {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: ${theme.spacing.md};
-
-    .icon {
-      animation: pulse 2s infinite;
-    }
-  }
-
-  @keyframes pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-  }
-`;
-
 // Navbar Styles
-const Navbar = styled.nav.withConfig({
-  shouldForwardProp: (prop) => prop !== 'isEditing',
-})`
+const Navbar = styled.nav`
   background: ${theme.colors.white};
   box-shadow: ${theme.shadows.sm};
   position: sticky;
-  top: ${props => props.isEditing ? '40px' : '0'};
+  top: 0;
   z-index: 40;
   transition: top 0.3s ease;
 `;
@@ -194,9 +134,9 @@ const HeroSection = styled.section.withConfig({
 })`
   height: 100vh;
   background: linear-gradient(
-    rgba(0, 0, 0, 0.4),
+    rgba(0, 0, 0, 0.4), 
     rgba(0, 0, 0, 0.6)
-  ), url(${props =>
+  ), url(${props => 
     props.businessType === 'gym' ? 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?ixlib=rb-4.0.3&w=1200&q=80' :
     props.businessType === 'restaurant' ? 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&w=1200&q=80' :
     props.businessType === 'salon' ? 'https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-4.0.3&w=1200&q=80' :
@@ -236,7 +176,7 @@ const HeroTitle = styled.h1`
   @media (max-width: ${theme.breakpoints.mobile}) {
     font-size: 3rem;
   }
-
+  
   @media (max-width: ${theme.breakpoints.tablet}) {
     font-size: 3.8rem;
   }
@@ -677,76 +617,6 @@ const SocialLink = styled.a.withConfig({
   }
 `;
 
-const EditableSection = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== 'isEditing' && prop !== 'primaryColor' && prop !== 'sectionName',
-})`
-  position: relative;
-    outline: ${props => props.isEditing ? `3px dashed ${props.primaryColor || theme.colors.primary}` : 'none'};
-  outline-offset: 8px;
-  cursor: ${props => props.isEditing ? 'pointer' : 'default'};
-  
-  &:hover {
-    outline: ${props => props.isEditing ? `2px solid ${props.primaryColor || theme.colors.primary}` : 'none'};
-  }
-`;
-
-// Floating Edit Button for mobile/better UX
-const FloatingEditButton = styled.button.withConfig({
-  shouldForwardProp: (prop) => prop !== 'isEditing' && prop !== 'primaryColor',
-})`
-  position: fixed;
-  bottom: 2rem;
-  right: 2rem;
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background: ${props => props.primaryColor || theme.colors.primary};
-  color: ${theme.colors.white};
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-  box-shadow: ${theme.shadows.xl};
-  transition: all 0.3s ease;
-  z-index: 45;
-  display: ${props => props.isEditing ? 'none' : 'flex'};
-  align-items: center;
-  justify-content: center;
-
-  &:hover {
-    transform: scale(1.1);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-  }
-
-  @media (max-width: ${theme.breakpoints.mobile}) {
-    bottom: 1rem;
-    right: 1rem;
-    width: 50px;
-    height: 50px;
-    font-size: 1.2rem;
-  }
-`;
-
-// Professional Badge/Watermark
-const ProfessionalBadge = styled.div`
-  position: fixed;
-  bottom: 1rem;
-  left: 1rem;
-  background: rgba(255, 255, 255, 0.95);
-  padding: ${theme.spacing.sm} ${theme.spacing.md};
-  border-radius: ${theme.borderRadius.lg};
-  font-size: 0.75rem;
-  color: ${theme.colors.gray600};
-  font-weight: 500;
-  box-shadow: ${theme.shadows.sm};
-  backdrop-filter: blur(10px);
-  border: 1px solid ${theme.colors.gray200};
-  z-index: 45;
-
-  @media (max-width: ${theme.breakpoints.mobile}) {
-    display: none;
-  }
-`;
-
 const BusinessWebsitePage = () => {
   const { businessSlug } = useParams();
   const navigate = useNavigate();
@@ -774,7 +644,7 @@ const BusinessWebsitePage = () => {
     navigate("/business-websites");
   };
 
-    const handleOwnerClick = () => {
+  const handleOwnerClick = () => {
     navigate(`/business/${businessData.slug}/owner`);
   };
 
@@ -848,10 +718,9 @@ const BusinessWebsitePage = () => {
 
   const content = getBusinessContent(businessData.slug);
 
-      return (
+  return (
     <PageContainer>
-      
-                  {/* Navbar */}
+      {/* Navbar */}
       <Navbar>
         <NavContainer>
           <BackToListButton onClick={handleBackToList}>
@@ -867,256 +736,215 @@ const BusinessWebsitePage = () => {
             <a href="#team">Team</a>
             <a href="#contact">Contact</a>
           </NavLinks>
-                    <OwnerLink 
-            primaryColor={businessData.primaryColor}
-            onClick={toggleEditMode}
-          >
+          <OwnerLink onClick={handleOwnerClick}>
             <FaEdit />
-                        Owner Dashboard
-                    </OwnerLink>
+            Owner Dashboard
+          </OwnerLink>
         </NavContainer>
       </Navbar>
 
       {/* Hero Section */}
-      <EditableSection 
-                isEditing={isEditing}
-        primaryColor={businessData.primaryColor}
-        sectionName="Hero Section"
-        onClick={() => handleSectionClick('hero')}
-      >
-                                <HeroSection id="hero" primaryColor={businessData.primaryColor} businessType={businessData.slug}>
-          <HeroContent>
-            <HeroTitle>{content.hero.title}</HeroTitle>
-            <HeroSubtitle>{content.hero.subtitle}</HeroSubtitle>
-            <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap', marginTop: '2rem' }}>
-              <HeroCTA primaryColor={businessData.primaryColor}>
-                {businessData.slug === 'restaurant' ? 'Reserve Table' :
-                 businessData.slug === 'gym' ? 'Start Free Trial' :
-                 businessData.slug === 'salon' ? 'Book Appointment' : 'Get Started'}
-              </HeroCTA>
-              <button style={{
-                padding: '1rem 2rem',
-                fontSize: '1.2rem',
-                fontWeight: '600',
-                background: 'transparent',
-                color: businessData.primaryColor,
-                border: `2px solid ${businessData.primaryColor}`,
-                borderRadius: '8px',
-                cursor: 'pointer',
-                transition: 'all 0.3s ease'
-              }}>
-                Learn More
-              </button>
-            </div>
-          </HeroContent>
-        </HeroSection>
-      </EditableSection>
+      <HeroSection id="hero" primaryColor={businessData.primaryColor} businessType={businessData.slug}>
+        <HeroContent>
+          <HeroTitle>{content.hero.title}</HeroTitle>
+          <HeroSubtitle>{content.hero.subtitle}</HeroSubtitle>
+          <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap', marginTop: '2rem' }}>
+            <HeroCTA primaryColor={businessData.primaryColor}>
+              {businessData.slug === 'restaurant' ? 'Reserve Table' : 
+               businessData.slug === 'gym' ? 'Start Free Trial' :
+               businessData.slug === 'salon' ? 'Book Appointment' : 'Get Started'}
+            </HeroCTA>
+            <button style={{
+              padding: '1rem 2rem',
+              fontSize: '1.2rem',
+              fontWeight: '600',
+              background: 'transparent',
+              color: theme.colors.white,
+              border: `2px solid ${theme.colors.white}`,
+              borderRadius: '8px',
+              cursor: 'pointer',
+              transition: 'all 0.3s ease'
+            }}>
+              Learn More
+            </button>
+          </div>
+        </HeroContent>
+      </HeroSection>
 
       {/* About Section */}
-      <EditableSection 
-                isEditing={isEditing}
-        primaryColor={businessData.primaryColor}
-        sectionName="About Section"
-        onClick={() => handleSectionClick('about')}
-      >
-        <Section id="about" background={theme.colors.gray50}>
-          <SectionContainer>
-            <AboutGrid>
-              <AboutContent>
-                <h3>{content.about.title}</h3>
-                <p>{content.about.description}</p>
-                <p>We pride ourselves on delivering exceptional service and creating memorable experiences for all our clients. Our commitment to excellence has made us a trusted choice in the community.</p>
-              </AboutContent>
-              <AboutImage primaryColor={businessData.primaryColor}>
-                {businessData.slug === 'salon' && '💇‍♀️'}
-                {businessData.slug === 'gym' && '🏋️‍♂️'}
-                {businessData.slug === 'restaurant' && '👨‍🍳'}
-                {!['salon', 'gym', 'restaurant'].includes(businessData.slug) && '🏢'}
-              </AboutImage>
-            </AboutGrid>
-            
-                        <StatsGrid>
-              <StatCard primaryColor={businessData.primaryColor}>
-                <div className="number">
-                  {businessData.slug === 'restaurant' ? '2,500+' :
-                   businessData.slug === 'gym' ? '1,200+' :
-                   businessData.slug === 'salon' ? '850+' : '500+'}
-                </div>
-                <div className="label">
-                  {businessData.slug === 'restaurant' ? 'Meals Served' :
-                   businessData.slug === 'gym' ? 'Active Members' :
-                   businessData.slug === 'salon' ? 'Services Completed' : 'Happy Clients'}
-                </div>
-              </StatCard>
-              <StatCard primaryColor={businessData.primaryColor}>
-                <div className="number">
-                  {businessData.slug === 'restaurant' ? '15+' :
-                   businessData.slug === 'gym' ? '8+' :
-                   businessData.slug === 'salon' ? '12+' : '5+'}
-                </div>
-                <div className="label">Years Experience</div>
-              </StatCard>
-              <StatCard primaryColor={businessData.primaryColor}>
-                <div className="number">4.9</div>
-                <div className="label">★ Average Rating</div>
-              </StatCard>
-              <StatCard primaryColor={businessData.primaryColor}>
-                <div className="number">
-                  {businessData.slug === 'restaurant' ? '7 Days' :
-                   businessData.slug === 'gym' ? '6AM-11PM' :
-                   businessData.slug === 'salon' ? 'Mon-Sat' : '24/7'}
-                </div>
-                <div className="label">
-                  {businessData.slug === 'restaurant' ? 'Weekly Service' :
-                   businessData.slug === 'gym' ? 'Operating Hours' :
-                   businessData.slug === 'salon' ? 'Open Days' : 'Support'}
-                </div>
-              </StatCard>
-            </StatsGrid>
-          </SectionContainer>
-        </Section>
-      </EditableSection>
+      <Section id="about" background={theme.colors.gray50}>
+        <SectionContainer>
+          <AboutGrid>
+            <AboutContent>
+              <h3>{content.about.title}</h3>
+              <p>{content.about.description}</p>
+              <p>We pride ourselves on delivering exceptional service and creating memorable experiences for all our clients. Our commitment to excellence has made us a trusted choice in the community.</p>
+            </AboutContent>
+            <AboutImage primaryColor={businessData.primaryColor}>
+              {businessData.slug === 'salon' && '💇‍♀️'}
+              {businessData.slug === 'gym' && '��️‍♂️'}
+              {businessData.slug === 'restaurant' && '👨‍🍳'}
+              {!['salon', 'gym', 'restaurant'].includes(businessData.slug) && '🏢'}
+            </AboutImage>
+          </AboutGrid>
+          
+          <StatsGrid>
+            <StatCard primaryColor={businessData.primaryColor}>
+              <div className="number">
+                {businessData.slug === 'restaurant' ? '2,500+' : 
+                 businessData.slug === 'gym' ? '1,200+' :
+                 businessData.slug === 'salon' ? '850+' : '500+'}
+              </div>
+              <div className="label">
+                {businessData.slug === 'restaurant' ? 'Meals Served' : 
+                 businessData.slug === 'gym' ? 'Active Members' :
+                 businessData.slug === 'salon' ? 'Services Completed' : 'Happy Clients'}
+              </div>
+            </StatCard>
+            <StatCard primaryColor={businessData.primaryColor}>
+              <div className="number">
+                {businessData.slug === 'restaurant' ? '15+' : 
+                 businessData.slug === 'gym' ? '8+' :
+                 businessData.slug === 'salon' ? '12+' : '5+'}
+              </div>
+              <div className="label">Years Experience</div>
+            </StatCard>
+            <StatCard primaryColor={businessData.primaryColor}>
+              <div className="number">4.9</div>
+              <div className="label">★ Average Rating</div>
+            </StatCard>
+            <StatCard primaryColor={businessData.primaryColor}>
+              <div className="number">
+                {businessData.slug === 'restaurant' ? '7 Days' : 
+                 businessData.slug === 'gym' ? '6AM-11PM' :
+                 businessData.slug === 'salon' ? 'Mon-Sat' : '24/7'}
+              </div>
+              <div className="label">
+                {businessData.slug === 'restaurant' ? 'Weekly Service' : 
+                 businessData.slug === 'gym' ? 'Operating Hours' :
+                 businessData.slug === 'salon' ? 'Open Days' : 'Support'}
+              </div>
+            </StatCard>
+          </StatsGrid>
+        </SectionContainer>
+      </Section>
 
       {/* Services Section */}
-      <EditableSection 
-        isEditing={isEditing}
-        primaryColor={businessData.primaryColor}
-        onClick={() => handleSectionClick('services')}
-      >
-        <Section id="services">
-          <SectionContainer>
-            <SectionTitle>Our Services</SectionTitle>
-            <SectionSubtitle>
-              We offer a comprehensive range of professional services designed to meet your needs and exceed your expectations.
-            </SectionSubtitle>
-            <ServicesGrid>
-              {content.services.map((service, index) => (
-                <ServiceCard key={index} primaryColor={businessData.primaryColor}>
-                  <div className="icon">{service.icon}</div>
-                  <h3>{service.title}</h3>
-                  <p>{service.description}</p>
-                </ServiceCard>
-              ))}
-            </ServicesGrid>
-          </SectionContainer>
-        </Section>
-      </EditableSection>
+      <Section id="services">
+        <SectionContainer>
+          <SectionTitle>Our Services</SectionTitle>
+          <SectionSubtitle>
+            We offer a comprehensive range of professional services designed to meet your needs and exceed your expectations.
+          </SectionSubtitle>
+          <ServicesGrid>
+            {content.services.map((service, index) => (
+              <ServiceCard key={index} primaryColor={businessData.primaryColor}>
+                <div className="icon">{service.icon}</div>
+                <h3>{service.title}</h3>
+                <p>{service.description}</p>
+              </ServiceCard>
+            ))}
+          </ServicesGrid>
+        </SectionContainer>
+      </Section>
 
       {/* Team Section */}
-      <EditableSection 
-        isEditing={isEditing}
-        primaryColor={businessData.primaryColor}
-        onClick={() => handleSectionClick('team')}
-      >
-        <Section id="team" background={theme.colors.gray50}>
-          <SectionContainer>
-            <SectionTitle>Meet Our Team</SectionTitle>
-            <SectionSubtitle>
-              Our experienced professionals are passionate about delivering exceptional service and results.
-            </SectionSubtitle>
-            <TeamGrid>
-              {content.team.map((member, index) => (
-                <TeamCard key={index}>
-                  <TeamPhoto primaryColor={businessData.primaryColor}>
-                    👤
-                  </TeamPhoto>
-                  <TeamInfo primaryColor={businessData.primaryColor}>
-                    <h3>{member.name}</h3>
-                    <div className="role">{member.role}</div>
-                    <p>{member.bio}</p>
-                  </TeamInfo>
-                </TeamCard>
-              ))}
-            </TeamGrid>
-          </SectionContainer>
-        </Section>
-      </EditableSection>
+      <Section id="team" background={theme.colors.gray50}>
+        <SectionContainer>
+          <SectionTitle>Meet Our Team</SectionTitle>
+          <SectionSubtitle>
+            Our experienced professionals are passionate about delivering exceptional service and results.
+          </SectionSubtitle>
+          <TeamGrid>
+            {content.team.map((member, index) => (
+              <TeamCard key={index}>
+                <TeamPhoto primaryColor={businessData.primaryColor}>
+                  👤
+                </TeamPhoto>
+                <TeamInfo primaryColor={businessData.primaryColor}>
+                  <h3>{member.name}</h3>
+                  <div className="role">{member.role}</div>
+                  <p>{member.bio}</p>
+                </TeamInfo>
+              </TeamCard>
+            ))}
+          </TeamGrid>
+        </SectionContainer>
+      </Section>
 
       {/* Testimonials Section */}
-      <EditableSection 
-        isEditing={isEditing}
-        primaryColor={businessData.primaryColor}
-        onClick={() => handleSectionClick('testimonials')}
-      >
-        <Section id="testimonials">
-          <SectionContainer>
-            <SectionTitle>What Our Clients Say</SectionTitle>
-            <SectionSubtitle>
-              Don't just take our word for it - hear from our satisfied customers about their experiences.
-            </SectionSubtitle>
-            <TestimonialsGrid>
-              {[1, 2, 3].map((_, index) => (
-                <TestimonialCard key={index} primaryColor={businessData.primaryColor}>
-                  <div className="quote">
-                    <FaQuoteLeft />
+      <Section id="testimonials">
+        <SectionContainer>
+          <SectionTitle>What Our Clients Say</SectionTitle>
+          <SectionSubtitle>
+            Don't just take our word for it - hear from our satisfied customers about their experiences.
+          </SectionSubtitle>
+          <TestimonialsGrid>
+            {[1, 2, 3].map((_, index) => (
+              <TestimonialCard key={index} primaryColor={businessData.primaryColor}>
+                <div className="quote">
+                  <FaQuoteLeft />
+                </div>
+                <div className="text">
+                  "Outstanding service and professional staff. I couldn't be happier with the results. Highly recommend to anyone looking for quality and excellence."
+                </div>
+                <div className="author">
+                  <div className="info">
+                    <h4>Client Name</h4>
+                    <p>Satisfied Customer</p>
                   </div>
-                  <div className="text">
-                    "Outstanding service and professional staff. I couldn't be happier with the results. Highly recommend to anyone looking for quality and excellence."
+                  <div className="rating">
+                    {[...Array(5)].map((_, i) => (
+                      <FaStar key={i} />
+                    ))}
                   </div>
-                  <div className="author">
-                    <div className="info">
-                      <h4>Client Name</h4>
-                      <p>Satisfied Customer</p>
-                    </div>
-                    <div className="rating">
-                      {[...Array(5)].map((_, i) => (
-                        <FaStar key={i} />
-                      ))}
-                    </div>
-                  </div>
-                </TestimonialCard>
-              ))}
-            </TestimonialsGrid>
-          </SectionContainer>
-        </Section>
-      </EditableSection>
+                </div>
+              </TestimonialCard>
+            ))}
+          </TestimonialsGrid>
+        </SectionContainer>
+      </Section>
 
       {/* Contact Section */}
-      <EditableSection 
-        isEditing={isEditing}
-        primaryColor={businessData.primaryColor}
-        onClick={() => handleSectionClick('contact')}
-      >
-        <Section id="contact" background={theme.colors.gray50}>
-          <SectionContainer>
-            <SectionTitle>Get In Touch</SectionTitle>
-            <SectionSubtitle>
-              Ready to get started? Contact us today to schedule a consultation or learn more about our services.
-            </SectionSubtitle>
-            <ContactGrid>
-              <ContactForm primaryColor={businessData.primaryColor}>
-                <input type="text" placeholder="Your Name" required />
-                <input type="email" placeholder="Your Email" required />
-                <input type="tel" placeholder="Your Phone" />
-                <textarea placeholder="Your Message" required></textarea>
-                <button type="submit">Send Message</button>
-              </ContactForm>
-              
-              <ContactInfo primaryColor={businessData.primaryColor}>
-                <h3>Contact Information</h3>
-                <div className="contact-item">
-                  <div className="icon">
-                    <FaPhone />
-                  </div>
-                  <div className="text">+1 (555) 123-4567</div>
+      <Section id="contact" background={theme.colors.gray50}>
+        <SectionContainer>
+          <SectionTitle>Get In Touch</SectionTitle>
+          <SectionSubtitle>
+            Ready to get started? Contact us today to schedule a consultation or learn more about our services.
+          </SectionSubtitle>
+          <ContactGrid>
+            <ContactForm primaryColor={businessData.primaryColor}>
+              <input type="text" placeholder="Your Name" required />
+              <input type="email" placeholder="Your Email" required />
+              <input type="tel" placeholder="Your Phone" />
+              <textarea placeholder="Your Message" required></textarea>
+              <button type="submit">Send Message</button>
+            </ContactForm>
+            
+            <ContactInfo primaryColor={businessData.primaryColor}>
+              <h3>Contact Information</h3>
+              <div className="contact-item">
+                <div className="icon">
+                  <FaPhone />
                 </div>
-                <div className="contact-item">
-                  <div className="icon">
-                    <FaEnvelope />
-                  </div>
-                  <div className="text">info@{businessData.slug}.com</div>
+                <div className="text">+1 (555) 123-4567</div>
+              </div>
+              <div className="contact-item">
+                <div className="icon">
+                  <FaEnvelope />
                 </div>
-                <div className="contact-item">
-                  <div className="icon">
-                    <FaMapMarkerAlt />
-                  </div>
-                  <div className="text">123 Business Street, City, State 12345</div>
+                <div className="text">info@{businessData.slug}.com</div>
+              </div>
+              <div className="contact-item">
+                <div className="icon">
+                  <FaMapMarkerAlt />
                 </div>
-              </ContactInfo>
-            </ContactGrid>
-          </SectionContainer>
-        </Section>
-      </EditableSection>
+                <div className="text">123 Business Street, City, State 12345</div>
+              </div>
+            </ContactInfo>
+          </ContactGrid>
+        </SectionContainer>
+      </Section>
 
       {/* Footer */}
       <Footer>
@@ -1137,24 +965,9 @@ const BusinessWebsitePage = () => {
               <FaLinkedin />
             </SocialLink>
           </SocialLinks>
-                    <p>&copy; 2024 {businessData.name}. All rights reserved.</p>
+          <p>&copy; 2024 {businessData.name}. All rights reserved.</p>
         </FooterContent>
       </Footer>
-
-      {/* Floating Edit Button for better UX */}
-      <FloatingEditButton
-        isEditing={isEditing}
-        primaryColor={businessData.primaryColor}
-        onClick={toggleEditMode}
-        title="Toggle Edit Mode"
-      >
-        ✏️
-      </FloatingEditButton>
-
-      {/* Professional Badge */}
-      <ProfessionalBadge>
-        💼 Professional Website Template
-      </ProfessionalBadge>
     </PageContainer>
   );
 };
