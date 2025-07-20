@@ -7,6 +7,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import ProductCard from "../components/ProductCard";
 import CategoryCard from "../components/CategoryCard";
+import BackToTop from "../components/BackToTop";
 import {
   categories,
   getFeaturedProducts,
