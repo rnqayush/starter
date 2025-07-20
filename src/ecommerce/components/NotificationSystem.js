@@ -386,7 +386,7 @@ const NotificationSystem = ({ children }) => {
     });
   };
 
-  const showEnquiryNotification = (enquiry, options = {}) => {
+    const showEnquiryNotification = useCallback((enquiry, options = {}) => {
     return addNotification({
       type: "enquiry",
       title: "New Enquiry Received",
@@ -416,7 +416,7 @@ const NotificationSystem = ({ children }) => {
       duration: 0, // Don't auto-close enquiry notifications
       ...options
     });
-  };
+  }, [addNotification]);
 
   // Check for new enquiries periodically
   useEffect(() => {
