@@ -7,6 +7,8 @@ import {
   FaImage,
   FaTimes,
   FaCheck,
+  FaEdit,
+  FaClock,
   FaExclamationTriangle,
   FaInfoCircle,
   FaDollarSign,
