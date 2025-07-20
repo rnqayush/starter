@@ -971,9 +971,13 @@ const VendorPage = () => {
               <FaHeart />
               Save
             </NavButton>
-            <NavButton scrolled={scrolled}>
+                        <NavButton scrolled={scrolled}>
               <FaShare />
               Share
+            </NavButton>
+            <NavButton onClick={() => navigate(`/${vendorId}/portfolio`)} scrolled={scrolled}>
+              <FaImages />
+              Portfolio
             </NavButton>
             <NavButton primary primaryColor={primaryColor} onClick={() => scrollToSection('contact')}>
               <FaCalendarAlt />
