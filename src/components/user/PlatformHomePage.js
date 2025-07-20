@@ -19,6 +19,16 @@ import {
   FaMobile,
   FaHeadset,
   FaRocket,
+  FaCheck,
+  FaStar,
+  FaQuoteLeft,
+  FaUsers,
+  FaStore,
+  FaChartLine,
+  FaClock,
+  FaShield,
+  FaCode,
+  FaCloud,
 } from "react-icons/fa";
 import Header from "../shared/Header";
 import { Button } from "../shared/Button";
