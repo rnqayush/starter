@@ -80,26 +80,34 @@ const NavLink = styled(Link).withConfig({
   shouldForwardProp: (prop) => prop !== "theme",
 })`
   color: ${theme.colors.gray700};
-  font-weight: 500;
-  transition: color 0.2s ease;
+  font-weight: 600;
+  transition: all 0.3s ease;
   position: relative;
+  padding: ${theme.spacing.sm} ${theme.spacing.md};
+  border-radius: ${theme.borderRadius.md};
+  font-size: 0.95rem;
 
   &:hover {
     color: ${(props) => props.theme?.primaryColor || theme.colors.primary};
+    background: ${(props) => props.theme?.primaryColor || theme.colors.primary}10;
+    transform: translateY(-1px);
   }
 
   &.active {
     color: ${(props) => props.theme?.primaryColor || theme.colors.primary};
+    background: ${(props) => props.theme?.primaryColor || theme.colors.primary}15;
 
     &::after {
       content: "";
       position: absolute;
-      bottom: -8px;
-      left: 0;
-      right: 0;
-      height: 2px;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 6px;
+      height: 6px;
       background: ${(props) =>
         props.theme?.primaryColor || theme.colors.primary};
+      border-radius: 50%;
     }
   }
 `;
