@@ -231,7 +231,9 @@ const NavButton = styled.button.withConfig({
 `;
 
 // Section Components
-const Section = styled.section`
+const Section = styled.section.withConfig({
+  shouldForwardProp: (prop) => !['backgroundColor'].includes(prop),
+})`
   padding: ${theme.spacing.xxl} ${theme.spacing.md};
   background: ${props => props.backgroundColor || 'white'};
 `;
