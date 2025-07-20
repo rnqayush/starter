@@ -205,7 +205,9 @@ const NavActions = styled.div`
   }
 `;
 
-const NavButton = styled.button`
+const NavButton = styled.button.withConfig({
+  shouldForwardProp: (prop) => !['primary', 'primaryColor', 'scrolled'].includes(prop),
+})`
   background: ${props => props.primary ? (props.primaryColor || theme.colors.primary) : 'transparent'};
   color: ${props => props.primary ? 'white' : (props.scrolled ? theme.colors.gray700 : 'white')};
   border: ${props => props.primary ? 'none' : `2px solid ${props.scrolled ? theme.colors.gray300 : 'white'}`};
