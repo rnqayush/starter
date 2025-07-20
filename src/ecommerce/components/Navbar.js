@@ -30,16 +30,26 @@ const NavbarContainer = styled.nav`
 `;
 
 const NavbarContent = styled.div`
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 0 ${theme.spacing.md};
+  padding: 0 ${theme.spacing.sm};
   display: flex;
   align-items: center;
   justify-content: space-between;
   height: 80px;
+  overflow: hidden;
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     height: 70px;
+    padding: 0 ${theme.spacing.xs};
+  }
+
+  @media (min-width: 769px) and (max-width: 1024px) {
+    padding: 0 ${theme.spacing.sm};
+  }
+
+  @media (min-width: 1025px) {
+    padding: 0 ${theme.spacing.md};
   }
 `;
 
@@ -52,6 +62,18 @@ const Logo = styled(Link).withConfig({
   display: flex;
   align-items: center;
   gap: ${theme.spacing.sm};
+  flex-shrink: 0;
+  white-space: nowrap;
+  min-width: 0;
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    font-size: 1.4rem;
+    gap: ${theme.spacing.xs};
+  }
+
+  @media (max-width: 1024px) {
+    font-size: 1.6rem;
+  }
 `;
 
 const LogoImage = styled.img`
@@ -61,20 +83,41 @@ const LogoImage = styled.img`
   object-fit: cover;
   border: 2px solid ${theme.colors.gray200};
   transition: all 0.3s ease;
+  flex-shrink: 0;
 
   &:hover {
     transform: scale(1.05);
     border-color: ${(props) => props.theme?.primaryColor || theme.colors.primary};
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    width: 40px;
+    height: 40px;
+  }
+
+  @media (max-width: 1024px) {
+    width: 45px;
+    height: 45px;
   }
 `;
 
 const NavLinks = styled.div`
   display: flex;
   align-items: center;
-  gap: ${theme.spacing.xl};
+  gap: ${theme.spacing.md};
+  flex-shrink: 1;
+  overflow: hidden;
 
   @media (max-width: ${theme.breakpoints.tablet}) {
     display: none;
+  }
+
+  @media (min-width: 1025px) and (max-width: 1200px) {
+    gap: ${theme.spacing.sm};
+  }
+
+  @media (min-width: 1201px) {
+    gap: ${theme.spacing.lg};
   }
 `;
 
@@ -118,8 +161,14 @@ const SearchContainer = styled.div`
   position: relative;
   display: flex;
   align-items: center;
+  flex-shrink: 1;
+  min-width: 0;
 
   @media (max-width: ${theme.breakpoints.mobile}) {
+    display: none;
+  }
+
+  @media (max-width: 1024px) {
     display: none;
   }
 `;
@@ -131,7 +180,9 @@ const SearchInput = styled.input.withConfig({
   padding-left: 2.5rem;
   border: 2px solid ${theme.colors.gray200};
   border-radius: ${theme.borderRadius.lg};
-  width: 300px;
+  width: 100%;
+  max-width: 280px;
+  min-width: 200px;
   font-size: 0.9rem;
   transition: border-color 0.2s ease;
 
@@ -140,8 +191,14 @@ const SearchInput = styled.input.withConfig({
       props.theme?.primaryColor || theme.colors.primary};
   }
 
-  @media (max-width: ${theme.breakpoints.tablet}) {
-    width: 200px;
+  @media (min-width: 1025px) and (max-width: 1200px) {
+    max-width: 220px;
+    min-width: 180px;
+  }
+
+  @media (min-width: 1201px) {
+    max-width: 300px;
+    min-width: 240px;
   }
 `;
 
@@ -155,7 +212,16 @@ const SearchIcon = styled(FaSearch)`
 const NavActions = styled.div`
   display: flex;
   align-items: center;
-  gap: ${theme.spacing.lg};
+  gap: ${theme.spacing.sm};
+  flex-shrink: 0;
+
+  @media (min-width: 1025px) and (max-width: 1200px) {
+    gap: ${theme.spacing.xs};
+  }
+
+  @media (min-width: 1201px) {
+    gap: ${theme.spacing.md};
+  }
 `;
 
 const CartButton = styled.button.withConfig({
@@ -191,19 +257,38 @@ const CartBadge = styled.span.withConfig({
 `;
 
 const UserButton = styled.button.withConfig({
-  shouldForwardProp: (prop) => prop !== "theme",
+  shouldForwardProp: (prop) => prop !== "theme" && prop !== "hideOnTablet" && prop !== "hideOnSmallDesktop",
 })`
   background: none;
   color: ${theme.colors.gray700};
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   transition: color 0.2s ease;
+  padding: ${theme.spacing.xs};
+  border-radius: ${theme.borderRadius.sm};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2rem;
+  height: 2rem;
 
   &:hover {
     color: ${(props) => props.theme?.primaryColor || theme.colors.primary};
+    background: ${theme.colors.gray50};
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     display: none;
+  }
+
+  @media (max-width: 1024px) {
+    font-size: 1rem;
+    min-width: 1.8rem;
+    height: 1.8rem;
+    ${(props) => props.hideOnTablet && 'display: none;'}
+  }
+
+  @media (max-width: 1200px) {
+    ${(props) => props.hideOnSmallDesktop && 'display: none;'}
   }
 `;
 
@@ -296,15 +381,18 @@ const DropdownMenu = styled.div.withConfig({
   shouldForwardProp: (prop) => prop !== "isOpen",
 })`
   position: absolute;
-  top: 100%;
+  top: calc(100% + 0.5rem);
   right: 0;
   background: ${theme.colors.white};
   border: 1px solid ${theme.colors.gray200};
   border-radius: ${theme.borderRadius.md};
-  box-shadow: ${theme.shadows.lg};
+  box-shadow: ${theme.shadows.xl};
   min-width: 200px;
-  z-index: 1000;
-  display: ${(props) => (props.isOpen ? "block" : "none")};
+  z-index: 9999;
+  opacity: ${(props) => (props.isOpen ? "1" : "0")};
+  visibility: ${(props) => (props.isOpen ? "visible" : "hidden")};
+  transform: translateY(${(props) => (props.isOpen ? "0" : "-10px")});
+  transition: all 0.2s ease;
   overflow: hidden;
 `;
 
@@ -390,9 +478,21 @@ const LoginButton = styled.button`
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
+  white-space: nowrap;
+  font-size: 0.875rem;
 
   &:hover {
     background: ${theme.colors.primaryDark};
+    transform: translateY(-1px);
+  }
+
+  @media (max-width: 1024px) {
+    padding: ${theme.spacing.xs} ${theme.spacing.sm};
+    font-size: 0.8rem;
+  }
+
+  @media (max-width: 1200px) {
+    padding: ${theme.spacing.sm};
   }
 `;
 
@@ -552,18 +652,18 @@ const Navbar = ({
           </form>
         </SearchContainer>
 
-        <NavActions>
-                              <Link to="/">
+                        <NavActions>
+          <Link to="/">
             <UserButton title="Back to Main Site" theme={vendorTheme}>
               <FaHome />
             </UserButton>
           </Link>
 
-          <UserButton title="Wishlist" theme={vendorTheme}>
+          <UserButton title="Wishlist" theme={vendorTheme} hideOnTablet>
             <FaHeart />
           </UserButton>
 
-          <UserButton title="Notifications" theme={vendorTheme}>
+          <UserButton title="Notifications" theme={vendorTheme} hideOnSmallDesktop>
             <FaBell />
           </UserButton>
 

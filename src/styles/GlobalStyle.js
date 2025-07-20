@@ -251,6 +251,9 @@ export const media = {
   tabletUp: `@media (min-width: 769px)`,
   mobileDown: `@media (max-width: ${theme.breakpoints.mobile})`,
   tabletDown: `@media (max-width: ${theme.breakpoints.tablet})`,
+  smallDesktop: `@media (min-width: 1025px) and (max-width: 1200px)`,
+  mediumDesktop: `@media (min-width: 1201px) and (max-width: 1440px)`,
+  largeDesktop: `@media (min-width: 1441px)`,
 };
 
 // Responsive grid utilities

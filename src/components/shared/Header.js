@@ -16,13 +16,14 @@ const HeaderContainer = styled.header`
 
 const HeaderContent = styled.div`
   width: 100%;
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 0 ${theme.spacing.md};
   display: flex;
   align-items: center;
   justify-content: space-between;
   min-height: 4.375rem;
+  position: relative;
 
   ${media.mobile} {
     padding: 0 ${theme.spacing.sm};
@@ -30,13 +31,17 @@ const HeaderContent = styled.div`
   }
 
   ${media.tablet} {
-    padding: 0 ${theme.spacing.lg};
+    padding: 0 ${theme.spacing.md};
     min-height: 4rem;
   }
 
   ${media.desktop} {
-    padding: 0 ${theme.spacing.xl};
+    padding: 0 ${theme.spacing.lg};
     min-height: 4.375rem;
+  }
+
+  @media (min-width: 1400px) {
+    padding: 0 ${theme.spacing.xl};
   }
 `;
 
@@ -73,7 +78,7 @@ const Nav = styled.nav.withConfig({
 })`
   display: flex;
   align-items: center;
-  gap: ${theme.spacing.xl};
+  gap: ${theme.spacing.lg};
 
   ${media.mobileDown} {
     position: fixed;
@@ -83,20 +88,29 @@ const Nav = styled.nav.withConfig({
     background: ${theme.colors.white};
     flex-direction: column;
     padding: ${theme.spacing.lg};
-    box-shadow: ${theme.shadows.lg};
+    box-shadow: ${theme.shadows.xl};
     transform: translateY(${(props) => (props.isOpen ? "0" : "-100%")});
     opacity: ${(props) => (props.isOpen ? "1" : "0")};
     visibility: ${(props) => (props.isOpen ? "visible" : "hidden")};
-    transition: all 0.3s ease;
-    z-index: 99;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 999;
     max-height: calc(100vh - 3.75rem);
     overflow-y: auto;
-    gap: ${theme.spacing.lg};
+    gap: ${theme.spacing.md};
     align-items: stretch;
+    border-top: 1px solid ${theme.colors.gray200};
   }
 
-  ${media.tablet} {
+  @media (min-width: 769px) and (max-width: 1024px) {
+    gap: ${theme.spacing.md};
+  }
+
+  @media (min-width: 1025px) and (max-width: 1200px) {
     gap: ${theme.spacing.lg};
+  }
+
+  @media (min-width: 1201px) {
+    gap: ${theme.spacing.xl};
   }
 `;
 
@@ -110,15 +124,18 @@ const NavLink = styled(Link)`
   white-space: nowrap;
   display: flex;
   align-items: center;
+  position: relative;
 
   &:hover {
     color: ${theme.colors.primary};
     background: ${theme.colors.gray50};
+    transform: translateY(-1px);
   }
 
   &.active {
     color: ${theme.colors.primary};
-    background: ${theme.colors.gray50};
+    background: ${theme.colors.primaryLight};
+    color: ${theme.colors.white};
   }
 
   ${media.mobileDown} {
@@ -127,11 +144,22 @@ const NavLink = styled(Link)`
     text-align: center;
     justify-content: center;
     font-size: 1.125rem;
+    border-radius: ${theme.borderRadius.lg};
   }
 
-  ${media.tablet} {
-    padding: ${theme.spacing.sm} ${theme.spacing.sm};
+  @media (min-width: 769px) and (max-width: 1024px) {
+    padding: ${theme.spacing.sm};
     font-size: 0.875rem;
+  }
+
+  @media (min-width: 1025px) and (max-width: 1200px) {
+    padding: ${theme.spacing.sm} ${theme.spacing.md};
+    font-size: 0.9rem;
+  }
+
+  @media (min-width: 1201px) {
+    padding: ${theme.spacing.sm} ${theme.spacing.md};
+    font-size: 1rem;
   }
 `;
 
@@ -165,22 +193,40 @@ const DropdownButton = styled.button.withConfig({
   &:hover {
     color: ${theme.colors.primary};
     background: ${theme.colors.gray50};
+    transform: translateY(-1px);
+  }
+
+  &:focus {
+    outline: 2px solid ${theme.colors.primary};
+    outline-offset: 2px;
   }
 
   svg {
     transition: transform 0.2s ease;
     transform: ${(props) => (props.isOpen ? "rotate(180deg)" : "rotate(0deg)")};
+    font-size: 0.875rem;
   }
 
   ${media.mobileDown} {
     padding: ${theme.spacing.md} ${theme.spacing.lg};
     width: 100%;
     font-size: 1.125rem;
+    border-radius: ${theme.borderRadius.lg};
   }
 
-  ${media.tablet} {
-    padding: ${theme.spacing.sm} ${theme.spacing.sm};
+  @media (min-width: 769px) and (max-width: 1024px) {
+    padding: ${theme.spacing.sm};
     font-size: 0.875rem;
+  }
+
+  @media (min-width: 1025px) and (max-width: 1200px) {
+    padding: ${theme.spacing.sm} ${theme.spacing.md};
+    font-size: 0.9rem;
+  }
+
+  @media (min-width: 1201px) {
+    padding: ${theme.spacing.sm} ${theme.spacing.md};
+    font-size: 1rem;
   }
 `;
 
@@ -267,15 +313,19 @@ const UserSection = styled.div`
   flex-shrink: 0;
 
   ${media.mobileDown} {
-    position: absolute;
-    top: 0;
-    right: ${theme.spacing.sm};
-    height: 100%;
     gap: ${theme.spacing.sm};
   }
 
-  ${media.tablet} {
+  @media (min-width: 769px) and (max-width: 1024px) {
     gap: ${theme.spacing.sm};
+  }
+
+  @media (min-width: 1025px) and (max-width: 1200px) {
+    gap: ${theme.spacing.md};
+  }
+
+  @media (min-width: 1201px) {
+    gap: ${theme.spacing.md};
   }
 `;
 
@@ -293,15 +343,31 @@ const LoginButton = styled(Link)`
   &:hover {
     color: ${theme.colors.primary};
     background: ${theme.colors.gray50};
+    transform: translateY(-1px);
+  }
+
+  &:focus {
+    outline: 2px solid ${theme.colors.primary};
+    outline-offset: 2px;
   }
 
   ${media.mobileDown} {
     display: none;
   }
 
-  ${media.tablet} {
+  @media (min-width: 769px) and (max-width: 1024px) {
     padding: ${theme.spacing.sm};
     font-size: 0.875rem;
+  }
+
+  @media (min-width: 1025px) and (max-width: 1200px) {
+    padding: ${theme.spacing.sm} ${theme.spacing.md};
+    font-size: 0.9rem;
+  }
+
+  @media (min-width: 1201px) {
+    padding: ${theme.spacing.sm} ${theme.spacing.md};
+    font-size: 1rem;
   }
 `;
 
@@ -314,19 +380,41 @@ const RegisterButton = styled(Button)`
   font-weight: 500;
   transition: all 0.2s ease;
   white-space: nowrap;
+  box-shadow: ${theme.shadows.sm};
 
   &:hover {
     background: ${theme.colors.primaryDark};
     transform: translateY(-1px);
+    box-shadow: ${theme.shadows.md};
+  }
+
+  &:focus {
+    outline: 2px solid ${theme.colors.primary};
+    outline-offset: 2px;
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: ${theme.shadows.sm};
   }
 
   ${media.mobileDown} {
     display: none;
   }
 
-  ${media.tablet} {
+  @media (min-width: 769px) and (max-width: 1024px) {
     padding: ${theme.spacing.sm} ${theme.spacing.md};
     font-size: 0.875rem;
+  }
+
+  @media (min-width: 1025px) and (max-width: 1200px) {
+    padding: ${theme.spacing.sm} ${theme.spacing.lg};
+    font-size: 0.9rem;
+  }
+
+  @media (min-width: 1201px) {
+    padding: ${theme.spacing.sm} ${theme.spacing.lg};
+    font-size: 1rem;
   }
 `;
 
@@ -338,22 +426,33 @@ const MobileMenuButton = styled.button`
   font-size: 1.25rem;
   padding: ${theme.spacing.sm};
   cursor: pointer;
-  border-radius: ${theme.borderRadius.sm};
+  border-radius: ${theme.borderRadius.md};
   transition: all 0.2s ease;
+  position: relative;
+  z-index: 1000;
 
   &:hover {
     background: ${theme.colors.gray50};
     color: ${theme.colors.primary};
+    transform: scale(1.05);
+  }
+
+  &:focus {
+    outline: 2px solid ${theme.colors.primary};
+    outline-offset: 2px;
   }
 
   &:active {
     background: ${theme.colors.gray100};
+    transform: scale(0.95);
   }
 
   ${media.mobileDown} {
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
   }
 `;
 
@@ -402,12 +501,33 @@ const MobileAuthButton = styled(Link)`
   }
 `;
 
+const MobileMenuOverlay = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "isOpen",
+})`
+  display: none;
+
+  ${media.mobileDown} {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 998;
+    opacity: ${(props) => (props.isOpen ? "1" : "0")};
+    visibility: ${(props) => (props.isOpen ? "visible" : "hidden")};
+    transition: all 0.3s ease;
+    backdrop-filter: blur(4px);
+  }
+`;
+
 const Header = ({ isOwnerView = false }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
 
-  const closeMobileMenu = () => setMobileMenuOpen(false);
+    const closeMobileMenu = () => setMobileMenuOpen(false);
 
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
 
@@ -427,115 +547,167 @@ const Header = ({ isOwnerView = false }) => {
     };
   }, []);
 
+  // Handle escape key to close mobile menu and dropdown
+  useEffect(() => {
+    const handleEscapeKey = (event) => {
+      if (event.key === "Escape") {
+        if (mobileMenuOpen) {
+          closeMobileMenu();
+        }
+        if (dropdownOpen) {
+          closeDropdown();
+        }
+      }
+    };
+
+    document.addEventListener("keydown", handleEscapeKey);
+    return () => {
+      document.removeEventListener("keydown", handleEscapeKey);
+    };
+  }, [mobileMenuOpen, dropdownOpen]);
+
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [mobileMenuOpen]);
+
   const handleDropdownItemClick = () => {
     closeDropdown();
     closeMobileMenu();
   };
 
-  return (
-    <HeaderContainer>
-      <HeaderContent>
-        <Logo
-          to={isOwnerView ? "/owner/dashboard" : "/"}
-          onClick={closeMobileMenu}
-        >
-          <FaHotel />
-          StoreBuilder
-        </Logo>
+    return (
+    <>
+      <MobileMenuOverlay isOpen={mobileMenuOpen} onClick={closeMobileMenu} />
+      <HeaderContainer>
+        <HeaderContent>
+          <Logo
+            to={isOwnerView ? "/owner/dashboard" : "/"}
+            onClick={closeMobileMenu}
+          >
+            <FaHotel />
+            StoreBuilder
+          </Logo>
 
-        <Nav isOpen={mobileMenuOpen}>
-          {isOwnerView ? (
-            <>
-              <NavLink to="/owner/dashboard" onClick={closeMobileMenu}>
-                Dashboard
-              </NavLink>
-              <NavLink to="/owner/my-hotels" onClick={closeMobileMenu}>
-                My Hotels
-              </NavLink>
-              <NavLink to="/owner/bookings" onClick={closeMobileMenu}>
-                Bookings
-              </NavLink>
-              <NavLink to="/owner/profile" onClick={closeMobileMenu}>
-                Profile
-              </NavLink>
-            </>
-          ) : (
-            <>
-              <NavLink to="/" onClick={closeMobileMenu}>
-                Home
-              </NavLink>
-              <NavLink to="/pricing" onClick={closeMobileMenu}>
-                Pricing
-              </NavLink>
-              <DropdownContainer ref={dropdownRef}>
-                <DropdownButton onClick={toggleDropdown} isOpen={dropdownOpen}>
-                  Explore Stores
-                  <FaChevronDown />
-                </DropdownButton>
-                <DropdownMenu isOpen={dropdownOpen}>
-                  <DropdownItem to="/hotels" onClick={handleDropdownItemClick}>
-                    🏨 Hotels
-                  </DropdownItem>
-                  <DropdownItem
-                    to="/ecommerce"
-                    onClick={handleDropdownItemClick}
+          <Nav isOpen={mobileMenuOpen}>
+            {isOwnerView ? (
+              <>
+                <NavLink to="/owner/dashboard" onClick={closeMobileMenu}>
+                  Dashboard
+                </NavLink>
+                <NavLink to="/owner/my-hotels" onClick={closeMobileMenu}>
+                  My Hotels
+                </NavLink>
+                <NavLink to="/owner/bookings" onClick={closeMobileMenu}>
+                  Bookings
+                </NavLink>
+                <NavLink to="/owner/profile" onClick={closeMobileMenu}>
+                  Profile
+                </NavLink>
+              </>
+            ) : (
+              <>
+                <NavLink to="/" onClick={closeMobileMenu}>
+                  Home
+                </NavLink>
+                <NavLink to="/pricing" onClick={closeMobileMenu}>
+                  Pricing
+                </NavLink>
+                <DropdownContainer ref={dropdownRef}>
+                  <DropdownButton
+                    onClick={toggleDropdown}
+                    isOpen={dropdownOpen}
+                    aria-expanded={dropdownOpen}
+                    aria-haspopup="true"
+                    aria-label="Explore Stores menu"
                   >
-                    🛍 Ecommerce
-                  </DropdownItem>
-                  <DropdownItem
-                    to="/weddings"
-                    onClick={handleDropdownItemClick}
-                  >
-                    💍 Weddings
-                  </DropdownItem>
-                  <DropdownItem
-                    to="/automobiles"
-                    onClick={handleDropdownItemClick}
-                  >
-                    🚗 Automobiles
-                  </DropdownItem>
-                </DropdownMenu>
-              </DropdownContainer>
-            </>
-          )}
+                    Explore Stores
+                    <FaChevronDown />
+                  </DropdownButton>
+                  <DropdownMenu isOpen={dropdownOpen} role="menu">
+                    <DropdownItem
+                      to="/hotels"
+                      onClick={handleDropdownItemClick}
+                      role="menuitem"
+                    >
+                      🏨 Hotels
+                    </DropdownItem>
+                    <DropdownItem
+                      to="/ecommerce"
+                      onClick={handleDropdownItemClick}
+                      role="menuitem"
+                    >
+                      🛍 Ecommerce
+                    </DropdownItem>
+                    <DropdownItem
+                      to="/weddings"
+                      onClick={handleDropdownItemClick}
+                      role="menuitem"
+                    >
+                      💍 Weddings
+                    </DropdownItem>
+                    <DropdownItem
+                      to="/automobiles"
+                      onClick={handleDropdownItemClick}
+                      role="menuitem"
+                    >
+                      🚗 Automobiles
+                    </DropdownItem>
+                  </DropdownMenu>
+                </DropdownContainer>
+              </>
+            )}
 
-          <MobileAuthButtons>
-            <MobileAuthButton
-              to="/login"
-              className="login"
-              onClick={closeMobileMenu}
-            >
+            <MobileAuthButtons>
+              <MobileAuthButton
+                to="/login"
+                className="login"
+                onClick={closeMobileMenu}
+              >
+                Login
+              </MobileAuthButton>
+              <MobileAuthButton
+                to="/register"
+                className="register"
+                onClick={closeMobileMenu}
+              >
+                Register
+              </MobileAuthButton>
+            </MobileAuthButtons>
+          </Nav>
+
+          <UserSection>
+            <LoginButton to="/login" onClick={closeMobileMenu}>
               Login
-            </MobileAuthButton>
-            <MobileAuthButton
+            </LoginButton>
+            <RegisterButton
+              as={Link}
               to="/register"
-              className="register"
               onClick={closeMobileMenu}
+              style={{ textDecoration: "none" }}
             >
               Register
-            </MobileAuthButton>
-          </MobileAuthButtons>
-        </Nav>
+            </RegisterButton>
 
-        <UserSection>
-          <LoginButton to="/login" onClick={closeMobileMenu}>
-            Login
-          </LoginButton>
-          <RegisterButton
-            as={Link}
-            to="/register"
-            onClick={closeMobileMenu}
-            style={{ textDecoration: "none" }}
-          >
-            Register
-          </RegisterButton>
-
-          <MobileMenuButton onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-            {mobileMenuOpen ? <FaTimes /> : <FaBars />}
-          </MobileMenuButton>
-        </UserSection>
-      </HeaderContent>
-    </HeaderContainer>
+            <MobileMenuButton
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={mobileMenuOpen}
+            >
+              {mobileMenuOpen ? <FaTimes /> : <FaBars />}
+            </MobileMenuButton>
+          </UserSection>
+        </HeaderContent>
+      </HeaderContainer>
+    </>
   );
 };
 
