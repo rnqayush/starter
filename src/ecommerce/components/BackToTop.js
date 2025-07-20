@@ -3,7 +3,9 @@ import styled from "styled-components";
 import { FaArrowUp } from "react-icons/fa";
 import { theme } from "../../styles/GlobalStyle";
 
-const BackToTopButton = styled.button`
+const BackToTopButton = styled.button.withConfig({
+  shouldForwardProp: (prop) => prop !== 'visible',
+})`
   position: fixed;
   bottom: ${theme.spacing.xl};
   right: ${theme.spacing.xl};
