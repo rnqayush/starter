@@ -608,70 +608,7 @@ const EcommerceMain = () => {
           </HeroContent>
         </HeroSection>
 
-                <QuickNavigation>
-          <QuickNavGrid>
-            <QuickNavItem to={`${getBaseUrl()}/products`}>
-              <div className="icon">🛍️</div>
-              All Products
-            </QuickNavItem>
-            <QuickNavItem to={`${getBaseUrl()}/products?featured=true`}>
-              <div className="icon">⭐</div>
-              Featured Items
-            </QuickNavItem>
-            <QuickNavItem to={`${getBaseUrl()}/products?sale=true`}>
-              <div className="icon">🔥</div>
-              Hot Deals
-            </QuickNavItem>
-            <QuickNavItem to={`${getBaseUrl()}/my-enquiries`}>
-              <div className="icon">📧</div>
-              My Enquiries
-            </QuickNavItem>
-          </QuickNavGrid>
-        </QuickNavigation>
-
-        <Container>
-
-          <StoreInfo>
-            <StoreInfoGrid>
-              <StoreContact>
-                <div className="contact-item">
-                  <span className="icon">📍</span>
-                  <span>{selectedVendor.address}, {selectedVendor.city}, {selectedVendor.state}</span>
-                </div>
-                <div className="contact-item">
-                  <span className="icon">📞</span>
-                  <span>{selectedVendor.phone}</span>
-                </div>
-                <div className="contact-item">
-                  <span className="icon">✉️</span>
-                  <span>{selectedVendor.email}</span>
-                </div>
-                <div className="contact-item">
-                  <span className="icon">🌐</span>
-                  <span>{selectedVendor.website}</span>
-                </div>
-              </StoreContact>
-              <StoreStats>
-                <StatItem>
-                  <div className="number">{selectedVendor.rating}</div>
-                  <div className="label">Rating</div>
-                </StatItem>
-                <StatItem>
-                  <div className="number">{selectedVendor.reviewCount}</div>
-                  <div className="label">Reviews</div>
-                </StatItem>
-                <StatItem>
-                  <div className="number">500+</div>
-                  <div className="label">Products</div>
-                </StatItem>
-                <StatItem>
-                  <div className="number">24/7</div>
-                  <div className="label">Support</div>
-                </StatItem>
-              </StoreStats>
-            </StoreInfoGrid>
-          </StoreInfo>
-        </Container>
+                
 
                 <Section>
           <Container>
