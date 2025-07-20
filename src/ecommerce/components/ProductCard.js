@@ -319,10 +319,9 @@ const EnquireButton = styled.button`
 `;
 
 const StockIndicator = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "inStock",
+  shouldForwardProp: (prop) => !["availability", "color"].includes(prop),
 })`
-  color: ${(props) =>
-    props.inStock ? theme.colors.success : theme.colors.error};
+  color: ${(props) => props.color || theme.colors.gray600};
   font-size: 0.8rem;
   font-weight: 600;
   margin-bottom: ${theme.spacing.sm};
