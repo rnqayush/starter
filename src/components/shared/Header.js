@@ -527,7 +527,7 @@ const Header = ({ isOwnerView = false }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
 
-  const closeMobileMenu = () => setMobileMenuOpen(false);
+    const closeMobileMenu = () => setMobileMenuOpen(false);
 
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
 
@@ -546,6 +546,38 @@ const Header = ({ isOwnerView = false }) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  // Handle escape key to close mobile menu and dropdown
+  useEffect(() => {
+    const handleEscapeKey = (event) => {
+      if (event.key === "Escape") {
+        if (mobileMenuOpen) {
+          closeMobileMenu();
+        }
+        if (dropdownOpen) {
+          closeDropdown();
+        }
+      }
+    };
+
+    document.addEventListener("keydown", handleEscapeKey);
+    return () => {
+      document.removeEventListener("keydown", handleEscapeKey);
+    };
+  }, [mobileMenuOpen, dropdownOpen]);
+
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [mobileMenuOpen]);
 
   const handleDropdownItemClick = () => {
     closeDropdown();
