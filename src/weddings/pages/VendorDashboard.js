@@ -608,7 +608,10 @@ const VendorDashboard = () => {
         ...service,
         id: service.id || `service-${index}-${Date.now()}`
       })));
-      setPortfolio(vendorData.locationPortfolio || []);
+            setPortfolio((vendorData.locationPortfolio || []).map((item, index) => ({
+        ...item,
+        id: item.id || `portfolio-${index}-${Date.now()}`
+      })));
       setPackages(vendorData.packages || []);
       setTestimonials(vendorData.testimonials || []);
       setFaq(vendorData.faq || []);
