@@ -443,8 +443,8 @@ const NotificationSystem = ({ children }) => {
     // Set up periodic checking (every 30 seconds)
     const interval = setInterval(checkForNewEnquiries, 30000);
 
-    return () => clearInterval(interval);
-  }, []);
+        return () => clearInterval(interval);
+  }, [showEnquiryNotification]);
 
   const contextValue = {
     notifications,
