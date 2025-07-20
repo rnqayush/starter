@@ -154,6 +154,12 @@ const HeroActions = styled.div`
   gap: ${theme.spacing.lg};
   justify-content: center;
   flex-wrap: wrap;
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    flex-direction: column;
+    align-items: center;
+    gap: ${theme.spacing.md};
+  }
 `;
 
 const HeroButton = styled.button.withConfig({
