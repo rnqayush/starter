@@ -348,7 +348,13 @@ const Navbar = ({
             </form>
           </SearchContainer>
 
-          <ActionButtons>
+                    <ActionButtons>
+            <IconButton
+              title="Dealer Dashboard"
+              onClick={() => navigate(`${getBaseUrl()}/dealer-dashboard`)}
+            >
+              <FaTachometerAlt />
+            </IconButton>
                         <IconButton
               title="Wishlist"
               onClick={() => navigate(`${getBaseUrl()}/wishlist`)}
@@ -356,7 +362,7 @@ const Navbar = ({
               <FaHeart />
             </IconButton>
             <IconButton title="Contact">
-              <FaEnvelope />
+              <aEnvelope />
             </IconButton>
             <IconButton title="Account">
               <FaUser />
