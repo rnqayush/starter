@@ -364,7 +364,11 @@ const ProductCard = ({
     onToggleWishlist?.(product);
   };
 
-  const getBaseUrl = () => (storeSlug ? `/${storeSlug}` : "/ecommerce");
+    const getBaseUrl = () => (storeSlug ? `/${storeSlug}` : "/ecommerce");
+
+  const availabilityStatus = getAvailabilityStatus(product);
+  const availabilityLabel = getAvailabilityLabel(availabilityStatus);
+  const availabilityColor = getAvailabilityColor(availabilityStatus);
 
   return (
     <Link to={`${getBaseUrl()}/product/${product.id}`}>
