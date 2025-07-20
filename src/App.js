@@ -123,7 +123,7 @@ function App() {
               element={<EcommerceModule />}
             />
 
-                        {/* Dealer-specific Routes (more specific routes first) */}
+                                    {/* Dealer-specific Routes (more specific routes first) */}
             <Route path="/:dealerSlug/vehicles" element={<AutomobileModule />} />
             <Route
               path="/:dealerSlug/vehicle/:id"
@@ -138,6 +138,10 @@ function App() {
               path="/:dealerSlug/trade-in"
               element={<AutomobileModule />}
             />
+
+            {/* Wedding vendor-specific Routes (more specific routes first) */}
+            <Route path="/:vendorSlug/booking" element={<WeddingModule />} />
+            <Route path="/:vendorSlug/booking/:serviceId" element={<WeddingModule />} />
 
             {/* Hotel-specific Routes (more specific routes first) */}
             <Route path="/:hotelSlug/rooms/:roomId" element={<HotelModule />} />
