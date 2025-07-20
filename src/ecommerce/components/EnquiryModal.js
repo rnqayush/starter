@@ -268,10 +268,15 @@ const EnquiryModal = ({
   userInfo = {} 
 }) => {
   const { showSuccessNotification, showEnquiryNotification } = useNotifications();
+  const { user, isAuthenticated } = useAuth();
+
+  // Use authenticated user data if available, otherwise use passed userInfo
+  const userData = isAuthenticated ? user : userInfo;
+
   const [formData, setFormData] = useState({
-    name: userInfo.name || "",
-    phone: userInfo.phone || "",
-    email: userInfo.email || "",
+    name: userData.name || "",
+    phone: userData.phone || "",
+    email: userData.email || "",
     message: "",
     agreeToTerms: false
   });
