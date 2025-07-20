@@ -134,6 +134,84 @@ export const weddingVendors = [
         answer: "We have an extensive network of trusted vendors including photographers, musicians, caterers, and more. We can recommend and coordinate with vendors or work with your chosen suppliers."
       }
     ],
+        locationPortfolio: [
+      {
+        id: "napa-valley-vineyard",
+        location: "Napa Valley Vineyard",
+        city: "Napa Valley",
+        state: "CA",
+        weddingDate: "September 2023",
+        coupleNames: "Sarah & Michael",
+        description: "An enchanting vineyard wedding with rustic elegance and breathtaking sunset views.",
+        coverImage: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=800&q=80",
+        gallery: [
+          "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=600&q=80",
+          "https://images.unsplash.com/photo-1465495976277-4387d4b0e4a6?w=600&q=80",
+          "https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=600&q=80",
+          "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=600&q=80",
+          "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=600&q=80",
+          "https://images.unsplash.com/photo-1464207687429-7505649dae38?w=600&q=80",
+          "https://images.unsplash.com/photo-1606800052052-a08af7148866?w=600&q=80",
+          "https://images.unsplash.com/photo-1594736797933-d0411ba3da6a?w=600&q=80"
+        ],
+        services: ["Full Wedding Planning", "Floral Design", "Venue Decoration", "Day-of Coordination"],
+        highlights: [
+          "Custom vineyard ceremony setup",
+          "Rustic chic reception decor",
+          "Farm-to-table catering coordination",
+          "Sunset photography session"
+        ]
+      },
+      {
+        id: "golden-gate-park",
+        location: "Golden Gate Park Pavilion",
+        city: "San Francisco",
+        state: "CA",
+        weddingDate: "June 2023",
+        coupleNames: "Emma & David",
+        description: "A romantic garden party wedding in the heart of San Francisco with lush greenery and elegant details.",
+        coverImage: "https://images.unsplash.com/photo-1464207687429-7505649dae38?w=800&q=80",
+        gallery: [
+          "https://images.unsplash.com/photo-1464207687429-7505649dae38?w=600&q=80",
+          "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=600&q=80",
+          "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=600&q=80",
+          "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?w=600&q=80",
+          "https://images.unsplash.com/photo-1594736797933-d0411ba3da6a?w=600&q=80",
+          "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600&q=80"
+        ],
+        services: ["Event Planning", "Garden Ceremony Setup", "Reception Coordination"],
+        highlights: [
+          "Botanical garden ceremony",
+          "Outdoor reception pavilion",
+          "City skyline backdrop",
+          "Eco-friendly decor elements"
+        ]
+      },
+      {
+        id: "monterey-bay-resort",
+        location: "Monterey Bay Resort",
+        city: "Monterey",
+        state: "CA",
+        weddingDate: "August 2023",
+        coupleNames: "Jennifer & Mark",
+        description: "A stunning oceanfront wedding with coastal elegance and breathtaking Pacific Ocean views.",
+        coverImage: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=800&q=80",
+        gallery: [
+          "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=600&q=80",
+          "https://images.unsplash.com/photo-1464207687429-7505649dae38?w=600&q=80",
+          "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=600&q=80",
+          "https://images.unsplash.com/photo-1606800052052-a08af7148866?w=600&q=80",
+          "https://images.unsplash.com/photo-1594736797933-d0411ba3da6a?w=600&q=80"
+        ],
+        services: ["Beachfront Ceremony", "Resort Coordination", "Coastal Decor", "Vendor Management"],
+        highlights: [
+          "Oceanfront ceremony arch",
+          "Sunset cocktail hour",
+          "Seaside reception setup",
+          "Marine-themed centerpieces"
+        ]
+      }
+    ],
     socialLinks: {
       instagram: "https://instagram.com/elegantevents",
       facebook: "https://facebook.com/elegantevents",
