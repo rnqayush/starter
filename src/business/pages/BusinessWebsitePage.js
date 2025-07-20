@@ -941,22 +941,42 @@ const BusinessWebsitePage = () => {
               </AboutImage>
             </AboutGrid>
             
-            <StatsGrid>
+                        <StatsGrid>
               <StatCard primaryColor={businessData.primaryColor}>
-                <div className="number">500+</div>
-                <div className="label">Happy Clients</div>
+                <div className="number">
+                  {businessData.slug === 'restaurant' ? '2,500+' :
+                   businessData.slug === 'gym' ? '1,200+' :
+                   businessData.slug === 'salon' ? '850+' : '500+'}
+                </div>
+                <div className="label">
+                  {businessData.slug === 'restaurant' ? 'Meals Served' :
+                   businessData.slug === 'gym' ? 'Active Members' :
+                   businessData.slug === 'salon' ? 'Services Completed' : 'Happy Clients'}
+                </div>
               </StatCard>
               <StatCard primaryColor={businessData.primaryColor}>
-                <div className="number">5+</div>
+                <div className="number">
+                  {businessData.slug === 'restaurant' ? '15+' :
+                   businessData.slug === 'gym' ? '8+' :
+                   businessData.slug === 'salon' ? '12+' : '5+'}
+                </div>
                 <div className="label">Years Experience</div>
               </StatCard>
               <StatCard primaryColor={businessData.primaryColor}>
-                <div className="number">98%</div>
-                <div className="label">Satisfaction Rate</div>
+                <div className="number">4.9</div>
+                <div className="label">★ Average Rating</div>
               </StatCard>
               <StatCard primaryColor={businessData.primaryColor}>
-                <div className="number">24/7</div>
-                <div className="label">Support</div>
+                <div className="number">
+                  {businessData.slug === 'restaurant' ? '7 Days' :
+                   businessData.slug === 'gym' ? '6AM-11PM' :
+                   businessData.slug === 'salon' ? 'Mon-Sat' : '24/7'}
+                </div>
+                <div className="label">
+                  {businessData.slug === 'restaurant' ? 'Weekly Service' :
+                   businessData.slug === 'gym' ? 'Operating Hours' :
+                   businessData.slug === 'salon' ? 'Open Days' : 'Support'}
+                </div>
               </StatCard>
             </StatsGrid>
           </SectionContainer>
