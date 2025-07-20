@@ -912,12 +912,39 @@ const VendorDashboard = () => {
     }));
   };
 
-  const removePortfolioHighlight = (index) => {
+    const removePortfolioHighlight = (index) => {
     setPortfolioForm(prev => ({
       ...prev,
       highlights: prev.highlights.filter((_, i) => i !== index)
     }));
   };
+
+  const closeMobileSidebar = () => setMobileSidebarOpen(false);
+
+  // Close mobile sidebar on escape key
+  useEffect(() => {
+    const handleEscapeKey = (event) => {
+      if (event.key === "Escape" && mobileSidebarOpen) {
+        closeMobileSidebar();
+      }
+    };
+
+    document.addEventListener("keydown", handleEscapeKey);
+    return () => document.removeEventListener("keydown", handleEscapeKey);
+  }, [mobileSidebarOpen]);
+
+  // Prevent body scroll when mobile sidebar is open
+  useEffect(() => {
+    if (mobileSidebarOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [mobileSidebarOpen]);
 
   const renderContent = () => {
     switch (activeSection) {
