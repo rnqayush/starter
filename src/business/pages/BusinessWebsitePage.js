@@ -224,14 +224,24 @@ const HeroContent = styled.div`
 `;
 
 const HeroTitle = styled.h1`
-  font-size: 3.5rem;
-  font-weight: 800;
+  font-size: 3.8rem;
+  font-weight: 900;
   color: ${theme.colors.gray900};
   margin-bottom: ${theme.spacing.lg};
   line-height: 1.1;
+  letter-spacing: -0.02em;
+  text-align: center;
+  background: linear-gradient(135deg, ${theme.colors.gray900} 0%, ${theme.colors.gray700} 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    font-size: 2.5rem;
+    font-size: 2.8rem;
+  }
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    font-size: 3.2rem;
   }
 `;
 
