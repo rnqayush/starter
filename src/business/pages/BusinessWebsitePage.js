@@ -800,8 +800,8 @@ const BusinessWebsitePage = () => {
         </div>
       </EditModeBanner>
       
-      {/* Navbar */}
-      <Navbar>
+            {/* Navbar */}
+      <Navbar isEditing={isEditing}>
         <NavContainer>
           <BackToListButton onClick={handleBackToList}>
             <FaArrowLeft />
