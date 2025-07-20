@@ -10,6 +10,7 @@ import {
   FaHome,
   FaEnvelope,
   FaHeart,
+  FaTachometerAlt,
 } from "react-icons/fa";
 import { theme } from "../../styles/GlobalStyle";
 
