@@ -894,10 +894,13 @@ const PlatformHomePage = () => {
         </ExploreStoresContainer>
       </ExploreStoresSection>
 
-      {/* Why Choose Us Section */}
+            {/* Why Choose Us Section */}
       <WhyChooseUsSection>
         <WhyChooseUsContainer>
-          <SectionTitle>Why Smart Sellers Choose Our Platform</SectionTitle>
+          <SectionTitle>Why Leading Brands Choose StoreBuilder</SectionTitle>
+          <SectionSubtitle>
+            Join thousands of successful businesses who trust our platform to power their online growth.
+          </SectionSubtitle>
           <BenefitsGrid>
             {benefits.map((benefit, index) => {
               const IconComponent = benefit.icon;
@@ -914,6 +917,37 @@ const PlatformHomePage = () => {
           </BenefitsGrid>
         </WhyChooseUsContainer>
       </WhyChooseUsSection>
+
+      {/* Testimonials Section */}
+      <TestimonialsSection>
+        <TestimonialsContainer>
+          <SectionTitle>Trusted by Industry Leaders</SectionTitle>
+          <SectionSubtitle>
+            Don't just take our word for it. Here's what our customers say about their success with StoreBuilder.
+          </SectionSubtitle>
+          <TestimonialsGrid>
+            {testimonials.map((testimonial, index) => (
+              <TestimonialCard key={index}>
+                <TestimonialQuote>
+                  <FaQuoteLeft />
+                </TestimonialQuote>
+                <TestimonialText>{testimonial.text}</TestimonialText>
+                <TestimonialAuthor>
+                  <AuthorInfo>
+                    <h4>{testimonial.name}</h4>
+                    <p>{testimonial.role}</p>
+                  </AuthorInfo>
+                  <StarRating>
+                    {[...Array(testimonial.rating)].map((_, i) => (
+                      <FaStar key={i} />
+                    ))}
+                  </StarRating>
+                </TestimonialAuthor>
+              </TestimonialCard>
+            ))}
+          </TestimonialsGrid>
+        </TestimonialsContainer>
+      </TestimonialsSection>
 
       {/* CTA Banner Section */}
       <CTABannerSection>
