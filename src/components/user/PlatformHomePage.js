@@ -14,11 +14,14 @@ import {
   FaPhone,
   FaEnvelope,
   FaMapMarkerAlt,
-  FaHandPaper,
   FaPalette,
-  FaMobile,
-  FaHeadset,
   FaRocket,
+  FaCheck,
+  FaStar,
+  FaQuoteLeft,
+  FaCode,
+  FaCloud,
+  FaLock,
 } from "react-icons/fa";
 import Header from "../shared/Header";
 import { Button } from "../shared/Button";
@@ -31,13 +34,13 @@ const PageContainer = styled.div`
 
 // Hero Section Styles
 const HeroSection = styled.section`
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 35%, #334155 100%);
   color: ${theme.colors.white};
   padding: ${theme.spacing.xxl} 0;
   text-align: center;
   position: relative;
   overflow: hidden;
-  min-height: 80vh;
+  min-height: 85vh;
   display: flex;
   align-items: center;
 
@@ -48,18 +51,28 @@ const HeroSection = styled.section`
     left: 0;
     right: 0;
     bottom: 0;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><polygon fill="%23ffffff08" points="0,0 1000,300 1000,1000 0,700"/></svg>');
-    background-size: cover;
+    background: radial-gradient(circle at 30% 40%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(168, 85, 247, 0.1) 0%, transparent 50%);
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse"><path d="M 50 0 L 0 0 0 50" fill="none" stroke="%23ffffff05" stroke-width="1"/></pattern></defs><rect width="100%" height="100%" fill="url(%23grid)"/></svg>');
   }
 
   ${media.mobile} {
     padding: ${theme.spacing.xl} 0;
-    min-height: 70vh;
+    min-height: 75vh;
   }
 
   ${media.tablet} {
     padding: ${theme.spacing.xxl} 0;
-    min-height: 75vh;
+    min-height: 80vh;
   }
 `;
 
@@ -85,39 +98,69 @@ const HeroContent = styled.div`
 `;
 
 const HeroTitle = styled.h1`
-  font-size: 4rem;
-  font-weight: 700;
+  font-size: 4.5rem;
+  font-weight: 800;
   margin-bottom: ${theme.spacing.lg};
-  background: linear-gradient(45deg, #ffffff, #f0f8ff);
+  background: linear-gradient(135deg, #ffffff 0%, #e0e7ff 50%, #c7d2fe 100%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   line-height: 1.1;
+  letter-spacing: -0.02em;
 
   ${media.mobile} {
-    font-size: 2.5rem;
+    font-size: 2.75rem;
     margin-bottom: ${theme.spacing.md};
   }
 
   ${media.tablet} {
-    font-size: 3.25rem;
+    font-size: 3.5rem;
   }
 
   ${media.desktop} {
-    font-size: 4.5rem;
+    font-size: 5rem;
   }
 `;
 
 const HeroSubtitle = styled.p`
-  font-size: 1.5rem;
-  margin-bottom: ${theme.spacing.xl};
-  opacity: 0.9;
-  max-width: 700px;
+  font-size: 1.4rem;
+  margin-bottom: ${theme.spacing.lg};
+  opacity: 0.95;
+  max-width: 750px;
   margin-left: auto;
   margin-right: auto;
+  line-height: 1.6;
+  font-weight: 400;
+  color: #e2e8f0;
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    font-size: 1.2rem;
+    font-size: 1.15rem;
+  }
+`;
+
+const TrustIndicators = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: ${theme.spacing.xl};
+  margin-bottom: ${theme.spacing.xl};
+  flex-wrap: wrap;
+  opacity: 0.8;
+
+  ${media.mobile} {
+    gap: ${theme.spacing.lg};
+  }
+`;
+
+const TrustItem = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.sm};
+  font-size: 0.95rem;
+  color: #cbd5e1;
+
+  svg {
+    color: #10b981;
   }
 `;
 
@@ -131,10 +174,10 @@ const HeroCTAContainer = styled.div`
 `;
 
 const CreateStoreCTA = styled(Button)`
-  padding: ${theme.spacing.lg} ${theme.spacing.xl};
-  font-size: 1.2rem;
+  padding: ${theme.spacing.lg} ${theme.spacing.xxl};
+  font-size: 1.15rem;
   font-weight: 600;
-  background: #10b981;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
   color: ${theme.colors.white};
   border: none;
   border-radius: ${theme.borderRadius.lg};
@@ -142,32 +185,90 @@ const CreateStoreCTA = styled(Button)`
   align-items: center;
   gap: ${theme.spacing.sm};
   transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+  }
+
+  &:hover::before {
+    left: 100%;
+  }
 
   &:hover {
-    background: #059669;
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
     transform: translateY(-2px);
-    box-shadow: ${theme.shadows.xl};
+    box-shadow: 0 20px 40px rgba(16, 185, 129, 0.4);
   }
 `;
 
 const ExploreStoreCTA = styled(Button)`
-  padding: ${theme.spacing.lg} ${theme.spacing.xl};
-  font-size: 1.2rem;
+  padding: ${theme.spacing.lg} ${theme.spacing.xxl};
+  font-size: 1.15rem;
   font-weight: 600;
-  background: #8b5cf6;
+  background: transparent;
   color: ${theme.colors.white};
-  border: none;
+  border: 2px solid rgba(255, 255, 255, 0.3);
   border-radius: ${theme.borderRadius.lg};
   display: flex;
   align-items: center;
   gap: ${theme.spacing.sm};
   transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
 
   &:hover {
-    background: #7c3aed;
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.5);
     transform: translateY(-2px);
-    box-shadow: ${theme.shadows.xl};
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
   }
+`;
+
+// Stats Section Styles
+const StatsSection = styled.section`
+  padding: ${theme.spacing.xxl} 0;
+  background: ${theme.colors.white};
+  border-bottom: 1px solid ${theme.colors.gray200};
+`;
+
+const StatsContainer = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 ${theme.spacing.md};
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: ${theme.spacing.xl};
+  text-align: center;
+`;
+
+const StatCard = styled.div`
+  padding: ${theme.spacing.lg};
+`;
+
+const StatNumber = styled.div`
+  font-size: 3rem;
+  font-weight: 800;
+  color: ${theme.colors.primary};
+  margin-bottom: ${theme.spacing.sm};
+  line-height: 1;
+
+  ${media.mobile} {
+    font-size: 2.5rem;
+  }
+`;
+
+const StatLabel = styled.div`
+  font-size: 1rem;
+  color: ${theme.colors.gray600};
+  font-weight: 500;
 `;
 
 // Explore Stores Section Styles
@@ -183,11 +284,16 @@ const ExploreStoresContainer = styled.div`
 `;
 
 const SectionTitle = styled.h2`
-  font-size: 2.5rem;
-  font-weight: 700;
+  font-size: 2.8rem;
+  font-weight: 800;
   text-align: center;
   margin-bottom: ${theme.spacing.md};
   color: ${theme.colors.gray900};
+  letter-spacing: -0.02em;
+
+  ${media.mobile} {
+    font-size: 2.2rem;
+  }
 `;
 
 const SectionSubtitle = styled.p`
@@ -351,7 +457,102 @@ const BenefitTitle = styled.h3`
 
 const BenefitDescription = styled.p`
   color: ${theme.colors.gray600};
-  line-height: 1.6;
+  line-height: 1.7;
+  font-size: 1rem;
+`;
+
+// Testimonials Section Styles
+const TestimonialsSection = styled.section`
+  padding: ${theme.spacing.xxl} 0;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+`;
+
+const TestimonialsContainer = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 ${theme.spacing.md};
+`;
+
+const TestimonialsGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: ${theme.spacing.xl};
+`;
+
+const TestimonialCard = styled.div`
+  background: ${theme.colors.white};
+  border-radius: ${theme.borderRadius.xl};
+  padding: ${theme.spacing.xl};
+  box-shadow: ${theme.shadows.md};
+  border: 1px solid ${theme.colors.gray200};
+  position: relative;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: ${theme.shadows.xl};
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6, #10b981);
+    border-radius: ${theme.borderRadius.xl};
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  &:hover::before {
+    opacity: 1;
+  }
+`;
+
+const TestimonialQuote = styled.div`
+  font-size: 2rem;
+  color: ${theme.colors.primary};
+  margin-bottom: ${theme.spacing.md};
+`;
+
+const TestimonialText = styled.p`
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: ${theme.colors.gray700};
+  margin-bottom: ${theme.spacing.lg};
+  font-style: italic;
+`;
+
+const TestimonialAuthor = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const AuthorInfo = styled.div`
+  h4 {
+    font-weight: 600;
+    color: ${theme.colors.gray900};
+    margin-bottom: ${theme.spacing.xs};
+  }
+
+  p {
+    color: ${theme.colors.gray600};
+    font-size: 0.9rem;
+  }
+`;
+
+const StarRating = styled.div`
+  display: flex;
+  gap: 2px;
+
+  svg {
+    color: #fbbf24;
+    font-size: 1.1rem;
+  }
 `;
 
 // CTA Banner Section Styles
@@ -531,26 +732,54 @@ const PlatformHomePage = () => {
     },
   ];
 
+    const stats = [
+    { number: "50K+", label: "Active Stores" },
+    { number: "99.9%", label: "Uptime" },
+    { number: "24/7", label: "Expert Support" },
+    { number: "4.9/5", label: "Customer Rating" },
+  ];
+
   const benefits = [
     {
-      icon: FaHandPaper,
-      title: "No Tech Headache",
-      description: "Just drag & drop",
+      icon: FaCode,
+      title: "No-Code Platform",
+      description: "Build professional stores without writing a single line of code. Our drag-and-drop interface makes it simple.",
     },
     {
       icon: FaPalette,
-      title: "Custom Designs",
-      description: "Look different, sell better",
+      title: "Unlimited Customization",
+      description: "Design freedom with hundreds of templates and complete brand control. Make your store uniquely yours.",
     },
     {
-      icon: FaMobile,
-      title: "Fast Performance",
-      description: "Optimized for mobile",
+      icon: FaCloud,
+      title: "Enterprise-Grade Infrastructure",
+      description: "Built on reliable cloud infrastructure with 99.9% uptime and lightning-fast loading speeds.",
+    },
+        {
+      icon: FaLock,
+      title: "Secure & Compliant",
+      description: "Bank-level security with SSL certificates, PCI compliance, and automated backups included.",
+    },
+  ];
+
+  const testimonials = [
+    {
+      name: "Sarah Johnson",
+      role: "Hotel Owner",
+      text: "StoreBuilder transformed our booking process. We went from 20% to 85% online bookings in just 3 months.",
+      rating: 5,
     },
     {
-      icon: FaHeadset,
-      title: "24x7 Support",
-      description: "We grow with you",
+      name: "Mike Chen",
+      role: "E-commerce Entrepreneur",
+      text: "The platform paid for itself in the first month. Sales increased by 300% with their conversion-optimized templates.",
+      rating: 5,
+    },
+    {
+      name: "Emily Rodriguez",
+      role: "Wedding Planner",
+      text: "My clients love the professional portfolio gallery. I've booked more weddings this year than ever before.",
+      rating: 5,
     },
   ];
 
@@ -574,34 +803,60 @@ const PlatformHomePage = () => {
     <PageContainer>
       <Header />
 
-      {/* Hero Section */}
+            {/* Hero Section */}
       <HeroSection>
         <HeroContent>
-          <HeroTitle>Launch Your Online Store Without Coding</HeroTitle>
+          <HeroTitle>Build Professional Online Stores in Minutes</HeroTitle>
           <HeroSubtitle>
-            From hotels to ecommerce, go live in minutes — mobile-ready,
-            customizable, and built for growth.
+            Trusted by 50,000+ businesses worldwide. Create stunning, conversion-optimized
+            stores for any industry with our enterprise-grade no-code platform.
           </HeroSubtitle>
+          <TrustIndicators>
+            <TrustItem>
+              <FaCheck />
+              <span>No Credit Card Required</span>
+            </TrustItem>
+            <TrustItem>
+              <FaCheck />
+              <span>14-Day Free Trial</span>
+            </TrustItem>
+            <TrustItem>
+              <FaCheck />
+              <span>24/7 Expert Support</span>
+            </TrustItem>
+          </TrustIndicators>
           <HeroCTAContainer>
             <CreateStoreCTA onClick={handleCreateStore}>
-              🟢 Create My Store
+              Start Building Your Store
               <FaRocket />
             </CreateStoreCTA>
             <ExploreStoreCTA onClick={handleExploreStores}>
-              🟣 Explore Live Stores
+              View Live Examples
               <FaArrowRight />
             </ExploreStoreCTA>
           </HeroCTAContainer>
         </HeroContent>
       </HeroSection>
 
+      {/* Stats Section */}
+      <StatsSection>
+        <StatsContainer>
+          {stats.map((stat, index) => (
+            <StatCard key={index}>
+              <StatNumber>{stat.number}</StatNumber>
+              <StatLabel>{stat.label}</StatLabel>
+            </StatCard>
+          ))}
+        </StatsContainer>
+      </StatsSection>
+
       {/* Explore Stores Section */}
       <ExploreStoresSection id="explore-stores">
         <ExploreStoresContainer>
-          <SectionTitle>See How Others Are Succeeding</SectionTitle>
+                    <SectionTitle>Industry-Specific Solutions</SectionTitle>
           <SectionSubtitle>
-            Hotels, fashion, weddings, cars – discover how business owners like
-            you have built stunning online storefronts.
+            Explore our specialized templates and features designed for your industry.
+            Each solution comes with industry-specific tools and integrations.
           </SectionSubtitle>
           <StoreCardsGrid>
             {storeCategories.map((store) => {
@@ -632,10 +887,13 @@ const PlatformHomePage = () => {
         </ExploreStoresContainer>
       </ExploreStoresSection>
 
-      {/* Why Choose Us Section */}
+            {/* Why Choose Us Section */}
       <WhyChooseUsSection>
         <WhyChooseUsContainer>
-          <SectionTitle>Why Smart Sellers Choose Our Platform</SectionTitle>
+          <SectionTitle>Why Leading Brands Choose StoreBuilder</SectionTitle>
+          <SectionSubtitle>
+            Join thousands of successful businesses who trust our platform to power their online growth.
+          </SectionSubtitle>
           <BenefitsGrid>
             {benefits.map((benefit, index) => {
               const IconComponent = benefit.icon;
@@ -653,11 +911,42 @@ const PlatformHomePage = () => {
         </WhyChooseUsContainer>
       </WhyChooseUsSection>
 
+      {/* Testimonials Section */}
+      <TestimonialsSection>
+        <TestimonialsContainer>
+          <SectionTitle>Trusted by Industry Leaders</SectionTitle>
+          <SectionSubtitle>
+            Don't just take our word for it. Here's what our customers say about their success with StoreBuilder.
+          </SectionSubtitle>
+          <TestimonialsGrid>
+            {testimonials.map((testimonial, index) => (
+              <TestimonialCard key={index}>
+                <TestimonialQuote>
+                  <FaQuoteLeft />
+                </TestimonialQuote>
+                <TestimonialText>{testimonial.text}</TestimonialText>
+                <TestimonialAuthor>
+                  <AuthorInfo>
+                    <h4>{testimonial.name}</h4>
+                    <p>{testimonial.role}</p>
+                  </AuthorInfo>
+                  <StarRating>
+                    {[...Array(testimonial.rating)].map((_, i) => (
+                      <FaStar key={i} />
+                    ))}
+                  </StarRating>
+                </TestimonialAuthor>
+              </TestimonialCard>
+            ))}
+          </TestimonialsGrid>
+        </TestimonialsContainer>
+      </TestimonialsSection>
+
       {/* CTA Banner Section */}
       <CTABannerSection>
         <CTABannerContainer>
-          <CTABannerTitle>
-            Don't Just Watch Others Succeed – Be the Next Big Brand
+                  <CTABannerTitle>
+            Ready to Transform Your Business?
           </CTABannerTitle>
           <CTABannerButton onClick={handleCreateStore}>
             Start My Online Store

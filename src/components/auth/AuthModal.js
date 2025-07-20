@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { 
   FaTimes, 
@@ -21,12 +21,14 @@ const ModalOverlay = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 10000;
+  z-index: 99999;
   backdrop-filter: blur(4px);
+  padding: 1rem;
+  overflow-y: auto;
 `;
 
 const ModalContainer = styled.div`
@@ -34,10 +36,16 @@ const ModalContainer = styled.div`
   border-radius: 16px;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
   max-width: 450px;
-  width: 90%;
-  max-height: 90vh;
+  width: 100%;
+  max-height: calc(100vh - 2rem);
   overflow-y: auto;
   position: relative;
+  margin: auto;
+
+  @media (max-width: 768px) {
+    max-width: 95%;
+    border-radius: 12px;
+  }
 `;
 
 const ModalHeader = styled.div`
@@ -342,6 +350,19 @@ const AuthModal = ({ isOpen, onClose, defaultTab = "login" }) => {
   });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+    // Prevent body scroll when modal is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
