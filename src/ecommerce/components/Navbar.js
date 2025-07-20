@@ -553,11 +553,19 @@ const Navbar = ({
         </SearchContainer>
 
         <NavActions>
-                    <Link to="/">
+                              <Link to="/">
             <UserButton title="Back to Main Site" theme={vendorTheme}>
               <FaHome />
             </UserButton>
           </Link>
+
+          <UserButton title="Wishlist" theme={vendorTheme}>
+            <FaHeart />
+          </UserButton>
+
+          <UserButton title="Notifications" theme={vendorTheme}>
+            <FaBell />
+          </UserButton>
 
                               {isAuthenticated ? (
             <UserDropdown ref={dropdownRef}>
