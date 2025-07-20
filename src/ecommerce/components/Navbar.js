@@ -423,7 +423,7 @@ const Navbar = ({
             </UserButton>
           </Link>
 
-          <UserDropdown>
+                    <UserDropdown ref={dropdownRef}>
             <UserDropdownButton
               onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)}
               theme={vendorTheme}
