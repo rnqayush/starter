@@ -1407,8 +1407,8 @@ const VendorDashboard = () => {
           {Object.entries(groupedNavItems).map(([section, items]) => (
             <NavSection key={section}>
               <NavSectionTitle>{section}</NavSectionTitle>
-              {items.map((item) => (
-                <NavItem
+                            {items.map((item) => (
+                                <NavItem
                   key={item.id}
                   active={activeSection === item.id}
                   onClick={() => setActiveSection(item.id)}
