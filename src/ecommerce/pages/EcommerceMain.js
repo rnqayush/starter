@@ -431,12 +431,11 @@ const EcommerceMain = () => {
                   to miss
                 </SectionSubtitle>
               </SectionHeader>
-              <Grid>
+                            <Grid>
                 {saleProducts.slice(0, 4).map((product) => (
                   <ProductCard
                     key={product.id}
                     product={product}
-                    onAddToCart={handleAddToCart}
                     storeSlug={selectedVendor.slug}
                   />
                 ))}
