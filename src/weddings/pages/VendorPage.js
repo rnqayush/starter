@@ -27,7 +27,7 @@ import {
 } from "react-icons/fa";
 import { theme } from "../../styles/GlobalStyle";
 import { getVendorById } from "../data/vendors";
-import { AuthContext } from "../../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 
 const PageContainer = styled.div`
   min-height: 100vh;
