@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import EcommerceMain from "./pages/EcommerceMain";
 import Products from "./pages/Products";
 import ProductDetail from "./pages/ProductDetail";
+import MyEnquiries from "./pages/MyEnquiries";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import OrderConfirmation from "./pages/OrderConfirmation";
