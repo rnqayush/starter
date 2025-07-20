@@ -530,7 +530,7 @@ const WeddingHome = () => {
   const categories = [
     { name: "Venues", icon: FaLeaf, count: 15, filter: "venue" },
     { name: "Photography", icon: FaCamera, count: 25, filter: "photography" },
-    { name: "Catering", icon: FaCake, count: 18, filter: "catering" },
+        { name: "Catering", icon: FaBirthdayCake, count: 18, filter: "catering" },
     { name: "Music & DJ", icon: FaMusic, count: 12, filter: "music" },
     { name: "Floral", icon: FaLeaf, count: 20, filter: "floral" },
     { name: "Jewelry", icon: FaGem, count: 8, filter: "jewelry" },
