@@ -510,7 +510,9 @@ const TestimonialsGrid = styled.div`
   gap: ${theme.spacing.xl};
 `;
 
-const TestimonialCard = styled.div`
+const TestimonialCard = styled.div.withConfig({
+  shouldForwardProp: (prop) => !['primaryColor'].includes(prop),
+})`
   background: white;
   border-radius: ${theme.borderRadius.lg};
   padding: ${theme.spacing.xl};
