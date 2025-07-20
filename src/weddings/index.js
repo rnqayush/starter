@@ -32,9 +32,10 @@ const WeddingModule = () => {
       <Route path="/booking-confirmation" element={<BookingConfirmation />} />
       <Route path="/my-bookings" element={<MyBookings />} />
       
-                  {/* Vendor-specific routes */}
+                        {/* Vendor-specific routes */}
       <Route path="/:vendorSlug" element={<VendorPage />} />
       <Route path="/:vendorSlug/portfolio" element={<VendorPortfolio />} />
+      <Route path="/:vendorSlug/dashboard" element={<VendorDashboard />} />
       <Route path="/:vendorSlug/booking" element={<BookingPage />} />
       <Route path="/:vendorSlug/booking/:serviceId" element={<BookingPage />} />
       <Route path="/:vendorSlug/detail" element={<VendorDetail />} />
