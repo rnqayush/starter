@@ -39,7 +39,9 @@ const DashboardContainer = styled.div`
   display: flex;
 `;
 
-const Sidebar = styled.div`
+const Sidebar = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "mobileOpen",
+})`
   width: 280px;
   background: ${theme.colors.white};
   border-right: 1px solid ${theme.colors.gray200};
@@ -55,8 +57,14 @@ const Sidebar = styled.div`
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     width: 100%;
-    position: relative;
-    height: auto;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 1000;
+    transform: translateX(${(props) => (props.mobileOpen ? "0" : "-100%")});
+    transition: transform 0.3s ease;
+    overflow-y: auto;
   }
 `;
 
@@ -125,10 +133,60 @@ const NavItem = styled.button.withConfig({
   }
 `;
 
+const MobileMenuButton = styled.button`
+  display: none;
+  position: fixed;
+  top: ${theme.spacing.lg};
+  left: ${theme.spacing.lg};
+  z-index: 1001;
+  background: ${theme.colors.primary};
+  color: white;
+  border: none;
+  border-radius: ${theme.borderRadius.md};
+  padding: ${theme.spacing.sm};
+  font-size: 1.25rem;
+  cursor: pointer;
+  box-shadow: ${theme.shadows.md};
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: ${theme.colors.primaryDark};
+    transform: scale(1.05);
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+`;
+
+const MobileSidebarOverlay = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "isOpen",
+})`
+  display: none;
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    opacity: ${(props) => (props.isOpen ? "1" : "0")};
+    visibility: ${(props) => (props.isOpen ? "visible" : "hidden")};
+    transition: all 0.3s ease;
+    backdrop-filter: blur(4px);
+  }
+`;
+
 const MainContent = styled.div`
   flex: 1;
   margin-left: 280px;
   padding: ${theme.spacing.xl};
+  min-height: 100vh;
 
   @media (max-width: ${theme.breakpoints.tablet}) {
     margin-left: 260px;
@@ -138,6 +196,7 @@ const MainContent = styled.div`
   @media (max-width: ${theme.breakpoints.mobile}) {
     margin-left: 0;
     padding: ${theme.spacing.md};
+    padding-top: 4rem; /* Account for mobile menu button */
   }
 `;
 
