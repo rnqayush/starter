@@ -693,9 +693,14 @@ const ProductDetail = () => {
               </VariantSection>
             )}
 
-                        <StockInfo inStock={product.stock > 0}>
+                                    <StockInfo inStock={getAvailabilityStatus(product) !== "out_of_stock"}>
               <FaCheck />
-              {product.stock > 0 ? "Available" : "Not Available"}
+              {getAvailabilityLabel(getAvailabilityStatus(product))}
+              {getAvailabilityStatus(product) === "in_stock" && product.stock > 0 && (
+                <span style={{ marginLeft: "8px", fontSize: "0.9rem", opacity: 0.8 }}>
+                  ({product.stock} units available)
+                </span>
+              )}
             </StockInfo>
 
             <SellerInfo>
