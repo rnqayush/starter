@@ -1609,9 +1609,16 @@ const VendorDashboard = () => {
     return acc;
   }, {});
 
-  return (
+    return (
     <DashboardContainer>
-      <Sidebar>
+      <MobileSidebarOverlay isOpen={mobileSidebarOpen} onClick={closeMobileSidebar} />
+      <MobileMenuButton
+        onClick={() => setMobileSidebarOpen(!mobileSidebarOpen)}
+        aria-label={mobileSidebarOpen ? "Close menu" : "Open menu"}
+      >
+        {mobileSidebarOpen ? <FaTimes /> : <FaBars />}
+      </MobileMenuButton>
+      <Sidebar mobileOpen={mobileSidebarOpen}>
         <SidebarHeader>
           <VendorName>{vendor.name}</VendorName>
           <VendorRole>Wedding Vendor Dashboard</VendorRole>
