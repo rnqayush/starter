@@ -21,12 +21,14 @@ const ModalOverlay = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 10000;
+  z-index: 99999;
   backdrop-filter: blur(4px);
+  padding: 1rem;
+  overflow-y: auto;
 `;
 
 const ModalContainer = styled.div`
