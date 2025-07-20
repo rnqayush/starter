@@ -1704,8 +1704,11 @@ const VendorDashboard = () => {
       >
         {mobileSidebarOpen ? <FaTimes /> : <FaBars />}
       </MobileMenuButton>
-      <Sidebar mobileOpen={mobileSidebarOpen}>
+            <Sidebar mobileOpen={mobileSidebarOpen}>
         <SidebarHeader>
+          <MobileSidebarCloseButton onClick={closeMobileSidebar}>
+            <FaTimes />
+          </MobileSidebarCloseButton>
           <VendorName>{vendor.name}</VendorName>
           <VendorRole>Wedding Vendor Dashboard</VendorRole>
         </SidebarHeader>
