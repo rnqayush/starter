@@ -335,12 +335,11 @@ const Home = () => {
                 Limited time offers you don't want to miss
               </SectionSubtitle>
             </SectionHeader>
-            <Grid>
+                        <Grid>
               {saleProducts.slice(0, 4).map((product) => (
                 <ProductCard
                   key={product.id}
                   product={product}
-                  onAddToCart={handleAddToCart}
                 />
               ))}
             </Grid>
