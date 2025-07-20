@@ -949,8 +949,9 @@ const VendorPage = () => {
 
   const [vendor, setVendor] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [scrolled, setScrolled] = useState(false);
+    const [scrolled, setScrolled] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeGalleryTab, setActiveGalleryTab] = useState('decor');
   const [openFaq, setOpenFaq] = useState(null);
   const [contactForm, setContactForm] = useState({
@@ -991,12 +992,40 @@ const VendorPage = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const scrollToSection = (sectionId) => {
+    const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
+    setMobileMenuOpen(false); // Close mobile menu after navigation
   };
+
+  const closeMobileMenu = () => setMobileMenuOpen(false);
+
+  // Close mobile menu on escape key
+  useEffect(() => {
+    const handleEscapeKey = (event) => {
+      if (event.key === "Escape" && mobileMenuOpen) {
+        closeMobileMenu();
+      }
+    };
+
+    document.addEventListener("keydown", handleEscapeKey);
+    return () => document.removeEventListener("keydown", handleEscapeKey);
+  }, [mobileMenuOpen]);
+
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [mobileMenuOpen]);
 
   const handleContactSubmit = async (e) => {
     e.preventDefault();
@@ -1048,28 +1077,29 @@ const VendorPage = () => {
 
   return (
     <PageContainer>
-      {/* Navigation */}
+            {/* Navigation */}
+      <MobileMenuOverlay isOpen={mobileMenuOpen} onClick={closeMobileMenu} />
       <NavBar scrolled={scrolled}>
         <NavContent>
           <NavLogo scrolled={scrolled}>{vendor.name}</NavLogo>
-          <NavActions>
-            <NavButton onClick={() => navigate('/weddings')} scrolled={scrolled}>
+          <NavActions isOpen={mobileMenuOpen}>
+            <NavButton onClick={() => { navigate('/weddings'); closeMobileMenu(); }} scrolled={scrolled}>
               <FaArrowLeft />
               Back
             </NavButton>
-            <NavButton scrolled={scrolled}>
+            <NavButton onClick={closeMobileMenu} scrolled={scrolled}>
               <FaHeart />
               Save
             </NavButton>
-                        <NavButton scrolled={scrolled}>
+            <NavButton onClick={closeMobileMenu} scrolled={scrolled}>
               <FaShare />
               Share
             </NavButton>
-                        <NavButton onClick={() => navigate(`/${vendorId}/portfolio`)} scrolled={scrolled}>
+            <NavButton onClick={() => { navigate(`/${vendorId}/portfolio`); closeMobileMenu(); }} scrolled={scrolled}>
               <FaImages />
               Portfolio
             </NavButton>
-                        <NavButton onClick={() => navigate(`/${vendorId}/dashboard`)} scrolled={scrolled}>
+            <NavButton onClick={() => { navigate(`/${vendorId}/dashboard`); closeMobileMenu(); }} scrolled={scrolled}>
               <FaCog />
               Dashboard
             </NavButton>
@@ -1078,6 +1108,13 @@ const VendorPage = () => {
               Enquire Now
             </NavButton>
           </NavActions>
+          <MobileMenuButton
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            scrolled={scrolled}
+            aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+          >
+            {mobileMenuOpen ? <FaTimes /> : <FaBars />}
+          </MobileMenuButton>
         </NavContent>
       </NavBar>
 
