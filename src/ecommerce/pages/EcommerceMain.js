@@ -608,39 +608,28 @@ const EcommerceMain = () => {
           </HeroContent>
         </HeroSection>
 
+                <QuickNavigation>
+          <QuickNavGrid>
+            <QuickNavItem to={`${getBaseUrl()}/products`}>
+              <div className="icon">🛍️</div>
+              All Products
+            </QuickNavItem>
+            <QuickNavItem to={`${getBaseUrl()}/products?featured=true`}>
+              <div className="icon">⭐</div>
+              Featured Items
+            </QuickNavItem>
+            <QuickNavItem to={`${getBaseUrl()}/products?sale=true`}>
+              <div className="icon">🔥</div>
+              Hot Deals
+            </QuickNavItem>
+            <QuickNavItem to={`${getBaseUrl()}/my-enquiries`}>
+              <div className="icon">📧</div>
+              My Enquiries
+            </QuickNavItem>
+          </QuickNavGrid>
+        </QuickNavigation>
+
         <Container>
-          <QuickNavigation>
-            <QuickNavGrid>
-              <QuickNavItem to={`${getBaseUrl()}/products`}>
-                <div className="icon">🛍️</div>
-                <div className="content">
-                  <h3>All Products</h3>
-                  <p>Browse our complete catalog</p>
-                </div>
-              </QuickNavItem>
-              <QuickNavItem to={`${getBaseUrl()}/products?featured=true`}>
-                <div className="icon">⭐</div>
-                <div className="content">
-                  <h3>Featured Items</h3>
-                  <p>Handpicked bestsellers</p>
-                </div>
-              </QuickNavItem>
-              <QuickNavItem to={`${getBaseUrl()}/products?sale=true`}>
-                <div className="icon">🔥</div>
-                <div className="content">
-                  <h3>Hot Deals</h3>
-                  <p>Limited time offers</p>
-                </div>
-              </QuickNavItem>
-              <QuickNavItem to={`${getBaseUrl()}/my-enquiries`}>
-                <div className="icon">📧</div>
-                <div className="content">
-                  <h3>My Enquiries</h3>
-                  <p>Track your requests</p>
-                </div>
-              </QuickNavItem>
-            </QuickNavGrid>
-          </QuickNavigation>
 
           <StoreInfo>
             <StoreInfoGrid>
