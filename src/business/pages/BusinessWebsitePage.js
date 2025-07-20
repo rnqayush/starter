@@ -438,7 +438,9 @@ const TestimonialsGrid = styled.div`
   gap: ${theme.spacing.xl};
 `;
 
-const TestimonialCard = styled.div`
+const TestimonialCard = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'primaryColor',
+})`
   background: ${theme.colors.white};
   padding: ${theme.spacing.xl};
   border-radius: ${theme.borderRadius.xl};
@@ -494,7 +496,9 @@ const ContactGrid = styled.div`
   }
 `;
 
-const ContactForm = styled.form`
+const ContactForm = styled.form.withConfig({
+  shouldForwardProp: (prop) => prop !== 'primaryColor',
+})`
   display: flex;
   flex-direction: column;
   gap: ${theme.spacing.lg};
