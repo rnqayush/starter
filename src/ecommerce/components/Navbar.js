@@ -62,6 +62,18 @@ const Logo = styled(Link).withConfig({
   display: flex;
   align-items: center;
   gap: ${theme.spacing.sm};
+  flex-shrink: 0;
+  white-space: nowrap;
+  min-width: 0;
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    font-size: 1.4rem;
+    gap: ${theme.spacing.xs};
+  }
+
+  @media (max-width: 1024px) {
+    font-size: 1.6rem;
+  }
 `;
 
 const LogoImage = styled.img`
