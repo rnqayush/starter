@@ -547,12 +547,8 @@ const ProductDetail = () => {
 
   if (loading) {
     return (
-      <PageContainer>
+            <PageContainer>
         <Navbar
-          cartItemsCount={cartItems.reduce(
-            (sum, item) => sum + item.quantity,
-            0,
-          )}
           storeName={vendor?.name || ""}
           storeLogo={vendor?.logo || ""}
           storeSlug={storeSlug}
