@@ -71,7 +71,9 @@ const HeaderActions = styled.div`
   }
 `;
 
-const ActionButton = styled.button`
+const ActionButton = styled.button.withConfig({
+  shouldForwardProp: (prop) => prop !== "primary",
+})`
   background: ${(props) => props.primary ? theme.colors.primary : theme.colors.white};
   color: ${(props) => props.primary ? theme.colors.white : theme.colors.gray700};
   padding: ${theme.spacing.md} ${theme.spacing.lg};
