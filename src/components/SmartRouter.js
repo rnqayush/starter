@@ -2,8 +2,10 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import HotelModule from "../hotel";
 import EcommerceModule from "../ecommerce";
+import AutomobileModule from "../automobiles";
 import { getHotelBySlug } from "../hotel/data/hotels";
 import { getVendorBySlug } from "../ecommerce/data/vendors";
+import { getVendorBySlug as getAutomobileVendorBySlug } from "../automobiles/data/vendors";
 
 const SmartRouter = () => {
   const { slug } = useParams();
