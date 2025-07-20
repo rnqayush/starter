@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { FaTimes, FaUser, FaPhone, FaEnvelope, FaComment, FaCheck } from "react-icons/fa";
 import { theme } from "../../styles/GlobalStyle";
 import { useNotifications } from "./NotificationSystem";
+import { useAuth } from "../../context/AuthContext";
 
 const ModalOverlay = styled.div`
   position: fixed;
