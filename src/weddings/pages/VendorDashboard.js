@@ -269,9 +269,20 @@ const ActionButton = styled.button.withConfig({
     box-shadow: ${theme.shadows.md};
   }
 
-  &:disabled {
+    &:disabled {
     opacity: 0.6;
     cursor: not-allowed;
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.xs} ${theme.spacing.md};
+    font-size: 0.9rem;
+    gap: ${theme.spacing.xs};
+    white-space: nowrap;
+
+    &:hover {
+      transform: none;
+    }
   }
 `;
 
