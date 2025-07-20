@@ -168,13 +168,8 @@ const DealerDashboard = () => {
         return <VehicleInventoryTab dealer={dealer} />;
       case "add-vehicle":
         return <AddVehicleTab dealer={dealer} />;
-      case "bulk-import":
-        return (
-          <div style={{ padding: "2rem", textAlign: "center" }}>
-            <h3>Bulk Import - Coming Soon</h3>
-            <p>CSV import functionality for vehicles will be available soon.</p>
-          </div>
-        );
+            case "bulk-import":
+        return <BulkImportTab dealer={dealer} />;
       case "orders":
         return <SalesOrdersTab dealer={dealer} />;
       case "enquiries":
