@@ -6,6 +6,7 @@ import DealerSidebar from "../components/DealerSidebar";
 import DashboardTab from "../components/DashboardTab";
 import VehicleInventoryTab from "../components/VehicleInventoryTab";
 import AddVehicleTab from "../components/AddVehicleTab";
+import BulkImportTab from "../components/BulkImportTab";
 import SalesOrdersTab from "../components/SalesOrdersTab";
 import EnquiriesTab from "../components/EnquiriesTab";
 import CustomersTab from "../components/CustomersTab";
