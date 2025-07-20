@@ -461,7 +461,7 @@ const VehicleCard = ({
   const availabilityLabel = getAvailabilityLabel(availabilityStatus);
   const availabilityColor = getAvailabilityColor(availabilityStatus);
 
-  return (
+    return (
     <Link to={`${getBaseUrl()}/vehicle/${vehicle.id}`}>
       <Card>
         <ImageContainer>
