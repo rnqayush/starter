@@ -221,13 +221,13 @@ export const theme = {
     tablet: "1024px",
     desktop: "1200px",
   },
-  spacing: {
+    spacing: {
     xs: "0.25rem",
     sm: "0.5rem",
-    md: "1rem",
-    lg: "1.5rem",
-    xl: "2rem",
-    xxl: "3rem",
+    md: "0.875rem",
+    lg: "1.25rem",
+    xl: "1.75rem",
+    xxl: "2.5rem",
   },
   borderRadius: {
     sm: "0.25rem",
@@ -288,42 +288,42 @@ export const containerStyles = `
   }
 
   ${media.desktop} {
-    padding: 0 ${theme.spacing.xl};
+    padding: 0 ${theme.spacing.lg};
   }
 `;
 
 // Responsive text utilities
 export const textResponsive = {
   h1: `
-    font-size: 2.5rem;
+    font-size: 2rem;
     line-height: 1.2;
 
     ${media.mobile} {
-      font-size: 2rem;
+      font-size: 1.75rem;
     }
 
     ${media.tablet} {
-      font-size: 2.25rem;
+      font-size: 1.875rem;
     }
   `,
   h2: `
-    font-size: 2rem;
+    font-size: 1.75rem;
     line-height: 1.3;
 
     ${media.mobile} {
-      font-size: 1.5rem;
+      font-size: 1.375rem;
     }
 
     ${media.tablet} {
-      font-size: 1.75rem;
+      font-size: 1.5rem;
     }
   `,
   h3: `
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     line-height: 1.4;
 
     ${media.mobile} {
-      font-size: 1.25rem;
+      font-size: 1.125rem;
     }
   `,
   body: `
