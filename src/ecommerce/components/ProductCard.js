@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { FaStar, FaHeart, FaShoppingCart } from "react-icons/fa";
+import { FaStar, FaHeart, FaEnvelope } from "react-icons/fa";
 import { theme, media } from "../../styles/GlobalStyle";
+import EnquiryModal from "./EnquiryModal";
 
 const Card = styled.div`
   background: ${theme.colors.white};
