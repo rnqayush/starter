@@ -431,6 +431,10 @@ const Navbar = ({
             <FaCar />
             Classic Cars
           </MobileNavLink>
+                              <MobileNavLink to={`${getBaseUrl()}/dealer-dashboard`} onClick={closeMobileMenu}>
+            <FaTachometerAlt />
+            Dealer Dashboard
+          </MobileNavLink>
                     <MobileNavLink to={`${getBaseUrl()}/wishlist`} onClick={closeMobileMenu}>
             <FaHeart />
             Wishlist
