@@ -232,6 +232,11 @@ const BellIcon = styled.div.withConfig({
 const NotificationItem = ({ notification, onClose, onAction }) => {
   const [isVisible, setIsVisible] = useState(false);
 
+  const handleClose = () => {
+    setIsVisible(false);
+    setTimeout(() => onClose(notification.id), 300);
+  };
+
   useEffect(() => {
     // Trigger animation
     setTimeout(() => setIsVisible(true), 100);
@@ -244,12 +249,7 @@ const NotificationItem = ({ notification, onClose, onAction }) => {
 
       return () => clearTimeout(timer);
     }
-  }, [notification.duration]);
-
-  const handleClose = () => {
-    setIsVisible(false);
-    setTimeout(() => onClose(notification.id), 300);
-  };
+  }, [notification.duration, handleClose]);
 
   const handleAction = (action) => {
     if (action.callback) {
