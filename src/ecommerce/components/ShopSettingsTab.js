@@ -12,13 +12,11 @@ import {
   FaEdit,
   FaUpload,
   FaCamera,
-  FaPalette,
   FaBell,
   FaToggleOn,
   FaToggleOff,
   FaShieldAlt,
-  FaKey,
-  FaTrash,
+  FaTimes,
   FaExclamationTriangle
 } from "react-icons/fa";
 import { theme } from "../../styles/GlobalStyle";
