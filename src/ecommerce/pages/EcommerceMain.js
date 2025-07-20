@@ -323,9 +323,22 @@ const QuickNavigation = styled.div`
 `;
 
 const QuickNavGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: ${theme.spacing.lg};
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 ${theme.spacing.md};
+  display: flex;
+  justify-content: center;
+  gap: ${theme.spacing.xl};
+  flex-wrap: wrap;
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    gap: ${theme.spacing.md};
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    flex-direction: column;
+    gap: ${theme.spacing.sm};
+  }
 `;
 
 const QuickNavItem = styled(Link)`
