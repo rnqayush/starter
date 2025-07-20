@@ -193,7 +193,12 @@ const FormField = ({
   children,
   ...props
 }) => {
-  const renderInput = () => {
+    const renderInput = () => {
+    // If children are provided, render them instead of input elements
+    if (children) {
+      return children;
+    }
+
     if (type === "textarea") {
       return (
         <Textarea
