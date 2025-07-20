@@ -17,10 +17,10 @@ const WeddingModule = () => {
   return (
     <Routes>
       {/* Main wedding routes */}
-      <Route path="/weddings" element={<WeddingHome />} />
-      <Route path="/weddings/booking/:vendorId" element={<BookingPage />} />
-      <Route path="/weddings/booking-confirmation" element={<BookingConfirmation />} />
-      <Route path="/weddings/my-bookings" element={<MyBookings />} />
+            <Route path="/" element={<WeddingHome />} />
+      <Route path="/booking/:vendorId" element={<BookingPage />} />
+      <Route path="/booking-confirmation" element={<BookingConfirmation />} />
+      <Route path="/my-bookings" element={<MyBookings />} />
       
       {/* Vendor-specific routes */}
       <Route path="/:vendorSlug" element={<VendorDetail />} />
