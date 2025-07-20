@@ -811,7 +811,7 @@ const LoadingSpinner = styled.div`
 const VendorPage = () => {
   const { vendorSlug } = useParams();
   const navigate = useNavigate();
-  const { user } = useContext(AuthContext);
+  const { user } = useAuth();
   
   const [vendor, setVendor] = useState(null);
   const [loading, setLoading] = useState(true);
