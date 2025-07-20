@@ -106,8 +106,12 @@ function App() {
             {/* Automobile Routes */}
             <Route path="/automobiles/*" element={<AutomobileModule />} />
 
-            {/* Wedding Routes */}
+                        {/* Wedding Routes */}
             <Route path="/weddings/*" element={<WeddingModule />} />
+
+            {/* Business Website Routes */}
+            <Route path="/business-websites" element={<BusinessModule />} />
+            <Route path="/business/:businessSlug" element={<BusinessModule />} />
 
                                     {/* Store-specific Routes (more specific routes first) */}
             <Route path="/:storeSlug/products" element={<EcommerceModule />} />
