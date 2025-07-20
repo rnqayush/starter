@@ -192,27 +192,27 @@ const BackToListButton = styled.button`
 
 // Hero Section Styles
 const HeroSection = styled.section.withConfig({
-  shouldForwardProp: (prop) => prop !== 'primaryColor',
+  shouldForwardProp: (prop) => prop !== 'primaryColor' && prop !== 'businessType',
 })`
+  height: 100vh;
   background: linear-gradient(
-    135deg,
-    ${props => props.primaryColor + '20'} 0%,
-    ${props => props.primaryColor + '10'} 100%
-  );
-  padding: ${theme.spacing.xxl} 0;
+    rgba(0, 0, 0, 0.4),
+    rgba(0, 0, 0, 0.6)
+  ), url(${props =>
+    props.businessType === 'gym' ? 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?ixlib=rb-4.0.3&w=1200&q=80' :
+    props.businessType === 'restaurant' ? 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&w=1200&q=80' :
+    props.businessType === 'salon' ? 'https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-4.0.3&w=1200&q=80' :
+    'https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&w=1200&q=80'
+  });
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
   position: relative;
   overflow: hidden;
-
-  &::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse"><path d="M 50 0 L 0 0 0 50" fill="none" stroke="%23000003" stroke-width="1"/></pattern></defs><rect width="100%" height="100%" fill="url(%23grid)"/></svg>');
-  }
 `;
 
 const HeroContent = styled.div`
