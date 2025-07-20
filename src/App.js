@@ -36,6 +36,7 @@ import {
 // Modules
 import EcommerceModule from "./ecommerce";
 import AutomobileModule from "./automobiles";
+import WeddingModule from "./weddings";
 import SellerDashboardDemo from "./ecommerce/pages/SellerDashboardDemo";
 
 // Store Listing Pages
@@ -98,11 +99,14 @@ function App() {
             />
             <Route path="/auto-dealers" element={<AutoDealersListing />} />
 
-                        {/* Ecommerce Routes */}
+                                    {/* Ecommerce Routes */}
             <Route path="/ecommerce/*" element={<EcommerceModule />} />
 
             {/* Automobile Routes */}
             <Route path="/automobiles/*" element={<AutomobileModule />} />
+
+            {/* Wedding Routes */}
+            <Route path="/weddings/*" element={<WeddingModule />} />
 
                                     {/* Store-specific Routes (more specific routes first) */}
             <Route path="/:storeSlug/products" element={<EcommerceModule />} />
@@ -119,7 +123,7 @@ function App() {
               element={<EcommerceModule />}
             />
 
-                        {/* Dealer-specific Routes (more specific routes first) */}
+                                    {/* Dealer-specific Routes (more specific routes first) */}
             <Route path="/:dealerSlug/vehicles" element={<AutomobileModule />} />
             <Route
               path="/:dealerSlug/vehicle/:id"
@@ -134,6 +138,10 @@ function App() {
               path="/:dealerSlug/trade-in"
               element={<AutomobileModule />}
             />
+
+            {/* Wedding vendor-specific Routes (more specific routes first) */}
+            <Route path="/:vendorSlug/booking" element={<WeddingModule />} />
+            <Route path="/:vendorSlug/booking/:serviceId" element={<WeddingModule />} />
 
             {/* Hotel-specific Routes (more specific routes first) */}
             <Route path="/:hotelSlug/rooms/:roomId" element={<HotelModule />} />

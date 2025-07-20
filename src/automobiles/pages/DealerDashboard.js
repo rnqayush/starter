@@ -6,12 +6,14 @@ import DealerSidebar from "../components/DealerSidebar";
 import DashboardTab from "../components/DashboardTab";
 import VehicleInventoryTab from "../components/VehicleInventoryTab";
 import AddVehicleTab from "../components/AddVehicleTab";
+import BulkImportTab from "../components/BulkImportTab";
 import SalesOrdersTab from "../components/SalesOrdersTab";
 import EnquiriesTab from "../components/EnquiriesTab";
 import CustomersTab from "../components/CustomersTab";
 import FinancingTab from "../components/FinancingTab";
 import TradeInsTab from "../components/TradeInsTab";
 import ServiceAppointmentsTab from "../components/ServiceAppointmentsTab";
+import PromotionsTab from "../components/PromotionsTab";
 import DealerSettingsTab from "../components/DealerSettingsTab";
 import AnalyticsTab from "../components/AnalyticsTab";
 import { getVendorByIdOrSlug } from "../data/vendors";
@@ -167,13 +169,8 @@ const DealerDashboard = () => {
         return <VehicleInventoryTab dealer={dealer} />;
       case "add-vehicle":
         return <AddVehicleTab dealer={dealer} />;
-      case "bulk-import":
-        return (
-          <div style={{ padding: "2rem", textAlign: "center" }}>
-            <h3>Bulk Import - Coming Soon</h3>
-            <p>CSV import functionality for vehicles will be available soon.</p>
-          </div>
-        );
+            case "bulk-import":
+        return <BulkImportTab dealer={dealer} />;
       case "orders":
         return <SalesOrdersTab dealer={dealer} />;
       case "enquiries":
@@ -186,13 +183,8 @@ const DealerDashboard = () => {
         return <TradeInsTab dealer={dealer} />;
       case "service":
         return <ServiceAppointmentsTab dealer={dealer} />;
-      case "promotions":
-        return (
-          <div style={{ padding: "2rem", textAlign: "center" }}>
-            <h3>Promotions & Deals - Coming Soon</h3>
-            <p>Promotional campaign management will be available soon.</p>
-          </div>
-        );
+            case "promotions":
+        return <PromotionsTab dealer={dealer} />;
       case "dealer-settings":
         return <DealerSettingsTab dealer={dealer} />;
       case "analytics":
