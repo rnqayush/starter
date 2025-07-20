@@ -147,7 +147,7 @@ function App() {
 
             
 
-            {/* Hotel-specific Routes (more specific routes first) */}
+                        {/* Hotel-specific Routes (more specific routes first) */}
             <Route path="/:hotelSlug/rooms/:roomId" element={<HotelModule />} />
             <Route
               path="/:hotelSlug/booking/:roomId"
