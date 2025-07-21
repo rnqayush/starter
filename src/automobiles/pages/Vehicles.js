@@ -11,9 +11,6 @@ import {
   vehicles,
   categories,
   getVehiclesByCategory,
-  getVehiclesByMake,
-  getVehiclesByPriceRange,
-  getVehiclesByCondition,
 } from "../data/vehicles";
 import { getVendorByIdOrSlug } from "../data/vendors";
 
@@ -274,7 +271,7 @@ const Vehicles = () => {
   });
   const [viewMode, setViewMode] = useState("grid");
 
-  const getBaseUrl = () => selectedDealer ? `/${selectedDealer.slug}` : "/automobiles";
+
 
   const makes = [...new Set(vehicles.map(v => v.make))].sort();
   const conditions = [...new Set(vehicles.map(v => v.condition))].sort();
