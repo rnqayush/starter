@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import HotelModule from "../hotel";
 import EcommerceModule from "../ecommerce";
 import AutomobileModule from "../automobiles";
