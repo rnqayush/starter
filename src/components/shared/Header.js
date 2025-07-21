@@ -5,13 +5,17 @@ import { FaHotel, FaBars, FaTimes, FaChevronDown } from "react-icons/fa";
 import { theme, media } from "../../styles/GlobalStyle";
 import { Button } from "./Button";
 
-const HeaderContainer = styled.header`
-  background: ${theme.colors.white};
-  box-shadow: ${theme.shadows.sm};
-  position: sticky;
+const HeaderContainer = styled.header.withConfig({
+  shouldForwardProp: (prop) => prop !== "isScrolled",
+})`
+  background: ${(props) => props.isScrolled ? theme.colors.white : 'transparent'};
+  box-shadow: ${(props) => props.isScrolled ? theme.shadows.sm : 'none'};
+  position: fixed;
   top: 0;
   z-index: 100;
   width: 100%;
+  transition: all 0.3s ease;
+  backdrop-filter: ${(props) => props.isScrolled ? 'none' : 'blur(10px)'};
 `;
 
 const HeaderContent = styled.div`
@@ -45,15 +49,18 @@ const HeaderContent = styled.div`
   }
 `;
 
-const Logo = styled(Link)`
+const Logo = styled(Link).withConfig({
+  shouldForwardProp: (prop) => prop !== "isScrolled",
+})`
   display: flex;
   align-items: center;
   gap: ${theme.spacing.sm};
   font-size: 1.25rem;
   font-weight: 700;
-  color: ${theme.colors.primary};
+  color: ${(props) => props.isScrolled ? theme.colors.primary : theme.colors.white};
   text-decoration: none;
   flex-shrink: 0;
+  transition: color 0.3s ease;
 
   ${media.mobile} {
     font-size: 1.125rem;
@@ -114,13 +121,15 @@ const Nav = styled.nav.withConfig({
   }
 `;
 
-const NavLink = styled(Link)`
-  color: ${theme.colors.gray700};
+const NavLink = styled(Link).withConfig({
+  shouldForwardProp: (prop) => prop !== "isScrolled",
+})`
+  color: ${(props) => props.isScrolled ? theme.colors.gray700 : 'rgba(255, 255, 255, 0.9)'};
   font-weight: 500;
   text-decoration: none;
   padding: ${theme.spacing.xs} ${theme.spacing.sm};
   border-radius: ${theme.borderRadius.md};
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   white-space: nowrap;
   display: flex;
   align-items: center;
@@ -128,8 +137,8 @@ const NavLink = styled(Link)`
   font-size: 0.875rem;
 
   &:hover {
-    color: ${theme.colors.primary};
-    background: ${theme.colors.gray50};
+    color: ${(props) => props.isScrolled ? theme.colors.primary : theme.colors.white};
+    background: ${(props) => props.isScrolled ? theme.colors.gray50 : 'rgba(255, 255, 255, 0.1)'};
     transform: translateY(-1px);
   }
 
@@ -146,6 +155,12 @@ const NavLink = styled(Link)`
     justify-content: center;
     font-size: 1.125rem;
     border-radius: ${theme.borderRadius.lg};
+    color: ${theme.colors.gray700};
+
+    &:hover {
+      color: ${theme.colors.primary};
+      background: ${theme.colors.gray50};
+    }
   }
 
   @media (min-width: 769px) and (max-width: 1024px) {
@@ -174,26 +189,26 @@ const DropdownContainer = styled.div`
 `;
 
 const DropdownButton = styled.button.withConfig({
-  shouldForwardProp: (prop) => prop !== "isOpen",
+  shouldForwardProp: (prop) => prop !== "isOpen" && prop !== "isScrolled",
 })`
   display: flex;
   align-items: center;
   justify-content: center;
   gap: ${theme.spacing.xs};
-  color: ${theme.colors.gray700};
+  color: ${(props) => props.isScrolled ? theme.colors.gray700 : 'rgba(255, 255, 255, 0.9)'};
   font-weight: 500;
   background: none;
   border: none;
   padding: ${theme.spacing.xs} ${theme.spacing.sm};
   border-radius: ${theme.borderRadius.md};
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   cursor: pointer;
   white-space: nowrap;
   font-size: 0.875rem;
 
   &:hover {
-    color: ${theme.colors.primary};
-    background: ${theme.colors.gray50};
+    color: ${(props) => props.isScrolled ? theme.colors.primary : theme.colors.white};
+    background: ${(props) => props.isScrolled ? theme.colors.gray50 : 'rgba(255, 255, 255, 0.1)'};
     transform: translateY(-1px);
   }
 
@@ -213,6 +228,12 @@ const DropdownButton = styled.button.withConfig({
     width: 100%;
     font-size: 1.125rem;
     border-radius: ${theme.borderRadius.lg};
+    color: ${theme.colors.gray700};
+
+    &:hover {
+      color: ${theme.colors.primary};
+      background: ${theme.colors.gray50};
+    }
   }
 
   @media (min-width: 769px) and (max-width: 1024px) {
@@ -330,20 +351,22 @@ const UserSection = styled.div`
   }
 `;
 
-const LoginButton = styled(Link)`
-  color: ${theme.colors.gray700};
+const LoginButton = styled(Link).withConfig({
+  shouldForwardProp: (prop) => prop !== "isScrolled",
+})`
+  color: ${(props) => props.isScrolled ? theme.colors.gray700 : 'rgba(255, 255, 255, 0.9)'};
   font-weight: 500;
   text-decoration: none;
   padding: ${theme.spacing.sm} ${theme.spacing.md};
   border-radius: ${theme.borderRadius.md};
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   white-space: nowrap;
   display: flex;
   align-items: center;
 
   &:hover {
-    color: ${theme.colors.primary};
-    background: ${theme.colors.gray50};
+    color: ${(props) => props.isScrolled ? theme.colors.primary : theme.colors.white};
+    background: ${(props) => props.isScrolled ? theme.colors.gray50 : 'rgba(255, 255, 255, 0.1)'};
     transform: translateY(-1px);
   }
 
@@ -372,19 +395,22 @@ const LoginButton = styled(Link)`
   }
 `;
 
-const RegisterButton = styled(Button)`
-  background: ${theme.colors.primary};
+const RegisterButton = styled(Button).withConfig({
+  shouldForwardProp: (prop) => prop !== "isScrolled",
+})`
+  background: ${(props) => props.isScrolled ? theme.colors.primary : 'rgba(255, 255, 255, 0.2)'};
   color: ${theme.colors.white};
-  border: none;
+  border: ${(props) => props.isScrolled ? 'none' : '1px solid rgba(255, 255, 255, 0.3)'};
   padding: ${theme.spacing.sm} ${theme.spacing.lg};
   border-radius: ${theme.borderRadius.md};
   font-weight: 500;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   white-space: nowrap;
-  box-shadow: ${theme.shadows.sm};
+  box-shadow: ${(props) => props.isScrolled ? theme.shadows.sm : 'none'};
+  backdrop-filter: ${(props) => props.isScrolled ? 'none' : 'blur(10px)'};
 
   &:hover {
-    background: ${theme.colors.primaryDark};
+    background: ${(props) => props.isScrolled ? theme.colors.primaryDark : 'rgba(255, 255, 255, 0.3)'};
     transform: translateY(-1px);
     box-shadow: ${theme.shadows.md};
   }
@@ -419,22 +445,24 @@ const RegisterButton = styled(Button)`
   }
 `;
 
-const MobileMenuButton = styled.button`
+const MobileMenuButton = styled.button.withConfig({
+  shouldForwardProp: (prop) => prop !== "isScrolled",
+})`
   display: none;
   background: none;
   border: none;
-  color: ${theme.colors.gray700};
+  color: ${(props) => props.isScrolled ? theme.colors.gray700 : theme.colors.white};
   font-size: 1.25rem;
   padding: ${theme.spacing.sm};
   cursor: pointer;
   border-radius: ${theme.borderRadius.md};
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   position: relative;
   z-index: 1000;
 
   &:hover {
-    background: ${theme.colors.gray50};
-    color: ${theme.colors.primary};
+    background: ${(props) => props.isScrolled ? theme.colors.gray50 : 'rgba(255, 255, 255, 0.1)'};
+    color: ${(props) => props.isScrolled ? theme.colors.primary : theme.colors.white};
     transform: scale(1.05);
   }
 
@@ -444,7 +472,7 @@ const MobileMenuButton = styled.button`
   }
 
   &:active {
-    background: ${theme.colors.gray100};
+    background: ${(props) => props.isScrolled ? theme.colors.gray100 : 'rgba(255, 255, 255, 0.2)'};
     transform: scale(0.95);
   }
 
