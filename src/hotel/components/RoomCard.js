@@ -434,20 +434,23 @@ const BookButton = styled(Link)`
   }
 `;
 
-const ViewDetailsButton = styled.button`
+const ViewRoomButton = styled(Link)`
   background: ${theme.colors.white};
   color: ${theme.colors.primary};
   border: 2px solid ${theme.colors.primary};
-  padding: ${theme.spacing.md};
+  padding: ${theme.spacing.md} ${theme.spacing.lg};
   border-radius: ${theme.borderRadius.lg};
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
   min-height: 3rem;
-  min-width: 3rem;
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: ${theme.spacing.sm};
+  text-decoration: none;
+  flex: 0 0 auto;
+  min-width: 120px;
 
   &:hover {
     background: ${theme.colors.primary};
@@ -457,8 +460,9 @@ const ViewDetailsButton = styled.button`
 
   ${media.mobile} {
     min-height: 2.75rem;
-    min-width: 2.75rem;
-    padding: ${theme.spacing.sm};
+    padding: ${theme.spacing.sm} ${theme.spacing.md};
+    font-size: 0.9rem;
+    min-width: 100px;
 
     &:hover {
       transform: translateY(-1px);
@@ -596,9 +600,10 @@ const RoomCard = ({ room, hotelId, hotelSlug }) => {
           <BookButton to={`/${hotelSlug}/booking/${room.id}`}>
             Book Now
           </BookButton>
-          <ViewDetailsButton onClick={() => window.open(`/${hotelSlug}/rooms/${room.id}`, '_blank')}>
+          <ViewRoomButton to={`/${hotelSlug}/rooms/${room.id}`}>
             <FaExpand />
-          </ViewDetailsButton>
+            View Room
+          </ViewRoomButton>
         </BookingActions>
       </CardContent>
     </Card>
