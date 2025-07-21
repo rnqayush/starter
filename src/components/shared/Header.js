@@ -611,7 +611,7 @@ const Header = ({ isOwnerView = false }) => {
       <HeaderContainer isScrolled={isScrolled}>
         <HeaderContent>
           <Logo
-            to={isOwnerView ? "/owner/dashboard" : "/"}
+            to={isOwnerView ? "/" : "/"}
             onClick={closeMobileMenu}
             isScrolled={isScrolled}
           >
