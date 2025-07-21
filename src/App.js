@@ -179,8 +179,6 @@ function App() {
             <Route path="/:vendorSlug/booking" element={<WeddingModule />} />
             <Route path="/:vendorSlug/booking/:serviceId" element={<WeddingModule />} />
 
-            
-
             {/* Generic slug routes - SmartRouter determines hotel vs store */}
             <Route path="/:slug" element={<SmartRouter />} />
 
