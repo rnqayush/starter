@@ -7,6 +7,7 @@ import Booking from "./pages/Booking";
 import RoomsBooking from "./pages/RoomsBooking";
 import BookingConfirmation from "./pages/BookingConfirmation";
 import MyBookings from "./pages/MyBookings";
+import OwnerDashboard from "../components/owner/OwnerDashboard";
 
 const HotelModule = () => {
   const location = useLocation();
@@ -19,6 +20,9 @@ const HotelModule = () => {
     return <BookingConfirmation />;
   } else if (path === "/my-bookings") {
     return <MyBookings />;
+  } else if (path.includes("/owner")) {
+    // Hotel owner dashboard like "/taj-palace/owner"
+    return <OwnerDashboard />;
   } else if (path.includes("/rooms/")) {
     return <RoomDetail />;
   } else if (path.includes("/booking/") && path.split("/").length > 3) {
