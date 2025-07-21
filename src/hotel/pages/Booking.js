@@ -400,7 +400,7 @@ const Booking = () => {
       // Create booking object
       const booking = {
         id: Date.now(),
-        // hotelId: parseInt(hotelId),
+
         roomId: parseInt(roomId),
         hotelName: hotel.name,
         roomName: room.name,
