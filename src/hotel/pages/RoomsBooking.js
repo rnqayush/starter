@@ -28,6 +28,10 @@ const Container = styled.div`
   margin: 0 auto;
   padding: ${theme.spacing.xl} ${theme.spacing.md};
   flex: 1;
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.lg} ${theme.spacing.sm};
+  }
 `;
 
 const BackButton = styled.button`
@@ -41,9 +45,17 @@ const BackButton = styled.button`
   margin-bottom: ${theme.spacing.xl};
   cursor: pointer;
   transition: all 0.2s ease;
+  font-size: 1rem;
 
   &:hover {
     transform: translateX(-4px);
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: ${theme.spacing.lg};
+    padding: ${theme.spacing.sm} 0;
   }
 `;
 
@@ -53,6 +65,13 @@ const PageHeader = styled.div`
   padding: ${theme.spacing.xxl};
   margin-bottom: ${theme.spacing.xl};
   box-shadow: ${theme.shadows.md};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.xl};
+    margin-bottom: ${theme.spacing.lg};
+    border-radius: ${theme.borderRadius.lg};
+    margin: 0 -${theme.spacing.xs} ${theme.spacing.lg};
+  }
 `;
 
 const HotelInfo = styled.div`
@@ -64,6 +83,11 @@ const HotelInfo = styled.div`
   @media (max-width: ${theme.breakpoints.tablet}) {
     flex-direction: column;
     gap: ${theme.spacing.lg};
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    gap: ${theme.spacing.xl};
+    margin-bottom: ${theme.spacing.lg};
   }
 `;
 
@@ -78,7 +102,9 @@ const HotelName = styled.h1`
   margin-bottom: ${theme.spacing.md};
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    font-size: 2rem;
+    font-size: 2.2rem;
+    text-align: center;
+    line-height: 1.3;
   }
 `;
 
@@ -89,6 +115,12 @@ const HotelLocation = styled.div`
   color: ${theme.colors.gray600};
   font-size: 1.1rem;
   margin-bottom: ${theme.spacing.sm};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    justify-content: center;
+    font-size: 1.2rem;
+    margin-bottom: ${theme.spacing.md};
+  }
 `;
 
 const HotelRating = styled.div`
@@ -97,6 +129,12 @@ const HotelRating = styled.div`
   gap: ${theme.spacing.sm};
   color: ${theme.colors.gray700};
   font-size: 1rem;
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    justify-content: center;
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
 `;
 
 const HotelImage = styled.div.withConfig({
@@ -108,10 +146,17 @@ const HotelImage = styled.div.withConfig({
   background-size: cover;
   background-position: center;
   border-radius: ${theme.borderRadius.lg};
-  
+  box-shadow: ${theme.shadows.md};
+
   @media (max-width: ${theme.breakpoints.tablet}) {
     width: 100%;
     height: 200px;
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    height: 250px;
+    border-radius: ${theme.borderRadius.xl};
+    box-shadow: ${theme.shadows.lg};
   }
 `;
 
@@ -121,6 +166,13 @@ const BookingControls = styled.div`
   padding: ${theme.spacing.xl};
   margin-bottom: ${theme.spacing.xl};
   box-shadow: ${theme.shadows.md};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.lg};
+    margin: 0 -${theme.spacing.xs} ${theme.spacing.lg};
+    border-radius: ${theme.borderRadius.lg};
+    box-shadow: ${theme.shadows.lg};
+  }
 `;
 
 const ControlsGrid = styled.div`
@@ -131,7 +183,16 @@ const ControlsGrid = styled.div`
 
   @media (max-width: ${theme.breakpoints.tablet}) {
     grid-template-columns: 1fr;
-    gap: ${theme.spacing.md};
+    gap: ${theme.spacing.lg};
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    grid-template-columns: 1fr;
+    gap: ${theme.spacing.lg};
+
+    & > * {
+      width: 100%;
+    }
   }
 `;
 
@@ -139,12 +200,21 @@ const FormGroup = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${theme.spacing.sm};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    gap: ${theme.spacing.md};
+  }
 `;
 
 const Label = styled.label`
   font-weight: 600;
   color: ${theme.colors.gray900};
   font-size: 0.9rem;
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    font-size: 1rem;
+    font-weight: 700;
+  }
 `;
 
 const Input = styled.input`
@@ -157,6 +227,17 @@ const Input = styled.input`
   &:focus {
     outline: none;
     border-color: ${theme.colors.primary};
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.lg};
+    font-size: 1.1rem;
+    border-radius: ${theme.borderRadius.lg};
+    border-width: 2px;
+
+    &:focus {
+      border-width: 3px;
+    }
   }
 `;
 
@@ -171,6 +252,17 @@ const Select = styled.select`
   &:focus {
     outline: none;
     border-color: ${theme.colors.primary};
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.lg};
+    font-size: 1.1rem;
+    border-radius: ${theme.borderRadius.lg};
+    border-width: 2px;
+
+    &:focus {
+      border-width: 3px;
+    }
   }
 `;
 
@@ -198,6 +290,24 @@ const FilterButton = styled.button`
     color: ${theme.colors.white};
     border-color: ${theme.colors.primary};
   }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.lg};
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: ${theme.borderRadius.lg};
+    min-height: 56px;
+    justify-content: center;
+
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: ${theme.shadows.md};
+    }
+
+    &.active {
+      box-shadow: ${theme.shadows.lg};
+    }
+  }
 `;
 
 const SearchButton = styled.button`
@@ -214,10 +324,42 @@ const SearchButton = styled.button`
   gap: ${theme.spacing.sm};
   min-height: 50px;
   box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+  }
+
+  &:hover::before {
+    left: 100%;
+  }
 
   &:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.lg} ${theme.spacing.xl};
+    font-size: 1.1rem;
+    font-weight: 700;
+    border-radius: ${theme.borderRadius.lg};
+    min-height: 56px;
+    width: 100%;
+    justify-content: center;
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+
+    &:hover {
+      transform: translateY(-1px);
+    }
   }
 `;
 
@@ -233,8 +375,11 @@ const ResultsHeader = styled.div`
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     flex-direction: column;
-    gap: ${theme.spacing.md};
+    gap: ${theme.spacing.lg};
     align-items: stretch;
+    padding: ${theme.spacing.xl};
+    margin: 0 -${theme.spacing.xs} ${theme.spacing.lg};
+    border-radius: ${theme.borderRadius.lg};
   }
 `;
 
@@ -247,6 +392,12 @@ const ResultsCount = styled.h2`
   .count {
     color: ${theme.colors.primary};
   }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    font-size: 1.7rem;
+    font-weight: 700;
+    text-align: center;
+  }
 `;
 
 const SortControls = styled.div`
@@ -255,13 +406,20 @@ const SortControls = styled.div`
   gap: ${theme.spacing.md};
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    justify-content: space-between;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: ${theme.spacing.lg};
   }
 `;
 
 const SortLabel = styled.span`
   color: ${theme.colors.gray600};
   font-weight: 500;
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
 `;
 
 const RoomsGrid = styled.div`
@@ -272,7 +430,8 @@ const RoomsGrid = styled.div`
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     grid-template-columns: 1fr;
-    gap: ${theme.spacing.lg};
+    gap: ${theme.spacing.xl};
+    padding: 0 ${theme.spacing.xs};
   }
 `;
 
@@ -287,6 +446,16 @@ const NoRoomsMessage = styled.div`
     font-size: 1.5rem;
     color: ${theme.colors.gray900};
     margin-bottom: ${theme.spacing.md};
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.xl};
+    margin: 0 ${theme.spacing.xs};
+
+    h3 {
+      font-size: 1.7rem;
+      font-weight: 700;
+    }
   }
 
   p {

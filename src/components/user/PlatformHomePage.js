@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import {
@@ -24,6 +24,11 @@ import {
   FaLock,
   FaGlobe,
 } from "react-icons/fa";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination, Autoplay } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 import Header from "../shared/Header";
 import { Button } from "../shared/Button";
 import { theme, media } from "../../styles/GlobalStyle";
@@ -33,6 +38,7 @@ import AuthModal from "../auth/AuthModal";
 const PageContainer = styled.div`
   min-height: 100vh;
   background: ${theme.colors.white};
+  padding-top: 0;
 `;
 
 // Hero Section Styles
@@ -151,7 +157,9 @@ const TrustIndicators = styled.div`
   opacity: 0.8;
 
   ${media.mobile} {
-    gap: ${theme.spacing.md};
+    gap: ${theme.spacing.sm};
+    justify-content: space-around;
+    padding: 0 ${theme.spacing.sm};
   }
 `;
 
@@ -165,6 +173,11 @@ const TrustItem = styled.div`
   svg {
     color: #10b981;
   }
+
+  ${media.mobile} {
+    font-size: 0.85rem;
+    gap: ${theme.spacing.xs};
+  }
 `;
 
 const HeroCTAContainer = styled.div`
@@ -174,6 +187,17 @@ const HeroCTAContainer = styled.div`
   align-items: center;
   flex-wrap: wrap;
   margin-top: ${theme.spacing.lg};
+
+  ${media.mobile} {
+    flex-direction: column;
+    gap: ${theme.spacing.sm};
+    width: 100%;
+
+    & > * {
+      width: 100%;
+      max-width: 280px;
+    }
+  }
 `;
 
 const CreateStoreCTA = styled(Button)`
@@ -250,6 +274,12 @@ const StatsContainer = styled.div`
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: ${theme.spacing.xl};
   text-align: center;
+
+  ${media.mobile} {
+    grid-template-columns: repeat(2, 1fr);
+    gap: ${theme.spacing.lg};
+    padding: 0 ${theme.spacing.sm};
+  }
 `;
 
 const StatCard = styled.div`
@@ -314,6 +344,16 @@ const StoreCardsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: ${theme.spacing.xl};
+
+  ${media.mobile} {
+    grid-template-columns: 1fr;
+    gap: ${theme.spacing.lg};
+    padding: 0 ${theme.spacing.sm};
+  }
+
+  ${media.tablet} {
+    grid-template-columns: repeat(2, 1fr);
+  }
 `;
 
 const StoreCard = styled.div`
@@ -420,6 +460,16 @@ const BenefitsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: ${theme.spacing.xl};
+
+  ${media.mobile} {
+    grid-template-columns: 1fr;
+    gap: ${theme.spacing.lg};
+    padding: 0 ${theme.spacing.sm};
+  }
+
+  ${media.tablet} {
+    grid-template-columns: repeat(2, 1fr);
+  }
 `;
 
 const BenefitCard = styled.div`
@@ -480,6 +530,65 @@ const TestimonialsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   gap: ${theme.spacing.xl};
+
+  ${media.mobile} {
+    display: none;
+  }
+
+  ${media.tablet} {
+    grid-template-columns: repeat(2, 1fr);
+  }
+`;
+
+const TestimonialsSwiperContainer = styled.div`
+  display: none;
+
+  ${media.mobile} {
+    display: block;
+    margin: 0 -${theme.spacing.sm};
+
+    .swiper {
+      padding: 0 ${theme.spacing.sm};
+      overflow: visible;
+    }
+
+    .swiper-slide {
+      height: auto;
+    }
+
+    .swiper-pagination {
+      bottom: -40px;
+
+      .swiper-pagination-bullet {
+        background: ${theme.colors.primary};
+        opacity: 0.3;
+
+        &.swiper-pagination-bullet-active {
+          opacity: 1;
+        }
+      }
+    }
+
+    .swiper-button-next,
+    .swiper-button-prev {
+      color: ${theme.colors.primary};
+      background: ${theme.colors.white};
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      margin-top: -20px;
+      box-shadow: ${theme.shadows.md};
+
+      &:after {
+        font-size: 16px;
+        font-weight: bold;
+      }
+
+      &.swiper-button-disabled {
+        opacity: 0.3;
+      }
+    }
+  }
 `;
 
 const TestimonialCard = styled.div`
@@ -632,6 +741,17 @@ const FooterContent = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: ${theme.spacing.xl};
+
+  ${media.mobile} {
+    grid-template-columns: repeat(2, 1fr);
+    gap: ${theme.spacing.lg};
+    padding: 0 ${theme.spacing.sm};
+  }
+
+  ${media.tablet} {
+    grid-template-columns: repeat(2, 1fr);
+    gap: ${theme.spacing.xl};
+  }
 `;
 
 const FooterSection = styled.div`
@@ -639,6 +759,15 @@ const FooterSection = styled.div`
     font-size: 1.2rem;
     margin-bottom: ${theme.spacing.lg};
     color: ${theme.colors.white};
+
+    ${media.mobile} {
+      font-size: 1rem;
+      margin-bottom: ${theme.spacing.md};
+    }
+  }
+
+  ${media.mobile} {
+    text-align: center;
   }
 `;
 
@@ -660,12 +789,28 @@ const ContactInfo = styled.div`
   gap: ${theme.spacing.md};
   margin-bottom: ${theme.spacing.md};
   color: ${theme.colors.gray300};
+
+  ${media.mobile} {
+    flex-direction: column;
+    gap: ${theme.spacing.sm};
+    text-align: center;
+
+    svg {
+      display: none;
+    }
+  }
 `;
 
 const SocialLinks = styled.div`
   display: flex;
   gap: ${theme.spacing.md};
   margin-top: ${theme.spacing.lg};
+
+  ${media.mobile} {
+    justify-content: center;
+    gap: ${theme.spacing.sm};
+    margin-top: ${theme.spacing.md};
+  }
 `;
 
 const SocialLink = styled.a`
@@ -691,12 +836,30 @@ const FooterBottom = styled.div`
   margin-top: ${theme.spacing.xl};
   border-top: 1px solid ${theme.colors.gray700};
   color: ${theme.colors.gray400};
+
+  ${media.mobile} {
+    padding-top: ${theme.spacing.lg};
+    margin-top: ${theme.spacing.lg};
+    font-size: 0.875rem;
+  }
 `;
 
 const PlatformHomePage = () => {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const storeCategories = [
     {
@@ -962,6 +1125,43 @@ const PlatformHomePage = () => {
               </TestimonialCard>
             ))}
           </TestimonialsGrid>
+
+          <TestimonialsSwiperContainer>
+            <Swiper
+              modules={[Navigation, Pagination, Autoplay]}
+              spaceBetween={20}
+              slidesPerView={1}
+              navigation
+              pagination={{ clickable: true }}
+              autoplay={{
+                delay: 4000,
+                disableOnInteraction: false,
+              }}
+              loop={true}
+            >
+              {testimonials.map((testimonial, index) => (
+                <SwiperSlide key={index}>
+                  <TestimonialCard>
+                    <TestimonialQuote>
+                      <FaQuoteLeft />
+                    </TestimonialQuote>
+                    <TestimonialText>{testimonial.text}</TestimonialText>
+                    <TestimonialAuthor>
+                      <AuthorInfo>
+                        <h4>{testimonial.name}</h4>
+                        <p>{testimonial.role}</p>
+                      </AuthorInfo>
+                      <StarRating>
+                        {[...Array(testimonial.rating)].map((_, i) => (
+                          <FaStar key={i} />
+                        ))}
+                      </StarRating>
+                    </TestimonialAuthor>
+                  </TestimonialCard>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </TestimonialsSwiperContainer>
         </TestimonialsContainer>
       </TestimonialsSection>
 

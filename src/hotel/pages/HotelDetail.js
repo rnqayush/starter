@@ -51,11 +51,18 @@ const HeroBanner = styled.section.withConfig({
   }
 
   @media (max-width: ${theme.breakpoints.tablet}) {
-    height: 70vh;
+    height: 80vh;
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    height: 60vh;
+    height: 100vh;
+    padding-top: 60px;
+    background-attachment: scroll;
+    background-position: center center;
+
+    &::before {
+      background: linear-gradient(135deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5));
+    }
   }
 `;
 
@@ -67,6 +74,15 @@ const HeroContent = styled.div`
   margin: 0 auto;
   padding: 0 ${theme.spacing.xl};
   width: 100%;
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: 0 ${theme.spacing.md};
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: calc(100vh - 120px);
+  }
 `;
 
 const HeroTitle = styled.h1`
@@ -75,14 +91,25 @@ const HeroTitle = styled.h1`
   margin-bottom: ${theme.spacing.lg};
   text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
   line-height: 1.1;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: none;
 
   @media (max-width: ${theme.breakpoints.tablet}) {
     font-size: 3rem;
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    font-size: 2.5rem;
-    margin-bottom: ${theme.spacing.md};
+    font-size: 2.8rem;
+    margin-bottom: ${theme.spacing.lg};
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: ${theme.colors.white};
+    background: none;
+    -webkit-text-fill-color: unset;
+    text-shadow: 2px 2px 12px rgba(0, 0, 0, 0.8);
   }
 `;
 
@@ -111,8 +138,9 @@ const HeroActions = styled.div`
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     flex-direction: column;
-    gap: ${theme.spacing.md};
+    gap: ${theme.spacing.lg};
     align-items: stretch;
+    margin-top: ${theme.spacing.xl};
   }
 `;
 
@@ -127,6 +155,23 @@ const CTAButton = styled.button`
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+  }
+
+  &:hover::before {
+    left: 100%;
+  }
 
   &:hover {
     transform: translateY(-2px);
@@ -134,8 +179,14 @@ const CTAButton = styled.button`
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    padding: ${theme.spacing.md} ${theme.spacing.xl};
-    font-size: 1rem;
+    padding: ${theme.spacing.lg} ${theme.spacing.xl};
+    font-size: 1.2rem;
+    font-weight: 700;
+    border-radius: ${theme.borderRadius.xl};
+    box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4);
+    width: 100%;
+    max-width: 280px;
+    margin: 0 auto;
   }
 `;
 
@@ -150,16 +201,46 @@ const QuickInfoCard = styled.div`
   align-items: center;
   gap: ${theme.spacing.md};
   min-width: 200px;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+  }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     min-width: auto;
-    padding: ${theme.spacing.md};
+    padding: ${theme.spacing.sm} ${theme.spacing.md};
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: ${theme.borderRadius.md};
+    backdrop-filter: blur(15px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    width: auto;
+    max-width: 140px;
+    justify-content: center;
+    gap: ${theme.spacing.sm};
+  }
+`;
+
+const MobileQuickInfoContainer = styled.div`
+  display: contents;
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    display: flex;
+    justify-content: center;
+    gap: ${theme.spacing.md};
+    width: 100%;
+    margin-bottom: ${theme.spacing.lg};
   }
 `;
 
 const QuickInfoIcon = styled.div`
   font-size: 1.5rem;
   color: #fbbf24;
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    font-size: 1.2rem;
+  }
 `;
 
 const QuickInfoText = styled.div`
@@ -172,6 +253,17 @@ const QuickInfoText = styled.div`
     font-size: 1.1rem;
     font-weight: 600;
   }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    .label {
+      font-size: 0.7rem;
+      opacity: 0.9;
+    }
+    .value {
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+  }
 `;
 
 const ContentSection = styled.section`
@@ -181,6 +273,14 @@ const ContentSection = styled.section`
   &.alt {
     background: ${theme.colors.gray50};
   }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.xl} 0;
+
+    &:first-of-type {
+      padding-top: ${theme.spacing.xxl};
+    }
+  }
 `;
 
 const Container = styled.div`
@@ -189,13 +289,17 @@ const Container = styled.div`
   padding: 0 ${theme.spacing.xl};
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    padding: 0 ${theme.spacing.md};
+    padding: 0 ${theme.spacing.lg};
   }
 `;
 
 const SectionHeader = styled.div`
   text-align: center;
   margin-bottom: ${theme.spacing.xxl};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    margin-bottom: ${theme.spacing.xl};
+  }
 `;
 
 const SectionTitle = styled.h2`
@@ -205,7 +309,10 @@ const SectionTitle = styled.h2`
   margin-bottom: ${theme.spacing.md};
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    font-size: 2rem;
+    font-size: 2.2rem;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: ${theme.spacing.lg};
   }
 `;
 
@@ -214,6 +321,14 @@ const SectionSubtitle = styled.p`
   color: ${theme.colors.gray600};
   max-width: 600px;
   margin: 0 auto;
+  line-height: 1.6;
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    font-size: 1.15rem;
+    line-height: 1.7;
+    max-width: 100%;
+    padding: 0 ${theme.spacing.sm};
+  }
 `;
 
 const Description = styled.p`
@@ -221,6 +336,13 @@ const Description = styled.p`
   line-height: 1.7;
   color: ${theme.colors.gray700};
   margin-bottom: ${theme.spacing.lg};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    font-size: 1.15rem;
+    line-height: 1.8;
+    text-align: left;
+    padding: 0 ${theme.spacing.sm};
+  }
 `;
 
 const FeaturesGrid = styled.div`
@@ -228,6 +350,12 @@ const FeaturesGrid = styled.div`
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: ${theme.spacing.xl};
   margin: ${theme.spacing.xxl} 0;
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    grid-template-columns: 1fr;
+    gap: ${theme.spacing.lg};
+    margin: ${theme.spacing.xl} 0;
+  }
 `;
 
 const FeatureCard = styled.div`
@@ -236,10 +364,23 @@ const FeatureCard = styled.div`
   border-radius: ${theme.borderRadius.lg};
   box-shadow: ${theme.shadows.md};
   text-align: center;
-  transition: transform 0.3s ease;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
 
   &:hover {
-    transform: translateY(-5px);
+    transform: translateY(-8px);
+    box-shadow: ${theme.shadows.xl};
+    border-color: ${theme.colors.primary};
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.xxl};
+    border-radius: ${theme.borderRadius.xl};
+    box-shadow: ${theme.shadows.lg};
+
+    &:hover {
+      transform: translateY(-4px);
+    }
   }
 `;
 
@@ -247,6 +388,11 @@ const FeatureIcon = styled.div`
   font-size: 3rem;
   color: ${theme.colors.primary};
   margin-bottom: ${theme.spacing.lg};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    font-size: 3.5rem;
+    margin-bottom: ${theme.spacing.xl};
+  }
 `;
 
 const FeatureTitle = styled.h3`
@@ -254,11 +400,22 @@ const FeatureTitle = styled.h3`
   font-weight: 600;
   color: ${theme.colors.gray900};
   margin-bottom: ${theme.spacing.md};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: ${theme.spacing.lg};
+  }
 `;
 
 const FeatureDescription = styled.p`
   color: ${theme.colors.gray600};
   line-height: 1.6;
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    font-size: 1.1rem;
+    line-height: 1.7;
+  }
 `;
 
 const AmenitiesSection = styled.div`
@@ -266,12 +423,23 @@ const AmenitiesSection = styled.div`
   border-radius: ${theme.borderRadius.xl};
   padding: ${theme.spacing.xxl};
   box-shadow: ${theme.shadows.lg};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.xl};
+    border-radius: ${theme.borderRadius.lg};
+    margin: 0 -${theme.spacing.sm};
+  }
 `;
 
 const AmenitiesGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: ${theme.spacing.lg};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    grid-template-columns: 1fr;
+    gap: ${theme.spacing.xl};
+  }
 `;
 
 const AmenityCategory = styled.div`
@@ -283,6 +451,21 @@ const AmenityCategory = styled.div`
     display: flex;
     align-items: center;
     gap: ${theme.spacing.sm};
+
+    @media (max-width: ${theme.breakpoints.mobile}) {
+      font-size: 1.3rem;
+      font-weight: 700;
+      padding: ${theme.spacing.md} 0;
+      border-bottom: 2px solid ${theme.colors.gray100};
+      margin-bottom: ${theme.spacing.lg};
+    }
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    background: ${theme.colors.gray50};
+    padding: ${theme.spacing.lg};
+    border-radius: ${theme.borderRadius.lg};
+    border: 1px solid ${theme.colors.gray200};
   }
 `;
 
@@ -320,7 +503,14 @@ const GalleryGrid = styled.div`
 
   @media (max-width: ${theme.breakpoints.tablet}) {
     grid-template-columns: 1fr;
-    grid-template-rows: repeat(3, 250px);
+    grid-template-rows: repeat(5, 200px);
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(5, 250px);
+    gap: ${theme.spacing.sm};
+    border-radius: ${theme.borderRadius.lg};
   }
 `;
 
@@ -374,6 +564,24 @@ const TestimonialsSection = styled.div`
   padding: ${theme.spacing.xxl};
   color: ${theme.colors.white};
   text-align: center;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><pattern id="testimonial-pattern" width="100" height="100" patternUnits="userSpaceOnUse"><circle fill="%23ffffff05" cx="50" cy="50" r="25"/></pattern></defs><rect width="100%" height="100%" fill="url(%23testimonial-pattern)"/></svg>');
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.xl};
+    border-radius: ${theme.borderRadius.lg};
+    margin: 0 -${theme.spacing.sm};
+  }
 `;
 
 const TestimonialCard = styled.div`
@@ -396,6 +604,13 @@ const TestimonialQuote = styled.blockquote`
     transform: translateX(-50%);
     font-size: 3rem;
     color: rgba(255, 255, 255, 0.3);
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    font-size: 1.4rem;
+    line-height: 1.8;
+    margin: ${theme.spacing.lg} 0;
+    padding: 0 ${theme.spacing.sm};
   }
 `;
 
@@ -436,6 +651,12 @@ const LocationSection = styled.div`
   border-radius: ${theme.borderRadius.xl};
   padding: ${theme.spacing.xxl};
   box-shadow: ${theme.shadows.lg};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.xl};
+    border-radius: ${theme.borderRadius.lg};
+    margin: 0 -${theme.spacing.sm};
+  }
 `;
 
 const LocationGrid = styled.div`
@@ -446,6 +667,10 @@ const LocationGrid = styled.div`
   @media (max-width: ${theme.breakpoints.tablet}) {
     grid-template-columns: 1fr;
     gap: ${theme.spacing.xl};
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    gap: ${theme.spacing.xxl};
   }
 `;
 
@@ -486,10 +711,30 @@ const ContactItem = styled.div`
       color: ${theme.colors.gray900};
     }
   }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.lg} 0;
+
+    .icon {
+      font-size: 1.3rem;
+      width: 24px;
+    }
+
+    .content {
+      .label {
+        font-size: 1rem;
+        margin-bottom: 4px;
+      }
+      .value {
+        font-size: 1.1rem;
+        font-weight: 600;
+      }
+    }
+  }
 `;
 
 const MapPlaceholder = styled.div`
-  background: ${theme.colors.gray100};
+  background: linear-gradient(135deg, ${theme.colors.gray100}, ${theme.colors.gray200});
   border-radius: ${theme.borderRadius.lg};
   height: 300px;
   display: flex;
@@ -497,6 +742,13 @@ const MapPlaceholder = styled.div`
   justify-content: center;
   color: ${theme.colors.gray500};
   font-size: 1.1rem;
+  text-align: center;
+  border: 1px solid ${theme.colors.gray200};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    height: 250px;
+    font-size: 1rem;
+  }
 `;
 
 const BackToTop = styled.button`
@@ -624,27 +876,29 @@ const HotelDetail = () => {
             Experience luxury hospitality in the heart of {hotel.city}
           </HeroSubtitle>
           <HeroActions>
+            <MobileQuickInfoContainer>
+              <QuickInfoCard>
+                <QuickInfoIcon>
+                  <FaStar />
+                </QuickInfoIcon>
+                <QuickInfoText>
+                  <div className="label">Rating</div>
+                  <div className="value">{hotel.rating}/5</div>
+                </QuickInfoText>
+              </QuickInfoCard>
+              <QuickInfoCard>
+                <QuickInfoIcon>
+                  <FaMapMarkerAlt />
+                </QuickInfoIcon>
+                <QuickInfoText>
+                  <div className="label">Location</div>
+                  <div className="value">{hotel.city}</div>
+                </QuickInfoText>
+              </QuickInfoCard>
+            </MobileQuickInfoContainer>
             <CTAButton onClick={() => navigate(`/${hotel.slug}/booking`)}>
               Book Your Stay
             </CTAButton>
-            <QuickInfoCard>
-              <QuickInfoIcon>
-                <FaStar />
-              </QuickInfoIcon>
-              <QuickInfoText>
-                <div className="label">Rating</div>
-                <div className="value">{hotel.rating}/5 Stars</div>
-              </QuickInfoText>
-            </QuickInfoCard>
-            <QuickInfoCard>
-              <QuickInfoIcon>
-                <FaMapMarkerAlt />
-              </QuickInfoIcon>
-              <QuickInfoText>
-                <div className="label">Location</div>
-                <div className="value">{hotel.city}</div>
-              </QuickInfoText>
-            </QuickInfoCard>
           </HeroActions>
         </HeroContent>
       </HeroBanner>
