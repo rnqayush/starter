@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import {
@@ -27,6 +27,8 @@ import {
 import Header from "../shared/Header";
 import { Button } from "../shared/Button";
 import { theme, media } from "../../styles/GlobalStyle";
+import { useAuth } from "../../context/AuthContext";
+import AuthModal from "../auth/AuthModal";
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -693,6 +695,8 @@ const FooterBottom = styled.div`
 
 const PlatformHomePage = () => {
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
+  const [showAuthModal, setShowAuthModal] = useState(false);
 
   const storeCategories = [
     {
@@ -798,7 +802,16 @@ const PlatformHomePage = () => {
   };
 
   const handleCreateStore = () => {
-    navigate("/create-store");
+    if (isAuthenticated) {
+      navigate("/start-building");
+    } else {
+      setShowAuthModal(true);
+    }
+  };
+
+  const handleAuthSuccess = () => {
+    setShowAuthModal(false);
+    navigate("/start-building");
   };
 
   const handleExploreStores = () => {
@@ -1028,6 +1041,12 @@ const PlatformHomePage = () => {
           <p>&copy; 2024 StoreBuilder. All rights reserved.</p>
         </FooterBottom>
       </Footer>
+
+      <AuthModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        onSuccess={handleAuthSuccess}
+      />
     </PageContainer>
   );
 };
