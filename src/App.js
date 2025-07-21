@@ -51,8 +51,6 @@ import WeddingCategoryLanding from "./components/category/WeddingCategoryLanding
 import AutomobileCategoryLanding from "./components/category/AutomobileCategoryLanding";
 import BusinessCategoryLanding from "./components/category/BusinessCategoryLanding";
 
-
-
 // Store Listing Pages
 import EcommerceStoresListing from "./ecommerce/pages/StoresListing";
 import WeddingVendorsListing from "./weddings/pages/StoresListing";
