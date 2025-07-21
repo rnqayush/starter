@@ -45,7 +45,7 @@ const EcommerceCategoryLanding = () => {
       subtitle="Build powerful online stores that convert visitors into customers with our feature-rich e-commerce templates and integrated payment solutions."
       gradient="linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)"
       mockups={mockups}
-      demoUrl="/demo-ecommerce"
+      demoUrl="/techmart-downtown"
       demoButtonText="See Demo Store Website"
     />
   );
