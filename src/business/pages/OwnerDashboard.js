@@ -1435,8 +1435,46 @@ const OwnerDashboard = () => {
                     </div>
                   </SectionItem>
                 ))}
-              </SectionList>
+                            </SectionList>
             </div>
+
+            {/* Gallery List for Non-Freelancers */}
+            {businessData.slug !== 'freelancer' && (
+              <div style={{ marginTop: theme.spacing.xl }}>
+                <h3 style={{ marginBottom: theme.spacing.lg, color: theme.colors.gray900 }}>Gallery Categories</h3>
+                <SectionList>
+                  {(currentData.gallery || []).map((gallery, index) => (
+                    <SectionItem key={gallery.id}>
+                      <div className="section-info">
+                        <h4>{gallery.category}</h4>
+                        <p>{gallery.images} images</p>
+                        {gallery.coverImage && (
+                          <div style={{
+                            marginTop: theme.spacing.sm,
+                            width: '60px',
+                            height: '40px',
+                            borderRadius: theme.borderRadius.sm,
+                            backgroundImage: `url(${gallery.coverImage})`,
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'center'
+                          }} />
+                        )}
+                      </div>
+                      <div className="section-actions">
+                        <Button onClick={() => openModal('gallery', gallery)}>
+                          <FaEdit />
+                          Edit
+                        </Button>
+                        <Button onClick={() => handleDelete('gallery', gallery.id)}>
+                          <FaTrash />
+                          Delete
+                        </Button>
+                      </div>
+                    </SectionItem>
+                  ))}
+                </SectionList>
+              </div>
+            )}
           </div>
         );
 
