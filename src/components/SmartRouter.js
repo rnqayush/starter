@@ -4,10 +4,12 @@ import HotelModule from "../hotel";
 import EcommerceModule from "../ecommerce";
 import AutomobileModule from "../automobiles";
 import WeddingModule from "../weddings";
+import BusinessModule from "../business";
 import { getHotelBySlug } from "../hotel/data/hotels";
 import { getVendorBySlug } from "../ecommerce/data/vendors";
 import { getVendorBySlug as getAutomobileVendorBySlug } from "../automobiles/data/vendors";
 import { getVendorById } from "../weddings/data/vendors";
+import { getBusinessTemplate } from "../business/data/businessTemplates";
 
 const SmartRouter = () => {
   const { slug } = useParams();
