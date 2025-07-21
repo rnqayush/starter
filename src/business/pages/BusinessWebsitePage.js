@@ -1184,12 +1184,22 @@ const BusinessWebsitePage = () => {
           <SectionSubtitle>
             We offer a comprehensive range of professional services designed to meet your needs and exceed your expectations.
           </SectionSubtitle>
-          <ServicesGrid>
+                    <ServicesGrid>
             {content.services.map((service, index) => (
               <ServiceCard key={index} primaryColor={businessData.primaryColor}>
                 <div className="icon">{service.icon}</div>
                 <h3>{service.title}</h3>
                 <p>{service.description}</p>
+                {service.price && (
+                  <div style={{
+                    marginTop: theme.spacing.md,
+                    fontSize: '1.1rem',
+                    fontWeight: '600',
+                    color: businessData.primaryColor
+                  }}>
+                    {service.price}
+                  </div>
+                )}
               </ServiceCard>
             ))}
           </ServicesGrid>
