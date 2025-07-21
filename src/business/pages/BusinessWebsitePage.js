@@ -661,17 +661,32 @@ const BusinessWebsitePage = () => {
           description: "With over 15 years of experience, our luxury salon combines traditional techniques with modern innovation to deliver exceptional beauty services."
         },
         services: [
-          { icon: "✂️", title: "Hair Styling", description: "Professional cuts, colors, and treatments for all hair types" },
-          { icon: "💅", title: "Nail Care", description: "Manicures, pedicures, and nail art by certified technicians" },
-          { icon: "🧴", title: "Spa Treatments", description: "Relaxing facials, massages, and body treatments" }
+          { icon: "✂️", title: "Hair Styling", description: "Professional cuts, colors, and treatments for all hair types", price: "From $45" },
+          { icon: "💅", title: "Nail Care", description: "Manicures, pedicures, and nail art by certified technicians", price: "From $25" },
+          { icon: "🧴", title: "Spa Treatments", description: "Relaxing facials, massages, and body treatments", price: "From $65" },
+          { icon: "💄", title: "Makeup Services", description: "Professional makeup for special occasions and events", price: "From $50" },
+          { icon: "🎨", title: "Hair Coloring", description: "Expert color services including highlights and balayage", price: "From $80" },
+          { icon: "🌿", title: "Organic Treatments", description: "Natural and organic beauty treatments for sensitive skin", price: "From $55" }
         ],
         team: [
-          { name: "Sarah Johnson", role: "Senior Stylist", bio: "15+ years experience in color and cutting" },
-          { name: "Maria Garcia", role: "Nail Specialist", bio: "Expert in nail art and luxury manicures" },
-          { name: "Emily Chen", role: "Spa Therapist", bio: "Licensed massage therapist and esthetician" }
+          { name: "Sarah Johnson", role: "Senior Stylist", bio: "15+ years experience in color and cutting", specialties: ["Color Specialist", "Bridal Hair"] },
+          { name: "Maria Garcia", role: "Nail Specialist", bio: "Expert in nail art and luxury manicures", specialties: ["Nail Art", "Gel Manicures"] },
+          { name: "Emily Chen", role: "Spa Therapist", bio: "Licensed massage therapist and esthetician", specialties: ["Deep Tissue", "Facials"] },
+          { name: "Jessica Miller", role: "Makeup Artist", bio: "Professional makeup artist specializing in bridal looks", specialties: ["Bridal Makeup", "Special Events"] }
+        ],
+        gallery: [
+          { category: "Hair Styling", images: 8 },
+          { category: "Nail Art", images: 6 },
+          { category: "Spa Treatments", images: 5 },
+          { category: "Salon Interior", images: 4 }
+        ],
+        packages: [
+          { name: "Bridal Package", description: "Complete bridal beauty package including hair, makeup, and nails", price: "$299", duration: "4 hours" },
+          { name: "Spa Day", description: "Full day relaxation with massage, facial, and beauty treatments", price: "$199", duration: "6 hours" },
+          { name: "Makeover Package", description: "Complete transformation with cut, color, and styling", price: "$149", duration: "3 hours" }
         ]
       },
-      gym: {
+            gym: {
         hero: {
           title: "Elite Fitness Center",
           subtitle: "Achieve your fitness goals with state-of-the-art equipment, expert trainers, and motivating group classes."
@@ -681,17 +696,32 @@ const BusinessWebsitePage = () => {
           description: "We're committed to helping you reach your fitness potential with personalized training programs and a supportive community."
         },
         services: [
-          { icon: "🏋️", title: "Personal Training", description: "One-on-one sessions with certified fitness professionals" },
-          { icon: "🏃", title: "Group Classes", description: "High-energy classes including HIIT, yoga, and spin" },
-          { icon: "💪", title: "Strength Training", description: "Complete weight room with modern equipment" }
+          { icon: "🏋️", title: "Personal Training", description: "One-on-one sessions with certified fitness professionals", price: "From $65/session" },
+          { icon: "🏃", title: "Group Classes", description: "High-energy classes including HIIT, yoga, and spin", price: "$20/class" },
+          { icon: "💪", title: "Strength Training", description: "Complete weight room with modern equipment", price: "Included" },
+          { icon: "🧘", title: "Yoga & Pilates", description: "Mind-body classes for flexibility and core strength", price: "$18/class" },
+          { icon: "🏊", title: "Swimming Pool", description: "Olympic-size pool for lap swimming and water aerobics", price: "Included" },
+          { icon: "🥊", title: "Boxing Classes", description: "High-intensity boxing and kickboxing training", price: "$25/class" }
         ],
         team: [
-          { name: "Mike Thompson", role: "Head Trainer", bio: "Former athlete with 10+ years training experience" },
-          { name: "Lisa Park", role: "Yoga Instructor", bio: "Certified in multiple yoga disciplines" },
-          { name: "David Wilson", role: "Nutritionist", bio: "Sports nutrition specialist and wellness coach" }
+          { name: "Mike Thompson", role: "Head Trainer", bio: "Former athlete with 10+ years training experience", specialties: ["Strength Training", "Athletic Performance"] },
+          { name: "Lisa Park", role: "Yoga Instructor", bio: "Certified in multiple yoga disciplines", specialties: ["Vinyasa Yoga", "Meditation"] },
+          { name: "David Wilson", role: "Nutritionist", bio: "Sports nutrition specialist and wellness coach", specialties: ["Meal Planning", "Weight Management"] },
+          { name: "Sarah Adams", role: "Group Fitness", bio: "High-energy instructor specializing in HIIT and cardio", specialties: ["HIIT", "Cardio Classes"] }
+        ],
+        gallery: [
+          { category: "Gym Equipment", images: 12 },
+          { category: "Group Classes", images: 8 },
+          { category: "Swimming Pool", images: 5 },
+          { category: "Facilities", images: 6 }
+        ],
+        packages: [
+          { name: "Premium Membership", description: "Full access to all facilities and unlimited classes", price: "$89/month", duration: "Monthly" },
+          { name: "Basic Membership", description: "Gym access with limited class participation", price: "$49/month", duration: "Monthly" },
+          { name: "Personal Training Package", description: "8 personal training sessions with meal plan", price: "$399", duration: "1 Month" }
         ]
       },
-      restaurant: {
+            restaurant: {
         hero: {
           title: "Bella Vista Restaurant",
           subtitle: "Experience authentic Italian cuisine crafted with fresh ingredients and traditional recipes in an elegant setting."
@@ -701,14 +731,29 @@ const BusinessWebsitePage = () => {
           description: "Family-owned for three generations, we bring authentic Italian flavors to your table using recipes passed down through our family."
         },
         services: [
-          { icon: "🍝", title: "Fine Dining", description: "Authentic Italian dishes made with imported ingredients" },
-          { icon: "🍷", title: "Wine Selection", description: "Curated collection of Italian and international wines" },
-          { icon: "🎉", title: "Private Events", description: "Special occasions and corporate events catering" }
+          { icon: "🍝", title: "Fine Dining", description: "Authentic Italian dishes made with imported ingredients", price: "$25-45" },
+          { icon: "🍷", title: "Wine Selection", description: "Curated collection of Italian and international wines", price: "$8-25/glass" },
+          { icon: "🎉", title: "Private Events", description: "Special occasions and corporate events catering", price: "Custom pricing" },
+          { icon: "🍕", title: "Wood-Fired Pizza", description: "Traditional Neapolitan pizzas from our wood-fired oven", price: "$18-28" },
+          { icon: "🥗", title: "Fresh Salads", description: "Garden-fresh salads with imported Italian ingredients", price: "$12-18" },
+          { icon: "🍰", title: "Desserts", description: "Homemade Italian desserts and pastries", price: "$8-12" }
         ],
         team: [
-          { name: "Chef Antonio", role: "Executive Chef", bio: "Third-generation chef from Tuscany" },
-          { name: "Isabella Rosa", role: "Sommelier", bio: "Wine expert with 12+ years experience" },
-          { name: "Marco Bianchi", role: "Pastry Chef", bio: "Specializes in traditional Italian desserts" }
+          { name: "Chef Antonio", role: "Executive Chef", bio: "Third-generation chef from Tuscany", specialties: ["Pasta Making", "Traditional Recipes"] },
+          { name: "Isabella Rosa", role: "Sommelier", bio: "Wine expert with 12+ years experience", specialties: ["Italian Wines", "Food Pairing"] },
+          { name: "Marco Bianchi", role: "Pastry Chef", bio: "Specializes in traditional Italian desserts", specialties: ["Tiramisu", "Cannoli"] },
+          { name: "Giuseppe Rossi", role: "Sous Chef", bio: "Expert in regional Italian cuisines", specialties: ["Risotto", "Seafood"] }
+        ],
+        gallery: [
+          { category: "Signature Dishes", images: 15 },
+          { category: "Restaurant Interior", images: 8 },
+          { category: "Wine Collection", images: 6 },
+          { category: "Kitchen", images: 4 }
+        ],
+        packages: [
+          { name: "Chef's Tasting Menu", description: "7-course tasting menu with wine pairings", price: "$95/person", duration: "2.5 hours" },
+          { name: "Family Style Dinner", description: "Traditional family-style Italian dinner for groups", price: "$45/person", duration: "2 hours" },
+          { name: "Wine Dinner", description: "5-course dinner with premium wine selections", price: "$75/person", duration: "3 hours" }
         ]
       }
     };
