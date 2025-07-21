@@ -1357,16 +1357,25 @@ const SocialLink = styled.a.withConfig({
 
 const BusinessWebsitePage = () => {
   const { businessSlug } = useParams();
+  const location = useLocation();
   const navigate = useNavigate();
   const [businessData, setBusinessData] = useState(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    const template = getBusinessTemplate(businessSlug);
+    // Extract slug from URL - either from params (/business/:businessSlug) or from path (/:slug)
+    let slug = businessSlug;
+    if (!slug) {
+      // For direct slug access like "/salon", extract from pathname
+      const pathSegments = location.pathname.split('/').filter(Boolean);
+      slug = pathSegments[0];
+    }
+
+    const template = getBusinessTemplate(slug);
     if (template) {
       setBusinessData(template);
     }
-  }, [businessSlug]);
+  }, [businessSlug, location.pathname]);
 
   if (!businessData) {
     return (
