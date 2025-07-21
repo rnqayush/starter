@@ -13,6 +13,9 @@ import {
   FaUsers,
   FaChartBar,
   FaPalette,
+  FaTimes,
+  FaCheck,
+  FaUpload,
 } from "react-icons/fa";
 import { theme } from "../../styles/GlobalStyle";
 import { getBusinessTemplate } from "../data/businessTemplates";
@@ -290,6 +293,42 @@ const OwnerDashboard = () => {
   const [businessData, setBusinessData] = useState(null);
   const [activeSection, setActiveSection] = useState('content');
   const [isEditing, setIsEditing] = useState(false);
+  const [editingItem, setEditingItem] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [modalType, setModalType] = useState('');
+  const [formData, setFormData] = useState({});
+  const [currentData, setCurrentData] = useState({
+    hero: {
+      title: "Creative Freelancer Portfolio",
+      subtitle: "Transforming ideas into stunning visual experiences. Specialized in design, development, and creative solutions for modern businesses."
+    },
+    about: {
+      title: "About Me",
+      description: "I'm a passionate creative professional with 8+ years of experience helping businesses and individuals bring their visions to life through innovative design and development."
+    },
+    services: [
+      { id: 1, icon: "🎨", title: "Web Design", description: "Custom website design tailored to your brand and business goals", price: "From $1,200" },
+      { id: 2, icon: "📱", title: "UI/UX Design", description: "User-centered design for web and mobile applications", price: "From $800" },
+      { id: 3, icon: "💻", title: "Frontend Development", description: "Modern, responsive websites built with latest technologies", price: "From $1,500" }
+    ],
+    portfolio: [
+      { id: 1, title: "E-commerce Platform", category: "Web Development", description: "Modern e-commerce platform with custom design and seamless user experience", technologies: ["React", "Node.js", "MongoDB"] },
+      { id: 2, title: "Brand Identity Design", category: "Branding", description: "Complete brand identity including logo, color palette, and brand guidelines", technologies: ["Illustrator", "Photoshop", "Figma"] }
+    ],
+    skills: [
+      { id: 1, name: "Web Design", level: 95, icon: "🎨" },
+      { id: 2, name: "UI/UX Design", level: 90, icon: "📱" },
+      { id: 3, name: "Frontend Development", level: 88, icon: "💻" }
+    ],
+    experience: [
+      { id: 1, company: "Digital Agency Inc.", role: "Senior Creative Designer", period: "2020 - Present", description: "Lead designer for major client projects, specializing in web design and branding solutions." },
+      { id: 2, company: "Freelance", role: "Independent Designer & Developer", period: "2018 - Present", description: "Providing creative solutions for startups and established businesses across various industries." }
+    ],
+    team: [
+      { id: 1, name: "Sarah Johnson", role: "Senior Stylist", bio: "15+ years experience in color and cutting", specialties: ["Color Specialist", "Bridal Hair"] },
+      { id: 2, name: "Maria Garcia", role: "Nail Specialist", bio: "Expert in nail art and luxury manicures", specialties: ["Nail Art", "Gel Manicures"] }
+    ]
+  });
 
   useEffect(() => {
     const template = getBusinessTemplate(businessSlug);
