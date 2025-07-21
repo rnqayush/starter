@@ -18,6 +18,9 @@ const AutomobileModule = () => {
     ComponentToRender = StoresListing;
   } else if (path === "/auto-dealers") {
     ComponentToRender = StoresListing;
+  } else if (path.includes("/owner")) {
+    // Dealer owner dashboard like "/luxury-auto-gallery/owner"
+    ComponentToRender = DealerDashboard;
   } else if (path.includes("/dealer-dashboard")) {
     ComponentToRender = DealerDashboard;
   } else if (path.includes("/vehicles") && !path.includes("/vehicle/")) {
