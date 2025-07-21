@@ -651,7 +651,362 @@ const OwnerDashboard = () => {
     { id: 'images', label: 'Media Library', icon: FaImage },
     { id: 'analytics', label: 'Analytics', icon: FaChartBar },
     { id: 'settings', label: 'Settings', icon: FaCog },
-  ];
+    ];
+
+  // Render modal for editing
+  const renderModal = () => {
+    if (!showModal) return null;
+
+    const renderForm = () => {
+      switch (modalType) {
+        case 'hero':
+          return (
+            <>
+              <FormField primaryColor={businessData.primaryColor}>
+                <label>Title</label>
+                <input
+                  type="text"
+                  value={formData.title || ''}
+                  onChange={(e) => handleInputChange('title', e.target.value)}
+                  placeholder="Enter hero title"
+                />
+              </FormField>
+              <FormField primaryColor={businessData.primaryColor}>
+                <label>Subtitle</label>
+                <textarea
+                  value={formData.subtitle || ''}
+                  onChange={(e) => handleInputChange('subtitle', e.target.value)}
+                  placeholder="Enter hero subtitle"
+                />
+              </FormField>
+            </>
+          );
+
+        case 'about':
+          return (
+            <>
+              <FormField primaryColor={businessData.primaryColor}>
+                <label>Section Title</label>
+                <input
+                  type="text"
+                  value={formData.title || ''}
+                  onChange={(e) => handleInputChange('title', e.target.value)}
+                  placeholder="Enter section title"
+                />
+              </FormField>
+              <FormField primaryColor={businessData.primaryColor}>
+                <label>Description</label>
+                <textarea
+                  value={formData.description || ''}
+                  onChange={(e) => handleInputChange('description', e.target.value)}
+                  placeholder="Enter about description"
+                />
+              </FormField>
+            </>
+          );
+
+        case 'services':
+          return (
+            <>
+              <FormField primaryColor={businessData.primaryColor}>
+                <label>Icon (Emoji)</label>
+                <input
+                  type="text"
+                  value={formData.icon || ''}
+                  onChange={(e) => handleInputChange('icon', e.target.value)}
+                  placeholder="🎨"
+                />
+                <div className="help-text">Choose an emoji to represent this service</div>
+              </FormField>
+              <FormField primaryColor={businessData.primaryColor}>
+                <label>Service Title</label>
+                <input
+                  type="text"
+                  value={formData.title || ''}
+                  onChange={(e) => handleInputChange('title', e.target.value)}
+                  placeholder="Web Design"
+                />
+              </FormField>
+              <FormField primaryColor={businessData.primaryColor}>
+                <label>Description</label>
+                <textarea
+                  value={formData.description || ''}
+                  onChange={(e) => handleInputChange('description', e.target.value)}
+                  placeholder="Describe your service"
+                />
+              </FormField>
+              <FormField primaryColor={businessData.primaryColor}>
+                <label>Price</label>
+                <input
+                  type="text"
+                  value={formData.price || ''}
+                  onChange={(e) => handleInputChange('price', e.target.value)}
+                  placeholder="From $1,200"
+                />
+              </FormField>
+            </>
+          );
+
+        case 'portfolio':
+          return (
+            <>
+              <FormField primaryColor={businessData.primaryColor}>
+                <label>Project Title</label>
+                <input
+                  type="text"
+                  value={formData.title || ''}
+                  onChange={(e) => handleInputChange('title', e.target.value)}
+                  placeholder="E-commerce Platform"
+                />
+              </FormField>
+              <FormField primaryColor={businessData.primaryColor}>
+                <label>Category</label>
+                <select
+                  value={formData.category || ''}
+                  onChange={(e) => handleInputChange('category', e.target.value)}
+                >
+                  <option value="">Select Category</option>
+                  <option value="Web Development">Web Development</option>
+                  <option value="UI/UX Design">UI/UX Design</option>
+                  <option value="Branding">Branding</option>
+                  <option value="Mobile App">Mobile App</option>
+                  <option value="Graphic Design">Graphic Design</option>
+                </select>
+              </FormField>
+              <FormField primaryColor={businessData.primaryColor}>
+                <label>Description</label>
+                <textarea
+                  value={formData.description || ''}
+                  onChange={(e) => handleInputChange('description', e.target.value)}
+                  placeholder="Describe the project"
+                />
+              </FormField>
+              <FormField primaryColor={businessData.primaryColor}>
+                <label>Technologies</label>
+                <TagInput primaryColor={businessData.primaryColor}>
+                  <div className="tags-container">
+                    {(formData.technologies || []).map((tech, index) => (
+                      <div key={index} className="tag">
+                        {tech}
+                        <span
+                          className="remove"
+                          onClick={() => {
+                            const newTechs = formData.technologies.filter((_, i) => i !== index);
+                            handleInputChange('technologies', newTechs);
+                          }}
+                        >
+                          ×
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                  <input
+                    type="text"
+                    className="tag-input"
+                    placeholder="Add technology (press Enter)"
+                    onKeyPress={(e) => {
+                      if (e.key === 'Enter' && e.target.value.trim()) {
+                        const newTechs = [...(formData.technologies || []), e.target.value.trim()];
+                        handleInputChange('technologies', newTechs);
+                        e.target.value = '';
+                      }
+                    }}
+                  />
+                </TagInput>
+              </FormField>
+            </>
+          );
+
+        case 'skills':
+          return (
+            <>
+              <FormField primaryColor={businessData.primaryColor}>
+                <label>Icon (Emoji)</label>
+                <input
+                  type="text"
+                  value={formData.icon || ''}
+                  onChange={(e) => handleInputChange('icon', e.target.value)}
+                  placeholder="🎨"
+                />
+              </FormField>
+              <FormField primaryColor={businessData.primaryColor}>
+                <label>Skill Name</label>
+                <input
+                  type="text"
+                  value={formData.name || ''}
+                  onChange={(e) => handleInputChange('name', e.target.value)}
+                  placeholder="Web Design"
+                />
+              </FormField>
+              <FormField primaryColor={businessData.primaryColor}>
+                <label>Proficiency Level: {formData.level || 50}%</label>
+                <RangeSlider
+                  type="range"
+                  min="0"
+                  max="100"
+                  value={formData.level || 50}
+                  onChange={(e) => handleInputChange('level', parseInt(e.target.value))}
+                  primaryColor={businessData.primaryColor}
+                />
+              </FormField>
+            </>
+          );
+
+        case 'experience':
+          return (
+            <>
+              <FormField primaryColor={businessData.primaryColor}>
+                <label>Company</label>
+                <input
+                  type="text"
+                  value={formData.company || ''}
+                  onChange={(e) => handleInputChange('company', e.target.value)}
+                  placeholder="Digital Agency Inc."
+                />
+              </FormField>
+              <FormField primaryColor={businessData.primaryColor}>
+                <label>Role</label>
+                <input
+                  type="text"
+                  value={formData.role || ''}
+                  onChange={(e) => handleInputChange('role', e.target.value)}
+                  placeholder="Senior Creative Designer"
+                />
+              </FormField>
+              <FormField primaryColor={businessData.primaryColor}>
+                <label>Period</label>
+                <input
+                  type="text"
+                  value={formData.period || ''}
+                  onChange={(e) => handleInputChange('period', e.target.value)}
+                  placeholder="2020 - Present"
+                />
+              </FormField>
+              <FormField primaryColor={businessData.primaryColor}>
+                <label>Description</label>
+                <textarea
+                  value={formData.description || ''}
+                  onChange={(e) => handleInputChange('description', e.target.value)}
+                  placeholder="Describe your role and achievements"
+                />
+              </FormField>
+            </>
+          );
+
+        case 'team':
+          return (
+            <>
+              <FormField primaryColor={businessData.primaryColor}>
+                <label>Name</label>
+                <input
+                  type="text"
+                  value={formData.name || ''}
+                  onChange={(e) => handleInputChange('name', e.target.value)}
+                  placeholder="Sarah Johnson"
+                />
+              </FormField>
+              <FormField primaryColor={businessData.primaryColor}>
+                <label>Role</label>
+                <input
+                  type="text"
+                  value={formData.role || ''}
+                  onChange={(e) => handleInputChange('role', e.target.value)}
+                  placeholder="Senior Stylist"
+                />
+              </FormField>
+              <FormField primaryColor={businessData.primaryColor}>
+                <label>Bio</label>
+                <textarea
+                  value={formData.bio || ''}
+                  onChange={(e) => handleInputChange('bio', e.target.value)}
+                  placeholder="Brief bio about the team member"
+                />
+              </FormField>
+              <FormField primaryColor={businessData.primaryColor}>
+                <label>Specialties</label>
+                <TagInput primaryColor={businessData.primaryColor}>
+                  <div className="tags-container">
+                    {(formData.specialties || []).map((specialty, index) => (
+                      <div key={index} className="tag">
+                        {specialty}
+                        <span
+                          className="remove"
+                          onClick={() => {
+                            const newSpecialties = formData.specialties.filter((_, i) => i !== index);
+                            handleInputChange('specialties', newSpecialties);
+                          }}
+                        >
+                          ×
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                  <input
+                    type="text"
+                    className="tag-input"
+                    placeholder="Add specialty (press Enter)"
+                    onKeyPress={(e) => {
+                      if (e.key === 'Enter' && e.target.value.trim()) {
+                        const newSpecialties = [...(formData.specialties || []), e.target.value.trim()];
+                        handleInputChange('specialties', newSpecialties);
+                        e.target.value = '';
+                      }
+                    }}
+                  />
+                </TagInput>
+              </FormField>
+            </>
+          );
+
+        default:
+          return <div>Form not implemented for {modalType}</div>;
+      }
+    };
+
+    return (
+      <ModalOverlay onClick={closeModal}>
+        <ModalContent onClick={(e) => e.stopPropagation()}>
+          <ModalHeader>
+            <h3>
+              {editingItem ? 'Edit' : 'Add'} {modalType.charAt(0).toUpperCase() + modalType.slice(1)}
+            </h3>
+            <CloseButton onClick={closeModal}>
+              <FaTimes />
+            </CloseButton>
+          </ModalHeader>
+
+          {renderForm()}
+
+          <ModalActions>
+            <ActionButton onClick={closeModal}>
+              Cancel
+            </ActionButton>
+            {editingItem && (
+              <ActionButton
+                variant="danger"
+                onClick={() => {
+                  const section = modalType.split('-')[0];
+                  handleDelete(section, editingItem.id);
+                  closeModal();
+                }}
+              >
+                <FaTrash />
+                Delete
+              </ActionButton>
+            )}
+            <ActionButton
+              variant="primary"
+              primaryColor={businessData.primaryColor}
+              onClick={handleSave}
+            >
+              <FaCheck />
+              Save
+            </ActionButton>
+          </ModalActions>
+        </ModalContent>
+      </ModalOverlay>
+    );
+  };
 
   const renderContent = () => {
     switch (activeSection) {
