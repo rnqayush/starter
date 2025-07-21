@@ -742,7 +742,7 @@ const StartBuilding = () => {
             Back
           </ActionButton>
 
-          {currentStep < totalSteps ? (
+          {currentStep < 3 ? (
             <ActionButton
               variant="next"
               onClick={handleNext}
