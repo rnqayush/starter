@@ -688,6 +688,236 @@ const HoursGrid = styled.div`
   margin-top: ${theme.spacing.xl};
 `;
 
+// Portfolio Section Styles
+const PortfolioGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: ${theme.spacing.xl};
+`;
+
+const PortfolioCard = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'primaryColor',
+})`
+  background: ${theme.colors.white};
+  border-radius: ${theme.borderRadius.xl};
+  overflow: hidden;
+  box-shadow: ${theme.shadows.md};
+  transition: all 0.3s ease;
+  cursor: pointer;
+
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: ${theme.shadows.xl};
+  }
+`;
+
+const PortfolioImage = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'primaryColor',
+})`
+  height: 240px;
+  background: linear-gradient(135deg, ${props => props.primaryColor + '30'} 0%, ${props => props.primaryColor + '60'} 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+  color: ${props => props.primaryColor || theme.colors.primary};
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  ${PortfolioCard}:hover &::after {
+    opacity: 1;
+  }
+`;
+
+const PortfolioContent = styled.div`
+  padding: ${theme.spacing.xl};
+
+  .portfolio-category {
+    color: ${props => props.primaryColor || theme.colors.primary};
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: ${theme.spacing.sm};
+  }
+
+  h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: ${theme.colors.gray900};
+    margin-bottom: ${theme.spacing.md};
+  }
+
+  p {
+    color: ${theme.colors.gray600};
+    line-height: 1.6;
+    margin-bottom: ${theme.spacing.lg};
+  }
+
+  .tech-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: ${theme.spacing.sm};
+
+    .tech-tag {
+      background: ${theme.colors.gray100};
+      color: ${theme.colors.gray700};
+      padding: ${theme.spacing.xs} ${theme.spacing.sm};
+      border-radius: ${theme.borderRadius.sm};
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+  }
+`;
+
+// Skills Section Styles
+const SkillsGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: ${theme.spacing.lg};
+`;
+
+const SkillCard = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'primaryColor',
+})`
+  background: ${theme.colors.white};
+  padding: ${theme.spacing.lg};
+  border-radius: ${theme.borderRadius.lg};
+  box-shadow: ${theme.shadows.sm};
+  border: 1px solid ${theme.colors.gray200};
+
+  .skill-header {
+    display: flex;
+    align-items: center;
+    gap: ${theme.spacing.md};
+    margin-bottom: ${theme.spacing.md};
+
+    .skill-icon {
+      font-size: 1.5rem;
+    }
+
+    .skill-info h4 {
+      font-weight: 600;
+      color: ${theme.colors.gray900};
+      margin-bottom: 2px;
+    }
+
+    .skill-info .percentage {
+      font-size: 0.9rem;
+      color: ${props => props.primaryColor || theme.colors.primary};
+      font-weight: 600;
+    }
+  }
+
+  .skill-bar {
+    height: 8px;
+    background: ${theme.colors.gray200};
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+
+    .skill-progress {
+      height: 100%;
+      background: linear-gradient(90deg, ${props => props.primaryColor || theme.colors.primary}, ${props => props.primaryColor + 'cc' || theme.colors.primary + 'cc'});
+      border-radius: 4px;
+      transition: width 2s ease;
+    }
+  }
+`;
+
+// Experience Section Styles
+const ExperienceTimeline = styled.div`
+  max-width: 800px;
+  margin: 0 auto;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 100%;
+    background: ${theme.colors.gray300};
+
+    @media (max-width: ${theme.breakpoints.tablet}) {
+      left: 20px;
+    }
+  }
+`;
+
+const ExperienceCard = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'primaryColor' && prop !== 'isLeft',
+})`
+  position: relative;
+  width: calc(50% - 20px);
+  margin-bottom: ${theme.spacing.xl};
+  ${props => props.isLeft ? 'margin-right: auto;' : 'margin-left: auto;'}
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    width: calc(100% - 50px);
+    margin-left: 50px;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 20px;
+    ${props => props.isLeft ? 'right: -15px;' : 'left: -15px;'}
+    width: 12px;
+    height: 12px;
+    background: ${props => props.primaryColor || theme.colors.primary};
+    border-radius: 50%;
+    border: 3px solid ${theme.colors.white};
+    box-shadow: ${theme.shadows.sm};
+
+    @media (max-width: ${theme.breakpoints.tablet}) {
+      left: -35px;
+    }
+  }
+
+  .experience-content {
+    background: ${theme.colors.white};
+    padding: ${theme.spacing.xl};
+    border-radius: ${theme.borderRadius.lg};
+    box-shadow: ${theme.shadows.md};
+    border: 1px solid ${theme.colors.gray200};
+
+    .period {
+      color: ${props => props.primaryColor || theme.colors.primary};
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: ${theme.spacing.sm};
+    }
+
+    h4 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: ${theme.colors.gray900};
+      margin-bottom: ${theme.spacing.xs};
+    }
+
+    .company {
+      color: ${theme.colors.gray600};
+      font-weight: 500;
+      margin-bottom: ${theme.spacing.md};
+    }
+
+    p {
+      color: ${theme.colors.gray700};
+      line-height: 1.6;
+    }
+  }
+`;
+
 const HoursCard = styled.div.withConfig({
   shouldForwardProp: (prop) => prop !== 'primaryColor',
 })`
