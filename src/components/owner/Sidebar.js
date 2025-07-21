@@ -331,7 +331,7 @@ const Sidebar = () => {
           ))}
 
           <NavSection>
-            <NavItem to="/" onClick={closeSidebar}>
+            <NavItem to={`/${hotelSlug}`} onClick={closeSidebar}>
               <NavIcon>
                 <FaSignOutAlt />
               </NavIcon>
