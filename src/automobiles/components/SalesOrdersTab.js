@@ -10,6 +10,8 @@ import {
   FaCalendar,
   FaPrint,
   FaDownload,
+  FaChevronLeft,
+  FaChevronRight,
 } from "react-icons/fa";
 import { theme } from "../../styles/GlobalStyle";
 
