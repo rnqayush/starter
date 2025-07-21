@@ -572,6 +572,13 @@ const Navbar = ({
     };
   }, []);
 
+  // Close mobile menu when auth modal opens
+  useEffect(() => {
+    if (showAuthModal) {
+      setIsMenuOpen(false);
+    }
+  }, [showAuthModal]);
+
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchQuery.trim()) {
