@@ -729,8 +729,7 @@ const StartBuilding = () => {
         </Header>
 
         <Content>
-          {currentStep <= totalSteps ? renderStepContent() : null}
-          {renderFinalStep()}
+          {renderStepContent()}
         </Content>
 
         <Actions>
