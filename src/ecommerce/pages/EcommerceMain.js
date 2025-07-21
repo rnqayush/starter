@@ -387,134 +387,21 @@ const FallbackButton = styled.button`
   }
 `;
 
-const QuickNavigation = styled.div`
-  background: ${theme.colors.white};
-  border-bottom: 1px solid ${theme.colors.gray200};
-  padding: ${theme.spacing.lg} 0;
-  position: sticky;
-  top: 80px;
-  z-index: 90;
-  box-shadow: ${theme.shadows.sm};
-`;
 
-const QuickNavGrid = styled.div`
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 ${theme.spacing.md};
-  display: flex;
-  justify-content: center;
-  gap: ${theme.spacing.xl};
-  flex-wrap: wrap;
 
-  @media (max-width: ${theme.breakpoints.tablet}) {
-    gap: ${theme.spacing.md};
-  }
 
-  @media (max-width: ${theme.breakpoints.mobile}) {
-    flex-direction: column;
-    gap: ${theme.spacing.sm};
-  }
-`;
 
-const QuickNavItem = styled(Link)`
-  display: flex;
-  align-items: center;
-  gap: ${theme.spacing.sm};
-  padding: ${theme.spacing.md} ${theme.spacing.lg};
-  border-radius: ${theme.borderRadius.lg};
-  background: transparent;
-  text-decoration: none;
-  color: ${theme.colors.gray700};
-  transition: all 0.3s ease;
-  border: 2px solid ${theme.colors.gray200};
-  font-weight: 600;
-  white-space: nowrap;
 
-  &:hover {
-    background: ${theme.colors.primary};
-    border-color: ${theme.colors.primary};
-    color: ${theme.colors.white};
-    transform: translateY(-2px);
-    box-shadow: ${theme.shadows.md};
-  }
 
-  .icon {
-    font-size: 1.2rem;
-  }
 
-  @media (max-width: ${theme.breakpoints.mobile}) {
-    justify-content: center;
-    padding: ${theme.spacing.sm} ${theme.spacing.md};
-    font-size: 0.9rem;
 
-    .icon {
-      font-size: 1rem;
-    }
-  }
-`;
 
-const StoreInfo = styled.div`
-  background: ${theme.colors.gray50};
-  padding: ${theme.spacing.lg};
-  border-radius: ${theme.borderRadius.md};
-  border: 1px solid ${theme.colors.gray200};
-  margin-bottom: ${theme.spacing.xl};
-`;
 
-const StoreInfoGrid = styled.div`
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: ${theme.spacing.xl};
-  align-items: center;
 
-  @media (max-width: ${theme.breakpoints.tablet}) {
-    grid-template-columns: 1fr;
-    gap: ${theme.spacing.lg};
-    text-align: center;
-  }
-`;
 
-const StoreContact = styled.div`
-  .contact-item {
-    display: flex;
-    align-items: center;
-    gap: ${theme.spacing.sm};
-    margin-bottom: ${theme.spacing.md};
-    color: ${theme.colors.gray700};
 
-    &:last-child {
-      margin-bottom: 0;
-    }
 
-    .icon {
-      color: ${theme.colors.primary};
-      width: 20px;
-    }
-  }
-`;
 
-const StoreStats = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-  gap: ${theme.spacing.lg};
-  text-align: center;
-`;
-
-const StatItem = styled.div`
-  .number {
-    font-size: 2rem;
-    font-weight: 700;
-    color: ${theme.colors.primary};
-    margin-bottom: ${theme.spacing.xs};
-  }
-
-  .label {
-    font-size: 0.9rem;
-    color: ${theme.colors.gray600};
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-`;
 
 const Breadcrumb = styled.div`
   background: ${theme.colors.white};
