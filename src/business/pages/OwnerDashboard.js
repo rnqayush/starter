@@ -1203,7 +1203,7 @@ const OwnerDashboard = () => {
               <h3 style={{ marginBottom: theme.spacing.lg, color: theme.colors.gray900 }}>Technical Skills</h3>
 
               {(currentData.skills || []).map((skill, index) => (
-                <div key={index} style={{
+                                <div key={skill.id} style={{
                   background: theme.colors.white,
                   border: `1px solid ${theme.colors.gray200}`,
                   borderRadius: theme.borderRadius.lg,
@@ -1221,11 +1221,11 @@ const OwnerDashboard = () => {
                       <h4 style={{ fontWeight: 600, color: theme.colors.gray900, margin: 0 }}>{skill.name}</h4>
                     </div>
                     <div style={{ display: 'flex', gap: theme.spacing.sm }}>
-                      <Button>
+                      <Button onClick={() => openModal('skills', skill)}>
                         <FaEdit />
                         Edit
                       </Button>
-                      <Button>
+                      <Button onClick={() => handleDelete('skills', skill.id)}>
                         <FaTrash />
                         Delete
                       </Button>
