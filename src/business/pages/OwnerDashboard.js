@@ -30,6 +30,10 @@ const DashboardHeader = styled.div`
   box-shadow: ${theme.shadows.sm};
   padding: ${theme.spacing.lg} 0;
   border-bottom: 1px solid ${theme.colors.gray200};
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    padding: ${theme.spacing.md} 0;
+  }
 `;
 
 const HeaderContent = styled.div`
@@ -39,6 +43,16 @@ const HeaderContent = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    flex-direction: column;
+    gap: ${theme.spacing.md};
+    align-items: flex-start;
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: 0 ${theme.spacing.sm};
+  }
 `;
 
 const BackButton = styled.button`
@@ -64,17 +78,39 @@ const DashboardTitle = styled.div`
     font-weight: 700;
     color: ${theme.colors.gray900};
     margin-bottom: ${theme.spacing.xs};
+
+    @media (max-width: ${theme.breakpoints.tablet}) {
+      font-size: 1.5rem;
+    }
+
+    @media (max-width: ${theme.breakpoints.mobile}) {
+      font-size: 1.3rem;
+    }
   }
 
   p {
     color: ${theme.colors.gray600};
     font-size: 1rem;
+
+    @media (max-width: ${theme.breakpoints.mobile}) {
+      font-size: 0.9rem;
+    }
   }
 `;
 
 const ActionButtons = styled.div`
   display: flex;
   gap: ${theme.spacing.md};
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    flex-direction: column;
+    gap: ${theme.spacing.sm};
+  }
 `;
 
 const Button = styled.button.withConfig({
@@ -120,6 +156,12 @@ const DashboardLayout = styled.div`
   @media (max-width: ${theme.breakpoints.tablet}) {
     grid-template-columns: 1fr;
     gap: ${theme.spacing.lg};
+    padding: ${theme.spacing.lg} ${theme.spacing.md};
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.md} ${theme.spacing.sm};
+    gap: ${theme.spacing.md};
   }
 `;
 
