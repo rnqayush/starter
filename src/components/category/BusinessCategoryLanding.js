@@ -45,9 +45,9 @@ const BusinessCategoryLanding = () => {
       subtitle="Establish your professional online presence with business websites tailored to your industry, from restaurants to consulting firms."
       gradient="linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
       mockups={mockups}
-      demoUrl="/salon"
+      demoUrl="/business/salon"
       demoButtonText="See Demo Business Website"
-      secondaryDemoUrl="/john-doe-portfolio"
+      secondaryDemoUrl="/business/freelancer"
       secondaryDemoButtonText="See Freelancer Demo Website"
     />
   );
