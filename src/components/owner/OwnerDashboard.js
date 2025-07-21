@@ -1,7 +1,7 @@
-import React, { useMemo } from "react";
+import React from "react";
 import styled from "styled-components";
 import { FaHotel, FaBed, FaCalendarCheck, FaEye, FaPlus, FaEdit } from "react-icons/fa";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import { Card, CardContent, Badge } from "../shared/Card";
 import { Button } from "../shared/Button";
