@@ -334,7 +334,7 @@ const RoleOption = styled.div`
   }
 `;
 
-const AuthModal = ({ isOpen, onClose, defaultTab = "login" }) => {
+const AuthModal = ({ isOpen, onClose, onSuccess, defaultTab = "login" }) => {
   const { login, register, loading } = useAuth();
   const [activeTab, setActiveTab] = useState(defaultTab);
   const [showPassword, setShowPassword] = useState(false);
