@@ -1393,7 +1393,7 @@ const BusinessWebsitePage = () => {
   };
 
     const handleOwnerClick = () => {
-    navigate(`/business/${businessData.slug}/owner`);
+    navigate(`/${businessData.slug}/owner`);
   };
 
   const toggleMobileMenu = () => {
