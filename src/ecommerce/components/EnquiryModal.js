@@ -370,7 +370,7 @@ const EnquiryModal = ({
 
       setIsSuccess(true);
     } catch (error) {
-      console.error("Error submitting enquiry:", error);
+
       alert("Failed to submit enquiry. Please try again.");
     } finally {
       setIsSubmitting(false);
