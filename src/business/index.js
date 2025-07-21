@@ -12,10 +12,13 @@ const BusinessModule = () => {
   if (path === "/business-websites") {
     return <BusinessWebsitesHome />;
   } else if (path.includes("/owner")) {
-    // Owner dashboard route like "/business/salon/owner" or "/business/gym/owner"
+    // Owner dashboard route like "/business/salon/owner", "/salon/owner" or "/gym/owner"
     return <OwnerDashboard />;
   } else if (path.startsWith("/business/")) {
     // Business website page like "/business/salon" or "/business/gym"
+    return <BusinessWebsitePage />;
+  } else if (path.match(/^\/[^/]+$/)) {
+    // Direct slug access like "/salon", "/freelancer", "/gym"
     return <BusinessWebsitePage />;
   } else {
     return <BusinessWebsitesHome />;
