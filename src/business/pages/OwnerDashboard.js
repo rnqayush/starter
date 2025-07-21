@@ -652,7 +652,7 @@ const OwnerDashboard = () => {
     },
     services: [
       { id: 1, icon: "🎨", title: "Web Design", description: "Custom website design tailored to your brand and business goals", price: "From $1,200" },
-      { id: 2, icon: "���", title: "UI/UX Design", description: "User-centered design for web and mobile applications", price: "From $800" },
+      { id: 2, icon: "📱", title: "UI/UX Design", description: "User-centered design for web and mobile applications", price: "From $800" },
       { id: 3, icon: "💻", title: "Frontend Development", description: "Modern, responsive websites built with latest technologies", price: "From $1,500" }
     ],
         portfolio: [
@@ -1211,6 +1211,38 @@ const OwnerDashboard = () => {
                     }}
                   />
                 </TagInput>
+              </FormField>
+            </>
+          );
+
+                case 'gallery':
+          return (
+            <>
+              <FormField primaryColor={businessData.primaryColor}>
+                <label>Category Name</label>
+                <input
+                  type="text"
+                  value={formData.category || ''}
+                  onChange={(e) => handleInputChange('category', e.target.value)}
+                  placeholder="Hair Styling"
+                />
+              </FormField>
+              <ImageUpload
+                field="coverImage"
+                label="Cover Image"
+                currentImage={formData.coverImage}
+                primaryColor={businessData.primaryColor}
+              />
+              <FormField primaryColor={businessData.primaryColor}>
+                <label>Number of Images</label>
+                <input
+                  type="number"
+                  value={formData.images || ''}
+                  onChange={(e) => handleInputChange('images', parseInt(e.target.value))}
+                  placeholder="8"
+                  min="1"
+                />
+                <div className="help-text">How many photos are in this category</div>
               </FormField>
             </>
           );
