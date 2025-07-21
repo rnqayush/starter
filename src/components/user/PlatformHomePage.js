@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import {
@@ -24,6 +24,11 @@ import {
   FaLock,
   FaGlobe,
 } from "react-icons/fa";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination, Autoplay } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 import Header from "../shared/Header";
 import { Button } from "../shared/Button";
 import { theme, media } from "../../styles/GlobalStyle";
@@ -526,13 +531,62 @@ const TestimonialsGrid = styled.div`
   gap: ${theme.spacing.xl};
 
   ${media.mobile} {
-    grid-template-columns: 1fr;
-    gap: ${theme.spacing.lg};
-    padding: 0 ${theme.spacing.sm};
+    display: none;
   }
 
   ${media.tablet} {
     grid-template-columns: repeat(2, 1fr);
+  }
+`;
+
+const TestimonialsSwiperContainer = styled.div`
+  display: none;
+
+  ${media.mobile} {
+    display: block;
+    margin: 0 -${theme.spacing.sm};
+
+    .swiper {
+      padding: 0 ${theme.spacing.sm};
+      overflow: visible;
+    }
+
+    .swiper-slide {
+      height: auto;
+    }
+
+    .swiper-pagination {
+      bottom: -40px;
+
+      .swiper-pagination-bullet {
+        background: ${theme.colors.primary};
+        opacity: 0.3;
+
+        &.swiper-pagination-bullet-active {
+          opacity: 1;
+        }
+      }
+    }
+
+    .swiper-button-next,
+    .swiper-button-prev {
+      color: ${theme.colors.primary};
+      background: ${theme.colors.white};
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      margin-top: -20px;
+      box-shadow: ${theme.shadows.md};
+
+      &:after {
+        font-size: 16px;
+        font-weight: bold;
+      }
+
+      &.swiper-button-disabled {
+        opacity: 0.3;
+      }
+    }
   }
 `;
 
