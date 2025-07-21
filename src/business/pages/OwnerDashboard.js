@@ -651,7 +651,18 @@ const OwnerDashboard = () => {
   const [showModal, setShowModal] = useState(false);
   const [modalType, setModalType] = useState('');
   const [formData, setFormData] = useState({});
-    const [currentData, setCurrentData] = useState({
+        const [currentData, setCurrentData] = useState({
+    sectionVisibility: {
+      hero: true,
+      about: true,
+      services: true,
+      portfolio: true,
+      skills: true,
+      experience: true,
+      team: true,
+      gallery: true,
+      contact: true
+    },
     hero: {
       title: "Creative Freelancer Portfolio",
       subtitle: "Transforming ideas into stunning visual experiences. Specialized in design, development, and creative solutions for modern businesses.",
@@ -684,11 +695,33 @@ const OwnerDashboard = () => {
       { id: 1, name: "Sarah Johnson", role: "Senior Stylist", bio: "15+ years experience in color and cutting", specialties: ["Color Specialist", "Bridal Hair"], photo: "https://images.unsplash.com/photo-1594824388853-bf7e0ad7b2ad?ixlib=rb-4.0.3&w=400&q=80" },
       { id: 2, name: "Maria Garcia", role: "Nail Specialist", bio: "Expert in nail art and luxury manicures", specialties: ["Nail Art", "Gel Manicures"], photo: "https://images.unsplash.com/photo-1580618672591-eb180b1a973f?ixlib=rb-4.0.3&w=400&q=80" }
     ],
-    gallery: [
+        gallery: [
       { id: 1, category: "Hair Styling", images: 8, coverImage: "https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-4.0.3&w=600&q=80" },
       { id: 2, category: "Nail Art", images: 6, coverImage: "https://images.unsplash.com/photo-1604654894610-df63bc536371?ixlib=rb-4.0.3&w=600&q=80" },
       { id: 3, category: "Spa Treatments", images: 5, coverImage: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&w=600&q=80" }
-    ]
+    ],
+    contact: {
+      title: "Get In Touch",
+      description: "Ready to start your next project? Contact me today and let's discuss how I can help bring your vision to life.",
+      email: "hello@freelancer.com",
+      phone: "+1 (555) 123-4567",
+      address: "123 Creative Street, Design City, DC 12345",
+      hours: {
+        monday: "9:00 AM - 6:00 PM",
+        tuesday: "9:00 AM - 6:00 PM",
+        wednesday: "9:00 AM - 6:00 PM",
+        thursday: "9:00 AM - 6:00 PM",
+        friday: "9:00 AM - 6:00 PM",
+        saturday: "10:00 AM - 4:00 PM",
+        sunday: "Closed"
+      },
+      socialMedia: {
+        linkedin: "https://linkedin.com/in/freelancer",
+        twitter: "https://twitter.com/freelancer",
+        instagram: "https://instagram.com/freelancer",
+        website: "https://portfolio.freelancer.com"
+      }
+    }
   });
 
   useEffect(() => {
