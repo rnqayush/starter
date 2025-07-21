@@ -47,6 +47,8 @@ const BusinessCategoryLanding = () => {
       mockups={mockups}
       demoUrl="/salon"
       demoButtonText="See Demo Business Website"
+      secondaryDemoUrl="/john-doe-portfolio"
+      secondaryDemoButtonText="See Freelancer Demo Website"
     />
   );
 };
