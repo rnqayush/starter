@@ -151,7 +151,9 @@ const TrustIndicators = styled.div`
   opacity: 0.8;
 
   ${media.mobile} {
-    gap: ${theme.spacing.md};
+    gap: ${theme.spacing.sm};
+    justify-content: space-around;
+    padding: 0 ${theme.spacing.sm};
   }
 `;
 
@@ -165,6 +167,11 @@ const TrustItem = styled.div`
   svg {
     color: #10b981;
   }
+
+  ${media.mobile} {
+    font-size: 0.85rem;
+    gap: ${theme.spacing.xs};
+  }
 `;
 
 const HeroCTAContainer = styled.div`
@@ -174,6 +181,17 @@ const HeroCTAContainer = styled.div`
   align-items: center;
   flex-wrap: wrap;
   margin-top: ${theme.spacing.lg};
+
+  ${media.mobile} {
+    flex-direction: column;
+    gap: ${theme.spacing.sm};
+    width: 100%;
+
+    & > * {
+      width: 100%;
+      max-width: 280px;
+    }
+  }
 `;
 
 const CreateStoreCTA = styled(Button)`
@@ -250,6 +268,12 @@ const StatsContainer = styled.div`
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: ${theme.spacing.xl};
   text-align: center;
+
+  ${media.mobile} {
+    grid-template-columns: repeat(2, 1fr);
+    gap: ${theme.spacing.lg};
+    padding: 0 ${theme.spacing.sm};
+  }
 `;
 
 const StatCard = styled.div`
@@ -314,6 +338,16 @@ const StoreCardsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: ${theme.spacing.xl};
+
+  ${media.mobile} {
+    grid-template-columns: 1fr;
+    gap: ${theme.spacing.lg};
+    padding: 0 ${theme.spacing.sm};
+  }
+
+  ${media.tablet} {
+    grid-template-columns: repeat(2, 1fr);
+  }
 `;
 
 const StoreCard = styled.div`
@@ -420,6 +454,16 @@ const BenefitsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: ${theme.spacing.xl};
+
+  ${media.mobile} {
+    grid-template-columns: 1fr;
+    gap: ${theme.spacing.lg};
+    padding: 0 ${theme.spacing.sm};
+  }
+
+  ${media.tablet} {
+    grid-template-columns: repeat(2, 1fr);
+  }
 `;
 
 const BenefitCard = styled.div`
@@ -480,6 +524,16 @@ const TestimonialsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   gap: ${theme.spacing.xl};
+
+  ${media.mobile} {
+    grid-template-columns: 1fr;
+    gap: ${theme.spacing.lg};
+    padding: 0 ${theme.spacing.sm};
+  }
+
+  ${media.tablet} {
+    grid-template-columns: repeat(2, 1fr);
+  }
 `;
 
 const TestimonialCard = styled.div`
