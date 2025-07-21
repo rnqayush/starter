@@ -652,7 +652,7 @@ const OwnerDashboard = () => {
     },
     services: [
       { id: 1, icon: "🎨", title: "Web Design", description: "Custom website design tailored to your brand and business goals", price: "From $1,200" },
-      { id: 2, icon: "📱", title: "UI/UX Design", description: "User-centered design for web and mobile applications", price: "From $800" },
+      { id: 2, icon: "���", title: "UI/UX Design", description: "User-centered design for web and mobile applications", price: "From $800" },
       { id: 3, icon: "💻", title: "Frontend Development", description: "Modern, responsive websites built with latest technologies", price: "From $1,500" }
     ],
         portfolio: [
@@ -1153,9 +1153,15 @@ const OwnerDashboard = () => {
                   type="text"
                   value={formData.name || ''}
                   onChange={(e) => handleInputChange('name', e.target.value)}
-                  placeholder="Sarah Johnson"
+                                    placeholder="Sarah Johnson"
                 />
               </FormField>
+              <ImageUpload
+                field="photo"
+                label="Team Member Photo"
+                currentImage={formData.photo}
+                primaryColor={businessData.primaryColor}
+              />
               <FormField primaryColor={businessData.primaryColor}>
                 <label>Role</label>
                 <input
