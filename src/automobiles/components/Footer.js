@@ -141,11 +141,11 @@ const Footer = ({ dealerSlug = "", dealer = null, theme: customTheme = {} }) => 
 
         <FooterSection>
           <h3>Services</h3>
-          <a href="#">Vehicle Sales</a>
-          <a href="#">Financing Options</a>
-          <a href="#">Trade-In Appraisal</a>
-          <a href="#">Service & Maintenance</a>
-          <a href="#">Extended Warranties</a>
+          <button type="button">Vehicle Sales</button>
+          <button type="button">Financing Options</button>
+          <button type="button">Trade-In Appraisal</button>
+          <button type="button">Service & Maintenance</button>
+          <button type="button">Extended Warranties</button>
         </FooterSection>
       </FooterContent>
 
