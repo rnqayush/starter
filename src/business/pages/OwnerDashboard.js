@@ -919,12 +919,7 @@ const OwnerDashboard = () => {
     }));
   };
 
-  const handleArrayFieldChange = (field, value) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: value
-    }));
-  };
+
 
   const handleSave = () => {
     if (!modalType) return;
