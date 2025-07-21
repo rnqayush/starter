@@ -51,7 +51,7 @@ const HeroSection = styled.section.withConfig({
   text-align: center;
   position: relative;
   overflow: hidden;
-  min-height: 55vh;
+  min-height: 100vh;
   display: flex;
   align-items: center;
 
@@ -67,7 +67,7 @@ const HeroSection = styled.section.withConfig({
   }
 
     @media (max-width: ${theme.breakpoints.mobile}) {
-    min-height: 45vh;
+    min-height: 100vh;
     background-attachment: scroll;
     padding: ${theme.spacing.lg} 0;
   }
