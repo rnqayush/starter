@@ -873,8 +873,19 @@ const OwnerDashboard = () => {
     }
   };
 
-  const removeImage = (field) => {
+    const removeImage = (field) => {
     handleInputChange(field, '');
+  };
+
+  // Visibility toggle handler
+  const toggleSectionVisibility = (section) => {
+    setCurrentData(prev => ({
+      ...prev,
+      sectionVisibility: {
+        ...prev.sectionVisibility,
+        [section]: !prev.sectionVisibility[section]
+      }
+    }));
   };
 
   const menuItems = businessData?.slug === 'freelancer' ? [
