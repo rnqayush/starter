@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { FaEdit, FaEye, FaArrowLeft } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import Sidebar from "./Sidebar";
-import { Card, CardContent } from "../shared/Card";
+import { Card } from "../shared/Card";
 import { Button } from "../shared/Button";
 import { theme } from "../../styles/GlobalStyle";
 import { useAppContext } from "../../context/AppContext";
