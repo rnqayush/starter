@@ -244,7 +244,7 @@ const HotelFooter = () => {
             <FooterLinks>
               <FooterLink to="/hotels">Find Hotels</FooterLink>
               <FooterLink to="/my-bookings">My Bookings</FooterLink>
-              <FooterLink to="/owner/dashboard">Hotel Owners</FooterLink>
+              <FooterLink to={hotelSlug ? `/${hotelSlug}/owner` : "/owner/dashboard"}>Hotel Owners</FooterLink>
               <FooterLink to="/about">About Us</FooterLink>
               <FooterLink to="/contact">Contact</FooterLink>
               <FooterLink to="/help">Help & Support</FooterLink>
