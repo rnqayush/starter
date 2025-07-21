@@ -158,6 +158,7 @@ function App() {
             />
 
             {/* Hotel-specific Routes (more specific routes first) */}
+            <Route path="/:hotelSlug/owner" element={<HotelModule />} />
             <Route path="/:hotelSlug/rooms/:roomId" element={<HotelModule />} />
             <Route
               path="/:hotelSlug/booking/:roomId"
