@@ -210,15 +210,15 @@ const QuickInfoCard = styled.div`
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     min-width: auto;
-    padding: ${theme.spacing.lg};
+    padding: ${theme.spacing.sm} ${theme.spacing.md};
     background: rgba(255, 255, 255, 0.15);
-    border-radius: ${theme.borderRadius.xl};
+    border-radius: ${theme.borderRadius.md};
     backdrop-filter: blur(15px);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 280px;
-    margin: 0 auto;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    width: auto;
+    max-width: 140px;
     justify-content: center;
+    gap: ${theme.spacing.sm};
   }
 `;
 
@@ -226,10 +226,11 @@ const MobileQuickInfoContainer = styled.div`
   display: contents;
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: flex;
+    justify-content: center;
     gap: ${theme.spacing.md};
     width: 100%;
+    margin-bottom: ${theme.spacing.lg};
   }
 `;
 
@@ -238,7 +239,7 @@ const QuickInfoIcon = styled.div`
   color: #fbbf24;
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    font-size: 1.8rem;
+    font-size: 1.2rem;
   }
 `;
 
@@ -255,11 +256,11 @@ const QuickInfoText = styled.div`
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     .label {
-      font-size: 0.95rem;
+      font-size: 0.7rem;
       opacity: 0.9;
     }
     .value {
-      font-size: 1.3rem;
+      font-size: 0.9rem;
       font-weight: 700;
     }
   }
@@ -875,9 +876,6 @@ const HotelDetail = () => {
             Experience luxury hospitality in the heart of {hotel.city}
           </HeroSubtitle>
           <HeroActions>
-            <CTAButton onClick={() => navigate(`/${hotel.slug}/booking`)}>
-              Book Your Stay
-            </CTAButton>
             <MobileQuickInfoContainer>
               <QuickInfoCard>
                 <QuickInfoIcon>
@@ -885,7 +883,7 @@ const HotelDetail = () => {
                 </QuickInfoIcon>
                 <QuickInfoText>
                   <div className="label">Rating</div>
-                  <div className="value">{hotel.rating}/5 Stars</div>
+                  <div className="value">{hotel.rating}/5</div>
                 </QuickInfoText>
               </QuickInfoCard>
               <QuickInfoCard>
@@ -898,6 +896,9 @@ const HotelDetail = () => {
                 </QuickInfoText>
               </QuickInfoCard>
             </MobileQuickInfoContainer>
+            <CTAButton onClick={() => navigate(`/${hotel.slug}/booking`)}>
+              Book Your Stay
+            </CTAButton>
           </HeroActions>
         </HeroContent>
       </HeroBanner>
