@@ -1540,8 +1540,8 @@ const BusinessWebsitePage = () => {
             <SectionSubtitle>
               A showcase of my recent work and creative projects across various industries and technologies.
             </SectionSubtitle>
-            <PortfolioGrid>
-              {content.portfolio.map((project, index) => (
+                        <PortfolioGrid>
+              {(content.portfolio || []).map((project, index) => (
                 <PortfolioCard key={index} primaryColor={businessData.primaryColor}>
                   <PortfolioImage primaryColor={businessData.primaryColor}>
                     🖼️
@@ -1551,7 +1551,7 @@ const BusinessWebsitePage = () => {
                     <h3>{project.title}</h3>
                     <p>{project.description}</p>
                     <div className="tech-stack">
-                      {project.technologies.map((tech, i) => (
+                      {(project.technologies || []).map((tech, i) => (
                         <span key={i} className="tech-tag">{tech}</span>
                       ))}
                     </div>
@@ -1571,8 +1571,8 @@ const BusinessWebsitePage = () => {
             <SectionSubtitle>
               Technical expertise and creative skills developed through years of professional experience.
             </SectionSubtitle>
-            <SkillsGrid>
-              {content.skills.map((skill, index) => (
+                        <SkillsGrid>
+              {(content.skills || []).map((skill, index) => (
                 <SkillCard key={index} primaryColor={businessData.primaryColor}>
                   <div className="skill-header">
                     <div className="skill-icon">{skill.icon}</div>
@@ -1604,8 +1604,8 @@ const BusinessWebsitePage = () => {
               : 'We offer a comprehensive range of professional services designed to meet your needs and exceed your expectations.'
             }
           </SectionSubtitle>
-          <ServicesGrid>
-            {content.services.map((service, index) => (
+                    <ServicesGrid>
+            {(content.services || []).map((service, index) => (
               <ServiceCard key={index} primaryColor={businessData.primaryColor}>
                 <div className="icon">{service.icon}</div>
                 <h3>{service.title}</h3>
@@ -1633,8 +1633,8 @@ const BusinessWebsitePage = () => {
           <SectionSubtitle>
             Our experienced professionals are passionate about delivering exceptional service and results.
           </SectionSubtitle>
-          <TeamGrid>
-            {content.team.map((member, index) => (
+                    <TeamGrid>
+            {(content.team || []).map((member, index) => (
               <TeamCard key={index}>
                 <TeamPhoto primaryColor={businessData.primaryColor}>
                   👤
@@ -1658,8 +1658,8 @@ const BusinessWebsitePage = () => {
             <SectionSubtitle>
               My journey in the creative industry, working with diverse clients and challenging projects.
             </SectionSubtitle>
-            <ExperienceTimeline>
-              {content.experience.map((exp, index) => (
+                        <ExperienceTimeline>
+              {(content.experience || []).map((exp, index) => (
                 <ExperienceCard
                   key={index}
                   primaryColor={businessData.primaryColor}
@@ -1742,8 +1742,8 @@ const BusinessWebsitePage = () => {
             <SectionSubtitle>
               Choose from our specially curated packages designed to give you the best value and experience.
             </SectionSubtitle>
-            <PackagesGrid>
-              {content.packages.map((pkg, index) => (
+                        <PackagesGrid>
+              {(content.packages || []).map((pkg, index) => (
                 <PackageCard
                   key={index}
                   primaryColor={businessData.primaryColor}
