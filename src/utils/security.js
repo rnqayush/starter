@@ -283,7 +283,7 @@ export const secureStorage = {
       localStorage.setItem(key, serialized);
       return true;
     } catch (error) {
-      console.error('Storage set error:', error);
+
       return false;
     }
   },
@@ -297,14 +297,14 @@ export const secureStorage = {
       const expectedChecksum = btoa(JSON.stringify(parsed.data)).slice(0, 10);
       
       if (parsed.checksum !== expectedChecksum) {
-        console.warn('Storage integrity check failed for:', key);
+
         localStorage.removeItem(key);
         return null;
       }
       
       return parsed.data;
     } catch (error) {
-      console.error('Storage get error:', error);
+
       localStorage.removeItem(key);
       return null;
     }
@@ -357,7 +357,7 @@ export const analytics = {
   trackEvent: (eventName, properties = {}) => {
     // In production, integrate with privacy-focused analytics
     if (process.env.NODE_ENV === 'development') {
-      console.log('Analytics Event:', eventName, properties);
+  
     }
     
     // Example: Send to analytics service with user consent
