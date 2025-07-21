@@ -3,24 +3,15 @@ import styled from "styled-components";
 import {
   FaShoppingCart,
   FaSearch,
-  FaFilter,
   FaPlus,
   FaEye,
   FaEdit,
-  FaTrash,
-  FaCheck,
   FaTimes,
-  FaClock,
-  FaTruck,
-  FaDollarSign,
-  FaUser,
-  FaCar,
   FaCalendar,
-  FaFileInvoiceDollar,
-  FaChevronLeft,
-  FaChevronRight,
   FaPrint,
   FaDownload,
+  FaChevronLeft,
+  FaChevronRight,
 } from "react-icons/fa";
 import { theme } from "../../styles/GlobalStyle";
 
@@ -548,21 +539,23 @@ const SalesOrdersTab = ({ dealer }) => {
       switch (dateFilter) {
         case "today":
           filterDate.setHours(0, 0, 0, 0);
-          filtered = filtered.filter(order => 
+          filtered = filtered.filter(order =>
             new Date(order.orderDate) >= filterDate
           );
           break;
         case "week":
           filterDate.setDate(today.getDate() - 7);
-          filtered = filtered.filter(order => 
+          filtered = filtered.filter(order =>
             new Date(order.orderDate) >= filterDate
           );
           break;
         case "month":
           filterDate.setMonth(today.getMonth() - 1);
-          filtered = filtered.filter(order => 
+          filtered = filtered.filter(order =>
             new Date(order.orderDate) >= filterDate
           );
+          break;
+        default:
           break;
       }
     }

@@ -3,26 +3,16 @@ import styled from "styled-components";
 import {
   FaTags,
   FaSearch,
-  FaFilter,
   FaPlus,
   FaEye,
   FaEdit,
-  FaTrash,
   FaPlay,
   FaPause,
   FaStop,
   FaCalendar,
-  FaDollarSign,
-  FaCar,
-  FaPercent,
-  FaGift,
-  FaBullhorn,
   FaChartLine,
-  FaUsers,
   FaDownload,
   FaCopy,
-  FaChevronLeft,
-  FaChevronRight,
 } from "react-icons/fa";
 import { theme } from "../../styles/GlobalStyle";
 
