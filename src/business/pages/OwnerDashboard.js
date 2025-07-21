@@ -641,6 +641,43 @@ const ImageUrlInput = styled.div.withConfig({
   }
 `;
 
+const VisibilityToggle = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'primaryColor' && prop !== 'isVisible',
+})`
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.sm};
+
+  .toggle-switch {
+    position: relative;
+    width: 44px;
+    height: 24px;
+    background: ${props => props.isVisible ? (props.primaryColor || theme.colors.primary) : theme.colors.gray300};
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: ${props => props.isVisible ? '22px' : '2px'};
+      width: 20px;
+      height: 20px;
+      background: ${theme.colors.white};
+      border-radius: 50%;
+      transition: left 0.3s ease;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+  }
+
+  .toggle-label {
+    font-size: 0.8rem;
+    color: ${props => props.isVisible ? theme.colors.gray700 : theme.colors.gray500};
+    font-weight: 500;
+  }
+`;
+
 const OwnerDashboard = () => {
   const { businessSlug } = useParams();
   const navigate = useNavigate();
