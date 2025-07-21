@@ -1463,10 +1463,13 @@ const OwnerDashboard = () => {
           </SidebarMenu>
         </Sidebar>
 
-        <MainContent>
+                <MainContent>
           {renderContent()}
         </MainContent>
       </DashboardLayout>
+
+      {/* Render Modal */}
+      {renderModal()}
     </DashboardContainer>
   );
 };
