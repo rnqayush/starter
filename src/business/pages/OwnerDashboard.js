@@ -2245,8 +2245,7 @@ const OwnerDashboard = () => {
                           <Button
                             style={{ fontSize: '0.8rem' }}
                             onClick={() => {
-                              // Here you would typically open a gallery viewer/manager
-                              console.log('Manage images for:', gallery.category);
+                              // Manage gallery functionality would be implemented here
                             }}
                           >
                             <FaImage size={12} />
