@@ -172,16 +172,11 @@ function App() {
             <Route path="/:vendorSlug/booking" element={<WeddingModule />} />
             <Route path="/:vendorSlug/booking/:serviceId" element={<WeddingModule />} />
 
-            {/* Business template owner routes */}
-            <Route path="/salon/owner" element={<BusinessModule />} />
-            <Route path="/freelancer/owner" element={<BusinessModule />} />
-            <Route path="/gym/owner" element={<BusinessModule />} />
-            <Route path="/restaurant/owner" element={<BusinessModule />} />
-            <Route path="/coaching/owner" element={<BusinessModule />} />
-            <Route path="/digital-agency/owner" element={<BusinessModule />} />
-
             {/* Generic slug routes - SmartRouter determines hotel vs store */}
             <Route path="/:slug" element={<SmartRouter />} />
+
+            {/* Owner routes for non-hotel vendors */}
+            <Route path="/:slug/owner" element={<SmartRouter />} />
 
             {/* Seller Dashboard Demo */}
             <Route
