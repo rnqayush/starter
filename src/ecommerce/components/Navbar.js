@@ -358,6 +358,7 @@ const UserDropdownButton = styled.button.withConfig({
   shouldForwardProp: (prop) => prop !== "theme",
 })`
   background: none;
+  border: none;
   color: ${theme.colors.gray700};
   font-size: 1rem;
   transition: color 0.2s ease;
@@ -366,6 +367,8 @@ const UserDropdownButton = styled.button.withConfig({
   gap: ${theme.spacing.xs};
   padding: ${theme.spacing.sm};
   border-radius: ${theme.borderRadius.md};
+  cursor: pointer;
+  pointer-events: auto;
 
   &:hover {
     color: ${(props) => props.theme?.primaryColor || theme.colors.primary};
