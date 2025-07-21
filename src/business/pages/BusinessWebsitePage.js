@@ -1529,14 +1529,79 @@ const BusinessWebsitePage = () => {
         </SectionContainer>
       </Section>
 
+            {/* Portfolio Section for Freelancers */}
+      {businessData.slug === 'freelancer' && content.portfolio ? (
+        <Section id="portfolio">
+          <SectionContainer>
+            <SectionTitle>My Portfolio</SectionTitle>
+            <SectionSubtitle>
+              A showcase of my recent work and creative projects across various industries and technologies.
+            </SectionSubtitle>
+            <PortfolioGrid>
+              {content.portfolio.map((project, index) => (
+                <PortfolioCard key={index} primaryColor={businessData.primaryColor}>
+                  <PortfolioImage primaryColor={businessData.primaryColor}>
+                    🖼️
+                  </PortfolioImage>
+                  <PortfolioContent primaryColor={businessData.primaryColor}>
+                    <div className="portfolio-category">{project.category}</div>
+                    <h3>{project.title}</h3>
+                    <p>{project.description}</p>
+                    <div className="tech-stack">
+                      {project.technologies.map((tech, i) => (
+                        <span key={i} className="tech-tag">{tech}</span>
+                      ))}
+                    </div>
+                  </PortfolioContent>
+                </PortfolioCard>
+              ))}
+            </PortfolioGrid>
+          </SectionContainer>
+        </Section>
+      ) : null}
+
+      {/* Skills Section for Freelancers */}
+      {businessData.slug === 'freelancer' && content.skills ? (
+        <Section id="skills" background={theme.colors.gray50}>
+          <SectionContainer>
+            <SectionTitle>My Skills</SectionTitle>
+            <SectionSubtitle>
+              Technical expertise and creative skills developed through years of professional experience.
+            </SectionSubtitle>
+            <SkillsGrid>
+              {content.skills.map((skill, index) => (
+                <SkillCard key={index} primaryColor={businessData.primaryColor}>
+                  <div className="skill-header">
+                    <div className="skill-icon">{skill.icon}</div>
+                    <div className="skill-info">
+                      <h4>{skill.name}</h4>
+                      <div className="percentage">{skill.level}%</div>
+                    </div>
+                  </div>
+                  <div className="skill-bar">
+                    <div
+                      className="skill-progress"
+                      style={{ width: `${skill.level}%` }}
+                    ></div>
+                  </div>
+                </SkillCard>
+              ))}
+            </SkillsGrid>
+          </SectionContainer>
+        </Section>
+      ) : null}
+
       {/* Services Section */}
-      <Section id="services">
+      <Section id="services" background={businessData.slug === 'freelancer' ? theme.colors.white : theme.colors.white}>
         <SectionContainer>
-          <SectionTitle>Our Services</SectionTitle>
+          <SectionTitle>{businessData.slug === 'freelancer' ? 'My Services' : 'Our Services'}</SectionTitle>
           <SectionSubtitle>
-            We offer a comprehensive range of professional services designed to meet your needs and exceed your expectations.
+            {businessData.slug === 'freelancer'
+              ? 'Professional services tailored to help your business succeed in the digital landscape.'
+              : 'We offer a comprehensive range of professional services designed to meet your needs and exceed your expectations.'
+            }
           </SectionSubtitle>
-                    <ServicesGrid>
+          <ServicesGrid>
             {content.services.map((service, index) => (
               <ServiceCard key={index} primaryColor={businessData.primaryColor}>
                 <div className="icon">{service.icon}</div>
