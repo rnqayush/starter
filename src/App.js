@@ -188,15 +188,7 @@ function App() {
               element={<SellerDashboardDemo />}
             />
 
-            {/* Hotel Owner Routes */}
-            <Route path="/owner/dashboard" element={<OwnerDashboard />} />
-            <Route path="/owner/add-hotel" element={<AddHotelPage />} />
-            <Route path="/owner/my-hotels" element={<MyHotelsPage />} />
-            <Route path="/owner/add-room/:hotelId" element={<AddRoomPage />} />
-            <Route path="/owner/bookings" element={<BookingsReceivedPage />} />
-            <Route path="/owner/profile" element={<ProfileSettingsPage />} />
-            <Route path="/owner/content-manager" element={<ContentManagerSelector />} />
-            <Route path="/owner/content-manager/:hotelSlug" element={<HotelContentManager />} />
+
           </Routes>
             </AppContainer>
       </Router>
