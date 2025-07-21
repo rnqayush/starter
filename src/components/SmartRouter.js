@@ -13,10 +13,14 @@ import { getBusinessTemplate } from "../business/data/businessTemplates";
 
 const SmartRouter = () => {
   const { slug } = useParams();
+  const location = useLocation();
 
-  // Check if this slug belongs to a hotel
+  // Check if this is an owner route (for business templates only, hotels have their own route)
+  const isOwnerRoute = location.pathname.includes('/owner');
+
+  // Check if this slug belongs to a hotel (hotels have their own /owner route, so only handle non-owner hotel routes here)
   const hotel = getHotelBySlug(slug);
-  if (hotel) {
+  if (hotel && !isOwnerRoute) {
     return <HotelModule />;
   }
 
