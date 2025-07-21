@@ -1059,6 +1059,128 @@ const BusinessWebsitePage = () => {
       }
     };
 
+        // Special handling for freelancer portfolio
+    if (businessType === 'freelancer') {
+      return {
+        hero: {
+          title: "Creative Freelancer Portfolio",
+          subtitle: "Transforming ideas into stunning visual experiences. Specialized in design, development, and creative solutions for modern businesses."
+        },
+        about: {
+          title: "About Me",
+          description: "I'm a passionate creative professional with 8+ years of experience helping businesses and individuals bring their visions to life through innovative design and development."
+        },
+        skills: [
+          { name: "Web Design", level: 95, icon: "🎨" },
+          { name: "UI/UX Design", level: 90, icon: "📱" },
+          { name: "Frontend Development", level: 88, icon: "💻" },
+          { name: "Graphic Design", level: 92, icon: "🖼️" },
+          { name: "Branding", level: 85, icon: "🏷️" },
+          { name: "Motion Graphics", level: 80, icon: "🎬" }
+        ],
+        portfolio: [
+          {
+            title: "E-commerce Platform",
+            category: "Web Development",
+            description: "Modern e-commerce platform with custom design and seamless user experience",
+            image: "project1",
+            technologies: ["React", "Node.js", "MongoDB"]
+          },
+          {
+            title: "Brand Identity Design",
+            category: "Branding",
+            description: "Complete brand identity including logo, color palette, and brand guidelines",
+            image: "project2",
+            technologies: ["Illustrator", "Photoshop", "Figma"]
+          },
+          {
+            title: "Mobile App UI",
+            category: "UI/UX Design",
+            description: "Clean and intuitive mobile app interface for fitness tracking application",
+            image: "project3",
+            technologies: ["Figma", "Principle", "Sketch"]
+          },
+          {
+            title: "Corporate Website",
+            category: "Web Design",
+            description: "Professional corporate website with custom animations and responsive design",
+            image: "project4",
+            technologies: ["HTML/CSS", "JavaScript", "GSAP"]
+          },
+          {
+            title: "Digital Marketing Campaign",
+            category: "Graphic Design",
+            description: "Social media graphics and digital assets for marketing campaign",
+            image: "project5",
+            technologies: ["Photoshop", "After Effects", "Illustrator"]
+          },
+          {
+            title: "SaaS Dashboard",
+            category: "UI/UX Design",
+            description: "Complex dashboard interface for SaaS application with data visualization",
+            image: "project6",
+            technologies: ["Figma", "React", "D3.js"]
+          }
+        ],
+        services: [
+          { icon: "🎨", title: "Web Design", description: "Custom website design tailored to your brand and business goals", price: "From $1,200" },
+          { icon: "📱", title: "UI/UX Design", description: "User-centered design for web and mobile applications", price: "From $800" },
+          { icon: "💻", title: "Frontend Development", description: "Modern, responsive websites built with latest technologies", price: "From $1,500" },
+          { icon: "🏷️", title: "Branding & Identity", description: "Complete brand identity design including logo and guidelines", price: "From $900" },
+          { icon: "🖼️", title: "Graphic Design", description: "Print and digital graphics for marketing and business materials", price: "From $300" },
+          { icon: "🎬", title: "Motion Graphics", description: "Animated graphics and video content for digital marketing", price: "From $600" }
+        ],
+        experience: [
+          {
+            company: "Digital Agency Inc.",
+            role: "Senior Creative Designer",
+            period: "2020 - Present",
+            description: "Lead designer for major client projects, specializing in web design and branding solutions."
+          },
+          {
+            company: "Freelance",
+            role: "Independent Designer & Developer",
+            period: "2018 - Present",
+            description: "Providing creative solutions for startups and established businesses across various industries."
+          },
+          {
+            company: "Tech Startup Co.",
+            role: "UI/UX Designer",
+            period: "2018 - 2020",
+            description: "Designed user interfaces for mobile and web applications, improving user engagement by 40%."
+          }
+        ],
+        testimonials: [
+          {
+            name: "Sarah Johnson",
+            company: "Tech Innovations LLC",
+            role: "CEO",
+            review: "Outstanding work! The website design exceeded our expectations and perfectly captured our brand vision.",
+            rating: 5
+          },
+          {
+            name: "Michael Chen",
+            company: "Creative Solutions",
+            role: "Marketing Director",
+            review: "Professional, creative, and delivers on time. The branding work has significantly improved our market presence.",
+            rating: 5
+          },
+          {
+            name: "Emily Rodriguez",
+            company: "Startup Hub",
+            role: "Founder",
+            review: "Incredible attention to detail and excellent communication throughout the project. Highly recommended!",
+            rating: 5
+          }
+        ],
+        packages: [
+          { name: "Starter Package", description: "Perfect for small businesses getting started online", price: "$1,499", duration: "2-3 weeks", includes: ["Custom Web Design", "Responsive Layout", "Basic SEO", "Contact Forms"] },
+          { name: "Professional Package", description: "Comprehensive solution for growing businesses", price: "$2,999", duration: "4-6 weeks", includes: ["Custom Design & Development", "CMS Integration", "Advanced SEO", "Analytics Setup", "Social Media Integration"] },
+          { name: "Enterprise Package", description: "Full-scale solution for established companies", price: "$4,999", duration: "6-8 weeks", includes: ["Complete Brand Identity", "Custom Web Application", "E-commerce Integration", "Performance Optimization", "Ongoing Support"] }
+        ]
+      };
+    }
+
     return baseContent[businessType] || baseContent.salon;
   };
 
