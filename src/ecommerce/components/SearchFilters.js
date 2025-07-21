@@ -2,12 +2,10 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { 
   FaSearch, 
-  FaFilter, 
-  FaTimes, 
-  FaChevronDown, 
+  FaTimes,
+  FaChevronDown,
   FaChevronUp,
   FaSlidersH,
-  FaMapMarkerAlt,
   FaStar,
   FaTag
 } from "react-icons/fa";
@@ -188,32 +186,11 @@ const RangeValues = styled.div`
   color: ${theme.colors.gray600};
 `;
 
-const CheckboxGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${theme.spacing.sm};
-  max-height: 150px;
-  overflow-y: auto;
-`;
 
-const CheckboxItem = styled.label`
-  display: flex;
-  align-items: center;
-  gap: ${theme.spacing.sm};
-  cursor: pointer;
-  font-size: 0.9rem;
-  color: ${theme.colors.gray700};
 
-  &:hover {
-    color: ${theme.colors.gray900};
-  }
-`;
 
-const Checkbox = styled.input`
-  width: 16px;
-  height: 16px;
-  accent-color: ${theme.colors.primary};
-`;
+
+
 
 const StarRating = styled.div`
   display: flex;

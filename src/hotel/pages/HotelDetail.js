@@ -4,48 +4,21 @@ import styled from "styled-components";
 import {
   FaMapMarkerAlt,
   FaStar,
-  FaWifi,
   FaSwimmingPool,
-  FaCar,
   FaUtensils,
-  FaDumbbell,
-  FaSpa,
-  FaArrowLeft,
-  FaShare,
-  FaHeart,
   FaClock,
   FaCheckCircle,
   FaPhone,
   FaEnvelope,
-  FaCalendarAlt,
-  FaUsers,
-  FaBed,
-  FaShower,
-  FaWind,
-  FaTv,
-  FaCoffee,
   FaConciergeBell,
-  FaBaby,
-  FaSmokingBan,
-  FaChevronLeft,
-  FaChevronRight,
-  FaQuoteLeft,
-  FaGlobeAmericas,
-  FaCreditCard,
-  FaShieldAlt,
-  FaAward,
-  FaGift,
   FaUmbrellaBeach,
-  FaGamepad,
   FaBusinessTime,
   FaTaxi,
-  FaCamera,
-  FaPlay,
 } from "react-icons/fa";
 import { theme } from "../../styles/GlobalStyle";
 import HotelNavbar from "../components/HotelNavbar";
 import HotelFooter from "../components/HotelFooter";
-import RoomCard from "../components/RoomCard";
+
 import { getHotelByIdOrSlug } from "../data/hotels";
 
 const PageContainer = styled.div`

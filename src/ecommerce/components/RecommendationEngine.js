@@ -74,64 +74,64 @@ const RecommendationEngine = ({
   });
 
   useEffect(() => {
+    const generateRecommendations = () => {
+      // Get trending products (simulate based on high ratings and reviews)
+      const trending = products
+        .filter(p => p.rating >= 4.5 && p.reviews > 100)
+        .sort((a, b) => b.rating * b.reviews - a.rating * a.reviews)
+        .slice(0, maxRecommendations);
+
+      let similar = [];
+      let viewed = [];
+      let collaborative = [];
+
+      if (currentProduct) {
+        // Similar products (same category)
+        similar = products
+          .filter(p =>
+            p.categoryId === currentProduct.categoryId &&
+            p.id !== currentProduct.id
+          )
+          .sort((a, b) => {
+            // Sort by price similarity and rating
+            const priceDiffA = Math.abs(a.price - currentProduct.price);
+            const priceDiffB = Math.abs(b.price - currentProduct.price);
+            return priceDiffA - priceDiffB || b.rating - a.rating;
+          })
+          .slice(0, maxRecommendations);
+
+        // Collaborative filtering (people who viewed this also viewed)
+        collaborative = products
+          .filter(p =>
+            p.id !== currentProduct.id &&
+            (p.categoryId === currentProduct.categoryId ||
+             Math.abs(p.price - currentProduct.price) < 100)
+          )
+          .sort((a, b) => b.rating - a.rating)
+          .slice(0, maxRecommendations);
+      }
+
+      // Recently viewed products (from localStorage)
+      const recentlyViewed = JSON.parse(localStorage.getItem("recentlyViewed") || "[]");
+      if (recentlyViewed.length > 0) {
+        viewed = products
+          .filter(p =>
+            recentlyViewed.includes(p.id) &&
+            (!currentProduct || p.id !== currentProduct.id)
+          )
+          .slice(0, maxRecommendations);
+      }
+
+      setRecommendations({
+        trending,
+        similar,
+        viewed,
+        collaborative
+      });
+    };
+
     generateRecommendations();
-  }, [currentProduct, userBehavior]);
-
-  const generateRecommendations = () => {
-    // Get trending products (simulate based on high ratings and reviews)
-    const trending = products
-      .filter(p => p.rating >= 4.5 && p.reviews > 100)
-      .sort((a, b) => b.rating * b.reviews - a.rating * a.reviews)
-      .slice(0, maxRecommendations);
-
-    let similar = [];
-    let viewed = [];
-    let collaborative = [];
-
-    if (currentProduct) {
-      // Similar products (same category)
-      similar = products
-        .filter(p => 
-          p.categoryId === currentProduct.categoryId && 
-          p.id !== currentProduct.id
-        )
-        .sort((a, b) => {
-          // Sort by price similarity and rating
-          const priceDiffA = Math.abs(a.price - currentProduct.price);
-          const priceDiffB = Math.abs(b.price - currentProduct.price);
-          return priceDiffA - priceDiffB || b.rating - a.rating;
-        })
-        .slice(0, maxRecommendations);
-
-      // Collaborative filtering (people who viewed this also viewed)
-      collaborative = products
-        .filter(p => 
-          p.id !== currentProduct.id && 
-          (p.categoryId === currentProduct.categoryId || 
-           Math.abs(p.price - currentProduct.price) < 100)
-        )
-        .sort((a, b) => b.rating - a.rating)
-        .slice(0, maxRecommendations);
-    }
-
-    // Recently viewed products (from localStorage)
-    const recentlyViewed = JSON.parse(localStorage.getItem("recentlyViewed") || "[]");
-    if (recentlyViewed.length > 0) {
-      viewed = products
-        .filter(p => 
-          recentlyViewed.includes(p.id) && 
-          (!currentProduct || p.id !== currentProduct.id)
-        )
-        .slice(0, maxRecommendations);
-    }
-
-    setRecommendations({
-      trending,
-      similar,
-      viewed,
-      collaborative
-    });
-  };
+  }, [currentProduct, userBehavior, maxRecommendations]);
 
   const trackProductView = (productId) => {
     // Track product views for future recommendations

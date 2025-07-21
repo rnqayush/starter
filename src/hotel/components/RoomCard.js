@@ -7,7 +7,7 @@ import {
   FaWifi,
   FaTv,
   FaCoffee,
-  FaShower,
+
   FaWind,
   FaExpand,
   FaHeart,

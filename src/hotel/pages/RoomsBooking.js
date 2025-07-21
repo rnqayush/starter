@@ -3,10 +3,9 @@ import { useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import {
   FaArrowLeft,
-  FaCalendarAlt,
-  FaUsers,
+
   FaFilter,
-  FaSortAmountDown,
+
   FaMapMarkerAlt,
   FaStar,
   FaSearch,
