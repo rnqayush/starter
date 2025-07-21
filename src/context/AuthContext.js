@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }) => {
           setIsAuthenticated(true);
         }
       } catch (error) {
-        console.error("Error initializing auth:", error);
+
         // Clear corrupted data
         localStorage.removeItem("user");
         localStorage.removeItem("isAuthenticated");
