@@ -1681,12 +1681,46 @@ const BusinessWebsitePage = () => {
             {businessData.slug !== 'freelancer' && <a href="#packages">Packages</a>}
             <a href="#contact">Contact</a>
           </NavLinks>
+                    <MobileMenuButton
+            primaryColor={businessData.primaryColor}
+            onClick={toggleMobileMenu}
+          >
+            <FaBars />
+          </MobileMenuButton>
           <OwnerLink onClick={handleOwnerClick}>
             <FaEdit />
             Owner Dashboard
           </OwnerLink>
         </NavContainer>
       </Navbar>
+
+      {/* Mobile Menu */}
+      <MobileMenu isOpen={isMobileMenuOpen} primaryColor={businessData.primaryColor}>
+        <MobileMenuHeader>
+          <Logo primaryColor={businessData.primaryColor}>
+            {businessData.name}
+          </Logo>
+          <MobileMenuButton
+            primaryColor={businessData.primaryColor}
+            onClick={closeMobileMenu}
+          >
+            <FaTimes />
+          </MobileMenuButton>
+        </MobileMenuHeader>
+        <MobileMenuLinks primaryColor={businessData.primaryColor}>
+          <a href="#home" onClick={closeMobileMenu}>Home</a>
+          <a href="#about" onClick={closeMobileMenu}>About</a>
+          {businessData.slug === 'freelancer' && <a href="#portfolio" onClick={closeMobileMenu}>Portfolio</a>}
+          {businessData.slug === 'freelancer' && <a href="#skills" onClick={closeMobileMenu}>Skills</a>}
+          <a href="#services" onClick={closeMobileMenu}>Services</a>
+          {businessData.slug !== 'freelancer' && <a href="#team" onClick={closeMobileMenu}>Team</a>}
+          {businessData.slug === 'freelancer' && <a href="#experience" onClick={closeMobileMenu}>Experience</a>}
+          {businessData.slug !== 'freelancer' && <a href="#gallery" onClick={closeMobileMenu}>Gallery</a>}
+          {businessData.slug !== 'freelancer' && <a href="#packages" onClick={closeMobileMenu}>Packages</a>}
+          <a href="#contact" onClick={closeMobileMenu}>Contact</a>
+          <a onClick={() => { handleOwnerClick(); closeMobileMenu(); }} style={{ cursor: 'pointer' }}>Owner Dashboard</a>
+        </MobileMenuLinks>
+      </MobileMenu>
 
       {/* Hero Section */}
       <HeroSection id="hero" primaryColor={businessData.primaryColor} businessType={businessData.slug}>
