@@ -11,6 +11,7 @@ import PlatformHomePage from "./components/user/PlatformHomePage";
 import PricingPage from "./components/user/PricingPage";
 import LoginPage from "./components/auth/LoginPage";
 import RegisterPage from "./components/auth/RegisterPage";
+import StartBuilding from "./components/StartBuilding";
 
 // Shared Components
 import ScrollToTop from "./components/shared/ScrollToTop";
