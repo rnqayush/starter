@@ -180,6 +180,15 @@ const FooterBottom = styled.div`
 `;
 
 const HotelFooter = () => {
+  const location = useLocation();
+
+  // Extract hotel slug from URL path like "/taj-palace/rooms/101"
+  const hotelSlug = useMemo(() => {
+    const pathSegments = location.pathname.split('/').filter(Boolean);
+    // For hotel routes, the first segment is usually the hotel slug
+    return pathSegments.length > 0 && pathSegments[0] !== 'hotels' ? pathSegments[0] : '';
+  }, [location.pathname]);
+
   const handleNewsletterSubmit = (e) => {
     e.preventDefault();
     alert("Thank you for subscribing to our newsletter!");
