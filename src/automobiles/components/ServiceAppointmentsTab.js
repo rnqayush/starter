@@ -643,15 +643,17 @@ const ServiceAppointmentsTab = ({ dealer }) => {
           break;
         case "week":
           filterDate.setDate(today.getDate() - 7);
-          filtered = filtered.filter(appointment => 
+          filtered = filtered.filter(appointment =>
             new Date(appointment.appointmentDate) >= filterDate
           );
           break;
         case "upcoming":
-          filtered = filtered.filter(appointment => 
+          filtered = filtered.filter(appointment =>
             new Date(appointment.appointmentDate) >= today &&
             (appointment.status === "scheduled" || appointment.status === "confirmed")
           );
+          break;
+        default:
           break;
       }
     }
