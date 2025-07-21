@@ -510,23 +510,25 @@ const OwnerDashboard = () => {
   const [showModal, setShowModal] = useState(false);
   const [modalType, setModalType] = useState('');
   const [formData, setFormData] = useState({});
-  const [currentData, setCurrentData] = useState({
+    const [currentData, setCurrentData] = useState({
     hero: {
       title: "Creative Freelancer Portfolio",
-      subtitle: "Transforming ideas into stunning visual experiences. Specialized in design, development, and creative solutions for modern businesses."
+      subtitle: "Transforming ideas into stunning visual experiences. Specialized in design, development, and creative solutions for modern businesses.",
+      backgroundImage: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-4.0.3&w=1200&q=80"
     },
-    about: {
+        about: {
       title: "About Me",
-      description: "I'm a passionate creative professional with 8+ years of experience helping businesses and individuals bring their visions to life through innovative design and development."
+      description: "I'm a passionate creative professional with 8+ years of experience helping businesses and individuals bring their visions to life through innovative design and development.",
+      profileImage: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&w=400&q=80"
     },
     services: [
       { id: 1, icon: "🎨", title: "Web Design", description: "Custom website design tailored to your brand and business goals", price: "From $1,200" },
       { id: 2, icon: "📱", title: "UI/UX Design", description: "User-centered design for web and mobile applications", price: "From $800" },
       { id: 3, icon: "💻", title: "Frontend Development", description: "Modern, responsive websites built with latest technologies", price: "From $1,500" }
     ],
-    portfolio: [
-      { id: 1, title: "E-commerce Platform", category: "Web Development", description: "Modern e-commerce platform with custom design and seamless user experience", technologies: ["React", "Node.js", "MongoDB"] },
-      { id: 2, title: "Brand Identity Design", category: "Branding", description: "Complete brand identity including logo, color palette, and brand guidelines", technologies: ["Illustrator", "Photoshop", "Figma"] }
+        portfolio: [
+      { id: 1, title: "E-commerce Platform", category: "Web Development", description: "Modern e-commerce platform with custom design and seamless user experience", technologies: ["React", "Node.js", "MongoDB"], image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&w=600&q=80" },
+      { id: 2, title: "Brand Identity Design", category: "Branding", description: "Complete brand identity including logo, color palette, and brand guidelines", technologies: ["Illustrator", "Photoshop", "Figma"], image: "https://images.unsplash.com/photo-1558655146-d09347e92766?ixlib=rb-4.0.3&w=600&q=80" }
     ],
     skills: [
       { id: 1, name: "Web Design", level: 95, icon: "🎨" },
@@ -537,9 +539,14 @@ const OwnerDashboard = () => {
       { id: 1, company: "Digital Agency Inc.", role: "Senior Creative Designer", period: "2020 - Present", description: "Lead designer for major client projects, specializing in web design and branding solutions." },
       { id: 2, company: "Freelance", role: "Independent Designer & Developer", period: "2018 - Present", description: "Providing creative solutions for startups and established businesses across various industries." }
     ],
-    team: [
-      { id: 1, name: "Sarah Johnson", role: "Senior Stylist", bio: "15+ years experience in color and cutting", specialties: ["Color Specialist", "Bridal Hair"] },
-      { id: 2, name: "Maria Garcia", role: "Nail Specialist", bio: "Expert in nail art and luxury manicures", specialties: ["Nail Art", "Gel Manicures"] }
+        team: [
+      { id: 1, name: "Sarah Johnson", role: "Senior Stylist", bio: "15+ years experience in color and cutting", specialties: ["Color Specialist", "Bridal Hair"], photo: "https://images.unsplash.com/photo-1594824388853-bf7e0ad7b2ad?ixlib=rb-4.0.3&w=400&q=80" },
+      { id: 2, name: "Maria Garcia", role: "Nail Specialist", bio: "Expert in nail art and luxury manicures", specialties: ["Nail Art", "Gel Manicures"], photo: "https://images.unsplash.com/photo-1580618672591-eb180b1a973f?ixlib=rb-4.0.3&w=400&q=80" }
+    ],
+    gallery: [
+      { id: 1, category: "Hair Styling", images: 8, coverImage: "https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-4.0.3&w=600&q=80" },
+      { id: 2, category: "Nail Art", images: 6, coverImage: "https://images.unsplash.com/photo-1604654894610-df63bc536371?ixlib=rb-4.0.3&w=600&q=80" },
+      { id: 3, category: "Spa Treatments", images: 5, coverImage: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&w=600&q=80" }
     ]
   });
 
