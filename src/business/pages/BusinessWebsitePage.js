@@ -1718,7 +1718,7 @@ const BusinessWebsitePage = () => {
           {businessData.slug !== 'freelancer' && <a href="#gallery" onClick={closeMobileMenu}>Gallery</a>}
           {businessData.slug !== 'freelancer' && <a href="#packages" onClick={closeMobileMenu}>Packages</a>}
           <a href="#contact" onClick={closeMobileMenu}>Contact</a>
-          <a onClick={() => { handleOwnerClick(); closeMobileMenu(); }} style={{ cursor: 'pointer' }}>Owner Dashboard</a>
+          <button onClick={() => { handleOwnerClick(); closeMobileMenu(); }} style={{ cursor: 'pointer', background: 'none', border: 'none', color: 'inherit', font: 'inherit', textDecoration: 'underline' }}>Owner Dashboard</button>
         </MobileMenuLinks>
       </MobileMenu>
 
