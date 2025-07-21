@@ -45,7 +45,7 @@ const AutomobileCategoryLanding = () => {
       subtitle="Drive more business with professional automotive websites designed for dealerships, rental services, and repair shops with industry-specific features."
       gradient="linear-gradient(135deg, #f093fb 0%, #f5576c 100%)"
       mockups={mockups}
-      demoUrl="/demo-automobile"
+      demoUrl="/luxury-auto-gallery"
       demoButtonText="See Demo Auto Website"
     />
   );
