@@ -226,7 +226,7 @@ const ContentManagerSelector = () => {
             <Title>Manage Hotel Content</Title>
             <Subtitle>Select a hotel to manage its content and settings</Subtitle>
           </div>
-          <BackButton onClick={() => navigate("/owner/dashboard")}>
+          <BackButton onClick={() => navigate(-1)}>
             <FaArrowLeft />
             Back to Dashboard
           </BackButton>
