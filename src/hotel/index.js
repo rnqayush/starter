@@ -4,6 +4,7 @@ import HotelHome from "./pages/HotelHome";
 import HotelDetail from "./pages/HotelDetail";
 import RoomDetail from "./pages/RoomDetail";
 import Booking from "./pages/Booking";
+import RoomsBooking from "./pages/RoomsBooking";
 import BookingConfirmation from "./pages/BookingConfirmation";
 import MyBookings from "./pages/MyBookings";
 
@@ -20,8 +21,12 @@ const HotelModule = () => {
     return <MyBookings />;
   } else if (path.includes("/rooms/")) {
     return <RoomDetail />;
-  } else if (path.includes("/booking")) {
+  } else if (path.includes("/booking/") && path.split("/").length > 3) {
+    // Specific room booking like "/taj-palace/booking/101"
     return <Booking />;
+  } else if (path.includes("/booking")) {
+    // General hotel booking like "/taj-palace/booking"
+    return <RoomsBooking />;
   } else if (path.match(/^\/[^/]+$/)) {
     // Single segment path like "/grand-luxury-resort" - hotel detail
     return <HotelDetail />;

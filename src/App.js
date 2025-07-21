@@ -8,6 +8,7 @@ import ErrorBoundary from "./components/ErrorBoundary";
 
 // User Components
 import PlatformHomePage from "./components/user/PlatformHomePage";
+import PricingPage from "./components/user/PricingPage";
 import LoginPage from "./components/auth/LoginPage";
 import RegisterPage from "./components/auth/RegisterPage";
 
@@ -25,6 +26,8 @@ import MyHotelsPage from "./components/owner/MyHotelsPage";
 import AddRoomPage from "./components/owner/AddRoomPage";
 import BookingsReceivedPage from "./components/owner/BookingsReceivedPage";
 import ProfileSettingsPage from "./components/owner/ProfileSettingsPage";
+import ContentManagerSelector from "./components/owner/ContentManagerSelector";
+import HotelContentManager from "./components/owner/HotelContentManager";
 
 // Mock data
 import {
@@ -90,6 +93,7 @@ function App() {
               <Routes>
             {/* Main Routes */}
             <Route path="/" element={<PlatformHomePage />} />
+            <Route path="/pricing" element={<PricingPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
 
@@ -193,6 +197,8 @@ function App() {
             <Route path="/owner/add-room/:hotelId" element={<AddRoomPage />} />
             <Route path="/owner/bookings" element={<BookingsReceivedPage />} />
             <Route path="/owner/profile" element={<ProfileSettingsPage />} />
+            <Route path="/owner/content-manager" element={<ContentManagerSelector />} />
+            <Route path="/owner/content-manager/:hotelSlug" element={<HotelContentManager />} />
           </Routes>
                                         </AppContainer>
       </Router>
