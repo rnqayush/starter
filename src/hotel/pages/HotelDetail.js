@@ -18,7 +18,7 @@ import {
 import { theme } from "../../styles/GlobalStyle";
 import HotelNavbar from "../components/HotelNavbar";
 import HotelFooter from "../components/HotelFooter";
-import RoomCard from "../components/RoomCard";
+
 import { getHotelByIdOrSlug } from "../data/hotels";
 
 const PageContainer = styled.div`
