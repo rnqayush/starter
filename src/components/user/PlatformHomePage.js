@@ -38,6 +38,7 @@ import AuthModal from "../auth/AuthModal";
 const PageContainer = styled.div`
   min-height: 100vh;
   background: ${theme.colors.white};
+  padding-top: 0;
 `;
 
 // Hero Section Styles
@@ -740,6 +741,17 @@ const FooterContent = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: ${theme.spacing.xl};
+
+  ${media.mobile} {
+    grid-template-columns: repeat(2, 1fr);
+    gap: ${theme.spacing.lg};
+    padding: 0 ${theme.spacing.sm};
+  }
+
+  ${media.tablet} {
+    grid-template-columns: repeat(2, 1fr);
+    gap: ${theme.spacing.xl};
+  }
 `;
 
 const FooterSection = styled.div`
@@ -747,6 +759,15 @@ const FooterSection = styled.div`
     font-size: 1.2rem;
     margin-bottom: ${theme.spacing.lg};
     color: ${theme.colors.white};
+
+    ${media.mobile} {
+      font-size: 1rem;
+      margin-bottom: ${theme.spacing.md};
+    }
+  }
+
+  ${media.mobile} {
+    text-align: center;
   }
 `;
 
@@ -768,12 +789,28 @@ const ContactInfo = styled.div`
   gap: ${theme.spacing.md};
   margin-bottom: ${theme.spacing.md};
   color: ${theme.colors.gray300};
+
+  ${media.mobile} {
+    flex-direction: column;
+    gap: ${theme.spacing.sm};
+    text-align: center;
+
+    svg {
+      display: none;
+    }
+  }
 `;
 
 const SocialLinks = styled.div`
   display: flex;
   gap: ${theme.spacing.md};
   margin-top: ${theme.spacing.lg};
+
+  ${media.mobile} {
+    justify-content: center;
+    gap: ${theme.spacing.sm};
+    margin-top: ${theme.spacing.md};
+  }
 `;
 
 const SocialLink = styled.a`
@@ -799,6 +836,12 @@ const FooterBottom = styled.div`
   margin-top: ${theme.spacing.xl};
   border-top: 1px solid ${theme.colors.gray700};
   color: ${theme.colors.gray400};
+
+  ${media.mobile} {
+    padding-top: ${theme.spacing.lg};
+    margin-top: ${theme.spacing.lg};
+    font-size: 0.875rem;
+  }
 `;
 
 const PlatformHomePage = () => {
