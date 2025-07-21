@@ -1556,6 +1556,50 @@ const OwnerDashboard = () => {
                             </SectionList>
             </div>
 
+                        {/* Team Members List */}
+            <div style={{ marginTop: theme.spacing.xl }}>
+              <h3 style={{ marginBottom: theme.spacing.lg, color: theme.colors.gray900 }}>Team Members</h3>
+              <SectionList>
+                {(currentData.team || []).map((member, index) => (
+                  <SectionItem key={member.id}>
+                    <div className="section-info">
+                      <div style={{ display: 'flex', alignItems: 'center', gap: theme.spacing.md }}>
+                        {member.photo && (
+                          <div style={{
+                            width: '50px',
+                            height: '50px',
+                            borderRadius: '50%',
+                            backgroundImage: `url(${member.photo})`,
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'center'
+                          }} />
+                        )}
+                        <div>
+                          <h4>{member.name}</h4>
+                          <p>{member.role}</p>
+                          {member.specialties && (
+                            <div style={{ fontSize: '0.8rem', color: theme.colors.gray500, marginTop: '4px' }}>
+                              {member.specialties.join(', ')}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="section-actions">
+                      <Button onClick={() => openModal('team', member)}>
+                        <FaEdit />
+                        Edit
+                      </Button>
+                      <Button onClick={() => handleDelete('team', member.id)}>
+                        <FaTrash />
+                        Delete
+                      </Button>
+                    </div>
+                  </SectionItem>
+                ))}
+              </SectionList>
+            </div>
+
             {/* Gallery List for Non-Freelancers */}
             {businessData.slug !== 'freelancer' && (
               <div style={{ marginTop: theme.spacing.xl }}>
