@@ -47,11 +47,7 @@ import WeddingCategoryLanding from "./components/category/WeddingCategoryLanding
 import AutomobileCategoryLanding from "./components/category/AutomobileCategoryLanding";
 import BusinessCategoryLanding from "./components/category/BusinessCategoryLanding";
 
-// Demo Website Pages
-import DemoEcommerce from "./components/demo/DemoEcommerce";
-import DemoWedding from "./components/demo/DemoWedding";
-import DemoAutomobile from "./components/demo/DemoAutomobile";
-import DemoBusiness from "./components/demo/DemoBusiness";
+
 
 // Store Listing Pages
 import EcommerceStoresListing from "./ecommerce/pages/StoresListing";
@@ -103,12 +99,6 @@ function App() {
             <Route path="/category/wedding" element={<WeddingCategoryLanding />} />
             <Route path="/category/automobile" element={<AutomobileCategoryLanding />} />
             <Route path="/category/business" element={<BusinessCategoryLanding />} />
-
-            {/* Demo Website Pages */}
-            <Route path="/demo-ecommerce" element={<DemoEcommerce />} />
-            <Route path="/demo-wedding" element={<DemoWedding />} />
-            <Route path="/demo-automobile" element={<DemoAutomobile />} />
-            <Route path="/demo-business" element={<DemoBusiness />} />
 
             {/* Hotel Routes */}
             <Route path="/hotels" element={<HotelModule />} />
