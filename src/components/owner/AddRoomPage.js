@@ -178,7 +178,7 @@ const AddRoomPage = () => {
 
       navigate("/owner/my-hotels");
     } catch (error) {
-      console.error("Error adding room:", error);
+
     } finally {
       setIsSubmitting(false);
     }
