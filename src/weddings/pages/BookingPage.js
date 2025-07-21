@@ -422,7 +422,7 @@ const BookingPage = () => {
   const [vendor, setVendor] = useState(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
+  const [submitted] = useState(false);
   const [errors, setErrors] = useState({});
 
   const [formData, setFormData] = useState({
