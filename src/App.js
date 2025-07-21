@@ -51,8 +51,6 @@ import WeddingCategoryLanding from "./components/category/WeddingCategoryLanding
 import AutomobileCategoryLanding from "./components/category/AutomobileCategoryLanding";
 import BusinessCategoryLanding from "./components/category/BusinessCategoryLanding";
 
-
-
 // Store Listing Pages
 import EcommerceStoresListing from "./ecommerce/pages/StoresListing";
 import WeddingVendorsListing from "./weddings/pages/StoresListing";
@@ -122,21 +120,21 @@ function App() {
             />
             <Route path="/auto-dealers" element={<AutoDealersListing />} />
 
-                                    {/* Ecommerce Routes */}
+            {/* Ecommerce Routes */}
             <Route path="/ecommerce/*" element={<EcommerceModule />} />
 
             {/* Automobile Routes */}
             <Route path="/automobiles/*" element={<AutomobileModule />} />
 
-                        {/* Wedding Routes */}
+            {/* Wedding Routes */}
             <Route path="/weddings/*" element={<WeddingModule />} />
 
-                        {/* Business Website Routes */}
+            {/* Business Website Routes */}
             <Route path="/business-websites" element={<BusinessModule />} />
             <Route path="/business/:businessSlug/owner" element={<BusinessModule />} />
             <Route path="/business/:businessSlug" element={<BusinessModule />} />
 
-                                    {/* Store-specific Routes (more specific routes first) */}
+            {/* Store-specific Routes (more specific routes first) */}
             <Route path="/:storeSlug/products" element={<EcommerceModule />} />
             <Route
               path="/:storeSlug/product/:id"
@@ -151,7 +149,7 @@ function App() {
               element={<EcommerceModule />}
             />
 
-                                    {/* Dealer-specific Routes (more specific routes first) */}
+            {/* Dealer-specific Routes (more specific routes first) */}
             <Route path="/:dealerSlug/vehicles" element={<AutomobileModule />} />
             <Route
               path="/:dealerSlug/vehicle/:id"
@@ -167,7 +165,7 @@ function App() {
               element={<AutomobileModule />}
             />
 
-                                                            {/* Hotel-specific Routes (more specific routes first) */}
+            {/* Hotel-specific Routes (more specific routes first) */}
             <Route path="/:hotelSlug/rooms/:roomId" element={<HotelModule />} />
             <Route
               path="/:hotelSlug/booking/:roomId"
@@ -181,9 +179,7 @@ function App() {
             <Route path="/:vendorSlug/booking" element={<WeddingModule />} />
             <Route path="/:vendorSlug/booking/:serviceId" element={<WeddingModule />} />
 
-            
-
-                                    {/* Generic slug routes - SmartRouter determines hotel vs store */}
+            {/* Generic slug routes - SmartRouter determines hotel vs store */}
             <Route path="/:slug" element={<SmartRouter />} />
 
             {/* Seller Dashboard Demo */}
@@ -202,7 +198,7 @@ function App() {
             <Route path="/owner/content-manager" element={<ContentManagerSelector />} />
             <Route path="/owner/content-manager/:hotelSlug" element={<HotelContentManager />} />
           </Routes>
-                                        </AppContainer>
+            </AppContainer>
       </Router>
       </AppContext.Provider>
     </AuthProvider>

@@ -17,7 +17,7 @@ export const getCurrentLocation = () => {
       },
       (error) => {
         // Fallback to default location (San Francisco)
-        console.warn("Geolocation failed, using default location:", error);
+
         resolve({
           lat: 37.7749,
           lng: -122.4194,

@@ -4,16 +4,16 @@ import styled from "styled-components";
 import {
   FaArrowLeft,
   FaCalendarAlt,
-  FaUsers,
+
   FaMapMarkerAlt,
   FaEnvelope,
   FaPhoneAlt,
-  FaHeart,
+
   FaRing,
   FaCheck,
   FaExclamationTriangle,
   FaInfoCircle,
-  FaDollarSign,
+
   FaClock,
   FaUser,
   FaComment,
@@ -422,7 +422,7 @@ const BookingPage = () => {
   const [vendor, setVendor] = useState(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
+  const [submitted] = useState(false);
   const [errors, setErrors] = useState({});
 
   const [formData, setFormData] = useState({
@@ -550,7 +550,6 @@ const BookingPage = () => {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 2000));
       
-            console.log("Booking Data:", { vendor: vendor.id, ...formData });
 
       // Generate booking ID and redirect to confirmation
       const bookingId = 'WED-' + Date.now().toString().slice(-6);

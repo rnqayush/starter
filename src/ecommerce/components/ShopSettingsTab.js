@@ -471,7 +471,7 @@ const ShopSettingsTab = () => {
       setIsEditing(false);
       alert("Settings saved successfully!");
     } catch (error) {
-      console.error("Failed to save settings:", error);
+
       alert("Failed to save settings. Please try again.");
     } finally {
       setIsSaving(false);

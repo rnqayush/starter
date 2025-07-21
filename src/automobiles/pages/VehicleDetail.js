@@ -12,7 +12,6 @@ import {
   FaRoad,
   FaCalendar,
   FaCog,
-  
   FaCheckCircle,
   FaStar,
 } from "react-icons/fa";

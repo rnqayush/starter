@@ -352,15 +352,7 @@ const StoreCard = ({ store, category }) => {
     }
   };
 
-  const getStoreLink = () => {
-    if (category === "ecommerce" || category === "automobiles" || category === "weddings") {
-      // Return the store id link for ecommerce, automobiles, and weddings
-      return `/${store.id}`;
-    }
 
-    // For other categories, return the original link format
-    return `/${category}/${store.id}`;
-  };
   const renderStars = (rating) => {
     const stars = [];
     const fullStars = Math.floor(rating);
@@ -488,7 +480,7 @@ const StoreCard = ({ store, category }) => {
     );
   }
 
-  return <Card to={getStoreLink()}>{cardContent}</Card>;
+  return <Card to={`/${category}/${store.id}`}>{cardContent}</Card>;
 };
 
 export default StoreCard;

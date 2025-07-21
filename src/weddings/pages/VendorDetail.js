@@ -20,8 +20,6 @@ import {
   FaRing,
   FaGem,
   FaLeaf,
-    FaBirthdayCake,
-  FaMusic,
 } from "react-icons/fa";
 import { theme } from "../../styles/GlobalStyle";
 import { getVendorById } from "../data/vendors";

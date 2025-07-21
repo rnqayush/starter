@@ -389,7 +389,6 @@ const EnquiryModal = ({
         status: "pending"
       };
 
-      console.log("Vehicle enquiry submitted:", enquiryData);
       
       // Store in localStorage for demo (in real app, this would be in your database)
       const existingEnquiries = JSON.parse(localStorage.getItem("vehicleEnquiries") || "[]");

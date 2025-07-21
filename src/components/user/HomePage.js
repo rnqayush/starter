@@ -273,7 +273,6 @@ const HomePage = () => {
   const handleSearch = (e) => {
     e.preventDefault();
     // Implement search functionality
-    console.log("Search:", searchForm);
   };
 
   const renderStars = (rating) => {

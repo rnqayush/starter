@@ -350,7 +350,6 @@ const EnquiryModal = ({
         status: "pending"
       };
 
-      console.log("Enquiry submitted:", enquiryData);
       
       // Store in localStorage for demo (in real app, this would be in your database)
       const existingEnquiries = JSON.parse(localStorage.getItem("userEnquiries") || "[]");
@@ -371,7 +370,7 @@ const EnquiryModal = ({
 
       setIsSuccess(true);
     } catch (error) {
-      console.error("Error submitting enquiry:", error);
+
       alert("Failed to submit enquiry. Please try again.");
     } finally {
       setIsSubmitting(false);

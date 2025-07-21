@@ -347,7 +347,6 @@ const AddProductTab = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Product data:", formData);
     // Here you would normally send the data to your backend
     alert("Product added successfully!");
   };

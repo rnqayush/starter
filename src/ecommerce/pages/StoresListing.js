@@ -341,7 +341,7 @@ const StoresListing = () => {
       setCurrentLocation(location);
       loadStoresForLocation(location);
     } catch (error) {
-      console.error("Failed to get location:", error);
+
       const defaultLocation = getDefaultLocation();
       setCurrentLocation(defaultLocation);
       loadStoresForLocation(defaultLocation);

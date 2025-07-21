@@ -308,7 +308,7 @@ const AddProductTabEnhanced = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Product data:", formData);
+
     alert("Product saved successfully!");
   };
 
