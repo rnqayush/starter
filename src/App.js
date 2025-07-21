@@ -11,6 +11,7 @@ import PlatformHomePage from "./components/user/PlatformHomePage";
 import PricingPage from "./components/user/PricingPage";
 import LoginPage from "./components/auth/LoginPage";
 import RegisterPage from "./components/auth/RegisterPage";
+import StartBuilding from "./components/StartBuilding";
 
 // Shared Components
 import ScrollToTop from "./components/shared/ScrollToTop";
@@ -96,6 +97,7 @@ function App() {
             <Route path="/pricing" element={<PricingPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
+            <Route path="/start-building" element={<StartBuilding />} />
 
             {/* Category Landing Pages */}
             <Route path="/category/hotel" element={<HotelCategoryLanding />} />

@@ -334,7 +334,7 @@ const RoleOption = styled.div`
   }
 `;
 
-const AuthModal = ({ isOpen, onClose, defaultTab = "login" }) => {
+const AuthModal = ({ isOpen, onClose, onSuccess, defaultTab = "login" }) => {
   const { login, register, loading } = useAuth();
   const [activeTab, setActiveTab] = useState(defaultTab);
   const [showPassword, setShowPassword] = useState(false);
@@ -438,7 +438,6 @@ const AuthModal = ({ isOpen, onClose, defaultTab = "login" }) => {
       }
 
       if (result.success) {
-        onClose();
         // Reset form
         setFormData({
           name: "",
@@ -450,6 +449,12 @@ const AuthModal = ({ isOpen, onClose, defaultTab = "login" }) => {
           businessName: "",
           businessType: "General"
         });
+
+        if (onSuccess) {
+          onSuccess();
+        } else {
+          onClose();
+        }
       } else {
         setErrors({ submit: result.error });
       }
