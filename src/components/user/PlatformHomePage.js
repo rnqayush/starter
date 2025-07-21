@@ -702,7 +702,7 @@ const PlatformHomePage = () => {
       description:
         "Boutique hotels, resorts, and bed & breakfasts showcase their rooms and services with stunning booking systems.",
       gradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-      path: "/hotels",
+      path: "/category/hotel",
     },
     {
       id: "ecommerce",
@@ -711,7 +711,7 @@ const PlatformHomePage = () => {
       description:
         "Fashion brands, electronics stores, and artisan shops sell products with beautiful catalogs and secure checkout.",
       gradient: "linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)",
-      path: "/ecommerce",
+      path: "/category/ecommerce",
     },
     {
       id: "weddings",
@@ -720,7 +720,7 @@ const PlatformHomePage = () => {
       description:
         "Wedding planners, photographers, and venues share their portfolios and book clients with elegant galleries.",
       gradient: "linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)",
-      path: "/weddings",
+      path: "/category/wedding",
     },
                 {
       id: "automobiles",
@@ -729,7 +729,7 @@ const PlatformHomePage = () => {
       description:
         "Car dealerships, rental companies, and mechanics display inventory and connect with customers online.",
       gradient: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
-      path: "/auto-dealers",
+      path: "/category/automobile",
     },
     {
       id: "business-websites",
@@ -738,7 +738,7 @@ const PlatformHomePage = () => {
       description:
         "Professional websites for salons, gyms, restaurants, consultants, and more. Showcase services with elegant templates.",
       gradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-      path: "/business-websites",
+      path: "/category/business",
     },
   ];
 

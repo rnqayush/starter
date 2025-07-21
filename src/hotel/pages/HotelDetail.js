@@ -62,7 +62,7 @@ const HotelBanner = styled.section.withConfig({
   shouldForwardProp: (prop) => prop !== "image",
 })`
   position: relative;
-  height: 500px;
+  height: 100vh;
   background-image: url(${(props) => props.image});
   background-size: cover;
   background-position: center;
