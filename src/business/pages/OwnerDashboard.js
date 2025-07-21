@@ -1475,31 +1475,37 @@ const OwnerDashboard = () => {
                 </div>
               </SectionItem>
 
-              <SectionItem>
+                            <SectionItem>
                 <div className="section-info">
                   <h4>Team Section</h4>
                   <p>Staff profiles, photos, and bios</p>
+                  <div style={{ fontSize: '0.8rem', color: theme.colors.gray500, marginTop: '4px' }}>
+                    {currentData.team?.length || 0} team members
+                  </div>
                 </div>
                 <div className="section-actions">
-                  <Button>
+                  <Button onClick={() => openModal('team')}>
+                    <FaPlus />
+                    Add Member
+                  </Button>
+                </div>
+              </SectionItem>
+
+                            <SectionItem>
+                <div className="section-info">
+                  <h4>Contact Section</h4>
+                  <p>Contact form, address, and business hours</p>
+                  <div style={{ fontSize: '0.8rem', color: theme.colors.gray500, marginTop: '4px' }}>
+                    Current: "{currentData.contact?.title}"
+                  </div>
+                </div>
+                <div className="section-actions">
+                  <Button onClick={() => openModal('contact', currentData.contact)}>
                     <FaEdit />
                     Edit
                   </Button>
                 </div>
               </SectionItem>
-
-              <SectionItem>
-                <div className="section-info">
-                  <h4>Contact Section</h4>
-                  <p>Contact form, address, and business hours</p>
-                </div>
-                <div className="section-actions">
-                  <Button>
-                    <FaEdit />
-                    Edit
-                  </Button>
-                </div>
-                                          </SectionItem>
 
               {businessData.slug !== 'freelancer' && (
                 <SectionItem>
