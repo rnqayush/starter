@@ -127,9 +127,17 @@ const ThumbnailGrid = styled.div`
   gap: ${theme.spacing.md};
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    grid-template-columns: repeat(4, 1fr);
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
     gap: ${theme.spacing.sm};
     padding: 0 ${theme.spacing.xs};
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 `;
 
@@ -150,9 +158,12 @@ const Thumbnail = styled.img.withConfig({
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
+    min-width: 80px;
+    width: 80px;
     height: 60px;
     border-radius: ${theme.borderRadius.lg};
     border-width: 3px;
+    scroll-snap-align: center;
   }
 `;
 
@@ -279,6 +290,11 @@ const AmenitiesGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: ${theme.spacing.md};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: ${theme.spacing.sm};
+  }
 `;
 
 const AmenityItem = styled.div`
@@ -289,6 +305,19 @@ const AmenityItem = styled.div`
   background: ${theme.colors.white};
   border-radius: ${theme.borderRadius.md};
   box-shadow: ${theme.shadows.sm};
+  border: 1px solid ${theme.colors.gray100};
+  transition: all 0.2s ease;
+
+  &:hover {
+    box-shadow: ${theme.shadows.md};
+    transform: translateY(-1px);
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.sm};
+    gap: ${theme.spacing.sm};
+    font-size: 0.9rem;
+  }
 `;
 
 const AmenityIcon = styled.div`
