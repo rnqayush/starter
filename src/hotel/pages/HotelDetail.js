@@ -15,6 +15,32 @@ import {
   FaHeart,
   FaClock,
   FaCheckCircle,
+  FaPhone,
+  FaEnvelope,
+  FaCalendarAlt,
+  FaUsers,
+  FaBed,
+  FaShower,
+  FaWind,
+  FaTv,
+  FaCoffee,
+  FaConciergeBell,
+  FaBaby,
+  FaSmokingBan,
+  FaChevronLeft,
+  FaChevronRight,
+  FaQuoteLeft,
+  FaGlobeAmericas,
+  FaCreditCard,
+  FaShieldAlt,
+  FaAward,
+  FaGift,
+  FaUmbrellaBeach,
+  FaGamepad,
+  FaBusinessTime,
+  FaTaxi,
+  FaCamera,
+  FaPlay,
 } from "react-icons/fa";
 import { theme } from "../../styles/GlobalStyle";
 import HotelNavbar from "../components/HotelNavbar";
@@ -29,36 +55,7 @@ const PageContainer = styled.div`
   background: ${theme.colors.gray50};
 `;
 
-const BackButton = styled.button`
-  background: ${theme.colors.white};
-  border: 2px solid ${theme.colors.gray200};
-  color: ${theme.colors.gray700};
-  padding: ${theme.spacing.sm} ${theme.spacing.md};
-  border-radius: ${theme.borderRadius.md};
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  gap: ${theme.spacing.sm};
-  margin: ${theme.spacing.lg} auto 0;
-  max-width: 1200px;
-  width: 100%;
-  margin-left: ${theme.spacing.md};
-  margin-right: ${theme.spacing.md};
-
-  &:hover {
-    border-color: ${theme.colors.primary};
-    color: ${theme.colors.primary};
-  }
-
-  @media (min-width: ${theme.breakpoints.desktop}) {
-    margin-left: auto;
-    margin-right: auto;
-  }
-`;
-
-const HotelBanner = styled.section.withConfig({
+const HeroBanner = styled.section.withConfig({
   shouldForwardProp: (prop) => prop !== "image",
 })`
   position: relative;
@@ -67,7 +64,8 @@ const HotelBanner = styled.section.withConfig({
   background-size: cover;
   background-position: center;
   display: flex;
-  align-items: end;
+  align-items: center;
+  overflow: hidden;
 
   &::before {
     content: "";
@@ -76,233 +74,568 @@ const HotelBanner = styled.section.withConfig({
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6));
+  }
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    height: 70vh;
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    height: 60vh;
   }
 `;
 
-const BannerContent = styled.div`
+const HeroContent = styled.div`
   position: relative;
-  z-index: 1;
+  z-index: 2;
   color: ${theme.colors.white};
-  padding: ${theme.spacing.xxl};
   max-width: 1200px;
   margin: 0 auto;
+  padding: 0 ${theme.spacing.xl};
   width: 100%;
 `;
 
-const BannerTop = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+const HeroTitle = styled.h1`
+  font-size: 4.5rem;
+  font-weight: 700;
   margin-bottom: ${theme.spacing.lg};
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+  line-height: 1.1;
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    font-size: 3rem;
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    font-size: 2.5rem;
+    margin-bottom: ${theme.spacing.md};
+  }
 `;
 
-const HotelInfo = styled.div`
-  flex: 1;
+const HeroSubtitle = styled.p`
+  font-size: 1.5rem;
+  margin-bottom: ${theme.spacing.xl};
+  opacity: 0.95;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+  max-width: 600px;
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    font-size: 1.3rem;
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    font-size: 1.1rem;
+    margin-bottom: ${theme.spacing.lg};
+  }
 `;
 
-const HotelActions = styled.div`
+const HeroActions = styled.div`
   display: flex;
+  gap: ${theme.spacing.lg};
+  align-items: center;
+  flex-wrap: wrap;
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    flex-direction: column;
+    gap: ${theme.spacing.md};
+    align-items: stretch;
+  }
+`;
+
+const CTAButton = styled.button`
+  background: linear-gradient(135deg, ${theme.colors.primary}, ${theme.colors.primaryDark});
+  color: ${theme.colors.white};
+  padding: ${theme.spacing.md} ${theme.spacing.xxl};
+  border: none;
+  border-radius: ${theme.borderRadius.lg};
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 35px rgba(59, 130, 246, 0.4);
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.md} ${theme.spacing.xl};
+    font-size: 1rem;
+  }
+`;
+
+const QuickInfoCard = styled.div`
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: ${theme.borderRadius.lg};
+  padding: ${theme.spacing.lg};
+  color: ${theme.colors.white};
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.md};
+  min-width: 200px;
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    min-width: auto;
+    padding: ${theme.spacing.md};
+  }
+`;
+
+const QuickInfoIcon = styled.div`
+  font-size: 1.5rem;
+  color: #fbbf24;
+`;
+
+const QuickInfoText = styled.div`
+  .label {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    margin-bottom: 2px;
+  }
+  .value {
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+`;
+
+const FloatingBookingCard = styled.div`
+  position: fixed;
+  top: 50%;
+  right: ${theme.spacing.xl};
+  transform: translateY(-50%);
+  background: ${theme.colors.white};
+  border-radius: ${theme.borderRadius.xl};
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  padding: ${theme.spacing.xl};
+  width: 320px;
+  z-index: 100;
+  border: 1px solid ${theme.colors.gray200};
+
+  @media (max-width: ${theme.breakpoints.desktop}) {
+    position: static;
+    transform: none;
+    margin: ${theme.spacing.xl} auto;
+    width: 100%;
+    max-width: 400px;
+  }
+`;
+
+const BookingCardTitle = styled.h3`
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: ${theme.colors.gray900};
+  margin-bottom: ${theme.spacing.lg};
+  text-align: center;
+`;
+
+const BookingForm = styled.form`
+  display: flex;
+  flex-direction: column;
   gap: ${theme.spacing.md};
 `;
 
-const ActionButton = styled.button`
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  color: ${theme.colors.white};
+const FormGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${theme.spacing.xs};
+`;
+
+const Label = styled.label`
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: ${theme.colors.gray700};
+`;
+
+const Input = styled.input`
   padding: ${theme.spacing.sm};
+  border: 2px solid ${theme.colors.gray200};
   border-radius: ${theme.borderRadius.md};
-  font-size: 1.1rem;
+  font-size: 0.9rem;
+  transition: border-color 0.2s ease;
+
+  &:focus {
+    outline: none;
+    border-color: ${theme.colors.primary};
+  }
+`;
+
+const PriceDisplay = styled.div`
+  background: ${theme.colors.gray50};
+  padding: ${theme.spacing.md};
+  border-radius: ${theme.borderRadius.md};
+  text-align: center;
+  margin: ${theme.spacing.md} 0;
+
+  .price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: ${theme.colors.primary};
+  }
+  .period {
+    font-size: 0.9rem;
+    color: ${theme.colors.gray600};
+  }
+`;
+
+const BookNowButton = styled.button`
+  background: ${theme.colors.primary};
+  color: ${theme.colors.white};
+  padding: ${theme.spacing.md};
+  border: none;
+  border-radius: ${theme.borderRadius.md};
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.3);
+    background: ${theme.colors.primaryDark};
   }
 `;
 
-const HotelName = styled.h1`
-  font-size: 3rem;
-  font-weight: 700;
+const ContentSection = styled.section`
+  padding: ${theme.spacing.xxl} 0;
+  background: ${theme.colors.white};
+
+  &.alt {
+    background: ${theme.colors.gray50};
+  }
+`;
+
+const Container = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 ${theme.spacing.xl};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: 0 ${theme.spacing.md};
+  }
+`;
+
+const SectionHeader = styled.div`
+  text-align: center;
+  margin-bottom: ${theme.spacing.xxl};
+`;
+
+const SectionTitle = styled.h2`
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: ${theme.colors.gray900};
   margin-bottom: ${theme.spacing.md};
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     font-size: 2rem;
   }
 `;
 
-const HotelLocation = styled.div`
-  display: flex;
-  align-items: center;
-  gap: ${theme.spacing.sm};
-  font-size: 1.2rem;
-  margin-bottom: ${theme.spacing.md};
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-`;
-
-const HotelRating = styled.div`
-  display: flex;
-  align-items: center;
-  gap: ${theme.spacing.sm};
+const SectionSubtitle = styled.p`
   font-size: 1.1rem;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-`;
-
-const StarRating = styled.div`
-  display: flex;
-  gap: 2px;
-`;
-
-const Star = styled(FaStar)`
-  color: #fbbf24;
-  font-size: 1rem;
-`;
-
-const TabsContainer = styled.div`
-  background: ${theme.colors.white};
-  border-bottom: 1px solid ${theme.colors.gray200};
-  position: sticky;
-  top: 70px;
-  z-index: 10;
-`;
-
-const Tabs = styled.div`
-  max-width: 1200px;
+  color: ${theme.colors.gray600};
+  max-width: 600px;
   margin: 0 auto;
-  display: flex;
-  padding: 0 ${theme.spacing.md};
 `;
 
-const Tab = styled.button.withConfig({
-  shouldForwardProp: (prop) => prop !== "active",
-})`
-  background: none;
-  border: none;
-  padding: ${theme.spacing.lg} ${theme.spacing.xl};
-  font-weight: 600;
-  color: ${(props) =>
-    props.active ? theme.colors.primary : theme.colors.gray600};
-  border-bottom: 3px solid
-    ${(props) => (props.active ? theme.colors.primary : "transparent")};
-  cursor: pointer;
-  transition: all 0.2s ease;
+const FeaturesGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: ${theme.spacing.xl};
+  margin: ${theme.spacing.xxl} 0;
+`;
+
+const FeatureCard = styled.div`
+  background: ${theme.colors.white};
+  padding: ${theme.spacing.xl};
+  border-radius: ${theme.borderRadius.lg};
+  box-shadow: ${theme.shadows.md};
+  text-align: center;
+  transition: transform 0.3s ease;
 
   &:hover {
-    color: ${theme.colors.primary};
+    transform: translateY(-5px);
   }
 `;
 
-const ContentContainer = styled.div`
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: ${theme.spacing.xxl} ${theme.spacing.md};
-  flex: 1;
+const FeatureIcon = styled.div`
+  font-size: 3rem;
+  color: ${theme.colors.primary};
+  margin-bottom: ${theme.spacing.lg};
 `;
 
-const Section = styled.div`
-  margin-bottom: ${theme.spacing.xxl};
-`;
-
-const SectionTitle = styled.h2`
-  font-size: 2rem;
+const FeatureTitle = styled.h3`
+  font-size: 1.3rem;
   font-weight: 600;
   color: ${theme.colors.gray900};
-  margin-bottom: ${theme.spacing.lg};
+  margin-bottom: ${theme.spacing.md};
 `;
 
-const Description = styled.p`
-  font-size: 1.1rem;
-  line-height: 1.7;
-  color: ${theme.colors.gray700};
-  margin-bottom: ${theme.spacing.lg};
+const FeatureDescription = styled.p`
+  color: ${theme.colors.gray600};
+  line-height: 1.6;
 `;
 
-const InfoGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: ${theme.spacing.xl};
-  margin-bottom: ${theme.spacing.xl};
-`;
-
-const InfoCard = styled.div`
+const AmenitiesSection = styled.div`
   background: ${theme.colors.white};
-  padding: ${theme.spacing.lg};
-  border-radius: ${theme.borderRadius.lg};
-  box-shadow: ${theme.shadows.sm};
-  border-left: 4px solid ${theme.colors.primary};
-
-  h3 {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: ${theme.colors.gray900};
-    margin-bottom: ${theme.spacing.sm};
-    display: flex;
-    align-items: center;
-    gap: ${theme.spacing.sm};
-  }
-
-  p {
-    color: ${theme.colors.gray600};
-    font-size: 0.9rem;
-  }
+  border-radius: ${theme.borderRadius.xl};
+  padding: ${theme.spacing.xxl};
+  box-shadow: ${theme.shadows.lg};
 `;
 
 const AmenitiesGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: ${theme.spacing.md};
-`;
-
-const AmenityItem = styled.div`
-  display: flex;
-  align-items: center;
-  gap: ${theme.spacing.md};
-  padding: ${theme.spacing.md};
-  background: ${theme.colors.white};
-  border-radius: ${theme.borderRadius.md};
-  box-shadow: ${theme.shadows.sm};
-`;
-
-const AmenityIcon = styled.div`
-  color: ${theme.colors.primary};
-  font-size: 1.2rem;
-`;
-
-const RoomsGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-  gap: ${theme.spacing.xl};
-
-  @media (max-width: ${theme.breakpoints.mobile}) {
-    grid-template-columns: 1fr;
-  }
-`;
-
-const PoliciesGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: ${theme.spacing.lg};
 `;
 
-const PolicyItem = styled.div`
+const AmenityCategory = styled.div`
+  h4 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: ${theme.colors.gray900};
+    margin-bottom: ${theme.spacing.md};
+    display: flex;
+    align-items: center;
+    gap: ${theme.spacing.sm};
+  }
+`;
+
+const AmenityList = styled.ul`
+  list-style: none;
+  padding: 0;
+  margin: 0;
+`;
+
+const AmenityItem = styled.li`
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: ${theme.spacing.sm};
-  padding: ${theme.spacing.md};
-  background: ${theme.colors.white};
-  border-radius: ${theme.borderRadius.md};
-  box-shadow: ${theme.shadows.sm};
+  padding: ${theme.spacing.xs} 0;
+  color: ${theme.colors.gray700};
+  font-size: 0.95rem;
 
   .icon {
     color: ${theme.colors.success};
-    margin-top: 2px;
+    font-size: 0.8rem;
+  }
+`;
+
+const GallerySection = styled.div`
+  margin: ${theme.spacing.xxl} 0;
+`;
+
+const GalleryGrid = styled.div`
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  grid-template-rows: 300px 300px;
+  gap: ${theme.spacing.md};
+  border-radius: ${theme.borderRadius.xl};
+  overflow: hidden;
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(3, 250px);
+  }
+`;
+
+const GalleryItem = styled.div.withConfig({
+  shouldForwardProp: (prop) => !['image', 'span'].includes(prop),
+})`
+  background-image: url(${(props) => props.image});
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  ${(props) => props.span && `grid-row: span ${props.span};`}
+
+  &:hover {
+    transform: scale(1.02);
   }
 
-  .text {
-    color: ${theme.colors.gray700};
-    font-size: 0.9rem;
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.1);
+    transition: background 0.3s ease;
+  }
+
+  &:hover::before {
+    background: rgba(0, 0, 0, 0.3);
+  }
+
+  &:first-child {
+    grid-row: span 2;
+  }
+`;
+
+const GalleryOverlay = styled.div`
+  position: absolute;
+  bottom: ${theme.spacing.md};
+  left: ${theme.spacing.md};
+  color: ${theme.colors.white};
+  font-weight: 500;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+`;
+
+const TestimonialsSection = styled.div`
+  background: linear-gradient(135deg, ${theme.colors.primary}, ${theme.colors.primaryDark});
+  border-radius: ${theme.borderRadius.xl};
+  padding: ${theme.spacing.xxl};
+  color: ${theme.colors.white};
+  text-align: center;
+`;
+
+const TestimonialCard = styled.div`
+  max-width: 800px;
+  margin: 0 auto;
+`;
+
+const TestimonialQuote = styled.blockquote`
+  font-size: 1.3rem;
+  line-height: 1.7;
+  margin: ${theme.spacing.xl} 0;
+  font-style: italic;
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 3rem;
+    color: rgba(255, 255, 255, 0.3);
+  }
+`;
+
+const TestimonialAuthor = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: ${theme.spacing.md};
+  margin-top: ${theme.spacing.lg};
+
+  .avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+  }
+
+  .info {
+    text-align: left;
+
+    .name {
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+    .details {
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+  }
+`;
+
+const LocationSection = styled.div`
+  background: ${theme.colors.white};
+  border-radius: ${theme.borderRadius.xl};
+  padding: ${theme.spacing.xxl};
+  box-shadow: ${theme.shadows.lg};
+`;
+
+const LocationGrid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: ${theme.spacing.xxl};
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    grid-template-columns: 1fr;
+    gap: ${theme.spacing.xl};
+  }
+`;
+
+const ContactInfo = styled.div`
+  h4 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: ${theme.colors.gray900};
+    margin-bottom: ${theme.spacing.lg};
+  }
+`;
+
+const ContactItem = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.md};
+  padding: ${theme.spacing.md} 0;
+  border-bottom: 1px solid ${theme.colors.gray100};
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  .icon {
+    color: ${theme.colors.primary};
+    font-size: 1.1rem;
+    width: 20px;
+  }
+
+  .content {
+    .label {
+      font-size: 0.9rem;
+      color: ${theme.colors.gray500};
+      margin-bottom: 2px;
+    }
+    .value {
+      font-weight: 500;
+      color: ${theme.colors.gray900};
+    }
+  }
+`;
+
+const MapPlaceholder = styled.div`
+  background: ${theme.colors.gray100};
+  border-radius: ${theme.borderRadius.lg};
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: ${theme.colors.gray500};
+  font-size: 1.1rem;
+`;
+
+const BackToTop = styled.button`
+  position: fixed;
+  bottom: ${theme.spacing.xl};
+  right: ${theme.spacing.xl};
+  background: ${theme.colors.primary};
+  color: ${theme.colors.white};
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  box-shadow: ${theme.shadows.lg};
+  transition: all 0.3s ease;
+  z-index: 50;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: ${theme.shadows.xl};
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    bottom: ${theme.spacing.lg};
+    right: ${theme.spacing.lg};
   }
 `;
 
@@ -310,9 +643,11 @@ const HotelDetail = () => {
   const { hotelSlug, slug } = useParams();
   const slugParam = hotelSlug || slug;
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState("overview");
   const [hotel, setHotel] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [checkIn, setCheckIn] = useState("");
+  const [checkOut, setCheckOut] = useState("");
+  const [guests, setGuests] = useState(2);
 
   useEffect(() => {
     const foundHotel = getHotelByIdOrSlug(slugParam);
@@ -320,46 +655,23 @@ const HotelDetail = () => {
     setLoading(false);
   }, [slugParam]);
 
-  const getAmenityIcon = (amenity) => {
-    const iconMap = {
-      WiFi: FaWifi,
-      Pool: FaSwimmingPool,
-      Parking: FaCar,
-      Restaurant: FaUtensils,
-      Gym: FaDumbbell,
-      Spa: FaSpa,
-    };
-    const IconComponent = iconMap[amenity] || FaCheckCircle;
-    return <IconComponent />;
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const renderStars = (rating) => {
-    const stars = [];
-    const fullStars = Math.floor(rating);
-    for (let i = 0; i < fullStars; i++) {
-      stars.push(<Star key={i} />);
-    }
-    return stars;
-  };
-
-  const handleShare = () => {
-    if (navigator.share) {
-      navigator.share({
-        title: hotel.name,
-        text: hotel.description,
-        url: window.location.href,
-      });
-    } else {
-      navigator.clipboard.writeText(window.location.href);
-      alert("Hotel link copied to clipboard!");
-    }
+  const handleBookingSubmit = (e) => {
+    e.preventDefault();
+    // Navigate to booking page
+    navigate(`/${hotel.slug}/booking`);
   };
 
   if (loading) {
     return (
       <PageContainer>
         <HotelNavbar />
-        <div style={{ padding: "4rem", textAlign: "center" }}>Loading...</div>
+        <div style={{ padding: "4rem", textAlign: "center" }}>
+          <h2>Loading...</h2>
+        </div>
         <HotelFooter />
       </PageContainer>
     );
@@ -378,156 +690,295 @@ const HotelDetail = () => {
     );
   }
 
+  const features = [
+    {
+      icon: FaConciergeBell,
+      title: "24/7 Concierge",
+      description: "Our dedicated concierge team is available round-the-clock to assist with all your needs."
+    },
+    {
+      icon: FaUmbrellaBeach,
+      title: "Luxury Amenities",
+      description: "Enjoy world-class facilities including spa, pool, and fine dining restaurants."
+    },
+    {
+      icon: FaBusinessTime,
+      title: "Business Center",
+      description: "Fully equipped business facilities for meetings and corporate events."
+    },
+    {
+      icon: FaTaxi,
+      title: "Airport Transfer",
+      description: "Complimentary airport shuttle service for all our guests."
+    }
+  ];
+
+  const amenityCategories = [
+    {
+      title: "Recreation",
+      icon: FaSwimmingPool,
+      items: ["Swimming Pool", "Fitness Center", "Spa & Wellness", "Game Room", "Tennis Court"]
+    },
+    {
+      title: "Dining",
+      icon: FaUtensils,
+      items: ["Fine Dining Restaurant", "Rooftop Bar", "Room Service", "Breakfast Buffet", "Coffee Shop"]
+    },
+    {
+      title: "Business",
+      icon: FaBusinessTime,
+      items: ["Business Center", "Meeting Rooms", "Conference Hall", "Free WiFi", "Printing Services"]
+    },
+    {
+      title: "Services",
+      icon: FaConciergeBell,
+      items: ["24/7 Concierge", "Valet Parking", "Laundry Service", "Airport Transfer", "Tour Desk"]
+    }
+  ];
+
   return (
     <PageContainer>
       <HotelNavbar />
 
-      <BackButton onClick={() => navigate(-1)}>
-        <FaArrowLeft />
-        Back to Hotels
-      </BackButton>
-
-      <HotelBanner image={hotel.image}>
-        <BannerContent>
-          <BannerTop>
-            <HotelInfo>
-              <HotelName>{hotel.name}</HotelName>
-              <HotelLocation>
+      <HeroBanner image={hotel.image}>
+        <HeroContent>
+          <HeroTitle>{hotel.name}</HeroTitle>
+          <HeroSubtitle>
+            Experience luxury hospitality in the heart of {hotel.city}
+          </HeroSubtitle>
+          <HeroActions>
+            <CTAButton onClick={() => navigate(`/${hotel.slug}/booking`)}>
+              Book Your Stay
+            </CTAButton>
+            <QuickInfoCard>
+              <QuickInfoIcon>
+                <FaStar />
+              </QuickInfoIcon>
+              <QuickInfoText>
+                <div className="label">Rating</div>
+                <div className="value">{hotel.rating}/5 Stars</div>
+              </QuickInfoText>
+            </QuickInfoCard>
+            <QuickInfoCard>
+              <QuickInfoIcon>
                 <FaMapMarkerAlt />
-                {hotel.location}
-              </HotelLocation>
-              <HotelRating>
-                <StarRating>{renderStars(hotel.rating)}</StarRating>
-                <span>
-                  {hotel.rating}/5 ({hotel.starRating} Star Hotel)
-                </span>
-              </HotelRating>
-            </HotelInfo>
+              </QuickInfoIcon>
+              <QuickInfoText>
+                <div className="label">Location</div>
+                <div className="value">{hotel.city}</div>
+              </QuickInfoText>
+            </QuickInfoCard>
+          </HeroActions>
+        </HeroContent>
+      </HeroBanner>
 
-            <HotelActions>
-              <ActionButton onClick={handleShare} title="Share Hotel">
-                <FaShare />
-              </ActionButton>
-              <ActionButton title="Add to Wishlist">
-                <FaHeart />
-              </ActionButton>
-            </HotelActions>
-          </BannerTop>
-        </BannerContent>
-      </HotelBanner>
+      <FloatingBookingCard>
+        <BookingCardTitle>Reserve Your Room</BookingCardTitle>
+        <BookingForm onSubmit={handleBookingSubmit}>
+          <FormGroup>
+            <Label>Check-in Date</Label>
+            <Input
+              type="date"
+              value={checkIn}
+              onChange={(e) => setCheckIn(e.target.value)}
+              required
+            />
+          </FormGroup>
+          <FormGroup>
+            <Label>Check-out Date</Label>
+            <Input
+              type="date"
+              value={checkOut}
+              onChange={(e) => setCheckOut(e.target.value)}
+              required
+            />
+          </FormGroup>
+          <FormGroup>
+            <Label>Guests</Label>
+            <Input
+              type="number"
+              min="1"
+              max="8"
+              value={guests}
+              onChange={(e) => setGuests(e.target.value)}
+            />
+          </FormGroup>
+          <PriceDisplay>
+            <div className="price">₹{hotel.startingPrice.toLocaleString()}</div>
+            <div className="period">per night</div>
+          </PriceDisplay>
+          <BookNowButton type="submit">
+            Check Availability
+          </BookNowButton>
+        </BookingForm>
+      </FloatingBookingCard>
 
-      <TabsContainer>
-        <Tabs>
-          <Tab
-            active={activeTab === "overview"}
-            onClick={() => setActiveTab("overview")}
-          >
-            Overview
-          </Tab>
-          <Tab
-            active={activeTab === "rooms"}
-            onClick={() => setActiveTab("rooms")}
-          >
-            Rooms & Rates
-          </Tab>
-          <Tab
-            active={activeTab === "amenities"}
-            onClick={() => setActiveTab("amenities")}
-          >
-            Amenities
-          </Tab>
-          <Tab
-            active={activeTab === "policies"}
-            onClick={() => setActiveTab("policies")}
-          >
-            Policies
-          </Tab>
-        </Tabs>
-      </TabsContainer>
+      <ContentSection>
+        <Container>
+          <SectionHeader>
+            <SectionTitle>Why Choose {hotel.name}?</SectionTitle>
+            <SectionSubtitle>
+              Discover the perfect blend of luxury, comfort, and exceptional service
+            </SectionSubtitle>
+          </SectionHeader>
+          <FeaturesGrid>
+            {features.map((feature, index) => (
+              <FeatureCard key={index}>
+                <FeatureIcon>
+                  <feature.icon />
+                </FeatureIcon>
+                <FeatureTitle>{feature.title}</FeatureTitle>
+                <FeatureDescription>{feature.description}</FeatureDescription>
+              </FeatureCard>
+            ))}
+          </FeaturesGrid>
+        </Container>
+      </ContentSection>
 
-      <ContentContainer>
-        {activeTab === "overview" && (
-          <Section>
-            <SectionTitle>About {hotel.name}</SectionTitle>
-            <Description>{hotel.description}</Description>
+      <ContentSection className="alt">
+        <Container>
+          <SectionHeader>
+            <SectionTitle>Hotel Gallery</SectionTitle>
+            <SectionSubtitle>
+              Take a virtual tour of our stunning property and amenities
+            </SectionSubtitle>
+          </SectionHeader>
+          <GallerySection>
+            <GalleryGrid>
+              <GalleryItem image={hotel.images[0]}>
+                <GalleryOverlay>Hotel Exterior</GalleryOverlay>
+              </GalleryItem>
+              <GalleryItem image={hotel.images[1]}>
+                <GalleryOverlay>Luxury Rooms</GalleryOverlay>
+              </GalleryItem>
+              <GalleryItem image={hotel.images[2]}>
+                <GalleryOverlay>Dining Experience</GalleryOverlay>
+              </GalleryItem>
+              <GalleryItem image="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3">
+                <GalleryOverlay>Swimming Pool</GalleryOverlay>
+              </GalleryItem>
+              <GalleryItem image="https://images.unsplash.com/photo-1578645510447-e20b4311e3ce?ixlib=rb-4.0.3">
+                <GalleryOverlay>Spa & Wellness</GalleryOverlay>
+              </GalleryItem>
+            </GalleryGrid>
+          </GallerySection>
+        </Container>
+      </ContentSection>
 
-            <InfoGrid>
-              <InfoCard>
-                <h3>
-                  <FaClock />
-                  Check-in
-                </h3>
-                <p>{hotel.checkInTime}</p>
-              </InfoCard>
-              <InfoCard>
-                <h3>
-                  <FaClock />
-                  Check-out
-                </h3>
-                <p>{hotel.checkOutTime}</p>
-              </InfoCard>
-              <InfoCard>
-                <h3>
-                  <FaMapMarkerAlt />
-                  Address
-                </h3>
-                <p>{hotel.address}</p>
-              </InfoCard>
-              <InfoCard>
-                <h3>
-                  <FaStar />
-                  Starting Price
-                </h3>
-                <p>���{hotel.startingPrice.toLocaleString()} per night</p>
-              </InfoCard>
-            </InfoGrid>
-          </Section>
-        )}
-
-        {activeTab === "rooms" && (
-          <Section>
-            <SectionTitle>Available Rooms</SectionTitle>
-            <RoomsGrid>
-              {hotel.rooms?.map((room) => (
-                <RoomCard
-                  key={room.id}
-                  room={room}
-                  hotelId={hotel.id}
-                  hotelSlug={hotel.slug}
-                />
-              ))}
-            </RoomsGrid>
-          </Section>
-        )}
-
-        {activeTab === "amenities" && (
-          <Section>
-            <SectionTitle>Hotel Amenities</SectionTitle>
+      <ContentSection>
+        <Container>
+          <SectionHeader>
+            <SectionTitle>World-Class Amenities</SectionTitle>
+            <SectionSubtitle>
+              Everything you need for a perfect stay, all under one roof
+            </SectionSubtitle>
+          </SectionHeader>
+          <AmenitiesSection>
             <AmenitiesGrid>
-              {hotel.amenities?.map((amenity, index) => (
-                <AmenityItem key={index}>
-                  <AmenityIcon>{getAmenityIcon(amenity)}</AmenityIcon>
-                  <span>{amenity}</span>
-                </AmenityItem>
+              {amenityCategories.map((category, index) => (
+                <AmenityCategory key={index}>
+                  <h4>
+                    <category.icon />
+                    {category.title}
+                  </h4>
+                  <AmenityList>
+                    {category.items.map((item, itemIndex) => (
+                      <AmenityItem key={itemIndex}>
+                        <FaCheckCircle className="icon" />
+                        {item}
+                      </AmenityItem>
+                    ))}
+                  </AmenityList>
+                </AmenityCategory>
               ))}
             </AmenitiesGrid>
-          </Section>
-        )}
+          </AmenitiesSection>
+        </Container>
+      </ContentSection>
 
-        {activeTab === "policies" && (
-          <Section>
-            <SectionTitle>Hotel Policies</SectionTitle>
-            <PoliciesGrid>
-              {hotel.policies?.map((policy, index) => (
-                <PolicyItem key={index}>
-                  <FaCheckCircle className="icon" />
-                  <span className="text">{policy}</span>
-                </PolicyItem>
-              ))}
-            </PoliciesGrid>
-          </Section>
-        )}
-      </ContentContainer>
+      <ContentSection className="alt">
+        <Container>
+          <TestimonialsSection>
+            <SectionHeader>
+              <SectionTitle style={{ color: 'white' }}>Guest Reviews</SectionTitle>
+              <SectionSubtitle style={{ color: 'rgba(255,255,255,0.8)' }}>
+                Hear what our valued guests have to say about their experience
+              </SectionSubtitle>
+            </SectionHeader>
+            <TestimonialCard>
+              <TestimonialQuote>
+                "Absolutely exceptional service and stunning accommodations. The staff went above and beyond to make our anniversary celebration truly memorable. The attention to detail and luxury amenities exceeded all our expectations."
+              </TestimonialQuote>
+              <TestimonialAuthor>
+                <div className="avatar">RS</div>
+                <div className="info">
+                  <div className="name">Raj & Priya Sharma</div>
+                  <div className="details">Anniversary Celebration • Mumbai</div>
+                </div>
+              </TestimonialAuthor>
+            </TestimonialCard>
+          </TestimonialsSection>
+        </Container>
+      </ContentSection>
+
+      <ContentSection>
+        <Container>
+          <SectionHeader>
+            <SectionTitle>Location & Contact</SectionTitle>
+            <SectionSubtitle>
+              Perfectly situated in the heart of {hotel.city}
+            </SectionSubtitle>
+          </SectionHeader>
+          <LocationSection>
+            <LocationGrid>
+              <ContactInfo>
+                <h4>Get in Touch</h4>
+                <ContactItem>
+                  <FaMapMarkerAlt className="icon" />
+                  <div className="content">
+                    <div className="label">Address</div>
+                    <div className="value">{hotel.address}</div>
+                  </div>
+                </ContactItem>
+                <ContactItem>
+                  <FaPhone className="icon" />
+                  <div className="content">
+                    <div className="label">Phone</div>
+                    <div className="value">+91 22 6601 1825</div>
+                  </div>
+                </ContactItem>
+                <ContactItem>
+                  <FaEnvelope className="icon" />
+                  <div className="content">
+                    <div className="label">Email</div>
+                    <div className="value">reservations@{hotel.slug}.com</div>
+                  </div>
+                </ContactItem>
+                <ContactItem>
+                  <FaClock className="icon" />
+                  <div className="content">
+                    <div className="label">Check-in / Check-out</div>
+                    <div className="value">{hotel.checkInTime} / {hotel.checkOutTime}</div>
+                  </div>
+                </ContactItem>
+              </ContactInfo>
+              <MapPlaceholder>
+                <div>
+                  <FaMapMarkerAlt style={{ fontSize: '2rem', marginBottom: '1rem' }} />
+                  <div>Interactive Map View</div>
+                  <div style={{ fontSize: '0.9rem', opacity: 0.7, marginTop: '0.5rem' }}>
+                    Prime location in {hotel.city}
+                  </div>
+                </div>
+              </MapPlaceholder>
+            </LocationGrid>
+          </LocationSection>
+        </Container>
+      </ContentSection>
+
+      <BackToTop onClick={scrollToTop}>
+        ↑
+      </BackToTop>
 
       <HotelFooter />
     </PageContainer>
