@@ -1098,10 +1098,40 @@ const OwnerDashboard = () => {
                     Edit
                   </Button>
                 </div>
-              </SectionItem>
+                            </SectionItem>
             </SectionList>
+
+            {/* Services List */}
+            <div style={{ marginTop: theme.spacing.xl }}>
+              <h3 style={{ marginBottom: theme.spacing.lg, color: theme.colors.gray900 }}>Current Services</h3>
+              <SectionList>
+                {(currentData.services || []).map((service, index) => (
+                  <SectionItem key={service.id}>
+                    <div className="section-info">
+                      <h4>{service.icon} {service.title}</h4>
+                      <p>{service.description}</p>
+                      {service.price && (
+                        <div style={{ fontSize: '0.8rem', color: businessData.primaryColor, fontWeight: 600, marginTop: '4px' }}>
+                          {service.price}
+                        </div>
+                      )}
+                    </div>
+                    <div className="section-actions">
+                      <Button onClick={() => openModal('services', service)}>
+                        <FaEdit />
+                        Edit
+                      </Button>
+                      <Button onClick={() => handleDelete('services', service.id)}>
+                        <FaTrash />
+                        Delete
+                      </Button>
+                    </div>
+                  </SectionItem>
+                ))}
+              </SectionList>
+            </div>
           </div>
-                );
+        );
 
       case 'portfolio':
         return businessData.slug === 'freelancer' ? (
