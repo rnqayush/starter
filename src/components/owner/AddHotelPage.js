@@ -224,7 +224,7 @@ const AddHotelPage = () => {
 
       navigate("/owner/my-hotels");
     } catch (error) {
-      console.error("Error adding hotel:", error);
+
     } finally {
       setIsSubmitting(false);
     }
