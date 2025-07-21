@@ -902,8 +902,14 @@ const OwnerDashboard = () => {
                   value={formData.title || ''}
                   onChange={(e) => handleInputChange('title', e.target.value)}
                   placeholder="Enter hero title"
-                />
+                                />
               </FormField>
+              <ImageUpload
+                field="backgroundImage"
+                label="Background Image"
+                currentImage={formData.backgroundImage}
+                primaryColor={businessData.primaryColor}
+              />
               <FormField primaryColor={businessData.primaryColor}>
                 <label>Subtitle</label>
                 <textarea
