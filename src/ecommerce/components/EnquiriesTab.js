@@ -507,7 +507,6 @@ const EnquiriesTab = () => {
   const saveNote = (enquiryId) => {
     setEditingNotes(new Set([...editingNotes].filter(id => id !== enquiryId)));
     // In real app, save to backend
-    console.log(`Saved note for enquiry ${enquiryId}:`, notes[enquiryId]);
   };
 
   const cancelEditingNote = (enquiryId) => {
