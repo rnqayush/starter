@@ -499,7 +499,7 @@ const StartBuilding = () => {
     "#10b981", "#3b82f6", "#8b5cf6", "#f59e0b", "#ef4444", "#06b6d4"
   ];
 
-  const totalSteps = formData.websiteType === "professional" ? 3 : 2;
+  const totalSteps = 3;
   const progress = (currentStep / totalSteps) * 100;
 
   const validateStep = () => {
