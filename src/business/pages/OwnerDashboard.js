@@ -354,6 +354,9 @@ const SectionItem = styled.div`
   background: ${theme.colors.gray50};
 
   .section-info {
+    flex: 1;
+    min-width: 0;
+
     h4 {
       font-weight: 600;
       color: ${theme.colors.gray900};
@@ -369,7 +372,30 @@ const SectionItem = styled.div`
   .section-actions {
     display: flex;
     gap: ${theme.spacing.sm};
+    flex-shrink: 0;
+  }
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: ${theme.spacing.md};
+    padding: ${theme.spacing.md};
+
+    .section-actions {
+      width: 100%;
+      justify-content: flex-end;
     }
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.sm};
+
+    .section-actions {
+      flex-direction: column;
+      width: 100%;
+      gap: ${theme.spacing.xs};
+    }
+  }
 `;
 
 // Modal and Form Styles
@@ -385,6 +411,17 @@ const ModalOverlay = styled.div`
   justify-content: center;
   z-index: 1000;
   padding: ${theme.spacing.lg};
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    padding: ${theme.spacing.md};
+    align-items: flex-start;
+    padding-top: ${theme.spacing.xl};
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.sm};
+    padding-top: ${theme.spacing.lg};
+  }
 `;
 
 const ModalContent = styled.div`
@@ -397,6 +434,19 @@ const ModalContent = styled.div`
   overflow-y: auto;
   box-shadow: ${theme.shadows.xl};
   position: relative;
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    max-width: 90vw;
+    max-height: 85vh;
+    padding: ${theme.spacing.lg};
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    max-width: 95vw;
+    max-height: 90vh;
+    padding: ${theme.spacing.md};
+    border-radius: ${theme.borderRadius.lg};
+  }
 `;
 
 const ModalHeader = styled.div`
