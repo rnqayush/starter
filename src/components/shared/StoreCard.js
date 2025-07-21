@@ -480,7 +480,7 @@ const StoreCard = ({ store, category }) => {
     );
   }
 
-  return <Card to={getStoreLink()}>{cardContent}</Card>;
+  return <Card to={`/${category}/${store.id}`}>{cardContent}</Card>;
 };
 
 export default StoreCard;
