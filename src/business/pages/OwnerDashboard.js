@@ -1106,9 +1106,9 @@ const OwnerDashboard = () => {
       case 'portfolio':
         return businessData.slug === 'freelancer' ? (
           <div>
-            <ContentHeader>
+                        <ContentHeader>
               <h2>Portfolio Manager</h2>
-              <Button variant="primary" primaryColor={businessData.primaryColor}>
+              <Button variant="primary" primaryColor={businessData.primaryColor} onClick={() => openModal('portfolio')}>
                 <FaPlus />
                 Add New Project
               </Button>
@@ -1117,13 +1117,7 @@ const OwnerDashboard = () => {
             <div style={{ marginBottom: theme.spacing.xl }}>
               <h3 style={{ marginBottom: theme.spacing.lg, color: theme.colors.gray900 }}>Portfolio Projects</h3>
 
-              {/* Sample portfolio items */}
-              {[
-                { title: 'E-commerce Platform', category: 'Web Development', tech: 'React, Node.js, MongoDB' },
-                { title: 'Brand Identity Design', category: 'Branding', tech: 'Illustrator, Photoshop, Figma' },
-                { title: 'Mobile App UI', category: 'UI/UX Design', tech: 'Figma, Principle, Sketch' },
-                { title: 'Corporate Website', category: 'Web Design', tech: 'HTML/CSS, JavaScript, GSAP' }
-              ].map((project, index) => (
+              {(currentData.portfolio || []).map((project, index) => (
                 <div key={index} style={{
                   background: theme.colors.white,
                   border: `1px solid ${theme.colors.gray200}`,
