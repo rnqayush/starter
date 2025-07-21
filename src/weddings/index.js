@@ -24,6 +24,7 @@ const WeddingModule = () => {
     <Routes>
       {/* Main wedding routes */}
       <Route path="/" element={
+        isVendorOwnerAccess ? <VendorDashboard /> :
         isVendorDashboardAccess ? <VendorDashboard /> :
         isVendorPortfolioAccess ? <VendorPortfolio /> :
         isDirectVendorAccess ? <VendorPage /> :
