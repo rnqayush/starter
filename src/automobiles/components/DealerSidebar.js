@@ -7,7 +7,6 @@ import {
   FaShoppingCart,
   FaEnvelope,
   FaChartLine,
-  FaStore,
   FaUsers,
   FaFileImport,
   FaCog,
