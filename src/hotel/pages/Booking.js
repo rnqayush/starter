@@ -243,12 +243,29 @@ const TextArea = styled.textarea`
     outline: none;
     border-color: ${theme.colors.primary};
   }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.lg};
+    font-size: 1.1rem;
+    border-radius: ${theme.borderRadius.lg};
+    border-width: 2px;
+    min-height: 120px;
+
+    &:focus {
+      border-width: 3px;
+    }
+  }
 `;
 
 const ErrorMessage = styled.span`
   color: ${theme.colors.error};
   font-size: 0.8rem;
   margin-top: ${theme.spacing.xs};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
 `;
 
 const SummaryHeader = styled.div`
@@ -268,6 +285,19 @@ const HotelInfo = styled.div`
   p {
     color: ${theme.colors.gray600};
     font-size: 0.9rem;
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    text-align: center;
+
+    h3 {
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+
+    p {
+      font-size: 1rem;
+    }
   }
 `;
 
@@ -290,6 +320,19 @@ const DetailRow = styled.div`
     font-weight: 600;
     color: ${theme.colors.gray900};
   }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    font-size: 1rem;
+    margin-bottom: ${theme.spacing.lg};
+
+    .label {
+      font-weight: 600;
+    }
+
+    .value {
+      font-weight: 700;
+    }
+  }
 `;
 
 const PriceBreakdown = styled.div`
@@ -309,11 +352,22 @@ const PriceRow = styled.div`
     padding-top: ${theme.spacing.md};
     margin-top: ${theme.spacing.md};
   }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    font-size: 1rem;
+    margin-bottom: ${theme.spacing.md};
+
+    &.total {
+      font-size: 1.3rem;
+      font-weight: 700;
+      padding-top: ${theme.spacing.lg};
+    }
+  }
 `;
 
 const BookButton = styled.button`
   width: 100%;
-  background: ${theme.colors.primary};
+  background: linear-gradient(135deg, ${theme.colors.primary}, ${theme.colors.primaryDark});
   color: ${theme.colors.white};
   padding: ${theme.spacing.lg};
   border: none;
@@ -321,22 +375,56 @@ const BookButton = styled.button`
   font-size: 1.1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   margin-top: ${theme.spacing.lg};
   display: flex;
   align-items: center;
   justify-content: center;
   gap: ${theme.spacing.sm};
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+  }
+
+  &:hover::before {
+    left: 100%;
+  }
 
   &:hover {
-    background: ${theme.colors.primaryDark};
     transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
   }
 
   &:disabled {
     background: ${theme.colors.gray400};
     cursor: not-allowed;
     transform: none;
+
+    &::before {
+      display: none;
+    }
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.xl};
+    font-size: 1.3rem;
+    font-weight: 700;
+    border-radius: ${theme.borderRadius.lg};
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+
+    &:hover {
+      transform: translateY(-1px);
+    }
   }
 `;
 
@@ -348,6 +436,12 @@ const SecurityNote = styled.div`
   font-size: 0.8rem;
   margin-top: ${theme.spacing.md};
   text-align: center;
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    font-size: 0.9rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
 `;
 
 const Booking = () => {
