@@ -1015,9 +1015,15 @@ const OwnerDashboard = () => {
                   <option value="UI/UX Design">UI/UX Design</option>
                   <option value="Branding">Branding</option>
                   <option value="Mobile App">Mobile App</option>
-                  <option value="Graphic Design">Graphic Design</option>
+                                    <option value="Graphic Design">Graphic Design</option>
                 </select>
               </FormField>
+              <ImageUpload
+                field="image"
+                label="Project Image"
+                currentImage={formData.image}
+                primaryColor={businessData.primaryColor}
+              />
               <FormField primaryColor={businessData.primaryColor}>
                 <label>Description</label>
                 <textarea
