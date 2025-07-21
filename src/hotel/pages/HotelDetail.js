@@ -257,6 +257,14 @@ const ContentSection = styled.section`
   &.alt {
     background: ${theme.colors.gray50};
   }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.xl} 0;
+
+    &:first-of-type {
+      padding-top: ${theme.spacing.xxl};
+    }
+  }
 `;
 
 const Container = styled.div`
@@ -265,13 +273,17 @@ const Container = styled.div`
   padding: 0 ${theme.spacing.xl};
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    padding: 0 ${theme.spacing.md};
+    padding: 0 ${theme.spacing.lg};
   }
 `;
 
 const SectionHeader = styled.div`
   text-align: center;
   margin-bottom: ${theme.spacing.xxl};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    margin-bottom: ${theme.spacing.xl};
+  }
 `;
 
 const SectionTitle = styled.h2`
@@ -281,7 +293,10 @@ const SectionTitle = styled.h2`
   margin-bottom: ${theme.spacing.md};
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    font-size: 2rem;
+    font-size: 2.2rem;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: ${theme.spacing.lg};
   }
 `;
 
@@ -290,6 +305,14 @@ const SectionSubtitle = styled.p`
   color: ${theme.colors.gray600};
   max-width: 600px;
   margin: 0 auto;
+  line-height: 1.6;
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    font-size: 1.15rem;
+    line-height: 1.7;
+    max-width: 100%;
+    padding: 0 ${theme.spacing.sm};
+  }
 `;
 
 const Description = styled.p`
@@ -297,6 +320,13 @@ const Description = styled.p`
   line-height: 1.7;
   color: ${theme.colors.gray700};
   margin-bottom: ${theme.spacing.lg};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    font-size: 1.15rem;
+    line-height: 1.8;
+    text-align: left;
+    padding: 0 ${theme.spacing.sm};
+  }
 `;
 
 const FeaturesGrid = styled.div`
@@ -342,6 +372,11 @@ const FeatureIcon = styled.div`
   font-size: 3rem;
   color: ${theme.colors.primary};
   margin-bottom: ${theme.spacing.lg};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    font-size: 3.5rem;
+    margin-bottom: ${theme.spacing.xl};
+  }
 `;
 
 const FeatureTitle = styled.h3`
@@ -349,11 +384,22 @@ const FeatureTitle = styled.h3`
   font-weight: 600;
   color: ${theme.colors.gray900};
   margin-bottom: ${theme.spacing.md};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: ${theme.spacing.lg};
+  }
 `;
 
 const FeatureDescription = styled.p`
   color: ${theme.colors.gray600};
   line-height: 1.6;
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    font-size: 1.1rem;
+    line-height: 1.7;
+  }
 `;
 
 const AmenitiesSection = styled.div`
@@ -587,6 +633,10 @@ const LocationGrid = styled.div`
     grid-template-columns: 1fr;
     gap: ${theme.spacing.xl};
   }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    gap: ${theme.spacing.xxl};
+  }
 `;
 
 const ContactInfo = styled.div`
@@ -624,6 +674,26 @@ const ContactItem = styled.div`
     .value {
       font-weight: 500;
       color: ${theme.colors.gray900};
+    }
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.lg} 0;
+
+    .icon {
+      font-size: 1.3rem;
+      width: 24px;
+    }
+
+    .content {
+      .label {
+        font-size: 1rem;
+        margin-bottom: 4px;
+      }
+      .value {
+        font-size: 1.1rem;
+        font-weight: 600;
+      }
     }
   }
 `;
