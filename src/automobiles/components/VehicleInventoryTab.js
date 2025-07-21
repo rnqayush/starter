@@ -3,15 +3,12 @@ import styled from "styled-components";
 import {
   FaCar,
   FaSearch,
-  FaFilter,
   FaPlus,
   FaEdit,
   FaTrash,
   FaEye,
   FaSortAmountUp,
   FaSortAmountDown,
-  FaCheck,
-  FaTimes,
 } from "react-icons/fa";
 import { theme } from "../../styles/GlobalStyle";
 import { vehicles, getAvailabilityStatus, getAvailabilityLabel, getAvailabilityColor } from "../data/vehicles";
