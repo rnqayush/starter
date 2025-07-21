@@ -367,7 +367,6 @@ const RoomsBooking = () => {
 
   const handleSearch = () => {
     // Here you could implement availability checking
-    console.log("Searching with params:", searchParams);
   };
 
   const clearFilters = () => {
