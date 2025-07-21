@@ -429,6 +429,307 @@ const TestimonialsGrid = styled.div`
   gap: ${theme.spacing.xl};
 `;
 
+// Gallery Section Styles
+const GalleryGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: ${theme.spacing.lg};
+`;
+
+const GalleryCategory = styled.div`
+  background: ${theme.colors.white};
+  border-radius: ${theme.borderRadius.xl};
+  overflow: hidden;
+  box-shadow: ${theme.shadows.md};
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: ${theme.shadows.lg};
+  }
+`;
+
+const GalleryImage = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'primaryColor',
+})`
+  height: 200px;
+  background: linear-gradient(135deg, ${props => props.primaryColor + '20'} 0%, ${props => props.primaryColor + '40'} 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  color: ${props => props.primaryColor || theme.colors.primary};
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  ${GalleryCategory}:hover &::after {
+    opacity: 1;
+  }
+`;
+
+const GalleryInfo = styled.div`
+  padding: ${theme.spacing.lg};
+  text-align: center;
+
+  h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: ${theme.colors.gray900};
+    margin-bottom: ${theme.spacing.sm};
+  }
+
+  p {
+    color: ${theme.colors.gray600};
+    font-size: 0.9rem;
+  }
+`;
+
+// Packages Section Styles
+const PackagesGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: ${theme.spacing.xl};
+`;
+
+const PackageCard = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'primaryColor' && prop !== 'featured',
+})`
+  background: ${theme.colors.white};
+  padding: ${theme.spacing.xl};
+  border-radius: ${theme.borderRadius.xl};
+  box-shadow: ${theme.shadows.md};
+  text-align: center;
+  position: relative;
+  transition: all 0.3s ease;
+  border: 2px solid ${props => props.featured ? (props.primaryColor || theme.colors.primary) : theme.colors.gray200};
+
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: ${theme.shadows.xl};
+  }
+
+  ${props => props.featured && `
+    &::before {
+      content: 'Most Popular';
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: ${props.primaryColor || theme.colors.primary};
+      color: white;
+      padding: 4px 16px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+  `}
+
+  .package-name {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: ${theme.colors.gray900};
+    margin-bottom: ${theme.spacing.md};
+  }
+
+  .package-price {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: ${props => props.primaryColor || theme.colors.primary};
+    margin-bottom: ${theme.spacing.sm};
+  }
+
+  .package-duration {
+    color: ${theme.colors.gray600};
+    margin-bottom: ${theme.spacing.lg};
+  }
+
+  .package-description {
+    color: ${theme.colors.gray700};
+    line-height: 1.6;
+    margin-bottom: ${theme.spacing.lg};
+  }
+
+  .package-button {
+    width: 100%;
+    background: ${props => props.primaryColor || theme.colors.primary};
+    color: white;
+    padding: ${theme.spacing.md} ${theme.spacing.lg};
+    border: none;
+    border-radius: ${theme.borderRadius.md};
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+  }
+`;
+
+// FAQ Section Styles
+const FAQContainer = styled.div`
+  max-width: 800px;
+  margin: 0 auto;
+`;
+
+const FAQItem = styled.div`
+  background: ${theme.colors.white};
+  border-radius: ${theme.borderRadius.lg};
+  margin-bottom: ${theme.spacing.md};
+  box-shadow: ${theme.shadows.sm};
+  overflow: hidden;
+  border: 1px solid ${theme.colors.gray200};
+`;
+
+const FAQQuestion = styled.button.withConfig({
+  shouldForwardProp: (prop) => prop !== 'primaryColor',
+})`
+  width: 100%;
+  padding: ${theme.spacing.lg};
+  background: none;
+  border: none;
+  text-align: left;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: ${theme.colors.gray900};
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  &:hover {
+    background: ${theme.colors.gray50};
+    color: ${props => props.primaryColor || theme.colors.primary};
+  }
+`;
+
+const FAQAnswer = styled.div`
+  padding: 0 ${theme.spacing.lg} ${theme.spacing.lg};
+  color: ${theme.colors.gray700};
+  line-height: 1.6;
+  border-top: 1px solid ${theme.colors.gray200};
+`;
+
+// Reviews Section Styles
+const ReviewsGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: ${theme.spacing.lg};
+`;
+
+const ReviewCard = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'primaryColor',
+})`
+  background: ${theme.colors.white};
+  padding: ${theme.spacing.lg};
+  border-radius: ${theme.borderRadius.lg};
+  box-shadow: ${theme.shadows.md};
+  position: relative;
+
+  .review-header {
+    display: flex;
+    align-items: center;
+    gap: ${theme.spacing.md};
+    margin-bottom: ${theme.spacing.md};
+
+    .avatar {
+      width: 50px;
+      height: 50px;
+      background: ${props => props.primaryColor + '20' || theme.colors.gray200};
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      color: ${props => props.primaryColor || theme.colors.primary};
+    }
+
+    .review-info h4 {
+      font-weight: 600;
+      color: ${theme.colors.gray900};
+      margin-bottom: 2px;
+    }
+
+    .review-info .date {
+      font-size: 0.8rem;
+      color: ${theme.colors.gray500};
+    }
+  }
+
+  .review-rating {
+    display: flex;
+    gap: 2px;
+    margin-bottom: ${theme.spacing.sm};
+    color: #fbbf24;
+  }
+
+  .review-text {
+    color: ${theme.colors.gray700};
+    line-height: 1.6;
+    font-style: italic;
+  }
+`;
+
+// Hours Section Styles
+const HoursGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: ${theme.spacing.lg};
+  margin-top: ${theme.spacing.xl};
+`;
+
+const HoursCard = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'primaryColor',
+})`
+  background: ${theme.colors.white};
+  padding: ${theme.spacing.lg};
+  border-radius: ${theme.borderRadius.lg};
+  box-shadow: ${theme.shadows.sm};
+  text-align: center;
+
+  h4 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: ${props => props.primaryColor || theme.colors.primary};
+    margin-bottom: ${theme.spacing.md};
+  }
+
+  .hours-list {
+    display: flex;
+    flex-direction: column;
+    gap: ${theme.spacing.sm};
+
+    .hours-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: ${theme.spacing.sm};
+      background: ${theme.colors.gray50};
+      border-radius: ${theme.borderRadius.sm};
+
+      .day {
+        font-weight: 500;
+        color: ${theme.colors.gray900};
+      }
+
+      .time {
+        color: ${theme.colors.gray600};
+        font-size: 0.9rem;
+      }
+    }
+  }
+`;
+
 const TestimonialCard = styled.div.withConfig({
   shouldForwardProp: (prop) => prop !== 'primaryColor',
 })`
