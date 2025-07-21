@@ -482,6 +482,7 @@ const StartBuilding = () => {
     websiteType: "",
     websiteName: "",
     logo: null,
+    fullPageImage: null,
     tagline: "",
     themeColor: "#10b981"
   });
