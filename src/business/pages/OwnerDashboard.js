@@ -930,9 +930,15 @@ const OwnerDashboard = () => {
                   type="text"
                   value={formData.title || ''}
                   onChange={(e) => handleInputChange('title', e.target.value)}
-                  placeholder="Enter section title"
+                                    placeholder="Enter section title"
                 />
               </FormField>
+              <ImageUpload
+                field="profileImage"
+                label={businessData.slug === 'freelancer' ? 'Profile Photo' : 'Business Image'}
+                currentImage={formData.profileImage}
+                primaryColor={businessData.primaryColor}
+              />
               <FormField primaryColor={businessData.primaryColor}>
                 <label>Description</label>
                 <textarea
