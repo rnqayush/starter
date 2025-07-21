@@ -1620,7 +1620,7 @@ const OwnerDashboard = () => {
                 </div>
               </SectionItem>
 
-              {businessData.slug !== 'freelancer' && (
+                            {businessData.slug !== 'freelancer' && (
                 <SectionItem>
                   <div className="section-info">
                     <h4>Gallery Section</h4>
@@ -1628,6 +1628,19 @@ const OwnerDashboard = () => {
                     <div style={{ fontSize: '0.8rem', color: theme.colors.gray500, marginTop: '4px' }}>
                       {currentData.gallery?.length || 0} galleries configured
                     </div>
+                    <VisibilityToggle
+                      primaryColor={businessData.primaryColor}
+                      isVisible={currentData.sectionVisibility?.gallery}
+                      style={{ marginTop: theme.spacing.sm }}
+                    >
+                      <div
+                        className="toggle-switch"
+                        onClick={() => toggleSectionVisibility('gallery')}
+                      />
+                      <span className="toggle-label">
+                        {currentData.sectionVisibility?.gallery ? 'Visible' : 'Hidden'}
+                      </span>
+                    </VisibilityToggle>
                   </div>
                   <div className="section-actions">
                     <Button onClick={() => openModal('gallery')}>
