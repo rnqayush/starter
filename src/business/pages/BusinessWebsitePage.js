@@ -1427,13 +1427,16 @@ const BusinessWebsitePage = () => {
           <Logo primaryColor={businessData.primaryColor}>
             {businessData.name}
           </Logo>
-                    <NavLinks primaryColor={businessData.primaryColor}>
+                              <NavLinks primaryColor={businessData.primaryColor}>
             <a href="#home">Home</a>
             <a href="#about">About</a>
+            {businessData.slug === 'freelancer' && <a href="#portfolio">Portfolio</a>}
+            {businessData.slug === 'freelancer' && <a href="#skills">Skills</a>}
             <a href="#services">Services</a>
-            <a href="#team">Team</a>
-            <a href="#gallery">Gallery</a>
-            <a href="#packages">Packages</a>
+            {businessData.slug !== 'freelancer' && <a href="#team">Team</a>}
+            {businessData.slug === 'freelancer' && <a href="#experience">Experience</a>}
+            {businessData.slug !== 'freelancer' && <a href="#gallery">Gallery</a>}
+            {businessData.slug !== 'freelancer' && <a href="#packages">Packages</a>}
             <a href="#contact">Contact</a>
           </NavLinks>
           <OwnerLink onClick={handleOwnerClick}>
