@@ -416,7 +416,212 @@ const OwnerDashboard = () => {
               </SectionItem>
             </SectionList>
           </div>
-        );
+                );
+
+      case 'portfolio':
+        return businessData.slug === 'freelancer' ? (
+          <div>
+            <ContentHeader>
+              <h2>Portfolio Manager</h2>
+              <Button variant="primary" primaryColor={businessData.primaryColor}>
+                <FaPlus />
+                Add New Project
+              </Button>
+            </ContentHeader>
+
+            <div style={{ marginBottom: theme.spacing.xl }}>
+              <h3 style={{ marginBottom: theme.spacing.lg, color: theme.colors.gray900 }}>Portfolio Projects</h3>
+
+              {/* Sample portfolio items */}
+              {[
+                { title: 'E-commerce Platform', category: 'Web Development', tech: 'React, Node.js, MongoDB' },
+                { title: 'Brand Identity Design', category: 'Branding', tech: 'Illustrator, Photoshop, Figma' },
+                { title: 'Mobile App UI', category: 'UI/UX Design', tech: 'Figma, Principle, Sketch' },
+                { title: 'Corporate Website', category: 'Web Design', tech: 'HTML/CSS, JavaScript, GSAP' }
+              ].map((project, index) => (
+                <div key={index} style={{
+                  background: theme.colors.white,
+                  border: `1px solid ${theme.colors.gray200}`,
+                  borderRadius: theme.borderRadius.lg,
+                  padding: theme.spacing.lg,
+                  marginBottom: theme.spacing.md
+                }}>
+                  <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    marginBottom: theme.spacing.md
+                  }}>
+                    <h4 style={{ fontWeight: 600, color: theme.colors.gray900 }}>{project.title}</h4>
+                    <div style={{ display: 'flex', gap: theme.spacing.sm }}>
+                      <Button>
+                        <FaEdit />
+                        Edit
+                      </Button>
+                      <Button>
+                        <FaTrash />
+                        Delete
+                      </Button>
+                    </div>
+                  </div>
+                  <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+                    gap: theme.spacing.md
+                  }}>
+                    <div>
+                      <label style={{
+                        display: 'block',
+                        fontSize: '0.8rem',
+                        fontWeight: 600,
+                        color: theme.colors.gray700,
+                        marginBottom: theme.spacing.xs,
+                        textTransform: 'uppercase'
+                      }}>Category</label>
+                      <div style={{ color: theme.colors.gray900, fontWeight: 500 }}>{project.category}</div>
+                    </div>
+                    <div>
+                      <label style={{
+                        display: 'block',
+                        fontSize: '0.8rem',
+                        fontWeight: 600,
+                        color: theme.colors.gray700,
+                        marginBottom: theme.spacing.xs,
+                        textTransform: 'uppercase'
+                      }}>Technologies</label>
+                      <div style={{ color: theme.colors.gray900, fontWeight: 500 }}>{project.tech}</div>
+                    </div>
+                    <div>
+                      <label style={{
+                        display: 'block',
+                        fontSize: '0.8rem',
+                        fontWeight: 600,
+                        color: theme.colors.gray700,
+                        marginBottom: theme.spacing.xs,
+                        textTransform: 'uppercase'
+                      }}>Status</label>
+                      <div style={{ color: theme.colors.gray900, fontWeight: 500 }}>Published</div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : null;
+
+      case 'skills':
+        return businessData.slug === 'freelancer' ? (
+          <div>
+            <ContentHeader>
+              <h2>Skills & Experience</h2>
+              <Button variant="primary" primaryColor={businessData.primaryColor}>
+                <FaPlus />
+                Add New Skill
+              </Button>
+            </ContentHeader>
+
+            <div style={{ marginBottom: theme.spacing.xl }}>
+              <h3 style={{ marginBottom: theme.spacing.lg, color: theme.colors.gray900 }}>Technical Skills</h3>
+
+              {[
+                { name: 'Web Design', level: 95, icon: '🎨' },
+                { name: 'UI/UX Design', level: 90, icon: '📱' },
+                { name: 'Frontend Development', level: 88, icon: '💻' },
+                { name: 'Graphic Design', level: 92, icon: '🖼️' }
+              ].map((skill, index) => (
+                <div key={index} style={{
+                  background: theme.colors.white,
+                  border: `1px solid ${theme.colors.gray200}`,
+                  borderRadius: theme.borderRadius.lg,
+                  padding: theme.spacing.lg,
+                  marginBottom: theme.spacing.md
+                }}>
+                  <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    marginBottom: theme.spacing.md
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: theme.spacing.md }}>
+                      <div style={{ fontSize: '1.5rem' }}>{skill.icon}</div>
+                      <h4 style={{ fontWeight: 600, color: theme.colors.gray900, margin: 0 }}>{skill.name}</h4>
+                    </div>
+                    <div style={{ display: 'flex', gap: theme.spacing.sm }}>
+                      <Button>
+                        <FaEdit />
+                        Edit
+                      </Button>
+                      <Button>
+                        <FaTrash />
+                        Delete
+                      </Button>
+                    </div>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: theme.spacing.md }}>
+                    <div style={{
+                      flex: 1,
+                      height: '8px',
+                      background: theme.colors.gray200,
+                      borderRadius: '4px',
+                      overflow: 'hidden',
+                      position: 'relative'
+                    }}>
+                      <div style={{
+                        height: '100%',
+                        background: businessData.primaryColor,
+                        width: `${skill.level}%`,
+                        transition: 'width 0.3s ease'
+                      }}></div>
+                    </div>
+                    <div style={{
+                      fontWeight: 600,
+                      color: businessData.primaryColor,
+                      minWidth: '40px'
+                    }}>{skill.level}%</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div>
+              <h3 style={{ marginBottom: theme.spacing.lg, color: theme.colors.gray900 }}>Professional Experience</h3>
+
+              <SectionList>
+                {[
+                  { company: 'Digital Agency Inc.', role: 'Senior Creative Designer', period: '2020 - Present' },
+                  { company: 'Freelance', role: 'Independent Designer & Developer', period: '2018 - Present' },
+                  { company: 'Tech Startup Co.', role: 'UI/UX Designer', period: '2018 - 2020' }
+                ].map((exp, index) => (
+                  <SectionItem key={index}>
+                    <div className="section-info">
+                      <h4>{exp.role}</h4>
+                      <p>{exp.company} • {exp.period}</p>
+                    </div>
+                    <div className="section-actions">
+                      <Button>
+                        <FaEdit />
+                        Edit
+                      </Button>
+                      <Button>
+                        <FaTrash />
+                        Delete
+                      </Button>
+                    </div>
+                  </SectionItem>
+                ))}
+              </SectionList>
+
+              <Button
+                variant="primary"
+                primaryColor={businessData.primaryColor}
+                style={{ marginTop: theme.spacing.lg }}
+              >
+                <FaPlus />
+                Add Experience
+              </Button>
+            </div>
+          </div>
+        ) : null;
 
       case 'design':
         return (
