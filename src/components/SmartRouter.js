@@ -38,6 +38,12 @@ const SmartRouter = () => {
     return <WeddingModule />;
   }
 
+  // Check if this slug belongs to a business template
+  const businessTemplate = getBusinessTemplate(slug);
+  if (businessTemplate) {
+    return <BusinessModule />;
+  }
+
   // If no match found, show 404 or default behavior
   return (
     <div style={{ padding: "4rem", textAlign: "center" }}>
