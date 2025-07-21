@@ -1026,41 +1026,50 @@ const OwnerDashboard = () => {
             </ContentHeader>
 
             <SectionList>
-              <SectionItem>
+                            <SectionItem>
                 <div className="section-info">
                   <h4>Hero Section</h4>
                   <p>Main headline, subtitle, and call-to-action buttons</p>
+                  <div style={{ fontSize: '0.8rem', color: theme.colors.gray500, marginTop: '4px' }}>
+                    Current: "{currentData.hero?.title}"
+                  </div>
                 </div>
                 <div className="section-actions">
-                  <Button>
+                  <Button onClick={() => openModal('hero', currentData.hero)}>
                     <FaEdit />
                     Edit
                   </Button>
                 </div>
               </SectionItem>
 
-              <SectionItem>
+                            <SectionItem>
                 <div className="section-info">
                   <h4>About Section</h4>
-                  <p>Business story, values, and statistics</p>
+                  <p>{businessData.slug === 'freelancer' ? 'Personal story, background, and professional journey' : 'Business story, values, and statistics'}</p>
+                  <div style={{ fontSize: '0.8rem', color: theme.colors.gray500, marginTop: '4px' }}>
+                    Current: "{currentData.about?.title}"
+                  </div>
                 </div>
                 <div className="section-actions">
-                  <Button>
+                  <Button onClick={() => openModal('about', currentData.about)}>
                     <FaEdit />
                     Edit
                   </Button>
                 </div>
               </SectionItem>
 
-              <SectionItem>
+                            <SectionItem>
                 <div className="section-info">
                   <h4>Services Section</h4>
-                  <p>List of services, pricing, and descriptions</p>
+                  <p>{businessData.slug === 'freelancer' ? 'Professional services offered to clients' : 'List of services, pricing, and descriptions'}</p>
+                  <div style={{ fontSize: '0.8rem', color: theme.colors.gray500, marginTop: '4px' }}>
+                    {currentData.services?.length || 0} services configured
+                  </div>
                 </div>
                 <div className="section-actions">
-                  <Button>
-                    <FaEdit />
-                    Edit
+                  <Button onClick={() => openModal('services')}>
+                    <FaPlus />
+                    Add Service
                   </Button>
                 </div>
               </SectionItem>
