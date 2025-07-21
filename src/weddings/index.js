@@ -18,6 +18,7 @@ const WeddingModule = () => {
   const isDirectVendorAccess = pathSegments.length === 1 && pathSegments[0] !== "weddings";
   const isVendorPortfolioAccess = pathSegments.length === 2 && pathSegments[1] === "portfolio";
   const isVendorDashboardAccess = pathSegments.length === 2 && pathSegments[1] === "dashboard";
+  const isVendorOwnerAccess = pathSegments.length === 2 && pathSegments[1] === "owner";
 
   return (
     <Routes>
