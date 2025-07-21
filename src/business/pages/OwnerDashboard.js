@@ -1475,13 +1475,26 @@ const OwnerDashboard = () => {
             </ContentHeader>
 
             <SectionList>
-                            <SectionItem>
+                                                        <SectionItem>
                 <div className="section-info">
                   <h4>Hero Section</h4>
                   <p>Main headline, subtitle, and call-to-action buttons</p>
                   <div style={{ fontSize: '0.8rem', color: theme.colors.gray500, marginTop: '4px' }}>
                     Current: "{currentData.hero?.title}"
                   </div>
+                  <VisibilityToggle
+                    primaryColor={businessData.primaryColor}
+                    isVisible={currentData.sectionVisibility?.hero}
+                    style={{ marginTop: theme.spacing.sm }}
+                  >
+                    <div
+                      className="toggle-switch"
+                      onClick={() => toggleSectionVisibility('hero')}
+                    />
+                    <span className="toggle-label">
+                      {currentData.sectionVisibility?.hero ? 'Visible' : 'Hidden'}
+                    </span>
+                  </VisibilityToggle>
                 </div>
                 <div className="section-actions">
                   <Button onClick={() => openModal('hero', currentData.hero)}>
