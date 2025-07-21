@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { FaHotel, FaBed, FaCalendarCheck, FaEye, FaPlus } from "react-icons/fa";
+import { FaHotel, FaBed, FaCalendarCheck, FaEye, FaPlus, FaEdit, FaCog } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import { Card, CardContent, Badge } from "../shared/Card";
@@ -280,6 +280,12 @@ const OwnerDashboard = () => {
       description: "Register a new hotel property with rooms and amenities",
       icon: FaHotel,
       link: "/owner/add-hotel",
+    },
+    {
+      title: "Manage Hotel Content",
+      description: "Edit hotel information, gallery, amenities and website content",
+      icon: FaEdit,
+      link: "/owner/content-manager",
     },
     {
       title: "Add Rooms",
