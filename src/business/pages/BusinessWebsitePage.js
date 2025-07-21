@@ -1359,6 +1359,7 @@ const BusinessWebsitePage = () => {
   const { businessSlug } = useParams();
   const navigate = useNavigate();
   const [businessData, setBusinessData] = useState(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const template = getBusinessTemplate(businessSlug);
@@ -1382,8 +1383,16 @@ const BusinessWebsitePage = () => {
     navigate("/business-websites");
   };
 
-  const handleOwnerClick = () => {
+    const handleOwnerClick = () => {
     navigate(`/business/${businessData.slug}/owner`);
+  };
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false);
   };
 
   // Sample data based on business type
