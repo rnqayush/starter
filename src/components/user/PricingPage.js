@@ -12,9 +12,7 @@ import {
   FaChartLine,
   FaUsers,
   FaArrowRight,
-  FaBolt,
   FaAward,
-  FaQuestionCircle,
   FaPlus,
   FaMinus,
 } from "react-icons/fa";
