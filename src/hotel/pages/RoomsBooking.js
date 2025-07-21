@@ -324,10 +324,42 @@ const SearchButton = styled.button`
   gap: ${theme.spacing.sm};
   min-height: 50px;
   box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+  }
+
+  &:hover::before {
+    left: 100%;
+  }
 
   &:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.lg} ${theme.spacing.xl};
+    font-size: 1.1rem;
+    font-weight: 700;
+    border-radius: ${theme.borderRadius.lg};
+    min-height: 56px;
+    width: 100%;
+    justify-content: center;
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+
+    &:hover {
+      transform: translateY(-1px);
+    }
   }
 `;
 
@@ -343,8 +375,11 @@ const ResultsHeader = styled.div`
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     flex-direction: column;
-    gap: ${theme.spacing.md};
+    gap: ${theme.spacing.lg};
     align-items: stretch;
+    padding: ${theme.spacing.xl};
+    margin: 0 -${theme.spacing.xs} ${theme.spacing.lg};
+    border-radius: ${theme.borderRadius.lg};
   }
 `;
 
@@ -357,6 +392,12 @@ const ResultsCount = styled.h2`
   .count {
     color: ${theme.colors.primary};
   }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    font-size: 1.7rem;
+    font-weight: 700;
+    text-align: center;
+  }
 `;
 
 const SortControls = styled.div`
@@ -365,13 +406,20 @@ const SortControls = styled.div`
   gap: ${theme.spacing.md};
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    justify-content: space-between;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: ${theme.spacing.lg};
   }
 `;
 
 const SortLabel = styled.span`
   color: ${theme.colors.gray600};
   font-weight: 500;
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
 `;
 
 const RoomsGrid = styled.div`
@@ -382,7 +430,8 @@ const RoomsGrid = styled.div`
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     grid-template-columns: 1fr;
-    gap: ${theme.spacing.lg};
+    gap: ${theme.spacing.xl};
+    padding: 0 ${theme.spacing.xs};
   }
 `;
 
@@ -397,6 +446,16 @@ const NoRoomsMessage = styled.div`
     font-size: 1.5rem;
     color: ${theme.colors.gray900};
     margin-bottom: ${theme.spacing.md};
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.xl};
+    margin: 0 ${theme.spacing.xs};
+
+    h3 {
+      font-size: 1.7rem;
+      font-weight: 700;
+    }
   }
 
   p {
