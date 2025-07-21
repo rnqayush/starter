@@ -572,8 +572,9 @@ const StartBuilding = () => {
       case 2:
         return (
           <FormSection>
-            <Title>Choose your website name</Title>
-            <Subtitle>This will be your website's URL address</Subtitle>
+            <Title>Set up your website details</Title>
+            <Subtitle>Choose your website name and upload your branding assets</Subtitle>
+
             <FormGroup>
               <Label>Website Name (URL slug)</Label>
               <Input
@@ -590,19 +591,12 @@ const StartBuilding = () => {
                 </PreviewBox>
               )}
             </FormGroup>
-          </FormSection>
-        );
 
-      case 3:
-        return (
-          <FormSection>
-            <Title>Additional info for professional website</Title>
-            <Subtitle>Customize your professional website with branding options</Subtitle>
-            
             <FormGroup>
               <Label>Logo Upload (Optional)</Label>
-              <FileUpload>
+              <FileUpload onClick={() => document.getElementById('logo-upload').click()}>
                 <input
+                  id="logo-upload"
                   type="file"
                   accept="image/*"
                   onChange={(e) => setFormData({ ...formData, logo: e.target.files[0] })}
@@ -615,7 +609,23 @@ const StartBuilding = () => {
             </FormGroup>
 
             <FormGroup>
-              <Label>Business Tagline</Label>
+              <Label>Full Page Image (Optional)</Label>
+              <FileUpload onClick={() => document.getElementById('hero-upload').click()}>
+                <input
+                  id="hero-upload"
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => setFormData({ ...formData, fullPageImage: e.target.files[0] })}
+                />
+                <FaUpload size={32} color="#6b7280" />
+                <p style={{ margin: "8px 0 0", color: "#6b7280" }}>
+                  {formData.fullPageImage ? formData.fullPageImage.name : "Click to upload a hero/banner image"}
+                </p>
+              </FileUpload>
+            </FormGroup>
+
+            <FormGroup>
+              <Label>Business Tagline (Optional)</Label>
               <Input
                 type="text"
                 placeholder="Your business tagline"
@@ -637,6 +647,52 @@ const StartBuilding = () => {
                 ))}
               </ColorPicker>
             </FormGroup>
+          </FormSection>
+        );
+
+      case 3:
+        return (
+          <FormSection>
+            <Title>Ready to publish!</Title>
+            <Subtitle>Review your website configuration and publish your site</Subtitle>
+
+            <Summary>
+              <SummaryItem>
+                <SummaryLabel>Website Type:</SummaryLabel>
+                <SummaryValue>{websiteTypes.find(t => t.id === formData.websiteType)?.title}</SummaryValue>
+              </SummaryItem>
+              <SummaryItem>
+                <SummaryLabel>Website URL:</SummaryLabel>
+                <SummaryValue>storebuilder.com/{formData.websiteName}</SummaryValue>
+              </SummaryItem>
+              {formData.logo && (
+                <SummaryItem>
+                  <SummaryLabel>Logo:</SummaryLabel>
+                  <SummaryValue>✓ {formData.logo.name}</SummaryValue>
+                </SummaryItem>
+              )}
+              {formData.fullPageImage && (
+                <SummaryItem>
+                  <SummaryLabel>Hero Image:</SummaryLabel>
+                  <SummaryValue>✓ {formData.fullPageImage.name}</SummaryValue>
+                </SummaryItem>
+              )}
+              {formData.tagline && (
+                <SummaryItem>
+                  <SummaryLabel>Tagline:</SummaryLabel>
+                  <SummaryValue>"{formData.tagline}"</SummaryValue>
+                </SummaryItem>
+              )}
+              <SummaryItem>
+                <SummaryLabel>Theme Color:</SummaryLabel>
+                <SummaryValue>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <div style={{ width: '20px', height: '20px', background: formData.themeColor, borderRadius: '4px' }}></div>
+                    {formData.themeColor}
+                  </div>
+                </SummaryValue>
+              </SummaryItem>
+            </Summary>
           </FormSection>
         );
 
