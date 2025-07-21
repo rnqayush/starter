@@ -1191,9 +1191,9 @@ const OwnerDashboard = () => {
       case 'skills':
         return businessData.slug === 'freelancer' ? (
           <div>
-            <ContentHeader>
+                        <ContentHeader>
               <h2>Skills & Experience</h2>
-              <Button variant="primary" primaryColor={businessData.primaryColor}>
+              <Button variant="primary" primaryColor={businessData.primaryColor} onClick={() => openModal('skills')}>
                 <FaPlus />
                 Add New Skill
               </Button>
@@ -1202,12 +1202,7 @@ const OwnerDashboard = () => {
             <div style={{ marginBottom: theme.spacing.xl }}>
               <h3 style={{ marginBottom: theme.spacing.lg, color: theme.colors.gray900 }}>Technical Skills</h3>
 
-              {[
-                { name: 'Web Design', level: 95, icon: '🎨' },
-                { name: 'UI/UX Design', level: 90, icon: '📱' },
-                { name: 'Frontend Development', level: 88, icon: '💻' },
-                { name: 'Graphic Design', level: 92, icon: '🖼️' }
-              ].map((skill, index) => (
+              {(currentData.skills || []).map((skill, index) => (
                 <div key={index} style={{
                   background: theme.colors.white,
                   border: `1px solid ${theme.colors.gray200}`,
