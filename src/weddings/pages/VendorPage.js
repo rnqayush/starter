@@ -76,7 +76,7 @@ const HeroSection = styled.section`
   background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4));
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    height: 70vh;
+    height: 100vh;
   }
 `;
 
