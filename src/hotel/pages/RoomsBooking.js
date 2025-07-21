@@ -5,7 +5,7 @@ import {
   FaArrowLeft,
 
   FaFilter,
-  FaSortAmountDown,
+
   FaMapMarkerAlt,
   FaStar,
   FaSearch,
