@@ -25,6 +25,10 @@ const Container = styled.div`
   margin: 0 auto;
   padding: ${theme.spacing.xl} ${theme.spacing.md};
   flex: 1;
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.lg} ${theme.spacing.sm};
+  }
 `;
 
 const BackButton = styled.button`
@@ -38,9 +42,17 @@ const BackButton = styled.button`
   margin-bottom: ${theme.spacing.xl};
   cursor: pointer;
   transition: all 0.2s ease;
+  font-size: 1rem;
 
   &:hover {
     transform: translateX(-4px);
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: ${theme.spacing.lg};
+    padding: ${theme.spacing.sm} 0;
   }
 `;
 
@@ -50,6 +62,12 @@ const PageTitle = styled.h1`
   color: ${theme.colors.gray900};
   margin-bottom: ${theme.spacing.xl};
   text-align: center;
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    font-size: 2.2rem;
+    margin-bottom: ${theme.spacing.lg};
+    line-height: 1.3;
+  }
 `;
 
 const BookingGrid = styled.div`
@@ -61,6 +79,10 @@ const BookingGrid = styled.div`
     grid-template-columns: 1fr;
     gap: ${theme.spacing.xl};
   }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    gap: ${theme.spacing.lg};
+  }
 `;
 
 const BookingForm = styled.form`
@@ -68,6 +90,13 @@ const BookingForm = styled.form`
   padding: ${theme.spacing.xxl};
   border-radius: ${theme.borderRadius.lg};
   box-shadow: ${theme.shadows.md};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.xl};
+    margin: 0 -${theme.spacing.xs};
+    border-radius: ${theme.borderRadius.lg};
+    box-shadow: ${theme.shadows.lg};
+  }
 `;
 
 const BookingSummary = styled.div`
@@ -78,6 +107,15 @@ const BookingSummary = styled.div`
   height: fit-content;
   position: sticky;
   top: ${theme.spacing.xl};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    position: static;
+    padding: ${theme.spacing.xl};
+    margin: 0 -${theme.spacing.xs};
+    order: -1;
+    border-radius: ${theme.borderRadius.lg};
+    box-shadow: ${theme.shadows.lg};
+  }
 `;
 
 const Section = styled.div`
@@ -85,6 +123,10 @@ const Section = styled.div`
 
   &:last-child {
     margin-bottom: 0;
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    margin-bottom: ${theme.spacing.xl};
   }
 `;
 
@@ -96,12 +138,23 @@ const SectionTitle = styled.h2`
   display: flex;
   align-items: center;
   gap: ${theme.spacing.sm};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    font-size: 1.7rem;
+    font-weight: 700;
+    margin-bottom: ${theme.spacing.xl};
+  }
 `;
 
 const FormGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: ${theme.spacing.lg};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    grid-template-columns: 1fr;
+    gap: ${theme.spacing.xl};
+  }
 `;
 
 const FormGroup = styled.div`
