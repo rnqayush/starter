@@ -218,6 +218,18 @@ const CTADescription = styled.p`
   margin-right: auto;
 `;
 
+const DemoButtonsContainer = styled.div`
+  display: flex;
+  gap: ${theme.spacing.lg};
+  justify-content: center;
+  flex-wrap: wrap;
+
+  ${media.mobile} {
+    flex-direction: column;
+    gap: ${theme.spacing.md};
+  }
+`;
+
 const DemoButton = styled(Button)`
   background: ${(props) => props.gradient || theme.colors.primary};
   color: ${theme.colors.white};
@@ -230,6 +242,8 @@ const DemoButton = styled(Button)`
   align-items: center;
   gap: ${theme.spacing.sm};
   transition: all 0.3s ease;
+  min-width: 200px;
+  justify-content: center;
 
   &:hover {
     transform: translateY(-2px);
@@ -243,14 +257,29 @@ const DemoButton = styled(Button)`
   }
 `;
 
-const CategoryLanding = ({ 
-  category, 
-  title, 
-  subtitle, 
-  gradient, 
-  mockups = [], 
-  demoUrl, 
-  demoButtonText = "See Demo Website"
+const SecondaryDemoButton = styled(DemoButton)`
+  background: ${theme.colors.white};
+  color: ${(props) => props.gradient ? theme.colors.primary : theme.colors.primary};
+  border: 2px solid ${(props) => props.gradient ? theme.colors.primary : theme.colors.primary};
+
+  &:hover {
+    background: ${(props) => props.gradient ? theme.colors.primary : theme.colors.primary};
+    color: ${theme.colors.white};
+    transform: translateY(-2px);
+    box-shadow: ${theme.shadows.xl};
+  }
+`;
+
+const CategoryLanding = ({
+  category,
+  title,
+  subtitle,
+  gradient,
+  mockups = [],
+  demoUrl,
+  demoButtonText = "See Demo Website",
+  secondaryDemoUrl,
+  secondaryDemoButtonText
 }) => {
   const navigate = useNavigate();
 
@@ -260,6 +289,10 @@ const CategoryLanding = ({
 
   const handleDemoClick = () => {
     navigate(demoUrl);
+  };
+
+  const handleSecondaryDemoClick = () => {
+    navigate(secondaryDemoUrl);
   };
 
   return (
@@ -301,10 +334,18 @@ const CategoryLanding = ({
           <CTADescription>
             See how beautiful and functional your {category} website could be with our professional templates and features.
           </CTADescription>
-          <DemoButton gradient={gradient} onClick={handleDemoClick}>
-            {demoButtonText}
-            <FaExternalLinkAlt />
-          </DemoButton>
+          <DemoButtonsContainer>
+            <DemoButton gradient={gradient} onClick={handleDemoClick}>
+              {demoButtonText}
+              <FaExternalLinkAlt />
+            </DemoButton>
+            {secondaryDemoUrl && secondaryDemoButtonText && (
+              <SecondaryDemoButton gradient={gradient} onClick={handleSecondaryDemoClick}>
+                {secondaryDemoButtonText}
+                <FaExternalLinkAlt />
+              </SecondaryDemoButton>
+            )}
+          </DemoButtonsContainer>
         </CTASection>
       </ContentContainer>
     </PageContainer>
