@@ -172,6 +172,16 @@ const Sidebar = styled.div`
   height: fit-content;
   box-shadow: ${theme.shadows.sm};
   border: 1px solid ${theme.colors.gray200};
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    padding: ${theme.spacing.lg};
+    margin-bottom: ${theme.spacing.lg};
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.md};
+    border-radius: ${theme.borderRadius.lg};
+  }
 `;
 
 const SidebarTitle = styled.h3`
@@ -206,6 +216,7 @@ const MenuItem = styled.button.withConfig({
   transition: all 0.2s ease;
   text-align: left;
   width: 100%;
+  font-size: 0.95rem;
 
   &:hover {
     background: ${props => props.primaryColor + '10' || theme.colors.gray50};
@@ -213,6 +224,25 @@ const MenuItem = styled.button.withConfig({
 
   svg {
     font-size: 1.1rem;
+    min-width: 1.1rem;
+  }
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    padding: ${theme.spacing.sm} ${theme.spacing.md};
+    font-size: 0.9rem;
+
+    svg {
+      font-size: 1rem;
+    }
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.sm};
+    gap: ${theme.spacing.sm};
+
+    svg {
+      font-size: 0.9rem;
+    }
   }
 `;
 
@@ -223,6 +253,17 @@ const MainContent = styled.div`
   box-shadow: ${theme.shadows.sm};
   border: 1px solid ${theme.colors.gray200};
   min-height: 600px;
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    padding: ${theme.spacing.lg};
+    min-height: 400px;
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.md};
+    border-radius: ${theme.borderRadius.lg};
+    min-height: 300px;
+  }
 `;
 
 const ContentHeader = styled.div`
