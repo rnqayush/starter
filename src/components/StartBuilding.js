@@ -509,7 +509,7 @@ const StartBuilding = () => {
       case 2:
         return formData.websiteName !== "" && /^[a-z0-9-]+$/.test(formData.websiteName);
       case 3:
-        return true; // Step 3 fields are optional
+        return true; // Confirmation step
       default:
         return false;
     }
