@@ -178,7 +178,9 @@ const ToggleContainer = styled.div`
   position: relative;
 `;
 
-const ToggleOption = styled.button`
+const ToggleOption = styled.button.withConfig({
+  shouldForwardProp: (prop) => prop !== 'active',
+})`
   background: ${props => props.active ? theme.colors.white : 'transparent'};
   color: ${props => props.active ? theme.colors.gray900 : theme.colors.gray600};
   border: none;
@@ -220,7 +222,9 @@ const PricingGrid = styled.div`
   }
 `;
 
-const PricingCard = styled.div`
+const PricingCard = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'featured',
+})`
   background: ${theme.colors.white};
   border-radius: ${theme.borderRadius.xl};
   padding: ${theme.spacing.xxl};
@@ -264,7 +268,9 @@ const PopularBadge = styled.div`
   gap: ${theme.spacing.xs};
 `;
 
-const PlanIcon = styled.div`
+const PlanIcon = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'featured',
+})`
   width: 60px;
   height: 60px;
   background: ${props => props.featured ? `linear-gradient(135deg, ${theme.colors.primary}, ${theme.colors.primaryDark})` : theme.colors.gray100};
@@ -363,10 +369,12 @@ const FeatureItem = styled.li`
   }
 `;
 
-const CTAButton = styled.button`
+const CTAButton = styled.button.withConfig({
+  shouldForwardProp: (prop) => prop !== 'featured',
+})`
   width: 100%;
-  background: ${props => props.featured ? 
-    `linear-gradient(135deg, ${theme.colors.primary}, ${theme.colors.primaryDark})` : 
+  background: ${props => props.featured ?
+    `linear-gradient(135deg, ${theme.colors.primary}, ${theme.colors.primaryDark})` :
     theme.colors.white};
   color: ${props => props.featured ? theme.colors.white : theme.colors.primary};
   border: ${props => props.featured ? 'none' : `2px solid ${theme.colors.primary}`};
@@ -384,11 +392,11 @@ const CTAButton = styled.button`
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: ${props => props.featured ? 
-      '0 8px 25px rgba(59, 130, 246, 0.4)' : 
+    box-shadow: ${props => props.featured ?
+      '0 8px 25px rgba(59, 130, 246, 0.4)' :
       '0 4px 15px rgba(59, 130, 246, 0.2)'};
-    background: ${props => props.featured ? 
-      `linear-gradient(135deg, ${theme.colors.primaryDark}, ${theme.colors.primary})` : 
+    background: ${props => props.featured ?
+      `linear-gradient(135deg, ${theme.colors.primaryDark}, ${theme.colors.primary})` :
       theme.colors.primary};
     color: ${theme.colors.white};
   }
@@ -487,7 +495,9 @@ const FAQQuestion = styled.button`
   }
 `;
 
-const FAQAnswer = styled.div`
+const FAQAnswer = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'isOpen',
+})`
   padding: 0 ${theme.spacing.lg} ${theme.spacing.lg};
   color: ${theme.colors.gray700};
   line-height: 1.6;
