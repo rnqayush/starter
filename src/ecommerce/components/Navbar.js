@@ -680,7 +680,11 @@ const Navbar = ({
                               {isAuthenticated ? (
             <UserDropdown ref={dropdownRef}>
               <UserDropdownButton
-                onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setIsUserDropdownOpen(!isUserDropdownOpen);
+                }}
                 theme={vendorTheme}
               >
                 <UserAvatar src={user.avatar} alt={user.name} />
