@@ -827,6 +827,16 @@ const Navbar = ({
               📧 My Enquiries
             </MobileNavLink>
 
+            <MobileNavLink
+              to="#"
+              onClick={() => {
+                setShowProfile(true);
+                setIsMenuOpen(false);
+              }}
+            >
+              👤 My Profile
+            </MobileNavLink>
+
             {canAccessSeller() && (
               <MobileNavLink
                 to={`${getBaseUrl()}/seller-dashboard`}
