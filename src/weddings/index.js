@@ -36,6 +36,7 @@ const WeddingModule = () => {
       
                         {/* Vendor-specific routes */}
       <Route path="/:vendorSlug" element={<VendorPage />} />
+      <Route path="/:vendorSlug/owner" element={<VendorDashboard />} />
       <Route path="/:vendorSlug/portfolio" element={<VendorPortfolio />} />
       <Route path="/:vendorSlug/dashboard" element={<VendorDashboard />} />
       <Route path="/:vendorSlug/booking" element={<BookingPage />} />
