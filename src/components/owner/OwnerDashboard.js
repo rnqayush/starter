@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { FaHotel, FaBed, FaCalendarCheck, FaEye, FaPlus, FaEdit, FaCog } from "react-icons/fa";
+import { FaHotel, FaBed, FaCalendarCheck, FaEye, FaPlus, FaEdit } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import { Card, CardContent, Badge } from "../shared/Card";
