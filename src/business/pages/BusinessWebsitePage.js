@@ -396,6 +396,16 @@ const ServicesGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: ${theme.spacing.xl};
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: ${theme.spacing.lg};
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    grid-template-columns: 1fr;
+    gap: ${theme.spacing.md};
+  }
 `;
 
 const ServiceCard = styled.div.withConfig({
@@ -438,6 +448,39 @@ const ServiceCard = styled.div.withConfig({
     color: ${theme.colors.gray600};
     line-height: 1.6;
   }
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    padding: ${theme.spacing.lg};
+
+    .icon {
+      width: 50px;
+      height: 50px;
+      font-size: 1.3rem;
+    }
+
+    h3 {
+      font-size: 1.2rem;
+    }
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.md};
+
+    .icon {
+      width: 45px;
+      height: 45px;
+      font-size: 1.2rem;
+      margin-bottom: ${theme.spacing.md};
+    }
+
+    h3 {
+      font-size: 1.1rem;
+    }
+
+    p {
+      font-size: 0.9rem;
+    }
+  }
 `;
 
 // Team Section Styles
@@ -445,6 +488,16 @@ const TeamGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: ${theme.spacing.xl};
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: ${theme.spacing.lg};
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    grid-template-columns: 1fr;
+    gap: ${theme.spacing.md};
+  }
 `;
 
 const TeamCard = styled.div`
