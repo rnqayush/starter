@@ -1411,7 +1411,21 @@ const BusinessWebsitePage = () => {
       };
     }
 
-    return baseContent[businessType] || baseContent.salon;
+        const defaultContent = baseContent[businessType] || baseContent.salon;
+
+    // Ensure all required properties exist with fallbacks
+    return {
+      hero: defaultContent.hero || { title: "Business", subtitle: "Welcome to our business" },
+      about: defaultContent.about || { title: "About Us", description: "Learn more about our business" },
+      services: defaultContent.services || [],
+      team: defaultContent.team || [],
+      gallery: defaultContent.gallery || [],
+      packages: defaultContent.packages || [],
+      portfolio: defaultContent.portfolio || [],
+      skills: defaultContent.skills || [],
+      experience: defaultContent.experience || [],
+      testimonials: defaultContent.testimonials || []
+    };
   };
 
   const content = getBusinessContent(businessData.slug);
