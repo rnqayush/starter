@@ -201,100 +201,6 @@ const QuickInfoText = styled.div`
   }
 `;
 
-const FloatingBookingCard = styled.div`
-  position: fixed;
-  top: 50%;
-  right: ${theme.spacing.xl};
-  transform: translateY(-50%);
-  background: ${theme.colors.white};
-  border-radius: ${theme.borderRadius.xl};
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-  padding: ${theme.spacing.xl};
-  width: 320px;
-  z-index: 100;
-  border: 1px solid ${theme.colors.gray200};
-
-  @media (max-width: ${theme.breakpoints.desktop}) {
-    position: static;
-    transform: none;
-    margin: ${theme.spacing.xl} auto;
-    width: 100%;
-    max-width: 400px;
-  }
-`;
-
-const BookingCardTitle = styled.h3`
-  font-size: 1.3rem;
-  font-weight: 600;
-  color: ${theme.colors.gray900};
-  margin-bottom: ${theme.spacing.lg};
-  text-align: center;
-`;
-
-const BookingForm = styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: ${theme.spacing.md};
-`;
-
-const FormGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${theme.spacing.xs};
-`;
-
-const Label = styled.label`
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: ${theme.colors.gray700};
-`;
-
-const Input = styled.input`
-  padding: ${theme.spacing.sm};
-  border: 2px solid ${theme.colors.gray200};
-  border-radius: ${theme.borderRadius.md};
-  font-size: 0.9rem;
-  transition: border-color 0.2s ease;
-
-  &:focus {
-    outline: none;
-    border-color: ${theme.colors.primary};
-  }
-`;
-
-const PriceDisplay = styled.div`
-  background: ${theme.colors.gray50};
-  padding: ${theme.spacing.md};
-  border-radius: ${theme.borderRadius.md};
-  text-align: center;
-  margin: ${theme.spacing.md} 0;
-
-  .price {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: ${theme.colors.primary};
-  }
-  .period {
-    font-size: 0.9rem;
-    color: ${theme.colors.gray600};
-  }
-`;
-
-const BookNowButton = styled.button`
-  background: ${theme.colors.primary};
-  color: ${theme.colors.white};
-  padding: ${theme.spacing.md};
-  border: none;
-  border-radius: ${theme.borderRadius.md};
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-
-  &:hover {
-    background: ${theme.colors.primaryDark};
-  }
-`;
-
 const ContentSection = styled.section`
   padding: ${theme.spacing.xxl} 0;
   background: ${theme.colors.white};
@@ -335,6 +241,13 @@ const SectionSubtitle = styled.p`
   color: ${theme.colors.gray600};
   max-width: 600px;
   margin: 0 auto;
+`;
+
+const Description = styled.p`
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: ${theme.colors.gray700};
+  margin-bottom: ${theme.spacing.lg};
 `;
 
 const FeaturesGrid = styled.div`
@@ -645,9 +558,6 @@ const HotelDetail = () => {
   const navigate = useNavigate();
   const [hotel, setHotel] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [checkIn, setCheckIn] = useState("");
-  const [checkOut, setCheckOut] = useState("");
-  const [guests, setGuests] = useState(2);
 
   useEffect(() => {
     const foundHotel = getHotelByIdOrSlug(slugParam);
@@ -657,12 +567,6 @@ const HotelDetail = () => {
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const handleBookingSubmit = (e) => {
-    e.preventDefault();
-    // Navigate to booking page
-    navigate(`/${hotel.slug}/booking`);
   };
 
   if (loading) {
@@ -772,48 +676,25 @@ const HotelDetail = () => {
         </HeroContent>
       </HeroBanner>
 
-      <FloatingBookingCard>
-        <BookingCardTitle>Reserve Your Room</BookingCardTitle>
-        <BookingForm onSubmit={handleBookingSubmit}>
-          <FormGroup>
-            <Label>Check-in Date</Label>
-            <Input
-              type="date"
-              value={checkIn}
-              onChange={(e) => setCheckIn(e.target.value)}
-              required
-            />
-          </FormGroup>
-          <FormGroup>
-            <Label>Check-out Date</Label>
-            <Input
-              type="date"
-              value={checkOut}
-              onChange={(e) => setCheckOut(e.target.value)}
-              required
-            />
-          </FormGroup>
-          <FormGroup>
-            <Label>Guests</Label>
-            <Input
-              type="number"
-              min="1"
-              max="8"
-              value={guests}
-              onChange={(e) => setGuests(e.target.value)}
-            />
-          </FormGroup>
-          <PriceDisplay>
-            <div className="price">₹{hotel.startingPrice.toLocaleString()}</div>
-            <div className="period">per night</div>
-          </PriceDisplay>
-          <BookNowButton type="submit">
-            Check Availability
-          </BookNowButton>
-        </BookingForm>
-      </FloatingBookingCard>
-
       <ContentSection>
+        <Container>
+          <SectionHeader>
+            <SectionTitle>About {hotel.name}</SectionTitle>
+            <SectionSubtitle>
+              Learn more about our heritage, mission, and commitment to excellence
+            </SectionSubtitle>
+          </SectionHeader>
+          <Description style={{ fontSize: '1.1rem', lineHeight: '1.8', textAlign: 'center', maxWidth: '800px', margin: '0 auto' }}>
+            {hotel.name} stands as a beacon of luxury and elegance in the heart of {hotel.city}. 
+            With our rich heritage of hospitality excellence spanning decades, we have been creating 
+            unforgettable experiences for discerning travelers from around the world. Our commitment 
+            to impeccable service, combined with our stunning architecture and world-class amenities, 
+            makes us the preferred choice for those seeking the finest in luxury accommodation.
+          </Description>
+        </Container>
+      </ContentSection>
+
+      <ContentSection className="alt">
         <Container>
           <SectionHeader>
             <SectionTitle>Why Choose {hotel.name}?</SectionTitle>
@@ -835,7 +716,7 @@ const HotelDetail = () => {
         </Container>
       </ContentSection>
 
-      <ContentSection className="alt">
+      <ContentSection>
         <Container>
           <SectionHeader>
             <SectionTitle>Hotel Gallery</SectionTitle>
@@ -865,7 +746,7 @@ const HotelDetail = () => {
         </Container>
       </ContentSection>
 
-      <ContentSection>
+      <ContentSection className="alt">
         <Container>
           <SectionHeader>
             <SectionTitle>World-Class Amenities</SectionTitle>
@@ -896,7 +777,7 @@ const HotelDetail = () => {
         </Container>
       </ContentSection>
 
-      <ContentSection className="alt">
+      <ContentSection>
         <Container>
           <TestimonialsSection>
             <SectionHeader>
@@ -921,7 +802,7 @@ const HotelDetail = () => {
         </Container>
       </ContentSection>
 
-      <ContentSection>
+      <ContentSection className="alt">
         <Container>
           <SectionHeader>
             <SectionTitle>Location & Contact</SectionTitle>
