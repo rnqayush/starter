@@ -4,16 +4,16 @@ import styled from "styled-components";
 import {
   FaArrowLeft,
   FaCalendarAlt,
-  FaUsers,
+
   FaMapMarkerAlt,
   FaEnvelope,
   FaPhoneAlt,
-  FaHeart,
+
   FaRing,
   FaCheck,
   FaExclamationTriangle,
   FaInfoCircle,
-  FaDollarSign,
+
   FaClock,
   FaUser,
   FaComment,
