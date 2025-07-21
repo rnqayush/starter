@@ -247,13 +247,19 @@ const Sidebar = () => {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
 
+  // Extract hotel slug from URL path like "/taj-palace/owner"
+  const hotelSlug = useMemo(() => {
+    const pathSegments = location.pathname.split('/').filter(Boolean);
+    return pathSegments.length > 0 ? pathSegments[0] : '';
+  }, [location.pathname]);
+
   const isActive = (path) => location.pathname === path;
 
-  const navigationItems = [
+  const navigationItems = useMemo(() => [
     {
       section: "Dashboard",
       items: [
-        { path: "/owner/dashboard", icon: FaHome, label: "Dashboard Home" },
+        { path: `/${hotelSlug}/owner`, icon: FaHome, label: "Dashboard Home" },
       ],
     },
     {
@@ -283,7 +289,7 @@ const Sidebar = () => {
         { path: "/owner/profile", icon: FaUser, label: "Profile Settings" },
       ],
     },
-  ];
+  ], [hotelSlug]);
 
   const toggleSidebar = () => setIsOpen(!isOpen);
   const closeSidebar = () => setIsOpen(false);
