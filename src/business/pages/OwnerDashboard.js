@@ -198,7 +198,9 @@ const ContentHeader = styled.div`
   }
 `;
 
-const EditableField = styled.div`
+const EditableField = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'primaryColor',
+})`
   margin-bottom: ${theme.spacing.lg};
 
   label {
@@ -346,7 +348,9 @@ const CloseButton = styled.button`
   }
 `;
 
-const FormField = styled.div`
+const FormField = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'primaryColor',
+})`
   margin-bottom: ${theme.spacing.lg};
 
   label {
@@ -384,7 +388,9 @@ const FormField = styled.div`
   }
 `;
 
-const TagInput = styled.div`
+const TagInput = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'primaryColor',
+})`
   .tags-container {
     display: flex;
     flex-wrap: wrap;
@@ -425,7 +431,9 @@ const TagInput = styled.div`
   }
 `;
 
-const RangeSlider = styled.input`
+const RangeSlider = styled.input.withConfig({
+  shouldForwardProp: (prop) => prop !== 'primaryColor',
+})`
   width: 100%;
   height: 6px;
   border-radius: 3px;
@@ -505,7 +513,9 @@ const ImageUploadContainer = styled.div`
   margin-bottom: ${theme.spacing.lg};
 `;
 
-const ImageUploadArea = styled.div`
+const ImageUploadArea = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'primaryColor' && prop !== 'hasImage',
+})`
   border: 2px dashed ${props => props.hasImage ? (props.primaryColor || theme.colors.primary) : theme.colors.gray300};
   border-radius: ${theme.borderRadius.lg};
   padding: ${theme.spacing.xl};
@@ -604,7 +614,9 @@ const ImagePreview = styled.div`
   }
 `;
 
-const ImageUrlInput = styled.div`
+const ImageUrlInput = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'primaryColor',
+})`
   display: flex;
   gap: ${theme.spacing.sm};
   align-items: flex-end;
