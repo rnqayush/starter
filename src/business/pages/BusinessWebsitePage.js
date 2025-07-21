@@ -114,8 +114,82 @@ const NavLinks = styled.div.withConfig({
     }
   }
 
-  @media (max-width: ${theme.breakpoints.tablet}) {
+    @media (max-width: ${theme.breakpoints.tablet}) {
     display: none;
+  }
+`;
+
+const MobileMenuButton = styled.button.withConfig({
+  shouldForwardProp: (prop) => prop !== 'primaryColor',
+})`
+  display: none;
+  background: transparent;
+  border: none;
+  color: ${theme.colors.gray700};
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: ${theme.spacing.sm};
+  border-radius: ${theme.borderRadius.sm};
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: ${theme.colors.gray100};
+    color: ${props => props.primaryColor || theme.colors.primary};
+  }
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    display: block;
+  }
+`;
+
+const MobileMenu = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'isOpen' && prop !== 'primaryColor',
+})`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: ${theme.colors.white};
+  z-index: 50;
+  transform: translateX(${props => props.isOpen ? '0' : '-100%'});
+  transition: transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+
+  @media (min-width: ${theme.breakpoints.desktop}) {
+    display: none;
+  }
+`;
+
+const MobileMenuHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: ${theme.spacing.lg};
+  border-bottom: 1px solid ${theme.colors.gray200};
+`;
+
+const MobileMenuLinks = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'primaryColor',
+})`
+  flex: 1;
+  padding: ${theme.spacing.lg};
+
+  a {
+    display: block;
+    padding: ${theme.spacing.lg};
+    text-decoration: none;
+    color: ${theme.colors.gray700};
+    font-weight: 500;
+    font-size: 1.1rem;
+    border-bottom: 1px solid ${theme.colors.gray100};
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: ${theme.colors.gray50};
+      color: ${props => props.primaryColor || theme.colors.primary};
+    }
   }
 `;
 
