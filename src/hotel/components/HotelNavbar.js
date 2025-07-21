@@ -320,7 +320,7 @@ const HotelNavbar = ({ showBackToMain = true }) => {
           <NavLink to="/my-bookings" onClick={closeMobileMenu}>
             My Bookings
           </NavLink>
-          <NavLink to="/owner/dashboard" onClick={closeMobileMenu}>
+          <NavLink to={hotelSlug ? `/${hotelSlug}/owner` : "/owner/dashboard"} onClick={closeMobileMenu}>
             Hotel Owner
           </NavLink>
 
