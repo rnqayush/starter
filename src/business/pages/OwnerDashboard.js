@@ -1504,13 +1504,26 @@ const OwnerDashboard = () => {
                 </div>
               </SectionItem>
 
-                            <SectionItem>
+                                                        <SectionItem>
                 <div className="section-info">
                   <h4>About Section</h4>
                   <p>{businessData.slug === 'freelancer' ? 'Personal story, background, and professional journey' : 'Business story, values, and statistics'}</p>
                   <div style={{ fontSize: '0.8rem', color: theme.colors.gray500, marginTop: '4px' }}>
                     Current: "{currentData.about?.title}"
                   </div>
+                  <VisibilityToggle
+                    primaryColor={businessData.primaryColor}
+                    isVisible={currentData.sectionVisibility?.about}
+                    style={{ marginTop: theme.spacing.sm }}
+                  >
+                    <div
+                      className="toggle-switch"
+                      onClick={() => toggleSectionVisibility('about')}
+                    />
+                    <span className="toggle-label">
+                      {currentData.sectionVisibility?.about ? 'Visible' : 'Hidden'}
+                    </span>
+                  </VisibilityToggle>
                 </div>
                 <div className="section-actions">
                   <Button onClick={() => openModal('about', currentData.about)}>
@@ -1520,13 +1533,26 @@ const OwnerDashboard = () => {
                 </div>
               </SectionItem>
 
-                            <SectionItem>
+                                                        <SectionItem>
                 <div className="section-info">
                   <h4>Services Section</h4>
                   <p>{businessData.slug === 'freelancer' ? 'Professional services offered to clients' : 'List of services, pricing, and descriptions'}</p>
                   <div style={{ fontSize: '0.8rem', color: theme.colors.gray500, marginTop: '4px' }}>
                     {currentData.services?.length || 0} services configured
                   </div>
+                  <VisibilityToggle
+                    primaryColor={businessData.primaryColor}
+                    isVisible={currentData.sectionVisibility?.services}
+                    style={{ marginTop: theme.spacing.sm }}
+                  >
+                    <div
+                      className="toggle-switch"
+                      onClick={() => toggleSectionVisibility('services')}
+                    />
+                    <span className="toggle-label">
+                      {currentData.sectionVisibility?.services ? 'Visible' : 'Hidden'}
+                    </span>
+                  </VisibilityToggle>
                 </div>
                 <div className="section-actions">
                   <Button onClick={() => openModal('services')}>
@@ -1536,13 +1562,26 @@ const OwnerDashboard = () => {
                 </div>
               </SectionItem>
 
-                            <SectionItem>
+                                          <SectionItem>
                 <div className="section-info">
                   <h4>Team Section</h4>
                   <p>Staff profiles, photos, and bios</p>
                   <div style={{ fontSize: '0.8rem', color: theme.colors.gray500, marginTop: '4px' }}>
                     {currentData.team?.length || 0} team members
                   </div>
+                  <VisibilityToggle
+                    primaryColor={businessData.primaryColor}
+                    isVisible={currentData.sectionVisibility?.team}
+                    style={{ marginTop: theme.spacing.sm }}
+                  >
+                    <div
+                      className="toggle-switch"
+                      onClick={() => toggleSectionVisibility('team')}
+                    />
+                    <span className="toggle-label">
+                      {currentData.sectionVisibility?.team ? 'Visible' : 'Hidden'}
+                    </span>
+                  </VisibilityToggle>
                 </div>
                 <div className="section-actions">
                   <Button onClick={() => openModal('team')}>
@@ -1552,13 +1591,26 @@ const OwnerDashboard = () => {
                 </div>
               </SectionItem>
 
-                            <SectionItem>
+                                          <SectionItem>
                 <div className="section-info">
                   <h4>Contact Section</h4>
                   <p>Contact form, address, and business hours</p>
                   <div style={{ fontSize: '0.8rem', color: theme.colors.gray500, marginTop: '4px' }}>
                     Current: "{currentData.contact?.title}"
                   </div>
+                  <VisibilityToggle
+                    primaryColor={businessData.primaryColor}
+                    isVisible={currentData.sectionVisibility?.contact}
+                    style={{ marginTop: theme.spacing.sm }}
+                  >
+                    <div
+                      className="toggle-switch"
+                      onClick={() => toggleSectionVisibility('contact')}
+                    />
+                    <span className="toggle-label">
+                      {currentData.sectionVisibility?.contact ? 'Visible' : 'Hidden'}
+                    </span>
+                  </VisibilityToggle>
                 </div>
                 <div className="section-actions">
                   <Button onClick={() => openModal('contact', currentData.contact)}>
