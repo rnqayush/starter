@@ -256,12 +256,28 @@ const HeroCTA = styled.button.withConfig({
 const Section = styled.section`
   padding: ${theme.spacing.xxl} 0;
   background: ${props => props.background || theme.colors.white};
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    padding: ${theme.spacing.xl} 0;
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.lg} 0;
+  }
 `;
 
 const SectionContainer = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 ${theme.spacing.md};
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    padding: 0 ${theme.spacing.sm};
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: 0 ${theme.spacing.sm};
+  }
 `;
 
 const SectionTitle = styled.h2`
@@ -270,6 +286,15 @@ const SectionTitle = styled.h2`
   text-align: center;
   margin-bottom: ${theme.spacing.md};
   color: ${theme.colors.gray900};
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    font-size: 2.2rem;
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    font-size: 1.8rem;
+    margin-bottom: ${theme.spacing.sm};
+  }
 `;
 
 const SectionSubtitle = styled.p`
@@ -281,6 +306,18 @@ const SectionSubtitle = styled.p`
   margin-left: auto;
   margin-right: auto;
   line-height: 1.6;
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    font-size: 1rem;
+    margin-bottom: ${theme.spacing.xl};
+    max-width: 90%;
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    font-size: 0.95rem;
+    margin-bottom: ${theme.spacing.lg};
+    max-width: 95%;
+  }
 `;
 
 // About Section Styles
