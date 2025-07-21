@@ -1387,7 +1387,25 @@ const OwnerDashboard = () => {
                     Edit
                   </Button>
                 </div>
-                            </SectionItem>
+                                          </SectionItem>
+
+              {businessData.slug !== 'freelancer' && (
+                <SectionItem>
+                  <div className="section-info">
+                    <h4>Gallery Section</h4>
+                    <p>Photo galleries organized by categories</p>
+                    <div style={{ fontSize: '0.8rem', color: theme.colors.gray500, marginTop: '4px' }}>
+                      {currentData.gallery?.length || 0} galleries configured
+                    </div>
+                  </div>
+                  <div className="section-actions">
+                    <Button onClick={() => openModal('gallery')}>
+                      <FaPlus />
+                      Add Gallery
+                    </Button>
+                  </div>
+                </SectionItem>
+              )}
             </SectionList>
 
             {/* Services List */}
