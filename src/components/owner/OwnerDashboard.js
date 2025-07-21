@@ -396,6 +396,13 @@ const MobileBookingDetails = styled.div`
 
 const OwnerDashboard = () => {
   const { ownerHotels, bookings } = useAppContext();
+  const location = useLocation();
+
+  // Extract hotel slug from URL path like "/taj-palace/owner"
+  const hotelSlug = useMemo(() => {
+    const pathSegments = location.pathname.split('/').filter(Boolean);
+    return pathSegments.length > 0 ? pathSegments[0] : '';
+  }, [location.pathname]);
 
   const ownerBookings = bookings.filter((booking) =>
     ownerHotels.some((hotel) => hotel.id === booking.hotelId),
