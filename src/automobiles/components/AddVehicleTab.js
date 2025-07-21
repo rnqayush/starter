@@ -613,8 +613,6 @@ const AddVehicleTab = ({ dealer }) => {
       await new Promise(resolve => setTimeout(resolve, 2000));
       
       setSubmitStatus("success");
-      console.log("Vehicle Data:", formData);
-      console.log("Images:", images);
       
       // Reset form after successful submission
       setTimeout(() => {
