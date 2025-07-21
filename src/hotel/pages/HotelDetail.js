@@ -51,11 +51,18 @@ const HeroBanner = styled.section.withConfig({
   }
 
   @media (max-width: ${theme.breakpoints.tablet}) {
-    height: 70vh;
+    height: 80vh;
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    height: 60vh;
+    height: 100vh;
+    padding-top: 60px;
+    background-attachment: scroll;
+    background-position: center center;
+
+    &::before {
+      background: linear-gradient(135deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5));
+    }
   }
 `;
 
@@ -67,6 +74,15 @@ const HeroContent = styled.div`
   margin: 0 auto;
   padding: 0 ${theme.spacing.xl};
   width: 100%;
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: 0 ${theme.spacing.md};
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: calc(100vh - 120px);
+  }
 `;
 
 const HeroTitle = styled.h1`
@@ -75,14 +91,25 @@ const HeroTitle = styled.h1`
   margin-bottom: ${theme.spacing.lg};
   text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
   line-height: 1.1;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: none;
 
   @media (max-width: ${theme.breakpoints.tablet}) {
     font-size: 3rem;
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    font-size: 2.5rem;
-    margin-bottom: ${theme.spacing.md};
+    font-size: 2.8rem;
+    margin-bottom: ${theme.spacing.lg};
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: ${theme.colors.white};
+    background: none;
+    -webkit-text-fill-color: unset;
+    text-shadow: 2px 2px 12px rgba(0, 0, 0, 0.8);
   }
 `;
 
@@ -111,8 +138,9 @@ const HeroActions = styled.div`
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     flex-direction: column;
-    gap: ${theme.spacing.md};
+    gap: ${theme.spacing.lg};
     align-items: stretch;
+    margin-top: ${theme.spacing.xl};
   }
 `;
 
@@ -127,6 +155,23 @@ const CTAButton = styled.button`
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+  }
+
+  &:hover::before {
+    left: 100%;
+  }
 
   &:hover {
     transform: translateY(-2px);
@@ -134,8 +179,14 @@ const CTAButton = styled.button`
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    padding: ${theme.spacing.md} ${theme.spacing.xl};
-    font-size: 1rem;
+    padding: ${theme.spacing.lg} ${theme.spacing.xl};
+    font-size: 1.2rem;
+    font-weight: 700;
+    border-radius: ${theme.borderRadius.xl};
+    box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4);
+    width: 100%;
+    max-width: 280px;
+    margin: 0 auto;
   }
 `;
 
@@ -150,10 +201,24 @@ const QuickInfoCard = styled.div`
   align-items: center;
   gap: ${theme.spacing.md};
   min-width: 200px;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+  }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     min-width: auto;
-    padding: ${theme.spacing.md};
+    padding: ${theme.spacing.lg};
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: ${theme.borderRadius.xl};
+    backdrop-filter: blur(15px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 280px;
+    margin: 0 auto;
+    justify-content: center;
   }
 `;
 
@@ -171,6 +236,17 @@ const QuickInfoText = styled.div`
   .value {
     font-size: 1.1rem;
     font-weight: 600;
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    .label {
+      font-size: 0.95rem;
+      opacity: 0.9;
+    }
+    .value {
+      font-size: 1.3rem;
+      font-weight: 700;
+    }
   }
 `;
 
@@ -228,6 +304,12 @@ const FeaturesGrid = styled.div`
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: ${theme.spacing.xl};
   margin: ${theme.spacing.xxl} 0;
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    grid-template-columns: 1fr;
+    gap: ${theme.spacing.lg};
+    margin: ${theme.spacing.xl} 0;
+  }
 `;
 
 const FeatureCard = styled.div`
@@ -236,10 +318,23 @@ const FeatureCard = styled.div`
   border-radius: ${theme.borderRadius.lg};
   box-shadow: ${theme.shadows.md};
   text-align: center;
-  transition: transform 0.3s ease;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
 
   &:hover {
-    transform: translateY(-5px);
+    transform: translateY(-8px);
+    box-shadow: ${theme.shadows.xl};
+    border-color: ${theme.colors.primary};
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.xxl};
+    border-radius: ${theme.borderRadius.xl};
+    box-shadow: ${theme.shadows.lg};
+
+    &:hover {
+      transform: translateY(-4px);
+    }
   }
 `;
 
@@ -272,6 +367,11 @@ const AmenitiesGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: ${theme.spacing.lg};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    grid-template-columns: 1fr;
+    gap: ${theme.spacing.xl};
+  }
 `;
 
 const AmenityCategory = styled.div`
@@ -283,6 +383,21 @@ const AmenityCategory = styled.div`
     display: flex;
     align-items: center;
     gap: ${theme.spacing.sm};
+
+    @media (max-width: ${theme.breakpoints.mobile}) {
+      font-size: 1.3rem;
+      font-weight: 700;
+      padding: ${theme.spacing.md} 0;
+      border-bottom: 2px solid ${theme.colors.gray100};
+      margin-bottom: ${theme.spacing.lg};
+    }
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    background: ${theme.colors.gray50};
+    padding: ${theme.spacing.lg};
+    border-radius: ${theme.borderRadius.lg};
+    border: 1px solid ${theme.colors.gray200};
   }
 `;
 
@@ -320,7 +435,14 @@ const GalleryGrid = styled.div`
 
   @media (max-width: ${theme.breakpoints.tablet}) {
     grid-template-columns: 1fr;
-    grid-template-rows: repeat(3, 250px);
+    grid-template-rows: repeat(5, 200px);
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(5, 250px);
+    gap: ${theme.spacing.sm};
+    border-radius: ${theme.borderRadius.lg};
   }
 `;
 
@@ -374,6 +496,24 @@ const TestimonialsSection = styled.div`
   padding: ${theme.spacing.xxl};
   color: ${theme.colors.white};
   text-align: center;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><pattern id="testimonial-pattern" width="100" height="100" patternUnits="userSpaceOnUse"><circle fill="%23ffffff05" cx="50" cy="50" r="25"/></pattern></defs><rect width="100%" height="100%" fill="url(%23testimonial-pattern)"/></svg>');
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.xl};
+    border-radius: ${theme.borderRadius.lg};
+    margin: 0 -${theme.spacing.sm};
+  }
 `;
 
 const TestimonialCard = styled.div`
