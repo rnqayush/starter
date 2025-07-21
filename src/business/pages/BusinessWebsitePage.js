@@ -1032,7 +1032,7 @@ const BusinessWebsitePage = () => {
           description: "Family-owned for three generations, we bring authentic Italian flavors to your table using recipes passed down through our family."
         },
         services: [
-          { icon: "����", title: "Fine Dining", description: "Authentic Italian dishes made with imported ingredients", price: "$25-45" },
+          { icon: "🍝", title: "Fine Dining", description: "Authentic Italian dishes made with imported ingredients", price: "$25-45" },
           { icon: "🍷", title: "Wine Selection", description: "Curated collection of Italian and international wines", price: "$8-25/glass" },
           { icon: "🎉", title: "Private Events", description: "Special occasions and corporate events catering", price: "Custom pricing" },
           { icon: "🍕", title: "Wood-Fired Pizza", description: "Traditional Neapolitan pizzas from our wood-fired oven", price: "$18-28" },
@@ -1500,8 +1500,11 @@ const BusinessWebsitePage = () => {
               <button type="submit">Send Message</button>
             </ContactForm>
             
-            <ContactInfo primaryColor={businessData.primaryColor}>
-              <h3>Contact Information</h3>
+                        <ContactInfo primaryColor={businessData.primaryColor}>
+              <h3>Send us a Message</h3>
+              <p style={{ marginBottom: theme.spacing.lg, color: theme.colors.gray600 }}>
+                We'd love to hear from you! Whether you have questions about our services, want to book an appointment, or need a custom quote, don't hesitate to reach out.
+              </p>
               <div className="contact-item">
                 <div className="icon">
                   <FaPhone />
