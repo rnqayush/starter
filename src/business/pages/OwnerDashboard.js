@@ -1260,7 +1260,7 @@ const OwnerDashboard = () => {
             </>
           );
 
-                case 'gallery':
+                        case 'gallery':
           return (
             <>
               <FormField primaryColor={businessData.primaryColor}>
@@ -1288,6 +1288,73 @@ const OwnerDashboard = () => {
                   min="1"
                 />
                 <div className="help-text">How many photos are in this category</div>
+              </FormField>
+            </>
+          );
+
+        case 'contact':
+          return (
+            <>
+              <FormField primaryColor={businessData.primaryColor}>
+                <label>Section Title</label>
+                <input
+                  type="text"
+                  value={formData.title || ''}
+                  onChange={(e) => handleInputChange('title', e.target.value)}
+                  placeholder="Get In Touch"
+                />
+              </FormField>
+              <FormField primaryColor={businessData.primaryColor}>
+                <label>Description</label>
+                <textarea
+                  value={formData.description || ''}
+                  onChange={(e) => handleInputChange('description', e.target.value)}
+                  placeholder="Ready to start your next project?"
+                />
+              </FormField>
+              <FormField primaryColor={businessData.primaryColor}>
+                <label>Email</label>
+                <input
+                  type="email"
+                  value={formData.email || ''}
+                  onChange={(e) => handleInputChange('email', e.target.value)}
+                  placeholder="hello@business.com"
+                />
+              </FormField>
+              <FormField primaryColor={businessData.primaryColor}>
+                <label>Phone</label>
+                <input
+                  type="tel"
+                  value={formData.phone || ''}
+                  onChange={(e) => handleInputChange('phone', e.target.value)}
+                  placeholder="+1 (555) 123-4567"
+                />
+              </FormField>
+              <FormField primaryColor={businessData.primaryColor}>
+                <label>Address</label>
+                <textarea
+                  value={formData.address || ''}
+                  onChange={(e) => handleInputChange('address', e.target.value)}
+                  placeholder="123 Business Street, City, State 12345"
+                  style={{ minHeight: '80px' }}
+                />
+              </FormField>
+              <FormField primaryColor={businessData.primaryColor}>
+                <label>Business Hours</label>
+                <div style={{ display: 'grid', gap: theme.spacing.sm }}>
+                  {['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'].map(day => (
+                    <div key={day} style={{ display: 'flex', alignItems: 'center', gap: theme.spacing.md }}>
+                      <label style={{ minWidth: '100px', textTransform: 'capitalize', fontSize: '0.9rem' }}>{day}:</label>
+                      <input
+                        type="text"
+                        value={formData.hours?.[day] || ''}
+                        onChange={(e) => handleInputChange('hours', { ...formData.hours, [day]: e.target.value })}
+                        placeholder={day === 'sunday' ? 'Closed' : '9:00 AM - 6:00 PM'}
+                        style={{ flex: 1 }}
+                      />
+                    </div>
+                  ))}
+                </div>
               </FormField>
             </>
           );
