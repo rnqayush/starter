@@ -438,7 +438,6 @@ const AuthModal = ({ isOpen, onClose, onSuccess, defaultTab = "login" }) => {
       }
 
       if (result.success) {
-        onClose();
         // Reset form
         setFormData({
           name: "",
@@ -450,6 +449,12 @@ const AuthModal = ({ isOpen, onClose, onSuccess, defaultTab = "login" }) => {
           businessName: "",
           businessType: "General"
         });
+
+        if (onSuccess) {
+          onSuccess();
+        } else {
+          onClose();
+        }
       } else {
         setErrors({ submit: result.error });
       }
