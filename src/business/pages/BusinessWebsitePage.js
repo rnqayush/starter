@@ -1032,7 +1032,7 @@ const BusinessWebsitePage = () => {
           description: "Family-owned for three generations, we bring authentic Italian flavors to your table using recipes passed down through our family."
         },
         services: [
-          { icon: "🍝", title: "Fine Dining", description: "Authentic Italian dishes made with imported ingredients", price: "$25-45" },
+          { icon: "����", title: "Fine Dining", description: "Authentic Italian dishes made with imported ingredients", price: "$25-45" },
           { icon: "🍷", title: "Wine Selection", description: "Curated collection of Italian and international wines", price: "$8-25/glass" },
           { icon: "🎉", title: "Private Events", description: "Special occasions and corporate events catering", price: "Custom pricing" },
           { icon: "🍕", title: "Wood-Fired Pizza", description: "Traditional Neapolitan pizzas from our wood-fired oven", price: "$18-28" },
@@ -1075,11 +1075,13 @@ const BusinessWebsitePage = () => {
           <Logo primaryColor={businessData.primaryColor}>
             {businessData.name}
           </Logo>
-          <NavLinks primaryColor={businessData.primaryColor}>
+                    <NavLinks primaryColor={businessData.primaryColor}>
             <a href="#home">Home</a>
             <a href="#about">About</a>
             <a href="#services">Services</a>
             <a href="#team">Team</a>
+            <a href="#gallery">Gallery</a>
+            <a href="#packages">Packages</a>
             <a href="#contact">Contact</a>
           </NavLinks>
           <OwnerLink onClick={handleOwnerClick}>
