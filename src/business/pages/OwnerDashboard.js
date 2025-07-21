@@ -2281,8 +2281,7 @@ const OwnerDashboard = () => {
                     type="file"
                     accept="image/*"
                     multiple
-                    onChange={(e) => {
-                      const files = Array.from(e.target.files);
+                    onChange={() => {
                       // Bulk upload functionality would be implemented here
                     }}
                   />
