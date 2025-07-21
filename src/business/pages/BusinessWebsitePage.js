@@ -13,6 +13,8 @@ import {
   FaInstagram,
   FaLinkedin,
   FaArrowLeft,
+  FaBars,
+  FaTimes,
 } from "react-icons/fa";
 import { theme } from "../../styles/GlobalStyle";
 import { getBusinessTemplate } from "../data/businessTemplates";
