@@ -45,7 +45,7 @@ const WeddingCategoryLanding = () => {
       subtitle="Create breathtaking wedding websites that capture love stories and help couples plan their perfect day with our romantic and elegant templates."
       gradient="linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)"
       mockups={mockups}
-      demoUrl="/demo-wedding"
+      demoUrl="/elegant-events"
       demoButtonText="See Demo Wedding Website"
     />
   );
