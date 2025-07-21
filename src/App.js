@@ -37,6 +37,7 @@ import {
 import EcommerceModule from "./ecommerce";
 import AutomobileModule from "./automobiles";
 import WeddingModule from "./weddings";
+import BusinessModule from "./business";
 import SellerDashboardDemo from "./ecommerce/pages/SellerDashboardDemo";
 
 // Store Listing Pages
@@ -105,8 +106,13 @@ function App() {
             {/* Automobile Routes */}
             <Route path="/automobiles/*" element={<AutomobileModule />} />
 
-            {/* Wedding Routes */}
+                        {/* Wedding Routes */}
             <Route path="/weddings/*" element={<WeddingModule />} />
+
+                        {/* Business Website Routes */}
+            <Route path="/business-websites" element={<BusinessModule />} />
+            <Route path="/business/:businessSlug/owner" element={<BusinessModule />} />
+            <Route path="/business/:businessSlug" element={<BusinessModule />} />
 
                                     {/* Store-specific Routes (more specific routes first) */}
             <Route path="/:storeSlug/products" element={<EcommerceModule />} />
@@ -139,15 +145,7 @@ function App() {
               element={<AutomobileModule />}
             />
 
-                                                {/* Wedding vendor-specific Routes (more specific routes first) */}
-            <Route path="/:vendorSlug/portfolio" element={<WeddingModule />} />
-            <Route path="/:vendorSlug/dashboard" element={<WeddingModule />} />
-            <Route path="/:vendorSlug/booking" element={<WeddingModule />} />
-            <Route path="/:vendorSlug/booking/:serviceId" element={<WeddingModule />} />
-
-            
-
-            {/* Hotel-specific Routes (more specific routes first) */}
+                                                            {/* Hotel-specific Routes (more specific routes first) */}
             <Route path="/:hotelSlug/rooms/:roomId" element={<HotelModule />} />
             <Route
               path="/:hotelSlug/booking/:roomId"
@@ -155,7 +153,15 @@ function App() {
             />
             <Route path="/:hotelSlug/booking" element={<HotelModule />} />
 
-            {/* Generic slug routes - SmartRouter determines hotel vs store */}
+            {/* Wedding vendor-specific Routes (more specific routes first) */}
+            <Route path="/:vendorSlug/portfolio" element={<WeddingModule />} />
+            <Route path="/:vendorSlug/dashboard" element={<WeddingModule />} />
+            <Route path="/:vendorSlug/booking" element={<WeddingModule />} />
+            <Route path="/:vendorSlug/booking/:serviceId" element={<WeddingModule />} />
+
+            
+
+                                    {/* Generic slug routes - SmartRouter determines hotel vs store */}
             <Route path="/:slug" element={<SmartRouter />} />
 
             {/* Seller Dashboard Demo */}
