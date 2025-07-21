@@ -1428,7 +1428,19 @@ const BusinessWebsitePage = () => {
     };
   };
 
-  const content = getBusinessContent(businessData.slug);
+    const content = getBusinessContent(businessData.slug);
+
+  // Safety check to ensure content is loaded
+  if (!content) {
+    return (
+      <PageContainer>
+        <div style={{ padding: "4rem", textAlign: "center" }}>
+          <h2>Loading...</h2>
+          <p>Please wait while we load the content.</p>
+        </div>
+      </PageContainer>
+    );
+  }
 
   return (
     <PageContainer>
