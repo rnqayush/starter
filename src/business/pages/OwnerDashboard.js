@@ -1118,7 +1118,7 @@ const OwnerDashboard = () => {
               <h3 style={{ marginBottom: theme.spacing.lg, color: theme.colors.gray900 }}>Portfolio Projects</h3>
 
               {(currentData.portfolio || []).map((project, index) => (
-                <div key={index} style={{
+                                <div key={project.id} style={{
                   background: theme.colors.white,
                   border: `1px solid ${theme.colors.gray200}`,
                   borderRadius: theme.borderRadius.lg,
@@ -1133,11 +1133,11 @@ const OwnerDashboard = () => {
                   }}>
                     <h4 style={{ fontWeight: 600, color: theme.colors.gray900 }}>{project.title}</h4>
                     <div style={{ display: 'flex', gap: theme.spacing.sm }}>
-                      <Button>
+                      <Button onClick={() => openModal('portfolio', project)}>
                         <FaEdit />
                         Edit
                       </Button>
-                      <Button>
+                      <Button onClick={() => handleDelete('portfolio', project.id)}>
                         <FaTrash />
                         Delete
                       </Button>
@@ -1168,7 +1168,7 @@ const OwnerDashboard = () => {
                         marginBottom: theme.spacing.xs,
                         textTransform: 'uppercase'
                       }}>Technologies</label>
-                      <div style={{ color: theme.colors.gray900, fontWeight: 500 }}>{project.tech}</div>
+                      <div style={{ color: theme.colors.gray900, fontWeight: 500 }}>{project.technologies?.join(', ')}</div>
                     </div>
                     <div>
                       <label style={{
@@ -1178,8 +1178,8 @@ const OwnerDashboard = () => {
                         color: theme.colors.gray700,
                         marginBottom: theme.spacing.xs,
                         textTransform: 'uppercase'
-                      }}>Status</label>
-                      <div style={{ color: theme.colors.gray900, fontWeight: 500 }}>Published</div>
+                      }}>Description</label>
+                      <div style={{ color: theme.colors.gray600, fontSize: '0.9rem' }}>{project.description}</div>
                     </div>
                   </div>
                 </div>
