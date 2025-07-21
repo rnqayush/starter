@@ -284,7 +284,220 @@ const SectionItem = styled.div`
   .section-actions {
     display: flex;
     gap: ${theme.spacing.sm};
+    }
+`;
+
+// Modal and Form Styles
+const ModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: ${theme.spacing.lg};
+`;
+
+const ModalContent = styled.div`
+  background: ${theme.colors.white};
+  border-radius: ${theme.borderRadius.xl};
+  padding: ${theme.spacing.xl};
+  max-width: 600px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: ${theme.shadows.xl};
+  position: relative;
+`;
+
+const ModalHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: ${theme.spacing.xl};
+  padding-bottom: ${theme.spacing.lg};
+  border-bottom: 1px solid ${theme.colors.gray200};
+
+  h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: ${theme.colors.gray900};
+    margin: 0;
   }
+`;
+
+const CloseButton = styled.button`
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: ${theme.colors.gray500};
+  cursor: pointer;
+  padding: ${theme.spacing.sm};
+  border-radius: ${theme.borderRadius.md};
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: ${theme.colors.gray100};
+    color: ${theme.colors.gray700};
+  }
+`;
+
+const FormField = styled.div`
+  margin-bottom: ${theme.spacing.lg};
+
+  label {
+    display: block;
+    font-weight: 600;
+    color: ${theme.colors.gray900};
+    margin-bottom: ${theme.spacing.sm};
+    font-size: 0.9rem;
+  }
+
+  input, textarea, select {
+    width: 100%;
+    padding: ${theme.spacing.md};
+    border: 2px solid ${theme.colors.gray200};
+    border-radius: ${theme.borderRadius.md};
+    font-size: 1rem;
+    transition: border-color 0.2s ease;
+    font-family: inherit;
+
+    &:focus {
+      outline: none;
+      border-color: ${props => props.primaryColor || theme.colors.primary};
+    }
+  }
+
+  textarea {
+    min-height: 100px;
+    resize: vertical;
+  }
+
+  .help-text {
+    font-size: 0.8rem;
+    color: ${theme.colors.gray500};
+    margin-top: ${theme.spacing.xs};
+  }
+`;
+
+const TagInput = styled.div`
+  .tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: ${theme.spacing.sm};
+    margin-bottom: ${theme.spacing.sm};
+  }
+
+  .tag {
+    background: ${props => props.primaryColor + '20' || theme.colors.primary + '20'};
+    color: ${props => props.primaryColor || theme.colors.primary};
+    padding: ${theme.spacing.xs} ${theme.spacing.sm};
+    border-radius: ${theme.borderRadius.sm};
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: ${theme.spacing.xs};
+
+    .remove {
+      cursor: pointer;
+      font-weight: bold;
+
+      &:hover {
+        color: ${theme.colors.error};
+      }
+    }
+  }
+
+  .tag-input {
+    padding: ${theme.spacing.sm};
+    border: 1px solid ${theme.colors.gray300};
+    border-radius: ${theme.borderRadius.sm};
+    font-size: 0.9rem;
+
+    &:focus {
+      outline: none;
+      border-color: ${props => props.primaryColor || theme.colors.primary};
+    }
+  }
+`;
+
+const RangeSlider = styled.input`
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: ${theme.colors.gray200};
+  outline: none;
+  -webkit-appearance: none;
+
+  &::-webkit-slider-thumb {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: ${props => props.primaryColor || theme.colors.primary};
+    cursor: pointer;
+  }
+
+  &::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: ${props => props.primaryColor || theme.colors.primary};
+    cursor: pointer;
+    border: none;
+  }
+`;
+
+const ModalActions = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  gap: ${theme.spacing.md};
+  margin-top: ${theme.spacing.xl};
+  padding-top: ${theme.spacing.lg};
+  border-top: 1px solid ${theme.colors.gray200};
+`;
+
+const ActionButton = styled.button.withConfig({
+  shouldForwardProp: (prop) => prop !== 'variant' && prop !== 'primaryColor',
+})`
+  padding: ${theme.spacing.md} ${theme.spacing.lg};
+  border-radius: ${theme.borderRadius.md};
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.sm};
+
+  ${props => props.variant === 'primary' ? `
+    background: ${props.primaryColor || theme.colors.primary};
+    color: ${theme.colors.white};
+
+    &:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+  ` : props.variant === 'danger' ? `
+    background: ${theme.colors.error};
+    color: ${theme.colors.white};
+
+    &:hover {
+      background: #dc2626;
+    }
+  ` : `
+    background: ${theme.colors.white};
+    color: ${theme.colors.gray700};
+    border: 1px solid ${theme.colors.gray300};
+
+    &:hover {
+      background: ${theme.colors.gray50};
+    }
+  `}
 `;
 
 const OwnerDashboard = () => {
