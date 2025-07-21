@@ -30,6 +30,10 @@ const Container = styled.div`
   margin: 0 auto;
   padding: ${theme.spacing.xl} ${theme.spacing.md};
   flex: 1;
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.lg} ${theme.spacing.sm};
+  }
 `;
 
 const BackButton = styled.button`
@@ -43,9 +47,17 @@ const BackButton = styled.button`
   margin-bottom: ${theme.spacing.xl};
   cursor: pointer;
   transition: all 0.2s ease;
+  font-size: 1rem;
 
   &:hover {
     transform: translateX(-4px);
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: ${theme.spacing.lg};
+    padding: ${theme.spacing.sm} 0;
   }
 `;
 
@@ -57,6 +69,10 @@ const RoomGrid = styled.div`
   @media (max-width: ${theme.breakpoints.tablet}) {
     grid-template-columns: 1fr;
     gap: ${theme.spacing.xl};
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    gap: ${theme.spacing.lg};
   }
 `;
 
@@ -70,10 +86,23 @@ const BookingCard = styled.div`
   position: sticky;
   top: ${theme.spacing.xl};
   height: fit-content;
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    position: static;
+    padding: ${theme.spacing.xl};
+    margin: 0 -${theme.spacing.xs};
+    order: -1;
+    border-radius: ${theme.borderRadius.lg};
+    box-shadow: ${theme.shadows.xl};
+  }
 `;
 
 const ImageGallery = styled.div`
   margin-bottom: ${theme.spacing.xl};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    margin-bottom: ${theme.spacing.lg};
+  }
 `;
 
 const MainImage = styled.img`
@@ -82,12 +111,26 @@ const MainImage = styled.img`
   object-fit: cover;
   border-radius: ${theme.borderRadius.lg};
   margin-bottom: ${theme.spacing.md};
+  box-shadow: ${theme.shadows.md};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    height: 300px;
+    border-radius: ${theme.borderRadius.xl};
+    box-shadow: ${theme.shadows.lg};
+    margin: 0 -${theme.spacing.xs} ${theme.spacing.lg};
+  }
 `;
 
 const ThumbnailGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   gap: ${theme.spacing.md};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    grid-template-columns: repeat(4, 1fr);
+    gap: ${theme.spacing.sm};
+    padding: 0 ${theme.spacing.xs};
+  }
 `;
 
 const Thumbnail = styled.img.withConfig({
