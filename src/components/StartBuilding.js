@@ -11,7 +11,6 @@ import {
   FaArrowRight,
   FaCheck,
   FaUpload,
-  FaGlobe,
   FaRocket,
 } from "react-icons/fa";
 import { theme, media } from "../styles/GlobalStyle";

@@ -289,7 +289,7 @@ export const RecommendationUtils = {
       .filter(p => preferences.preferredCategories.includes(p.category))
       .sort((a, b) => {
         // Score based on rating and price similarity
-        const priceScore = 1 - Math.abs(p.price - preferences.averagePriceRange) / 1000;
+        const priceScore = 1 - Math.abs(b.price - preferences.averagePriceRange) / 1000;
         const ratingScore = b.rating / 5;
         return (ratingScore + priceScore) - (a.rating / 5 + Math.abs(a.price - preferences.averagePriceRange) / 1000);
       })

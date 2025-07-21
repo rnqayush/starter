@@ -313,30 +313,7 @@ const EditableField = styled.div.withConfig({
   }
 `;
 
-const ImageUpload = styled.div`
-  border: 2px dashed ${theme.colors.gray300};
-  border-radius: ${theme.borderRadius.lg};
-  padding: ${theme.spacing.xl};
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
 
-  &:hover {
-    border-color: ${props => props.primaryColor || theme.colors.primary};
-    background: ${props => props.primaryColor + '05' || theme.colors.gray50};
-  }
-
-  .icon {
-    font-size: 2rem;
-    color: ${theme.colors.gray400};
-    margin-bottom: ${theme.spacing.md};
-  }
-
-  p {
-    color: ${theme.colors.gray600};
-    font-weight: 500;
-  }
-`;
 
 const SectionList = styled.div`
   display: flex;
@@ -942,12 +919,7 @@ const OwnerDashboard = () => {
     }));
   };
 
-  const handleArrayFieldChange = (field, value) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: value
-    }));
-  };
+
 
   const handleSave = () => {
     if (!modalType) return;

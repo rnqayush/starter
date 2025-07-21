@@ -10,15 +10,9 @@ import {
   FaTimes,
   FaEye,
   FaImages,
-  FaBed,
-  FaUtensils,
   FaSwimmingPool,
-  FaBusinessTime,
   FaStar,
-  FaMapMarkerAlt,
   FaPhone,
-  FaEnvelope,
-  FaClock,
   FaArrowLeft,
 } from "react-icons/fa";
 import { theme } from "../../styles/GlobalStyle";
@@ -235,19 +229,9 @@ const ImageItem = styled.div`
   }
 `;
 
-const SectionsList = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${theme.spacing.lg};
-`;
 
-const SectionItem = styled.div`
-  background: ${theme.colors.white};
-  border: 1px solid ${theme.colors.gray200};
-  border-radius: ${theme.borderRadius.lg};
-  padding: ${theme.spacing.lg};
-  position: relative;
-`;
+
+
 
 const SectionHeader = styled.div`
   display: flex;
@@ -256,17 +240,9 @@ const SectionHeader = styled.div`
   margin-bottom: ${theme.spacing.md};
 `;
 
-const SectionTitle = styled.h3`
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: ${theme.colors.gray900};
-  margin: 0;
-`;
 
-const SectionActions = styled.div`
-  display: flex;
-  gap: ${theme.spacing.sm};
-`;
+
+
 
 const ActionButton = styled.button`
   background: ${theme.colors.white};
@@ -318,7 +294,7 @@ const HotelContentManager = () => {
   const navigate = useNavigate();
   const [hotel, setHotel] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [editingSection, setEditingSection] = useState(null);
+
   const [formData, setFormData] = useState({
     name: "",
     description: "",

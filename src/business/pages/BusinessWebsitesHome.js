@@ -4,10 +4,8 @@ import styled from "styled-components";
 import {
   FaArrowLeft,
   FaSearch,
-  FaFilter,
   FaEye,
   FaCheck,
-  FaStar,
 } from "react-icons/fa";
 import { theme } from "../../styles/GlobalStyle";
 import Header from "../../components/shared/Header";
