@@ -1260,23 +1260,24 @@ const OwnerDashboard = () => {
             <div>
               <h3 style={{ marginBottom: theme.spacing.lg, color: theme.colors.gray900 }}>Professional Experience</h3>
 
-              <SectionList>
-                {[
-                  { company: 'Digital Agency Inc.', role: 'Senior Creative Designer', period: '2020 - Present' },
-                  { company: 'Freelance', role: 'Independent Designer & Developer', period: '2018 - Present' },
-                  { company: 'Tech Startup Co.', role: 'UI/UX Designer', period: '2018 - 2020' }
-                ].map((exp, index) => (
-                  <SectionItem key={index}>
+                            <SectionList>
+                {(currentData.experience || []).map((exp, index) => (
+                  <SectionItem key={exp.id}>
                     <div className="section-info">
                       <h4>{exp.role}</h4>
                       <p>{exp.company} • {exp.period}</p>
+                      {exp.description && (
+                        <div style={{ fontSize: '0.8rem', color: theme.colors.gray500, marginTop: '4px' }}>
+                          {exp.description.substring(0, 100)}...
+                        </div>
+                      )}
                     </div>
                     <div className="section-actions">
-                      <Button>
+                      <Button onClick={() => openModal('experience', exp)}>
                         <FaEdit />
                         Edit
                       </Button>
-                      <Button>
+                      <Button onClick={() => handleDelete('experience', exp.id)}>
                         <FaTrash />
                         Delete
                       </Button>
@@ -1289,6 +1290,7 @@ const OwnerDashboard = () => {
                 variant="primary"
                 primaryColor={businessData.primaryColor}
                 style={{ marginTop: theme.spacing.lg }}
+                onClick={() => openModal('experience')}
               >
                 <FaPlus />
                 Add Experience
