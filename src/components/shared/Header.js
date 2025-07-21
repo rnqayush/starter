@@ -535,6 +535,7 @@ const MobileAuthButton = styled(Link)`
 const Header = ({ isOwnerView = false }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const dropdownRef = useRef(null);
 
     const closeMobileMenu = () => setMobileMenuOpen(false);
@@ -589,6 +590,17 @@ const Header = ({ isOwnerView = false }) => {
     };
   }, [mobileMenuOpen]);
 
+  // Handle scroll detection for navbar transparency
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+      setIsScrolled(scrollPosition > 50);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   const handleDropdownItemClick = () => {
     closeDropdown();
     closeMobileMenu();
@@ -596,11 +608,12 @@ const Header = ({ isOwnerView = false }) => {
 
     return (
     <>
-      <HeaderContainer>
+      <HeaderContainer isScrolled={isScrolled}>
         <HeaderContent>
           <Logo
             to={isOwnerView ? "/owner/dashboard" : "/"}
             onClick={closeMobileMenu}
+            isScrolled={isScrolled}
           >
             <FaHotel />
             StoreBuilder
@@ -609,31 +622,32 @@ const Header = ({ isOwnerView = false }) => {
           <Nav isOpen={mobileMenuOpen}>
             {isOwnerView ? (
               <>
-                <NavLink to="/owner/dashboard" onClick={closeMobileMenu}>
+                <NavLink to="/owner/dashboard" onClick={closeMobileMenu} isScrolled={isScrolled}>
                   Dashboard
                 </NavLink>
-                <NavLink to="/owner/my-hotels" onClick={closeMobileMenu}>
+                <NavLink to="/owner/my-hotels" onClick={closeMobileMenu} isScrolled={isScrolled}>
                   My Hotels
                 </NavLink>
-                <NavLink to="/owner/bookings" onClick={closeMobileMenu}>
+                <NavLink to="/owner/bookings" onClick={closeMobileMenu} isScrolled={isScrolled}>
                   Bookings
                 </NavLink>
-                <NavLink to="/owner/profile" onClick={closeMobileMenu}>
+                <NavLink to="/owner/profile" onClick={closeMobileMenu} isScrolled={isScrolled}>
                   Profile
                 </NavLink>
               </>
             ) : (
               <>
-                <NavLink to="/" onClick={closeMobileMenu}>
+                <NavLink to="/" onClick={closeMobileMenu} isScrolled={isScrolled}>
                   Home
                 </NavLink>
-                <NavLink to="/pricing" onClick={closeMobileMenu}>
+                <NavLink to="/pricing" onClick={closeMobileMenu} isScrolled={isScrolled}>
                   Pricing
                 </NavLink>
                 <DropdownContainer ref={dropdownRef}>
                   <DropdownButton
                     onClick={toggleDropdown}
                     isOpen={dropdownOpen}
+                    isScrolled={isScrolled}
                     aria-expanded={dropdownOpen}
                     aria-haspopup="true"
                     aria-label="Explore Stores menu"
@@ -694,13 +708,14 @@ const Header = ({ isOwnerView = false }) => {
           </Nav>
 
           <UserSection>
-            <LoginButton to="/login" onClick={closeMobileMenu}>
+            <LoginButton to="/login" onClick={closeMobileMenu} isScrolled={isScrolled}>
               Login
             </LoginButton>
             <RegisterButton
               as={Link}
               to="/register"
               onClick={closeMobileMenu}
+              isScrolled={isScrolled}
               style={{ textDecoration: "none" }}
             >
               Register
@@ -710,6 +725,7 @@ const Header = ({ isOwnerView = false }) => {
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
               aria-expanded={mobileMenuOpen}
+              isScrolled={isScrolled}
             >
               {mobileMenuOpen ? <FaTimes /> : <FaBars />}
             </MobileMenuButton>
