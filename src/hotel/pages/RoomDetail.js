@@ -148,6 +148,12 @@ const Thumbnail = styled.img.withConfig({
   &:hover {
     border-color: ${theme.colors.primary};
   }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    height: 60px;
+    border-radius: ${theme.borderRadius.lg};
+    border-width: 3px;
+  }
 `;
 
 const RoomHeader = styled.div`
@@ -155,6 +161,13 @@ const RoomHeader = styled.div`
   justify-content: space-between;
   align-items: flex-start;
   margin-bottom: ${theme.spacing.lg};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    flex-direction: column;
+    gap: ${theme.spacing.lg};
+    align-items: center;
+    text-align: center;
+  }
 `;
 
 const RoomInfo = styled.div`
@@ -164,6 +177,10 @@ const RoomInfo = styled.div`
 const RoomActions = styled.div`
   display: flex;
   gap: ${theme.spacing.md};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    gap: ${theme.spacing.lg};
+  }
 `;
 
 const ActionButton = styled.button`
@@ -175,10 +192,21 @@ const ActionButton = styled.button`
   font-size: 1.1rem;
   cursor: pointer;
   transition: all 0.2s ease;
+  box-shadow: ${theme.shadows.sm};
 
   &:hover {
     border-color: ${theme.colors.primary};
     color: ${theme.colors.primary};
+    transform: translateY(-1px);
+    box-shadow: ${theme.shadows.md};
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.md};
+    font-size: 1.3rem;
+    border-radius: ${theme.borderRadius.lg};
+    border-width: 3px;
+    box-shadow: ${theme.shadows.md};
   }
 `;
 
@@ -189,7 +217,9 @@ const RoomName = styled.h1`
   margin-bottom: ${theme.spacing.sm};
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    font-size: 2rem;
+    font-size: 2.2rem;
+    line-height: 1.3;
+    text-align: center;
   }
 `;
 
