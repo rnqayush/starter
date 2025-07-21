@@ -346,7 +346,6 @@ const HotelContentManager = () => {
   const handleSaveBasicInfo = (e) => {
     e.preventDefault();
     // Here you would save to your backend
-    console.log("Saving basic info:", formData);
     alert("Basic information saved!");
   };
 
