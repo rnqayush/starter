@@ -28,6 +28,7 @@ const MainContent = styled.main`
   ${media.mobile} {
     padding: ${theme.spacing.lg} ${theme.spacing.sm};
     padding-top: 4rem;
+    background: ${theme.colors.gray50};
   }
 
   ${media.desktop} {
@@ -40,6 +41,7 @@ const DashboardHeader = styled.div`
 
   ${media.mobile} {
     margin-bottom: ${theme.spacing.xl};
+    text-align: center;
   }
 
   ${media.tablet} {
@@ -52,9 +54,18 @@ const WelcomeTitle = styled.h1`
   font-weight: 700;
   margin-bottom: ${theme.spacing.sm};
   color: ${theme.colors.gray900};
+  background: linear-gradient(135deg, ${theme.colors.primary}, ${theme.colors.primaryDark});
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1.2;
 
   ${media.mobile} {
-    font-size: 1.875rem;
+    font-size: 2rem;
+    text-align: center;
+    color: ${theme.colors.gray900};
+    background: none;
+    -webkit-text-fill-color: unset;
   }
 
   ${media.tablet} {
@@ -65,9 +76,12 @@ const WelcomeTitle = styled.h1`
 const WelcomeSubtitle = styled.p`
   font-size: 1.125rem;
   color: ${theme.colors.gray600};
+  line-height: 1.6;
 
   ${media.mobile} {
-    font-size: 1rem;
+    font-size: 1.1rem;
+    text-align: center;
+    padding: 0 ${theme.spacing.sm};
   }
 `;
 
@@ -78,7 +92,7 @@ const StatsGrid = styled.div`
   margin-bottom: ${theme.spacing.xxl};
 
   ${media.mobile} {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
     gap: ${theme.spacing.md};
     margin-bottom: ${theme.spacing.xl};
   }
@@ -96,6 +110,20 @@ const StatsGrid = styled.div`
 const StatCard = styled(Card)`
   background: ${(props) => props.color || theme.colors.white};
   color: ${(props) => props.textColor || theme.colors.gray900};
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: ${theme.shadows.xl};
+    border-color: ${theme.colors.primary};
+  }
+
+  ${media.mobile} {
+    &:hover {
+      transform: translateY(-2px);
+    }
+  }
 `;
 
 const StatIcon = styled.div.withConfig({
@@ -112,12 +140,14 @@ const StatIcon = styled.div.withConfig({
   font-size: 1.5rem;
   margin-bottom: ${theme.spacing.md};
   flex-shrink: 0;
+  transition: all 0.3s ease;
 
   ${media.mobile} {
-    width: 3rem;
-    height: 3rem;
-    font-size: 1.25rem;
-    margin-bottom: ${theme.spacing.sm};
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1rem;
+    margin: 0 auto ${theme.spacing.sm};
+    border-radius: ${theme.borderRadius.md};
   }
 
   ${media.tablet} {
@@ -134,7 +164,9 @@ const StatValue = styled.div`
   line-height: 1;
 
   ${media.mobile} {
-    font-size: 2rem;
+    font-size: 1.75rem;
+    text-align: center;
+    color: ${theme.colors.primary};
   }
 
   ${media.tablet} {
@@ -146,11 +178,14 @@ const StatLabel = styled.div`
   font-size: 0.875rem;
   opacity: 0.8;
   line-height: 1.3;
+  font-weight: 500;
 
   ${media.mobile} {
-    font-size: 0.8125rem;
+    font-size: 0.85rem;
+    text-align: center;
+    font-weight: 600;
+    opacity: 0.9;
   }
-  font-weight: 500;
 `;
 
 const SectionTitle = styled.h2`
@@ -158,6 +193,14 @@ const SectionTitle = styled.h2`
   font-weight: 600;
   margin-bottom: ${theme.spacing.xl};
   color: ${theme.colors.gray900};
+
+  ${media.mobile} {
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: ${theme.spacing.lg};
+    padding: 0 ${theme.spacing.sm};
+  }
 `;
 
 const QuickActionsGrid = styled.div`
@@ -165,14 +208,35 @@ const QuickActionsGrid = styled.div`
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: ${theme.spacing.xl};
   margin-bottom: ${theme.spacing.xxl};
+
+  ${media.mobile} {
+    grid-template-columns: repeat(2, 1fr);
+    gap: ${theme.spacing.md};
+    margin-bottom: ${theme.spacing.xl};
+  }
+
+  ${media.tablet} {
+    grid-template-columns: repeat(2, 1fr);
+    gap: ${theme.spacing.lg};
+  }
 `;
 
 const ActionCard = styled(Card)`
   text-align: center;
   cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
 
   &:hover {
     transform: translateY(-4px);
+    box-shadow: ${theme.shadows.xl};
+    border-color: ${theme.colors.primary};
+  }
+
+  ${media.mobile} {
+    &:hover {
+      transform: translateY(-2px);
+    }
   }
 `;
 
@@ -187,6 +251,14 @@ const ActionIcon = styled.div`
   justify-content: center;
   font-size: 2rem;
   margin: 0 auto ${theme.spacing.lg};
+  transition: all 0.3s ease;
+
+  ${media.mobile} {
+    width: 50px;
+    height: 50px;
+    font-size: 1.3rem;
+    margin: 0 auto ${theme.spacing.md};
+  }
 `;
 
 const ActionTitle = styled.h3`
@@ -194,12 +266,25 @@ const ActionTitle = styled.h3`
   font-weight: 600;
   margin-bottom: ${theme.spacing.sm};
   color: ${theme.colors.gray900};
+  line-height: 1.3;
+
+  ${media.mobile} {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: ${theme.spacing.xs};
+  }
 `;
 
 const ActionDescription = styled.p`
   color: ${theme.colors.gray600};
   margin-bottom: ${theme.spacing.lg};
   line-height: 1.5;
+
+  ${media.mobile} {
+    font-size: 0.85rem;
+    margin-bottom: ${theme.spacing.md};
+    display: none;
+  }
 `;
 
 const RecentBookingsSection = styled.section`
@@ -211,6 +296,11 @@ const BookingsTable = styled.div`
   border-radius: ${theme.borderRadius.lg};
   overflow: hidden;
   box-shadow: ${theme.shadows.md};
+
+  ${media.mobile} {
+    margin: 0 -${theme.spacing.xs};
+    border-radius: ${theme.borderRadius.md};
+  }
 `;
 
 const TableHeader = styled.div`
@@ -241,21 +331,67 @@ const TableRow = styled.div`
   @media (max-width: ${theme.breakpoints.mobile}) {
     grid-template-columns: 1fr;
     gap: ${theme.spacing.sm};
-    padding: ${theme.spacing.md};
+    padding: ${theme.spacing.lg};
+    background: ${theme.colors.white};
+    border-radius: ${theme.borderRadius.md};
+    margin-bottom: ${theme.spacing.sm};
+    box-shadow: ${theme.shadows.sm};
   }
 `;
 
-const BookingInfo = styled.div``;
+const BookingInfo = styled.div`
+  ${media.mobile} {
+    text-align: center;
+    margin-bottom: ${theme.spacing.sm};
+  }
+`;
 
 const GuestName = styled.div`
   font-weight: 600;
   margin-bottom: ${theme.spacing.xs};
   color: ${theme.colors.gray900};
+
+  ${media.mobile} {
+    font-size: 1.1rem;
+    margin-bottom: ${theme.spacing.sm};
+  }
 `;
 
 const HotelRoom = styled.div`
   font-size: 0.875rem;
   color: ${theme.colors.gray600};
+
+  ${media.mobile} {
+    font-size: 1rem;
+  }
+`;
+
+const MobileBookingDetails = styled.div`
+  display: none;
+
+  ${media.mobile} {
+    display: flex;
+    justify-content: space-around;
+    padding: ${theme.spacing.sm} 0;
+    border-top: 1px solid ${theme.colors.gray100};
+    margin-top: ${theme.spacing.sm};
+    font-size: 0.9rem;
+
+    .detail {
+      text-align: center;
+      
+      .label {
+        color: ${theme.colors.gray500};
+        font-size: 0.8rem;
+        margin-bottom: 2px;
+      }
+      
+      .value {
+        font-weight: 600;
+        color: ${theme.colors.gray900};
+      }
+    }
+  }
 `;
 
 const OwnerDashboard = () => {
@@ -392,7 +528,7 @@ const OwnerDashboard = () => {
         <SectionTitle>Quick Actions</SectionTitle>
         <QuickActionsGrid>
           {quickActions.map((action) => (
-            <Link key={action.title} to={action.link}>
+            <Link key={action.title} to={action.link} style={{ textDecoration: 'none' }}>
               <ActionCard>
                 <CardContent>
                   <ActionIcon>
@@ -430,20 +566,40 @@ const OwnerDashboard = () => {
                       {booking.hotelName} - {booking.roomName}
                     </HotelRoom>
                   </BookingInfo>
-                  <div>{formatDate(booking.checkIn)}</div>
-                  <div>{formatDate(booking.checkOut)}</div>
-                  <div>
+                  <div className="desktop-only">{formatDate(booking.checkIn)}</div>
+                  <div className="desktop-only">{formatDate(booking.checkOut)}</div>
+                  <div className="desktop-only">
                     <Badge variant={getStatusVariant(booking.status)}>
                       {booking.status.charAt(0).toUpperCase() +
                         booking.status.slice(1)}
                     </Badge>
                   </div>
-                  <div>
+                  <div className="desktop-only">
                     <Button variant="outline" size="small">
                       <FaEye />
                       View
                     </Button>
                   </div>
+                  
+                  <MobileBookingDetails>
+                    <div className="detail">
+                      <div className="label">Check-in</div>
+                      <div className="value">{formatDate(booking.checkIn)}</div>
+                    </div>
+                    <div className="detail">
+                      <div className="label">Check-out</div>
+                      <div className="value">{formatDate(booking.checkOut)}</div>
+                    </div>
+                    <div className="detail">
+                      <div className="label">Status</div>
+                      <div className="value">
+                        <Badge variant={getStatusVariant(booking.status)}>
+                          {booking.status.charAt(0).toUpperCase() +
+                            booking.status.slice(1)}
+                        </Badge>
+                      </div>
+                    </div>
+                  </MobileBookingDetails>
                 </TableRow>
               ))
             ) : (
