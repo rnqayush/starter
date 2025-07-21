@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { FaArrowLeft, FaCheck, FaStar, FaPhone, FaEnvelope, FaMapMarkerAlt } from "react-icons/fa";
+import { FaArrowLeft } from "react-icons/fa";
 import Header from "../shared/Header";
 import { Button } from "../shared/Button";
 import { theme, media } from "../../styles/GlobalStyle";
