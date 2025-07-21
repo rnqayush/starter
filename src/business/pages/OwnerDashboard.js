@@ -565,11 +565,80 @@ const OwnerDashboard = () => {
     navigate(`/business/${businessData.slug}`);
   };
 
-  const handlePreview = () => {
+    const handlePreview = () => {
     window.open(`/business/${businessData.slug}`, '_blank');
   };
 
-    const menuItems = businessData?.slug === 'freelancer' ? [
+  // Modal and form handlers
+  const openModal = (type, item = null) => {
+    setModalType(type);
+    setEditingItem(item);
+    setFormData(item || {});
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    setModalType('');
+    setEditingItem(null);
+    setFormData({});
+  };
+
+  const handleInputChange = (field, value) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
+  const handleArrayFieldChange = (field, value) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
+  const handleSave = () => {
+    if (!modalType) return;
+
+    if (modalType.includes('hero') || modalType.includes('about')) {
+      setCurrentData(prev => ({
+        ...prev,
+        [modalType]: formData
+      }));
+    } else {
+      const section = modalType.split('-')[0];
+      if (editingItem) {
+        // Edit existing item
+        setCurrentData(prev => ({
+          ...prev,
+          [section]: prev[section].map(item =>
+            item.id === editingItem.id ? { ...item, ...formData } : item
+          )
+        }));
+      } else {
+        // Add new item
+        const newItem = {
+          ...formData,
+          id: Date.now() // Simple ID generation
+        };
+        setCurrentData(prev => ({
+          ...prev,
+          [section]: [...prev[section], newItem]
+        }));
+      }
+    }
+    closeModal();
+  };
+
+  const handleDelete = (section, id) => {
+    setCurrentData(prev => ({
+      ...prev,
+      [section]: prev[section].filter(item => item.id !== id)
+    }));
+  };
+
+  const menuItems = businessData?.slug === 'freelancer' ? [
     { id: 'content', label: 'Content Editor', icon: FaEdit },
     { id: 'portfolio', label: 'Portfolio Manager', icon: FaImage },
     { id: 'skills', label: 'Skills & Experience', icon: FaUsers },
