@@ -222,9 +222,24 @@ const QuickInfoCard = styled.div`
   }
 `;
 
+const MobileQuickInfoContainer = styled.div`
+  display: contents;
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: ${theme.spacing.md};
+    width: 100%;
+  }
+`;
+
 const QuickInfoIcon = styled.div`
   font-size: 1.5rem;
   color: #fbbf24;
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    font-size: 1.8rem;
+  }
 `;
 
 const QuickInfoText = styled.div`
@@ -407,6 +422,12 @@ const AmenitiesSection = styled.div`
   border-radius: ${theme.borderRadius.xl};
   padding: ${theme.spacing.xxl};
   box-shadow: ${theme.shadows.lg};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.xl};
+    border-radius: ${theme.borderRadius.lg};
+    margin: 0 -${theme.spacing.sm};
+  }
 `;
 
 const AmenitiesGrid = styled.div`
@@ -583,6 +604,13 @@ const TestimonialQuote = styled.blockquote`
     font-size: 3rem;
     color: rgba(255, 255, 255, 0.3);
   }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    font-size: 1.4rem;
+    line-height: 1.8;
+    margin: ${theme.spacing.lg} 0;
+    padding: 0 ${theme.spacing.sm};
+  }
 `;
 
 const TestimonialAuthor = styled.div`
@@ -622,6 +650,12 @@ const LocationSection = styled.div`
   border-radius: ${theme.borderRadius.xl};
   padding: ${theme.spacing.xxl};
   box-shadow: ${theme.shadows.lg};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.xl};
+    border-radius: ${theme.borderRadius.lg};
+    margin: 0 -${theme.spacing.sm};
+  }
 `;
 
 const LocationGrid = styled.div`
@@ -699,7 +733,7 @@ const ContactItem = styled.div`
 `;
 
 const MapPlaceholder = styled.div`
-  background: ${theme.colors.gray100};
+  background: linear-gradient(135deg, ${theme.colors.gray100}, ${theme.colors.gray200});
   border-radius: ${theme.borderRadius.lg};
   height: 300px;
   display: flex;
@@ -707,6 +741,13 @@ const MapPlaceholder = styled.div`
   justify-content: center;
   color: ${theme.colors.gray500};
   font-size: 1.1rem;
+  text-align: center;
+  border: 1px solid ${theme.colors.gray200};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    height: 250px;
+    font-size: 1rem;
+  }
 `;
 
 const BackToTop = styled.button`
@@ -837,24 +878,26 @@ const HotelDetail = () => {
             <CTAButton onClick={() => navigate(`/${hotel.slug}/booking`)}>
               Book Your Stay
             </CTAButton>
-            <QuickInfoCard>
-              <QuickInfoIcon>
-                <FaStar />
-              </QuickInfoIcon>
-              <QuickInfoText>
-                <div className="label">Rating</div>
-                <div className="value">{hotel.rating}/5 Stars</div>
-              </QuickInfoText>
-            </QuickInfoCard>
-            <QuickInfoCard>
-              <QuickInfoIcon>
-                <FaMapMarkerAlt />
-              </QuickInfoIcon>
-              <QuickInfoText>
-                <div className="label">Location</div>
-                <div className="value">{hotel.city}</div>
-              </QuickInfoText>
-            </QuickInfoCard>
+            <MobileQuickInfoContainer>
+              <QuickInfoCard>
+                <QuickInfoIcon>
+                  <FaStar />
+                </QuickInfoIcon>
+                <QuickInfoText>
+                  <div className="label">Rating</div>
+                  <div className="value">{hotel.rating}/5 Stars</div>
+                </QuickInfoText>
+              </QuickInfoCard>
+              <QuickInfoCard>
+                <QuickInfoIcon>
+                  <FaMapMarkerAlt />
+                </QuickInfoIcon>
+                <QuickInfoText>
+                  <div className="label">Location</div>
+                  <div className="value">{hotel.city}</div>
+                </QuickInfoText>
+              </QuickInfoCard>
+            </MobileQuickInfoContainer>
           </HeroActions>
         </HeroContent>
       </HeroBanner>
