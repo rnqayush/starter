@@ -325,6 +325,69 @@ const AmenityIcon = styled.div`
   font-size: 1.2rem;
 `;
 
+const PoliciesGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: ${theme.spacing.lg};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    grid-template-columns: 1fr;
+    gap: ${theme.spacing.md};
+  }
+`;
+
+const PolicyCard = styled.div`
+  background: ${theme.colors.white};
+  border: 1px solid ${theme.colors.gray200};
+  border-radius: ${theme.borderRadius.lg};
+  padding: ${theme.spacing.lg};
+  box-shadow: ${theme.shadows.sm};
+  transition: all 0.2s ease;
+
+  &:hover {
+    box-shadow: ${theme.shadows.md};
+    transform: translateY(-2px);
+  }
+
+  h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: ${theme.colors.gray900};
+    margin-bottom: ${theme.spacing.md};
+    display: flex;
+    align-items: center;
+    gap: ${theme.spacing.sm};
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.md};
+  }
+`;
+
+const PolicyItem = styled.div`
+  display: flex;
+  align-items: flex-start;
+  gap: ${theme.spacing.sm};
+  margin-bottom: ${theme.spacing.sm};
+  font-size: 0.95rem;
+  color: ${theme.colors.gray700};
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  .icon {
+    color: ${theme.colors.success};
+    font-size: 0.8rem;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+
+  .text {
+    line-height: 1.5;
+  }
+`;
+
 const BookingForm = styled.form`
   display: flex;
   flex-direction: column;
@@ -576,6 +639,103 @@ const RoomDetail = () => {
                   </AmenityItem>
                 ))}
               </AmenitiesGrid>
+            </Section>
+
+            <Section>
+              <SectionTitle>Room Policies & Details</SectionTitle>
+              <PoliciesGrid>
+                <PolicyCard>
+                  <h4>
+                    <FaCheckCircle style={{ color: theme.colors.success }} />
+                    Guest Policies
+                  </h4>
+                  <PolicyItem>
+                    <FaCheckCircle className="icon" />
+                    <span className="text">Couple Friendly - Unmarried couples welcome</span>
+                  </PolicyItem>
+                  <PolicyItem>
+                    <FaCheckCircle className="icon" />
+                    <span className="text">Local ID accepted for check-in</span>
+                  </PolicyItem>
+                  <PolicyItem>
+                    <FaCheckCircle className="icon" />
+                    <span className="text">Pet friendly (additional charges apply)</span>
+                  </PolicyItem>
+                  <PolicyItem>
+                    <FaCheckCircle className="icon" />
+                    <span className="text">24/7 front desk assistance</span>
+                  </PolicyItem>
+                </PolicyCard>
+
+                <PolicyCard>
+                  <h4>
+                    <FaCoffee style={{ color: theme.colors.primary }} />
+                    Services & Facilities
+                  </h4>
+                  <PolicyItem>
+                    <FaCheckCircle className="icon" />
+                    <span className="text">Complimentary breakfast included</span>
+                  </PolicyItem>
+                  <PolicyItem>
+                    <FaCheckCircle className="icon" />
+                    <span className="text">Free high-speed WiFi</span>
+                  </PolicyItem>
+                  <PolicyItem>
+                    <FaCheckCircle className="icon" />
+                    <span className="text">24/7 room service available</span>
+                  </PolicyItem>
+                  <PolicyItem>
+                    <FaCheckCircle className="icon" />
+                    <span className="text">Daily housekeeping service</span>
+                  </PolicyItem>
+                </PolicyCard>
+
+                <PolicyCard>
+                  <h4>
+                    <FaUsers style={{ color: theme.colors.primary }} />
+                    Check-in Policies
+                  </h4>
+                  <PolicyItem>
+                    <FaCheckCircle className="icon" />
+                    <span className="text">Check-in: 2:00 PM onwards</span>
+                  </PolicyItem>
+                  <PolicyItem>
+                    <FaCheckCircle className="icon" />
+                    <span className="text">Check-out: 12:00 PM</span>
+                  </PolicyItem>
+                  <PolicyItem>
+                    <FaCheckCircle className="icon" />
+                    <span className="text">Early check-in subject to availability</span>
+                  </PolicyItem>
+                  <PolicyItem>
+                    <FaCheckCircle className="icon" />
+                    <span className="text">Valid ID required at check-in</span>
+                  </PolicyItem>
+                </PolicyCard>
+
+                <PolicyCard>
+                  <h4>
+                    <FaSnowflake style={{ color: theme.colors.primary }} />
+                    Cancellation Policy
+                  </h4>
+                  <PolicyItem>
+                    <FaCheckCircle className="icon" />
+                    <span className="text">Free cancellation up to 24 hours before check-in</span>
+                  </PolicyItem>
+                  <PolicyItem>
+                    <FaCheckCircle className="icon" />
+                    <span className="text">No-show charges: 100% of first night</span>
+                  </PolicyItem>
+                  <PolicyItem>
+                    <FaCheckCircle className="icon" />
+                    <span className="text">Flexible booking options available</span>
+                  </PolicyItem>
+                  <PolicyItem>
+                    <FaCheckCircle className="icon" />
+                    <span className="text">Refundable security deposit</span>
+                  </PolicyItem>
+                </PolicyCard>
+              </PoliciesGrid>
             </Section>
           </RoomContent>
 
