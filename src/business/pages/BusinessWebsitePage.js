@@ -1644,8 +1644,36 @@ const BusinessWebsitePage = () => {
               </TeamCard>
             ))}
           </TeamGrid>
-        </SectionContainer>
+                </SectionContainer>
       </Section>
+
+      {/* Experience Section for Freelancers */}
+      {businessData.slug === 'freelancer' && content.experience ? (
+        <Section id="experience">
+          <SectionContainer>
+            <SectionTitle>Professional Experience</SectionTitle>
+            <SectionSubtitle>
+              My journey in the creative industry, working with diverse clients and challenging projects.
+            </SectionSubtitle>
+            <ExperienceTimeline>
+              {content.experience.map((exp, index) => (
+                <ExperienceCard
+                  key={index}
+                  primaryColor={businessData.primaryColor}
+                  isLeft={index % 2 === 0}
+                >
+                  <div className="experience-content">
+                    <div className="period">{exp.period}</div>
+                    <h4>{exp.role}</h4>
+                    <div className="company">{exp.company}</div>
+                    <p>{exp.description}</p>
+                  </div>
+                </ExperienceCard>
+              ))}
+            </ExperienceTimeline>
+          </SectionContainer>
+        </Section>
+      ) : null}
 
       {/* Testimonials Section */}
       <Section id="testimonials">
