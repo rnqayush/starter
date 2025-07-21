@@ -808,7 +808,83 @@ const OwnerDashboard = () => {
     { id: 'images', label: 'Media Library', icon: FaImage },
     { id: 'analytics', label: 'Analytics', icon: FaChartBar },
     { id: 'settings', label: 'Settings', icon: FaCog },
-    ];
+      ];
+
+  // Reusable Image Upload Component
+  const ImageUpload = ({ field, label, currentImage, primaryColor }) => {
+    const [tempUrl, setTempUrl] = useState('');
+
+    return (
+      <ImageUploadContainer>
+        <FormField primaryColor={primaryColor}>
+          <label>{label}</label>
+
+          {currentImage ? (
+            <ImagePreview>
+              <img src={currentImage} alt="Preview" />
+              <div className="image-overlay">
+                <div className="image-actions">
+                  <button
+                    className="image-action-btn"
+                    onClick={() => removeImage(field)}
+                    title="Remove Image"
+                  >
+                    <FaTrash />
+                  </button>
+                </div>
+              </div>
+            </ImagePreview>
+          ) : (
+            <ImageUploadArea
+              hasImage={false}
+              primaryColor={primaryColor}
+              onClick={() => document.getElementById(`file-${field}`).click()}
+            >
+              <FaUpload className="upload-icon" />
+              <div className="upload-text">Click to upload image</div>
+              <div className="upload-hint">Supports JPG, PNG, GIF up to 10MB</div>
+              <input
+                id={`file-${field}`}
+                type="file"
+                accept="image/*"
+                onChange={(e) => {
+                  const file = e.target.files[0];
+                  if (file) {
+                    handleImageUpload(file, field);
+                  }
+                }}
+              />
+            </ImageUploadArea>
+          )}
+
+          <div style={{ marginTop: theme.spacing.md }}>
+            <label style={{ fontSize: '0.8rem', marginBottom: theme.spacing.xs }}>Or enter image URL:</label>
+            <ImageUrlInput primaryColor={primaryColor}>
+              <div className="url-input">
+                <input
+                  type="url"
+                  value={tempUrl}
+                  onChange={(e) => setTempUrl(e.target.value)}
+                  placeholder="https://example.com/image.jpg"
+                />
+              </div>
+              <button
+                className="url-button"
+                onClick={() => {
+                  if (tempUrl) {
+                    handleImageUrl(tempUrl, field);
+                    setTempUrl('');
+                  }
+                }}
+              >
+                Add URL
+              </button>
+            </ImageUrlInput>
+          </div>
+        </FormField>
+      </ImageUploadContainer>
+    );
+  };
 
   // Render modal for editing
   const renderModal = () => {
