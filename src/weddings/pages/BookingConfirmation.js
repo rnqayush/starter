@@ -13,7 +13,6 @@ import {
   FaHome,
   FaShare,
   FaPrint,
-  FaDownload,
 } from "react-icons/fa";
 import { theme } from "../../styles/GlobalStyle";
 import { getVendorById } from "../data/vendors";
