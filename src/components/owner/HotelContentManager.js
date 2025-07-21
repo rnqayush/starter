@@ -422,7 +422,7 @@ const HotelContentManager = () => {
         <Header>
           <Title>Manage {hotel.name}</Title>
           <HeaderActions>
-            <BackButton onClick={() => navigate("/owner/dashboard")}>
+            <BackButton onClick={() => navigate(-1)}>
               <FaArrowLeft />
               Back to Dashboard
             </BackButton>

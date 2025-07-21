@@ -22,6 +22,9 @@ const EcommerceModule = () => {
     ComponentToRender = StoresListing;
   } else if (path === "/ecommerce-stores") {
     ComponentToRender = StoresListing;
+  } else if (path.includes("/owner")) {
+    // Store owner dashboard like "/techmart-downtown/owner"
+    ComponentToRender = SellerDashboard;
   } else if (path.includes("/seller-dashboard")) {
     ComponentToRender = SellerDashboard;
   } else if (path.includes("/my-enquiries")) {

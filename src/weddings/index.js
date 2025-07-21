@@ -18,11 +18,13 @@ const WeddingModule = () => {
   const isDirectVendorAccess = pathSegments.length === 1 && pathSegments[0] !== "weddings";
   const isVendorPortfolioAccess = pathSegments.length === 2 && pathSegments[1] === "portfolio";
   const isVendorDashboardAccess = pathSegments.length === 2 && pathSegments[1] === "dashboard";
+  const isVendorOwnerAccess = pathSegments.length === 2 && pathSegments[1] === "owner";
 
   return (
     <Routes>
       {/* Main wedding routes */}
       <Route path="/" element={
+        isVendorOwnerAccess ? <VendorDashboard /> :
         isVendorDashboardAccess ? <VendorDashboard /> :
         isVendorPortfolioAccess ? <VendorPortfolio /> :
         isDirectVendorAccess ? <VendorPage /> :
@@ -34,6 +36,7 @@ const WeddingModule = () => {
       
                         {/* Vendor-specific routes */}
       <Route path="/:vendorSlug" element={<VendorPage />} />
+      <Route path="/:vendorSlug/owner" element={<VendorDashboard />} />
       <Route path="/:vendorSlug/portfolio" element={<VendorPortfolio />} />
       <Route path="/:vendorSlug/dashboard" element={<VendorDashboard />} />
       <Route path="/:vendorSlug/booking" element={<BookingPage />} />

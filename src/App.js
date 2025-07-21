@@ -20,15 +20,7 @@ import SmartRouter from "./components/SmartRouter";
 // Hotel Module
 import HotelModule from "./hotel";
 
-// Hotel Owner Components
-import OwnerDashboard from "./components/owner/OwnerDashboard";
-import AddHotelPage from "./components/owner/AddHotelPage";
-import MyHotelsPage from "./components/owner/MyHotelsPage";
-import AddRoomPage from "./components/owner/AddRoomPage";
-import BookingsReceivedPage from "./components/owner/BookingsReceivedPage";
-import ProfileSettingsPage from "./components/owner/ProfileSettingsPage";
-import ContentManagerSelector from "./components/owner/ContentManagerSelector";
-import HotelContentManager from "./components/owner/HotelContentManager";
+
 
 // Mock data
 import {
@@ -166,6 +158,7 @@ function App() {
             />
 
             {/* Hotel-specific Routes (more specific routes first) */}
+            <Route path="/:hotelSlug/owner" element={<HotelModule />} />
             <Route path="/:hotelSlug/rooms/:roomId" element={<HotelModule />} />
             <Route
               path="/:hotelSlug/booking/:roomId"
@@ -182,21 +175,16 @@ function App() {
             {/* Generic slug routes - SmartRouter determines hotel vs store */}
             <Route path="/:slug" element={<SmartRouter />} />
 
+            {/* Owner routes for non-hotel vendors */}
+            <Route path="/:slug/owner" element={<SmartRouter />} />
+
             {/* Seller Dashboard Demo */}
             <Route
               path="/seller-dashboard-demo"
               element={<SellerDashboardDemo />}
             />
 
-            {/* Hotel Owner Routes */}
-            <Route path="/owner/dashboard" element={<OwnerDashboard />} />
-            <Route path="/owner/add-hotel" element={<AddHotelPage />} />
-            <Route path="/owner/my-hotels" element={<MyHotelsPage />} />
-            <Route path="/owner/add-room/:hotelId" element={<AddRoomPage />} />
-            <Route path="/owner/bookings" element={<BookingsReceivedPage />} />
-            <Route path="/owner/profile" element={<ProfileSettingsPage />} />
-            <Route path="/owner/content-manager" element={<ContentManagerSelector />} />
-            <Route path="/owner/content-manager/:hotelSlug" element={<HotelContentManager />} />
+
           </Routes>
             </AppContainer>
       </Router>

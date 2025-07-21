@@ -611,7 +611,7 @@ const Header = ({ isOwnerView = false }) => {
       <HeaderContainer isScrolled={isScrolled}>
         <HeaderContent>
           <Logo
-            to={isOwnerView ? "/owner/dashboard" : "/"}
+            to={isOwnerView ? "/" : "/"}
             onClick={closeMobileMenu}
             isScrolled={isScrolled}
           >
@@ -622,7 +622,7 @@ const Header = ({ isOwnerView = false }) => {
           <Nav isOpen={mobileMenuOpen}>
             {isOwnerView ? (
               <>
-                <NavLink to="/owner/dashboard" onClick={closeMobileMenu} isScrolled={isScrolled}>
+                <NavLink to="/" onClick={closeMobileMenu} isScrolled={isScrolled}>
                   Dashboard
                 </NavLink>
                 <NavLink to="/owner/my-hotels" onClick={closeMobileMenu} isScrolled={isScrolled}>

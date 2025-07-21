@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState, useMemo } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import {
   FaHotel,
@@ -293,7 +293,15 @@ const MobileActionButton = styled(Link)`
 
 const HotelNavbar = ({ showBackToMain = true }) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  // Extract hotel slug from URL path like "/taj-palace/rooms/101"
+  const hotelSlug = useMemo(() => {
+    const pathSegments = location.pathname.split('/').filter(Boolean);
+    // For hotel routes, the first segment is usually the hotel slug
+    return pathSegments.length > 0 && pathSegments[0] !== 'hotels' ? pathSegments[0] : '';
+  }, [location.pathname]);
 
   const closeMobileMenu = () => setMobileMenuOpen(false);
 
@@ -312,7 +320,7 @@ const HotelNavbar = ({ showBackToMain = true }) => {
           <NavLink to="/my-bookings" onClick={closeMobileMenu}>
             My Bookings
           </NavLink>
-          <NavLink to="/owner/dashboard" onClick={closeMobileMenu}>
+          <NavLink to={hotelSlug ? `/${hotelSlug}/owner` : "/owner/dashboard"} onClick={closeMobileMenu}>
             Hotel Owner
           </NavLink>
 

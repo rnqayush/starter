@@ -1,20 +1,26 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import HotelModule from "../hotel";
 import EcommerceModule from "../ecommerce";
 import AutomobileModule from "../automobiles";
 import WeddingModule from "../weddings";
+import BusinessModule from "../business";
 import { getHotelBySlug } from "../hotel/data/hotels";
 import { getVendorBySlug } from "../ecommerce/data/vendors";
 import { getVendorBySlug as getAutomobileVendorBySlug } from "../automobiles/data/vendors";
 import { getVendorById } from "../weddings/data/vendors";
+import { getBusinessTemplate } from "../business/data/businessTemplates";
 
 const SmartRouter = () => {
   const { slug } = useParams();
+  const location = useLocation();
 
-  // Check if this slug belongs to a hotel
+  // Check if this is an owner route (for business templates only, hotels have their own route)
+  const isOwnerRoute = location.pathname.includes('/owner');
+
+  // Check if this slug belongs to a hotel (hotels have their own /owner route, so only handle non-owner hotel routes here)
   const hotel = getHotelBySlug(slug);
-  if (hotel) {
+  if (hotel && !isOwnerRoute) {
     return <HotelModule />;
   }
 
@@ -34,6 +40,12 @@ const SmartRouter = () => {
   const weddingVendor = getVendorById(slug);
   if (weddingVendor) {
     return <WeddingModule />;
+  }
+
+  // Check if this slug belongs to a business template
+  const businessTemplate = getBusinessTemplate(slug);
+  if (businessTemplate) {
+    return <BusinessModule />;
   }
 
   // If no match found, show 404 or default behavior

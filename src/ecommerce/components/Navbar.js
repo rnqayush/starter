@@ -358,6 +358,7 @@ const UserDropdownButton = styled.button.withConfig({
   shouldForwardProp: (prop) => prop !== "theme",
 })`
   background: none;
+  border: none;
   color: ${theme.colors.gray700};
   font-size: 1rem;
   transition: color 0.2s ease;
@@ -366,6 +367,8 @@ const UserDropdownButton = styled.button.withConfig({
   gap: ${theme.spacing.xs};
   padding: ${theme.spacing.sm};
   border-radius: ${theme.borderRadius.md};
+  cursor: pointer;
+  pointer-events: auto;
 
   &:hover {
     color: ${(props) => props.theme?.primaryColor || theme.colors.primary};
@@ -572,6 +575,13 @@ const Navbar = ({
     };
   }, []);
 
+  // Close mobile menu when auth modal opens
+  useEffect(() => {
+    if (showAuthModal) {
+      setIsMenuOpen(false);
+    }
+  }, [showAuthModal]);
+
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchQuery.trim()) {
@@ -670,7 +680,11 @@ const Navbar = ({
                               {isAuthenticated ? (
             <UserDropdown ref={dropdownRef}>
               <UserDropdownButton
-                onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setIsUserDropdownOpen(!isUserDropdownOpen);
+                }}
                 theme={vendorTheme}
               >
                 <UserAvatar src={user.avatar} alt={user.name} />
@@ -815,6 +829,16 @@ const Navbar = ({
               onClick={() => setIsMenuOpen(false)}
             >
               📧 My Enquiries
+            </MobileNavLink>
+
+            <MobileNavLink
+              to="#"
+              onClick={() => {
+                setShowProfile(true);
+                setIsMenuOpen(false);
+              }}
+            >
+              👤 My Profile
             </MobileNavLink>
 
             {canAccessSeller() && (
