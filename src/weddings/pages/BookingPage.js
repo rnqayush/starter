@@ -550,7 +550,6 @@ const BookingPage = () => {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 2000));
       
-            console.log("Booking Data:", { vendor: vendor.id, ...formData });
 
       // Generate booking ID and redirect to confirmation
       const bookingId = 'WED-' + Date.now().toString().slice(-6);
