@@ -317,7 +317,14 @@ const OwnerDashboard = () => {
     window.open(`/business/${businessData.slug}`, '_blank');
   };
 
-  const menuItems = [
+    const menuItems = businessData?.slug === 'freelancer' ? [
+    { id: 'content', label: 'Content Editor', icon: FaEdit },
+    { id: 'portfolio', label: 'Portfolio Manager', icon: FaImage },
+    { id: 'skills', label: 'Skills & Experience', icon: FaUsers },
+    { id: 'design', label: 'Design & Theme', icon: FaPalette },
+    { id: 'analytics', label: 'Analytics', icon: FaChartBar },
+    { id: 'settings', label: 'Settings', icon: FaCog },
+  ] : [
     { id: 'content', label: 'Content Editor', icon: FaEdit },
     { id: 'design', label: 'Design & Theme', icon: FaPalette },
     { id: 'images', label: 'Media Library', icon: FaImage },
