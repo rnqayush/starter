@@ -701,47 +701,7 @@ const StartBuilding = () => {
     }
   };
 
-  const renderFinalStep = () => {
-    if (currentStep === totalSteps && validateStep()) {
-      return (
-        <FormSection>
-          <Title>Ready to publish!</Title>
-          <Subtitle>Review your website configuration</Subtitle>
-          
-          <Summary>
-            <SummaryItem>
-              <SummaryLabel>Website Type:</SummaryLabel>
-              <SummaryValue>{websiteTypes.find(t => t.id === formData.websiteType)?.title}</SummaryValue>
-            </SummaryItem>
-            <SummaryItem>
-              <SummaryLabel>Website URL:</SummaryLabel>
-              <SummaryValue>storebuilder.com/{formData.websiteName}</SummaryValue>
-            </SummaryItem>
-            {formData.websiteType === "professional" && (
-              <>
-                {formData.tagline && (
-                  <SummaryItem>
-                    <SummaryLabel>Tagline:</SummaryLabel>
-                    <SummaryValue>{formData.tagline}</SummaryValue>
-                  </SummaryItem>
-                )}
-                <SummaryItem>
-                  <SummaryLabel>Theme Color:</SummaryLabel>
-                  <SummaryValue>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <div style={{ width: '20px', height: '20px', background: formData.themeColor, borderRadius: '4px' }}></div>
-                      {formData.themeColor}
-                    </div>
-                  </SummaryValue>
-                </SummaryItem>
-              </>
-            )}
-          </Summary>
-        </FormSection>
-      );
-    }
-    return null;
-  };
+
 
   return (
     <Container>
