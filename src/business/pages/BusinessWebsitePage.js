@@ -1248,6 +1248,237 @@ const BusinessWebsitePage = () => {
               </TestimonialCard>
             ))}
           </TestimonialsGrid>
+                </SectionContainer>
+      </Section>
+
+      {/* Gallery Section */}
+      <Section id="gallery">
+        <SectionContainer>
+          <SectionTitle>Our Gallery</SectionTitle>
+          <SectionSubtitle>
+            Take a look at our work, facilities, and the experiences we create for our clients.
+          </SectionSubtitle>
+          <GalleryGrid>
+            {content.gallery?.map((category, index) => (
+              <GalleryCategory key={index}>
+                <GalleryImage primaryColor={businessData.primaryColor}>
+                  📸
+                </GalleryImage>
+                <GalleryInfo>
+                  <h3>{category.category}</h3>
+                  <p>{category.images} photos</p>
+                </GalleryInfo>
+              </GalleryCategory>
+            ))}
+          </GalleryGrid>
+        </SectionContainer>
+      </Section>
+
+      {/* Packages Section */}
+      {content.packages && (
+        <Section id="packages" background={theme.colors.gray50}>
+          <SectionContainer>
+            <SectionTitle>Our Packages</SectionTitle>
+            <SectionSubtitle>
+              Choose from our specially curated packages designed to give you the best value and experience.
+            </SectionSubtitle>
+            <PackagesGrid>
+              {content.packages.map((pkg, index) => (
+                <PackageCard
+                  key={index}
+                  primaryColor={businessData.primaryColor}
+                  featured={index === 1}
+                >
+                  <div className="package-name">{pkg.name}</div>
+                  <div className="package-price">{pkg.price}</div>
+                  <div className="package-duration">{pkg.duration}</div>
+                  <div className="package-description">{pkg.description}</div>
+                  <button className="package-button">Book Now</button>
+                </PackageCard>
+              ))}
+            </PackagesGrid>
+          </SectionContainer>
+        </Section>
+      )}
+
+      {/* FAQ Section */}
+      <Section id="faq">
+        <SectionContainer>
+          <SectionTitle>Frequently Asked Questions</SectionTitle>
+          <SectionSubtitle>
+            Find answers to common questions about our services, booking, and policies.
+          </SectionSubtitle>
+          <FAQContainer>
+            {[
+              {
+                question: "How far in advance should I book?",
+                answer: "We recommend booking at least 1-2 weeks in advance, especially for weekends and special occasions. However, we also accept same-day appointments based on availability."
+              },
+              {
+                question: "What is your cancellation policy?",
+                answer: "We require at least 24 hours notice for cancellations. Cancellations made less than 24 hours in advance may be subject to a fee."
+              },
+              {
+                question: "Do you offer group discounts?",
+                answer: "Yes! We offer special group rates for parties of 3 or more. Contact us for custom group pricing and package options."
+              },
+              {
+                question: "What payment methods do you accept?",
+                answer: "We accept all major credit cards, cash, and digital payments including Apple Pay and Google Pay. We also offer financing options for larger packages."
+              },
+              {
+                question: "Are your products organic/natural?",
+                answer: "We use a carefully curated selection of premium products, including many organic and natural options. We're happy to discuss specific product ingredients and alternatives for sensitive skin."
+              }
+            ].map((faq, index) => (
+              <FAQItem key={index}>
+                <FAQQuestion primaryColor={businessData.primaryColor}>
+                  {faq.question}
+                  <span>+</span>
+                </FAQQuestion>
+                <FAQAnswer>
+                  {faq.answer}
+                </FAQAnswer>
+              </FAQItem>
+            ))}
+          </FAQContainer>
+        </SectionContainer>
+      </Section>
+
+      {/* Reviews Section */}
+      <Section id="reviews" background={theme.colors.gray50}>
+        <SectionContainer>
+          <SectionTitle>Recent Reviews</SectionTitle>
+          <SectionSubtitle>
+            See what our recent customers are saying about their experiences with us.
+          </SectionSubtitle>
+          <ReviewsGrid>
+            {[
+              {
+                name: "Emma Thompson",
+                date: "2 weeks ago",
+                rating: 5,
+                review: "Absolutely amazing experience! The staff was professional, the atmosphere was relaxing, and the results exceeded my expectations. I'll definitely be coming back!"
+              },
+              {
+                name: "Michael Chen",
+                date: "1 month ago",
+                rating: 5,
+                review: "Top-notch service and quality. The attention to detail and customer care is outstanding. Highly recommend to anyone looking for excellence."
+              },
+              {
+                name: "Sarah Williams",
+                date: "3 weeks ago",
+                rating: 5,
+                review: "Best decision I made! The team is knowledgeable, friendly, and really listens to what you want. The facility is clean and modern too."
+              },
+              {
+                name: "David Rodriguez",
+                date: "1 week ago",
+                rating: 5,
+                review: "Fantastic value for money. The package I chose was perfect and included everything I needed. Will be booking again soon!"
+              },
+              {
+                name: "Lisa Park",
+                date: "2 months ago",
+                rating: 5,
+                review: "I've been a customer for over a year now and they never disappoint. Consistent quality and service every single time."
+              },
+              {
+                name: "James Wilson",
+                date: "3 days ago",
+                rating: 5,
+                review: "Exceeded all expectations! From booking to completion, everything was seamless. The results speak for themselves."
+              }
+            ].map((review, index) => (
+              <ReviewCard key={index} primaryColor={businessData.primaryColor}>
+                <div className="review-header">
+                  <div className="avatar">
+                    {review.name.split(' ').map(n => n[0]).join('')}
+                  </div>
+                  <div className="review-info">
+                    <h4>{review.name}</h4>
+                    <div className="date">{review.date}</div>
+                  </div>
+                </div>
+                <div className="review-rating">
+                  {[...Array(review.rating)].map((_, i) => (
+                    <FaStar key={i} />
+                  ))}
+                </div>
+                <div className="review-text">
+                  "{review.review}"
+                </div>
+              </ReviewCard>
+            ))}
+          </ReviewsGrid>
+        </SectionContainer>
+      </Section>
+
+      {/* Business Hours Section */}
+      <Section id="hours">
+        <SectionContainer>
+          <SectionTitle>Business Hours & Location</SectionTitle>
+          <SectionSubtitle>
+            Visit us during our business hours or contact us anytime for appointments and inquiries.
+          </SectionSubtitle>
+          <HoursGrid>
+            <HoursCard primaryColor={businessData.primaryColor}>
+              <h4>Operating Hours</h4>
+              <div className="hours-list">
+                <div className="hours-item">
+                  <span className="day">Monday</span>
+                  <span className="time">9:00 AM - 7:00 PM</span>
+                </div>
+                <div className="hours-item">
+                  <span className="day">Tuesday</span>
+                  <span className="time">9:00 AM - 7:00 PM</span>
+                </div>
+                <div className="hours-item">
+                  <span className="day">Wednesday</span>
+                  <span className="time">9:00 AM - 7:00 PM</span>
+                </div>
+                <div className="hours-item">
+                  <span className="day">Thursday</span>
+                  <span className="time">9:00 AM - 8:00 PM</span>
+                </div>
+                <div className="hours-item">
+                  <span className="day">Friday</span>
+                  <span className="time">9:00 AM - 8:00 PM</span>
+                </div>
+                <div className="hours-item">
+                  <span className="day">Saturday</span>
+                  <span className="time">8:00 AM - 6:00 PM</span>
+                </div>
+                <div className="hours-item">
+                  <span className="day">Sunday</span>
+                  <span className="time">10:00 AM - 5:00 PM</span>
+                </div>
+              </div>
+            </HoursCard>
+
+            <HoursCard primaryColor={businessData.primaryColor}>
+              <h4>Contact Information</h4>
+              <div className="hours-list">
+                <div className="hours-item">
+                  <span className="day">Phone</span>
+                  <span className="time">+1 (555) 123-4567</span>
+                </div>
+                <div className="hours-item">
+                  <span className="day">Email</span>
+                  <span className="time">info@{businessData.slug}.com</span>
+                </div>
+                <div className="hours-item">
+                  <span className="day">Address</span>
+                  <span className="time">123 Business St</span>
+                </div>
+                <div className="hours-item">
+                  <span className="day">City</span>
+                  <span className="time">Your City, ST 12345</span>
+                </div>
+              </div>
+            </HoursCard>
+          </HoursGrid>
         </SectionContainer>
       </Section>
 
