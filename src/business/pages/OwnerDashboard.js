@@ -500,6 +500,135 @@ const ActionButton = styled.button.withConfig({
   `}
 `;
 
+// Image Upload Components
+const ImageUploadContainer = styled.div`
+  margin-bottom: ${theme.spacing.lg};
+`;
+
+const ImageUploadArea = styled.div`
+  border: 2px dashed ${props => props.hasImage ? (props.primaryColor || theme.colors.primary) : theme.colors.gray300};
+  border-radius: ${theme.borderRadius.lg};
+  padding: ${theme.spacing.xl};
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: ${props => props.hasImage ? 'transparent' : theme.colors.gray50};
+  position: relative;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  &:hover {
+    border-color: ${props => props.primaryColor || theme.colors.primary};
+    background: ${props => props.primaryColor + '05' || theme.colors.gray100};
+  }
+
+  .upload-icon {
+    font-size: 3rem;
+    color: ${theme.colors.gray400};
+    margin-bottom: ${theme.spacing.md};
+  }
+
+  .upload-text {
+    color: ${theme.colors.gray600};
+    font-weight: 500;
+    margin-bottom: ${theme.spacing.sm};
+  }
+
+  .upload-hint {
+    color: ${theme.colors.gray500};
+    font-size: 0.8rem;
+  }
+
+  input[type="file"] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+  }
+`;
+
+const ImagePreview = styled.div`
+  position: relative;
+  width: 100%;
+  height: 200px;
+  border-radius: ${theme.borderRadius.md};
+  overflow: hidden;
+  margin-bottom: ${theme.spacing.md};
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  .image-actions {
+    display: flex;
+    gap: ${theme.spacing.sm};
+  }
+
+  .image-action-btn {
+    background: ${theme.colors.white};
+    border: none;
+    border-radius: ${theme.borderRadius.md};
+    padding: ${theme.spacing.sm};
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: ${theme.colors.gray100};
+    }
+  }
+`;
+
+const ImageUrlInput = styled.div`
+  display: flex;
+  gap: ${theme.spacing.sm};
+  align-items: flex-end;
+
+  .url-input {
+    flex: 1;
+  }
+
+  .url-button {
+    padding: ${theme.spacing.md};
+    background: ${props => props.primaryColor || theme.colors.primary};
+    color: white;
+    border: none;
+    border-radius: ${theme.borderRadius.md};
+    cursor: pointer;
+    font-weight: 600;
+    white-space: nowrap;
+
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+`;
+
 const OwnerDashboard = () => {
   const { businessSlug } = useParams();
   const navigate = useNavigate();
