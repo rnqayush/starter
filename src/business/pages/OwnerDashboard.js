@@ -1698,22 +1698,236 @@ const OwnerDashboard = () => {
           </div>
         );
 
-      case 'images':
-        return (
+            case 'images':
+        return businessData.slug !== 'freelancer' ? (
           <div>
             <ContentHeader>
               <h2>Media Library</h2>
-              <Button variant="primary" primaryColor={businessData.primaryColor}>
+              <Button
+                variant="primary"
+                primaryColor={businessData.primaryColor}
+                onClick={() => openModal('gallery')}
+              >
                 <FaPlus />
-                Upload Images
+                Add Gallery Category
               </Button>
             </ContentHeader>
-            <ImageUpload primaryColor={businessData.primaryColor}>
-              <FaImage className="icon" />
-              <p>Upload images for your website sections</p>
-            </ImageUpload>
+
+            <div style={{ marginBottom: theme.spacing.xl }}>
+              <h3 style={{ marginBottom: theme.spacing.lg, color: theme.colors.gray900 }}>Gallery Categories</h3>
+
+              {(currentData.gallery || []).length === 0 ? (
+                <div style={{
+                  background: theme.colors.gray50,
+                  border: `2px dashed ${theme.colors.gray300}`,
+                  borderRadius: theme.borderRadius.lg,
+                  padding: theme.spacing.xl,
+                  textAlign: 'center'
+                }}>
+                  <FaImage style={{ fontSize: '3rem', color: theme.colors.gray400, marginBottom: theme.spacing.md }} />
+                  <h4 style={{ color: theme.colors.gray600, marginBottom: theme.spacing.sm }}>No gallery categories yet</h4>
+                  <p style={{ color: theme.colors.gray500, marginBottom: theme.spacing.lg }}>Create your first gallery category to organize your photos</p>
+                  <Button
+                    variant="primary"
+                    primaryColor={businessData.primaryColor}
+                    onClick={() => openModal('gallery')}
+                  >
+                    <FaPlus />
+                    Create First Gallery
+                  </Button>
+                </div>
+              ) : (
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+                  gap: theme.spacing.lg
+                }}>
+                  {(currentData.gallery || []).map((gallery, index) => (
+                    <div key={gallery.id} style={{
+                      background: theme.colors.white,
+                      border: `1px solid ${theme.colors.gray200}`,
+                      borderRadius: theme.borderRadius.lg,
+                      overflow: 'hidden',
+                      transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+                      cursor: 'pointer'
+                    }}>
+                      {/* Gallery Cover Image */}
+                      <div style={{
+                        height: '200px',
+                        backgroundImage: gallery.coverImage ? `url(${gallery.coverImage})` : 'none',
+                        backgroundColor: gallery.coverImage ? 'transparent' : theme.colors.gray100,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        position: 'relative'
+                      }}>
+                        {!gallery.coverImage && (
+                          <div style={{ textAlign: 'center', color: theme.colors.gray500 }}>
+                            <FaImage style={{ fontSize: '2rem', marginBottom: theme.spacing.sm }} />
+                            <div>No cover image</div>
+                          </div>
+                        )}
+                        <div style={{
+                          position: 'absolute',
+                          top: theme.spacing.sm,
+                          right: theme.spacing.sm,
+                          display: 'flex',
+                          gap: theme.spacing.xs
+                        }}>
+                          <button
+                            style={{
+                              background: 'rgba(255, 255, 255, 0.9)',
+                              border: 'none',
+                              borderRadius: theme.borderRadius.sm,
+                              padding: theme.spacing.xs,
+                              cursor: 'pointer',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center'
+                            }}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              openModal('gallery', gallery);
+                            }}
+                          >
+                            <FaEdit size={14} />
+                          </button>
+                          <button
+                            style={{
+                              background: 'rgba(255, 255, 255, 0.9)',
+                              border: 'none',
+                              borderRadius: theme.borderRadius.sm,
+                              padding: theme.spacing.xs,
+                              cursor: 'pointer',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              color: theme.colors.error
+                            }}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleDelete('gallery', gallery.id);
+                            }}
+                          >
+                            <FaTrash size={14} />
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Gallery Info */}
+                      <div style={{ padding: theme.spacing.lg }}>
+                        <h4 style={{
+                          margin: 0,
+                          marginBottom: theme.spacing.sm,
+                          fontWeight: 600,
+                          color: theme.colors.gray900
+                        }}>
+                          {gallery.category}
+                        </h4>
+                        <div style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: theme.spacing.sm,
+                          color: theme.colors.gray600,
+                          fontSize: '0.9rem'
+                        }}>
+                          <FaImage size={14} />
+                          <span>{gallery.images || 0} images</span>
+                        </div>
+
+                        <div style={{
+                          marginTop: theme.spacing.md,
+                          display: 'flex',
+                          gap: theme.spacing.sm
+                        }}>
+                          <Button
+                            style={{ flex: 1, fontSize: '0.8rem' }}
+                            onClick={() => openModal('gallery', gallery)}
+                          >
+                            <FaEdit size={12} />
+                            Edit
+                          </Button>
+                          <Button
+                            style={{ fontSize: '0.8rem' }}
+                            onClick={() => {
+                              // Here you would typically open a gallery viewer/manager
+                              console.log('Manage images for:', gallery.category);
+                            }}
+                          >
+                            <FaImage size={12} />
+                            Manage
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Quick Upload Section */}
+            <div style={{ marginTop: theme.spacing.xl }}>
+              <h3 style={{ marginBottom: theme.spacing.lg, color: theme.colors.gray900 }}>Quick Upload</h3>
+              <div style={{
+                background: theme.colors.white,
+                border: `1px solid ${theme.colors.gray200}`,
+                borderRadius: theme.borderRadius.lg,
+                padding: theme.spacing.xl
+              }}>
+                <ImageUploadArea
+                  hasImage={false}
+                  primaryColor={businessData.primaryColor}
+                  onClick={() => document.getElementById('bulk-upload').click()}
+                >
+                  <FaUpload className="upload-icon" />
+                  <div className="upload-text">Upload multiple images</div>
+                  <div className="upload-hint">Select images to add to your media library</div>
+                  <input
+                    id="bulk-upload"
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    onChange={(e) => {
+                      const files = Array.from(e.target.files);
+                      console.log('Bulk upload:', files.length, 'files');
+                      // Here you would handle bulk upload functionality
+                    }}
+                  />
+                </ImageUploadArea>
+
+                <div style={{
+                  marginTop: theme.spacing.lg,
+                  padding: theme.spacing.md,
+                  background: theme.colors.gray50,
+                  borderRadius: theme.borderRadius.md,
+                  border: `1px solid ${theme.colors.gray200}`
+                }}>
+                  <h4 style={{
+                    margin: 0,
+                    marginBottom: theme.spacing.sm,
+                    fontSize: '0.9rem',
+                    fontWeight: 600,
+                    color: theme.colors.gray900
+                  }}>Upload Tips:</h4>
+                  <ul style={{
+                    margin: 0,
+                    paddingLeft: theme.spacing.lg,
+                    fontSize: '0.8rem',
+                    color: theme.colors.gray600,
+                    lineHeight: '1.5'
+                  }}>
+                    <li>Recommended image size: 1200x800px or higher</li>
+                    <li>Supported formats: JPG, PNG, GIF, WebP</li>
+                    <li>Maximum file size: 10MB per image</li>
+                    <li>Organize images into categories for better management</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
           </div>
-        );
+        ) : null;
 
       case 'analytics':
         return (
