@@ -170,7 +170,7 @@ const ClearButton = styled.button`
 `;
 
 const HotelHome = () => {
-  // const navigate = useNavigate(); // Removed for now
+
   const [filteredHotels, setFilteredHotels] = useState(hotels);
   const [searchCriteria, setSearchCriteria] = useState(null);
 
