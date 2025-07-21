@@ -737,7 +737,9 @@ const PortfolioImage = styled.div.withConfig({
   }
 `;
 
-const PortfolioContent = styled.div`
+const PortfolioContent = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'primaryColor',
+})`
   padding: ${theme.spacing.xl};
 
   .portfolio-category {
