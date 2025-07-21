@@ -37,9 +37,21 @@ const NavContainer = styled.div`
   margin: 0 auto;
   padding: 0 ${theme.spacing.md};
   display: flex;
-  justify-content: between;
+  justify-content: space-between;
   align-items: center;
   height: 70px;
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    padding: 0 ${theme.spacing.sm};
+    height: 60px;
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    flex-wrap: wrap;
+    height: auto;
+    min-height: 60px;
+    padding: ${theme.spacing.sm};
+  }
 `;
 
 const Logo = styled.div.withConfig({
@@ -49,6 +61,18 @@ const Logo = styled.div.withConfig({
   font-weight: 800;
   color: ${props => props.primaryColor || theme.colors.primary};
   flex: 1;
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    font-size: 1.5rem;
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    font-size: 1.3rem;
+    flex: none;
+    width: 100%;
+    text-align: center;
+    margin-bottom: ${theme.spacing.sm};
+  }
 `;
 
 const NavLinks = styled.div.withConfig({
@@ -66,6 +90,7 @@ const NavLinks = styled.div.withConfig({
     padding: ${theme.spacing.sm} 0;
     position: relative;
     transition: color 0.2s ease;
+    white-space: nowrap;
 
     &:hover {
       color: ${props => props.primaryColor || theme.colors.primary};
@@ -106,10 +131,24 @@ const OwnerLink = styled.button`
   gap: ${theme.spacing.sm};
   flex: 1;
   justify-content: flex-end;
+  min-height: 44px;
 
   &:hover {
     background: ${theme.colors.gray50};
     border-color: ${theme.colors.gray400};
+  }
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    padding: ${theme.spacing.sm} ${theme.spacing.md};
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    flex: none;
+    width: 100%;
+    justify-content: center;
+    margin-top: ${theme.spacing.sm};
+    min-height: 48px;
   }
 `;
 
