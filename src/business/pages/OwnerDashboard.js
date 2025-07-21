@@ -772,6 +772,27 @@ const OwnerDashboard = () => {
       ...prev,
       [section]: prev[section].filter(item => item.id !== id)
     }));
+    };
+
+  // Image upload handlers
+  const handleImageUpload = (file, field) => {
+    if (file && file.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        handleInputChange(field, e.target.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleImageUrl = (url, field) => {
+    if (url.trim()) {
+      handleInputChange(field, url.trim());
+    }
+  };
+
+  const removeImage = (field) => {
+    handleInputChange(field, '');
   };
 
   const menuItems = businessData?.slug === 'freelancer' ? [
