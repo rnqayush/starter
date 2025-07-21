@@ -2283,8 +2283,7 @@ const OwnerDashboard = () => {
                     multiple
                     onChange={(e) => {
                       const files = Array.from(e.target.files);
-                      console.log('Bulk upload:', files.length, 'files');
-                      // Here you would handle bulk upload functionality
+                      // Bulk upload functionality would be implemented here
                     }}
                   />
                 </ImageUploadArea>
