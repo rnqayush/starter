@@ -5,19 +5,19 @@ export const Button = styled.button`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-    gap: ${theme.spacing.xs};
+  gap: ${theme.spacing.xs};
   padding: ${(props) =>
     props.size === "large"
-      ? `${theme.spacing.md} ${theme.spacing.xl}`
+      ? `${theme.spacing.sm} ${theme.spacing.lg}`
       : props.size === "small"
         ? `${theme.spacing.xs} ${theme.spacing.sm}`
-        : `${theme.spacing.sm} ${theme.spacing.lg}`};
+        : `${theme.spacing.xs} ${theme.spacing.md}`};
   font-size: ${(props) =>
     props.size === "large"
-      ? "1rem"
+      ? "0.9375rem"
       : props.size === "small"
-        ? "0.8125rem"
-        : "0.875rem"};
+        ? "0.75rem"
+        : "0.8125rem"};
   font-weight: 600;
   border-radius: ${theme.borderRadius.md};
   border: 2px solid transparent;
@@ -26,41 +26,40 @@ export const Button = styled.button`
   text-decoration: none;
   min-height: ${(props) =>
     props.size === "large"
-      ? "2.5rem"
+      ? "2.25rem"
       : props.size === "small"
-        ? "1.75rem"
-        : "2.125rem"};
+        ? "1.625rem"
+        : "1.875rem"};
   white-space: nowrap;
 
-    ${media.mobile} {
-    padding: ${(props) =>
-      props.size === "large"
-        ? `${theme.spacing.sm} ${theme.spacing.lg}`
-        : props.size === "small"
-          ? `${theme.spacing.xs} ${theme.spacing.sm}`
-          : `${theme.spacing.xs} ${theme.spacing.md}`};
-    font-size: ${(props) =>
-      props.size === "large"
-        ? "0.9375rem"
-        : props.size === "small"
-          ? "0.75rem"
-          : "0.8125rem"};
-    min-height: ${(props) =>
-      props.size === "large"
-        ? "2.25rem"
-        : props.size === "small"
-          ? "1.625rem"
-          : "1.875rem"};
-    gap: ${theme.spacing.xs};
-  }
-
-    ${media.tablet} {
+  ${media.tabletUp} {
     font-size: ${(props) =>
       props.size === "large"
         ? "0.9375rem"
         : props.size === "small"
           ? "0.78125rem"
           : "0.8125rem"};
+  }
+
+  ${media.desktop} {
+    padding: ${(props) =>
+      props.size === "large"
+        ? `${theme.spacing.md} ${theme.spacing.xl}`
+        : props.size === "small"
+          ? `${theme.spacing.xs} ${theme.spacing.sm}`
+          : `${theme.spacing.sm} ${theme.spacing.lg}`};
+    font-size: ${(props) =>
+      props.size === "large"
+        ? "1rem"
+        : props.size === "small"
+          ? "0.8125rem"
+          : "0.875rem"};
+    min-height: ${(props) =>
+      props.size === "large"
+        ? "2.5rem"
+        : props.size === "small"
+          ? "1.75rem"
+          : "2.125rem"};
   }
 
   ${(props) => {
@@ -129,20 +128,20 @@ export const Button = styled.button`
 `;
 
 export const IconButton = styled(Button)`
-  padding: ${theme.spacing.sm};
+  padding: ${theme.spacing.xs};
   min-width: auto;
-  min-height: 2.125rem;
-  width: 2.125rem;
+  min-height: 1.875rem;
+  width: 1.875rem;
+  font-size: 0.8125rem;
 
-  ${media.mobile} {
-    padding: ${theme.spacing.xs};
-    min-height: 1.875rem;
-    width: 1.875rem;
-    font-size: 0.8125rem;
-  }
-
-  ${media.tablet} {
+  ${media.tabletUp} {
     min-height: 2rem;
     width: 2rem;
+  }
+
+  ${media.desktop} {
+    padding: ${theme.spacing.sm};
+    min-height: 2.125rem;
+    width: 2.125rem;
   }
 `;

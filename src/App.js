@@ -143,6 +143,7 @@ function App() {
             <Route path="/seller-dashboard-demo" element={<SellerDashboardDemo />} />
 
             {/* Legacy Owner Routes - Redirect to hotel slug pattern */}
+            <Route path="/owner" element={<MyHotelsPage />} />
             <Route path="/owner/add-hotel" element={<AddHotelPage />} />
             <Route path="/owner/my-hotels" element={<MyHotelsPage />} />
             <Route path="/owner/add-room/:hotelId" element={<AddRoomPage />} />

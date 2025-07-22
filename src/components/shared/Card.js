@@ -3,149 +3,136 @@ import { theme, media } from "../../styles/GlobalStyle";
 
 export const Card = styled.div`
   background: ${theme.colors.white};
-  border-radius: ${theme.borderRadius.lg};
-  box-shadow: ${theme.shadows.md};
+  border-radius: ${theme.borderRadius.md};
+  box-shadow: ${theme.shadows.sm};
   overflow: hidden;
   transition: all 0.3s ease;
   width: 100%;
 
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: ${theme.shadows.lg};
+    transform: none;
+    box-shadow: ${theme.shadows.md};
   }
 
-  ${media.mobile} {
-    border-radius: ${theme.borderRadius.md};
-    box-shadow: ${theme.shadows.sm};
+  ${media.tabletUp} {
+    border-radius: ${theme.borderRadius.lg};
+    box-shadow: ${theme.shadows.md};
 
     &:hover {
-      transform: none;
-      box-shadow: ${theme.shadows.md};
+      transform: translateY(-2px);
+      box-shadow: ${theme.shadows.lg};
     }
   }
 `;
 
 export const CardImage = styled.div`
   width: 100%;
-  height: ${(props) => props.height || "10rem"};
+  height: ${(props) => props.height || "9rem"};
   background-image: url(${(props) => props.src});
   background-size: cover;
   background-position: center;
   position: relative;
 
-  ${media.mobile} {
-    height: ${(props) => props.height || "9rem"};
+  ${media.tabletUp} {
+    height: ${(props) => props.height || "9.5rem"};
   }
 
-  ${media.tablet} {
-    height: ${(props) => props.height || "9.5rem"};
+  ${media.desktop} {
+    height: ${(props) => props.height || "10rem"};
   }
 `;
 
 export const CardContent = styled.div`
-  padding: ${theme.spacing.md};
+  padding: ${theme.spacing.sm};
 
-  ${media.mobile} {
-    padding: ${theme.spacing.sm};
-  }
-
-  ${media.tablet} {
+  ${media.tabletUp} {
     padding: ${theme.spacing.md};
   }
 `;
 
 export const CardTitle = styled.h3`
-  font-size: 1.125rem;
+  font-size: 1rem;
   font-weight: 600;
   margin-bottom: ${theme.spacing.xs};
   color: ${theme.colors.gray900};
   line-height: 1.3;
 
-  ${media.mobile} {
-    font-size: 1rem;
-    margin-bottom: ${theme.spacing.xs};
+  ${media.tabletUp} {
+    font-size: 1.0625rem;
   }
 
-  ${media.tablet} {
-    font-size: 1.0625rem;
+  ${media.desktop} {
+    font-size: 1.125rem;
   }
 `;
 
 export const CardSubtitle = styled.p`
   color: ${theme.colors.gray600};
-  margin-bottom: ${theme.spacing.sm};
-  font-size: 0.8125rem;
+  margin-bottom: ${theme.spacing.xs};
+  font-size: 0.75rem;
   line-height: 1.4;
 
-  ${media.mobile} {
-    font-size: 0.75rem;
-    margin-bottom: ${theme.spacing.xs};
+  ${media.tabletUp} {
+    font-size: 0.8125rem;
+    margin-bottom: ${theme.spacing.sm};
   }
 `;
 
 export const CardDescription = styled.p`
   color: ${theme.colors.gray700};
-  line-height: 1.5;
-  margin-bottom: ${theme.spacing.sm};
-  font-size: 0.8125rem;
+  line-height: 1.4;
+  margin-bottom: ${theme.spacing.xs};
+  font-size: 0.75rem;
 
-  ${media.mobile} {
-    font-size: 0.75rem;
-    line-height: 1.4;
-    margin-bottom: ${theme.spacing.xs};
+  ${media.tabletUp} {
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    margin-bottom: ${theme.spacing.sm};
   }
 `;
 
 export const CardFooter = styled.div`
-  padding: ${theme.spacing.sm} ${theme.spacing.md};
+  padding: ${theme.spacing.xs} ${theme.spacing.sm};
   border-top: 1px solid ${theme.colors.gray200};
   background: ${theme.colors.gray50};
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: ${theme.spacing.sm};
+  gap: ${theme.spacing.xs};
+  flex-direction: column;
+  align-items: stretch;
 
-  ${media.mobile} {
-    padding: ${theme.spacing.xs} ${theme.spacing.sm};
-    gap: ${theme.spacing.xs};
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  ${media.tablet} {
+  ${media.tabletUp} {
+    padding: ${theme.spacing.sm} ${theme.spacing.md};
+    gap: ${theme.spacing.sm};
     flex-direction: row;
     align-items: center;
+    justify-content: space-between;
   }
 `;
 
 export const CardActions = styled.div`
   display: flex;
   gap: ${theme.spacing.xs};
-  margin-top: ${theme.spacing.sm};
+  margin-top: ${theme.spacing.xs};
+  flex-direction: column;
 
-  ${media.mobile} {
-    gap: ${theme.spacing.xs};
-    margin-top: ${theme.spacing.xs};
-    flex-direction: column;
-  }
-
-  ${media.tablet} {
+  ${media.tabletUp} {
     flex-direction: row;
+    margin-top: ${theme.spacing.sm};
   }
 `;
 
 export const Badge = styled.span`
   display: inline-flex;
   align-items: center;
-  padding: ${theme.spacing.xs} ${theme.spacing.sm};
-  font-size: 0.75rem;
+  padding: ${theme.spacing.xs} ${theme.spacing.xs};
+  font-size: 0.6875rem;
   font-weight: 500;
   border-radius: ${theme.borderRadius.sm};
   white-space: nowrap;
 
-  ${media.mobile} {
-    font-size: 0.6875rem;
-    padding: ${theme.spacing.xs} ${theme.spacing.xs};
+  ${media.tabletUp} {
+    font-size: 0.75rem;
+    padding: ${theme.spacing.xs} ${theme.spacing.sm};
   }
 
   ${(props) => {
@@ -180,28 +167,28 @@ export const Badge = styled.span`
 `;
 
 export const Price = styled.div`
-  font-size: 1.125rem;
+  font-size: 1rem;
   font-weight: 700;
   color: ${theme.colors.primary};
   display: flex;
   align-items: baseline;
   gap: ${theme.spacing.xs};
 
-  ${media.mobile} {
-    font-size: 1rem;
+  ${media.tabletUp} {
+    font-size: 1.0625rem;
   }
 
-  ${media.tablet} {
-    font-size: 1.0625rem;
+  ${media.desktop} {
+    font-size: 1.125rem;
   }
 `;
 
 export const PriceUnit = styled.span`
-  font-size: 0.8125rem;
+  font-size: 0.75rem;
   font-weight: 400;
   color: ${theme.colors.gray600};
 
-  ${media.mobile} {
-    font-size: 0.75rem;
+  ${media.tabletUp} {
+    font-size: 0.8125rem;
   }
 `;

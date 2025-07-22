@@ -8,14 +8,10 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   html {
-    font-size: 16px;
+    font-size: 14px;
     scroll-behavior: smooth;
 
-    @media (max-width: 768px) {
-      font-size: 14px;
-    }
-
-    @media (min-width: 769px) and (max-width: 1024px) {
+    @media (min-width: 769px) {
       font-size: 15px;
     }
 
@@ -35,12 +31,8 @@ export const GlobalStyle = createGlobalStyle`
     background-color: #f8fafc;
     font-size: 1rem;
     padding-top: 3.75rem;
-
-    @media (max-width: 768px) {
-      padding-top: 3.75rem;
-      -webkit-text-size-adjust: 100%;
-      -webkit-tap-highlight-color: transparent;
-    }
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
   }
 
   a {
@@ -67,58 +59,58 @@ export const GlobalStyle = createGlobalStyle`
   }
 
     h1 {
-    font-size: 2rem;
+    font-size: 1.75rem;
 
-    @media (max-width: 768px) {
-      font-size: 1.75rem;
+    @media (min-width: 769px) {
+      font-size: 1.875rem;
     }
 
-    @media (min-width: 769px) and (max-width: 1024px) {
-      font-size: 1.875rem;
+    @media (min-width: 1025px) {
+      font-size: 2rem;
     }
   }
 
     h2 {
-    font-size: 1.75rem;
+    font-size: 1.375rem;
 
-    @media (max-width: 768px) {
-      font-size: 1.375rem;
+    @media (min-width: 769px) {
+      font-size: 1.5rem;
     }
 
-    @media (min-width: 769px) and (max-width: 1024px) {
-      font-size: 1.5rem;
+    @media (min-width: 1025px) {
+      font-size: 1.75rem;
     }
   }
 
     h3 {
-    font-size: 1.25rem;
+    font-size: 1.125rem;
 
-    @media (max-width: 768px) {
-      font-size: 1.125rem;
+    @media (min-width: 769px) {
+      font-size: 1.25rem;
     }
   }
 
     h4 {
-    font-size: 1.125rem;
+    font-size: 1rem;
 
-    @media (max-width: 768px) {
-      font-size: 1rem;
+    @media (min-width: 769px) {
+      font-size: 1.125rem;
     }
   }
 
   h5 {
-    font-size: 1.125rem;
+    font-size: 1rem;
 
-    @media (max-width: 768px) {
-      font-size: 1rem;
+    @media (min-width: 769px) {
+      font-size: 1.125rem;
     }
   }
 
   h6 {
-    font-size: 1rem;
+    font-size: 0.875rem;
 
-    @media (max-width: 768px) {
-      font-size: 0.875rem;
+    @media (min-width: 769px) {
+      font-size: 1rem;
     }
   }
 
@@ -131,13 +123,18 @@ export const GlobalStyle = createGlobalStyle`
   table {
     width: 100%;
     border-collapse: collapse;
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
 
-    @media (max-width: 768px) {
-      display: block;
-      overflow-x: auto;
-      white-space: nowrap;
-      border: 1px solid #e2e8f0;
-      border-radius: 0.5rem;
+    @media (min-width: 769px) {
+      display: table;
+      overflow-x: visible;
+      white-space: normal;
+      border: none;
+      border-radius: 0;
     }
   }
 
@@ -145,13 +142,9 @@ export const GlobalStyle = createGlobalStyle`
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 1rem;
+    padding: 0 0.75rem;
 
-    @media (max-width: 768px) {
-      padding: 0 0.75rem;
-    }
-
-    @media (min-width: 769px) and (max-width: 1024px) {
+    @media (min-width: 769px) {
       padding: 0 1.25rem;
     }
 
@@ -178,7 +171,7 @@ export const GlobalStyle = createGlobalStyle`
     gap: 1rem;
     grid-template-columns: 1fr;
 
-    @media (min-width: 769px) and (max-width: 1024px) {
+    @media (min-width: 769px) {
       grid-template-columns: repeat(2, 1fr);
       gap: 1.25rem;
     }
@@ -284,13 +277,9 @@ export const containerStyles = `
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 ${theme.spacing.md};
+  padding: 0 ${theme.spacing.sm};
 
-  ${media.mobile} {
-    padding: 0 ${theme.spacing.sm};
-  }
-
-  ${media.tablet} {
+  ${media.tabletUp} {
     padding: 0 ${theme.spacing.lg};
   }
 
@@ -302,51 +291,51 @@ export const containerStyles = `
 // Responsive text utilities
 export const textResponsive = {
   h1: `
-    font-size: 2rem;
+    font-size: 1.75rem;
     line-height: 1.2;
 
-    ${media.mobile} {
-      font-size: 1.75rem;
+    ${media.tabletUp} {
+      font-size: 1.875rem;
     }
 
-    ${media.tablet} {
-      font-size: 1.875rem;
+    ${media.desktop} {
+      font-size: 2rem;
     }
   `,
   h2: `
-    font-size: 1.75rem;
+    font-size: 1.375rem;
     line-height: 1.3;
 
-    ${media.mobile} {
-      font-size: 1.375rem;
+    ${media.tabletUp} {
+      font-size: 1.5rem;
     }
 
-    ${media.tablet} {
-      font-size: 1.5rem;
+    ${media.desktop} {
+      font-size: 1.75rem;
     }
   `,
   h3: `
-    font-size: 1.25rem;
+    font-size: 1.125rem;
     line-height: 1.4;
 
-    ${media.mobile} {
-      font-size: 1.125rem;
+    ${media.tabletUp} {
+      font-size: 1.25rem;
     }
   `,
   body: `
-    font-size: 1rem;
+    font-size: 0.875rem;
     line-height: 1.6;
 
-    ${media.mobile} {
-      font-size: 0.875rem;
+    ${media.tabletUp} {
+      font-size: 1rem;
     }
   `,
   small: `
-    font-size: 0.875rem;
+    font-size: 0.75rem;
     line-height: 1.5;
 
-    ${media.mobile} {
-      font-size: 0.75rem;
+    ${media.tabletUp} {
+      font-size: 0.875rem;
     }
   `,
 };
