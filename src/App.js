@@ -91,17 +91,7 @@ function App() {
               <GlobalStyle />
               <ScrollToTop />
               <Routes>
-            {/* Owner Dashboard Routes - Move to top for priority */}
-            <Route path="/owner/add-hotel" element={<AddHotelPage />} />
-            <Route path="/owner/my-hotels" element={<MyHotelsPage />} />
-            <Route path="/owner/add-room/:hotelId" element={<AddRoomPage />} />
-            <Route path="/owner/bookings" element={<BookingsReceivedPage />} />
-            <Route path="/owner/profile" element={<ProfileSettingsPage />} />
-            <Route path="/owner/content-manager" element={<ContentManagerSelector />} />
-            <Route path="/owner/content-manager/:hotelId" element={<HotelContentManager />} />
-            <Route path="/owner/dashboard" element={<HotelModule />} />
-
-            {/* Main Routes */}
+            {/* Main Platform Routes (Highest Priority) */}
             <Route path="/" element={<PlatformHomePage />} />
             <Route path="/pricing" element={<PricingPage />} />
             <Route path="/login" element={<LoginPage />} />
@@ -115,94 +105,66 @@ function App() {
             <Route path="/category/automobile" element={<AutomobileCategoryLanding />} />
             <Route path="/category/business" element={<BusinessCategoryLanding />} />
 
-            {/* Hotel Routes */}
+            {/* Directory & Listing Routes */}
             <Route path="/hotels" element={<HotelModule />} />
+            <Route path="/ecommerce-stores" element={<EcommerceStoresListing />} />
+            <Route path="/wedding-vendors" element={<WeddingVendorsListing />} />
+            <Route path="/auto-dealers" element={<AutoDealersListing />} />
+            <Route path="/business-websites" element={<BusinessModule />} />
+
+            {/* Global Routes (Non-slug specific) */}
             <Route path="/booking-confirmation" element={<HotelModule />} />
             <Route path="/my-bookings" element={<HotelModule />} />
-
-            {/* Store Listing Routes */}
-            <Route
-              path="/ecommerce-stores"
-              element={<EcommerceStoresListing />}
-            />
-            <Route
-              path="/wedding-vendors"
-              element={<WeddingVendorsListing />}
-            />
-            <Route path="/auto-dealers" element={<AutoDealersListing />} />
-
-            {/* Ecommerce Routes */}
             <Route path="/ecommerce/*" element={<EcommerceModule />} />
-
-            {/* Automobile Routes */}
             <Route path="/automobiles/*" element={<AutomobileModule />} />
-
-            {/* Wedding Routes */}
             <Route path="/weddings/*" element={<WeddingModule />} />
+            <Route path="/seller-dashboard-demo" element={<SellerDashboardDemo />} />
 
-            {/* Business Website Routes */}
-            <Route path="/business-websites" element={<BusinessModule />} />
-            <Route path="/business/:businessSlug/owner" element={<BusinessModule />} />
-            <Route path="/business/:businessSlug" element={<BusinessModule />} />
+            {/* Legacy Owner Routes - Redirect to hotel slug pattern */}
+            <Route path="/owner/add-hotel" element={<AddHotelPage />} />
+            <Route path="/owner/my-hotels" element={<MyHotelsPage />} />
+            <Route path="/owner/add-room/:hotelId" element={<AddRoomPage />} />
+            <Route path="/owner/bookings" element={<BookingsReceivedPage />} />
+            <Route path="/owner/profile" element={<ProfileSettingsPage />} />
+            <Route path="/owner/content-manager" element={<ContentManagerSelector />} />
+            <Route path="/owner/content-manager/:hotelId" element={<HotelContentManager />} />
+            <Route path="/owner/dashboard" element={<HotelModule />} />
 
-            {/* Store-specific Routes (more specific routes first) */}
-            <Route path="/:storeSlug/products" element={<EcommerceModule />} />
-            <Route
-              path="/:storeSlug/product/:id"
-              element={<EcommerceModule />}
-            />
-            <Route path="/:storeSlug/seller-dashboard" element={<EcommerceModule />} />
-            <Route path="/:storeSlug/my-enquiries" element={<EcommerceModule />} />
-            <Route path="/:storeSlug/cart" element={<EcommerceModule />} />
-            <Route path="/:storeSlug/checkout" element={<EcommerceModule />} />
-            <Route
-              path="/:storeSlug/order-confirmation"
-              element={<EcommerceModule />}
-            />
-
-            {/* Dealer-specific Routes (more specific routes first) */}
-            <Route path="/:dealerSlug/vehicles" element={<AutomobileModule />} />
-            <Route
-              path="/:dealerSlug/vehicle/:id"
-              element={<AutomobileModule />}
-            />
-            <Route path="/:dealerSlug/wishlist" element={<AutomobileModule />} />
-            <Route path="/:dealerSlug/dealer-dashboard" element={<AutomobileModule />} />
-            <Route path="/:dealerSlug/my-enquiries" element={<AutomobileModule />} />
-            <Route path="/:dealerSlug/inventory" element={<AutomobileModule />} />
-            <Route path="/:dealerSlug/financing" element={<AutomobileModule />} />
-            <Route
-              path="/:dealerSlug/trade-in"
-              element={<AutomobileModule />}
-            />
-
-            {/* Hotel-specific Routes (more specific routes first) */}
-            <Route path="/:hotelSlug/owner" element={<HotelModule />} />
-            <Route path="/:hotelSlug/rooms/:roomId" element={<HotelModule />} />
-            <Route
-              path="/:hotelSlug/booking/:roomId"
-              element={<HotelModule />}
-            />
-            <Route path="/:hotelSlug/booking" element={<HotelModule />} />
-
-            {/* Wedding vendor-specific Routes (more specific routes first) */}
-            <Route path="/:vendorSlug/portfolio" element={<WeddingModule />} />
-            <Route path="/:vendorSlug/dashboard" element={<WeddingModule />} />
-            <Route path="/:vendorSlug/booking" element={<WeddingModule />} />
-            <Route path="/:vendorSlug/booking/:serviceId" element={<WeddingModule />} />
-
-            {/* Generic slug routes - SmartRouter determines hotel vs store */}
-            <Route path="/:slug" element={<SmartRouter />} />
-
-            {/* Owner routes for non-hotel vendors */}
+            {/* Unified Slug-based Routes - All demo websites */}
+            {/* Owner/Dashboard Routes for all modules */}
+            <Route path="/:slug/owner/*" element={<SmartRouter />} />
             <Route path="/:slug/owner" element={<SmartRouter />} />
+            <Route path="/:slug/dashboard" element={<SmartRouter />} />
+            <Route path="/:slug/seller-dashboard" element={<SmartRouter />} />
+            <Route path="/:slug/dealer-dashboard" element={<SmartRouter />} />
 
-            {/* Seller Dashboard Demo */}
-            <Route
-              path="/seller-dashboard-demo"
-              element={<SellerDashboardDemo />}
-            />
+            {/* E-commerce specific routes */}
+            <Route path="/:slug/products" element={<SmartRouter />} />
+            <Route path="/:slug/product/:id" element={<SmartRouter />} />
+            <Route path="/:slug/cart" element={<SmartRouter />} />
+            <Route path="/:slug/checkout" element={<SmartRouter />} />
+            <Route path="/:slug/order-confirmation" element={<SmartRouter />} />
+            <Route path="/:slug/my-enquiries" element={<SmartRouter />} />
 
+            {/* Hotel specific routes */}
+            <Route path="/:slug/rooms/:roomId" element={<SmartRouter />} />
+            <Route path="/:slug/booking/:roomId" element={<SmartRouter />} />
+            <Route path="/:slug/booking" element={<SmartRouter />} />
+
+            {/* Automobile specific routes */}
+            <Route path="/:slug/vehicles" element={<SmartRouter />} />
+            <Route path="/:slug/vehicle/:id" element={<SmartRouter />} />
+            <Route path="/:slug/wishlist" element={<SmartRouter />} />
+            <Route path="/:slug/inventory" element={<SmartRouter />} />
+            <Route path="/:slug/financing" element={<SmartRouter />} />
+            <Route path="/:slug/trade-in" element={<SmartRouter />} />
+
+            {/* Wedding vendor specific routes */}
+            <Route path="/:slug/portfolio" element={<SmartRouter />} />
+            <Route path="/:slug/booking/:serviceId" element={<SmartRouter />} />
+
+            {/* Generic slug routes (lowest priority) */}
+            <Route path="/:slug" element={<SmartRouter />} />
 
           </Routes>
             </AppContainer>
