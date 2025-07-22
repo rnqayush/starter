@@ -3,6 +3,16 @@ import styled from "styled-components";
 import Sidebar from "./Sidebar";
 import { Card, CardContent } from "../shared/Card";
 import { Button } from "../shared/Button";
+import {
+  Input,
+  FormGroup,
+  Label,
+  TextArea,
+  Select,
+  InputGroup,
+  CheckboxGroup,
+  CheckboxItem,
+} from "../shared/Input";
 import { theme } from "../../styles/GlobalStyle";
 
 const PageContainer = styled.div`
