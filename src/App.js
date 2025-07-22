@@ -110,7 +110,7 @@ function App() {
             <Route path="/my-bookings" element={<HotelModule />} />
 
             {/* Owner Dashboard Routes */}
-            <Route path="/owner/add-hotel" element={<TestPage />} />
+            <Route path="/owner/add-hotel" element={<AddHotelPage />} />
             <Route path="/owner/my-hotels" element={<MyHotelsPage />} />
             <Route path="/owner/add-room/:hotelId" element={<AddRoomPage />} />
             <Route path="/owner/bookings" element={<BookingsReceivedPage />} />
