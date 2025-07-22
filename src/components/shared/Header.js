@@ -498,13 +498,21 @@ const RegisterButton = styled(Button).withConfig({
 `;
 
 const MobileMenuButton = styled.button.withConfig({
-  shouldForwardProp: (prop) => prop !== "isScrolled",
+  shouldForwardProp: (prop) => prop !== "isScrolled" && prop !== "isInHero",
 })`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: none;
-  border: none;
+  background: ${(props) => {
+    if (props.isScrolled) return 'none';
+    if (props.isInHero) return 'rgba(255, 255, 255, 0.1)';
+    return 'none';
+  }};
+  border: ${(props) => {
+    if (props.isScrolled) return 'none';
+    if (props.isInHero) return '1px solid rgba(255, 255, 255, 0.2)';
+    return 'none';
+  }};
   color: ${(props) => props.isScrolled ? theme.colors.gray700 : theme.colors.white};
   font-size: 1.25rem;
   padding: ${theme.spacing.sm};
@@ -519,6 +527,16 @@ const MobileMenuButton = styled.button.withConfig({
   min-width: 44px;
   min-height: 44px;
   touch-action: manipulation;
+  backdrop-filter: ${(props) => {
+    if (props.isScrolled) return 'none';
+    if (props.isInHero) return 'blur(10px)';
+    return 'none';
+  }};
+  text-shadow: ${(props) => {
+    if (props.isScrolled) return 'none';
+    if (props.isInHero) return '0 2px 4px rgba(0, 0, 0, 0.3)';
+    return 'none';
+  }};
 
   &:hover {
     background: ${(props) => props.isScrolled ? theme.colors.gray50 : 'rgba(255, 255, 255, 0.1)'};
