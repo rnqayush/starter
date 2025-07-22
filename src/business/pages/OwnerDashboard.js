@@ -789,8 +789,11 @@ const VisibilityToggle = styled.div.withConfig({
 `;
 
 const OwnerDashboard = () => {
-  const { businessSlug } = useParams();
+  const { businessSlug, slug } = useParams();
   const navigate = useNavigate();
+
+  // Support both businessSlug (legacy routes) and slug (new optimized routes)
+  const actualSlug = businessSlug || slug;
   const [businessData, setBusinessData] = useState(null);
   const [activeSection, setActiveSection] = useState('content');
   const [isEditing, setIsEditing] = useState(false);
