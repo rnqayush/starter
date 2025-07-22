@@ -77,21 +77,25 @@ const HeaderContent = styled.div`
 `;
 
 const Logo = styled(Link).withConfig({
-  shouldForwardProp: (prop) => prop !== "isScrolled",
+  shouldForwardProp: (prop) => prop !== "isScrolled" && prop !== "isInHero",
 })`
   display: flex;
   align-items: center;
   gap: ${theme.spacing.sm};
   font-size: 1.25rem;
   font-weight: 700;
-  color: ${(props) => props.isScrolled ? theme.colors.primary : theme.colors.white};
+  color: ${(props) => {
+    if (props.isScrolled) return theme.colors.primary;
+    return theme.colors.white;
+  }};
   text-decoration: none;
   flex-shrink: 0;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
   min-width: 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-shadow: ${(props) => props.isInHero ? '0 2px 4px rgba(0, 0, 0, 0.3)' : 'none'};
 
   ${media.mobile} {
     font-size: 1.125rem;
