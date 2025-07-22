@@ -689,6 +689,7 @@ const Header = ({ isOwnerView = false }) => {
 
     return (
     <>
+      <MobileMenuOverlay isOpen={mobileMenuOpen} onClick={closeMobileMenu} />
       <HeaderContainer isScrolled={isScrolled}>
         <HeaderContent>
           <Logo
