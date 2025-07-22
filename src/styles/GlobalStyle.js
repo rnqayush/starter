@@ -34,6 +34,13 @@ export const GlobalStyle = createGlobalStyle`
     color: #1f2937;
     background-color: #f8fafc;
     font-size: 1rem;
+    padding-top: 3.75rem;
+
+    @media (max-width: 768px) {
+      padding-top: 3.75rem;
+      -webkit-text-size-adjust: 100%;
+      -webkit-tap-highlight-color: transparent;
+    }
   }
 
   a {

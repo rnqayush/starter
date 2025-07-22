@@ -16,6 +16,11 @@ const HeaderContainer = styled.header.withConfig({
   width: 100%;
   transition: all 0.3s ease;
   backdrop-filter: ${(props) => props.isScrolled ? 'none' : 'blur(10px)'};
+
+  ${media.mobile} {
+    background: ${(props) => props.isScrolled ? theme.colors.white : 'rgba(255, 255, 255, 0.95)'};
+    backdrop-filter: blur(10px);
+  }
 `;
 
 const HeaderContent = styled.div`
@@ -30,8 +35,9 @@ const HeaderContent = styled.div`
   position: relative;
 
   ${media.mobile} {
-    padding: 0 ${theme.spacing.sm};
-    min-height: 3.5rem;
+    padding: 0 ${theme.spacing.md};
+    min-height: 3.75rem;
+    gap: ${theme.spacing.sm};
   }
 
   ${media.tablet} {
@@ -61,10 +67,16 @@ const Logo = styled(Link).withConfig({
   text-decoration: none;
   flex-shrink: 0;
   transition: color 0.3s ease;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 
   ${media.mobile} {
     font-size: 1.125rem;
     gap: ${theme.spacing.xs};
+    color: ${(props) => props.isScrolled ? theme.colors.primary : theme.colors.gray700};
+    max-width: calc(100vw - 140px);
   }
 
   ${media.tablet} {
@@ -73,6 +85,7 @@ const Logo = styled(Link).withConfig({
 
   svg {
     font-size: 1.125rem;
+    flex-shrink: 0;
 
     ${media.mobile} {
       font-size: 1rem;
@@ -92,20 +105,22 @@ const Nav = styled.nav.withConfig({
     top: 3.75rem;
     left: 0;
     right: 0;
+    bottom: 0;
     background: ${theme.colors.white};
     flex-direction: column;
-    padding: ${theme.spacing.lg};
+    padding: ${theme.spacing.lg} ${theme.spacing.md};
     box-shadow: ${theme.shadows.xl};
     transform: translateY(${(props) => (props.isOpen ? "0" : "-100%")});
     opacity: ${(props) => (props.isOpen ? "1" : "0")};
     visibility: ${(props) => (props.isOpen ? "visible" : "hidden")};
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 999;
-    max-height: calc(100vh - 3.75rem);
     overflow-y: auto;
-    gap: ${theme.spacing.md};
+    gap: ${theme.spacing.sm};
     align-items: stretch;
     border-top: 1px solid ${theme.colors.gray200};
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: env(safe-area-inset-bottom);
   }
 
   @media (min-width: 769px) and (max-width: 1024px) {
@@ -149,17 +164,24 @@ const NavLink = styled(Link).withConfig({
   }
 
   ${media.mobileDown} {
-    padding: ${theme.spacing.md} ${theme.spacing.lg};
+    padding: ${theme.spacing.lg} ${theme.spacing.xl};
     width: 100%;
     text-align: center;
     justify-content: center;
     font-size: 1.125rem;
     border-radius: ${theme.borderRadius.lg};
     color: ${theme.colors.gray700};
+    min-height: 48px;
+    font-weight: 600;
 
-    &:hover {
+    &:hover, &:focus {
       color: ${theme.colors.primary};
       background: ${theme.colors.gray50};
+      transform: none;
+    }
+
+    &:active {
+      background: ${theme.colors.gray100};
     }
   }
 
@@ -224,15 +246,22 @@ const DropdownButton = styled.button.withConfig({
   }
 
   ${media.mobileDown} {
-    padding: ${theme.spacing.md} ${theme.spacing.lg};
+    padding: ${theme.spacing.lg} ${theme.spacing.xl};
     width: 100%;
     font-size: 1.125rem;
     border-radius: ${theme.borderRadius.lg};
     color: ${theme.colors.gray700};
+    min-height: 48px;
+    font-weight: 600;
 
-    &:hover {
+    &:hover, &:focus {
       color: ${theme.colors.primary};
       background: ${theme.colors.gray50};
+      transform: none;
+    }
+
+    &:active {
+      background: ${theme.colors.gray100};
     }
   }
 
@@ -316,14 +345,27 @@ const DropdownItem = styled(Link)`
   }
 
   ${media.mobileDown} {
-    padding: ${theme.spacing.md};
+    padding: ${theme.spacing.lg} ${theme.spacing.md};
     text-align: center;
     font-size: 1rem;
     border-bottom: 1px solid ${theme.colors.gray200};
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     &:first-child,
     &:last-child {
       border-radius: 0;
+    }
+
+    &:hover, &:focus {
+      background: ${theme.colors.gray50};
+      color: ${theme.colors.primary};
+    }
+
+    &:active {
+      background: ${theme.colors.gray100};
     }
   }
 `;
@@ -333,9 +375,10 @@ const UserSection = styled.div`
   align-items: center;
   gap: ${theme.spacing.md};
   flex-shrink: 0;
+  min-width: 0;
 
   ${media.mobileDown} {
-    gap: ${theme.spacing.sm};
+    gap: ${theme.spacing.xs};
   }
 
   @media (min-width: 769px) and (max-width: 1024px) {
@@ -459,6 +502,7 @@ const MobileMenuButton = styled.button.withConfig({
   transition: all 0.3s ease;
   position: relative;
   z-index: 1000;
+  flex-shrink: 0;
 
   &:hover {
     background: ${(props) => props.isScrolled ? theme.colors.gray50 : 'rgba(255, 255, 255, 0.1)'};
@@ -480,8 +524,12 @@ const MobileMenuButton = styled.button.withConfig({
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 2.5rem;
-    height: 2.5rem;
+    width: 2.75rem;
+    height: 2.75rem;
+    color: ${(props) => props.isScrolled ? theme.colors.gray700 : theme.colors.gray700};
+    min-width: 44px;
+    min-height: 44px;
+    touch-action: manipulation;
   }
 `;
 
@@ -492,10 +540,11 @@ const MobileAuthButtons = styled.div`
     display: flex;
     flex-direction: column;
     gap: ${theme.spacing.md};
-    padding: ${theme.spacing.lg} 0;
+    padding: ${theme.spacing.xl} 0;
     border-top: 1px solid ${theme.colors.gray200};
-    margin-top: ${theme.spacing.lg};
+    margin-top: auto;
     width: 100%;
+    padding-bottom: calc(${theme.spacing.xl} + env(safe-area-inset-bottom));
   }
 `;
 
@@ -503,20 +552,26 @@ const MobileAuthButton = styled(Link)`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: ${theme.spacing.md} ${theme.spacing.lg};
-  border-radius: ${theme.borderRadius.md};
-  font-weight: 500;
+  padding: ${theme.spacing.lg} ${theme.spacing.xl};
+  border-radius: ${theme.borderRadius.lg};
+  font-weight: 600;
   text-decoration: none;
   transition: all 0.2s ease;
-  font-size: 1rem;
+  font-size: 1.125rem;
+  min-height: 48px;
+  touch-action: manipulation;
 
   &.login {
     color: ${theme.colors.gray700};
     background: ${theme.colors.gray100};
 
-    &:hover {
+    &:hover, &:focus {
       background: ${theme.colors.gray200};
       color: ${theme.colors.primary};
+    }
+
+    &:active {
+      background: ${theme.colors.gray300};
     }
   }
 
@@ -524,9 +579,35 @@ const MobileAuthButton = styled(Link)`
     color: ${theme.colors.white};
     background: ${theme.colors.primary};
 
-    &:hover {
+    &:hover, &:focus {
       background: ${theme.colors.primaryDark};
     }
+
+    &:active {
+      background: ${theme.colors.primaryDark};
+      transform: scale(0.98);
+    }
+  }
+`;
+
+const MobileMenuOverlay = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "isOpen",
+})`
+  display: none;
+
+  ${media.mobileDown} {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 998;
+    opacity: ${(props) => (props.isOpen ? "1" : "0")};
+    visibility: ${(props) => (props.isOpen ? "visible" : "hidden")};
+    transition: all 0.3s ease;
+    backdrop-filter: blur(4px);
   }
 `;
 
@@ -608,6 +689,7 @@ const Header = ({ isOwnerView = false }) => {
 
     return (
     <>
+      <MobileMenuOverlay isOpen={mobileMenuOpen} onClick={closeMobileMenu} />
       <HeaderContainer isScrolled={isScrolled}>
         <HeaderContent>
           <Logo
