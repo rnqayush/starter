@@ -89,6 +89,30 @@ function App() {
               <GlobalStyle />
               <ScrollToTop />
               <Routes>
+            {/*
+              OPTIMIZED ROUTING STRUCTURE
+              ===========================
+
+              Priority Order:
+              1. Main Platform Routes (/, /pricing, /login, etc.)
+              2. Category Landing Pages (/category/*)
+              3. Directory & Listing Routes (/hotels, /ecommerce-stores, etc.)
+              4. Global Routes (Non-slug specific)
+              5. Legacy Owner Routes (to be migrated)
+              6. Unified Slug-based Routes (/{slug}/*)
+
+              All demo websites now follow the pattern:
+              - /{slug} - Main website page
+              - /{slug}/owner - Owner dashboard
+              - /{slug}/products - Product listing (ecommerce)
+              - /{slug}/vehicles - Vehicle listing (automobile)
+              - /{slug}/booking - Booking pages (hotel/wedding)
+              - etc.
+
+              SmartRouter automatically detects the module type based on slug
+              and routes to the appropriate module (Hotel, Ecommerce, Automobile, Wedding, Business)
+            */}
+
             {/* Main Platform Routes (Highest Priority) */}
             <Route path="/" element={<PlatformHomePage />} />
             <Route path="/pricing" element={<PricingPage />} />
