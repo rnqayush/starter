@@ -909,6 +909,7 @@ const Header = ({ isOwnerView = false }) => {
               aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
               aria-expanded={mobileMenuOpen}
               isScrolled={isScrolled}
+              isInHero={isInHero}
             >
               {mobileMenuOpen ? <FaTimes /> : <FaBars />}
             </MobileMenuButton>
