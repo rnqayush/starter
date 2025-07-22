@@ -9,13 +9,13 @@ const HeaderContainer = styled.header.withConfig({
   shouldForwardProp: (prop) => prop !== "isScrolled",
 })`
   background: ${(props) => props.isScrolled ? theme.colors.white : 'transparent'};
-  backdrop-filter: ${(props) => props.isScrolled ? 'none' : 'blur(10px)'};
   box-shadow: ${(props) => props.isScrolled ? theme.shadows.sm : 'none'};
   position: fixed;
   top: 0;
   z-index: 100;
   width: 100%;
   transition: all 0.3s ease;
+  backdrop-filter: ${(props) => props.isScrolled ? 'none' : 'blur(10px)'};
 `;
 
 const HeaderContent = styled.div`
@@ -28,9 +28,15 @@ const HeaderContent = styled.div`
   justify-content: space-between;
   min-height: 3.75rem;
   position: relative;
-  gap: ${theme.spacing.sm};
 
-  ${media.tabletUp} {
+  ${media.mobile} {
+    padding: 0 ${theme.spacing.md};
+    min-height: 3.75rem;
+    gap: ${theme.spacing.sm};
+  }
+
+  ${media.tablet} {
+    padding: 0 ${theme.spacing.md};
     min-height: 3.625rem;
   }
 
@@ -81,34 +87,13 @@ const Logo = styled(Link).withConfig({
   }
 `;
 
-const Nav = styled.nav.withConfig({
-  shouldForwardProp: (prop) => prop !== "isOpen",
-})`
-  display: flex;
+const DesktopNav = styled.nav`
+  display: none;
   align-items: center;
   gap: ${theme.spacing.lg};
 
-  ${media.mobileDown} {
-    position: fixed;
-    top: 3.75rem;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: ${theme.colors.white};
-    flex-direction: column;
-    padding: ${theme.spacing.lg} ${theme.spacing.md};
-    box-shadow: ${theme.shadows.xl};
-    transform: translateY(${(props) => (props.isOpen ? "0" : "-100%")});
-    opacity: ${(props) => (props.isOpen ? "1" : "0")};
-    visibility: ${(props) => (props.isOpen ? "visible" : "hidden")};
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    z-index: 999;
-    overflow-y: auto;
-    gap: ${theme.spacing.sm};
-    align-items: stretch;
-    border-top: 1px solid ${theme.colors.gray200};
-    -webkit-overflow-scrolling: touch;
-    padding-bottom: env(safe-area-inset-bottom);
+  ${media.tabletUp} {
+    display: flex;
   }
 
   @media (min-width: 769px) and (max-width: 1024px) {
@@ -120,25 +105,81 @@ const Nav = styled.nav.withConfig({
   }
 `;
 
-const NavLink = styled(Link).withConfig({
-  shouldForwardProp: (prop) => prop !== "isScrolled",
+const MobileNav = styled.nav.withConfig({
+  shouldForwardProp: (prop) => prop !== "isOpen",
 })`
-  color: ${(props) => props.isScrolled ? theme.colors.gray700 : 'rgba(255, 255, 255, 0.9)'};
-  font-weight: 500;
+  position: fixed;
+  top: 3.75rem;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: ${theme.colors.white};
+  flex-direction: column;
+  padding: ${theme.spacing.lg} ${theme.spacing.md};
+  box-shadow: ${theme.shadows.xl};
+  transform: translateY(${(props) => (props.isOpen ? "0" : "-100%")});
+  opacity: ${(props) => (props.isOpen ? "1" : "0")};
+  visibility: ${(props) => (props.isOpen ? "visible" : "hidden")};
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 999;
+  overflow-y: auto;
+  gap: ${theme.spacing.sm};
+  align-items: stretch;
+  border-top: 1px solid ${theme.colors.gray200};
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: calc(${theme.spacing.xl} + env(safe-area-inset-bottom));
+  display: flex;
+
+  ${media.tabletUp} {
+    display: none;
+  }
+`;
+
+const NavLink = styled(Link).withConfig({
+  shouldForwardProp: (prop) => prop !== "isScrolled" && prop !== "isMobile",
+})`
+  color: ${(props) => 
+    props.isMobile 
+      ? theme.colors.gray700 
+      : props.isScrolled 
+        ? theme.colors.gray700 
+        : 'rgba(255, 255, 255, 0.9)'
+  };
+  font-weight: ${(props) => props.isMobile ? '600' : '500'};
   text-decoration: none;
-  padding: ${theme.spacing.xs} ${theme.spacing.sm};
-  border-radius: ${theme.borderRadius.md};
+  padding: ${(props) => 
+    props.isMobile 
+      ? `${theme.spacing.lg} ${theme.spacing.xl}` 
+      : `${theme.spacing.xs} ${theme.spacing.sm}`
+  };
+  border-radius: ${(props) => props.isMobile ? theme.borderRadius.lg : theme.borderRadius.md};
   transition: all 0.3s ease;
   white-space: nowrap;
   display: flex;
   align-items: center;
   position: relative;
-  font-size: 0.875rem;
+  font-size: ${(props) => props.isMobile ? '1.125rem' : '0.875rem'};
+  width: ${(props) => props.isMobile ? '100%' : 'auto'};
+  text-align: ${(props) => props.isMobile ? 'center' : 'left'};
+  justify-content: ${(props) => props.isMobile ? 'center' : 'flex-start'};
+  min-height: ${(props) => props.isMobile ? '48px' : 'auto'};
 
   &:hover {
-    color: ${(props) => props.isScrolled ? theme.colors.primary : theme.colors.white};
-    background: ${(props) => props.isScrolled ? theme.colors.gray50 : 'rgba(255, 255, 255, 0.1)'};
-    transform: translateY(-1px);
+    color: ${(props) => 
+      props.isMobile 
+        ? theme.colors.primary 
+        : props.isScrolled 
+          ? theme.colors.primary 
+          : theme.colors.white
+    };
+    background: ${(props) => 
+      props.isMobile 
+        ? theme.colors.gray50 
+        : props.isScrolled 
+          ? theme.colors.gray50 
+          : 'rgba(255, 255, 255, 0.1)'
+    };
+    transform: ${(props) => props.isMobile ? 'none' : 'translateY(-1px)'};
   }
 
   &.active {
@@ -147,35 +188,12 @@ const NavLink = styled(Link).withConfig({
     color: ${theme.colors.white};
   }
 
-  ${media.mobileDown} {
-    padding: ${theme.spacing.lg} ${theme.spacing.xl};
-    width: 100%;
-    text-align: center;
-    justify-content: center;
-    font-size: 1.125rem;
-    border-radius: ${theme.borderRadius.lg};
-    color: ${theme.colors.gray700};
-    min-height: 48px;
-    font-weight: 600;
-
-    &:hover, &:focus {
-      color: ${theme.colors.primary};
-      background: ${theme.colors.gray50};
-      transform: none;
-    }
-
-    &:active {
-      background: ${theme.colors.gray100};
-    }
-  }
-
   @media (min-width: 769px) and (max-width: 1024px) {
     padding: ${theme.spacing.xs} ${theme.spacing.sm};
     font-size: 0.8125rem;
   }
 
   @media (min-width: 1201px) {
-    padding: ${theme.spacing.xs} ${theme.spacing.sm};
     font-size: 0.875rem;
   }
 `;
@@ -183,35 +201,55 @@ const NavLink = styled(Link).withConfig({
 const DropdownContainer = styled.div`
   position: relative;
   display: inline-block;
-  width: 100%;
-
-  ${media.tabletUp} {
-    width: auto;
-  }
+  width: ${(props) => props.isMobile ? '100%' : 'auto'};
 `;
 
 const DropdownButton = styled.button.withConfig({
-  shouldForwardProp: (prop) => prop !== "isOpen" && prop !== "isScrolled",
+  shouldForwardProp: (prop) => prop !== "isOpen" && prop !== "isScrolled" && prop !== "isMobile",
 })`
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: ${(props) => props.isMobile ? 'center' : 'flex-start'};
   gap: ${theme.spacing.xs};
-  color: ${(props) => props.isScrolled ? theme.colors.gray700 : 'rgba(255, 255, 255, 0.9)'};
-  font-weight: 500;
+  color: ${(props) => 
+    props.isMobile 
+      ? theme.colors.gray700 
+      : props.isScrolled 
+        ? theme.colors.gray700 
+        : 'rgba(255, 255, 255, 0.9)'
+  };
+  font-weight: ${(props) => props.isMobile ? '600' : '500'};
   background: none;
   border: none;
-  padding: ${theme.spacing.xs} ${theme.spacing.sm};
-  border-radius: ${theme.borderRadius.md};
+  padding: ${(props) => 
+    props.isMobile 
+      ? `${theme.spacing.lg} ${theme.spacing.xl}` 
+      : `${theme.spacing.xs} ${theme.spacing.sm}`
+  };
+  border-radius: ${(props) => props.isMobile ? theme.borderRadius.lg : theme.borderRadius.md};
   transition: all 0.3s ease;
   cursor: pointer;
   white-space: nowrap;
-  font-size: 0.875rem;
+  font-size: ${(props) => props.isMobile ? '1.125rem' : '0.875rem'};
+  width: ${(props) => props.isMobile ? '100%' : 'auto'};
+  min-height: ${(props) => props.isMobile ? '48px' : 'auto'};
 
   &:hover {
-    color: ${(props) => props.isScrolled ? theme.colors.primary : theme.colors.white};
-    background: ${(props) => props.isScrolled ? theme.colors.gray50 : 'rgba(255, 255, 255, 0.1)'};
-    transform: translateY(-1px);
+    color: ${(props) => 
+      props.isMobile 
+        ? theme.colors.primary 
+        : props.isScrolled 
+          ? theme.colors.primary 
+          : theme.colors.white
+    };
+    background: ${(props) => 
+      props.isMobile 
+        ? theme.colors.gray50 
+        : props.isScrolled 
+          ? theme.colors.gray50 
+          : 'rgba(255, 255, 255, 0.1)'
+    };
+    transform: ${(props) => props.isMobile ? 'none' : 'translateY(-1px)'};
   }
 
   &:focus {
@@ -223,26 +261,6 @@ const DropdownButton = styled.button.withConfig({
     transition: transform 0.2s ease;
     transform: ${(props) => (props.isOpen ? "rotate(180deg)" : "rotate(0deg)")};
     font-size: 0.875rem;
-  }
-
-  ${media.mobileDown} {
-    padding: ${theme.spacing.lg} ${theme.spacing.xl};
-    width: 100%;
-    font-size: 1.125rem;
-    border-radius: ${theme.borderRadius.lg};
-    color: ${theme.colors.gray700};
-    min-height: 48px;
-    font-weight: 600;
-
-    &:hover, &:focus {
-      color: ${theme.colors.primary};
-      background: ${theme.colors.gray50};
-      transform: none;
-    }
-
-    &:active {
-      background: ${theme.colors.gray100};
-    }
   }
 
   @media (min-width: 769px) and (max-width: 1024px) {
@@ -262,34 +280,23 @@ const DropdownButton = styled.button.withConfig({
 `;
 
 const DropdownMenu = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "isOpen",
+  shouldForwardProp: (prop) => prop !== "isOpen" && prop !== "isMobile",
 })`
-  position: absolute;
-  top: 100%;
+  position: ${(props) => props.isMobile ? 'static' : 'absolute'};
+  top: ${(props) => props.isMobile ? 'auto' : '100%'};
   left: 0;
-  background: ${theme.colors.white};
-  border-radius: ${theme.borderRadius.lg};
-  box-shadow: ${theme.shadows.xl};
-  border: 1px solid ${theme.colors.gray200};
-  min-width: 12.5rem;
+  background: ${(props) => props.isMobile ? theme.colors.gray50 : theme.colors.white};
+  border-radius: ${(props) => props.isMobile ? theme.borderRadius.md : theme.borderRadius.lg};
+  box-shadow: ${(props) => props.isMobile ? 'none' : theme.shadows.xl};
+  border: ${(props) => props.isMobile ? 'none' : `1px solid ${theme.colors.gray200}`};
+  min-width: ${(props) => props.isMobile ? 'auto' : '12.5rem'};
   z-index: 1000;
   opacity: ${(props) => (props.isOpen ? "1" : "0")};
   visibility: ${(props) => (props.isOpen ? "visible" : "hidden")};
-  transform: translateY(${(props) => (props.isOpen ? "0" : "-0.625rem")});
+  transform: ${(props) => props.isMobile ? 'none' : `translateY(${props.isOpen ? "0" : "-0.625rem"})`};
   transition: all 0.2s ease;
-
-  ${media.mobileDown} {
-    position: static;
-    box-shadow: none;
-    border: none;
-    background: ${theme.colors.gray50};
-    margin-top: ${theme.spacing.sm};
-    opacity: 1;
-    visibility: visible;
-    transform: none;
-    border-radius: ${theme.borderRadius.md};
-    width: 100%;
-  }
+  margin-top: ${(props) => props.isMobile ? theme.spacing.sm : '0'};
+  width: ${(props) => props.isMobile ? '100%' : 'auto'};
 
   ${media.tablet} {
     min-width: 10rem;
@@ -324,7 +331,7 @@ const DropdownItem = styled(Link)`
     border-bottom-right-radius: ${theme.borderRadius.lg};
   }
 
-  ${media.mobileDown} {
+  ${media.mobile} {
     padding: ${theme.spacing.lg} ${theme.spacing.md};
     text-align: center;
     font-size: 1rem;
@@ -353,58 +360,59 @@ const DropdownItem = styled(Link)`
 const UserSection = styled.div`
   display: flex;
   align-items: center;
-  gap: ${theme.spacing.xs};
+  gap: ${theme.spacing.md};
   flex-shrink: 0;
   min-width: 0;
 
-  ${media.tabletUp} {
+  ${media.mobile} {
+    gap: ${theme.spacing.xs};
+  }
+
+  @media (min-width: 769px) and (max-width: 1024px) {
     gap: ${theme.spacing.sm};
-  }
-
-  ${media.desktop} {
-    gap: ${theme.spacing.md};
-  }
-
-  @media (min-width: 1201px) {
-    gap: ${theme.spacing.md};
   }
 `;
 
 const LoginButton = styled(Link).withConfig({
   shouldForwardProp: (prop) => prop !== "isScrolled",
 })`
-  display: none;
+  color: ${(props) => props.isScrolled ? theme.colors.gray700 : 'rgba(255, 255, 255, 0.9)'};
+  font-weight: 500;
+  text-decoration: none;
+  padding: ${theme.spacing.sm} ${theme.spacing.md};
+  border-radius: ${theme.borderRadius.md};
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
 
-  ${media.tabletUp} {
-    color: ${(props) => props.isScrolled ? theme.colors.gray700 : 'rgba(255, 255, 255, 0.9)'};
-    font-weight: 500;
-    text-decoration: none;
-    padding: ${theme.spacing.sm};
-    border-radius: ${theme.borderRadius.md};
-    transition: all 0.3s ease;
-    white-space: nowrap;
-    display: flex;
-    align-items: center;
-    font-size: 0.875rem;
-
-    &:hover {
-      color: ${(props) => props.isScrolled ? theme.colors.primary : theme.colors.white};
-      background: ${(props) => props.isScrolled ? theme.colors.gray50 : 'rgba(255, 255, 255, 0.1)'};
-      transform: translateY(-1px);
-    }
-
-    &:focus {
-      outline: 2px solid ${theme.colors.primary};
-      outline-offset: 2px;
-    }
+  &:hover {
+    color: ${(props) => props.isScrolled ? theme.colors.primary : theme.colors.white};
+    background: ${(props) => props.isScrolled ? theme.colors.gray50 : 'rgba(255, 255, 255, 0.1)'};
+    transform: translateY(-1px);
   }
 
-  ${media.desktop} {
+  &:focus {
+    outline: 2px solid ${theme.colors.primary};
+    outline-offset: 2px;
+  }
+
+  ${media.mobile} {
+    display: none;
+  }
+
+  @media (min-width: 769px) and (max-width: 1024px) {
+    padding: ${theme.spacing.sm};
+    font-size: 0.875rem;
+  }
+
+  @media (min-width: 1025px) and (max-width: 1200px) {
     padding: ${theme.spacing.sm} ${theme.spacing.md};
     font-size: 0.9rem;
   }
 
   @media (min-width: 1201px) {
+    padding: ${theme.spacing.sm} ${theme.spacing.md};
     font-size: 1rem;
   }
 `;
@@ -412,45 +420,49 @@ const LoginButton = styled(Link).withConfig({
 const RegisterButton = styled(Button).withConfig({
   shouldForwardProp: (prop) => prop !== "isScrolled",
 })`
-  display: none;
+  background: ${(props) => props.isScrolled ? theme.colors.primary : 'rgba(255, 255, 255, 0.2)'};
+  color: ${theme.colors.white};
+  border: ${(props) => props.isScrolled ? 'none' : '1px solid rgba(255, 255, 255, 0.3)'};
+  padding: ${theme.spacing.sm} ${theme.spacing.lg};
+  border-radius: ${theme.borderRadius.md};
+  font-weight: 500;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  box-shadow: ${(props) => props.isScrolled ? theme.shadows.sm : 'none'};
+  backdrop-filter: ${(props) => props.isScrolled ? 'none' : 'blur(10px)'};
 
-  ${media.tabletUp} {
-    background: ${(props) => props.isScrolled ? theme.colors.primary : 'rgba(255, 255, 255, 0.2)'};
-    color: ${theme.colors.white};
-    border: ${(props) => props.isScrolled ? 'none' : '1px solid rgba(255, 255, 255, 0.3)'};
-    padding: ${theme.spacing.sm} ${theme.spacing.md};
-    border-radius: ${theme.borderRadius.md};
-    font-weight: 500;
-    transition: all 0.3s ease;
-    white-space: nowrap;
-    box-shadow: ${(props) => props.isScrolled ? theme.shadows.sm : 'none'};
-    backdrop-filter: ${(props) => props.isScrolled ? 'none' : 'blur(10px)'};
-    font-size: 0.875rem;
-    display: flex;
-
-    &:hover {
-      background: ${(props) => props.isScrolled ? theme.colors.primaryDark : 'rgba(255, 255, 255, 0.3)'};
-      transform: translateY(-1px);
-      box-shadow: ${theme.shadows.md};
-    }
-
-    &:focus {
-      outline: 2px solid ${theme.colors.primary};
-      outline-offset: 2px;
-    }
-
-    &:active {
-      transform: translateY(0);
-      box-shadow: ${theme.shadows.sm};
-    }
+  &:hover {
+    background: ${(props) => props.isScrolled ? theme.colors.primaryDark : 'rgba(255, 255, 255, 0.3)'};
+    transform: translateY(-1px);
+    box-shadow: ${theme.shadows.md};
   }
 
-  ${media.desktop} {
+  &:focus {
+    outline: 2px solid ${theme.colors.primary};
+    outline-offset: 2px;
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: ${theme.shadows.sm};
+  }
+
+  ${media.mobile} {
+    display: none;
+  }
+
+  @media (min-width: 769px) and (max-width: 1024px) {
+    padding: ${theme.spacing.sm} ${theme.spacing.md};
+    font-size: 0.875rem;
+  }
+
+  @media (min-width: 1025px) and (max-width: 1200px) {
     padding: ${theme.spacing.sm} ${theme.spacing.lg};
     font-size: 0.9rem;
   }
 
   @media (min-width: 1201px) {
+    padding: ${theme.spacing.sm} ${theme.spacing.lg};
     font-size: 1rem;
   }
 `;
@@ -458,7 +470,9 @@ const RegisterButton = styled(Button).withConfig({
 const MobileMenuButton = styled.button.withConfig({
   shouldForwardProp: (prop) => prop !== "isScrolled",
 })`
-  display: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: none;
   border: none;
   color: ${(props) => props.isScrolled ? theme.colors.gray700 : theme.colors.white};
@@ -470,6 +484,11 @@ const MobileMenuButton = styled.button.withConfig({
   position: relative;
   z-index: 1000;
   flex-shrink: 0;
+  width: 2.75rem;
+  height: 2.75rem;
+  min-width: 44px;
+  min-height: 44px;
+  touch-action: manipulation;
 
   &:hover {
     background: ${(props) => props.isScrolled ? theme.colors.gray50 : 'rgba(255, 255, 255, 0.1)'};
@@ -487,31 +506,20 @@ const MobileMenuButton = styled.button.withConfig({
     transform: scale(0.95);
   }
 
-  ${media.mobileDown} {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 2.75rem;
-    height: 2.75rem;
-    min-width: 44px;
-    min-height: 44px;
-    touch-action: manipulation;
+  ${media.tabletUp} {
+    display: none;
   }
 `;
 
 const MobileAuthButtons = styled.div`
-  display: none;
-
-  ${media.mobileDown} {
-    display: flex;
-    flex-direction: column;
-    gap: ${theme.spacing.md};
-    padding: ${theme.spacing.xl} 0;
-    border-top: 1px solid ${theme.colors.gray200};
-    margin-top: auto;
-    width: 100%;
-    padding-bottom: calc(${theme.spacing.xl} + env(safe-area-inset-bottom));
-  }
+  display: flex;
+  flex-direction: column;
+  gap: ${theme.spacing.md};
+  padding: ${theme.spacing.xl} 0;
+  border-top: 1px solid ${theme.colors.gray200};
+  margin-top: auto;
+  width: 100%;
+  padding-bottom: calc(${theme.spacing.xl} + env(safe-area-inset-bottom));
 `;
 
 const MobileAuthButton = styled(Link)`
@@ -559,25 +567,23 @@ const MobileAuthButton = styled(Link)`
 const MobileMenuOverlay = styled.div.withConfig({
   shouldForwardProp: (prop) => prop !== "isOpen",
 })`
-  display: none;
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 998;
+  opacity: ${(props) => (props.isOpen ? "1" : "0")};
+  visibility: ${(props) => (props.isOpen ? "visible" : "hidden")};
+  transition: all 0.3s ease;
+  backdrop-filter: blur(4px);
 
-  ${media.mobileDown} {
-    display: block;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 998;
-    opacity: ${(props) => (props.isOpen ? "1" : "0")};
-    visibility: ${(props) => (props.isOpen ? "visible" : "hidden")};
-    transition: all 0.3s ease;
-    backdrop-filter: blur(4px);
+  ${media.tabletUp} {
+    display: none;
   }
 `;
-
-
 
 const Header = ({ isOwnerView = false }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -585,10 +591,8 @@ const Header = ({ isOwnerView = false }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const dropdownRef = useRef(null);
 
-    const closeMobileMenu = () => setMobileMenuOpen(false);
-
+  const closeMobileMenu = () => setMobileMenuOpen(false);
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
-
   const closeDropdown = () => setDropdownOpen(false);
 
   // Close dropdown when clicking outside
@@ -653,7 +657,7 @@ const Header = ({ isOwnerView = false }) => {
     closeMobileMenu();
   };
 
-    return (
+  return (
     <>
       <MobileMenuOverlay isOpen={mobileMenuOpen} onClick={closeMobileMenu} />
       <HeaderContainer isScrolled={isScrolled}>
@@ -667,28 +671,29 @@ const Header = ({ isOwnerView = false }) => {
             StoreBuilder
           </Logo>
 
-          <Nav isOpen={mobileMenuOpen}>
+          {/* Desktop Navigation */}
+          <DesktopNav>
             {isOwnerView ? (
               <>
-                <NavLink to="/" onClick={closeMobileMenu} isScrolled={isScrolled}>
+                <NavLink to="/" isScrolled={isScrolled}>
                   Dashboard
                 </NavLink>
-                <NavLink to="/owner/my-hotels" onClick={closeMobileMenu} isScrolled={isScrolled}>
+                <NavLink to="/owner/my-hotels" isScrolled={isScrolled}>
                   My Hotels
                 </NavLink>
-                <NavLink to="/owner/bookings" onClick={closeMobileMenu} isScrolled={isScrolled}>
+                <NavLink to="/owner/bookings" isScrolled={isScrolled}>
                   Bookings
                 </NavLink>
-                <NavLink to="/owner/profile" onClick={closeMobileMenu} isScrolled={isScrolled}>
+                <NavLink to="/owner/profile" isScrolled={isScrolled}>
                   Profile
                 </NavLink>
               </>
             ) : (
               <>
-                <NavLink to="/" onClick={closeMobileMenu} isScrolled={isScrolled}>
+                <NavLink to="/" isScrolled={isScrolled}>
                   Home
                 </NavLink>
-                <NavLink to="/pricing" onClick={closeMobileMenu} isScrolled={isScrolled}>
+                <NavLink to="/pricing" isScrolled={isScrolled}>
                   Pricing
                 </NavLink>
                 <DropdownContainer ref={dropdownRef}>
@@ -704,6 +709,78 @@ const Header = ({ isOwnerView = false }) => {
                     <FaChevronDown />
                   </DropdownButton>
                   <DropdownMenu isOpen={dropdownOpen} role="menu">
+                    <DropdownItem
+                      to="/hotels"
+                      onClick={handleDropdownItemClick}
+                      role="menuitem"
+                    >
+                      🏨 Hotels
+                    </DropdownItem>
+                    <DropdownItem
+                      to="/ecommerce"
+                      onClick={handleDropdownItemClick}
+                      role="menuitem"
+                    >
+                      🛍 Ecommerce
+                    </DropdownItem>
+                    <DropdownItem
+                      to="/weddings"
+                      onClick={handleDropdownItemClick}
+                      role="menuitem"
+                    >
+                      💍 Weddings
+                    </DropdownItem>
+                    <DropdownItem
+                      to="/automobiles"
+                      onClick={handleDropdownItemClick}
+                      role="menuitem"
+                    >
+                      🚗 Automobiles
+                    </DropdownItem>
+                  </DropdownMenu>
+                </DropdownContainer>
+              </>
+            )}
+          </DesktopNav>
+
+          {/* Mobile Navigation */}
+          <MobileNav isOpen={mobileMenuOpen}>
+            {isOwnerView ? (
+              <>
+                <NavLink to="/" onClick={closeMobileMenu} isMobile={true}>
+                  Dashboard
+                </NavLink>
+                <NavLink to="/owner/my-hotels" onClick={closeMobileMenu} isMobile={true}>
+                  My Hotels
+                </NavLink>
+                <NavLink to="/owner/bookings" onClick={closeMobileMenu} isMobile={true}>
+                  Bookings
+                </NavLink>
+                <NavLink to="/owner/profile" onClick={closeMobileMenu} isMobile={true}>
+                  Profile
+                </NavLink>
+              </>
+            ) : (
+              <>
+                <NavLink to="/" onClick={closeMobileMenu} isMobile={true}>
+                  Home
+                </NavLink>
+                <NavLink to="/pricing" onClick={closeMobileMenu} isMobile={true}>
+                  Pricing
+                </NavLink>
+                <DropdownContainer isMobile={true}>
+                  <DropdownButton
+                    onClick={toggleDropdown}
+                    isOpen={dropdownOpen}
+                    isMobile={true}
+                    aria-expanded={dropdownOpen}
+                    aria-haspopup="true"
+                    aria-label="Explore Stores menu"
+                  >
+                    Explore Stores
+                    <FaChevronDown />
+                  </DropdownButton>
+                  <DropdownMenu isOpen={dropdownOpen} isMobile={true} role="menu">
                     <DropdownItem
                       to="/hotels"
                       onClick={handleDropdownItemClick}
@@ -753,7 +830,7 @@ const Header = ({ isOwnerView = false }) => {
                 Register
               </MobileAuthButton>
             </MobileAuthButtons>
-          </Nav>
+          </MobileNav>
 
           <UserSection>
             <LoginButton to="/login" onClick={closeMobileMenu} isScrolled={isScrolled}>
