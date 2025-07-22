@@ -28,6 +28,7 @@ import BookingsReceivedPage from "./components/owner/BookingsReceivedPage";
 import ProfileSettingsPage from "./components/owner/ProfileSettingsPage";
 import ContentManagerSelector from "./components/owner/ContentManagerSelector";
 import HotelContentManager from "./components/owner/HotelContentManager";
+import TestPage from "./components/owner/TestPage";
 
 // Mock data
 import {
