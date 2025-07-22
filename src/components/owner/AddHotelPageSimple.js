@@ -14,6 +14,8 @@ import {
   CheckboxItem,
 } from "../shared/Input";
 import { theme } from "../../styles/GlobalStyle";
+import { useAppContext } from "../../context/AppContext";
+import { amenitiesList } from "../../data/mockData";
 
 const PageContainer = styled.div`
   display: flex;
