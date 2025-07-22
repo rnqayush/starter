@@ -1071,43 +1071,6 @@ const PlatformHomePage = () => {
               </TestimonialCard>
             ))}
           </TestimonialsGrid>
-
-          <TestimonialsSwiperContainer>
-            <Swiper
-              modules={[Navigation, Pagination, Autoplay]}
-              spaceBetween={20}
-              slidesPerView={1}
-              navigation
-              pagination={{ clickable: true }}
-              autoplay={{
-                delay: 4000,
-                disableOnInteraction: false,
-              }}
-              loop={true}
-            >
-              {testimonials.map((testimonial, index) => (
-                <SwiperSlide key={index}>
-                  <TestimonialCard>
-                    <TestimonialQuote>
-                      <FaQuoteLeft />
-                    </TestimonialQuote>
-                    <TestimonialText>{testimonial.text}</TestimonialText>
-                    <TestimonialAuthor>
-                      <AuthorInfo>
-                        <h4>{testimonial.name}</h4>
-                        <p>{testimonial.role}</p>
-                      </AuthorInfo>
-                      <StarRating>
-                        {[...Array(testimonial.rating)].map((_, i) => (
-                          <FaStar key={i} />
-                        ))}
-                      </StarRating>
-                    </TestimonialAuthor>
-                  </TestimonialCard>
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </TestimonialsSwiperContainer>
         </TestimonialsContainer>
       </TestimonialsSection>
 
