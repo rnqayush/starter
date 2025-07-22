@@ -8,19 +8,14 @@ import { Button } from "./Button";
 const HeaderContainer = styled.header.withConfig({
   shouldForwardProp: (prop) => prop !== "isScrolled",
 })`
-  background: ${(props) => props.isScrolled ? theme.colors.white : 'rgba(255, 255, 255, 0.95)'};
-  backdrop-filter: blur(10px);
+  background: ${(props) => props.isScrolled ? theme.colors.white : 'transparent'};
+  backdrop-filter: ${(props) => props.isScrolled ? 'none' : 'blur(10px)'};
   box-shadow: ${(props) => props.isScrolled ? theme.shadows.sm : 'none'};
   position: fixed;
   top: 0;
   z-index: 100;
   width: 100%;
   transition: all 0.3s ease;
-
-  ${media.tabletUp} {
-    background: ${(props) => props.isScrolled ? theme.colors.white : 'transparent'};
-    backdrop-filter: ${(props) => props.isScrolled ? 'none' : 'blur(10px)'};
-  }
 `;
 
 const HeaderContent = styled.div`
@@ -54,10 +49,10 @@ const Logo = styled(Link).withConfig({
 })`
   display: flex;
   align-items: center;
-  gap: ${theme.spacing.xs};
-  font-size: 1.125rem;
+  gap: ${theme.spacing.sm};
+  font-size: 1.25rem;
   font-weight: 700;
-  color: ${(props) => props.isScrolled ? theme.colors.primary : theme.colors.gray700};
+  color: ${(props) => props.isScrolled ? theme.colors.primary : theme.colors.white};
   text-decoration: none;
   flex-shrink: 0;
   transition: color 0.3s ease;
@@ -65,25 +60,23 @@ const Logo = styled(Link).withConfig({
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: calc(100vw - 140px);
 
-  ${media.tabletUp} {
-    font-size: 1.1875rem;
-    gap: ${theme.spacing.sm};
-    color: ${(props) => props.isScrolled ? theme.colors.primary : theme.colors.white};
-    max-width: none;
+  ${media.mobile} {
+    font-size: 1.125rem;
+    gap: ${theme.spacing.xs};
+    max-width: calc(100vw - 140px);
   }
 
-  ${media.desktop} {
-    font-size: 1.25rem;
+  ${media.tablet} {
+    font-size: 1.1875rem;
   }
 
   svg {
-    font-size: 1rem;
+    font-size: 1.125rem;
     flex-shrink: 0;
 
-    ${media.tabletUp} {
-      font-size: 1.125rem;
+    ${media.mobile} {
+      font-size: 1rem;
     }
   }
 `;
@@ -91,52 +84,35 @@ const Logo = styled(Link).withConfig({
 const Nav = styled.nav.withConfig({
   shouldForwardProp: (prop) => prop !== "isOpen",
 })`
-  position: fixed;
-  top: 3.75rem;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: ${theme.colors.white};
-  flex-direction: column;
-  padding: ${theme.spacing.lg} ${theme.spacing.md};
-  box-shadow: ${theme.shadows.xl};
-  transform: translateY(${(props) => (props.isOpen ? "0" : "-100%")});
-  opacity: ${(props) => (props.isOpen ? "1" : "0")};
-  visibility: ${(props) => (props.isOpen ? "visible" : "hidden")};
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: 999;
-  overflow-y: auto;
-  gap: ${theme.spacing.sm};
-  align-items: stretch;
-  border-top: 1px solid ${theme.colors.gray200};
-  -webkit-overflow-scrolling: touch;
-  padding-bottom: env(safe-area-inset-bottom);
   display: flex;
+  align-items: center;
+  gap: ${theme.spacing.lg};
 
-  ${media.tabletUp} {
-    position: static;
-    top: auto;
-    left: auto;
-    right: auto;
-    bottom: auto;
-    background: transparent;
-    flex-direction: row;
-    padding: 0;
-    box-shadow: none;
-    transform: none;
-    opacity: 1;
-    visibility: visible;
-    transition: none;
-    z-index: auto;
-    overflow-y: visible;
-    gap: ${theme.spacing.md};
-    align-items: center;
-    border-top: none;
-    padding-bottom: 0;
+  ${media.mobileDown} {
+    position: fixed;
+    top: 3.75rem;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: ${theme.colors.white};
+    flex-direction: column;
+    padding: ${theme.spacing.lg} ${theme.spacing.md};
+    box-shadow: ${theme.shadows.xl};
+    transform: translateY(${(props) => (props.isOpen ? "0" : "-100%")});
+    opacity: ${(props) => (props.isOpen ? "1" : "0")};
+    visibility: ${(props) => (props.isOpen ? "visible" : "hidden")};
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 999;
+    overflow-y: auto;
+    gap: ${theme.spacing.sm};
+    align-items: stretch;
+    border-top: 1px solid ${theme.colors.gray200};
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: env(safe-area-inset-bottom);
   }
 
-  ${media.desktop} {
-    gap: ${theme.spacing.lg};
+  @media (min-width: 769px) and (max-width: 1024px) {
+    gap: ${theme.spacing.md};
   }
 
   @media (min-width: 1201px) {
@@ -147,29 +123,22 @@ const Nav = styled.nav.withConfig({
 const NavLink = styled(Link).withConfig({
   shouldForwardProp: (prop) => prop !== "isScrolled",
 })`
-  padding: ${theme.spacing.lg} ${theme.spacing.xl};
-  width: 100%;
-  text-align: center;
-  justify-content: center;
-  font-size: 1.125rem;
-  border-radius: ${theme.borderRadius.lg};
-  color: ${theme.colors.gray700};
-  min-height: 48px;
-  font-weight: 600;
+  color: ${(props) => props.isScrolled ? theme.colors.gray700 : 'rgba(255, 255, 255, 0.9)'};
+  font-weight: 500;
   text-decoration: none;
+  padding: ${theme.spacing.xs} ${theme.spacing.sm};
+  border-radius: ${theme.borderRadius.md};
   transition: all 0.3s ease;
   white-space: nowrap;
   display: flex;
   align-items: center;
   position: relative;
+  font-size: 0.875rem;
 
-  &:hover, &:focus {
-    color: ${theme.colors.primary};
-    background: ${theme.colors.gray50};
-  }
-
-  &:active {
-    background: ${theme.colors.gray100};
+  &:hover {
+    color: ${(props) => props.isScrolled ? theme.colors.primary : theme.colors.white};
+    background: ${(props) => props.isScrolled ? theme.colors.gray50 : 'rgba(255, 255, 255, 0.1)'};
+    transform: translateY(-1px);
   }
 
   &.active {
@@ -178,29 +147,35 @@ const NavLink = styled(Link).withConfig({
     color: ${theme.colors.white};
   }
 
-  ${media.tabletUp} {
-    padding: ${theme.spacing.xs} ${theme.spacing.sm};
-    width: auto;
-    text-align: left;
-    justify-content: flex-start;
-    font-size: 0.8125rem;
-    border-radius: ${theme.borderRadius.md};
-    color: ${(props) => props.isScrolled ? theme.colors.gray700 : 'rgba(255, 255, 255, 0.9)'};
-    min-height: auto;
-    font-weight: 500;
+  ${media.mobileDown} {
+    padding: ${theme.spacing.lg} ${theme.spacing.xl};
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+    font-size: 1.125rem;
+    border-radius: ${theme.borderRadius.lg};
+    color: ${theme.colors.gray700};
+    min-height: 48px;
+    font-weight: 600;
 
-    &:hover {
-      color: ${(props) => props.isScrolled ? theme.colors.primary : theme.colors.white};
-      background: ${(props) => props.isScrolled ? theme.colors.gray50 : 'rgba(255, 255, 255, 0.1)'};
-      transform: translateY(-1px);
+    &:hover, &:focus {
+      color: ${theme.colors.primary};
+      background: ${theme.colors.gray50};
+      transform: none;
+    }
+
+    &:active {
+      background: ${theme.colors.gray100};
     }
   }
 
-  ${media.desktop} {
-    font-size: 0.875rem;
+  @media (min-width: 769px) and (max-width: 1024px) {
+    padding: ${theme.spacing.xs} ${theme.spacing.sm};
+    font-size: 0.8125rem;
   }
 
   @media (min-width: 1201px) {
+    padding: ${theme.spacing.xs} ${theme.spacing.sm};
     font-size: 0.875rem;
   }
 `;
@@ -222,26 +197,21 @@ const DropdownButton = styled.button.withConfig({
   align-items: center;
   justify-content: center;
   gap: ${theme.spacing.xs};
-  color: ${theme.colors.gray700};
-  font-weight: 600;
+  color: ${(props) => props.isScrolled ? theme.colors.gray700 : 'rgba(255, 255, 255, 0.9)'};
+  font-weight: 500;
   background: none;
   border: none;
-  padding: ${theme.spacing.lg} ${theme.spacing.xl};
-  border-radius: ${theme.borderRadius.lg};
+  padding: ${theme.spacing.xs} ${theme.spacing.sm};
+  border-radius: ${theme.borderRadius.md};
   transition: all 0.3s ease;
   cursor: pointer;
   white-space: nowrap;
-  font-size: 1.125rem;
-  width: 100%;
-  min-height: 48px;
+  font-size: 0.875rem;
 
-  &:hover, &:focus {
-    color: ${theme.colors.primary};
-    background: ${theme.colors.gray50};
-  }
-
-  &:active {
-    background: ${theme.colors.gray100};
+  &:hover {
+    color: ${(props) => props.isScrolled ? theme.colors.primary : theme.colors.white};
+    background: ${(props) => props.isScrolled ? theme.colors.gray50 : 'rgba(255, 255, 255, 0.1)'};
+    transform: translateY(-1px);
   }
 
   &:focus {
@@ -255,29 +225,38 @@ const DropdownButton = styled.button.withConfig({
     font-size: 0.875rem;
   }
 
-  ${media.tabletUp} {
-    padding: ${theme.spacing.sm};
-    font-size: 0.875rem;
-    width: auto;
-    min-height: auto;
-    color: ${(props) => props.isScrolled ? theme.colors.gray700 : 'rgba(255, 255, 255, 0.9)'};
-    font-weight: 500;
-    border-radius: ${theme.borderRadius.md};
-    justify-content: flex-start;
+  ${media.mobileDown} {
+    padding: ${theme.spacing.lg} ${theme.spacing.xl};
+    width: 100%;
+    font-size: 1.125rem;
+    border-radius: ${theme.borderRadius.lg};
+    color: ${theme.colors.gray700};
+    min-height: 48px;
+    font-weight: 600;
 
-    &:hover {
-      color: ${(props) => props.isScrolled ? theme.colors.primary : theme.colors.white};
-      background: ${(props) => props.isScrolled ? theme.colors.gray50 : 'rgba(255, 255, 255, 0.1)'};
-      transform: translateY(-1px);
+    &:hover, &:focus {
+      color: ${theme.colors.primary};
+      background: ${theme.colors.gray50};
+      transform: none;
+    }
+
+    &:active {
+      background: ${theme.colors.gray100};
     }
   }
 
-  ${media.desktop} {
+  @media (min-width: 769px) and (max-width: 1024px) {
+    padding: ${theme.spacing.sm};
+    font-size: 0.875rem;
+  }
+
+  @media (min-width: 1025px) and (max-width: 1200px) {
     padding: ${theme.spacing.sm} ${theme.spacing.md};
     font-size: 0.9rem;
   }
 
   @media (min-width: 1201px) {
+    padding: ${theme.spacing.sm} ${theme.spacing.md};
     font-size: 1rem;
   }
 `;
@@ -479,12 +458,10 @@ const RegisterButton = styled(Button).withConfig({
 const MobileMenuButton = styled.button.withConfig({
   shouldForwardProp: (prop) => prop !== "isScrolled",
 })`
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: none;
   background: none;
   border: none;
-  color: ${(props) => props.isScrolled ? theme.colors.gray700 : theme.colors.gray700};
+  color: ${(props) => props.isScrolled ? theme.colors.gray700 : theme.colors.white};
   font-size: 1.25rem;
   padding: ${theme.spacing.sm};
   cursor: pointer;
@@ -493,11 +470,6 @@ const MobileMenuButton = styled.button.withConfig({
   position: relative;
   z-index: 1000;
   flex-shrink: 0;
-  width: 2.75rem;
-  height: 2.75rem;
-  min-width: 44px;
-  min-height: 44px;
-  touch-action: manipulation;
 
   &:hover {
     background: ${(props) => props.isScrolled ? theme.colors.gray50 : 'rgba(255, 255, 255, 0.1)'};
@@ -515,23 +487,30 @@ const MobileMenuButton = styled.button.withConfig({
     transform: scale(0.95);
   }
 
-  ${media.tabletUp} {
-    display: none;
+  ${media.mobileDown} {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    min-width: 44px;
+    min-height: 44px;
+    touch-action: manipulation;
   }
 `;
 
 const MobileAuthButtons = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${theme.spacing.md};
-  padding: ${theme.spacing.xl} 0;
-  border-top: 1px solid ${theme.colors.gray200};
-  margin-top: auto;
-  width: 100%;
-  padding-bottom: calc(${theme.spacing.xl} + env(safe-area-inset-bottom));
+  display: none;
 
-  ${media.tabletUp} {
-    display: none;
+  ${media.mobileDown} {
+    display: flex;
+    flex-direction: column;
+    gap: ${theme.spacing.md};
+    padding: ${theme.spacing.xl} 0;
+    border-top: 1px solid ${theme.colors.gray200};
+    margin-top: auto;
+    width: 100%;
+    padding-bottom: calc(${theme.spacing.xl} + env(safe-area-inset-bottom));
   }
 `;
 
@@ -580,21 +559,21 @@ const MobileAuthButton = styled(Link)`
 const MobileMenuOverlay = styled.div.withConfig({
   shouldForwardProp: (prop) => prop !== "isOpen",
 })`
-  display: block;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 998;
-  opacity: ${(props) => (props.isOpen ? "1" : "0")};
-  visibility: ${(props) => (props.isOpen ? "visible" : "hidden")};
-  transition: all 0.3s ease;
-  backdrop-filter: blur(4px);
+  display: none;
 
-  ${media.tabletUp} {
-    display: none;
+  ${media.mobileDown} {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 998;
+    opacity: ${(props) => (props.isOpen ? "1" : "0")};
+    visibility: ${(props) => (props.isOpen ? "visible" : "hidden")};
+    transition: all 0.3s ease;
+    backdrop-filter: blur(4px);
   }
 `;
 
