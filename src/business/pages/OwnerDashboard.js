@@ -834,7 +834,7 @@ const OwnerDashboard = () => {
     ],
     skills: [
       { id: 1, name: "Web Design", level: 95, icon: "🎨" },
-      { id: 2, name: "UI/UX Design", level: 90, icon: "📱" },
+      { id: 2, name: "UI/UX Design", level: 90, icon: "���" },
       { id: 3, name: "Frontend Development", level: 88, icon: "💻" }
     ],
     experience: [
@@ -893,11 +893,11 @@ const OwnerDashboard = () => {
   }
 
   const handleBackToWebsite = () => {
-    navigate(`/business/${businessData.slug}`);
+    navigate(`/${actualSlug}`);
   };
 
     const handlePreview = () => {
-    window.open(`/business/${businessData.slug}`, '_blank');
+    window.open(`/${actualSlug}`, '_blank');
   };
 
   // Modal and form handlers
