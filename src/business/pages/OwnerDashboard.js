@@ -789,8 +789,11 @@ const VisibilityToggle = styled.div.withConfig({
 `;
 
 const OwnerDashboard = () => {
-  const { businessSlug } = useParams();
+  const { businessSlug, slug } = useParams();
   const navigate = useNavigate();
+
+  // Support both businessSlug (legacy routes) and slug (new optimized routes)
+  const actualSlug = businessSlug || slug;
   const [businessData, setBusinessData] = useState(null);
   const [activeSection, setActiveSection] = useState('content');
   const [isEditing, setIsEditing] = useState(false);
@@ -831,7 +834,7 @@ const OwnerDashboard = () => {
     ],
     skills: [
       { id: 1, name: "Web Design", level: 95, icon: "🎨" },
-      { id: 2, name: "UI/UX Design", level: 90, icon: "📱" },
+      { id: 2, name: "UI/UX Design", level: 90, icon: "���" },
       { id: 3, name: "Frontend Development", level: 88, icon: "💻" }
     ],
     experience: [
@@ -872,11 +875,11 @@ const OwnerDashboard = () => {
   });
 
   useEffect(() => {
-    const template = getBusinessTemplate(businessSlug);
+    const template = getBusinessTemplate(actualSlug);
     if (template) {
       setBusinessData(template);
     }
-  }, [businessSlug]);
+  }, [actualSlug]);
 
   if (!businessData) {
     return (
@@ -890,11 +893,11 @@ const OwnerDashboard = () => {
   }
 
   const handleBackToWebsite = () => {
-    navigate(`/business/${businessData.slug}`);
+    navigate(`/${actualSlug}`);
   };
 
     const handlePreview = () => {
-    window.open(`/business/${businessData.slug}`, '_blank');
+    window.open(`/${actualSlug}`, '_blank');
   };
 
   // Modal and form handlers

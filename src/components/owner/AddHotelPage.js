@@ -15,7 +15,7 @@ import {
   CheckboxGroup,
   CheckboxItem,
 } from "../shared/Input";
-import { theme } from "../../styles/GlobalStyle";
+import { theme, media } from "../../styles/GlobalStyle";
 import { useAppContext } from "../../context/AppContext";
 import { amenitiesList } from "../../data/mockData";
 
@@ -27,13 +27,18 @@ const PageContainer = styled.div`
 
 const MainContent = styled.main`
   flex: 1;
-  margin-left: 280px;
+  margin-left: 17.5rem;
   padding: ${theme.spacing.xxl};
 
-  @media (max-width: ${theme.breakpoints.tablet}) {
+  ${media.tabletDown} {
     margin-left: 0;
     padding: ${theme.spacing.xl} ${theme.spacing.md};
     padding-top: 80px;
+  }
+
+  ${media.mobile} {
+    padding: ${theme.spacing.lg} ${theme.spacing.sm};
+    padding-top: 4rem;
   }
 `;
 
