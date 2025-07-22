@@ -35,14 +35,10 @@ const HeroSection = styled.section`
     url("https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3")
       center/cover;
   color: ${theme.colors.white};
-  padding: ${theme.spacing.xl} 0;
+  padding: ${theme.spacing.lg} 0;
   text-align: center;
 
-  ${media.mobile} {
-    padding: ${theme.spacing.lg} 0;
-  }
-
-  ${media.tablet} {
+  ${media.tabletUp} {
     padding: ${theme.spacing.xl} 0;
   }
 `;
@@ -50,13 +46,9 @@ const HeroSection = styled.section`
 const HeroContent = styled.div`
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 ${theme.spacing.md};
+  padding: 0 ${theme.spacing.sm};
 
-  ${media.mobile} {
-    padding: 0 ${theme.spacing.sm};
-  }
-
-  ${media.tablet} {
+  ${media.tabletUp} {
     padding: 0 ${theme.spacing.lg};
   }
 
@@ -66,67 +58,62 @@ const HeroContent = styled.div`
 `;
 
 const HeroTitle = styled.h1`
-  font-size: 2.5rem;
+  font-size: 1.75rem;
   font-weight: 700;
-  margin-bottom: ${theme.spacing.sm};
+  margin-bottom: ${theme.spacing.xs};
 
-  ${media.mobile} {
-    font-size: 1.75rem;
-    margin-bottom: ${theme.spacing.xs};
+  ${media.tabletUp} {
+    font-size: 2rem;
+    margin-bottom: ${theme.spacing.sm};
   }
 
-  ${media.tablet} {
-    font-size: 2rem;
+  ${media.desktop} {
+    font-size: 2.5rem;
   }
 `;
 
 const HeroSubtitle = styled.p`
-  font-size: 1.125rem;
-  margin-bottom: ${theme.spacing.xl};
+  font-size: 0.9375rem;
+  margin-bottom: ${theme.spacing.lg};
   opacity: 0.9;
 
-  ${media.mobile} {
-    font-size: 0.9375rem;
-    margin-bottom: ${theme.spacing.lg};
+  ${media.tabletUp} {
+    font-size: 1rem;
+    margin-bottom: ${theme.spacing.xl};
   }
 
-  ${media.tablet} {
-    font-size: 1rem;
+  ${media.desktop} {
+    font-size: 1.125rem;
   }
 `;
 
 const SearchCard = styled(Card)`
   max-width: 800px;
-  margin: 0 auto;
-  padding: ${theme.spacing.lg};
+  margin: 0 ${theme.spacing.sm};
+  padding: ${theme.spacing.sm};
   background: ${theme.colors.white};
-  border-radius: ${theme.borderRadius.xl};
+  border-radius: ${theme.borderRadius.lg};
   box-shadow: ${theme.shadows.xl};
 
-  ${media.mobile} {
-    margin: 0 ${theme.spacing.sm};
-    padding: ${theme.spacing.sm};
-    border-radius: ${theme.borderRadius.lg};
-  }
-
-  ${media.tablet} {
+  ${media.tabletUp} {
     margin: 0 ${theme.spacing.lg};
     padding: ${theme.spacing.md};
+    border-radius: ${theme.borderRadius.xl};
+  }
+
+  ${media.desktop} {
+    margin: 0 auto;
+    padding: ${theme.spacing.lg};
   }
 `;
 
 const SearchForm = styled.form`
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr auto;
-  gap: ${theme.spacing.md};
+  grid-template-columns: 1fr;
+  gap: ${theme.spacing.sm};
   align-items: end;
 
-  ${media.mobile} {
-    grid-template-columns: 1fr;
-    gap: ${theme.spacing.sm};
-  }
-
-  ${media.tablet} {
+  ${media.tabletUp} {
     grid-template-columns: 1fr 1fr;
     gap: ${theme.spacing.md};
   }
@@ -137,46 +124,40 @@ const SearchForm = styled.form`
 `;
 
 const HotelsSection = styled.section`
-  padding: ${theme.spacing.xl} 0;
+  padding: ${theme.spacing.lg} 0;
 
-  ${media.mobile} {
-    padding: ${theme.spacing.lg} 0;
+  ${media.tabletUp} {
+    padding: ${theme.spacing.xl} 0;
   }
 `;
 
 const SectionTitle = styled.h2`
-  font-size: 1.75rem;
+  font-size: 1.375rem;
   font-weight: 600;
   text-align: center;
-  margin-bottom: ${theme.spacing.xl};
+  margin-bottom: ${theme.spacing.md};
   color: ${theme.colors.gray900};
 
-  ${media.mobile} {
-    font-size: 1.375rem;
-    margin-bottom: ${theme.spacing.md};
-  }
-
-  ${media.tablet} {
+  ${media.tabletUp} {
     font-size: 1.5rem;
     margin-bottom: ${theme.spacing.lg};
+  }
+
+  ${media.desktop} {
+    font-size: 1.75rem;
+    margin-bottom: ${theme.spacing.xl};
   }
 `;
 
 const HotelsGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: ${theme.spacing.lg};
+  grid-template-columns: 1fr;
+  gap: ${theme.spacing.md};
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 ${theme.spacing.md};
+  padding: 0 ${theme.spacing.sm};
 
-  ${media.mobile} {
-    grid-template-columns: 1fr;
-    gap: ${theme.spacing.md};
-    padding: 0 ${theme.spacing.sm};
-  }
-
-  ${media.tablet} {
+  ${media.tabletUp} {
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: ${theme.spacing.md};
     padding: 0 ${theme.spacing.lg};
@@ -184,7 +165,7 @@ const HotelsGrid = styled.div`
 
   ${media.desktop} {
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    padding: 0 ${theme.spacing.lg};
+    gap: ${theme.spacing.lg};
   }
 `;
 
@@ -194,19 +175,16 @@ const HotelCard = styled(Card)`
 
 const HotelInfo = styled.div`
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+  flex-direction: column;
+  align-items: stretch;
+  gap: ${theme.spacing.sm};
   margin-bottom: ${theme.spacing.md};
 
-  ${media.mobile} {
-    flex-direction: column;
-    align-items: stretch;
-    gap: ${theme.spacing.sm};
-  }
-
-  ${media.tablet} {
+  ${media.tabletUp} {
     flex-direction: row;
     align-items: flex-start;
+    justify-content: space-between;
+    gap: 0;
   }
 `;
 
@@ -219,12 +197,12 @@ const LocationText = styled.div`
   align-items: center;
   gap: ${theme.spacing.xs};
   color: ${theme.colors.gray600};
-  font-size: 0.875rem;
-  margin-bottom: ${theme.spacing.sm};
+  font-size: 0.8rem;
+  margin-bottom: ${theme.spacing.xs};
 
-  ${media.mobile} {
-    font-size: 0.8rem;
-    margin-bottom: ${theme.spacing.xs};
+  ${media.tabletUp} {
+    font-size: 0.875rem;
+    margin-bottom: ${theme.spacing.sm};
   }
 `;
 
@@ -233,22 +211,18 @@ const Rating = styled.div`
   align-items: center;
   gap: ${theme.spacing.xs};
   color: ${theme.colors.accent};
-  font-size: 0.875rem;
+  font-size: 0.8rem;
 
-  ${media.mobile} {
-    font-size: 0.8rem;
+  ${media.tabletUp} {
+    font-size: 0.875rem;
   }
 `;
 
 const PriceSection = styled.div`
-  text-align: right;
+  text-align: left;
+  margin-top: ${theme.spacing.sm};
 
-  ${media.mobile} {
-    text-align: left;
-    margin-top: ${theme.spacing.sm};
-  }
-
-  ${media.tablet} {
+  ${media.tabletUp} {
     text-align: right;
     margin-top: 0;
   }
