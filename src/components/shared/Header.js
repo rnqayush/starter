@@ -6,16 +6,42 @@ import { theme, media } from "../../styles/GlobalStyle";
 import { Button } from "./Button";
 
 const HeaderContainer = styled.header.withConfig({
-  shouldForwardProp: (prop) => prop !== "isScrolled",
+  shouldForwardProp: (prop) => prop !== "isScrolled" && prop !== "isInHero",
 })`
-  background: ${(props) => props.isScrolled ? theme.colors.white : 'transparent'};
-  box-shadow: ${(props) => props.isScrolled ? theme.shadows.sm : 'none'};
+  background: ${(props) => {
+    if (props.isScrolled) return theme.colors.white;
+    if (props.isInHero) {
+      return 'linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.95) 35%, rgba(51, 65, 85, 0.9) 100%)';
+    }
+    return 'transparent';
+  }};
+  box-shadow: ${(props) => {
+    if (props.isScrolled) return theme.shadows.sm;
+    if (props.isInHero) return '0 4px 20px rgba(0, 0, 0, 0.3)';
+    return 'none';
+  }};
   position: fixed;
   top: 0;
   z-index: 100;
   width: 100%;
   transition: all 0.3s ease;
-  backdrop-filter: ${(props) => props.isScrolled ? 'none' : 'blur(10px)'};
+  backdrop-filter: ${(props) => {
+    if (props.isScrolled) return 'none';
+    if (props.isInHero) return 'blur(20px)';
+    return 'blur(10px)';
+  }};
+  border-bottom: ${(props) => {
+    if (props.isInHero) return '1px solid rgba(255, 255, 255, 0.1)';
+    return 'none';
+  }};
+
+  ${media.mobile} {
+    backdrop-filter: ${(props) => {
+      if (props.isScrolled) return 'none';
+      if (props.isInHero) return 'blur(15px)';
+      return 'blur(8px)';
+    }};
+  }
 `;
 
 const HeaderContent = styled.div`
@@ -51,21 +77,25 @@ const HeaderContent = styled.div`
 `;
 
 const Logo = styled(Link).withConfig({
-  shouldForwardProp: (prop) => prop !== "isScrolled",
+  shouldForwardProp: (prop) => prop !== "isScrolled" && prop !== "isInHero",
 })`
   display: flex;
   align-items: center;
   gap: ${theme.spacing.sm};
   font-size: 1.25rem;
   font-weight: 700;
-  color: ${(props) => props.isScrolled ? theme.colors.primary : theme.colors.white};
+  color: ${(props) => {
+    if (props.isScrolled) return theme.colors.primary;
+    return theme.colors.white;
+  }};
   text-decoration: none;
   flex-shrink: 0;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
   min-width: 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-shadow: ${(props) => props.isInHero ? '0 2px 4px rgba(0, 0, 0, 0.3)' : 'none'};
 
   ${media.mobile} {
     font-size: 1.125rem;
@@ -468,13 +498,21 @@ const RegisterButton = styled(Button).withConfig({
 `;
 
 const MobileMenuButton = styled.button.withConfig({
-  shouldForwardProp: (prop) => prop !== "isScrolled",
+  shouldForwardProp: (prop) => prop !== "isScrolled" && prop !== "isInHero",
 })`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: none;
-  border: none;
+  background: ${(props) => {
+    if (props.isScrolled) return 'none';
+    if (props.isInHero) return 'rgba(255, 255, 255, 0.1)';
+    return 'none';
+  }};
+  border: ${(props) => {
+    if (props.isScrolled) return 'none';
+    if (props.isInHero) return '1px solid rgba(255, 255, 255, 0.2)';
+    return 'none';
+  }};
   color: ${(props) => props.isScrolled ? theme.colors.gray700 : theme.colors.white};
   font-size: 1.25rem;
   padding: ${theme.spacing.sm};
@@ -489,6 +527,16 @@ const MobileMenuButton = styled.button.withConfig({
   min-width: 44px;
   min-height: 44px;
   touch-action: manipulation;
+  backdrop-filter: ${(props) => {
+    if (props.isScrolled) return 'none';
+    if (props.isInHero) return 'blur(10px)';
+    return 'none';
+  }};
+  text-shadow: ${(props) => {
+    if (props.isScrolled) return 'none';
+    if (props.isInHero) return '0 2px 4px rgba(0, 0, 0, 0.3)';
+    return 'none';
+  }};
 
   &:hover {
     background: ${(props) => props.isScrolled ? theme.colors.gray50 : 'rgba(255, 255, 255, 0.1)'};
@@ -589,6 +637,7 @@ const Header = ({ isOwnerView = false }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isInHero, setIsInHero] = useState(false);
   const dropdownRef = useRef(null);
 
   const closeMobileMenu = () => setMobileMenuOpen(false);
@@ -641,13 +690,21 @@ const Header = ({ isOwnerView = false }) => {
     };
   }, [mobileMenuOpen]);
 
-  // Handle scroll detection for navbar transparency
+  // Handle scroll detection for navbar transparency and hero detection
   useEffect(() => {
     const handleScroll = () => {
       const scrollPosition = window.scrollY;
+      const windowHeight = window.innerHeight;
+
+      // Check if scrolled
       setIsScrolled(scrollPosition > 50);
+
+      // Check if in hero section (approximately first 75% of viewport height)
+      const heroHeight = windowHeight * 0.75;
+      setIsInHero(scrollPosition < heroHeight);
     };
 
+    handleScroll(); // Call once on mount
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -660,12 +717,13 @@ const Header = ({ isOwnerView = false }) => {
   return (
     <>
       <MobileMenuOverlay isOpen={mobileMenuOpen} onClick={closeMobileMenu} />
-      <HeaderContainer isScrolled={isScrolled}>
+      <HeaderContainer isScrolled={isScrolled} isInHero={isInHero}>
         <HeaderContent>
           <Logo
             to={isOwnerView ? "/" : "/"}
             onClick={closeMobileMenu}
             isScrolled={isScrolled}
+            isInHero={isInHero}
           >
             <FaHotel />
             StoreBuilder
@@ -851,6 +909,7 @@ const Header = ({ isOwnerView = false }) => {
               aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
               aria-expanded={mobileMenuOpen}
               isScrolled={isScrolled}
+              isInHero={isInHero}
             >
               {mobileMenuOpen ? <FaTimes /> : <FaBars />}
             </MobileMenuButton>
