@@ -8,18 +8,18 @@ import { Button } from "./Button";
 const HeaderContainer = styled.header.withConfig({
   shouldForwardProp: (prop) => prop !== "isScrolled",
 })`
-  background: ${(props) => props.isScrolled ? theme.colors.white : 'transparent'};
+  background: ${(props) => props.isScrolled ? theme.colors.white : 'rgba(255, 255, 255, 0.95)'};
+  backdrop-filter: blur(10px);
   box-shadow: ${(props) => props.isScrolled ? theme.shadows.sm : 'none'};
   position: fixed;
   top: 0;
   z-index: 100;
   width: 100%;
   transition: all 0.3s ease;
-  backdrop-filter: ${(props) => props.isScrolled ? 'none' : 'blur(10px)'};
 
-  ${media.mobile} {
-    background: ${(props) => props.isScrolled ? theme.colors.white : 'rgba(255, 255, 255, 0.95)'};
-    backdrop-filter: blur(10px);
+  ${media.tabletUp} {
+    background: ${(props) => props.isScrolled ? theme.colors.white : 'transparent'};
+    backdrop-filter: ${(props) => props.isScrolled ? 'none' : 'blur(10px)'};
   }
 `;
 
@@ -33,15 +33,9 @@ const HeaderContent = styled.div`
   justify-content: space-between;
   min-height: 3.75rem;
   position: relative;
+  gap: ${theme.spacing.sm};
 
-  ${media.mobile} {
-    padding: 0 ${theme.spacing.md};
-    min-height: 3.75rem;
-    gap: ${theme.spacing.sm};
-  }
-
-  ${media.tablet} {
-    padding: 0 ${theme.spacing.md};
+  ${media.tabletUp} {
     min-height: 3.625rem;
   }
 
@@ -60,10 +54,10 @@ const Logo = styled(Link).withConfig({
 })`
   display: flex;
   align-items: center;
-  gap: ${theme.spacing.sm};
-  font-size: 1.25rem;
+  gap: ${theme.spacing.xs};
+  font-size: 1.125rem;
   font-weight: 700;
-  color: ${(props) => props.isScrolled ? theme.colors.primary : theme.colors.white};
+  color: ${(props) => props.isScrolled ? theme.colors.primary : theme.colors.gray700};
   text-decoration: none;
   flex-shrink: 0;
   transition: color 0.3s ease;
@@ -71,24 +65,25 @@ const Logo = styled(Link).withConfig({
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  max-width: calc(100vw - 140px);
 
-  ${media.mobile} {
-    font-size: 1.125rem;
-    gap: ${theme.spacing.xs};
-    color: ${(props) => props.isScrolled ? theme.colors.primary : theme.colors.gray700};
-    max-width: calc(100vw - 140px);
+  ${media.tabletUp} {
+    font-size: 1.1875rem;
+    gap: ${theme.spacing.sm};
+    color: ${(props) => props.isScrolled ? theme.colors.primary : theme.colors.white};
+    max-width: none;
   }
 
-  ${media.tablet} {
-    font-size: 1.1875rem;
+  ${media.desktop} {
+    font-size: 1.25rem;
   }
 
   svg {
-    font-size: 1.125rem;
+    font-size: 1rem;
     flex-shrink: 0;
 
-    ${media.mobile} {
-      font-size: 1rem;
+    ${media.tabletUp} {
+      font-size: 1.125rem;
     }
   }
 `;
@@ -96,38 +91,51 @@ const Logo = styled(Link).withConfig({
 const Nav = styled.nav.withConfig({
   shouldForwardProp: (prop) => prop !== "isOpen",
 })`
+  position: fixed;
+  top: 3.75rem;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: ${theme.colors.white};
+  flex-direction: column;
+  padding: ${theme.spacing.lg} ${theme.spacing.md};
+  box-shadow: ${theme.shadows.xl};
+  transform: translateY(${(props) => (props.isOpen ? "0" : "-100%")});
+  opacity: ${(props) => (props.isOpen ? "1" : "0")};
+  visibility: ${(props) => (props.isOpen ? "visible" : "hidden")};
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 999;
+  overflow-y: auto;
+  gap: ${theme.spacing.sm};
+  align-items: stretch;
+  border-top: 1px solid ${theme.colors.gray200};
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: env(safe-area-inset-bottom);
   display: flex;
-  align-items: center;
-  gap: ${theme.spacing.lg};
 
-  ${media.mobileDown} {
-    position: fixed;
-    top: 3.75rem;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: ${theme.colors.white};
-    flex-direction: column;
-    padding: ${theme.spacing.lg} ${theme.spacing.md};
-    box-shadow: ${theme.shadows.xl};
-    transform: translateY(${(props) => (props.isOpen ? "0" : "-100%")});
-    opacity: ${(props) => (props.isOpen ? "1" : "0")};
-    visibility: ${(props) => (props.isOpen ? "visible" : "hidden")};
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    z-index: 999;
-    overflow-y: auto;
-    gap: ${theme.spacing.sm};
-    align-items: stretch;
-    border-top: 1px solid ${theme.colors.gray200};
-    -webkit-overflow-scrolling: touch;
-    padding-bottom: env(safe-area-inset-bottom);
-  }
-
-  @media (min-width: 769px) and (max-width: 1024px) {
+  ${media.tabletUp} {
+    position: static;
+    top: auto;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    background: transparent;
+    flex-direction: row;
+    padding: 0;
+    box-shadow: none;
+    transform: none;
+    opacity: 1;
+    visibility: visible;
+    transition: none;
+    z-index: auto;
+    overflow-y: visible;
     gap: ${theme.spacing.md};
+    align-items: center;
+    border-top: none;
+    padding-bottom: 0;
   }
 
-  @media (min-width: 1025px) and (max-width: 1200px) {
+  ${media.desktop} {
     gap: ${theme.spacing.lg};
   }
 
@@ -139,22 +147,29 @@ const Nav = styled.nav.withConfig({
 const NavLink = styled(Link).withConfig({
   shouldForwardProp: (prop) => prop !== "isScrolled",
 })`
-  color: ${(props) => props.isScrolled ? theme.colors.gray700 : 'rgba(255, 255, 255, 0.9)'};
-  font-weight: 500;
+  padding: ${theme.spacing.lg} ${theme.spacing.xl};
+  width: 100%;
+  text-align: center;
+  justify-content: center;
+  font-size: 1.125rem;
+  border-radius: ${theme.borderRadius.lg};
+  color: ${theme.colors.gray700};
+  min-height: 48px;
+  font-weight: 600;
   text-decoration: none;
-  padding: ${theme.spacing.xs} ${theme.spacing.sm};
-  border-radius: ${theme.borderRadius.md};
   transition: all 0.3s ease;
   white-space: nowrap;
   display: flex;
   align-items: center;
   position: relative;
-  font-size: 0.875rem;
 
-  &:hover {
-    color: ${(props) => props.isScrolled ? theme.colors.primary : theme.colors.white};
-    background: ${(props) => props.isScrolled ? theme.colors.gray50 : 'rgba(255, 255, 255, 0.1)'};
-    transform: translateY(-1px);
+  &:hover, &:focus {
+    color: ${theme.colors.primary};
+    background: ${theme.colors.gray50};
+  }
+
+  &:active {
+    background: ${theme.colors.gray100};
   }
 
   &.active {
@@ -163,40 +178,29 @@ const NavLink = styled(Link).withConfig({
     color: ${theme.colors.white};
   }
 
-  ${media.mobileDown} {
-    padding: ${theme.spacing.lg} ${theme.spacing.xl};
-    width: 100%;
-    text-align: center;
-    justify-content: center;
-    font-size: 1.125rem;
-    border-radius: ${theme.borderRadius.lg};
-    color: ${theme.colors.gray700};
-    min-height: 48px;
-    font-weight: 600;
-
-    &:hover, &:focus {
-      color: ${theme.colors.primary};
-      background: ${theme.colors.gray50};
-      transform: none;
-    }
-
-    &:active {
-      background: ${theme.colors.gray100};
-    }
-  }
-
-  @media (min-width: 769px) and (max-width: 1024px) {
+  ${media.tabletUp} {
     padding: ${theme.spacing.xs} ${theme.spacing.sm};
+    width: auto;
+    text-align: left;
+    justify-content: flex-start;
     font-size: 0.8125rem;
+    border-radius: ${theme.borderRadius.md};
+    color: ${(props) => props.isScrolled ? theme.colors.gray700 : 'rgba(255, 255, 255, 0.9)'};
+    min-height: auto;
+    font-weight: 500;
+
+    &:hover {
+      color: ${(props) => props.isScrolled ? theme.colors.primary : theme.colors.white};
+      background: ${(props) => props.isScrolled ? theme.colors.gray50 : 'rgba(255, 255, 255, 0.1)'};
+      transform: translateY(-1px);
+    }
   }
 
-  @media (min-width: 1025px) and (max-width: 1200px) {
-    padding: ${theme.spacing.xs} ${theme.spacing.sm};
+  ${media.desktop} {
     font-size: 0.875rem;
   }
 
   @media (min-width: 1201px) {
-    padding: ${theme.spacing.xs} ${theme.spacing.sm};
     font-size: 0.875rem;
   }
 `;
@@ -204,9 +208,10 @@ const NavLink = styled(Link).withConfig({
 const DropdownContainer = styled.div`
   position: relative;
   display: inline-block;
+  width: 100%;
 
-  ${media.mobileDown} {
-    width: 100%;
+  ${media.tabletUp} {
+    width: auto;
   }
 `;
 
@@ -217,21 +222,26 @@ const DropdownButton = styled.button.withConfig({
   align-items: center;
   justify-content: center;
   gap: ${theme.spacing.xs};
-  color: ${(props) => props.isScrolled ? theme.colors.gray700 : 'rgba(255, 255, 255, 0.9)'};
-  font-weight: 500;
+  color: ${theme.colors.gray700};
+  font-weight: 600;
   background: none;
   border: none;
-  padding: ${theme.spacing.xs} ${theme.spacing.sm};
-  border-radius: ${theme.borderRadius.md};
+  padding: ${theme.spacing.lg} ${theme.spacing.xl};
+  border-radius: ${theme.borderRadius.lg};
   transition: all 0.3s ease;
   cursor: pointer;
   white-space: nowrap;
-  font-size: 0.875rem;
+  font-size: 1.125rem;
+  width: 100%;
+  min-height: 48px;
 
-  &:hover {
-    color: ${(props) => props.isScrolled ? theme.colors.primary : theme.colors.white};
-    background: ${(props) => props.isScrolled ? theme.colors.gray50 : 'rgba(255, 255, 255, 0.1)'};
-    transform: translateY(-1px);
+  &:hover, &:focus {
+    color: ${theme.colors.primary};
+    background: ${theme.colors.gray50};
+  }
+
+  &:active {
+    background: ${theme.colors.gray100};
   }
 
   &:focus {
@@ -245,38 +255,29 @@ const DropdownButton = styled.button.withConfig({
     font-size: 0.875rem;
   }
 
-  ${media.mobileDown} {
-    padding: ${theme.spacing.lg} ${theme.spacing.xl};
-    width: 100%;
-    font-size: 1.125rem;
-    border-radius: ${theme.borderRadius.lg};
-    color: ${theme.colors.gray700};
-    min-height: 48px;
-    font-weight: 600;
-
-    &:hover, &:focus {
-      color: ${theme.colors.primary};
-      background: ${theme.colors.gray50};
-      transform: none;
-    }
-
-    &:active {
-      background: ${theme.colors.gray100};
-    }
-  }
-
-  @media (min-width: 769px) and (max-width: 1024px) {
+  ${media.tabletUp} {
     padding: ${theme.spacing.sm};
     font-size: 0.875rem;
+    width: auto;
+    min-height: auto;
+    color: ${(props) => props.isScrolled ? theme.colors.gray700 : 'rgba(255, 255, 255, 0.9)'};
+    font-weight: 500;
+    border-radius: ${theme.borderRadius.md};
+    justify-content: flex-start;
+
+    &:hover {
+      color: ${(props) => props.isScrolled ? theme.colors.primary : theme.colors.white};
+      background: ${(props) => props.isScrolled ? theme.colors.gray50 : 'rgba(255, 255, 255, 0.1)'};
+      transform: translateY(-1px);
+    }
   }
 
-  @media (min-width: 1025px) and (max-width: 1200px) {
+  ${media.desktop} {
     padding: ${theme.spacing.sm} ${theme.spacing.md};
     font-size: 0.9rem;
   }
 
   @media (min-width: 1201px) {
-    padding: ${theme.spacing.sm} ${theme.spacing.md};
     font-size: 1rem;
   }
 `;
@@ -373,19 +374,15 @@ const DropdownItem = styled(Link)`
 const UserSection = styled.div`
   display: flex;
   align-items: center;
-  gap: ${theme.spacing.md};
+  gap: ${theme.spacing.xs};
   flex-shrink: 0;
   min-width: 0;
 
-  ${media.mobileDown} {
-    gap: ${theme.spacing.xs};
-  }
-
-  @media (min-width: 769px) and (max-width: 1024px) {
+  ${media.tabletUp} {
     gap: ${theme.spacing.sm};
   }
 
-  @media (min-width: 1025px) and (max-width: 1200px) {
+  ${media.desktop} {
     gap: ${theme.spacing.md};
   }
 
@@ -397,43 +394,38 @@ const UserSection = styled.div`
 const LoginButton = styled(Link).withConfig({
   shouldForwardProp: (prop) => prop !== "isScrolled",
 })`
-  color: ${(props) => props.isScrolled ? theme.colors.gray700 : 'rgba(255, 255, 255, 0.9)'};
-  font-weight: 500;
-  text-decoration: none;
-  padding: ${theme.spacing.sm} ${theme.spacing.md};
-  border-radius: ${theme.borderRadius.md};
-  transition: all 0.3s ease;
-  white-space: nowrap;
-  display: flex;
-  align-items: center;
+  display: none;
 
-  &:hover {
-    color: ${(props) => props.isScrolled ? theme.colors.primary : theme.colors.white};
-    background: ${(props) => props.isScrolled ? theme.colors.gray50 : 'rgba(255, 255, 255, 0.1)'};
-    transform: translateY(-1px);
-  }
-
-  &:focus {
-    outline: 2px solid ${theme.colors.primary};
-    outline-offset: 2px;
-  }
-
-  ${media.mobileDown} {
-    display: none;
-  }
-
-  @media (min-width: 769px) and (max-width: 1024px) {
+  ${media.tabletUp} {
+    color: ${(props) => props.isScrolled ? theme.colors.gray700 : 'rgba(255, 255, 255, 0.9)'};
+    font-weight: 500;
+    text-decoration: none;
     padding: ${theme.spacing.sm};
+    border-radius: ${theme.borderRadius.md};
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
     font-size: 0.875rem;
+
+    &:hover {
+      color: ${(props) => props.isScrolled ? theme.colors.primary : theme.colors.white};
+      background: ${(props) => props.isScrolled ? theme.colors.gray50 : 'rgba(255, 255, 255, 0.1)'};
+      transform: translateY(-1px);
+    }
+
+    &:focus {
+      outline: 2px solid ${theme.colors.primary};
+      outline-offset: 2px;
+    }
   }
 
-  @media (min-width: 1025px) and (max-width: 1200px) {
+  ${media.desktop} {
     padding: ${theme.spacing.sm} ${theme.spacing.md};
     font-size: 0.9rem;
   }
 
   @media (min-width: 1201px) {
-    padding: ${theme.spacing.sm} ${theme.spacing.md};
     font-size: 1rem;
   }
 `;
@@ -441,49 +433,45 @@ const LoginButton = styled(Link).withConfig({
 const RegisterButton = styled(Button).withConfig({
   shouldForwardProp: (prop) => prop !== "isScrolled",
 })`
-  background: ${(props) => props.isScrolled ? theme.colors.primary : 'rgba(255, 255, 255, 0.2)'};
-  color: ${theme.colors.white};
-  border: ${(props) => props.isScrolled ? 'none' : '1px solid rgba(255, 255, 255, 0.3)'};
-  padding: ${theme.spacing.sm} ${theme.spacing.lg};
-  border-radius: ${theme.borderRadius.md};
-  font-weight: 500;
-  transition: all 0.3s ease;
-  white-space: nowrap;
-  box-shadow: ${(props) => props.isScrolled ? theme.shadows.sm : 'none'};
-  backdrop-filter: ${(props) => props.isScrolled ? 'none' : 'blur(10px)'};
+  display: none;
 
-  &:hover {
-    background: ${(props) => props.isScrolled ? theme.colors.primaryDark : 'rgba(255, 255, 255, 0.3)'};
-    transform: translateY(-1px);
-    box-shadow: ${theme.shadows.md};
-  }
-
-  &:focus {
-    outline: 2px solid ${theme.colors.primary};
-    outline-offset: 2px;
-  }
-
-  &:active {
-    transform: translateY(0);
-    box-shadow: ${theme.shadows.sm};
-  }
-
-  ${media.mobileDown} {
-    display: none;
-  }
-
-  @media (min-width: 769px) and (max-width: 1024px) {
+  ${media.tabletUp} {
+    background: ${(props) => props.isScrolled ? theme.colors.primary : 'rgba(255, 255, 255, 0.2)'};
+    color: ${theme.colors.white};
+    border: ${(props) => props.isScrolled ? 'none' : '1px solid rgba(255, 255, 255, 0.3)'};
     padding: ${theme.spacing.sm} ${theme.spacing.md};
+    border-radius: ${theme.borderRadius.md};
+    font-weight: 500;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    box-shadow: ${(props) => props.isScrolled ? theme.shadows.sm : 'none'};
+    backdrop-filter: ${(props) => props.isScrolled ? 'none' : 'blur(10px)'};
     font-size: 0.875rem;
+    display: flex;
+
+    &:hover {
+      background: ${(props) => props.isScrolled ? theme.colors.primaryDark : 'rgba(255, 255, 255, 0.3)'};
+      transform: translateY(-1px);
+      box-shadow: ${theme.shadows.md};
+    }
+
+    &:focus {
+      outline: 2px solid ${theme.colors.primary};
+      outline-offset: 2px;
+    }
+
+    &:active {
+      transform: translateY(0);
+      box-shadow: ${theme.shadows.sm};
+    }
   }
 
-  @media (min-width: 1025px) and (max-width: 1200px) {
+  ${media.desktop} {
     padding: ${theme.spacing.sm} ${theme.spacing.lg};
     font-size: 0.9rem;
   }
 
   @media (min-width: 1201px) {
-    padding: ${theme.spacing.sm} ${theme.spacing.lg};
     font-size: 1rem;
   }
 `;
@@ -491,10 +479,12 @@ const RegisterButton = styled(Button).withConfig({
 const MobileMenuButton = styled.button.withConfig({
   shouldForwardProp: (prop) => prop !== "isScrolled",
 })`
-  display: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: none;
   border: none;
-  color: ${(props) => props.isScrolled ? theme.colors.gray700 : theme.colors.white};
+  color: ${(props) => props.isScrolled ? theme.colors.gray700 : theme.colors.gray700};
   font-size: 1.25rem;
   padding: ${theme.spacing.sm};
   cursor: pointer;
@@ -503,6 +493,11 @@ const MobileMenuButton = styled.button.withConfig({
   position: relative;
   z-index: 1000;
   flex-shrink: 0;
+  width: 2.75rem;
+  height: 2.75rem;
+  min-width: 44px;
+  min-height: 44px;
+  touch-action: manipulation;
 
   &:hover {
     background: ${(props) => props.isScrolled ? theme.colors.gray50 : 'rgba(255, 255, 255, 0.1)'};
@@ -520,31 +515,23 @@ const MobileMenuButton = styled.button.withConfig({
     transform: scale(0.95);
   }
 
-  ${media.mobileDown} {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 2.75rem;
-    height: 2.75rem;
-    color: ${(props) => props.isScrolled ? theme.colors.gray700 : theme.colors.gray700};
-    min-width: 44px;
-    min-height: 44px;
-    touch-action: manipulation;
+  ${media.tabletUp} {
+    display: none;
   }
 `;
 
 const MobileAuthButtons = styled.div`
-  display: none;
+  display: flex;
+  flex-direction: column;
+  gap: ${theme.spacing.md};
+  padding: ${theme.spacing.xl} 0;
+  border-top: 1px solid ${theme.colors.gray200};
+  margin-top: auto;
+  width: 100%;
+  padding-bottom: calc(${theme.spacing.xl} + env(safe-area-inset-bottom));
 
-  ${media.mobileDown} {
-    display: flex;
-    flex-direction: column;
-    gap: ${theme.spacing.md};
-    padding: ${theme.spacing.xl} 0;
-    border-top: 1px solid ${theme.colors.gray200};
-    margin-top: auto;
-    width: 100%;
-    padding-bottom: calc(${theme.spacing.xl} + env(safe-area-inset-bottom));
+  ${media.tabletUp} {
+    display: none;
   }
 `;
 
@@ -593,21 +580,21 @@ const MobileAuthButton = styled(Link)`
 const MobileMenuOverlay = styled.div.withConfig({
   shouldForwardProp: (prop) => prop !== "isOpen",
 })`
-  display: none;
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 998;
+  opacity: ${(props) => (props.isOpen ? "1" : "0")};
+  visibility: ${(props) => (props.isOpen ? "visible" : "hidden")};
+  transition: all 0.3s ease;
+  backdrop-filter: blur(4px);
 
-  ${media.mobileDown} {
-    display: block;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 998;
-    opacity: ${(props) => (props.isOpen ? "1" : "0")};
-    visibility: ${(props) => (props.isOpen ? "visible" : "hidden")};
-    transition: all 0.3s ease;
-    backdrop-filter: blur(4px);
+  ${media.tabletUp} {
+    display: none;
   }
 `;
 
