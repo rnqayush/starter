@@ -27,7 +27,7 @@ const PageContainer = styled.div`
 
 const MainContent = styled.main`
   flex: 1;
-  margin-left: 280px;
+  margin-left: 17.5rem;
   padding: ${theme.spacing.xxl};
 
   @media (max-width: ${theme.breakpoints.tablet}) {
