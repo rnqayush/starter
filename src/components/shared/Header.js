@@ -642,13 +642,21 @@ const Header = ({ isOwnerView = false }) => {
     };
   }, [mobileMenuOpen]);
 
-  // Handle scroll detection for navbar transparency
+  // Handle scroll detection for navbar transparency and hero detection
   useEffect(() => {
     const handleScroll = () => {
       const scrollPosition = window.scrollY;
+      const windowHeight = window.innerHeight;
+
+      // Check if scrolled
       setIsScrolled(scrollPosition > 50);
+
+      // Check if in hero section (approximately first 75% of viewport height)
+      const heroHeight = windowHeight * 0.75;
+      setIsInHero(scrollPosition < heroHeight);
     };
 
+    handleScroll(); // Call once on mount
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
