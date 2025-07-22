@@ -589,6 +589,7 @@ const Header = ({ isOwnerView = false }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isInHero, setIsInHero] = useState(false);
   const dropdownRef = useRef(null);
 
   const closeMobileMenu = () => setMobileMenuOpen(false);
