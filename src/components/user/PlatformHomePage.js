@@ -24,11 +24,6 @@ import {
   FaLock,
   FaGlobe,
 } from "react-icons/fa";
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination, Autoplay } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
 import Header from "../shared/Header";
 import { Button } from "../shared/Button";
 import { theme, media } from "../../styles/GlobalStyle";
