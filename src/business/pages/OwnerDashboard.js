@@ -875,11 +875,11 @@ const OwnerDashboard = () => {
   });
 
   useEffect(() => {
-    const template = getBusinessTemplate(businessSlug);
+    const template = getBusinessTemplate(actualSlug);
     if (template) {
       setBusinessData(template);
     }
-  }, [businessSlug]);
+  }, [actualSlug]);
 
   if (!businessData) {
     return (
