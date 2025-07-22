@@ -6,16 +6,42 @@ import { theme, media } from "../../styles/GlobalStyle";
 import { Button } from "./Button";
 
 const HeaderContainer = styled.header.withConfig({
-  shouldForwardProp: (prop) => prop !== "isScrolled",
+  shouldForwardProp: (prop) => prop !== "isScrolled" && prop !== "isInHero",
 })`
-  background: ${(props) => props.isScrolled ? theme.colors.white : 'transparent'};
-  box-shadow: ${(props) => props.isScrolled ? theme.shadows.sm : 'none'};
+  background: ${(props) => {
+    if (props.isScrolled) return theme.colors.white;
+    if (props.isInHero) {
+      return 'linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.95) 35%, rgba(51, 65, 85, 0.9) 100%)';
+    }
+    return 'transparent';
+  }};
+  box-shadow: ${(props) => {
+    if (props.isScrolled) return theme.shadows.sm;
+    if (props.isInHero) return '0 4px 20px rgba(0, 0, 0, 0.3)';
+    return 'none';
+  }};
   position: fixed;
   top: 0;
   z-index: 100;
   width: 100%;
   transition: all 0.3s ease;
-  backdrop-filter: ${(props) => props.isScrolled ? 'none' : 'blur(10px)'};
+  backdrop-filter: ${(props) => {
+    if (props.isScrolled) return 'none';
+    if (props.isInHero) return 'blur(20px)';
+    return 'blur(10px)';
+  }};
+  border-bottom: ${(props) => {
+    if (props.isInHero) return '1px solid rgba(255, 255, 255, 0.1)';
+    return 'none';
+  }};
+
+  ${media.mobile} {
+    backdrop-filter: ${(props) => {
+      if (props.isScrolled) return 'none';
+      if (props.isInHero) return 'blur(15px)';
+      return 'blur(8px)';
+    }};
+  }
 `;
 
 const HeaderContent = styled.div`
