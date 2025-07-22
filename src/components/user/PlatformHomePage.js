@@ -535,57 +535,6 @@ const TestimonialsGrid = styled.div`
   }
 `;
 
-const TestimonialsSwiperContainer = styled.div`
-  display: none;
-
-  ${media.mobile} {
-    display: block;
-    margin: 0 -${theme.spacing.sm};
-
-    .swiper {
-      padding: 0 ${theme.spacing.sm};
-      overflow: visible;
-    }
-
-    .swiper-slide {
-      height: auto;
-    }
-
-    .swiper-pagination {
-      bottom: -40px;
-
-      .swiper-pagination-bullet {
-        background: ${theme.colors.primary};
-        opacity: 0.3;
-
-        &.swiper-pagination-bullet-active {
-          opacity: 1;
-        }
-      }
-    }
-
-    .swiper-button-next,
-    .swiper-button-prev {
-      color: ${theme.colors.primary};
-      background: ${theme.colors.white};
-      border-radius: 50%;
-      width: 40px;
-      height: 40px;
-      margin-top: -20px;
-      box-shadow: ${theme.shadows.md};
-
-      &:after {
-        font-size: 16px;
-        font-weight: bold;
-      }
-
-      &.swiper-button-disabled {
-        opacity: 0.3;
-      }
-    }
-  }
-`;
-
 const TestimonialCard = styled.div`
   background: ${theme.colors.white};
   border-radius: ${theme.borderRadius.xl};
