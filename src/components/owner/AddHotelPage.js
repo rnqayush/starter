@@ -234,7 +234,7 @@ const AddHotelPage = () => {
     <PageContainer>
       <Sidebar />
 
-      <MainContent style={{ background: 'white', minHeight: '100vh' }}>
+      <MainContent>
         <PageHeader>
           <PageTitle>Add New Hotel</PageTitle>
           <PageSubtitle>
