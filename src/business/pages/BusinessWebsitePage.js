@@ -1356,26 +1356,29 @@ const SocialLink = styled.a.withConfig({
 `;
 
 const BusinessWebsitePage = () => {
-  const { businessSlug } = useParams();
+  const { businessSlug, slug } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
   const [businessData, setBusinessData] = useState(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+  // Support both businessSlug (legacy routes) and slug (new optimized routes)
+  const actualSlug = businessSlug || slug;
+
   useEffect(() => {
-    // Extract slug from URL - either from params (/business/:businessSlug) or from path (/:slug)
-    let slug = businessSlug;
-    if (!slug) {
+    // Extract slug from URL - either from params or from pathname
+    let extractedSlug = actualSlug;
+    if (!extractedSlug) {
       // For direct slug access like "/salon", extract from pathname
       const pathSegments = location.pathname.split('/').filter(Boolean);
-      slug = pathSegments[0];
+      extractedSlug = pathSegments[0];
     }
 
-    const template = getBusinessTemplate(slug);
+    const template = getBusinessTemplate(extractedSlug);
     if (template) {
       setBusinessData(template);
     }
-  }, [businessSlug, location.pathname]);
+  }, [actualSlug, location.pathname]);
 
   if (!businessData) {
     return (
@@ -1453,7 +1456,7 @@ const BusinessWebsitePage = () => {
         },
         services: [
           { icon: "🏋️", title: "Personal Training", description: "One-on-one sessions with certified fitness professionals", price: "From $65/session" },
-          { icon: "🏃", title: "Group Classes", description: "High-energy classes including HIIT, yoga, and spin", price: "$20/class" },
+          { icon: "���", title: "Group Classes", description: "High-energy classes including HIIT, yoga, and spin", price: "$20/class" },
           { icon: "💪", title: "Strength Training", description: "Complete weight room with modern equipment", price: "Included" },
           { icon: "🧘", title: "Yoga & Pilates", description: "Mind-body classes for flexibility and core strength", price: "$18/class" },
           { icon: "🏊", title: "Swimming Pool", description: "Olympic-size pool for lap swimming and water aerobics", price: "Included" },
