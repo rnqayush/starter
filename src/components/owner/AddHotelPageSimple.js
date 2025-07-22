@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import Sidebar from "./Sidebar";
+import { Card, CardContent } from "../shared/Card";
+import { Button } from "../shared/Button";
 import { theme } from "../../styles/GlobalStyle";
 
 const PageContainer = styled.div`
