@@ -527,7 +527,9 @@ const TestimonialsGrid = styled.div`
   gap: ${theme.spacing.xl};
 
   ${media.mobile} {
-    display: none;
+    grid-template-columns: 1fr;
+    gap: ${theme.spacing.lg};
+    padding: 0 ${theme.spacing.sm};
   }
 
   ${media.tablet} {
