@@ -20,7 +20,14 @@ import SmartRouter from "./components/SmartRouter";
 // Hotel Module
 import HotelModule from "./hotel";
 
-
+// Owner Components
+import AddHotelPage from "./components/owner/AddHotelPage";
+import MyHotelsPage from "./components/owner/MyHotelsPage";
+import AddRoomPage from "./components/owner/AddRoomPage";
+import BookingsReceivedPage from "./components/owner/BookingsReceivedPage";
+import ProfileSettingsPage from "./components/owner/ProfileSettingsPage";
+import ContentManagerSelector from "./components/owner/ContentManagerSelector";
+import HotelContentManager from "./components/owner/HotelContentManager";
 
 // Mock data
 import {
