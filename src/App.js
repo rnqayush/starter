@@ -29,6 +29,7 @@ import ProfileSettingsPage from "./components/owner/ProfileSettingsPage";
 import ContentManagerSelector from "./components/owner/ContentManagerSelector";
 import HotelContentManager from "./components/owner/HotelContentManager";
 import TestPage from "./components/owner/TestPage";
+import AddHotelPageSimple from "./components/owner/AddHotelPageSimple";
 
 // Mock data
 import {
