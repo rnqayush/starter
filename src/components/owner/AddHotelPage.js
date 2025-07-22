@@ -30,10 +30,15 @@ const MainContent = styled.main`
   margin-left: 17.5rem;
   padding: ${theme.spacing.xxl};
 
-  @media (max-width: ${theme.breakpoints.tablet}) {
+  ${media.tabletDown} {
     margin-left: 0;
     padding: ${theme.spacing.xl} ${theme.spacing.md};
     padding-top: 80px;
+  }
+
+  ${media.mobile} {
+    padding: ${theme.spacing.lg} ${theme.spacing.sm};
+    padding-top: 4rem;
   }
 `;
 
