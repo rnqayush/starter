@@ -717,12 +717,13 @@ const Header = ({ isOwnerView = false }) => {
   return (
     <>
       <MobileMenuOverlay isOpen={mobileMenuOpen} onClick={closeMobileMenu} />
-      <HeaderContainer isScrolled={isScrolled}>
+      <HeaderContainer isScrolled={isScrolled} isInHero={isInHero}>
         <HeaderContent>
           <Logo
             to={isOwnerView ? "/" : "/"}
             onClick={closeMobileMenu}
             isScrolled={isScrolled}
+            isInHero={isInHero}
           >
             <FaHotel />
             StoreBuilder
