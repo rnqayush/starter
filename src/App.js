@@ -91,7 +91,7 @@ function App() {
               <ScrollToTop />
               <Routes>
             {/* Owner Dashboard Routes - Move to top for priority */}
-            <Route path="/owner/add-hotel" element={<AddHotelPage />} />
+            <Route path="/owner/add-hotel" element={<TestPage />} />
             <Route path="/owner/my-hotels" element={<MyHotelsPage />} />
             <Route path="/owner/add-room/:hotelId" element={<AddRoomPage />} />
             <Route path="/owner/bookings" element={<BookingsReceivedPage />} />
