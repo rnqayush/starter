@@ -1,6 +1,6 @@
-import React, { useMemo } from "react";
-import { Link, useLocation } from "react-router-dom";
-import styled from "styled-components";
+import React, { useMemo } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import styled from 'styled-components';
 import {
   FaFacebook,
   FaTwitter,
@@ -10,8 +10,8 @@ import {
   FaEnvelope,
   FaMapMarkerAlt,
   FaHotel,
-} from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
+} from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
 
 const FooterContainer = styled.footer`
   background: ${theme.colors.gray900};
@@ -186,12 +186,14 @@ const HotelFooter = () => {
   const hotelSlug = useMemo(() => {
     const pathSegments = location.pathname.split('/').filter(Boolean);
     // For hotel routes, the first segment is usually the hotel slug
-    return pathSegments.length > 0 && pathSegments[0] !== 'hotels' ? pathSegments[0] : '';
+    return pathSegments.length > 0 && pathSegments[0] !== 'hotels'
+      ? pathSegments[0]
+      : '';
   }, [location.pathname]);
 
-  const handleNewsletterSubmit = (e) => {
+  const handleNewsletterSubmit = e => {
     e.preventDefault();
-    alert("Thank you for subscribing to our newsletter!");
+    alert('Thank you for subscribing to our newsletter!');
   };
 
   return (
@@ -244,7 +246,11 @@ const HotelFooter = () => {
             <FooterLinks>
               <FooterLink to="/hotels">Find Hotels</FooterLink>
               <FooterLink to="/my-bookings">My Bookings</FooterLink>
-              <FooterLink to={hotelSlug ? `/${hotelSlug}/owner` : "/owner/dashboard"}>Hotel Owners</FooterLink>
+              <FooterLink
+                to={hotelSlug ? `/${hotelSlug}/owner` : '/owner/dashboard'}
+              >
+                Hotel Owners
+              </FooterLink>
               <FooterLink to="/about">About Us</FooterLink>
               <FooterLink to="/contact">Contact</FooterLink>
               <FooterLink to="/help">Help & Support</FooterLink>
@@ -279,7 +285,7 @@ const HotelFooter = () => {
               <FaMapMarkerAlt />
               <span>123 Travel Street, Tourism City, TC 12345</span>
             </ContactInfo>
-            <p style={{ marginTop: theme.spacing.md, fontSize: "0.8rem" }}>
+            <p style={{ marginTop: theme.spacing.md, fontSize: '0.8rem' }}>
               <strong>Customer Support:</strong>
               <br />
               Available 24/7 for all your booking needs
@@ -296,7 +302,7 @@ const HotelFooter = () => {
                 style={{ marginLeft: theme.spacing.sm }}
               >
                 Privacy Policy
-              </FooterLink>{" "}
+              </FooterLink>{' '}
               |
               <FooterLink to="/terms" style={{ marginLeft: theme.spacing.sm }}>
                 Terms of Service

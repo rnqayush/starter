@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import React, { useState } from 'react';
+import styled from 'styled-components';
 import {
   FaUpload,
   FaTimes,
@@ -9,11 +9,11 @@ import {
   FaTrash,
   FaBarcode,
   FaTag,
-} from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
-import FormField from "./shared/FormField";
-import Button from "./shared/Button";
-import { productCategories } from "../data/sellerData";
+} from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
+import FormField from './shared/FormField';
+import Button from './shared/Button';
+import { productCategories } from '../data/sellerData';
 
 const FormContainer = styled.div`
   max-width: 1000px;
@@ -190,66 +190,66 @@ const FormActions = styled.div`
 
 const AddProductTabEnhanced = () => {
   const [formData, setFormData] = useState({
-    name: "",
-    description: "",
-    category: "",
-    sku: "",
-    barcode: "",
-    price: "",
-    compareAtPrice: "",
-    stock: "",
-    lowStockThreshold: "",
-    weight: "",
-    status: "draft",
-    seoTitle: "",
-    seoDescription: "",
+    name: '',
+    description: '',
+    category: '',
+    sku: '',
+    barcode: '',
+    price: '',
+    compareAtPrice: '',
+    stock: '',
+    lowStockThreshold: '',
+    weight: '',
+    status: 'draft',
+    seoTitle: '',
+    seoDescription: '',
     tags: [],
     images: [],
     variants: [],
   });
 
   const [dragOver, setDragOver] = useState(false);
-  const [currentTag, setCurrentTag] = useState("");
+  const [currentTag, setCurrentTag] = useState('');
 
-  const handleInputChange = (e) => {
+  const handleInputChange = e => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
+    setFormData(prev => ({
       ...prev,
       [name]: value,
     }));
   };
 
-  const handleImageUpload = (files) => {
-    const newImages = Array.from(files).map((file) => ({
+  const handleImageUpload = files => {
+    const newImages = Array.from(files).map(file => ({
       id: Date.now() + Math.random(),
       file,
       url: URL.createObjectURL(file),
     }));
 
-    setFormData((prev) => ({
+    setFormData(prev => ({
       ...prev,
       images: [...prev.images, ...newImages],
     }));
   };
 
-  const handleImageRemove = (imageId) => {
-    setFormData((prev) => ({
+  const handleImageRemove = imageId => {
+    setFormData(prev => ({
       ...prev,
-      images: prev.images.filter((img) => img.id !== imageId),
+      images: prev.images.filter(img => img.id !== imageId),
     }));
   };
 
-  const handleDragOver = (e) => {
+  const handleDragOver = e => {
     e.preventDefault();
     setDragOver(true);
   };
 
-  const handleDragLeave = (e) => {
+  const handleDragLeave = e => {
     e.preventDefault();
     setDragOver(false);
   };
 
-  const handleDrop = (e) => {
+  const handleDrop = e => {
     e.preventDefault();
     setDragOver(false);
     const files = e.dataTransfer.files;
@@ -258,73 +258,73 @@ const AddProductTabEnhanced = () => {
 
   const addTag = () => {
     if (currentTag.trim() && !formData.tags.includes(currentTag.trim())) {
-      setFormData((prev) => ({
+      setFormData(prev => ({
         ...prev,
         tags: [...prev.tags, currentTag.trim()],
       }));
-      setCurrentTag("");
+      setCurrentTag('');
     }
   };
 
-  const removeTag = (tagToRemove) => {
-    setFormData((prev) => ({
+  const removeTag = tagToRemove => {
+    setFormData(prev => ({
       ...prev,
-      tags: prev.tags.filter((tag) => tag !== tagToRemove),
+      tags: prev.tags.filter(tag => tag !== tagToRemove),
     }));
   };
 
   const addVariant = () => {
     const newVariant = {
       id: Date.now(),
-      option1: "",
-      option2: "",
-      price: "",
-      sku: "",
-      barcode: "",
-      stock: "",
-      weight: "",
+      option1: '',
+      option2: '',
+      price: '',
+      sku: '',
+      barcode: '',
+      stock: '',
+      weight: '',
     };
-    setFormData((prev) => ({
+    setFormData(prev => ({
       ...prev,
       variants: [...prev.variants, newVariant],
     }));
   };
 
-  const removeVariant = (variantId) => {
-    setFormData((prev) => ({
+  const removeVariant = variantId => {
+    setFormData(prev => ({
       ...prev,
-      variants: prev.variants.filter((v) => v.id !== variantId),
+      variants: prev.variants.filter(v => v.id !== variantId),
     }));
   };
 
   const updateVariant = (variantId, field, value) => {
-    setFormData((prev) => ({
+    setFormData(prev => ({
       ...prev,
-      variants: prev.variants.map((v) =>
-        v.id === variantId ? { ...v, [field]: value } : v,
+      variants: prev.variants.map(v =>
+        v.id === variantId ? { ...v, [field]: value } : v
       ),
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = e => {
     e.preventDefault();
 
-    alert("Product saved successfully!");
+    alert('Product saved successfully!');
   };
 
   const generateSKU = () => {
-    const prefix = formData.name.substring(0, 3).toUpperCase() || "PRD";
+    const prefix = formData.name.substring(0, 3).toUpperCase() || 'PRD';
     const random = Math.floor(Math.random() * 10000)
       .toString()
-      .padStart(4, "0");
-    setFormData((prev) => ({ ...prev, sku: `${prefix}-${random}` }));
+      .padStart(4, '0');
+    setFormData(prev => ({ ...prev, sku: `${prefix}-${random}` }));
   };
 
   const generateBarcode = () => {
     const barcode = Math.floor(Math.random() * 1000000000000)
       .toString()
-      .padStart(12, "0");
-    setFormData((prev) => ({ ...prev, barcode }));
+      .padStart(12, '0');
+    setFormData(prev => ({ ...prev, barcode }));
   };
 
   return (
@@ -365,7 +365,7 @@ const AddProductTabEnhanced = () => {
                 name="category"
                 value={formData.category}
                 onChange={handleInputChange}
-                options={productCategories.map((cat) => ({
+                options={productCategories.map(cat => ({
                   value: cat,
                   label: cat,
                 }))}
@@ -379,9 +379,9 @@ const AddProductTabEnhanced = () => {
                 value={formData.status}
                 onChange={handleInputChange}
                 options={[
-                  { value: "draft", label: "Draft" },
-                  { value: "active", label: "Active" },
-                  { value: "archived", label: "Archived" },
+                  { value: 'draft', label: 'Draft' },
+                  { value: 'active', label: 'Active' },
+                  { value: 'archived', label: 'Archived' },
                 ]}
                 required
               />
@@ -521,11 +521,11 @@ const AddProductTabEnhanced = () => {
           </FormHeader>
           <FormBody>
             <ImageUploadArea
-              className={dragOver ? "dragover" : ""}
+              className={dragOver ? 'dragover' : ''}
               onDragOver={handleDragOver}
               onDragLeave={handleDragLeave}
               onDrop={handleDrop}
-              onClick={() => document.getElementById("imageInput").click()}
+              onClick={() => document.getElementById('imageInput').click()}
             >
               <UploadIcon>
                 <FaUpload />
@@ -542,12 +542,12 @@ const AddProductTabEnhanced = () => {
               type="file"
               multiple
               accept="image/*"
-              onChange={(e) => handleImageUpload(e.target.files)}
+              onChange={e => handleImageUpload(e.target.files)}
             />
 
             {formData.images.length > 0 && (
               <ImagePreviewGrid>
-                {formData.images.map((image) => (
+                {formData.images.map(image => (
                   <ImagePreview key={image.id}>
                     <PreviewImage src={image.url} alt="Product preview" />
                     <RemoveImageButton
@@ -579,7 +579,7 @@ const AddProductTabEnhanced = () => {
               </Button>
             </div>
 
-            {formData.variants.map((variant) => (
+            {formData.variants.map(variant => (
               <VariantCard key={variant.id}>
                 <VariantHeader>
                   <VariantTitle>
@@ -599,8 +599,8 @@ const AddProductTabEnhanced = () => {
                   <FormField
                     label="Option 1 (e.g., Size)"
                     value={variant.option1}
-                    onChange={(e) =>
-                      updateVariant(variant.id, "option1", e.target.value)
+                    onChange={e =>
+                      updateVariant(variant.id, 'option1', e.target.value)
                     }
                     placeholder="S, M, L, XL"
                   />
@@ -608,8 +608,8 @@ const AddProductTabEnhanced = () => {
                   <FormField
                     label="Option 2 (e.g., Color)"
                     value={variant.option2}
-                    onChange={(e) =>
-                      updateVariant(variant.id, "option2", e.target.value)
+                    onChange={e =>
+                      updateVariant(variant.id, 'option2', e.target.value)
                     }
                     placeholder="Red, Blue, Green"
                   />
@@ -620,8 +620,8 @@ const AddProductTabEnhanced = () => {
                     label="Variant Price"
                     type="number"
                     value={variant.price}
-                    onChange={(e) =>
-                      updateVariant(variant.id, "price", e.target.value)
+                    onChange={e =>
+                      updateVariant(variant.id, 'price', e.target.value)
                     }
                     placeholder="0.00"
                     step="0.01"
@@ -631,8 +631,8 @@ const AddProductTabEnhanced = () => {
                     label="Variant Stock"
                     type="number"
                     value={variant.stock}
-                    onChange={(e) =>
-                      updateVariant(variant.id, "stock", e.target.value)
+                    onChange={e =>
+                      updateVariant(variant.id, 'stock', e.target.value)
                     }
                     placeholder="0"
                   />
@@ -642,8 +642,8 @@ const AddProductTabEnhanced = () => {
                   <FormField
                     label="Variant SKU"
                     value={variant.sku}
-                    onChange={(e) =>
-                      updateVariant(variant.id, "sku", e.target.value)
+                    onChange={e =>
+                      updateVariant(variant.id, 'sku', e.target.value)
                     }
                     placeholder="Unique SKU"
                   />
@@ -651,8 +651,8 @@ const AddProductTabEnhanced = () => {
                   <FormField
                     label="Variant Barcode"
                     value={variant.barcode}
-                    onChange={(e) =>
-                      updateVariant(variant.id, "barcode", e.target.value)
+                    onChange={e =>
+                      updateVariant(variant.id, 'barcode', e.target.value)
                     }
                     placeholder="Barcode"
                   />
@@ -694,9 +694,9 @@ const AddProductTabEnhanced = () => {
             <div>
               <label
                 style={{
-                  display: "block",
-                  fontSize: "0.9rem",
-                  fontWeight: "500",
+                  display: 'block',
+                  fontSize: '0.9rem',
+                  fontWeight: '500',
                   color: theme.colors.gray700,
                   marginBottom: theme.spacing.sm,
                 }}
@@ -705,7 +705,7 @@ const AddProductTabEnhanced = () => {
               </label>
               <div
                 style={{
-                  display: "flex",
+                  display: 'flex',
                   gap: theme.spacing.sm,
                   marginBottom: theme.spacing.sm,
                 }}
@@ -713,17 +713,17 @@ const AddProductTabEnhanced = () => {
                 <input
                   type="text"
                   value={currentTag}
-                  onChange={(e) => setCurrentTag(e.target.value)}
+                  onChange={e => setCurrentTag(e.target.value)}
                   placeholder="Add a tag"
-                  onKeyPress={(e) =>
-                    e.key === "Enter" && (e.preventDefault(), addTag())
+                  onKeyPress={e =>
+                    e.key === 'Enter' && (e.preventDefault(), addTag())
                   }
                   style={{
                     flex: 1,
                     padding: theme.spacing.md,
                     border: `1px solid ${theme.colors.gray300}`,
                     borderRadius: theme.borderRadius.md,
-                    fontSize: "0.9rem",
+                    fontSize: '0.9rem',
                   }}
                 />
                 <Button type="button" variant="outline" onClick={addTag}>
@@ -732,22 +732,22 @@ const AddProductTabEnhanced = () => {
               </div>
               <div
                 style={{
-                  display: "flex",
-                  flexWrap: "wrap",
+                  display: 'flex',
+                  flexWrap: 'wrap',
                   gap: theme.spacing.sm,
                 }}
               >
-                {formData.tags.map((tag) => (
+                {formData.tags.map(tag => (
                   <span
                     key={tag}
                     style={{
-                      background: theme.colors.primary + "20",
+                      background: theme.colors.primary + '20',
                       color: theme.colors.primary,
                       padding: `${theme.spacing.xs} ${theme.spacing.sm}`,
                       borderRadius: theme.borderRadius.sm,
-                      fontSize: "0.8rem",
-                      display: "flex",
-                      alignItems: "center",
+                      fontSize: '0.8rem',
+                      display: 'flex',
+                      alignItems: 'center',
                       gap: theme.spacing.xs,
                     }}
                   >
@@ -756,11 +756,11 @@ const AddProductTabEnhanced = () => {
                       type="button"
                       onClick={() => removeTag(tag)}
                       style={{
-                        background: "none",
-                        border: "none",
-                        color: "inherit",
-                        cursor: "pointer",
-                        padding: "2px",
+                        background: 'none',
+                        border: 'none',
+                        color: 'inherit',
+                        cursor: 'pointer',
+                        padding: '2px',
                       }}
                     >
                       <FaTimes />
@@ -778,7 +778,7 @@ const AddProductTabEnhanced = () => {
             Cancel
           </Button>
 
-          <div style={{ display: "flex", gap: theme.spacing.md }}>
+          <div style={{ display: 'flex', gap: theme.spacing.md }}>
             <Button type="submit" variant="outline">
               Save as Draft
             </Button>

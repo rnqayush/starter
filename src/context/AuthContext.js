@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
 // Create Auth Context
 const AuthContext = createContext();
@@ -7,7 +7,7 @@ const AuthContext = createContext();
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error("useAuth must be used within an AuthProvider");
+    throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;
 };
@@ -22,19 +22,18 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const initializeAuth = () => {
       try {
-        const savedUser = localStorage.getItem("user");
-        const savedAuth = localStorage.getItem("isAuthenticated");
-        
-        if (savedUser && savedAuth === "true") {
+        const savedUser = localStorage.getItem('user');
+        const savedAuth = localStorage.getItem('isAuthenticated');
+
+        if (savedUser && savedAuth === 'true') {
           const parsedUser = JSON.parse(savedUser);
           setUser(parsedUser);
           setIsAuthenticated(true);
         }
       } catch (error) {
-
         // Clear corrupted data
-        localStorage.removeItem("user");
-        localStorage.removeItem("isAuthenticated");
+        localStorage.removeItem('user');
+        localStorage.removeItem('isAuthenticated');
       } finally {
         setLoading(false);
       }
@@ -44,44 +43,44 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   // Login function
-  const login = async (credentials) => {
+  const login = async credentials => {
     setLoading(true);
     try {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
-      
+
       // For demo purposes, create user based on email
       const userData = {
         id: Date.now(),
         email: credentials.email,
         name: credentials.name || getNameFromEmail(credentials.email),
-        phone: credentials.phone || "",
-        role: credentials.role || "customer", // customer, seller, admin
+        phone: credentials.phone || '',
+        role: credentials.role || 'customer', // customer, seller, admin
         avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(credentials.name || getNameFromEmail(credentials.email))}&background=1e40af&color=fff`,
         preferences: {
           notifications: {
             email: true,
             sms: false,
-            push: true
+            push: true,
           },
-          language: "en",
-          currency: "USD"
+          language: 'en',
+          currency: 'USD',
         },
         profile: {
-          bio: "",
-          location: "",
-          website: "",
-          socialLinks: {}
+          bio: '',
+          location: '',
+          website: '',
+          socialLinks: {},
         },
         createdAt: new Date().toISOString(),
-        lastLogin: new Date().toISOString()
+        lastLogin: new Date().toISOString(),
       };
 
       // If seller, add seller-specific data
-      if (credentials.role === "seller") {
+      if (credentials.role === 'seller') {
         userData.seller = {
           businessName: credentials.businessName || `${userData.name}'s Store`,
-          businessType: credentials.businessType || "General",
+          businessType: credentials.businessType || 'General',
           verified: false,
           rating: 0,
           totalSales: 0,
@@ -90,18 +89,18 @@ export const AuthProvider = ({ children }) => {
           settings: {
             autoRespond: true,
             showLocation: true,
-            allowReviews: true
-          }
+            allowReviews: true,
+          },
         };
       }
 
       setUser(userData);
       setIsAuthenticated(true);
-      
+
       // Persist to localStorage
-      localStorage.setItem("user", JSON.stringify(userData));
-      localStorage.setItem("isAuthenticated", "true");
-      
+      localStorage.setItem('user', JSON.stringify(userData));
+      localStorage.setItem('isAuthenticated', 'true');
+
       return { success: true, user: userData };
     } catch (error) {
       return { success: false, error: error.message };
@@ -111,12 +110,12 @@ export const AuthProvider = ({ children }) => {
   };
 
   // Register function
-  const register = async (userData) => {
+  const register = async userData => {
     setLoading(true);
     try {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1500));
-      
+
       const newUser = {
         id: Date.now(),
         ...userData,
@@ -125,26 +124,26 @@ export const AuthProvider = ({ children }) => {
           notifications: {
             email: true,
             sms: false,
-            push: true
+            push: true,
           },
-          language: "en",
-          currency: "USD"
+          language: 'en',
+          currency: 'USD',
         },
         profile: {
-          bio: "",
-          location: "",
-          website: "",
-          socialLinks: {}
+          bio: '',
+          location: '',
+          website: '',
+          socialLinks: {},
         },
         createdAt: new Date().toISOString(),
-        lastLogin: new Date().toISOString()
+        lastLogin: new Date().toISOString(),
       };
 
       // If seller registration, add seller data
-      if (userData.role === "seller") {
+      if (userData.role === 'seller') {
         newUser.seller = {
           businessName: userData.businessName || `${userData.name}'s Store`,
-          businessType: userData.businessType || "General",
+          businessType: userData.businessType || 'General',
           verified: false,
           rating: 0,
           totalSales: 0,
@@ -153,18 +152,18 @@ export const AuthProvider = ({ children }) => {
           settings: {
             autoRespond: true,
             showLocation: true,
-            allowReviews: true
-          }
+            allowReviews: true,
+          },
         };
       }
 
       setUser(newUser);
       setIsAuthenticated(true);
-      
+
       // Persist to localStorage
-      localStorage.setItem("user", JSON.stringify(newUser));
-      localStorage.setItem("isAuthenticated", "true");
-      
+      localStorage.setItem('user', JSON.stringify(newUser));
+      localStorage.setItem('isAuthenticated', 'true');
+
       return { success: true, user: newUser };
     } catch (error) {
       return { success: false, error: error.message };
@@ -177,30 +176,30 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     setUser(null);
     setIsAuthenticated(false);
-    localStorage.removeItem("user");
-    localStorage.removeItem("isAuthenticated");
-    
+    localStorage.removeItem('user');
+    localStorage.removeItem('isAuthenticated');
+
     // Clear other user-specific data
-    localStorage.removeItem("userEnquiries");
-    localStorage.removeItem("shopSettings");
-    localStorage.removeItem("recentlyViewed");
-    localStorage.removeItem("pageViews");
+    localStorage.removeItem('userEnquiries');
+    localStorage.removeItem('shopSettings');
+    localStorage.removeItem('recentlyViewed');
+    localStorage.removeItem('pageViews');
   };
 
   // Update user profile
-  const updateProfile = async (updates) => {
-    if (!user) return { success: false, error: "No user logged in" };
-    
+  const updateProfile = async updates => {
+    if (!user) return { success: false, error: 'No user logged in' };
+
     try {
       const updatedUser = {
         ...user,
         ...updates,
-        lastModified: new Date().toISOString()
+        lastModified: new Date().toISOString(),
       };
-      
+
       setUser(updatedUser);
-      localStorage.setItem("user", JSON.stringify(updatedUser));
-      
+      localStorage.setItem('user', JSON.stringify(updatedUser));
+
       return { success: true, user: updatedUser };
     } catch (error) {
       return { success: false, error: error.message };
@@ -208,16 +207,16 @@ export const AuthProvider = ({ children }) => {
   };
 
   // Switch user role (for demo purposes)
-  const switchRole = (newRole) => {
+  const switchRole = newRole => {
     if (!user) return;
-    
+
     const updatedUser = { ...user, role: newRole };
-    
+
     // Add seller data if switching to seller
-    if (newRole === "seller" && !user.seller) {
+    if (newRole === 'seller' && !user.seller) {
       updatedUser.seller = {
         businessName: `${user.name}'s Store`,
-        businessType: "General",
+        businessType: 'General',
         verified: false,
         rating: 0,
         totalSales: 0,
@@ -226,35 +225,35 @@ export const AuthProvider = ({ children }) => {
         settings: {
           autoRespond: true,
           showLocation: true,
-          allowReviews: true
-        }
+          allowReviews: true,
+        },
       };
     }
-    
+
     setUser(updatedUser);
-    localStorage.setItem("user", JSON.stringify(updatedUser));
+    localStorage.setItem('user', JSON.stringify(updatedUser));
   };
 
   // Check if user has specific role
-  const hasRole = (role) => {
+  const hasRole = role => {
     return user?.role === role;
   };
 
   // Check if user can access seller features
   const canAccessSeller = () => {
-    return user?.role === "seller" || user?.role === "admin";
+    return user?.role === 'seller' || user?.role === 'admin';
   };
 
   // Get user display name
   const getDisplayName = () => {
-    if (!user) return "Guest";
+    if (!user) return 'Guest';
     return user.name || getNameFromEmail(user.email);
   };
 
   // Helper function to extract name from email
-  const getNameFromEmail = (email) => {
-    if (!email) return "User";
-    const name = email.split("@")[0];
+  const getNameFromEmail = email => {
+    if (!email) return 'User';
+    const name = email.split('@')[0];
     return name.charAt(0).toUpperCase() + name.slice(1);
   };
 
@@ -263,20 +262,20 @@ export const AuthProvider = ({ children }) => {
     const guestId = `guest_${Date.now()}`;
     return {
       id: guestId,
-      name: "Guest User",
+      name: 'Guest User',
       email: `${guestId}@demo.com`,
-      role: "customer",
+      role: 'customer',
       isGuest: true,
       avatar: `https://ui-avatars.com/api/?name=Guest&background=6b7280&color=fff`,
       preferences: {
         notifications: {
           email: false,
           sms: false,
-          push: false
+          push: false,
         },
-        language: "en",
-        currency: "USD"
-      }
+        language: 'en',
+        currency: 'USD',
+      },
     };
   };
 
@@ -285,40 +284,40 @@ export const AuthProvider = ({ children }) => {
     user,
     loading,
     isAuthenticated,
-    
+
     // Actions
     login,
     register,
     logout,
     updateProfile,
     switchRole,
-    
+
     // Utilities
     hasRole,
     canAccessSeller,
     getDisplayName,
-    generateGuestUser
+    generateGuestUser,
   };
 
   if (loading) {
     return (
-      <div style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        minHeight: "100vh",
-        fontSize: "18px",
-        color: "#6b7280"
-      }}>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '100vh',
+          fontSize: '18px',
+          color: '#6b7280',
+        }}
+      >
         Loading...
       </div>
     );
   }
 
   return (
-    <AuthContext.Provider value={contextValue}>
-      {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
   );
 };
 

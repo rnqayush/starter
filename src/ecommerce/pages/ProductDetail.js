@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { useParams, useNavigate, Link, useLocation } from "react-router-dom";
-import styled from "styled-components";
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
+import styled from 'styled-components';
 import {
   FaStar,
   FaHeart,
@@ -13,16 +13,21 @@ import {
   FaShieldAlt,
   FaUser,
   FaStore,
-    FaMapMarkerAlt,
-} from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import ProductCard from "../components/ProductCard";
-import LoadingSpinner from "../components/LoadingSpinner";
-import EnquiryModal from "../components/EnquiryModal";
-import { getProductById, products, getAvailabilityStatus, getAvailabilityLabel } from "../data/products";
-import { getVendorByIdOrSlug } from "../data/vendors";
+  FaMapMarkerAlt,
+} from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
+import ProductCard from '../components/ProductCard';
+import LoadingSpinner from '../components/LoadingSpinner';
+import EnquiryModal from '../components/EnquiryModal';
+import {
+  getProductById,
+  products,
+  getAvailabilityStatus,
+  getAvailabilityLabel,
+} from '../data/products';
+import { getVendorByIdOrSlug } from '../data/vendors';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -114,7 +119,7 @@ const ThumbnailContainer = styled.div`
 `;
 
 const Thumbnail = styled.img.withConfig({
-  shouldForwardProp: (prop) => prop !== "active",
+  shouldForwardProp: prop => prop !== 'active',
 })`
   width: 80px;
   height: 80px;
@@ -122,7 +127,7 @@ const Thumbnail = styled.img.withConfig({
   border-radius: ${theme.borderRadius.md};
   cursor: pointer;
   border: 2px solid
-    ${(props) => (props.active ? theme.colors.primary : theme.colors.gray200)};
+    ${props => (props.active ? theme.colors.primary : theme.colors.gray200)};
   transition: all 0.2s ease;
   flex-shrink: 0;
 
@@ -164,9 +169,9 @@ const StarRating = styled.div`
 `;
 
 const Star = styled(FaStar).withConfig({
-  shouldForwardProp: (prop) => prop !== "filled",
+  shouldForwardProp: prop => prop !== 'filled',
 })`
-  color: ${(props) => (props.filled ? "#fbbf24" : theme.colors.gray300)};
+  color: ${props => (props.filled ? '#fbbf24' : theme.colors.gray300)};
   font-size: 1rem;
 `;
 
@@ -234,7 +239,7 @@ const FeatureItem = styled.li`
   font-size: 0.9rem;
 
   &::before {
-    content: "";
+    content: '';
     width: 6px;
     height: 6px;
     background: ${theme.colors.success};
@@ -261,14 +266,14 @@ const VariantOptions = styled.div`
 `;
 
 const VariantOption = styled.button.withConfig({
-  shouldForwardProp: (prop) => prop !== "selected",
+  shouldForwardProp: prop => prop !== 'selected',
 })`
   padding: ${theme.spacing.sm} ${theme.spacing.md};
   border: 2px solid
-    ${(props) => (props.selected ? theme.colors.primary : theme.colors.gray200)};
-  background: ${(props) =>
+    ${props => (props.selected ? theme.colors.primary : theme.colors.gray200)};
+  background: ${props =>
     props.selected ? theme.colors.primary : theme.colors.white};
-  color: ${(props) =>
+  color: ${props =>
     props.selected ? theme.colors.white : theme.colors.gray700};
   border-radius: ${theme.borderRadius.md};
   font-weight: 500;
@@ -281,18 +286,16 @@ const VariantOption = styled.button.withConfig({
 `;
 
 const StockInfo = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "inStock",
+  shouldForwardProp: prop => prop !== 'inStock',
 })`
   display: flex;
   align-items: center;
   gap: ${theme.spacing.sm};
   margin-bottom: ${theme.spacing.lg};
-  color: ${(props) =>
+  color: ${props =>
     props.inStock ? theme.colors.success : theme.colors.error};
   font-weight: 600;
 `;
-
-
 
 const ActionButtons = styled.div`
   display: flex;
@@ -460,24 +463,24 @@ const SellerMetaItem = styled.div`
 `;
 
 const ProductDetail = () => {
-  const { id } = useParams();
+  const { productId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
   const [product, setProduct] = useState(null);
   const [selectedImage, setSelectedImage] = useState(0);
-  const [selectedSize, setSelectedSize] = useState("");
+  const [selectedSize, setSelectedSize] = useState('');
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [storeSlug, setStoreSlug] = useState("");
+  const [storeSlug, setStoreSlug] = useState('');
   const [vendor, setVendor] = useState(null);
   const [isEnquiryModalOpen, setIsEnquiryModalOpen] = useState(false);
 
   // Detect store slug from URL
   useEffect(() => {
     const path = location.pathname;
-    if (path !== `/ecommerce/product/${id}`) {
+    if (path !== `/ecommerce/product/${productId}`) {
       // Extract store slug from URL like "/techmart-downtown/product/4"
-      const pathSegments = path.split("/").filter(Boolean);
+      const pathSegments = path.split('/').filter(Boolean);
       const slug = pathSegments[0];
       const foundVendor = getVendorByIdOrSlug(slug);
       if (foundVendor) {
@@ -485,11 +488,11 @@ const ProductDetail = () => {
         setVendor(foundVendor);
       }
     }
-  }, [location.pathname, id]);
+  }, [location.pathname, productId]);
 
   useEffect(() => {
     setLoading(true);
-    const foundProduct = getProductById(id);
+    const foundProduct = getProductById(productId);
 
     if (foundProduct) {
       setProduct(foundProduct);
@@ -497,9 +500,9 @@ const ProductDetail = () => {
       // Get related products from same category
       const related = products
         .filter(
-          (p) =>
+          p =>
             p.categoryId === foundProduct.categoryId &&
-            p.id !== foundProduct.id,
+            p.productId !== foundProduct.productId
         )
         .slice(0, 4);
       setRelatedProducts(related);
@@ -511,9 +514,9 @@ const ProductDetail = () => {
     }
 
     setLoading(false);
-  }, [id]);
+  }, [productId]);
 
-    const getBaseUrl = () => (storeSlug ? `/${storeSlug}` : "/ecommerce");
+  const getBaseUrl = () => (storeSlug ? `/${storeSlug}` : '/ecommerce');
 
   const handleEnquireClick = () => {
     setIsEnquiryModalOpen(true);
@@ -528,11 +531,11 @@ const ProductDetail = () => {
       });
     } else {
       navigator.clipboard.writeText(window.location.href);
-      alert("Product link copied to clipboard!");
+      alert('Product link copied to clipboard!');
     }
   };
 
-  const renderStars = (rating) => {
+  const renderStars = rating => {
     const stars = [];
     for (let i = 1; i <= 5; i++) {
       stars.push(<Star key={i} filled={i <= Math.floor(rating)} />);
@@ -546,10 +549,10 @@ const ProductDetail = () => {
 
   if (loading) {
     return (
-            <PageContainer>
+      <PageContainer>
         <Navbar
-          storeName={vendor?.name || ""}
-          storeLogo={vendor?.logo || ""}
+          storeName={vendor?.name || ''}
+          storeLogo={vendor?.logo || ''}
           storeSlug={storeSlug}
           theme={vendor?.theme || {}}
         />
@@ -561,17 +564,17 @@ const ProductDetail = () => {
 
   if (!product) {
     return (
-            <PageContainer>
+      <PageContainer>
         <Navbar
-          storeName={vendor?.name || ""}
-          storeLogo={vendor?.logo || ""}
+          storeName={vendor?.name || ''}
+          storeLogo={vendor?.logo || ''}
           storeSlug={storeSlug}
           theme={vendor?.theme || {}}
         />
         <Container>
-          <div style={{ textAlign: "center", padding: "4rem 0" }}>
+          <div style={{ textAlign: 'center', padding: '4rem 0' }}>
             <h2>Product not found</h2>
-            <p style={{ margin: "1rem 0", color: theme.colors.gray600 }}>
+            <p style={{ margin: '1rem 0', color: theme.colors.gray600 }}>
               The product you're looking for doesn't exist.
             </p>
             <Link
@@ -588,10 +591,10 @@ const ProductDetail = () => {
   }
 
   return (
-        <PageContainer>
+    <PageContainer>
       <Navbar
-        storeName={vendor?.name || ""}
-        storeLogo={vendor?.logo || ""}
+        storeName={vendor?.name || ''}
+        storeLogo={vendor?.logo || ''}
         storeSlug={storeSlug}
         theme={vendor?.theme || {}}
       />
@@ -608,7 +611,7 @@ const ProductDetail = () => {
           <Link to={`${getBaseUrl()}/products`}>Products</Link>
           <span>/</span>
           <Link to={`${getBaseUrl()}/products?category=${product.category}`}>
-            {product.category.replace("-", " ")}
+            {product.category.replace('-', ' ')}
           </Link>
           <span>/</span>
           <span>{product.name}</span>
@@ -679,7 +682,7 @@ const ProductDetail = () => {
               <VariantSection>
                 <h3>Size:</h3>
                 <VariantOptions>
-                  {product.sizes.map((size) => (
+                  {product.sizes.map(size => (
                     <VariantOption
                       key={size}
                       selected={selectedSize === size}
@@ -692,24 +695,36 @@ const ProductDetail = () => {
               </VariantSection>
             )}
 
-                                    <StockInfo inStock={getAvailabilityStatus(product) !== "out_of_stock"}>
+            <StockInfo
+              inStock={getAvailabilityStatus(product) !== 'out_of_stock'}
+            >
               <FaCheck />
               {getAvailabilityLabel(getAvailabilityStatus(product))}
-              {getAvailabilityStatus(product) === "in_stock" && product.stock > 0 && (
-                <span style={{ marginLeft: "8px", fontSize: "0.9rem", opacity: 0.8 }}>
-                  ({product.stock} units available)
-                </span>
-              )}
+              {getAvailabilityStatus(product) === 'in_stock' &&
+                product.stock > 0 && (
+                  <span
+                    style={{
+                      marginLeft: '8px',
+                      fontSize: '0.9rem',
+                      opacity: 0.8,
+                    }}
+                  >
+                    ({product.stock} units available)
+                  </span>
+                )}
             </StockInfo>
 
             <SellerInfo>
               <SellerHeader>
                 <SellerLogo
-                  src={vendor?.logo || "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=80&h=80&fit=crop&crop=center"}
-                  alt={vendor?.name || "Seller"}
+                  src={
+                    vendor?.logo ||
+                    'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=80&h=80&fit=crop&crop=center'
+                  }
+                  alt={vendor?.name || 'Seller'}
                 />
                 <SellerDetails>
-                  <SellerName>{vendor?.name || "TechMart Downtown"}</SellerName>
+                  <SellerName>{vendor?.name || 'TechMart Downtown'}</SellerName>
                   <SellerBadge>Verified Seller</SellerBadge>
                 </SellerDetails>
               </SellerHeader>
@@ -734,12 +749,17 @@ const ProductDetail = () => {
             </SellerInfo>
 
             <ActionButtons>
-                            <EnquireButton
+              <EnquireButton
                 onClick={handleEnquireClick}
-                disabled={getAvailabilityStatus(product) === "out_of_stock" || (product.sizes && !selectedSize)}
+                disabled={
+                  getAvailabilityStatus(product) === 'out_of_stock' ||
+                  (product.sizes && !selectedSize)
+                }
               >
                 <FaEnvelope />
-                {getAvailabilityStatus(product) === "out_of_stock" ? "Not Available" : "Enquire Now"}
+                {getAvailabilityStatus(product) === 'out_of_stock'
+                  ? 'Not Available'
+                  : 'Enquire Now'}
               </EnquireButton>
 
               <WishlistButton title="Add to Wishlist">
@@ -768,13 +788,13 @@ const ProductDetail = () => {
           </ProductInfo>
         </ProductContainer>
 
-                {relatedProducts.length > 0 && (
+        {relatedProducts.length > 0 && (
           <RelatedSection>
             <SectionTitle>Related Products</SectionTitle>
             <RelatedGrid>
-              {relatedProducts.map((relatedProduct) => (
+              {relatedProducts.map(relatedProduct => (
                 <ProductCard
-                  key={relatedProduct.id}
+                  key={relatedProduct.productId}
                   product={relatedProduct}
                   storeSlug={storeSlug}
                 />

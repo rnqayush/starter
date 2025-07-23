@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import React, { useState } from 'react';
+import styled from 'styled-components';
 import {
   FaHome,
   FaBox,
@@ -17,11 +17,11 @@ import {
   FaPalette,
   FaBars,
   FaTimes,
-} from "react-icons/fa";
-import { theme, media } from "../../styles/GlobalStyle";
+} from 'react-icons/fa';
+import { theme, media } from '../../styles/GlobalStyle';
 
 const SidebarContainer = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "isOpen",
+  shouldForwardProp: prop => prop !== 'isOpen',
 })`
   position: fixed;
   left: 0;
@@ -37,7 +37,7 @@ const SidebarContainer = styled.div.withConfig({
 
   ${media.tabletDown} {
     width: 260px;
-    transform: translateX(${(props) => (props.isOpen ? "0" : "-100%")});
+    transform: translateX(${props => (props.isOpen ? '0' : '-100%')});
     z-index: 1001;
   }
 
@@ -219,36 +219,36 @@ const NavSectionTitle = styled.h3`
 `;
 
 const NavItem = styled.button.withConfig({
-  shouldForwardProp: (prop) => prop !== "active",
+  shouldForwardProp: prop => prop !== 'active',
 })`
   width: 100%;
   display: flex;
   align-items: center;
   gap: ${theme.spacing.md};
   padding: ${theme.spacing.md} ${theme.spacing.xl};
-  background: ${(props) =>
-    props.active ? theme.colors.primary + "10" : "transparent"};
+  background: ${props =>
+    props.active ? theme.colors.primary + '10' : 'transparent'};
   border: none;
   border-left: 3px solid
-    ${(props) => (props.active ? theme.colors.primary : "transparent")};
-  color: ${(props) =>
+    ${props => (props.active ? theme.colors.primary : 'transparent')};
+  color: ${props =>
     props.active ? theme.colors.primary : theme.colors.gray700};
   font-size: 0.95rem;
-  font-weight: ${(props) => (props.active ? "600" : "500")};
+  font-weight: ${props => (props.active ? '600' : '500')};
   cursor: pointer;
   transition: all 0.2s ease;
   text-align: left;
 
   &:hover {
-    background: ${(props) =>
-      props.active ? theme.colors.primary + "10" : theme.colors.gray50};
-    color: ${(props) =>
+    background: ${props =>
+      props.active ? theme.colors.primary + '10' : theme.colors.gray50};
+    color: ${props =>
       props.active ? theme.colors.primary : theme.colors.gray900};
   }
 
   svg {
     font-size: 1.1rem;
-    opacity: ${(props) => (props.active ? "1" : "0.7")};
+    opacity: ${props => (props.active ? '1' : '0.7')};
   }
 
   ${media.mobile} {
@@ -382,7 +382,7 @@ const MobileToggle = styled.button`
 `;
 
 const Overlay = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "isOpen",
+  shouldForwardProp: prop => prop !== 'isOpen',
 })`
   position: fixed;
   top: 0;
@@ -392,8 +392,8 @@ const Overlay = styled.div.withConfig({
   background: rgba(0, 0, 0, 0.5);
   z-index: 1000;
   display: none;
-  opacity: ${(props) => (props.isOpen ? "1" : "0")};
-  visibility: ${(props) => (props.isOpen ? "visible" : "hidden")};
+  opacity: ${props => (props.isOpen ? '1' : '0')};
+  visibility: ${props => (props.isOpen ? 'visible' : 'hidden')};
   transition: all 0.3s ease;
 
   ${media.tabletDown} {
@@ -407,42 +407,42 @@ const SellerSidebar = ({ activeTab, onTabChange }) => {
   const toggleSidebar = () => setIsOpen(!isOpen);
   const closeSidebar = () => setIsOpen(false);
 
-  const handleTabChange = (tabId) => {
+  const handleTabChange = tabId => {
     onTabChange(tabId);
     closeSidebar();
   };
   const navItems = [
     {
-      section: "Overview",
-      items: [{ id: "dashboard", label: "Dashboard", icon: FaHome }],
+      section: 'Overview',
+      items: [{ id: 'dashboard', label: 'Dashboard', icon: FaHome }],
     },
     {
-      section: "Catalog",
+      section: 'Catalog',
       items: [
-        { id: "products", label: "Products", icon: FaBox },
-        { id: "add-product", label: "Add Product", icon: FaPlus },
-        { id: "categories", label: "Categories", icon: FaTags },
-        { id: "bulk-import", label: "Bulk Import", icon: FaFileImport },
-      ],
-    },
-        {
-      section: "Sales",
-      items: [
-        { id: "orders", label: "Orders", icon: FaShoppingCart },
-        { id: "enquiries", label: "Enquiries", icon: FaEnvelope },
-        { id: "discounts", label: "Discounts & Coupons", icon: FaPercent },
+        { id: 'products', label: 'Products', icon: FaBox },
+        { id: 'add-product', label: 'Add Product', icon: FaPlus },
+        { id: 'categories', label: 'Categories', icon: FaTags },
+        { id: 'bulk-import', label: 'Bulk Import', icon: FaFileImport },
       ],
     },
     {
-      section: "Customers",
-      items: [{ id: "customers", label: "Customer List", icon: FaUsers }],
+      section: 'Sales',
+      items: [
+        { id: 'orders', label: 'Orders', icon: FaShoppingCart },
+        { id: 'enquiries', label: 'Enquiries', icon: FaEnvelope },
+        { id: 'discounts', label: 'Discounts & Coupons', icon: FaPercent },
+      ],
     },
     {
-      section: "Store Management",
+      section: 'Customers',
+      items: [{ id: 'customers', label: 'Customer List', icon: FaUsers }],
+    },
+    {
+      section: 'Store Management',
       items: [
-        { id: "store-settings", label: "Store Settings", icon: FaCog },
-        { id: "appearance", label: "Appearance", icon: FaPalette },
-        { id: "analytics", label: "Analytics", icon: FaChartLine },
+        { id: 'store-settings', label: 'Store Settings', icon: FaCog },
+        { id: 'appearance', label: 'Appearance', icon: FaPalette },
+        { id: 'analytics', label: 'Analytics', icon: FaChartLine },
       ],
     },
   ];
@@ -482,7 +482,7 @@ const SellerSidebar = ({ activeTab, onTabChange }) => {
           {navItems.map((section, sectionIndex) => (
             <NavSection key={sectionIndex}>
               <NavSectionTitle>{section.section}</NavSectionTitle>
-              {section.items.map((item) => (
+              {section.items.map(item => (
                 <NavItem
                   key={item.id}
                   active={activeTab === item.id}

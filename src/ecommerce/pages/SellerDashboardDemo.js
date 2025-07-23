@@ -1,14 +1,14 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 import {
   FaStore,
   FaChartLine,
   FaArrowRight,
   FaUser,
   FaShoppingCart,
-} from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
+} from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
 
 const DemoContainer = styled.div`
   min-height: 100vh;
@@ -145,17 +145,17 @@ const SellerDashboardDemo = () => {
   const navigate = useNavigate();
 
   const features = [
-    { icon: FaChartLine, text: "Sales Analytics & Insights" },
-    { icon: FaShoppingCart, text: "Order Management" },
-    { icon: FaStore, text: "Product Catalog" },
-    { icon: FaUser, text: "Customer Management" },
-    { icon: FaChartLine, text: "Revenue Tracking" },
-    { icon: FaStore, text: "Inventory Control" },
+    { icon: FaChartLine, text: 'Sales Analytics & Insights' },
+    { icon: FaShoppingCart, text: 'Order Management' },
+    { icon: FaStore, text: 'Product Catalog' },
+    { icon: FaUser, text: 'Customer Management' },
+    { icon: FaChartLine, text: 'Revenue Tracking' },
+    { icon: FaStore, text: 'Inventory Control' },
   ];
 
   return (
     <DemoContainer>
-      <BackButton onClick={() => navigate("/")}>← Back to Home</BackButton>
+      <BackButton onClick={() => navigate('/')}>← Back to Home</BackButton>
 
       <DemoCard>
         <DemoIcon>
@@ -181,7 +181,7 @@ const SellerDashboardDemo = () => {
           ))}
         </FeaturesList>
 
-        <DemoButton onClick={() => navigate("/ecommerce/seller-dashboard")}>
+        <DemoButton onClick={() => navigate('/ecommerce/seller-dashboard')}>
           Launch Seller Dashboard
           <FaArrowRight />
         </DemoButton>

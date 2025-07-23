@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 import {
   FaArrowLeft,
   FaUser,
@@ -28,11 +28,11 @@ import {
   FaStar,
   FaChevronRight,
   FaCheck,
-  FaBars
-} from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
-import { getVendorById } from "../data/vendors";
-import { useAuth } from "../../context/AuthContext";
+  FaBars,
+} from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
+import { getVendorById } from '../data/vendors';
+import { useAuth } from '../../context/AuthContext';
 
 const DashboardContainer = styled.div`
   min-height: 100vh;
@@ -67,7 +67,7 @@ const MobileSidebarCloseButton = styled.button`
 `;
 
 const Sidebar = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "mobileOpen",
+  shouldForwardProp: prop => prop !== 'mobileOpen',
 })`
   width: 280px;
   background: ${theme.colors.white};
@@ -89,10 +89,10 @@ const Sidebar = styled.div.withConfig({
     left: 0;
     height: 100vh;
     z-index: 1000;
-    transform: translateX(${(props) => (props.mobileOpen ? "0" : "-100%")});
+    transform: translateX(${props => (props.mobileOpen ? '0' : '-100%')});
     transition: transform 0.3s ease;
     overflow-y: auto;
-    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   }
 `;
 
@@ -134,7 +134,7 @@ const NavSectionTitle = styled.h3`
 `;
 
 const NavItem = styled.button.withConfig({
-  shouldForwardProp: (prop) => !['active'].includes(prop),
+  shouldForwardProp: prop => !['active'].includes(prop),
 })`
   width: 100%;
   padding: ${theme.spacing.md} ${theme.spacing.lg};
@@ -143,13 +143,16 @@ const NavItem = styled.button.withConfig({
   text-align: left;
   cursor: pointer;
   font-size: 0.95rem;
-  color: ${props => props.active ? theme.colors.primary : theme.colors.gray700};
-  background: ${props => props.active ? theme.colors.primary + '10' : 'transparent'};
+  color: ${props =>
+    props.active ? theme.colors.primary : theme.colors.gray700};
+  background: ${props =>
+    props.active ? theme.colors.primary + '10' : 'transparent'};
   transition: all 0.2s ease;
   display: flex;
   align-items: center;
   gap: ${theme.spacing.sm};
-  border-left: 3px solid ${props => props.active ? theme.colors.primary : 'transparent'};
+  border-left: 3px solid
+    ${props => (props.active ? theme.colors.primary : 'transparent')};
 
   &:hover {
     background: ${theme.colors.gray50};
@@ -190,7 +193,7 @@ const MobileMenuButton = styled.button`
 `;
 
 const MobileSidebarOverlay = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "isOpen",
+  shouldForwardProp: prop => prop !== 'isOpen',
 })`
   display: none;
 
@@ -203,9 +206,11 @@ const MobileSidebarOverlay = styled.div.withConfig({
     bottom: 0;
     background: rgba(0, 0, 0, 0.2);
     z-index: 999;
-    opacity: ${(props) => (props.isOpen ? "1" : "0")};
-    visibility: ${(props) => (props.isOpen ? "visible" : "hidden")};
-    transition: opacity 0.3s ease, visibility 0.3s ease;
+    opacity: ${props => (props.isOpen ? '1' : '0')};
+    visibility: ${props => (props.isOpen ? 'visible' : 'hidden')};
+    transition:
+      opacity 0.3s ease,
+      visibility 0.3s ease;
   }
 `;
 
@@ -263,24 +268,31 @@ const PageActions = styled.div`
 `;
 
 const ActionButton = styled.button.withConfig({
-  shouldForwardProp: (prop) => !['variant'].includes(prop),
+  shouldForwardProp: prop => !['variant'].includes(prop),
 })`
-  background: ${props => 
-    props.variant === 'primary' ? theme.colors.primary :
-    props.variant === 'success' ? theme.colors.green500 :
-    props.variant === 'danger' ? theme.colors.error :
-    theme.colors.white
-  };
-  color: ${props => 
-    props.variant === 'primary' || props.variant === 'success' || props.variant === 'danger'
-      ? 'white' : theme.colors.gray700
-  };
-  border: 2px solid ${props => 
-    props.variant === 'primary' ? theme.colors.primary :
-    props.variant === 'success' ? theme.colors.green500 :
-    props.variant === 'danger' ? theme.colors.error :
-    theme.colors.gray200
-  };
+  background: ${props =>
+    props.variant === 'primary'
+      ? theme.colors.primary
+      : props.variant === 'success'
+        ? theme.colors.green500
+        : props.variant === 'danger'
+          ? theme.colors.error
+          : theme.colors.white};
+  color: ${props =>
+    props.variant === 'primary' ||
+    props.variant === 'success' ||
+    props.variant === 'danger'
+      ? 'white'
+      : theme.colors.gray700};
+  border: 2px solid
+    ${props =>
+      props.variant === 'primary'
+        ? theme.colors.primary
+        : props.variant === 'success'
+          ? theme.colors.green500
+          : props.variant === 'danger'
+            ? theme.colors.error
+            : theme.colors.gray200};
   padding: ${theme.spacing.sm} ${theme.spacing.lg};
   border-radius: ${theme.borderRadius.md};
   font-weight: 600;
@@ -295,7 +307,7 @@ const ActionButton = styled.button.withConfig({
     box-shadow: ${theme.shadows.md};
   }
 
-    &:disabled {
+  &:disabled {
     opacity: 0.6;
     cursor: not-allowed;
   }
@@ -407,7 +419,7 @@ const ImageUploadArea = styled.div`
     background: ${theme.colors.primary}05;
   }
 
-  input[type="file"] {
+  input[type='file'] {
     display: none;
   }
 `;
@@ -524,7 +536,7 @@ const PortfolioMeta = styled.div`
 `;
 
 const StatusBadge = styled.span.withConfig({
-  shouldForwardProp: (prop) => !['status'].includes(prop),
+  shouldForwardProp: prop => !['status'].includes(prop),
 })`
   display: inline-flex;
   align-items: center;
@@ -533,16 +545,18 @@ const StatusBadge = styled.span.withConfig({
   border-radius: ${theme.borderRadius.sm};
   font-size: 0.8rem;
   font-weight: 600;
-  background: ${props => 
-    props.status === 'published' ? theme.colors.green100 :
-    props.status === 'draft' ? theme.colors.gray100 :
-    theme.colors.yellow100
-  };
-  color: ${props => 
-    props.status === 'published' ? theme.colors.green700 :
-    props.status === 'draft' ? theme.colors.gray700 :
-    theme.colors.yellow700
-  };
+  background: ${props =>
+    props.status === 'published'
+      ? theme.colors.green100
+      : props.status === 'draft'
+        ? theme.colors.gray100
+        : theme.colors.yellow100};
+  color: ${props =>
+    props.status === 'published'
+      ? theme.colors.green700
+      : props.status === 'draft'
+        ? theme.colors.gray700
+        : theme.colors.yellow700};
 `;
 
 const EmptyState = styled.div`
@@ -650,7 +664,7 @@ const StatsGrid = styled.div`
 `;
 
 const StatCard = styled.div.withConfig({
-  shouldForwardProp: (prop) => !['bgColor'].includes(prop),
+  shouldForwardProp: prop => !['bgColor'].includes(prop),
 })`
   padding: ${theme.spacing.lg};
   background: ${props => props.bgColor};
@@ -712,18 +726,18 @@ const VendorDashboard = () => {
   const { vendorSlug } = useParams();
   const navigate = useNavigate();
   const { user } = useAuth();
-  
+
   // Get vendor ID from URL path
   const currentPath = window.location.pathname;
   const pathSegments = currentPath.split('/').filter(Boolean);
   const vendorId = vendorSlug || pathSegments[0];
-  
+
   const [vendor, setVendor] = useState(null);
   const [loading, setLoading] = useState(true);
   const [activeSection, setActiveSection] = useState('overview');
   const [hasChanges, setHasChanges] = useState(false);
   const [saving, setSaving] = useState(false);
-  
+
   // Form states for different sections
   const [basicInfo, setBasicInfo] = useState({
     name: '',
@@ -732,17 +746,17 @@ const VendorDashboard = () => {
     phone: '',
     email: '',
     website: '',
-    address: ''
+    address: '',
   });
-  
+
   const [mediaFiles, setMediaFiles] = useState({
     logo: '',
     banner: '',
-    gallery: []
+    gallery: [],
   });
 
   const [services, setServices] = useState([]);
-    const [portfolio, setPortfolio] = useState([]);
+  const [portfolio, setPortfolio] = useState([]);
   const [portfolioForm, setPortfolioForm] = useState({
     id: '',
     location: '',
@@ -755,9 +769,9 @@ const VendorDashboard = () => {
     gallery: [],
     services: [],
     highlights: [],
-    editing: false
+    editing: false,
   });
-    const [showPortfolioForm, setShowPortfolioForm] = useState(false);
+  const [showPortfolioForm, setShowPortfolioForm] = useState(false);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [packages, setPackages] = useState([]);
   const [testimonials, setTestimonials] = useState([]);
@@ -774,28 +788,37 @@ const VendorDashboard = () => {
         phone: vendorData.phone,
         email: vendorData.email,
         website: vendorData.website,
-        address: vendorData.address
+        address: vendorData.address,
       });
       setMediaFiles({
         logo: vendorData.logo,
         banner: vendorData.image,
-        gallery: vendorData.portfolioImages || []
+        gallery: vendorData.portfolioImages || [],
       });
-                  setServices((vendorData.services || []).map((service, index) => ({
-        ...service,
-        id: service.id || `service-${index}-${Date.now()}`,
-        image: service.image || '',
-        icon: service.icon || '⭐'
-      })));
-                  setPortfolio((vendorData.locationPortfolio || []).map((item, index) => ({
-        ...item,
-        id: item.id || `portfolio-${index}-${Date.now()}`,
-        gallery: (item.gallery || []).map((img, imgIndex) =>
-          typeof img === 'string'
-            ? { id: `img-${imgIndex}-${Date.now()}`, src: img, title: '', description: '' }
-            : { ...img, id: img.id || `img-${imgIndex}-${Date.now()}` }
-        )
-      })));
+      setServices(
+        (vendorData.services || []).map((service, index) => ({
+          ...service,
+          id: service.id || `service-${index}-${Date.now()}`,
+          image: service.image || '',
+          icon: service.icon || '⭐',
+        }))
+      );
+      setPortfolio(
+        (vendorData.locationPortfolio || []).map((item, index) => ({
+          ...item,
+          id: item.id || `portfolio-${index}-${Date.now()}`,
+          gallery: (item.gallery || []).map((img, imgIndex) =>
+            typeof img === 'string'
+              ? {
+                  id: `img-${imgIndex}-${Date.now()}`,
+                  src: img,
+                  title: '',
+                  description: '',
+                }
+              : { ...img, id: img.id || `img-${imgIndex}-${Date.now()}` }
+          ),
+        }))
+      );
       setPackages(vendorData.packages || []);
       setTestimonials(vendorData.testimonials || []);
       setFaq(vendorData.faq || []);
@@ -805,14 +828,44 @@ const VendorDashboard = () => {
 
   const navigationItems = [
     { id: 'overview', label: 'Overview', icon: FaUser, section: 'General' },
-    { id: 'basic-info', label: 'Basic Information', icon: FaAddressCard, section: 'General' },
-    { id: 'media', label: 'Photos & Media', icon: FaImages, section: 'Content' },
-    { id: 'services', label: 'Services', icon: FaServicestack, section: 'Content' },
-    { id: 'portfolio', label: 'Portfolio & Work', icon: FaBriefcase, section: 'Content' },
-    { id: 'packages', label: 'Packages & Pricing', icon: FaDollarSign, section: 'Content' },
-    { id: 'testimonials', label: 'Testimonials', icon: FaComments, section: 'Content' },
+    {
+      id: 'basic-info',
+      label: 'Basic Information',
+      icon: FaAddressCard,
+      section: 'General',
+    },
+    {
+      id: 'media',
+      label: 'Photos & Media',
+      icon: FaImages,
+      section: 'Content',
+    },
+    {
+      id: 'services',
+      label: 'Services',
+      icon: FaServicestack,
+      section: 'Content',
+    },
+    {
+      id: 'portfolio',
+      label: 'Portfolio & Work',
+      icon: FaBriefcase,
+      section: 'Content',
+    },
+    {
+      id: 'packages',
+      label: 'Packages & Pricing',
+      icon: FaDollarSign,
+      section: 'Content',
+    },
+    {
+      id: 'testimonials',
+      label: 'Testimonials',
+      icon: FaComments,
+      section: 'Content',
+    },
     { id: 'faq', label: 'FAQ', icon: FaQuestionCircle, section: 'Content' },
-    { id: 'settings', label: 'Settings', icon: FaCog, section: 'Account' }
+    { id: 'settings', label: 'Settings', icon: FaCog, section: 'Account' },
   ];
 
   const handleSave = async () => {
@@ -829,16 +882,16 @@ const VendorDashboard = () => {
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
-      reader.onload = (event) => {
+      reader.onload = event => {
         if (type === 'gallery') {
           setMediaFiles(prev => ({
             ...prev,
-            gallery: [...prev.gallery, event.target.result]
+            gallery: [...prev.gallery, event.target.result],
           }));
         } else {
           setMediaFiles(prev => ({
             ...prev,
-            [type]: event.target.result
+            [type]: event.target.result,
           }));
         }
         setHasChanges(true);
@@ -847,33 +900,38 @@ const VendorDashboard = () => {
     }
   };
 
-  const removeGalleryImage = (index) => {
+  const removeGalleryImage = index => {
     setMediaFiles(prev => ({
       ...prev,
-      gallery: prev.gallery.filter((_, i) => i !== index)
+      gallery: prev.gallery.filter((_, i) => i !== index),
     }));
     setHasChanges(true);
   };
 
-    const addService = () => {
-    setServices(prev => [...prev, {
-      id: Date.now(),
-      name: 'New Service',
-      description: 'Service description',
-      icon: '⭐',
-      image: ''
-    }]);
+  const addService = () => {
+    setServices(prev => [
+      ...prev,
+      {
+        id: Date.now(),
+        name: 'New Service',
+        description: 'Service description',
+        icon: '⭐',
+        image: '',
+      },
+    ]);
     setHasChanges(true);
   };
 
   const updateService = (id, field, value) => {
-    setServices(prev => prev.map(service => 
-      service.id === id ? { ...service, [field]: value } : service
-    ));
+    setServices(prev =>
+      prev.map(service =>
+        service.id === id ? { ...service, [field]: value } : service
+      )
+    );
     setHasChanges(true);
   };
 
-    const removeService = (id) => {
+  const removeService = id => {
     setServices(prev => prev.filter(service => service.id !== id));
     setHasChanges(true);
   };
@@ -892,26 +950,30 @@ const VendorDashboard = () => {
       gallery: [],
       services: [],
       highlights: [],
-      editing: false
+      editing: false,
     });
     setShowPortfolioForm(true);
   };
 
-  const editPortfolioItem = (item) => {
+  const editPortfolioItem = item => {
     setPortfolioForm({ ...item, editing: true });
     setShowPortfolioForm(true);
   };
 
   const savePortfolioItem = () => {
     if (portfolioForm.editing) {
-      setPortfolio(prev => prev.map(item =>
-        item.id === portfolioForm.id ? { ...portfolioForm, editing: false } : item
-      ));
+      setPortfolio(prev =>
+        prev.map(item =>
+          item.id === portfolioForm.id
+            ? { ...portfolioForm, editing: false }
+            : item
+        )
+      );
     } else {
       const newItem = {
         ...portfolioForm,
         id: portfolioForm.id || Date.now().toString(),
-        editing: false
+        editing: false,
       };
       setPortfolio(prev => [...prev, newItem]);
     }
@@ -919,7 +981,7 @@ const VendorDashboard = () => {
     setShowPortfolioForm(false);
   };
 
-  const deletePortfolioItem = (id) => {
+  const deletePortfolioItem = id => {
     setPortfolio(prev => prev.filter(item => item.id !== id));
     setHasChanges(true);
   };
@@ -928,20 +990,20 @@ const VendorDashboard = () => {
     setPortfolioForm(prev => ({ ...prev, [field]: value }));
   };
 
-  const addPortfolioGalleryImage = (e) => {
+  const addPortfolioGalleryImage = e => {
     const files = Array.from(e.target.files);
     files.forEach(file => {
       const reader = new FileReader();
-      reader.onload = (event) => {
+      reader.onload = event => {
         const imageData = {
           id: Date.now() + Math.random(),
           src: event.target.result,
           title: '',
-          description: ''
+          description: '',
         };
         setPortfolioForm(prev => ({
           ...prev,
-          gallery: [...prev.gallery, imageData]
+          gallery: [...prev.gallery, imageData],
         }));
       };
       reader.readAsDataURL(file);
@@ -953,56 +1015,60 @@ const VendorDashboard = () => {
       ...prev,
       gallery: prev.gallery.map(img =>
         img.id === imageId ? { ...img, [field]: value } : img
-      )
+      ),
     }));
   };
 
-  const removePortfolioGalleryImage = (imageId) => {
+  const removePortfolioGalleryImage = imageId => {
     setPortfolioForm(prev => ({
       ...prev,
-      gallery: prev.gallery.filter(img => img.id !== imageId)
+      gallery: prev.gallery.filter(img => img.id !== imageId),
     }));
   };
 
   const addPortfolioService = () => {
     setPortfolioForm(prev => ({
       ...prev,
-      services: [...prev.services, '']
+      services: [...prev.services, ''],
     }));
   };
 
   const updatePortfolioService = (index, value) => {
     setPortfolioForm(prev => ({
       ...prev,
-      services: prev.services.map((service, i) => i === index ? value : service)
+      services: prev.services.map((service, i) =>
+        i === index ? value : service
+      ),
     }));
   };
 
-  const removePortfolioService = (index) => {
+  const removePortfolioService = index => {
     setPortfolioForm(prev => ({
       ...prev,
-      services: prev.services.filter((_, i) => i !== index)
+      services: prev.services.filter((_, i) => i !== index),
     }));
   };
 
   const addPortfolioHighlight = () => {
     setPortfolioForm(prev => ({
       ...prev,
-      highlights: [...prev.highlights, '']
+      highlights: [...prev.highlights, ''],
     }));
   };
 
   const updatePortfolioHighlight = (index, value) => {
     setPortfolioForm(prev => ({
       ...prev,
-      highlights: prev.highlights.map((highlight, i) => i === index ? value : highlight)
+      highlights: prev.highlights.map((highlight, i) =>
+        i === index ? value : highlight
+      ),
     }));
   };
 
-    const removePortfolioHighlight = (index) => {
+  const removePortfolioHighlight = index => {
     setPortfolioForm(prev => ({
       ...prev,
-      highlights: prev.highlights.filter((_, i) => i !== index)
+      highlights: prev.highlights.filter((_, i) => i !== index),
     }));
   };
 
@@ -1010,26 +1076,26 @@ const VendorDashboard = () => {
 
   // Close mobile sidebar on escape key
   useEffect(() => {
-    const handleEscapeKey = (event) => {
-      if (event.key === "Escape" && mobileSidebarOpen) {
+    const handleEscapeKey = event => {
+      if (event.key === 'Escape' && mobileSidebarOpen) {
         closeMobileSidebar();
       }
     };
 
-    document.addEventListener("keydown", handleEscapeKey);
-    return () => document.removeEventListener("keydown", handleEscapeKey);
+    document.addEventListener('keydown', handleEscapeKey);
+    return () => document.removeEventListener('keydown', handleEscapeKey);
   }, [mobileSidebarOpen]);
 
   // Prevent body scroll when mobile sidebar is open
   useEffect(() => {
     if (mobileSidebarOpen) {
-      document.body.style.overflow = "hidden";
+      document.body.style.overflow = 'hidden';
     } else {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow = 'unset';
     }
 
     return () => {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow = 'unset';
     };
   }, [mobileSidebarOpen]);
 
@@ -1042,7 +1108,7 @@ const VendorDashboard = () => {
               <FaUser />
               Dashboard Overview
             </SectionTitle>
-                                    <StatsGrid>
+            <StatsGrid>
               {[
                 {
                   id: 'profile-views',
@@ -1052,7 +1118,7 @@ const VendorDashboard = () => {
                   bgColor: theme.colors.blue50,
                   titleColor: theme.colors.blue700,
                   valueColor: theme.colors.blue800,
-                  subtitleColor: theme.colors.blue600
+                  subtitleColor: theme.colors.blue600,
                 },
                 {
                   id: 'enquiries',
@@ -1062,7 +1128,7 @@ const VendorDashboard = () => {
                   bgColor: theme.colors.green50,
                   titleColor: theme.colors.green700,
                   valueColor: theme.colors.green800,
-                  subtitleColor: theme.colors.green600
+                  subtitleColor: theme.colors.green600,
                 },
                 {
                   id: 'portfolio-views',
@@ -1072,13 +1138,32 @@ const VendorDashboard = () => {
                   bgColor: theme.colors.purple50,
                   titleColor: theme.colors.purple700,
                   valueColor: theme.colors.purple800,
-                  subtitleColor: theme.colors.purple600
-                }
-              ].map((stat) => (
+                  subtitleColor: theme.colors.purple600,
+                },
+              ].map(stat => (
                 <StatCard key={stat.id} bgColor={stat.bgColor}>
-                  <h3 style={{ margin: '0 0 8px 0', color: stat.titleColor }}>{stat.title}</h3>
-                  <p style={{ margin: 0, fontSize: '2rem', fontWeight: 'bold', color: stat.valueColor }}>{stat.value}</p>
-                  <p style={{ margin: 0, fontSize: '0.9rem', color: stat.subtitleColor }}>{stat.subtitle}</p>
+                  <h3 style={{ margin: '0 0 8px 0', color: stat.titleColor }}>
+                    {stat.title}
+                  </h3>
+                  <p
+                    style={{
+                      margin: 0,
+                      fontSize: '2rem',
+                      fontWeight: 'bold',
+                      color: stat.valueColor,
+                    }}
+                  >
+                    {stat.value}
+                  </p>
+                  <p
+                    style={{
+                      margin: 0,
+                      fontSize: '0.9rem',
+                      color: stat.subtitleColor,
+                    }}
+                  >
+                    {stat.subtitle}
+                  </p>
                 </StatCard>
               ))}
             </StatsGrid>
@@ -1092,12 +1177,12 @@ const VendorDashboard = () => {
               <FaAddressCard />
               Basic Information
             </SectionTitle>
-                        <FormGrid>
+            <FormGrid>
               <FormGroup key="business-name">
                 <FormLabel>Business Name</FormLabel>
                 <FormInput
                   value={basicInfo.name}
-                  onChange={(e) => {
+                  onChange={e => {
                     setBasicInfo(prev => ({ ...prev, name: e.target.value }));
                     setHasChanges(true);
                   }}
@@ -1108,8 +1193,11 @@ const VendorDashboard = () => {
                 <FormLabel>Tagline</FormLabel>
                 <FormInput
                   value={basicInfo.tagline}
-                  onChange={(e) => {
-                    setBasicInfo(prev => ({ ...prev, tagline: e.target.value }));
+                  onChange={e => {
+                    setBasicInfo(prev => ({
+                      ...prev,
+                      tagline: e.target.value,
+                    }));
                     setHasChanges(true);
                   }}
                   placeholder="Your catchy tagline"
@@ -1119,8 +1207,11 @@ const VendorDashboard = () => {
                 <FormLabel>Description</FormLabel>
                 <FormTextarea
                   value={basicInfo.description}
-                  onChange={(e) => {
-                    setBasicInfo(prev => ({ ...prev, description: e.target.value }));
+                  onChange={e => {
+                    setBasicInfo(prev => ({
+                      ...prev,
+                      description: e.target.value,
+                    }));
                     setHasChanges(true);
                   }}
                   placeholder="Describe your business and what makes you special"
@@ -1130,7 +1221,7 @@ const VendorDashboard = () => {
                 <FormLabel>Phone</FormLabel>
                 <FormInput
                   value={basicInfo.phone}
-                  onChange={(e) => {
+                  onChange={e => {
                     setBasicInfo(prev => ({ ...prev, phone: e.target.value }));
                     setHasChanges(true);
                   }}
@@ -1142,7 +1233,7 @@ const VendorDashboard = () => {
                 <FormInput
                   type="email"
                   value={basicInfo.email}
-                  onChange={(e) => {
+                  onChange={e => {
                     setBasicInfo(prev => ({ ...prev, email: e.target.value }));
                     setHasChanges(true);
                   }}
@@ -1153,8 +1244,11 @@ const VendorDashboard = () => {
                 <FormLabel>Website</FormLabel>
                 <FormInput
                   value={basicInfo.website}
-                  onChange={(e) => {
-                    setBasicInfo(prev => ({ ...prev, website: e.target.value }));
+                  onChange={e => {
+                    setBasicInfo(prev => ({
+                      ...prev,
+                      website: e.target.value,
+                    }));
                     setHasChanges(true);
                   }}
                   placeholder="www.yourbusiness.com"
@@ -1164,8 +1258,11 @@ const VendorDashboard = () => {
                 <FormLabel>Address</FormLabel>
                 <FormInput
                   value={basicInfo.address}
-                  onChange={(e) => {
-                    setBasicInfo(prev => ({ ...prev, address: e.target.value }));
+                  onChange={e => {
+                    setBasicInfo(prev => ({
+                      ...prev,
+                      address: e.target.value,
+                    }));
                     setHasChanges(true);
                   }}
                   placeholder="Your business address"
@@ -1182,10 +1279,16 @@ const VendorDashboard = () => {
               <FaImages />
               Photos & Media
             </SectionTitle>
-            
+
             <div style={{ marginBottom: theme.spacing.xxl }}>
               <h3 style={{ marginBottom: theme.spacing.lg }}>Logo</h3>
-              <div style={{ display: 'flex', gap: theme.spacing.lg, alignItems: 'center' }}>
+              <div
+                style={{
+                  display: 'flex',
+                  gap: theme.spacing.lg,
+                  alignItems: 'center',
+                }}
+              >
                 {mediaFiles.logo && (
                   <PreviewImage src={mediaFiles.logo} alt="Logo" />
                 )}
@@ -1193,12 +1296,20 @@ const VendorDashboard = () => {
                   <input
                     type="file"
                     accept="image/*"
-                    onChange={(e) => handleImageUpload(e, 'logo')}
+                    onChange={e => handleImageUpload(e, 'logo')}
                     id="logo-upload"
                   />
                   <label htmlFor="logo-upload">
-                    <FaUpload style={{ fontSize: '2rem', marginBottom: theme.spacing.sm, color: theme.colors.gray400 }} />
-                    <p style={{ margin: 0, color: theme.colors.gray600 }}>Click to upload logo</p>
+                    <FaUpload
+                      style={{
+                        fontSize: '2rem',
+                        marginBottom: theme.spacing.sm,
+                        color: theme.colors.gray400,
+                      }}
+                    />
+                    <p style={{ margin: 0, color: theme.colors.gray600 }}>
+                      Click to upload logo
+                    </p>
                   </label>
                 </ImageUploadArea>
               </div>
@@ -1206,20 +1317,43 @@ const VendorDashboard = () => {
 
             <div style={{ marginBottom: theme.spacing.xxl }}>
               <h3 style={{ marginBottom: theme.spacing.lg }}>Hero Banner</h3>
-              <div style={{ display: 'flex', gap: theme.spacing.lg, alignItems: 'center' }}>
+              <div
+                style={{
+                  display: 'flex',
+                  gap: theme.spacing.lg,
+                  alignItems: 'center',
+                }}
+              >
                 {mediaFiles.banner && (
-                  <img src={mediaFiles.banner} alt="Banner" style={{ width: '200px', height: '120px', objectFit: 'cover', borderRadius: theme.borderRadius.md }} />
+                  <img
+                    src={mediaFiles.banner}
+                    alt="Banner"
+                    style={{
+                      width: '200px',
+                      height: '120px',
+                      objectFit: 'cover',
+                      borderRadius: theme.borderRadius.md,
+                    }}
+                  />
                 )}
                 <ImageUploadArea>
                   <input
                     type="file"
                     accept="image/*"
-                    onChange={(e) => handleImageUpload(e, 'banner')}
+                    onChange={e => handleImageUpload(e, 'banner')}
                     id="banner-upload"
                   />
                   <label htmlFor="banner-upload">
-                    <FaUpload style={{ fontSize: '2rem', marginBottom: theme.spacing.sm, color: theme.colors.gray400 }} />
-                    <p style={{ margin: 0, color: theme.colors.gray600 }}>Click to upload banner</p>
+                    <FaUpload
+                      style={{
+                        fontSize: '2rem',
+                        marginBottom: theme.spacing.sm,
+                        color: theme.colors.gray400,
+                      }}
+                    />
+                    <p style={{ margin: 0, color: theme.colors.gray600 }}>
+                      Click to upload banner
+                    </p>
                   </label>
                 </ImageUploadArea>
               </div>
@@ -1227,11 +1361,20 @@ const VendorDashboard = () => {
 
             <div>
               <h3 style={{ marginBottom: theme.spacing.lg }}>Gallery Images</h3>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: theme.spacing.md, marginBottom: theme.spacing.lg }}>
+              <div
+                style={{
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  gap: theme.spacing.md,
+                  marginBottom: theme.spacing.lg,
+                }}
+              >
                 {mediaFiles.gallery.map((image, index) => (
                   <ImagePreview key={index}>
                     <PreviewImage src={image} alt={`Gallery ${index + 1}`} />
-                    <RemoveImageButton onClick={() => removeGalleryImage(index)}>
+                    <RemoveImageButton
+                      onClick={() => removeGalleryImage(index)}
+                    >
                       <FaTimes />
                     </RemoveImageButton>
                   </ImagePreview>
@@ -1242,19 +1385,27 @@ const VendorDashboard = () => {
                   type="file"
                   accept="image/*"
                   multiple
-                  onChange={(e) => handleImageUpload(e, 'gallery')}
+                  onChange={e => handleImageUpload(e, 'gallery')}
                   id="gallery-upload"
                 />
                 <label htmlFor="gallery-upload">
-                  <FaUpload style={{ fontSize: '2rem', marginBottom: theme.spacing.sm, color: theme.colors.gray400 }} />
-                  <p style={{ margin: 0, color: theme.colors.gray600 }}>Click to add gallery images</p>
+                  <FaUpload
+                    style={{
+                      fontSize: '2rem',
+                      marginBottom: theme.spacing.sm,
+                      color: theme.colors.gray400,
+                    }}
+                  />
+                  <p style={{ margin: 0, color: theme.colors.gray600 }}>
+                    Click to add gallery images
+                  </p>
                 </label>
               </ImageUploadArea>
             </div>
           </ContentSection>
         );
 
-            case 'services':
+      case 'services':
         return (
           <ContentSection>
             <SectionTitle>
@@ -1262,12 +1413,29 @@ const VendorDashboard = () => {
               Services
             </SectionTitle>
             <ServiceList>
-              {services.map((service) => (
-                <ServiceItem key={service.id} style={{ flexDirection: 'column', alignItems: 'stretch' }}>
-                  <div style={{ display: 'flex', gap: theme.spacing.lg, marginBottom: theme.spacing.lg }}>
+              {services.map(service => (
+                <ServiceItem
+                  key={service.id}
+                  style={{ flexDirection: 'column', alignItems: 'stretch' }}
+                >
+                  <div
+                    style={{
+                      display: 'flex',
+                      gap: theme.spacing.lg,
+                      marginBottom: theme.spacing.lg,
+                    }}
+                  >
                     {/* Service Cover Image */}
                     <div style={{ minWidth: '200px' }}>
-                      <h4 style={{ margin: `0 0 ${theme.spacing.sm} 0`, fontSize: '0.9rem', fontWeight: 600 }}>Cover Image</h4>
+                      <h4
+                        style={{
+                          margin: `0 0 ${theme.spacing.sm} 0`,
+                          fontSize: '0.9rem',
+                          fontWeight: 600,
+                        }}
+                      >
+                        Cover Image
+                      </h4>
                       {service.image && (
                         <img
                           src={service.image}
@@ -1278,7 +1446,7 @@ const VendorDashboard = () => {
                             objectFit: 'cover',
                             borderRadius: theme.borderRadius.md,
                             border: `2px solid ${theme.colors.gray200}`,
-                            marginBottom: theme.spacing.sm
+                            marginBottom: theme.spacing.sm,
                           }}
                         />
                       )}
@@ -1286,12 +1454,16 @@ const VendorDashboard = () => {
                         <input
                           type="file"
                           accept="image/*"
-                          onChange={(e) => {
+                          onChange={e => {
                             const file = e.target.files[0];
                             if (file) {
                               const reader = new FileReader();
-                              reader.onload = (event) => {
-                                updateService(service.id, 'image', event.target.result);
+                              reader.onload = event => {
+                                updateService(
+                                  service.id,
+                                  'image',
+                                  event.target.result
+                                );
                               };
                               reader.readAsDataURL(file);
                             }
@@ -1310,10 +1482,12 @@ const VendorDashboard = () => {
                             cursor: 'pointer',
                             fontSize: '0.8rem',
                             color: theme.colors.gray600,
-                            transition: 'all 0.2s ease'
+                            transition: 'all 0.2s ease',
                           }}
                         >
-                          <FaUpload style={{ marginBottom: theme.spacing.xs }} />
+                          <FaUpload
+                            style={{ marginBottom: theme.spacing.xs }}
+                          />
                           <br />
                           {service.image ? 'Change Image' : 'Upload Image'}
                         </label>
@@ -1322,12 +1496,21 @@ const VendorDashboard = () => {
 
                     {/* Service Details */}
                     <ServiceContent style={{ flex: 1 }}>
-                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 80px', gap: theme.spacing.md, marginBottom: theme.spacing.md }}>
+                      <div
+                        style={{
+                          display: 'grid',
+                          gridTemplateColumns: '1fr 80px',
+                          gap: theme.spacing.md,
+                          marginBottom: theme.spacing.md,
+                        }}
+                      >
                         <FormGroup>
                           <FormLabel>Service Name</FormLabel>
                           <FormInput
                             value={service.name}
-                            onChange={(e) => updateService(service.id, 'name', e.target.value)}
+                            onChange={e =>
+                              updateService(service.id, 'name', e.target.value)
+                            }
                             placeholder="Wedding Planning, Photography, etc."
                           />
                         </FormGroup>
@@ -1335,7 +1518,9 @@ const VendorDashboard = () => {
                           <FormLabel>Icon</FormLabel>
                           <FormInput
                             value={service.icon || ''}
-                            onChange={(e) => updateService(service.id, 'icon', e.target.value)}
+                            onChange={e =>
+                              updateService(service.id, 'icon', e.target.value)
+                            }
                             placeholder="💍"
                             style={{ textAlign: 'center', fontSize: '1.2rem' }}
                           />
@@ -1345,7 +1530,13 @@ const VendorDashboard = () => {
                         <FormLabel>Service Description</FormLabel>
                         <FormTextarea
                           value={service.description}
-                          onChange={(e) => updateService(service.id, 'description', e.target.value)}
+                          onChange={e =>
+                            updateService(
+                              service.id,
+                              'description',
+                              e.target.value
+                            )
+                          }
                           placeholder="Detailed description of this service..."
                           style={{ minHeight: '100px' }}
                         />
@@ -1353,8 +1544,16 @@ const VendorDashboard = () => {
                     </ServiceContent>
                   </div>
 
-                  <ServiceActions style={{ alignSelf: 'flex-end', marginTop: theme.spacing.md }}>
-                    <ActionButton variant="danger" onClick={() => removeService(service.id)}>
+                  <ServiceActions
+                    style={{
+                      alignSelf: 'flex-end',
+                      marginTop: theme.spacing.md,
+                    }}
+                  >
+                    <ActionButton
+                      variant="danger"
+                      onClick={() => removeService(service.id)}
+                    >
                       <FaTrash />
                       Remove Service
                     </ActionButton>
@@ -1365,20 +1564,31 @@ const VendorDashboard = () => {
 
             {services.length === 0 && (
               <EmptyState>
-                <FaServicestack style={{ fontSize: '3rem', marginBottom: theme.spacing.lg, color: theme.colors.gray400 }} />
+                <FaServicestack
+                  style={{
+                    fontSize: '3rem',
+                    marginBottom: theme.spacing.lg,
+                    color: theme.colors.gray400,
+                  }}
+                />
                 <h3>No services added yet</h3>
-                <p>Start by adding the services you offer to potential clients</p>
+                <p>
+                  Start by adding the services you offer to potential clients
+                </p>
               </EmptyState>
             )}
 
-            <ActionButton onClick={addService} style={{ marginTop: theme.spacing.lg }}>
+            <ActionButton
+              onClick={addService}
+              style={{ marginTop: theme.spacing.lg }}
+            >
               <FaPlus />
               Add New Service
             </ActionButton>
           </ContentSection>
         );
 
-            case 'portfolio':
+      case 'portfolio':
         return (
           <>
             <ContentSection>
@@ -1398,7 +1608,13 @@ const VendorDashboard = () => {
                 <PortfolioGrid>
                   {portfolio.map((item, index) => (
                     <PortfolioCard key={item.id || index}>
-                      <PortfolioImage src={item.coverImage || 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=400&q=80'} alt={item.location} />
+                      <PortfolioImage
+                        src={
+                          item.coverImage ||
+                          'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=400&q=80'
+                        }
+                        alt={item.location}
+                      />
                       <PortfolioInfo>
                         <PortfolioTitle>{item.location}</PortfolioTitle>
                         <PortfolioMeta>
@@ -1410,12 +1626,21 @@ const VendorDashboard = () => {
                             Published
                           </StatusBadge>
                         </div>
-                        <div style={{ display: 'flex', gap: theme.spacing.sm, marginTop: theme.spacing.md }}>
+                        <div
+                          style={{
+                            display: 'flex',
+                            gap: theme.spacing.sm,
+                            marginTop: theme.spacing.md,
+                          }}
+                        >
                           <ActionButton onClick={() => editPortfolioItem(item)}>
                             <FaEdit />
                             Edit
                           </ActionButton>
-                          <ActionButton variant="danger" onClick={() => deletePortfolioItem(item.id)}>
+                          <ActionButton
+                            variant="danger"
+                            onClick={() => deletePortfolioItem(item.id)}
+                          >
                             <FaTrash />
                             Delete
                           </ActionButton>
@@ -1426,7 +1651,13 @@ const VendorDashboard = () => {
                 </PortfolioGrid>
               ) : (
                 <EmptyState>
-                  <FaBriefcase style={{ fontSize: '3rem', marginBottom: theme.spacing.lg, color: theme.colors.gray400 }} />
+                  <FaBriefcase
+                    style={{
+                      fontSize: '3rem',
+                      marginBottom: theme.spacing.lg,
+                      color: theme.colors.gray400,
+                    }}
+                  />
                   <h3>No portfolio items yet</h3>
                   <p>Start showcasing your work by adding portfolio items</p>
                   <ActionButton variant="primary" onClick={addPortfolioItem}>
@@ -1438,23 +1669,31 @@ const VendorDashboard = () => {
             </ContentSection>
 
             {showPortfolioForm && (
-              <PortfolioFormModal onClick={(e) => e.target === e.currentTarget && setShowPortfolioForm(false)}>
+              <PortfolioFormModal
+                onClick={e =>
+                  e.target === e.currentTarget && setShowPortfolioForm(false)
+                }
+              >
                 <PortfolioFormContent>
                   <PortfolioFormHeader>
                     <PortfolioFormTitle>
-                      {portfolioForm.editing ? 'Edit Portfolio Item' : 'Add New Portfolio Item'}
+                      {portfolioForm.editing
+                        ? 'Edit Portfolio Item'
+                        : 'Add New Portfolio Item'}
                     </PortfolioFormTitle>
                     <ActionButton onClick={() => setShowPortfolioForm(false)}>
                       <FaTimes />
                     </ActionButton>
                   </PortfolioFormHeader>
 
-                                    <FormGrid>
+                  <FormGrid>
                     <FormGroup key="portfolio-location">
                       <FormLabel>Event Location/Venue Name</FormLabel>
                       <FormInput
                         value={portfolioForm.location}
-                        onChange={(e) => updatePortfolioForm('location', e.target.value)}
+                        onChange={e =>
+                          updatePortfolioForm('location', e.target.value)
+                        }
                         placeholder="Napa Valley Vineyard"
                       />
                     </FormGroup>
@@ -1462,7 +1701,9 @@ const VendorDashboard = () => {
                       <FormLabel>City</FormLabel>
                       <FormInput
                         value={portfolioForm.city}
-                        onChange={(e) => updatePortfolioForm('city', e.target.value)}
+                        onChange={e =>
+                          updatePortfolioForm('city', e.target.value)
+                        }
                         placeholder="Napa Valley"
                       />
                     </FormGroup>
@@ -1470,7 +1711,9 @@ const VendorDashboard = () => {
                       <FormLabel>State</FormLabel>
                       <FormInput
                         value={portfolioForm.state}
-                        onChange={(e) => updatePortfolioForm('state', e.target.value)}
+                        onChange={e =>
+                          updatePortfolioForm('state', e.target.value)
+                        }
                         placeholder="CA"
                       />
                     </FormGroup>
@@ -1478,7 +1721,9 @@ const VendorDashboard = () => {
                       <FormLabel>Wedding Date</FormLabel>
                       <FormInput
                         value={portfolioForm.weddingDate}
-                        onChange={(e) => updatePortfolioForm('weddingDate', e.target.value)}
+                        onChange={e =>
+                          updatePortfolioForm('weddingDate', e.target.value)
+                        }
                         placeholder="September 2023"
                       />
                     </FormGroup>
@@ -1486,36 +1731,63 @@ const VendorDashboard = () => {
                       <FormLabel>Couple Names</FormLabel>
                       <FormInput
                         value={portfolioForm.coupleNames}
-                        onChange={(e) => updatePortfolioForm('coupleNames', e.target.value)}
+                        onChange={e =>
+                          updatePortfolioForm('coupleNames', e.target.value)
+                        }
                         placeholder="Sarah & Michael"
                       />
                     </FormGroup>
-                    <FormGroup key="portfolio-description" style={{ gridColumn: '1 / -1' }}>
+                    <FormGroup
+                      key="portfolio-description"
+                      style={{ gridColumn: '1 / -1' }}
+                    >
                       <FormLabel>Description</FormLabel>
                       <FormTextarea
                         value={portfolioForm.description}
-                        onChange={(e) => updatePortfolioForm('description', e.target.value)}
+                        onChange={e =>
+                          updatePortfolioForm('description', e.target.value)
+                        }
                         placeholder="Describe this wedding event, the theme, special moments, and what made it unique..."
                       />
                     </FormGroup>
                   </FormGrid>
 
                   <div style={{ marginTop: theme.spacing.xl }}>
-                    <h3 style={{ marginBottom: theme.spacing.lg }}>Cover Image</h3>
-                    <div style={{ display: 'flex', gap: theme.spacing.lg, alignItems: 'center' }}>
+                    <h3 style={{ marginBottom: theme.spacing.lg }}>
+                      Cover Image
+                    </h3>
+                    <div
+                      style={{
+                        display: 'flex',
+                        gap: theme.spacing.lg,
+                        alignItems: 'center',
+                      }}
+                    >
                       {portfolioForm.coverImage && (
-                        <img src={portfolioForm.coverImage} alt="Cover" style={{ width: '200px', height: '120px', objectFit: 'cover', borderRadius: theme.borderRadius.md }} />
+                        <img
+                          src={portfolioForm.coverImage}
+                          alt="Cover"
+                          style={{
+                            width: '200px',
+                            height: '120px',
+                            objectFit: 'cover',
+                            borderRadius: theme.borderRadius.md,
+                          }}
+                        />
                       )}
                       <ImageUploadArea>
                         <input
                           type="file"
                           accept="image/*"
-                          onChange={(e) => {
+                          onChange={e => {
                             const file = e.target.files[0];
                             if (file) {
                               const reader = new FileReader();
-                              reader.onload = (event) => {
-                                updatePortfolioForm('coverImage', event.target.result);
+                              reader.onload = event => {
+                                updatePortfolioForm(
+                                  'coverImage',
+                                  event.target.result
+                                );
                               };
                               reader.readAsDataURL(file);
                             }
@@ -1523,17 +1795,38 @@ const VendorDashboard = () => {
                           id="cover-upload"
                         />
                         <label htmlFor="cover-upload">
-                          <FaUpload style={{ fontSize: '2rem', marginBottom: theme.spacing.sm, color: theme.colors.gray400 }} />
-                          <p style={{ margin: 0, color: theme.colors.gray600 }}>Click to upload cover image</p>
+                          <FaUpload
+                            style={{
+                              fontSize: '2rem',
+                              marginBottom: theme.spacing.sm,
+                              color: theme.colors.gray400,
+                            }}
+                          />
+                          <p style={{ margin: 0, color: theme.colors.gray600 }}>
+                            Click to upload cover image
+                          </p>
                         </label>
                       </ImageUploadArea>
                     </div>
                   </div>
 
                   <div style={{ marginTop: theme.spacing.xl }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: theme.spacing.lg }}>
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        marginBottom: theme.spacing.lg,
+                      }}
+                    >
                       <h3 style={{ margin: 0 }}>Photo Gallery</h3>
-                      <ActionButton onClick={() => document.getElementById('portfolio-gallery-upload').click()}>
+                      <ActionButton
+                        onClick={() =>
+                          document
+                            .getElementById('portfolio-gallery-upload')
+                            .click()
+                        }
+                      >
                         <FaPlus />
                         Add Photos
                       </ActionButton>
@@ -1548,16 +1841,25 @@ const VendorDashboard = () => {
                       style={{ display: 'none' }}
                     />
 
-                    {portfolioForm.gallery.map((image) => (
+                    {portfolioForm.gallery.map(image => (
                       <GalleryImageCard key={image.id}>
-                        <GalleryImagePreview src={image.src} alt={image.title || 'Gallery image'} />
+                        <GalleryImagePreview
+                          src={image.src}
+                          alt={image.title || 'Gallery image'}
+                        />
                         <GalleryImageForm>
-                                                    <FormGrid>
+                          <FormGrid>
                             <FormGroup key={`${image.id}-title`}>
                               <FormLabel>Photo Title</FormLabel>
                               <FormInput
                                 value={image.title}
-                                onChange={(e) => updatePortfolioGalleryImage(image.id, 'title', e.target.value)}
+                                onChange={e =>
+                                  updatePortfolioGalleryImage(
+                                    image.id,
+                                    'title',
+                                    e.target.value
+                                  )
+                                }
                                 placeholder="Ceremony setup, Reception decor, etc."
                               />
                             </FormGroup>
@@ -1565,13 +1867,29 @@ const VendorDashboard = () => {
                               <FormLabel>Description</FormLabel>
                               <FormInput
                                 value={image.description}
-                                onChange={(e) => updatePortfolioGalleryImage(image.id, 'description', e.target.value)}
+                                onChange={e =>
+                                  updatePortfolioGalleryImage(
+                                    image.id,
+                                    'description',
+                                    e.target.value
+                                  )
+                                }
                                 placeholder="Describe this photo..."
                               />
                             </FormGroup>
                           </FormGrid>
-                          <div style={{ marginTop: theme.spacing.md, textAlign: 'right' }}>
-                            <SmallButton className="danger" onClick={() => removePortfolioGalleryImage(image.id)}>
+                          <div
+                            style={{
+                              marginTop: theme.spacing.md,
+                              textAlign: 'right',
+                            }}
+                          >
+                            <SmallButton
+                              className="danger"
+                              onClick={() =>
+                                removePortfolioGalleryImage(image.id)
+                              }
+                            >
                               <FaTrash />
                             </SmallButton>
                           </div>
@@ -1580,31 +1898,59 @@ const VendorDashboard = () => {
                     ))}
 
                     {portfolioForm.gallery.length === 0 && (
-                      <div style={{ textAlign: 'center', padding: theme.spacing.xl, color: theme.colors.gray500 }}>
-                        <FaCamera style={{ fontSize: '2rem', marginBottom: theme.spacing.sm }} />
-                        <p>No photos added yet. Click "Add Photos" to start building your gallery.</p>
+                      <div
+                        style={{
+                          textAlign: 'center',
+                          padding: theme.spacing.xl,
+                          color: theme.colors.gray500,
+                        }}
+                      >
+                        <FaCamera
+                          style={{
+                            fontSize: '2rem',
+                            marginBottom: theme.spacing.sm,
+                          }}
+                        />
+                        <p>
+                          No photos added yet. Click "Add Photos" to start
+                          building your gallery.
+                        </p>
                       </div>
                     )}
                   </div>
 
                   <div style={{ marginTop: theme.spacing.xl }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: theme.spacing.lg }}>
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        marginBottom: theme.spacing.lg,
+                      }}
+                    >
                       <h3 style={{ margin: 0 }}>Services Provided</h3>
                       <ActionButton onClick={addPortfolioService}>
                         <FaPlus />
                         Add Service
                       </ActionButton>
                     </div>
-                                        <ServiceHighlightList>
+                    <ServiceHighlightList>
                       {portfolioForm.services.map((service, index) => (
-                        <ServiceHighlightItem key={`service-${index}-${service.slice(0, 10)}`}>
+                        <ServiceHighlightItem
+                          key={`service-${index}-${service.slice(0, 10)}`}
+                        >
                           <FormInput
                             value={service}
-                            onChange={(e) => updatePortfolioService(index, e.target.value)}
+                            onChange={e =>
+                              updatePortfolioService(index, e.target.value)
+                            }
                             placeholder="Full Wedding Planning, Floral Design, etc."
                             style={{ flex: 1 }}
                           />
-                          <SmallButton className="danger" onClick={() => removePortfolioService(index)}>
+                          <SmallButton
+                            className="danger"
+                            onClick={() => removePortfolioService(index)}
+                          >
                             <FaTrash />
                           </SmallButton>
                         </ServiceHighlightItem>
@@ -1613,23 +1959,37 @@ const VendorDashboard = () => {
                   </div>
 
                   <div style={{ marginTop: theme.spacing.xl }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: theme.spacing.lg }}>
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        marginBottom: theme.spacing.lg,
+                      }}
+                    >
                       <h3 style={{ margin: 0 }}>Event Highlights</h3>
                       <ActionButton onClick={addPortfolioHighlight}>
                         <FaPlus />
                         Add Highlight
                       </ActionButton>
                     </div>
-                                        <ServiceHighlightList>
+                    <ServiceHighlightList>
                       {portfolioForm.highlights.map((highlight, index) => (
-                        <ServiceHighlightItem key={`highlight-${index}-${highlight.slice(0, 10)}`}>
+                        <ServiceHighlightItem
+                          key={`highlight-${index}-${highlight.slice(0, 10)}`}
+                        >
                           <FormInput
                             value={highlight}
-                            onChange={(e) => updatePortfolioHighlight(index, e.target.value)}
+                            onChange={e =>
+                              updatePortfolioHighlight(index, e.target.value)
+                            }
                             placeholder="Custom vineyard ceremony setup, Sunset photography session, etc."
                             style={{ flex: 1 }}
                           />
-                          <SmallButton className="danger" onClick={() => removePortfolioHighlight(index)}>
+                          <SmallButton
+                            className="danger"
+                            onClick={() => removePortfolioHighlight(index)}
+                          >
                             <FaTrash />
                           </SmallButton>
                         </ServiceHighlightItem>
@@ -1637,13 +1997,24 @@ const VendorDashboard = () => {
                     </ServiceHighlightList>
                   </div>
 
-                  <div style={{ marginTop: theme.spacing.xxl, paddingTop: theme.spacing.lg, borderTop: `1px solid ${theme.colors.gray200}`, display: 'flex', gap: theme.spacing.md, justifyContent: 'flex-end' }}>
+                  <div
+                    style={{
+                      marginTop: theme.spacing.xxl,
+                      paddingTop: theme.spacing.lg,
+                      borderTop: `1px solid ${theme.colors.gray200}`,
+                      display: 'flex',
+                      gap: theme.spacing.md,
+                      justifyContent: 'flex-end',
+                    }}
+                  >
                     <ActionButton onClick={() => setShowPortfolioForm(false)}>
                       Cancel
                     </ActionButton>
                     <ActionButton variant="success" onClick={savePortfolioItem}>
                       <FaSave />
-                      {portfolioForm.editing ? 'Update Portfolio Item' : 'Save Portfolio Item'}
+                      {portfolioForm.editing
+                        ? 'Update Portfolio Item'
+                        : 'Save Portfolio Item'}
                     </ActionButton>
                   </div>
                 </PortfolioFormContent>
@@ -1656,7 +2027,10 @@ const VendorDashboard = () => {
         return (
           <ContentSection>
             <SectionTitle>Section: {activeSection}</SectionTitle>
-            <p>This section is under development. Content management for {activeSection} will be available soon.</p>
+            <p>
+              This section is under development. Content management for{' '}
+              {activeSection} will be available soon.
+            </p>
           </ContentSection>
         );
     }
@@ -1665,7 +2039,15 @@ const VendorDashboard = () => {
   if (loading) {
     return (
       <DashboardContainer>
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', width: '100%' }}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            minHeight: '100vh',
+            width: '100%',
+          }}
+        >
           Loading dashboard...
         </div>
       </DashboardContainer>
@@ -1675,7 +2057,15 @@ const VendorDashboard = () => {
   if (!vendor) {
     return (
       <DashboardContainer>
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', width: '100%' }}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            minHeight: '100vh',
+            width: '100%',
+          }}
+        >
           <div style={{ textAlign: 'center' }}>
             <h2>Vendor Not Found</h2>
             <p>You don't have access to this vendor dashboard.</p>
@@ -1695,16 +2085,19 @@ const VendorDashboard = () => {
     return acc;
   }, {});
 
-    return (
+  return (
     <DashboardContainer>
-      <MobileSidebarOverlay isOpen={mobileSidebarOpen} onClick={closeMobileSidebar} />
+      <MobileSidebarOverlay
+        isOpen={mobileSidebarOpen}
+        onClick={closeMobileSidebar}
+      />
       <MobileMenuButton
         onClick={() => setMobileSidebarOpen(!mobileSidebarOpen)}
-        aria-label={mobileSidebarOpen ? "Close menu" : "Open menu"}
+        aria-label={mobileSidebarOpen ? 'Close menu' : 'Open menu'}
       >
         {mobileSidebarOpen ? <FaTimes /> : <FaBars />}
       </MobileMenuButton>
-            <Sidebar mobileOpen={mobileSidebarOpen}>
+      <Sidebar mobileOpen={mobileSidebarOpen}>
         <SidebarHeader>
           <MobileSidebarCloseButton onClick={closeMobileSidebar}>
             <FaTimes />
@@ -1712,13 +2105,13 @@ const VendorDashboard = () => {
           <VendorName>{vendor.name}</VendorName>
           <VendorRole>Wedding Vendor Dashboard</VendorRole>
         </SidebarHeader>
-        
+
         <SidebarNav>
           {Object.entries(groupedNavItems).map(([section, items]) => (
             <NavSection key={section}>
               <NavSectionTitle>{section}</NavSectionTitle>
-                            {items.map((item) => (
-                                                                <NavItem
+              {items.map(item => (
+                <NavItem
                   key={item.id}
                   active={activeSection === item.id}
                   onClick={() => {
@@ -1728,7 +2121,9 @@ const VendorDashboard = () => {
                 >
                   <item.icon />
                   {item.label}
-                  <FaChevronRight style={{ marginLeft: 'auto', fontSize: '0.8rem' }} />
+                  <FaChevronRight
+                    style={{ marginLeft: 'auto', fontSize: '0.8rem' }}
+                  />
                 </NavItem>
               ))}
             </NavSection>
@@ -1738,24 +2133,34 @@ const VendorDashboard = () => {
 
       <MainContent>
         <ContentHeader>
-          <div style={{ display: 'flex', alignItems: 'center', gap: theme.spacing.lg }}>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: theme.spacing.lg,
+            }}
+          >
             <ActionButton onClick={() => navigate(`/${vendorId}`)}>
               <FaArrowLeft />
               Back to Site
             </ActionButton>
             <PageTitle>
-              {navigationItems.find(item => item.id === activeSection)?.label || 'Dashboard'}
+              {navigationItems.find(item => item.id === activeSection)?.label ||
+                'Dashboard'}
             </PageTitle>
           </div>
-          
+
           <PageActions>
-            <ActionButton onClick={() => navigate(`/${vendorId}`)} variant="secondary">
+            <ActionButton
+              onClick={() => navigate(`/${vendorId}`)}
+              variant="secondary"
+            >
               <FaEye />
               Preview Site
             </ActionButton>
             {hasChanges && (
-              <ActionButton 
-                variant="success" 
+              <ActionButton
+                variant="success"
                 onClick={handleSave}
                 disabled={saving}
               >

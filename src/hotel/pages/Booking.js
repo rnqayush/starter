@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from "react";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
-import styled from "styled-components";
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import styled from 'styled-components';
 import {
   FaArrowLeft,
   FaUser,
   FaCalendarAlt,
   FaCreditCard,
   FaLock,
-} from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
-import HotelNavbar from "../components/HotelNavbar";
-import HotelFooter from "../components/HotelFooter";
-import { getHotelByIdOrSlug, getRoomById } from "../data/hotels";
+} from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
+import HotelNavbar from '../components/HotelNavbar';
+import HotelFooter from '../components/HotelFooter';
+import { getHotelByIdOrSlug, getRoomById } from '../data/hotels';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -367,7 +367,11 @@ const PriceRow = styled.div`
 
 const BookButton = styled.button`
   width: 100%;
-  background: linear-gradient(135deg, ${theme.colors.primary}, ${theme.colors.primaryDark});
+  background: linear-gradient(
+    135deg,
+    ${theme.colors.primary},
+    ${theme.colors.primaryDark}
+  );
   color: ${theme.colors.white};
   padding: ${theme.spacing.lg};
   border: none;
@@ -392,7 +396,12 @@ const BookButton = styled.button`
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
     transition: left 0.5s;
   }
 
@@ -445,7 +454,7 @@ const SecurityNote = styled.div`
 `;
 
 const Booking = () => {
-  const { hotelSlug, roomId } = useParams();
+  const { slug, roomId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
   const [hotel, setHotel] = useState(null);
@@ -454,43 +463,43 @@ const Booking = () => {
   const [errors, setErrors] = useState({});
 
   const initialBookingData = location.state?.bookingData || {
-    checkIn: "",
-    checkOut: "",
-    guests: "2",
+    checkIn: '',
+    checkOut: '',
+    guests: '2',
   };
 
   const [formData, setFormData] = useState({
     // Guest Information
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
     // Booking Details
     checkIn: initialBookingData.checkIn,
     checkOut: initialBookingData.checkOut,
     guests: initialBookingData.guests,
-    specialRequests: "",
+    specialRequests: '',
     // Payment Information
-    cardNumber: "",
-    expiryDate: "",
-    cvv: "",
-    cardName: "",
+    cardNumber: '',
+    expiryDate: '',
+    cvv: '',
+    cardName: '',
   });
 
   useEffect(() => {
-    const foundHotel = getHotelByIdOrSlug(hotelSlug);
+    const foundHotel = getHotelByIdOrSlug(slug);
     const foundRoom = foundHotel ? getRoomById(foundHotel.id, roomId) : null;
     setHotel(foundHotel);
     setRoom(foundRoom);
-  }, [hotelSlug, roomId]);
+  }, [slug, roomId]);
 
-  const handleInputChange = (e) => {
+  const handleInputChange = e => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
 
     // Clear error when user starts typing
     if (errors[name]) {
-      setErrors({ ...errors, [name]: "" });
+      setErrors({ ...errors, [name]: '' });
     }
   };
 
@@ -499,32 +508,32 @@ const Booking = () => {
 
     // Required fields validation
     const requiredFields = [
-      "firstName",
-      "lastName",
-      "email",
-      "phone",
-      "checkIn",
-      "checkOut",
-      "cardNumber",
-      "expiryDate",
-      "cvv",
-      "cardName",
+      'firstName',
+      'lastName',
+      'email',
+      'phone',
+      'checkIn',
+      'checkOut',
+      'cardNumber',
+      'expiryDate',
+      'cvv',
+      'cardName',
     ];
 
-    requiredFields.forEach((field) => {
+    requiredFields.forEach(field => {
       if (!formData[field].trim()) {
-        newErrors[field] = "This field is required";
+        newErrors[field] = 'This field is required';
       }
     });
 
     // Email validation
     if (formData.email && !/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Please enter a valid email address";
+      newErrors.email = 'Please enter a valid email address';
     }
 
     // Phone validation
     if (formData.phone && !/^\+?[\d\s-()]{10,}$/.test(formData.phone)) {
-      newErrors.phone = "Please enter a valid phone number";
+      newErrors.phone = 'Please enter a valid phone number';
     }
 
     // Date validation
@@ -532,7 +541,7 @@ const Booking = () => {
       const checkIn = new Date(formData.checkIn);
       const checkOut = new Date(formData.checkOut);
       if (checkOut <= checkIn) {
-        newErrors.checkOut = "Check-out date must be after check-in date";
+        newErrors.checkOut = 'Check-out date must be after check-in date';
       }
     }
 
@@ -562,7 +571,7 @@ const Booking = () => {
     return calculateSubtotal() + calculateTaxes();
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
 
     if (!validateForm()) {
@@ -573,7 +582,7 @@ const Booking = () => {
 
     // Simulate booking process
     try {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await new Promise(resolve => setTimeout(resolve, 2000));
 
       // Create booking object
       const booking = {
@@ -584,16 +593,16 @@ const Booking = () => {
         roomName: room.name,
         ...formData,
         totalPrice: calculateTotal(),
-        status: "confirmed",
-        bookingDate: new Date().toISOString().split("T")[0],
+        status: 'confirmed',
+        bookingDate: new Date().toISOString().split('T')[0],
       };
 
       // Navigate to confirmation
-      navigate("/booking-confirmation", {
+      navigate(`/${slug}/bookingconfirmation`, {
         state: { booking },
       });
     } catch (error) {
-      alert("Booking failed. Please try again.");
+      alert('Booking failed. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -604,7 +613,7 @@ const Booking = () => {
       <PageContainer>
         <HotelNavbar />
         <Container>
-          <div style={{ textAlign: "center", padding: "4rem 0" }}>
+          <div style={{ textAlign: 'center', padding: '4rem 0' }}>
             <h2>Booking not available</h2>
             <p>Please select a valid hotel and room.</p>
           </div>
@@ -642,7 +651,7 @@ const Booking = () => {
                     name="firstName"
                     value={formData.firstName}
                     onChange={handleInputChange}
-                    className={errors.firstName ? "error" : ""}
+                    className={errors.firstName ? 'error' : ''}
                   />
                   {errors.firstName && (
                     <ErrorMessage>{errors.firstName}</ErrorMessage>
@@ -657,7 +666,7 @@ const Booking = () => {
                     name="lastName"
                     value={formData.lastName}
                     onChange={handleInputChange}
-                    className={errors.lastName ? "error" : ""}
+                    className={errors.lastName ? 'error' : ''}
                   />
                   {errors.lastName && (
                     <ErrorMessage>{errors.lastName}</ErrorMessage>
@@ -672,7 +681,7 @@ const Booking = () => {
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
-                    className={errors.email ? "error" : ""}
+                    className={errors.email ? 'error' : ''}
                   />
                   {errors.email && <ErrorMessage>{errors.email}</ErrorMessage>}
                 </FormGroup>
@@ -685,7 +694,7 @@ const Booking = () => {
                     name="phone"
                     value={formData.phone}
                     onChange={handleInputChange}
-                    className={errors.phone ? "error" : ""}
+                    className={errors.phone ? 'error' : ''}
                   />
                   {errors.phone && <ErrorMessage>{errors.phone}</ErrorMessage>}
                 </FormGroup>
@@ -706,8 +715,8 @@ const Booking = () => {
                     name="checkIn"
                     value={formData.checkIn}
                     onChange={handleInputChange}
-                    min={new Date().toISOString().split("T")[0]}
-                    className={errors.checkIn ? "error" : ""}
+                    min={new Date().toISOString().split('T')[0]}
+                    className={errors.checkIn ? 'error' : ''}
                   />
                   {errors.checkIn && (
                     <ErrorMessage>{errors.checkIn}</ErrorMessage>
@@ -723,7 +732,7 @@ const Booking = () => {
                     value={formData.checkOut}
                     onChange={handleInputChange}
                     min={formData.checkIn}
-                    className={errors.checkOut ? "error" : ""}
+                    className={errors.checkOut ? 'error' : ''}
                   />
                   {errors.checkOut && (
                     <ErrorMessage>{errors.checkOut}</ErrorMessage>
@@ -740,7 +749,7 @@ const Booking = () => {
                   >
                     {Array.from({ length: room.maxGuests }, (_, i) => (
                       <option key={i + 1} value={i + 1}>
-                        {i + 1} Guest{i > 0 ? "s" : ""}
+                        {i + 1} Guest{i > 0 ? 's' : ''}
                       </option>
                     ))}
                   </Select>
@@ -767,7 +776,7 @@ const Booking = () => {
                 Payment Information
               </SectionTitle>
               <FormGrid>
-                <FormGroup style={{ gridColumn: "1 / -1" }}>
+                <FormGroup style={{ gridColumn: '1 / -1' }}>
                   <Label htmlFor="cardNumber">Card Number</Label>
                   <Input
                     type="text"
@@ -776,7 +785,7 @@ const Booking = () => {
                     value={formData.cardNumber}
                     onChange={handleInputChange}
                     placeholder="1234 5678 9012 3456"
-                    className={errors.cardNumber ? "error" : ""}
+                    className={errors.cardNumber ? 'error' : ''}
                   />
                   {errors.cardNumber && (
                     <ErrorMessage>{errors.cardNumber}</ErrorMessage>
@@ -792,7 +801,7 @@ const Booking = () => {
                     value={formData.expiryDate}
                     onChange={handleInputChange}
                     placeholder="MM/YY"
-                    className={errors.expiryDate ? "error" : ""}
+                    className={errors.expiryDate ? 'error' : ''}
                   />
                   {errors.expiryDate && (
                     <ErrorMessage>{errors.expiryDate}</ErrorMessage>
@@ -808,12 +817,12 @@ const Booking = () => {
                     value={formData.cvv}
                     onChange={handleInputChange}
                     placeholder="123"
-                    className={errors.cvv ? "error" : ""}
+                    className={errors.cvv ? 'error' : ''}
                   />
                   {errors.cvv && <ErrorMessage>{errors.cvv}</ErrorMessage>}
                 </FormGroup>
 
-                <FormGroup style={{ gridColumn: "1 / -1" }}>
+                <FormGroup style={{ gridColumn: '1 / -1' }}>
                   <Label htmlFor="cardName">Cardholder Name</Label>
                   <Input
                     type="text"
@@ -821,7 +830,7 @@ const Booking = () => {
                     name="cardName"
                     value={formData.cardName}
                     onChange={handleInputChange}
-                    className={errors.cardName ? "error" : ""}
+                    className={errors.cardName ? 'error' : ''}
                   />
                   {errors.cardName && (
                     <ErrorMessage>{errors.cardName}</ErrorMessage>
@@ -832,7 +841,7 @@ const Booking = () => {
 
             <BookButton type="submit" disabled={loading}>
               {loading ? (
-                "Processing..."
+                'Processing...'
               ) : (
                 <>
                   <FaLock />
@@ -865,7 +874,7 @@ const Booking = () => {
                 <span className="value">
                   {formData.checkIn
                     ? new Date(formData.checkIn).toLocaleDateString()
-                    : "-"}
+                    : '-'}
                 </span>
               </DetailRow>
               <DetailRow>
@@ -873,7 +882,7 @@ const Booking = () => {
                 <span className="value">
                   {formData.checkOut
                     ? new Date(formData.checkOut).toLocaleDateString()
-                    : "-"}
+                    : '-'}
                 </span>
               </DetailRow>
               <DetailRow>
@@ -890,7 +899,7 @@ const Booking = () => {
               <PriceRow>
                 <span>
                   ₹{room.price.toLocaleString()} × {calculateNights()} night
-                  {calculateNights() > 1 ? "s" : ""}
+                  {calculateNights() > 1 ? 's' : ''}
                 </span>
                 <span>₹{calculateSubtotal().toLocaleString()}</span>
               </PriceRow>

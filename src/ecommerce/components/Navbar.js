@@ -1,23 +1,23 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import { useAuth } from "../../context/AuthContext";
-import AuthModal from "../../components/auth/AuthModal";
-import UserProfile from "../../components/user/UserProfile";
+import React, { useState, useEffect, useRef } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import { useAuth } from '../../context/AuthContext';
+import AuthModal from '../../components/auth/AuthModal';
+import UserProfile from '../../components/user/UserProfile';
 import {
   FaShoppingCart,
   FaUser,
   FaSearch,
   FaBars,
   FaTimes,
-    FaHome,
+  FaHome,
   FaEnvelope,
   FaStore,
   FaChevronDown,
   FaHeart,
   FaBell,
-} from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
+} from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
 
 const NavbarContainer = styled.nav`
   background: ${theme.colors.white};
@@ -54,11 +54,11 @@ const NavbarContent = styled.div`
 `;
 
 const Logo = styled(Link).withConfig({
-  shouldForwardProp: (prop) => prop !== "theme",
+  shouldForwardProp: prop => prop !== 'theme',
 })`
   font-size: 1.8rem;
   font-weight: 700;
-  color: ${(props) => props.theme?.primaryColor || theme.colors.primary};
+  color: ${props => props.theme?.primaryColor || theme.colors.primary};
   display: flex;
   align-items: center;
   gap: ${theme.spacing.sm};
@@ -87,7 +87,7 @@ const LogoImage = styled.img`
 
   &:hover {
     transform: scale(1.05);
-    border-color: ${(props) => props.theme?.primaryColor || theme.colors.primary};
+    border-color: ${props => props.theme?.primaryColor || theme.colors.primary};
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
@@ -122,7 +122,7 @@ const NavLinks = styled.div`
 `;
 
 const NavLink = styled(Link).withConfig({
-  shouldForwardProp: (prop) => prop !== "theme",
+  shouldForwardProp: prop => prop !== 'theme',
 })`
   color: ${theme.colors.gray700};
   font-weight: 600;
@@ -133,25 +133,24 @@ const NavLink = styled(Link).withConfig({
   font-size: 0.95rem;
 
   &:hover {
-    color: ${(props) => props.theme?.primaryColor || theme.colors.primary};
-    background: ${(props) => props.theme?.primaryColor || theme.colors.primary}10;
+    color: ${props => props.theme?.primaryColor || theme.colors.primary};
+    background: ${props => props.theme?.primaryColor || theme.colors.primary}10;
     transform: translateY(-1px);
   }
 
   &.active {
-    color: ${(props) => props.theme?.primaryColor || theme.colors.primary};
-    background: ${(props) => props.theme?.primaryColor || theme.colors.primary}15;
+    color: ${props => props.theme?.primaryColor || theme.colors.primary};
+    background: ${props => props.theme?.primaryColor || theme.colors.primary}15;
 
     &::after {
-      content: "";
+      content: '';
       position: absolute;
       bottom: 0;
       left: 50%;
       transform: translateX(-50%);
       width: 6px;
       height: 6px;
-      background: ${(props) =>
-        props.theme?.primaryColor || theme.colors.primary};
+      background: ${props => props.theme?.primaryColor || theme.colors.primary};
       border-radius: 50%;
     }
   }
@@ -174,7 +173,7 @@ const SearchContainer = styled.div`
 `;
 
 const SearchInput = styled.input.withConfig({
-  shouldForwardProp: (prop) => prop !== "theme",
+  shouldForwardProp: prop => prop !== 'theme',
 })`
   padding: ${theme.spacing.sm} ${theme.spacing.md};
   padding-left: 2.5rem;
@@ -187,8 +186,7 @@ const SearchInput = styled.input.withConfig({
   transition: border-color 0.2s ease;
 
   &:focus {
-    border-color: ${(props) =>
-      props.theme?.primaryColor || theme.colors.primary};
+    border-color: ${props => props.theme?.primaryColor || theme.colors.primary};
   }
 
   @media (min-width: 1025px) and (max-width: 1200px) {
@@ -225,7 +223,7 @@ const NavActions = styled.div`
 `;
 
 const CartButton = styled.button.withConfig({
-  shouldForwardProp: (prop) => prop !== "theme",
+  shouldForwardProp: prop => prop !== 'theme',
 })`
   position: relative;
   background: none;
@@ -234,17 +232,17 @@ const CartButton = styled.button.withConfig({
   transition: color 0.2s ease;
 
   &:hover {
-    color: ${(props) => props.theme?.primaryColor || theme.colors.primary};
+    color: ${props => props.theme?.primaryColor || theme.colors.primary};
   }
 `;
 
 const CartBadge = styled.span.withConfig({
-  shouldForwardProp: (prop) => prop !== "theme",
+  shouldForwardProp: prop => prop !== 'theme',
 })`
   position: absolute;
   top: -8px;
   right: -8px;
-  background: ${(props) => props.theme?.primaryColor || theme.colors.error};
+  background: ${props => props.theme?.primaryColor || theme.colors.error};
   color: ${theme.colors.white};
   border-radius: 50%;
   width: 18px;
@@ -257,7 +255,10 @@ const CartBadge = styled.span.withConfig({
 `;
 
 const UserButton = styled.button.withConfig({
-  shouldForwardProp: (prop) => prop !== "theme" && prop !== "hideOnTablet" && prop !== "hideOnSmallDesktop",
+  shouldForwardProp: prop =>
+    prop !== 'theme' &&
+    prop !== 'hideOnTablet' &&
+    prop !== 'hideOnSmallDesktop',
 })`
   background: none;
   color: ${theme.colors.gray700};
@@ -272,7 +273,7 @@ const UserButton = styled.button.withConfig({
   height: 2rem;
 
   &:hover {
-    color: ${(props) => props.theme?.primaryColor || theme.colors.primary};
+    color: ${props => props.theme?.primaryColor || theme.colors.primary};
     background: ${theme.colors.gray50};
   }
 
@@ -284,11 +285,11 @@ const UserButton = styled.button.withConfig({
     font-size: 1rem;
     min-width: 1.8rem;
     height: 1.8rem;
-    ${(props) => props.hideOnTablet && 'display: none;'}
+    ${props => props.hideOnTablet && 'display: none;'}
   }
 
   @media (max-width: 1200px) {
-    ${(props) => props.hideOnSmallDesktop && 'display: none;'}
+    ${props => props.hideOnSmallDesktop && 'display: none;'}
   }
 `;
 
@@ -304,7 +305,7 @@ const MobileMenuButton = styled.button`
 `;
 
 const MobileMenu = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "isOpen",
+  shouldForwardProp: prop => prop !== 'isOpen',
 })`
   display: none;
   position: absolute;
@@ -322,7 +323,7 @@ const MobileMenu = styled.div.withConfig({
   }
 
   @media (max-width: ${theme.breakpoints.tablet}) {
-    display: ${(props) => (props.isOpen ? "flex" : "none")};
+    display: ${props => (props.isOpen ? 'flex' : 'none')};
   }
 `;
 
@@ -355,7 +356,7 @@ const UserDropdown = styled.div`
 `;
 
 const UserDropdownButton = styled.button.withConfig({
-  shouldForwardProp: (prop) => prop !== "theme",
+  shouldForwardProp: prop => prop !== 'theme',
 })`
   background: none;
   border: none;
@@ -371,7 +372,7 @@ const UserDropdownButton = styled.button.withConfig({
   pointer-events: auto;
 
   &:hover {
-    color: ${(props) => props.theme?.primaryColor || theme.colors.primary};
+    color: ${props => props.theme?.primaryColor || theme.colors.primary};
     background: ${theme.colors.gray50};
   }
 
@@ -381,7 +382,7 @@ const UserDropdownButton = styled.button.withConfig({
 `;
 
 const DropdownMenu = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "isOpen",
+  shouldForwardProp: prop => prop !== 'isOpen',
 })`
   position: absolute;
   top: calc(100% + 0.5rem);
@@ -392,9 +393,9 @@ const DropdownMenu = styled.div.withConfig({
   box-shadow: ${theme.shadows.xl};
   min-width: 200px;
   z-index: 9999;
-  opacity: ${(props) => (props.isOpen ? "1" : "0")};
-  visibility: ${(props) => (props.isOpen ? "visible" : "hidden")};
-  transform: translateY(${(props) => (props.isOpen ? "0" : "-10px")});
+  opacity: ${props => (props.isOpen ? '1' : '0')};
+  visibility: ${props => (props.isOpen ? 'visible' : 'hidden')};
+  transform: translateY(${props => (props.isOpen ? '0' : '-10px')});
   transition: all 0.2s ease;
   overflow: hidden;
 `;
@@ -544,34 +545,34 @@ const ModalCloseButton = styled.button`
 
 const Navbar = ({
   cartItemsCount = 0,
-  storeName = "",
-  storeLogo = "",
-  storeSlug = "",
+  storeName = '',
+  storeLogo = '',
+  storeSlug = '',
   theme: vendorTheme = {},
 }) => {
-      const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
-  const [authModalTab, setAuthModalTab] = useState("login");
+  const [authModalTab, setAuthModalTab] = useState('login');
   const navigate = useNavigate();
   const dropdownRef = useRef(null);
   const { user, isAuthenticated, logout, canAccessSeller } = useAuth();
 
-  const getBaseUrl = () => (storeSlug ? `/${storeSlug}` : "/ecommerce");
+  const getBaseUrl = () => `/${storeSlug}`;
 
   // Close dropdown when clicking outside
   useEffect(() => {
-    const handleClickOutside = (event) => {
+    const handleClickOutside = event => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsUserDropdownOpen(false);
       }
     };
 
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
 
@@ -582,23 +583,23 @@ const Navbar = ({
     }
   }, [showAuthModal]);
 
-  const handleSearch = (e) => {
+  const handleSearch = e => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      const baseUrl = storeSlug ? `/${storeSlug}` : "/ecommerce";
+      const baseUrl = storeSlug ? `/${storeSlug}` : '/ecommerce';
       navigate(
-        `${baseUrl}/products?search=${encodeURIComponent(searchQuery.trim())}`,
+        `${baseUrl}/products?search=${encodeURIComponent(searchQuery.trim())}`
       );
-      setSearchQuery("");
+      setSearchQuery('');
       setIsMenuOpen(false);
     }
   };
 
-  const handleMobileSearch = (e) => {
+  const handleMobileSearch = e => {
     e.preventDefault();
     if (e.target.value.trim()) {
       navigate(
-        `/ecommerce/products?search=${encodeURIComponent(e.target.value.trim())}`,
+        `/ecommerce/products?search=${encodeURIComponent(e.target.value.trim())}`
       );
       setIsMenuOpen(false);
     }
@@ -613,7 +614,7 @@ const Navbar = ({
           ) : (
             <FaShoppingCart />
           )}
-          {storeName || "ShopMart"}
+          {storeName || 'ShopMart'}
         </Logo>
 
         <NavLinks>
@@ -656,13 +657,13 @@ const Navbar = ({
               type="text"
               placeholder="Search products..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={e => setSearchQuery(e.target.value)}
               theme={vendorTheme}
             />
           </form>
         </SearchContainer>
 
-                        <NavActions>
+        <NavActions>
           <Link to="/">
             <UserButton title="Back to Main Site" theme={vendorTheme}>
               <FaHome />
@@ -673,20 +674,32 @@ const Navbar = ({
             <FaHeart />
           </UserButton>
 
-          <UserButton title="Notifications" theme={vendorTheme} hideOnSmallDesktop>
+          <UserButton
+            title="Notifications"
+            theme={vendorTheme}
+            hideOnSmallDesktop
+          >
             <FaBell />
           </UserButton>
 
-                              {isAuthenticated ? (
+          {isAuthenticated ? (
             <UserDropdown ref={dropdownRef}>
               <UserDropdownButton
-                onClick={(e) => {
+                onClick={e => {
                   e.preventDefault();
                   e.stopPropagation();
                   setIsUserDropdownOpen(!isUserDropdownOpen);
                 }}
                 theme={vendorTheme}
               >
+                <DropdownDivider />
+                <DropdownItem
+                  to={`${getBaseUrl()}/selleradminPanel`}
+                  onClick={() => setIsUserDropdownOpen(false)}
+                >
+                  <FaStore />
+                  Seller Dashboard
+                </DropdownItem>
                 <UserAvatar src={user.avatar} alt={user.name} />
                 <UserInfo>
                   <div className="name">{user.name}</div>
@@ -714,19 +727,6 @@ const Navbar = ({
                   My Enquiries
                 </DropdownItem>
 
-                {canAccessSeller() && (
-                  <>
-                    <DropdownDivider />
-                    <DropdownItem
-                      to={`${getBaseUrl()}/seller-dashboard`}
-                      onClick={() => setIsUserDropdownOpen(false)}
-                    >
-                      <FaStore />
-                      Seller Dashboard
-                    </DropdownItem>
-                  </>
-                )}
-
                 <DropdownDivider />
 
                 <DropdownButton
@@ -741,19 +741,23 @@ const Navbar = ({
               </DropdownMenu>
             </UserDropdown>
           ) : (
-            <div style={{ display: "flex", gap: "0.5rem" }}>
+            <div style={{ display: 'flex', gap: '0.5rem' }}>
               <LoginButton
                 onClick={() => {
-                  setAuthModalTab("login");
+                  setAuthModalTab('login');
                   setShowAuthModal(true);
                 }}
               >
                 Sign In
               </LoginButton>
               <LoginButton
-                style={{ background: "transparent", color: vendorTheme?.primaryColor || theme.colors.primary, border: `2px solid ${vendorTheme?.primaryColor || theme.colors.primary}` }}
+                style={{
+                  background: 'transparent',
+                  color: vendorTheme?.primaryColor || theme.colors.primary,
+                  border: `2px solid ${vendorTheme?.primaryColor || theme.colors.primary}`,
+                }}
                 onClick={() => {
-                  setAuthModalTab("register");
+                  setAuthModalTab('register');
                   setShowAuthModal(true);
                 }}
               >
@@ -805,14 +809,14 @@ const Navbar = ({
         >
           Home & Garden
         </MobileNavLink>
-                <MobileNavLink
+        <MobileNavLink
           to="/ecommerce/products?category=sports"
           onClick={() => setIsMenuOpen(false)}
         >
           Sports
         </MobileNavLink>
 
-                {isAuthenticated ? (
+        {isAuthenticated ? (
           <>
             <MobileNavLink
               to="#"
@@ -865,7 +869,7 @@ const Navbar = ({
             <MobileNavLink
               to="#"
               onClick={() => {
-                setAuthModalTab("login");
+                setAuthModalTab('login');
                 setShowAuthModal(true);
                 setIsMenuOpen(false);
               }}
@@ -876,7 +880,7 @@ const Navbar = ({
             <MobileNavLink
               to="#"
               onClick={() => {
-                setAuthModalTab("register");
+                setAuthModalTab('register');
                 setShowAuthModal(true);
                 setIsMenuOpen(false);
               }}
@@ -886,12 +890,12 @@ const Navbar = ({
           </>
         )}
 
-                <form onSubmit={handleSearch}>
+        <form onSubmit={handleSearch}>
           <MobileSearchInput
             type="text"
             placeholder="Search products..."
-            onKeyPress={(e) => {
-              if (e.key === "Enter") {
+            onKeyPress={e => {
+              if (e.key === 'Enter') {
                 handleMobileSearch(e);
               }
             }}
@@ -909,7 +913,7 @@ const Navbar = ({
       {/* Profile Modal */}
       {showProfile && (
         <Modal onClick={() => setShowProfile(false)}>
-          <ModalContent onClick={(e) => e.stopPropagation()}>
+          <ModalContent onClick={e => e.stopPropagation()}>
             <ModalCloseButton onClick={() => setShowProfile(false)}>
               <FaTimes />
             </ModalCloseButton>

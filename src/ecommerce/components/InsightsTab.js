@@ -1,17 +1,17 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 import {
   FaChartPie,
   FaChartBar,
   FaChartLine,
   FaDownload,
-} from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
+} from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
 import {
   categoryRevenueData,
   bestSellingProducts,
   salesTrendData,
-} from "../data/sellerData";
+} from '../data/sellerData';
 
 const InsightsContainer = styled.div`
   display: grid;
@@ -81,7 +81,7 @@ const ChartIcon = styled.div`
   width: 40px;
   height: 40px;
   border-radius: ${theme.borderRadius.md};
-  background: ${(props) =>
+  background: ${props =>
     props.gradient ||
     `linear-gradient(135deg, ${theme.colors.primary}, ${theme.colors.secondary})`};
   display: flex;
@@ -121,7 +121,7 @@ const PieSegment = styled.div`
   height: 100%;
   border-radius: 50%;
   background: conic-gradient(
-    ${(props) =>
+    ${props =>
       props.segments
         .map((segment, index) => {
           const colors = [
@@ -135,7 +135,7 @@ const PieSegment = styled.div`
           const endAngle = segment.endAngle;
           return `${colors[index % colors.length]} ${startAngle}deg ${endAngle}deg`;
         })
-        .join(", ")}
+        .join(', ')}
   );
 `;
 
@@ -180,12 +180,12 @@ const LegendItem = styled.div`
 `;
 
 const LegendColor = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "color",
+  shouldForwardProp: prop => prop !== 'color',
 })`
   width: 12px;
   height: 12px;
   border-radius: 2px;
-  background: ${(props) => props.color};
+  background: ${props => props.color};
 `;
 
 const LegendText = styled.span`
@@ -318,24 +318,24 @@ const StatLabel = styled.div`
 `;
 
 const InsightsTab = () => {
-  const formatCurrency = (value) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
+  const formatCurrency = value => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
     }).format(value);
   };
 
-  const formatPercentage = (value) => {
+  const formatPercentage = value => {
     return `${value}%`;
   };
 
   // Calculate pie chart segments
   const totalRevenue = categoryRevenueData.reduce(
     (sum, item) => sum + item.revenue,
-    0,
+    0
   );
   let currentAngle = 0;
-  const pieSegments = categoryRevenueData.map((item) => {
+  const pieSegments = categoryRevenueData.map(item => {
     const angle = (item.percentage / 100) * 360;
     const segment = {
       startAngle: currentAngle,
@@ -347,8 +347,8 @@ const InsightsTab = () => {
   });
 
   // Calculate max values for charts
-  const maxProductSales = Math.max(...bestSellingProducts.map((p) => p.sold));
-  const maxSalesValue = Math.max(...salesTrendData.map((d) => d.sales));
+  const maxProductSales = Math.max(...bestSellingProducts.map(p => p.sold));
+  const maxSalesValue = Math.max(...salesTrendData.map(d => d.sales));
 
   const colors = [
     theme.colors.primary,

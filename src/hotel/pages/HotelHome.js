@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import { theme, media } from "../../styles/GlobalStyle";
-import HotelNavbar from "../components/HotelNavbar";
-import HotelFooter from "../components/HotelFooter";
-import HotelCard from "../components/HotelCard";
-import SearchForm from "../components/SearchForm";
-import { hotels } from "../data/hotels";
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import { theme, media } from '../../styles/GlobalStyle';
+import HotelNavbar from '../components/HotelNavbar';
+import HotelFooter from '../components/HotelFooter';
+import HotelCard from '../components/HotelCard';
+import SearchForm from '../components/SearchForm';
+import { hotels } from '../data/hotels';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -17,7 +17,7 @@ const PageContainer = styled.div`
 const HeroSection = styled.section`
   background:
     linear-gradient(135deg, rgba(30, 64, 175, 0.9), rgba(59, 130, 246, 0.8)),
-    url("https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3")
+    url('https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3')
       center/cover;
   color: ${theme.colors.white};
   padding: ${theme.spacing.xxl} 0;
@@ -170,11 +170,10 @@ const ClearButton = styled.button`
 `;
 
 const HotelHome = () => {
-
   const [filteredHotels, setFilteredHotels] = useState(hotels);
   const [searchCriteria, setSearchCriteria] = useState(null);
 
-  const handleSearch = (searchData) => {
+  const handleSearch = searchData => {
     const { destination } = searchData;
 
     if (!destination.trim()) {
@@ -184,10 +183,10 @@ const HotelHome = () => {
     }
 
     const filtered = hotels.filter(
-      (hotel) =>
+      hotel =>
         hotel.name.toLowerCase().includes(destination.toLowerCase()) ||
         hotel.location.toLowerCase().includes(destination.toLowerCase()) ||
-        hotel.city.toLowerCase().includes(destination.toLowerCase()),
+        hotel.city.toLowerCase().includes(destination.toLowerCase())
     );
 
     setFilteredHotels(filtered);
@@ -219,12 +218,12 @@ const HotelHome = () => {
       <HotelsSection>
         <Container>
           <SectionTitle>
-            {searchCriteria ? "Search Results" : "Popular Hotels"}
+            {searchCriteria ? 'Search Results' : 'Popular Hotels'}
           </SectionTitle>
 
           {filteredHotels.length > 0 ? (
             <HotelsGrid>
-              {filteredHotels.map((hotel) => (
+              {filteredHotels.map(hotel => (
                 <HotelCard key={hotel.id} hotel={hotel} />
               ))}
             </HotelsGrid>

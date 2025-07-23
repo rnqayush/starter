@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import styled from "styled-components";
-import { FaSearch, FaMapMarkerAlt, FaStar } from "react-icons/fa";
-import Header from "../shared/Header";
-import { Button } from "../shared/Button";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+import { FaSearch, FaMapMarkerAlt, FaStar } from 'react-icons/fa';
+import Header from '../shared/Header';
+import { Button } from '../shared/Button';
 import {
   Card,
   CardImage,
@@ -11,7 +11,7 @@ import {
   CardTitle,
   Price,
   PriceUnit,
-} from "../shared/Card";
+} from '../shared/Card';
 import {
   Input,
   FormGroup,
@@ -20,9 +20,9 @@ import {
   SearchInput,
   SearchField,
   SearchIcon,
-} from "../shared/Input";
-import { theme, media } from "../../styles/GlobalStyle";
-import { useAppContext } from "../../context/AppContext";
+} from '../shared/Input';
+import { theme, media } from '../../styles/GlobalStyle';
+import { useAppContext } from '../../context/AppContext';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -32,7 +32,7 @@ const PageContainer = styled.div`
 const HeroSection = styled.section`
   background:
     linear-gradient(135deg, rgba(30, 64, 175, 0.9), rgba(59, 130, 246, 0.8)),
-    url("https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3")
+    url('https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3')
       center/cover;
   color: ${theme.colors.white};
   padding: ${theme.spacing.lg} 0;
@@ -231,25 +231,25 @@ const PriceSection = styled.div`
 const HomePage = () => {
   const { hotels } = useAppContext();
   const [searchForm, setSearchForm] = useState({
-    destination: "",
-    checkIn: "",
-    checkOut: "",
-    guests: "2",
+    destination: '',
+    checkIn: '',
+    checkOut: '',
+    guests: '2',
   });
 
-  const handleInputChange = (e) => {
+  const handleInputChange = e => {
     setSearchForm({
       ...searchForm,
       [e.target.name]: e.target.value,
     });
   };
 
-  const handleSearch = (e) => {
+  const handleSearch = e => {
     e.preventDefault();
     // Implement search functionality
   };
 
-  const renderStars = (rating) => {
+  const renderStars = rating => {
     const stars = [];
     const fullStars = Math.floor(rating);
 
@@ -338,7 +338,7 @@ const HomePage = () => {
         <div className="container">
           <SectionTitle>Popular Hotels</SectionTitle>
           <HotelsGrid>
-            {hotels.map((hotel) => (
+            {hotels.map(hotel => (
               <Link key={hotel.id} to={`/${hotel.slug}`}>
                 <HotelCard>
                   <CardImage src={hotel.image} height="250px" />
@@ -362,7 +362,7 @@ const HomePage = () => {
                         </Price>
                       </PriceSection>
                     </HotelInfo>
-                    <Button variant="secondary" style={{ width: "100%" }}>
+                    <Button variant="secondary" style={{ width: '100%' }}>
                       View Hotel
                     </Button>
                   </CardContent>

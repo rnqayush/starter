@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import React, { useState } from 'react';
+import styled from 'styled-components';
 import {
   FaCheck,
   FaCrown,
@@ -15,9 +15,9 @@ import {
   FaAward,
   FaPlus,
   FaMinus,
-} from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
-import Header from "../shared/Header";
+} from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
+import Header from '../shared/Header';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -25,7 +25,11 @@ const PageContainer = styled.div`
 `;
 
 const HeroSection = styled.section`
-  background: linear-gradient(135deg, ${theme.colors.primary} 0%, ${theme.colors.primaryDark} 100%);
+  background: linear-gradient(
+    135deg,
+    ${theme.colors.primary} 0%,
+    ${theme.colors.primaryDark} 100%
+  );
   color: ${theme.colors.white};
   padding: ${theme.spacing.xxl} 0;
   text-align: center;
@@ -33,7 +37,7 @@ const HeroSection = styled.section`
   overflow: hidden;
 
   &::before {
-    content: "";
+    content: '';
     position: absolute;
     top: 0;
     left: 0;
@@ -64,7 +68,11 @@ const HeroTitle = styled.h1`
   font-size: 3.5rem;
   font-weight: 800;
   margin-bottom: ${theme.spacing.lg};
-  background: linear-gradient(135deg, ${theme.colors.white} 0%, rgba(255,255,255,0.8) 100%);
+  background: linear-gradient(
+    135deg,
+    ${theme.colors.white} 0%,
+    rgba(255, 255, 255, 0.8) 100%
+  );
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -118,7 +126,7 @@ const StatItem = styled.div`
     font-weight: 800;
     margin-bottom: ${theme.spacing.xs};
     color: ${theme.colors.white};
-    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   }
 
   .label {
@@ -177,10 +185,11 @@ const ToggleContainer = styled.div`
 `;
 
 const ToggleOption = styled.button.withConfig({
-  shouldForwardProp: (prop) => prop !== 'active',
+  shouldForwardProp: prop => prop !== 'active',
 })`
-  background: ${props => props.active ? theme.colors.white : 'transparent'};
-  color: ${props => props.active ? theme.colors.gray900 : theme.colors.gray600};
+  background: ${props => (props.active ? theme.colors.white : 'transparent')};
+  color: ${props =>
+    props.active ? theme.colors.gray900 : theme.colors.gray600};
   border: none;
   padding: ${theme.spacing.sm} ${theme.spacing.lg};
   border-radius: ${theme.borderRadius.md};
@@ -188,7 +197,7 @@ const ToggleOption = styled.button.withConfig({
   cursor: pointer;
   transition: all 0.2s ease;
   position: relative;
-  box-shadow: ${props => props.active ? theme.shadows.sm : 'none'};
+  box-shadow: ${props => (props.active ? theme.shadows.sm : 'none')};
 
   &:hover {
     color: ${theme.colors.gray900};
@@ -221,20 +230,27 @@ const PricingGrid = styled.div`
 `;
 
 const PricingCard = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== 'featured',
+  shouldForwardProp: prop => prop !== 'featured',
 })`
   background: ${theme.colors.white};
   border-radius: ${theme.borderRadius.xl};
   padding: ${theme.spacing.xxl};
-  box-shadow: ${props => props.featured ? '0 20px 60px rgba(59, 130, 246, 0.15)' : theme.shadows.lg};
-  border: ${props => props.featured ? `3px solid ${theme.colors.primary}` : `1px solid ${theme.colors.gray200}`};
+  box-shadow: ${props =>
+    props.featured ? '0 20px 60px rgba(59, 130, 246, 0.15)' : theme.shadows.lg};
+  border: ${props =>
+    props.featured
+      ? `3px solid ${theme.colors.primary}`
+      : `1px solid ${theme.colors.gray200}`};
   position: relative;
   transition: all 0.3s ease;
-  transform: ${props => props.featured ? 'scale(1.05)' : 'scale(1)'};
+  transform: ${props => (props.featured ? 'scale(1.05)' : 'scale(1)')};
 
   &:hover {
-    transform: ${props => props.featured ? 'scale(1.05)' : 'scale(1.02)'};
-    box-shadow: ${props => props.featured ? '0 25px 70px rgba(59, 130, 246, 0.2)' : theme.shadows.xl};
+    transform: ${props => (props.featured ? 'scale(1.05)' : 'scale(1.02)')};
+    box-shadow: ${props =>
+      props.featured
+        ? '0 25px 70px rgba(59, 130, 246, 0.2)'
+        : theme.shadows.xl};
   }
 
   @media (max-width: ${theme.breakpoints.tablet}) {
@@ -252,7 +268,11 @@ const PopularBadge = styled.div`
   top: -12px;
   left: 50%;
   transform: translateX(-50%);
-  background: linear-gradient(135deg, ${theme.colors.primary}, ${theme.colors.primaryDark});
+  background: linear-gradient(
+    135deg,
+    ${theme.colors.primary},
+    ${theme.colors.primaryDark}
+  );
   color: ${theme.colors.white};
   padding: ${theme.spacing.sm} ${theme.spacing.lg};
   border-radius: ${theme.borderRadius.lg};
@@ -267,12 +287,16 @@ const PopularBadge = styled.div`
 `;
 
 const PlanIcon = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== 'featured',
+  shouldForwardProp: prop => prop !== 'featured',
 })`
   width: 60px;
   height: 60px;
-  background: ${props => props.featured ? `linear-gradient(135deg, ${theme.colors.primary}, ${theme.colors.primaryDark})` : theme.colors.gray100};
-  color: ${props => props.featured ? theme.colors.white : theme.colors.gray600};
+  background: ${props =>
+    props.featured
+      ? `linear-gradient(135deg, ${theme.colors.primary}, ${theme.colors.primaryDark})`
+      : theme.colors.gray100};
+  color: ${props =>
+    props.featured ? theme.colors.white : theme.colors.gray600};
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -368,14 +392,17 @@ const FeatureItem = styled.li`
 `;
 
 const CTAButton = styled.button.withConfig({
-  shouldForwardProp: (prop) => prop !== 'featured',
+  shouldForwardProp: prop => prop !== 'featured',
 })`
   width: 100%;
-  background: ${props => props.featured ?
-    `linear-gradient(135deg, ${theme.colors.primary}, ${theme.colors.primaryDark})` :
-    theme.colors.white};
-  color: ${props => props.featured ? theme.colors.white : theme.colors.primary};
-  border: ${props => props.featured ? 'none' : `2px solid ${theme.colors.primary}`};
+  background: ${props =>
+    props.featured
+      ? `linear-gradient(135deg, ${theme.colors.primary}, ${theme.colors.primaryDark})`
+      : theme.colors.white};
+  color: ${props =>
+    props.featured ? theme.colors.white : theme.colors.primary};
+  border: ${props =>
+    props.featured ? 'none' : `2px solid ${theme.colors.primary}`};
   padding: ${theme.spacing.lg} ${theme.spacing.xl};
   border-radius: ${theme.borderRadius.lg};
   font-size: 1.1rem;
@@ -386,16 +413,19 @@ const CTAButton = styled.button.withConfig({
   align-items: center;
   justify-content: center;
   gap: ${theme.spacing.sm};
-  box-shadow: ${props => props.featured ? '0 4px 15px rgba(59, 130, 246, 0.3)' : 'none'};
+  box-shadow: ${props =>
+    props.featured ? '0 4px 15px rgba(59, 130, 246, 0.3)' : 'none'};
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: ${props => props.featured ?
-      '0 8px 25px rgba(59, 130, 246, 0.4)' :
-      '0 4px 15px rgba(59, 130, 246, 0.2)'};
-    background: ${props => props.featured ?
-      `linear-gradient(135deg, ${theme.colors.primaryDark}, ${theme.colors.primary})` :
-      theme.colors.primary};
+    box-shadow: ${props =>
+      props.featured
+        ? '0 8px 25px rgba(59, 130, 246, 0.4)'
+        : '0 4px 15px rgba(59, 130, 246, 0.2)'};
+    background: ${props =>
+      props.featured
+        ? `linear-gradient(135deg, ${theme.colors.primaryDark}, ${theme.colors.primary})`
+        : theme.colors.primary};
     color: ${theme.colors.white};
   }
 `;
@@ -433,7 +463,11 @@ const FeatureCard = styled.div`
 const FeatureIcon = styled.div`
   width: 80px;
   height: 80px;
-  background: linear-gradient(135deg, ${theme.colors.primary}, ${theme.colors.primaryDark});
+  background: linear-gradient(
+    135deg,
+    ${theme.colors.primary},
+    ${theme.colors.primaryDark}
+  );
   color: ${theme.colors.white};
   border-radius: 50%;
   display: flex;
@@ -494,18 +528,22 @@ const FAQQuestion = styled.button`
 `;
 
 const FAQAnswer = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== 'isOpen',
+  shouldForwardProp: prop => prop !== 'isOpen',
 })`
   padding: 0 ${theme.spacing.lg} ${theme.spacing.lg};
   color: ${theme.colors.gray700};
   line-height: 1.6;
-  max-height: ${props => props.isOpen ? '200px' : '0'};
+  max-height: ${props => (props.isOpen ? '200px' : '0')};
   overflow: hidden;
   transition: max-height 0.3s ease;
 `;
 
 const CTASection = styled.section`
-  background: linear-gradient(135deg, ${theme.colors.gray900} 0%, ${theme.colors.gray800} 100%);
+  background: linear-gradient(
+    135deg,
+    ${theme.colors.gray900} 0%,
+    ${theme.colors.gray800} 100%
+  );
   color: ${theme.colors.white};
   padding: ${theme.spacing.xxl} 0;
   text-align: center;
@@ -543,7 +581,11 @@ const CTAButtons = styled.div`
 `;
 
 const PrimaryCTAButton = styled.button`
-  background: linear-gradient(135deg, ${theme.colors.primary}, ${theme.colors.primaryDark});
+  background: linear-gradient(
+    135deg,
+    ${theme.colors.primary},
+    ${theme.colors.primaryDark}
+  );
   color: ${theme.colors.white};
   border: none;
   padding: ${theme.spacing.lg} ${theme.spacing.xxl};
@@ -584,158 +626,174 @@ const PricingPage = () => {
 
   const plans = [
     {
-      name: "Starter",
-      description: "Perfect for individuals and small businesses getting started online",
+      name: 'Starter',
+      description:
+        'Perfect for individuals and small businesses getting started online',
       icon: FaRocket,
       monthlyPrice: 2000,
       yearlyPrice: 20000,
       originalYearlyPrice: 24000,
       features: [
-        "Custom subdomain (yourname.storebuilder.com)",
-        "Professional website templates",
-        "Mobile-responsive design",
-        "Basic SEO optimization",
-        "Contact forms & email integration",
-        "5GB storage space",
-        "Basic analytics dashboard",
-        "Email support",
-        "SSL certificate included",
-        "Social media integration"
-      ]
+        'Custom subdomain (yourname.storebuilder.com)',
+        'Professional website templates',
+        'Mobile-responsive design',
+        'Basic SEO optimization',
+        'Contact forms & email integration',
+        '5GB storage space',
+        'Basic analytics dashboard',
+        'Email support',
+        'SSL certificate included',
+        'Social media integration',
+      ],
     },
     {
-      name: "Professional",
-      description: "Ideal for growing businesses that need more features and customization",
+      name: 'Professional',
+      description:
+        'Ideal for growing businesses that need more features and customization',
       icon: FaCrown,
       monthlyPrice: 5000,
       yearlyPrice: 50000,
       originalYearlyPrice: 60000,
       featured: true,
       features: [
-        "Custom domain included (yourname.com)",
-        "Everything in Starter plan",
-        "Advanced design customization",
-        "E-commerce functionality",
-        "Payment gateway integration",
-        "Advanced SEO tools",
-        "Google Analytics integration",
-        "Priority email support",
-        "Remove branding",
-        "50GB storage space",
-        "Advanced contact forms",
-        "Newsletter integration",
-        "Social media management tools"
-      ]
+        'Custom domain included (yourname.com)',
+        'Everything in Starter plan',
+        'Advanced design customization',
+        'E-commerce functionality',
+        'Payment gateway integration',
+        'Advanced SEO tools',
+        'Google Analytics integration',
+        'Priority email support',
+        'Remove branding',
+        '50GB storage space',
+        'Advanced contact forms',
+        'Newsletter integration',
+        'Social media management tools',
+      ],
     },
     {
-      name: "Enterprise",
-      description: "For established businesses needing premium features and dedicated support",
+      name: 'Enterprise',
+      description:
+        'For established businesses needing premium features and dedicated support',
       icon: FaAward,
       monthlyPrice: 10000,
       yearlyPrice: 100000,
       originalYearlyPrice: 120000,
       features: [
-        "Multiple custom domains",
-        "Everything in Professional plan",
-        "Advanced e-commerce features",
-        "Multi-language support",
-        "Advanced security features",
-        "Dedicated account manager",
-        "24/7 phone support",
-        "Custom integrations",
-        "Unlimited storage",
-        "Advanced analytics & reporting",
-        "API access",
-        "White-label solutions",
-        "Priority feature requests",
-        "Custom training sessions"
-      ]
-    }
+        'Multiple custom domains',
+        'Everything in Professional plan',
+        'Advanced e-commerce features',
+        'Multi-language support',
+        'Advanced security features',
+        'Dedicated account manager',
+        '24/7 phone support',
+        'Custom integrations',
+        'Unlimited storage',
+        'Advanced analytics & reporting',
+        'API access',
+        'White-label solutions',
+        'Priority feature requests',
+        'Custom training sessions',
+      ],
+    },
   ];
 
   const features = [
     {
       icon: FaCode,
-      title: "No Code Required",
-      description: "Build professional websites without any technical knowledge. Our drag-and-drop builder makes it easy for anyone."
+      title: 'No Code Required',
+      description:
+        'Build professional websites without any technical knowledge. Our drag-and-drop builder makes it easy for anyone.',
     },
     {
       icon: FaGlobe,
-      title: "Global CDN",
-      description: "Lightning-fast loading speeds worldwide with our global content delivery network and optimized hosting."
+      title: 'Global CDN',
+      description:
+        'Lightning-fast loading speeds worldwide with our global content delivery network and optimized hosting.',
     },
     {
       icon: FaShieldAlt,
-      title: "Advanced Security",
-      description: "Bank-level security with SSL certificates, regular backups, and protection against malware and attacks."
+      title: 'Advanced Security',
+      description:
+        'Bank-level security with SSL certificates, regular backups, and protection against malware and attacks.',
     },
     {
       icon: FaHeadset,
-      title: "Expert Support",
-      description: "Get help when you need it with our dedicated support team available via email, chat, and phone."
+      title: 'Expert Support',
+      description:
+        'Get help when you need it with our dedicated support team available via email, chat, and phone.',
     },
     {
       icon: FaChartLine,
-      title: "Analytics & Insights",
-      description: "Track your website performance with detailed analytics and insights to grow your business."
+      title: 'Analytics & Insights',
+      description:
+        'Track your website performance with detailed analytics and insights to grow your business.',
     },
     {
       icon: FaUsers,
-      title: "Team Collaboration",
-      description: "Work together with your team members and clients with our collaborative editing features."
-    }
+      title: 'Team Collaboration',
+      description:
+        'Work together with your team members and clients with our collaborative editing features.',
+    },
   ];
 
   const faqs = [
     {
       question: "What's included in the free trial?",
-      answer: "You get full access to all features for 14 days, including custom domains, premium templates, and priority support. No credit card required to start."
+      answer:
+        'You get full access to all features for 14 days, including custom domains, premium templates, and priority support. No credit card required to start.',
     },
     {
-      question: "Can I change plans later?",
-      answer: "Yes! You can upgrade or downgrade your plan at any time. When you upgrade, you'll only pay the prorated difference for the current billing cycle."
+      question: 'Can I change plans later?',
+      answer:
+        "Yes! You can upgrade or downgrade your plan at any time. When you upgrade, you'll only pay the prorated difference for the current billing cycle.",
     },
     {
-      question: "Do you offer refunds?",
-      answer: "We offer a 30-day money-back guarantee for all paid plans. If you're not satisfied, we'll refund your payment in full."
+      question: 'Do you offer refunds?',
+      answer:
+        "We offer a 30-day money-back guarantee for all paid plans. If you're not satisfied, we'll refund your payment in full.",
     },
     {
-      question: "Is there a setup fee?",
-      answer: "No setup fees! The price you see is exactly what you pay. We believe in transparent pricing with no hidden costs."
+      question: 'Is there a setup fee?',
+      answer:
+        'No setup fees! The price you see is exactly what you pay. We believe in transparent pricing with no hidden costs.',
     },
     {
-      question: "Can I use my own domain?",
-      answer: "Absolutely! Professional and Enterprise plans include a free custom domain for the first year. You can also connect an existing domain you own."
+      question: 'Can I use my own domain?',
+      answer:
+        'Absolutely! Professional and Enterprise plans include a free custom domain for the first year. You can also connect an existing domain you own.',
     },
     {
-      question: "How secure is my website?",
-      answer: "Very secure! All plans include SSL certificates, regular backups, malware protection, and we follow industry best practices for security."
-    }
+      question: 'How secure is my website?',
+      answer:
+        'Very secure! All plans include SSL certificates, regular backups, malware protection, and we follow industry best practices for security.',
+    },
   ];
 
-  const toggleFAQ = (index) => {
+  const toggleFAQ = index => {
     setOpenFAQ(openFAQ === index ? null : index);
   };
 
-  const getPrice = (plan) => {
+  const getPrice = plan => {
     return isYearly ? plan.yearlyPrice : plan.monthlyPrice;
   };
 
-  const getOriginalPrice = (plan) => {
+  const getOriginalPrice = plan => {
     return isYearly ? plan.originalYearlyPrice : null;
   };
 
   return (
     <PageContainer>
       <Header />
-      
+
       <HeroSection>
         <Container>
           <HeroTitle>Simple, Transparent Pricing</HeroTitle>
           <HeroSubtitle>
-            Choose the perfect plan for your business. Start with our free trial and scale as you grow.
+            Choose the perfect plan for your business. Start with our free trial
+            and scale as you grow.
           </HeroSubtitle>
-          
+
           <StatsContainer>
             <StatItem>
               <div className="number">50,000+</div>
@@ -757,7 +815,8 @@ const PricingPage = () => {
         <Container>
           <SectionTitle>Choose Your Plan</SectionTitle>
           <SectionSubtitle>
-            Start with a 14-day free trial. No credit card required. Cancel anytime.
+            Start with a 14-day free trial. No credit card required. Cancel
+            anytime.
           </SectionSubtitle>
 
           <BillingToggle>
@@ -768,10 +827,7 @@ const PricingPage = () => {
               >
                 Monthly
               </ToggleOption>
-              <ToggleOption
-                active={isYearly}
-                onClick={() => setIsYearly(true)}
-              >
+              <ToggleOption active={isYearly} onClick={() => setIsYearly(true)}>
                 Yearly
                 <SaveBadge>Save 20%</SaveBadge>
               </ToggleOption>
@@ -787,24 +843,31 @@ const PricingPage = () => {
                     Most Popular
                   </PopularBadge>
                 )}
-                
+
                 <PlanIcon featured={plan.featured}>
                   <plan.icon />
                 </PlanIcon>
-                
+
                 <PlanName>{plan.name}</PlanName>
                 <PlanDescription>{plan.description}</PlanDescription>
-                
+
                 <PlanPrice>
                   <Price>
                     <span className="currency">₹</span>
                     {getPrice(plan).toLocaleString()}
-                    <span className="period">/{isYearly ? 'year' : 'month'}</span>
+                    <span className="period">
+                      /{isYearly ? 'year' : 'month'}
+                    </span>
                   </Price>
                   {isYearly && getOriginalPrice(plan) && (
                     <PriceNote>
-                      <OriginalPrice>₹{getOriginalPrice(plan).toLocaleString()}</OriginalPrice>
-                      Save ₹{(getOriginalPrice(plan) - getPrice(plan)).toLocaleString()}
+                      <OriginalPrice>
+                        ₹{getOriginalPrice(plan).toLocaleString()}
+                      </OriginalPrice>
+                      Save ₹
+                      {(
+                        getOriginalPrice(plan) - getPrice(plan)
+                      ).toLocaleString()}
                     </PriceNote>
                   )}
                   {!isYearly && (
@@ -814,7 +877,10 @@ const PricingPage = () => {
 
                 <FeaturesList>
                   {plan.features.map((feature, featureIndex) => (
-                    <FeatureItem key={featureIndex} className={plan.featured ? 'premium' : ''}>
+                    <FeatureItem
+                      key={featureIndex}
+                      className={plan.featured ? 'premium' : ''}
+                    >
                       <FaCheck className="icon" />
                       {feature}
                     </FeatureItem>
@@ -856,7 +922,8 @@ const PricingPage = () => {
         <Container>
           <SectionTitle>Frequently Asked Questions</SectionTitle>
           <SectionSubtitle>
-            Got questions? We've got answers. Can't find what you're looking for? Contact our support team.
+            Got questions? We've got answers. Can't find what you're looking
+            for? Contact our support team.
           </SectionSubtitle>
 
           <FAQContainer>
@@ -866,9 +933,7 @@ const PricingPage = () => {
                   {faq.question}
                   {openFAQ === index ? <FaMinus /> : <FaPlus />}
                 </FAQQuestion>
-                <FAQAnswer isOpen={openFAQ === index}>
-                  {faq.answer}
-                </FAQAnswer>
+                <FAQAnswer isOpen={openFAQ === index}>{faq.answer}</FAQAnswer>
               </FAQItem>
             ))}
           </FAQContainer>
@@ -879,16 +944,13 @@ const PricingPage = () => {
         <Container>
           <CTATitle>Ready to Get Started?</CTATitle>
           <CTASubtitle>
-            Join thousands of businesses already using StoreBuilder to create stunning websites and grow their online presence.
+            Join thousands of businesses already using StoreBuilder to create
+            stunning websites and grow their online presence.
           </CTASubtitle>
-          
+
           <CTAButtons>
-            <PrimaryCTAButton>
-              Start Your Free Trial
-            </PrimaryCTAButton>
-            <SecondaryCTAButton>
-              Talk to Sales
-            </SecondaryCTAButton>
+            <PrimaryCTAButton>Start Your Free Trial</PrimaryCTAButton>
+            <SecondaryCTAButton>Talk to Sales</SecondaryCTAButton>
           </CTAButtons>
         </Container>
       </CTASection>

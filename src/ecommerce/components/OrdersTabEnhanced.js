@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import React, { useState } from 'react';
+import styled from 'styled-components';
 import {
   FaSearch,
   FaFilter,
@@ -12,12 +12,12 @@ import {
   FaPrint,
   FaFileInvoiceDollar,
   FaShippingFast,
-} from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
-import Modal from "./shared/Modal";
-import FormField from "./shared/FormField";
-import Button from "./shared/Button";
-import { sellerOrders } from "../data/sellerData";
+} from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
+import Modal from './shared/Modal';
+import FormField from './shared/FormField';
+import Button from './shared/Button';
+import { sellerOrders } from '../data/sellerData';
 
 const OrdersContainer = styled.div`
   background: ${theme.colors.white};
@@ -103,13 +103,11 @@ const FilterTabs = styled.div`
 `;
 
 const FilterTab = styled.button.withConfig({
-  shouldForwardProp: (prop) => prop !== "active",
+  shouldForwardProp: prop => prop !== 'active',
 })`
   padding: ${theme.spacing.sm} ${theme.spacing.md};
-  background: ${(props) =>
-    props.active ? theme.colors.primary : "transparent"};
-  color: ${(props) =>
-    props.active ? theme.colors.white : theme.colors.gray600};
+  background: ${props => (props.active ? theme.colors.primary : 'transparent')};
+  color: ${props => (props.active ? theme.colors.white : theme.colors.gray600)};
   border: none;
   border-radius: ${theme.borderRadius.sm};
   font-size: 0.85rem;
@@ -119,7 +117,7 @@ const FilterTab = styled.button.withConfig({
   white-space: nowrap;
 
   &:hover {
-    background: ${(props) =>
+    background: ${props =>
       props.active ? theme.colors.primaryDark : theme.colors.gray200};
   }
 `;
@@ -164,7 +162,7 @@ const TableCell = styled.td`
 `;
 
 const OrderId = styled.span`
-  font-family: "Courier New", monospace;
+  font-family: 'Courier New', monospace;
   font-weight: 600;
   color: ${theme.colors.primary};
 `;
@@ -207,7 +205,7 @@ const TotalAmount = styled.span`
 `;
 
 const StatusBadge = styled.span.withConfig({
-  shouldForwardProp: (prop) => prop !== "status",
+  shouldForwardProp: prop => prop !== 'status',
 })`
   padding: ${theme.spacing.xs} ${theme.spacing.sm};
   border-radius: ${theme.borderRadius.sm};
@@ -220,29 +218,29 @@ const StatusBadge = styled.span.withConfig({
   gap: ${theme.spacing.xs};
   width: fit-content;
 
-  ${(props) => {
+  ${props => {
     switch (props.status) {
-      case "completed":
+      case 'completed':
         return `
           background: ${theme.colors.success}20;
           color: ${theme.colors.success};
         `;
-      case "shipped":
+      case 'shipped':
         return `
           background: ${theme.colors.info}20;
           color: ${theme.colors.info};
         `;
-      case "processing":
+      case 'processing':
         return `
           background: ${theme.colors.warning}20;
           color: ${theme.colors.warning};
         `;
-      case "pending":
+      case 'pending':
         return `
           background: ${theme.colors.gray200};
           color: ${theme.colors.gray600};
         `;
-      case "cancelled":
+      case 'cancelled':
         return `
           background: ${theme.colors.error}20;
           color: ${theme.colors.error};
@@ -338,143 +336,143 @@ const StatusUpdateForm = styled.div`
 `;
 
 const OrdersTabEnhanced = () => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState("all");
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('all');
   const [orders, setOrders] = useState(sellerOrders);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [showOrderModal, setShowOrderModal] = useState(false);
   const [trackingInfo, setTrackingInfo] = useState({
-    trackingNumber: "",
-    carrier: "ups",
-    notes: "",
+    trackingNumber: '',
+    carrier: 'ups',
+    notes: '',
   });
 
-  const formatCurrency = (value) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
+  const formatCurrency = value => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
     }).format(value);
   };
 
-  const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
+  const formatDate = dateString => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
     });
   };
 
-  const getStatusIcon = (status) => {
+  const getStatusIcon = status => {
     switch (status) {
-      case "completed":
+      case 'completed':
         return <FaCheck />;
-      case "shipped":
+      case 'shipped':
         return <FaTruck />;
-      case "processing":
+      case 'processing':
         return <FaClock />;
-      case "pending":
+      case 'pending':
         return <FaClock />;
-      case "cancelled":
+      case 'cancelled':
         return <FaTimes />;
       default:
         return <FaClock />;
     }
   };
 
-  const getStatusText = (status) => {
+  const getStatusText = status => {
     switch (status) {
-      case "completed":
-        return "Completed";
-      case "shipped":
-        return "Shipped";
-      case "processing":
-        return "Processing";
-      case "pending":
-        return "Pending";
-      case "cancelled":
-        return "Cancelled";
+      case 'completed':
+        return 'Completed';
+      case 'shipped':
+        return 'Shipped';
+      case 'processing':
+        return 'Processing';
+      case 'pending':
+        return 'Pending';
+      case 'cancelled':
+        return 'Cancelled';
       default:
         return status;
     }
   };
 
-  const filteredOrders = orders.filter((order) => {
+  const filteredOrders = orders.filter(order => {
     const matchesSearch =
       order.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
       order.customerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       order.customerEmail.toLowerCase().includes(searchTerm.toLowerCase());
 
     const matchesStatus =
-      statusFilter === "all" || order.status === statusFilter;
+      statusFilter === 'all' || order.status === statusFilter;
 
     return matchesSearch && matchesStatus;
   });
 
   const statusCounts = {
     all: orders.length,
-    pending: orders.filter((o) => o.status === "pending").length,
-    processing: orders.filter((o) => o.status === "processing").length,
-    shipped: orders.filter((o) => o.status === "shipped").length,
-    completed: orders.filter((o) => o.status === "completed").length,
-    cancelled: orders.filter((o) => o.status === "cancelled").length,
+    pending: orders.filter(o => o.status === 'pending').length,
+    processing: orders.filter(o => o.status === 'processing').length,
+    shipped: orders.filter(o => o.status === 'shipped').length,
+    completed: orders.filter(o => o.status === 'completed').length,
+    cancelled: orders.filter(o => o.status === 'cancelled').length,
   };
 
-  const handleViewOrder = (order) => {
+  const handleViewOrder = order => {
     setSelectedOrder(order);
     setShowOrderModal(true);
   };
 
   const handleUpdateStatus = (orderId, newStatus) => {
     setOrders(
-      orders.map((order) =>
-        order.id === orderId ? { ...order, status: newStatus } : order,
-      ),
+      orders.map(order =>
+        order.id === orderId ? { ...order, status: newStatus } : order
+      )
     );
   };
 
   const handleAddTracking = () => {
     if (selectedOrder && trackingInfo.trackingNumber) {
       setOrders(
-        orders.map((order) =>
+        orders.map(order =>
           order.id === selectedOrder.id
             ? {
                 ...order,
-                status: "shipped",
+                status: 'shipped',
                 trackingNumber: trackingInfo.trackingNumber,
                 carrier: trackingInfo.carrier,
                 trackingNotes: trackingInfo.notes,
               }
-            : order,
-        ),
+            : order
+        )
       );
-      setTrackingInfo({ trackingNumber: "", carrier: "ups", notes: "" });
-      alert("Tracking information added successfully!");
+      setTrackingInfo({ trackingNumber: '', carrier: 'ups', notes: '' });
+      alert('Tracking information added successfully!');
     }
   };
 
-  const handlePrintInvoice = (order) => {
+  const handlePrintInvoice = order => {
     alert(`Printing invoice for order ${order.id}`);
   };
 
   const handleExportOrders = () => {
     const csv = [
-      ["Order ID", "Customer", "Total", "Status", "Date"].join(","),
-      ...filteredOrders.map((order) =>
+      ['Order ID', 'Customer', 'Total', 'Status', 'Date'].join(','),
+      ...filteredOrders.map(order =>
         [
           order.id,
           order.customerName,
           order.total,
           order.status,
           order.orderDate,
-        ].join(","),
+        ].join(',')
       ),
-    ].join("\n");
+    ].join('\n');
 
-    const blob = new Blob([csv], { type: "text/csv" });
+    const blob = new Blob([csv], { type: 'text/csv' });
     const url = window.URL.createObjectURL(blob);
-    const a = document.createElement("a");
+    const a = document.createElement('a');
     a.href = url;
-    a.download = "orders.csv";
+    a.download = 'orders.csv';
     a.click();
   };
 
@@ -509,7 +507,7 @@ const OrdersTabEnhanced = () => {
                 type="text"
                 placeholder="Search orders..."
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={e => setSearchTerm(e.target.value)}
               />
             </SearchBox>
 
@@ -527,38 +525,38 @@ const OrdersTabEnhanced = () => {
 
         <FilterTabs>
           <FilterTab
-            active={statusFilter === "all"}
-            onClick={() => setStatusFilter("all")}
+            active={statusFilter === 'all'}
+            onClick={() => setStatusFilter('all')}
           >
             All ({statusCounts.all})
           </FilterTab>
           <FilterTab
-            active={statusFilter === "pending"}
-            onClick={() => setStatusFilter("pending")}
+            active={statusFilter === 'pending'}
+            onClick={() => setStatusFilter('pending')}
           >
             Pending ({statusCounts.pending})
           </FilterTab>
           <FilterTab
-            active={statusFilter === "processing"}
-            onClick={() => setStatusFilter("processing")}
+            active={statusFilter === 'processing'}
+            onClick={() => setStatusFilter('processing')}
           >
             Processing ({statusCounts.processing})
           </FilterTab>
           <FilterTab
-            active={statusFilter === "shipped"}
-            onClick={() => setStatusFilter("shipped")}
+            active={statusFilter === 'shipped'}
+            onClick={() => setStatusFilter('shipped')}
           >
             Shipped ({statusCounts.shipped})
           </FilterTab>
           <FilterTab
-            active={statusFilter === "completed"}
-            onClick={() => setStatusFilter("completed")}
+            active={statusFilter === 'completed'}
+            onClick={() => setStatusFilter('completed')}
           >
             Completed ({statusCounts.completed})
           </FilterTab>
           <FilterTab
-            active={statusFilter === "cancelled"}
-            onClick={() => setStatusFilter("cancelled")}
+            active={statusFilter === 'cancelled'}
+            onClick={() => setStatusFilter('cancelled')}
           >
             Cancelled ({statusCounts.cancelled})
           </FilterTab>
@@ -578,7 +576,7 @@ const OrdersTabEnhanced = () => {
               </TableRow>
             </TableHeader>
             <tbody>
-              {filteredOrders.map((order) => (
+              {filteredOrders.map(order => (
                 <TableRow key={order.id}>
                   <TableCell>
                     <OrderId>{order.id}</OrderId>
@@ -688,9 +686,9 @@ const OrdersTabEnhanced = () => {
                 <div
                   key={index}
                   style={{
-                    display: "flex",
-                    justifyContent: "between",
-                    alignItems: "center",
+                    display: 'flex',
+                    justifyContent: 'between',
+                    alignItems: 'center',
                     padding: theme.spacing.md,
                     border: `1px solid ${theme.colors.gray200}`,
                     borderRadius: theme.borderRadius.md,
@@ -707,14 +705,14 @@ const OrdersTabEnhanced = () => {
               ))}
               <div
                 style={{
-                  display: "flex",
-                  justifyContent: "between",
-                  alignItems: "center",
+                  display: 'flex',
+                  justifyContent: 'between',
+                  alignItems: 'center',
                   padding: theme.spacing.lg,
                   background: theme.colors.gray50,
                   borderRadius: theme.borderRadius.md,
-                  fontWeight: "600",
-                  fontSize: "1.1rem",
+                  fontWeight: '600',
+                  fontSize: '1.1rem',
                 }}
               >
                 <span>Total</span>
@@ -729,30 +727,30 @@ const OrdersTabEnhanced = () => {
                   label="Change Status"
                   type="select"
                   value={selectedOrder.status}
-                  onChange={(e) =>
+                  onChange={e =>
                     handleUpdateStatus(selectedOrder.id, e.target.value)
                   }
                   options={[
-                    { value: "pending", label: "Pending" },
-                    { value: "processing", label: "Processing" },
-                    { value: "shipped", label: "Shipped" },
-                    { value: "completed", label: "Completed" },
-                    { value: "cancelled", label: "Cancelled" },
+                    { value: 'pending', label: 'Pending' },
+                    { value: 'processing', label: 'Processing' },
+                    { value: 'shipped', label: 'Shipped' },
+                    { value: 'completed', label: 'Completed' },
+                    { value: 'cancelled', label: 'Cancelled' },
                   ]}
                 />
                 <Button variant="primary">Update Status</Button>
               </StatusUpdateForm>
             </DetailSection>
 
-            {selectedOrder.status !== "shipped" &&
-              selectedOrder.status !== "completed" && (
+            {selectedOrder.status !== 'shipped' &&
+              selectedOrder.status !== 'completed' && (
                 <DetailSection>
                   <DetailTitle>Add Tracking Information</DetailTitle>
                   <FormField
                     label="Tracking Number"
                     value={trackingInfo.trackingNumber}
-                    onChange={(e) =>
-                      setTrackingInfo((prev) => ({
+                    onChange={e =>
+                      setTrackingInfo(prev => ({
                         ...prev,
                         trackingNumber: e.target.value,
                       }))
@@ -764,21 +762,21 @@ const OrdersTabEnhanced = () => {
                       label="Carrier"
                       type="select"
                       value={trackingInfo.carrier}
-                      onChange={(e) =>
-                        setTrackingInfo((prev) => ({
+                      onChange={e =>
+                        setTrackingInfo(prev => ({
                           ...prev,
                           carrier: e.target.value,
                         }))
                       }
                       options={[
-                        { value: "ups", label: "UPS" },
-                        { value: "fedex", label: "FedEx" },
-                        { value: "usps", label: "USPS" },
-                        { value: "dhl", label: "DHL" },
-                        { value: "other", label: "Other" },
+                        { value: 'ups', label: 'UPS' },
+                        { value: 'fedex', label: 'FedEx' },
+                        { value: 'usps', label: 'USPS' },
+                        { value: 'dhl', label: 'DHL' },
+                        { value: 'other', label: 'Other' },
                       ]}
                     />
-                    <div style={{ display: "flex", alignItems: "end" }}>
+                    <div style={{ display: 'flex', alignItems: 'end' }}>
                       <Button
                         variant="primary"
                         onClick={handleAddTracking}

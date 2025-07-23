@@ -1,15 +1,10 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import {
-  FaArrowLeft,
-  FaSearch,
-  FaEye,
-  FaCheck,
-} from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
-import Header from "../../components/shared/Header";
-import { businessTemplates } from "../data/businessTemplates";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import { FaArrowLeft, FaSearch, FaEye, FaCheck } from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
+import Header from '../../components/shared/Header';
+import { businessTemplates } from '../data/businessTemplates';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -157,7 +152,7 @@ const TemplateImage = styled.div`
   position: relative;
 
   &::after {
-    content: "";
+    content: '';
     position: absolute;
     inset: 0;
     background: linear-gradient(
@@ -263,39 +258,44 @@ const ViewWebsiteButton = styled.button`
 
 const BusinessWebsitesHome = () => {
   const navigate = useNavigate();
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('all');
 
   const categories = [
-    { value: "all", label: "All Categories" },
-    { value: "Beauty & Wellness", label: "Beauty & Wellness" },
-    { value: "Health & Fitness", label: "Health & Fitness" },
-    { value: "Food & Dining", label: "Food & Dining" },
-    { value: "Professional Services", label: "Professional Services" },
-    { value: "Technology", label: "Technology" },
-    { value: "Creative", label: "Creative" },
-    { value: "Construction & Real Estate", label: "Construction & Real Estate" },
+    { value: 'all', label: 'All Categories' },
+    { value: 'Beauty & Wellness', label: 'Beauty & Wellness' },
+    { value: 'Health & Fitness', label: 'Health & Fitness' },
+    { value: 'Food & Dining', label: 'Food & Dining' },
+    { value: 'Professional Services', label: 'Professional Services' },
+    { value: 'Technology', label: 'Technology' },
+    { value: 'Creative', label: 'Creative' },
+    {
+      value: 'Construction & Real Estate',
+      label: 'Construction & Real Estate',
+    },
   ];
 
   const filteredTemplates = businessTemplates.filter(template => {
-    const matchesSearch = template.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         template.description.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = selectedCategory === "all" || template.category === selectedCategory;
+    const matchesSearch =
+      template.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      template.description.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory =
+      selectedCategory === 'all' || template.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
 
   const handleBackClick = () => {
-    navigate("/");
+    navigate('/');
   };
 
-  const handleTemplateClick = (template) => {
+  const handleTemplateClick = template => {
     navigate(`/business/${template.slug}`);
   };
 
   return (
     <PageContainer>
       <Header />
-      
+
       <Container>
         <BackButton onClick={handleBackClick}>
           <FaArrowLeft />
@@ -305,8 +305,9 @@ const BusinessWebsitesHome = () => {
         <HeaderSection>
           <PageTitle>Business Presentational Websites</PageTitle>
           <PageSubtitle>
-            Choose from our collection of professionally designed website templates
-            for various business types. Each template is fully customizable and mobile-responsive.
+            Choose from our collection of professionally designed website
+            templates for various business types. Each template is fully
+            customizable and mobile-responsive.
           </PageSubtitle>
         </HeaderSection>
 
@@ -317,13 +318,13 @@ const BusinessWebsitesHome = () => {
               type="text"
               placeholder="Search templates..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={e => setSearchTerm(e.target.value)}
             />
           </SearchBox>
-          
+
           <CategoryFilter
             value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value)}
+            onChange={e => setSelectedCategory(e.target.value)}
           >
             {categories.map(category => (
               <option key={category.value} value={category.value}>
@@ -344,18 +345,18 @@ const BusinessWebsitesHome = () => {
                   {template.category}
                 </TemplateCategory>
               </TemplateImage>
-              
+
               <TemplateContent>
                 <TemplateHeader>
                   <TemplateInfo>
                     <TemplateName>{template.name}</TemplateName>
                   </TemplateInfo>
                 </TemplateHeader>
-                
+
                 <TemplateDescription>
                   {template.description}
                 </TemplateDescription>
-                
+
                 <FeaturesList>
                   {template.features.map((feature, index) => (
                     <FeatureTag key={index}>
@@ -364,7 +365,7 @@ const BusinessWebsitesHome = () => {
                     </FeatureTag>
                   ))}
                 </FeaturesList>
-                
+
                 <ViewWebsiteButton>
                   <FaEye />
                   View Website

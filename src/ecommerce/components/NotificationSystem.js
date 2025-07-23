@@ -1,16 +1,22 @@
-import React, { useState, useEffect, useCallback, createContext, useContext } from "react";
-import styled from "styled-components";
-import { 
-  FaBell, 
-  FaEnvelope, 
-  FaTimes, 
-  FaCheck, 
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  createContext,
+  useContext,
+} from 'react';
+import styled from 'styled-components';
+import {
+  FaBell,
+  FaEnvelope,
+  FaTimes,
+  FaCheck,
   FaExclamationTriangle,
   FaInfo,
   FaShoppingBag,
-  FaUser
-} from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
+  FaUser,
+} from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
 
 // Notification Context
 const NotificationContext = createContext();
@@ -18,7 +24,9 @@ const NotificationContext = createContext();
 export const useNotifications = () => {
   const context = useContext(NotificationContext);
   if (!context) {
-    throw new Error("useNotifications must be used within a NotificationProvider");
+    throw new Error(
+      'useNotifications must be used within a NotificationProvider'
+    );
   }
   return context;
 };
@@ -44,7 +52,7 @@ const NotificationContainer = styled.div`
 `;
 
 const NotificationCard = styled.div.withConfig({
-  shouldForwardProp: (prop) => !["type", "isVisible"].includes(prop)
+  shouldForwardProp: prop => !['type', 'isVisible'].includes(prop),
 })`
   background: ${theme.colors.white};
   border-radius: ${theme.borderRadius.lg};
@@ -54,31 +62,32 @@ const NotificationCard = styled.div.withConfig({
   display: flex;
   align-items: flex-start;
   gap: ${theme.spacing.md};
-  opacity: ${props => props.isVisible ? 1 : 0};
-  transform: translateX(${props => props.isVisible ? 0 : "100%"});
+  opacity: ${props => (props.isVisible ? 1 : 0)};
+  transform: translateX(${props => (props.isVisible ? 0 : '100%')});
   transition: all 0.3s ease;
-  border-left: 4px solid ${props => {
-    switch (props.type) {
-      case "success":
-        return theme.colors.success;
-      case "error":
-        return theme.colors.error;
-      case "warning":
-        return theme.colors.warning;
-      case "enquiry":
-        return theme.colors.primary;
-      default:
-        return theme.colors.info;
-    }
-  }};
+  border-left: 4px solid
+    ${props => {
+      switch (props.type) {
+        case 'success':
+          return theme.colors.success;
+        case 'error':
+          return theme.colors.error;
+        case 'warning':
+          return theme.colors.warning;
+        case 'enquiry':
+          return theme.colors.primary;
+        default:
+          return theme.colors.info;
+      }
+    }};
 
   &:hover {
-    transform: translateX(${props => props.isVisible ? "-4px" : "100%"});
+    transform: translateX(${props => (props.isVisible ? '-4px' : '100%')});
   }
 `;
 
 const NotificationIcon = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "type"
+  shouldForwardProp: prop => prop !== 'type',
 })`
   display: flex;
   align-items: center;
@@ -88,27 +97,27 @@ const NotificationIcon = styled.div.withConfig({
   border-radius: 50%;
   background: ${props => {
     switch (props.type) {
-      case "success":
-        return theme.colors.success + "20";
-      case "error":
-        return theme.colors.error + "20";
-      case "warning":
-        return theme.colors.warning + "20";
-      case "enquiry":
-        return theme.colors.primary + "20";
+      case 'success':
+        return theme.colors.success + '20';
+      case 'error':
+        return theme.colors.error + '20';
+      case 'warning':
+        return theme.colors.warning + '20';
+      case 'enquiry':
+        return theme.colors.primary + '20';
       default:
-        return theme.colors.info + "20";
+        return theme.colors.info + '20';
     }
   }};
   color: ${props => {
     switch (props.type) {
-      case "success":
+      case 'success':
         return theme.colors.success;
-      case "error":
+      case 'error':
         return theme.colors.error;
-      case "warning":
+      case 'warning':
         return theme.colors.warning;
-      case "enquiry":
+      case 'enquiry':
         return theme.colors.primary;
       default:
         return theme.colors.info;
@@ -195,7 +204,7 @@ const CloseButton = styled.button`
 `;
 
 const BellIcon = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "hasNotifications"
+  shouldForwardProp: prop => prop !== 'hasNotifications',
 })`
   position: relative;
   display: flex;
@@ -204,16 +213,25 @@ const BellIcon = styled.div.withConfig({
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: ${props => props.hasNotifications ? theme.colors.primary + "20" : theme.colors.gray100};
-  color: ${props => props.hasNotifications ? theme.colors.primary : theme.colors.gray600};
+  background: ${props =>
+    props.hasNotifications
+      ? theme.colors.primary + '20'
+      : theme.colors.gray100};
+  color: ${props =>
+    props.hasNotifications ? theme.colors.primary : theme.colors.gray600};
   cursor: pointer;
   transition: all 0.2s ease;
 
   &:hover {
-    background: ${props => props.hasNotifications ? theme.colors.primary + "30" : theme.colors.gray200};
+    background: ${props =>
+      props.hasNotifications
+        ? theme.colors.primary + '30'
+        : theme.colors.gray200};
   }
 
-  ${props => props.hasNotifications && `
+  ${props =>
+    props.hasNotifications &&
+    `
     &::after {
       content: "";
       position: absolute;
@@ -232,7 +250,7 @@ const BellIcon = styled.div.withConfig({
 const NotificationItem = ({ notification, onClose, onAction }) => {
   const [isVisible, setIsVisible] = useState(false);
 
-    const handleClose = useCallback(() => {
+  const handleClose = useCallback(() => {
     setIsVisible(false);
     setTimeout(() => onClose(notification.id), 300);
   }, [onClose, notification.id]);
@@ -251,7 +269,7 @@ const NotificationItem = ({ notification, onClose, onAction }) => {
     }
   }, [notification.duration, handleClose]);
 
-  const handleAction = (action) => {
+  const handleAction = action => {
     if (action.callback) {
       action.callback(notification);
     }
@@ -265,30 +283,30 @@ const NotificationItem = ({ notification, onClose, onAction }) => {
 
   const getIcon = () => {
     switch (notification.type) {
-      case "success":
+      case 'success':
         return <FaCheck />;
-      case "error":
+      case 'error':
         return <FaExclamationTriangle />;
-      case "warning":
+      case 'warning':
         return <FaExclamationTriangle />;
-      case "enquiry":
+      case 'enquiry':
         return <FaEnvelope />;
-      case "order":
+      case 'order':
         return <FaShoppingBag />;
-      case "user":
+      case 'user':
         return <FaUser />;
       default:
         return <FaInfo />;
     }
   };
 
-  const formatTime = (timestamp) => {
+  const formatTime = timestamp => {
     const now = new Date();
     const time = new Date(timestamp);
     const diffMs = now - time;
     const diffMinutes = Math.floor(diffMs / 60000);
-    
-    if (diffMinutes < 1) return "Just now";
+
+    if (diffMinutes < 1) return 'Just now';
     if (diffMinutes < 60) return `${diffMinutes}m ago`;
     if (diffMinutes < 1440) return `${Math.floor(diffMinutes / 60)}h ago`;
     return time.toLocaleDateString();
@@ -296,19 +314,21 @@ const NotificationItem = ({ notification, onClose, onAction }) => {
 
   return (
     <NotificationCard type={notification.type} isVisible={isVisible}>
-      <NotificationIcon type={notification.type}>
-        {getIcon()}
-      </NotificationIcon>
-      
+      <NotificationIcon type={notification.type}>{getIcon()}</NotificationIcon>
+
       <NotificationContent>
         <NotificationTitle>{notification.title}</NotificationTitle>
         <NotificationMessage>{notification.message}</NotificationMessage>
-        
+
         {notification.meta && (
           <NotificationMeta>
             <span>{formatTime(notification.timestamp)}</span>
-            {notification.meta.product && <span>• {notification.meta.product}</span>}
-            {notification.meta.customer && <span>• {notification.meta.customer}</span>}
+            {notification.meta.product && (
+              <span>• {notification.meta.product}</span>
+            )}
+            {notification.meta.customer && (
+              <span>• {notification.meta.customer}</span>
+            )}
           </NotificationMeta>
         )}
 
@@ -317,7 +337,7 @@ const NotificationItem = ({ notification, onClose, onAction }) => {
             {notification.actions.map((action, index) => (
               <NotificationButton
                 key={index}
-                className={action.type || "secondary"}
+                className={action.type || 'secondary'}
                 onClick={() => handleAction(action)}
               >
                 {action.label}
@@ -326,7 +346,7 @@ const NotificationItem = ({ notification, onClose, onAction }) => {
           </NotificationActions>
         )}
       </NotificationContent>
-      
+
       <CloseButton onClick={handleClose}>
         <FaTimes />
       </CloseButton>
@@ -338,13 +358,13 @@ const NotificationItem = ({ notification, onClose, onAction }) => {
 const NotificationSystem = ({ children }) => {
   const [notifications, setNotifications] = useState([]);
 
-    const addNotification = useCallback((notification) => {
+  const addNotification = useCallback(notification => {
     const id = Date.now() + Math.random();
     const newNotification = {
       id,
       timestamp: Date.now(),
       duration: 5000, // Default 5 seconds
-      ...notification
+      ...notification,
     };
 
     setNotifications(prev => [newNotification, ...prev]);
@@ -352,7 +372,7 @@ const NotificationSystem = ({ children }) => {
     return id;
   }, []);
 
-  const removeNotification = (id) => {
+  const removeNotification = id => {
     setNotifications(prev => prev.filter(n => n.id !== id));
   };
 
@@ -360,81 +380,89 @@ const NotificationSystem = ({ children }) => {
     setNotifications([]);
   };
 
-  const markAsRead = (id) => {
-    setNotifications(prev => 
-      prev.map(n => n.id === id ? { ...n, read: true } : n)
+  const markAsRead = id => {
+    setNotifications(prev =>
+      prev.map(n => (n.id === id ? { ...n, read: true } : n))
     );
   };
 
   // Utility functions for common notification types
   const showSuccessNotification = (title, message, options = {}) => {
     return addNotification({
-      type: "success",
+      type: 'success',
       title,
       message,
-      ...options
+      ...options,
     });
   };
 
   const showErrorNotification = (title, message, options = {}) => {
     return addNotification({
-      type: "error",
+      type: 'error',
       title,
       message,
       duration: 8000, // Longer duration for errors
-      ...options
+      ...options,
     });
   };
 
-    const showEnquiryNotification = useCallback((enquiry, options = {}) => {
-    return addNotification({
-      type: "enquiry",
-      title: "New Enquiry Received",
-      message: `${enquiry.name} is interested in ${enquiry.productName}`,
-      meta: {
-        product: enquiry.productName,
-        customer: enquiry.name
-      },
-      actions: [
-        {
-          label: "View Details",
-          type: "primary",
-          callback: () => {
-            // Navigate to enquiry management
-            window.location.href = "/ecommerce/seller-dashboard?tab=enquiries";
-          }
+  const showEnquiryNotification = useCallback(
+    (enquiry, options = {}) => {
+      return addNotification({
+        type: 'enquiry',
+        title: 'New Enquiry Received',
+        message: `${enquiry.name} is interested in ${enquiry.productName}`,
+        meta: {
+          product: enquiry.productName,
+          customer: enquiry.name,
         },
-        {
-          label: "Contact Customer",
-          type: "secondary",
-          callback: () => {
-            window.open(`mailto:${enquiry.email}?subject=Re: Enquiry for ${enquiry.productName}`);
+        actions: [
+          {
+            label: 'View Details',
+            type: 'primary',
+            callback: () => {
+              // Navigate to enquiry management
+              window.location.href =
+                '/ecommerce/seller-dashboard?tab=enquiries';
+            },
           },
-          closeOnClick: false
-        }
-      ],
-      duration: 0, // Don't auto-close enquiry notifications
-      ...options
-    });
-  }, [addNotification]);
+          {
+            label: 'Contact Customer',
+            type: 'secondary',
+            callback: () => {
+              window.open(
+                `mailto:${enquiry.email}?subject=Re: Enquiry for ${enquiry.productName}`
+              );
+            },
+            closeOnClick: false,
+          },
+        ],
+        duration: 0, // Don't auto-close enquiry notifications
+        ...options,
+      });
+    },
+    [addNotification]
+  );
 
   // Check for new enquiries periodically
   useEffect(() => {
     const checkForNewEnquiries = () => {
-      const lastCheck = localStorage.getItem("lastEnquiryCheck");
-      const currentEnquiries = JSON.parse(localStorage.getItem("userEnquiries") || "[]");
-      
+      const lastCheck = localStorage.getItem('lastEnquiryCheck');
+      const currentEnquiries = JSON.parse(
+        localStorage.getItem('userEnquiries') || '[]'
+      );
+
       if (lastCheck) {
         const newEnquiries = currentEnquiries.filter(
           enquiry => new Date(enquiry.timestamp) > new Date(lastCheck)
         );
-        
+
         newEnquiries.forEach(enquiry => {
           showEnquiryNotification(enquiry);
         });
       }
-      
-      localStorage.setItem("lastEnquiryCheck", new Date().toISOString());
+
+      localStorage.setItem('lastEnquiryCheck', new Date().toISOString());
     };
 
     // Check immediately
@@ -443,7 +471,7 @@ const NotificationSystem = ({ children }) => {
     // Set up periodic checking (every 30 seconds)
     const interval = setInterval(checkForNewEnquiries, 30000);
 
-        return () => clearInterval(interval);
+    return () => clearInterval(interval);
   }, [showEnquiryNotification]);
 
   const contextValue = {
@@ -454,7 +482,7 @@ const NotificationSystem = ({ children }) => {
     markAsRead,
     showSuccessNotification,
     showErrorNotification,
-    showEnquiryNotification
+    showEnquiryNotification,
   };
 
   return (

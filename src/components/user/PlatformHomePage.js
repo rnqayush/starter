@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 import {
   FaHotel,
   FaCar,
@@ -23,12 +23,12 @@ import {
   FaCloud,
   FaLock,
   FaGlobe,
-} from "react-icons/fa";
-import Header from "../shared/Header";
-import { Button } from "../shared/Button";
-import { theme, media } from "../../styles/GlobalStyle";
-import { useAuth } from "../../context/AuthContext";
-import AuthModal from "../auth/AuthModal";
+} from 'react-icons/fa';
+import Header from '../shared/Header';
+import { Button } from '../shared/Button';
+import { theme, media } from '../../styles/GlobalStyle';
+import { useAuth } from '../../context/AuthContext';
+import AuthModal from '../auth/AuthModal';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -49,18 +49,27 @@ const HeroSection = styled.section`
   align-items: center;
 
   &::before {
-    content: "";
+    content: '';
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: radial-gradient(circle at 30% 40%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 70% 80%, rgba(168, 85, 247, 0.1) 0%, transparent 50%);
+    background:
+      radial-gradient(
+        circle at 30% 40%,
+        rgba(59, 130, 246, 0.1) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 70% 80%,
+        rgba(168, 85, 247, 0.1) 0%,
+        transparent 50%
+      );
   }
 
   &::after {
-    content: "";
+    content: '';
     position: absolute;
     top: 0;
     left: 0;
@@ -69,7 +78,7 @@ const HeroSection = styled.section`
     background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse"><path d="M 50 0 L 0 0 0 50" fill="none" stroke="%23ffffff05" stroke-width="1"/></pattern></defs><rect width="100%" height="100%" fill="url(%23grid)"/></svg>');
   }
 
-    ${media.mobile} {
+  ${media.mobile} {
     padding: ${theme.spacing.lg} 0;
     min-height: 65vh;
   }
@@ -217,7 +226,12 @@ const CreateStoreCTA = styled(Button)`
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
     transition: left 0.5s;
   }
 
@@ -367,13 +381,13 @@ const StoreCard = styled.div`
   }
 
   &::before {
-    content: "";
+    content: '';
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     height: 4px;
-    background: ${(props) => props.gradient};
+    background: ${props => props.gradient};
     transform: scaleX(0);
     transition: transform 0.3s ease;
   }
@@ -385,7 +399,7 @@ const StoreCard = styled.div`
 
 const StoreCardImage = styled.div`
   height: 200px;
-  background: ${(props) => props.gradient};
+  background: ${props => props.gradient};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -394,7 +408,7 @@ const StoreCardImage = styled.div`
   position: relative;
 
   &::after {
-    content: "";
+    content: '';
     position: absolute;
     inset: 0;
     background: linear-gradient(
@@ -425,7 +439,7 @@ const StoreCardDescription = styled.p`
 
 const ViewStoresButton = styled(Button)`
   width: 100%;
-  background: ${(props) => props.gradient};
+  background: ${props => props.gradient};
   border: none;
   display: flex;
   align-items: center;
@@ -623,7 +637,7 @@ const CTABannerSection = styled.section`
   overflow: hidden;
 
   &::before {
-    content: "";
+    content: '';
     position: absolute;
     top: 0;
     left: 0;
@@ -797,110 +811,114 @@ const PlatformHomePage = () => {
 
   const storeCategories = [
     {
-      id: "hotels",
+      id: 'hotels',
       icon: FaHotel,
-      title: "Hotels",
+      title: 'Hotels',
       description:
-        "Boutique hotels, resorts, and bed & breakfasts showcase their rooms and services with stunning booking systems.",
-      gradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-      path: "/category/hotel",
+        'Boutique hotels, resorts, and bed & breakfasts showcase their rooms and services with stunning booking systems.',
+      gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+      path: '/website-examples/hotel',
     },
     {
-      id: "ecommerce",
+      id: 'ecommerce',
       icon: FaShoppingBag,
-      title: "Ecommerce",
+      title: 'Ecommerce',
       description:
-        "Fashion brands, electronics stores, and artisan shops sell products with beautiful catalogs and secure checkout.",
-      gradient: "linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)",
-      path: "/category/ecommerce",
+        'Fashion brands, electronics stores, and artisan shops sell products with beautiful catalogs and secure checkout.',
+      gradient: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)',
+      path: '/website-examples/ecommerce',
     },
     {
-      id: "weddings",
+      id: 'weddings',
       icon: FaRing,
-      title: "Weddings",
+      title: 'Weddings',
       description:
-        "Wedding planners, photographers, and venues share their portfolios and book clients with elegant galleries.",
-      gradient: "linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)",
-      path: "/category/wedding",
-    },
-                {
-      id: "automobiles",
-      icon: FaCar,
-      title: "Automobiles",
-      description:
-        "Car dealerships, rental companies, and mechanics display inventory and connect with customers online.",
-      gradient: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
-      path: "/category/automobile",
+        'Wedding planners, photographers, and venues share their portfolios and book clients with elegant galleries.',
+      gradient: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)',
+      path: '/website-examples/wedding',
     },
     {
-      id: "business-websites",
-      icon: FaGlobe,
-      title: "Business Websites",
+      id: 'automobiles',
+      icon: FaCar,
+      title: 'Automobiles',
       description:
-        "Professional websites for salons, gyms, restaurants, consultants, and more. Showcase services with elegant templates.",
-      gradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-      path: "/category/business",
+        'Car dealerships, rental companies, and mechanics display inventory and connect with customers online.',
+      gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+      path: '/website-examples/automobile',
+    },
+    {
+      id: 'business-websites',
+      icon: FaGlobe,
+      title: 'Business Websites',
+      description:
+        'Professional websites for salons, gyms, restaurants, consultants, and more. Showcase services with elegant templates.',
+      gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+      path: '/website-examples/business',
     },
   ];
 
-    const stats = [
-    { number: "50K+", label: "Active Stores" },
-    { number: "99.9%", label: "Uptime" },
-    { number: "24/7", label: "Expert Support" },
-    { number: "4.9/5", label: "Customer Rating" },
+  const stats = [
+    { number: '50K+', label: 'Active Stores' },
+    { number: '99.9%', label: 'Uptime' },
+    { number: '24/7', label: 'Expert Support' },
+    { number: '4.9/5', label: 'Customer Rating' },
   ];
 
   const benefits = [
     {
       icon: FaCode,
-      title: "No-Code Platform",
-      description: "Build professional stores without writing a single line of code. Our drag-and-drop interface makes it simple.",
+      title: 'No-Code Platform',
+      description:
+        'Build professional stores without writing a single line of code. Our drag-and-drop interface makes it simple.',
     },
     {
       icon: FaPalette,
-      title: "Unlimited Customization",
-      description: "Design freedom with hundreds of templates and complete brand control. Make your store uniquely yours.",
+      title: 'Unlimited Customization',
+      description:
+        'Design freedom with hundreds of templates and complete brand control. Make your store uniquely yours.',
     },
     {
       icon: FaCloud,
-      title: "Enterprise-Grade Infrastructure",
-      description: "Built on reliable cloud infrastructure with 99.9% uptime and lightning-fast loading speeds.",
+      title: 'Enterprise-Grade Infrastructure',
+      description:
+        'Built on reliable cloud infrastructure with 99.9% uptime and lightning-fast loading speeds.',
     },
-        {
+    {
       icon: FaLock,
-      title: "Secure & Compliant",
-      description: "Bank-level security with SSL certificates, PCI compliance, and automated backups included.",
+      title: 'Secure & Compliant',
+      description:
+        'Bank-level security with SSL certificates, PCI compliance, and automated backups included.',
     },
   ];
 
   const testimonials = [
     {
-      name: "Sarah Johnson",
-      role: "Hotel Owner",
-      text: "StoreBuilder transformed our booking process. We went from 20% to 85% online bookings in just 3 months.",
+      name: 'Sarah Johnson',
+      role: 'Hotel Owner',
+      text: 'StoreBuilder transformed our booking process. We went from 20% to 85% online bookings in just 3 months.',
       rating: 5,
     },
     {
-      name: "Mike Chen",
-      role: "E-commerce Entrepreneur",
-      text: "The platform paid for itself in the first month. Sales increased by 300% with their conversion-optimized templates.",
+      name: 'Mike Chen',
+      role: 'E-commerce Entrepreneur',
+      text: 'The platform paid for itself in the first month. Sales increased by 300% with their conversion-optimized templates.',
       rating: 5,
     },
     {
-      name: "Emily Rodriguez",
-      role: "Wedding Planner",
+      name: 'Emily Rodriguez',
+      role: 'Wedding Planner',
       text: "My clients love the professional portfolio gallery. I've booked more weddings this year than ever before.",
       rating: 5,
     },
   ];
 
-  const handleStoreClick = (store) => {
+  const handleStoreClick = store => {
     navigate(store.path);
   };
 
   const handleCreateStore = () => {
     if (isAuthenticated) {
-      navigate("/start-building");
+      navigate('/start-building');
     } else {
       setShowAuthModal(true);
     }
@@ -908,14 +926,14 @@ const PlatformHomePage = () => {
 
   const handleAuthSuccess = () => {
     setShowAuthModal(false);
-    navigate("/start-building");
+    navigate('/start-building');
   };
 
   const handleExploreStores = () => {
     // Scroll to explore stores section
-    const exploreSection = document.getElementById("explore-stores");
+    const exploreSection = document.getElementById('explore-stores');
     if (exploreSection) {
-      exploreSection.scrollIntoView({ behavior: "smooth" });
+      exploreSection.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
@@ -923,13 +941,14 @@ const PlatformHomePage = () => {
     <PageContainer>
       <Header />
 
-            {/* Hero Section */}
+      {/* Hero Section */}
       <HeroSection>
         <HeroContent>
           <HeroTitle>Your Business. Your Website. Live in 5 Minutes.</HeroTitle>
           <HeroSubtitle>
-            Trusted by 50,000+ businesses worldwide. Create stunning, conversion-optimized
-            stores for any industry with our enterprise-grade no-code platform.
+            Trusted by 50,000+ businesses worldwide. Create stunning,
+            conversion-optimized stores for any industry with our
+            enterprise-grade no-code platform.
           </HeroSubtitle>
           <TrustIndicators>
             <TrustItem>
@@ -973,13 +992,14 @@ const PlatformHomePage = () => {
       {/* Explore Stores Section */}
       <ExploreStoresSection id="explore-stores">
         <ExploreStoresContainer>
-                    <SectionTitle>Industry-Specific Solutions</SectionTitle>
+          <SectionTitle>Industry-Specific Solutions</SectionTitle>
           <SectionSubtitle>
-            Explore our specialized templates and features designed for your industry.
-            Each solution comes with industry-specific tools and integrations.
+            Explore our specialized templates and features designed for your
+            industry. Each solution comes with industry-specific tools and
+            integrations.
           </SectionSubtitle>
           <StoreCardsGrid>
-            {storeCategories.map((store) => {
+            {storeCategories.map(store => {
               const IconComponent = store.icon;
               return (
                 <StoreCard
@@ -1007,12 +1027,13 @@ const PlatformHomePage = () => {
         </ExploreStoresContainer>
       </ExploreStoresSection>
 
-            {/* Why Choose Us Section */}
+      {/* Why Choose Us Section */}
       <WhyChooseUsSection>
         <WhyChooseUsContainer>
           <SectionTitle>Why Leading Brands Choose StoreBuilder</SectionTitle>
           <SectionSubtitle>
-            Join thousands of successful businesses who trust our platform to power their online growth.
+            Join thousands of successful businesses who trust our platform to
+            power their online growth.
           </SectionSubtitle>
           <BenefitsGrid>
             {benefits.map((benefit, index) => {
@@ -1036,7 +1057,8 @@ const PlatformHomePage = () => {
         <TestimonialsContainer>
           <SectionTitle>Trusted by Industry Leaders</SectionTitle>
           <SectionSubtitle>
-            Don't just take our word for it. Here's what our customers say about their success with StoreBuilder.
+            Don't just take our word for it. Here's what our customers say about
+            their success with StoreBuilder.
           </SectionSubtitle>
           <TestimonialsGrid>
             {testimonials.map((testimonial, index) => (
@@ -1065,9 +1087,7 @@ const PlatformHomePage = () => {
       {/* CTA Banner Section */}
       <CTABannerSection>
         <CTABannerContainer>
-                  <CTABannerTitle>
-            Ready to Transform Your Business?
-          </CTABannerTitle>
+          <CTABannerTitle>Ready to Transform Your Business?</CTABannerTitle>
           <CTABannerButton onClick={handleCreateStore}>
             Start My Online Store
             <FaRocket />

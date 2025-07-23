@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import { FaCalendarAlt, FaUsers, FaEye, FaTimes } from "react-icons/fa";
-import Header from "../shared/Header";
-import { Button } from "../shared/Button";
-import { Card, CardContent, Badge } from "../shared/Card";
-import { theme } from "../../styles/GlobalStyle";
-import { useAppContext } from "../../context/AppContext";
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import { FaCalendarAlt, FaUsers, FaEye, FaTimes } from 'react-icons/fa';
+import Header from '../shared/Header';
+import { Button } from '../shared/Button';
+import { Card, CardContent, Badge } from '../shared/Card';
+import { theme } from '../../styles/GlobalStyle';
+import { useAppContext } from '../../context/AppContext';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -144,15 +144,15 @@ const FilterTabs = styled.div`
 `;
 
 const FilterTab = styled.button.withConfig({
-  shouldForwardProp: (prop) => prop !== "active",
+  shouldForwardProp: prop => prop !== 'active',
 })`
   padding: ${theme.spacing.md} ${theme.spacing.lg};
   border: none;
   background: none;
-  color: ${(props) =>
+  color: ${props =>
     props.active ? theme.colors.primary : theme.colors.gray600};
   border-bottom: 2px solid
-    ${(props) => (props.active ? theme.colors.primary : "transparent")};
+    ${props => (props.active ? theme.colors.primary : 'transparent')};
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -164,48 +164,46 @@ const FilterTab = styled.button.withConfig({
 
 const MyBookingsPage = () => {
   const { bookings, setBookings } = useAppContext();
-  const [filter, setFilter] = useState("all");
+  const [filter, setFilter] = useState('all');
 
   const userBookings = bookings.filter(
-    (booking) => booking.userId === "current-user",
+    booking => booking.userId === 'current-user'
   );
 
-  const filteredBookings = userBookings.filter((booking) => {
-    if (filter === "all") return true;
+  const filteredBookings = userBookings.filter(booking => {
+    if (filter === 'all') return true;
     return booking.status === filter;
   });
 
-  const handleCancelBooking = (bookingId) => {
+  const handleCancelBooking = bookingId => {
     setBookings(
-      bookings.map((booking) =>
-        booking.id === bookingId
-          ? { ...booking, status: "cancelled" }
-          : booking,
-      ),
+      bookings.map(booking =>
+        booking.id === bookingId ? { ...booking, status: 'cancelled' } : booking
+      )
     );
   };
 
-  const getStatusVariant = (status) => {
+  const getStatusVariant = status => {
     switch (status) {
-      case "confirmed":
-        return "success";
-      case "pending":
-        return "warning";
-      case "cancelled":
-        return "error";
-      case "rejected":
-        return "error";
+      case 'confirmed':
+        return 'success';
+      case 'pending':
+        return 'warning';
+      case 'cancelled':
+        return 'error';
+      case 'rejected':
+        return 'error';
       default:
-        return "default";
+        return 'default';
     }
   };
 
-  const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString("en-IN", {
-      weekday: "short",
-      year: "numeric",
-      month: "short",
-      day: "numeric",
+  const formatDate = dateString => {
+    return new Date(dateString).toLocaleDateString('en-IN', {
+      weekday: 'short',
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
     });
   };
 
@@ -219,9 +217,9 @@ const MyBookingsPage = () => {
   const getFilterCounts = () => {
     return {
       all: userBookings.length,
-      pending: userBookings.filter((b) => b.status === "pending").length,
-      confirmed: userBookings.filter((b) => b.status === "confirmed").length,
-      cancelled: userBookings.filter((b) => b.status === "cancelled").length,
+      pending: userBookings.filter(b => b.status === 'pending').length,
+      confirmed: userBookings.filter(b => b.status === 'confirmed').length,
+      cancelled: userBookings.filter(b => b.status === 'cancelled').length,
     };
   };
 
@@ -259,31 +257,31 @@ const MyBookingsPage = () => {
         <PageTitle>My Bookings</PageTitle>
 
         <FilterTabs>
-          <FilterTab active={filter === "all"} onClick={() => setFilter("all")}>
+          <FilterTab active={filter === 'all'} onClick={() => setFilter('all')}>
             All ({counts.all})
           </FilterTab>
           <FilterTab
-            active={filter === "pending"}
-            onClick={() => setFilter("pending")}
+            active={filter === 'pending'}
+            onClick={() => setFilter('pending')}
           >
             Pending ({counts.pending})
           </FilterTab>
           <FilterTab
-            active={filter === "confirmed"}
-            onClick={() => setFilter("confirmed")}
+            active={filter === 'confirmed'}
+            onClick={() => setFilter('confirmed')}
           >
             Confirmed ({counts.confirmed})
           </FilterTab>
           <FilterTab
-            active={filter === "cancelled"}
-            onClick={() => setFilter("cancelled")}
+            active={filter === 'cancelled'}
+            onClick={() => setFilter('cancelled')}
           >
             Cancelled ({counts.cancelled})
           </FilterTab>
         </FilterTabs>
 
         <BookingsGrid>
-          {filteredBookings.map((booking) => (
+          {filteredBookings.map(booking => (
             <BookingCard key={booking.id}>
               <CardContent>
                 <BookingHeader>
@@ -301,36 +299,36 @@ const MyBookingsPage = () => {
                   <DetailItem>
                     <FaCalendarAlt />
                     <div>
-                      <div style={{ fontWeight: "500" }}>Check-in</div>
+                      <div style={{ fontWeight: '500' }}>Check-in</div>
                       <div>{formatDate(booking.checkIn)}</div>
                     </div>
                   </DetailItem>
                   <DetailItem>
                     <FaCalendarAlt />
                     <div>
-                      <div style={{ fontWeight: "500" }}>Check-out</div>
+                      <div style={{ fontWeight: '500' }}>Check-out</div>
                       <div>{formatDate(booking.checkOut)}</div>
                     </div>
                   </DetailItem>
                   <DetailItem>
                     <FaUsers />
                     <div>
-                      <div style={{ fontWeight: "500" }}>Guests</div>
+                      <div style={{ fontWeight: '500' }}>Guests</div>
                       <div>
-                        {booking.guests} guest{booking.guests > 1 ? "s" : ""}
+                        {booking.guests} guest{booking.guests > 1 ? 's' : ''}
                       </div>
                     </div>
                   </DetailItem>
                   <DetailItem>
                     <FaCalendarAlt />
                     <div>
-                      <div style={{ fontWeight: "500" }}>Duration</div>
+                      <div style={{ fontWeight: '500' }}>Duration</div>
                       <div>
-                        {calculateNights(booking.checkIn, booking.checkOut)}{" "}
+                        {calculateNights(booking.checkIn, booking.checkOut)}{' '}
                         night
                         {calculateNights(booking.checkIn, booking.checkOut) > 1
-                          ? "s"
-                          : ""}
+                          ? 's'
+                          : ''}
                       </div>
                     </div>
                   </DetailItem>
@@ -354,7 +352,7 @@ const MyBookingsPage = () => {
                     Total: ₹{booking.totalPrice.toLocaleString()}
                   </TotalPrice>
                   <BookingActions>
-                    {booking.status === "pending" && (
+                    {booking.status === 'pending' && (
                       <Button
                         variant="danger"
                         size="small"

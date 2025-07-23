@@ -1,7 +1,15 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import { FaTimes, FaUser, FaPhone, FaEnvelope, FaComment, FaCheck, FaCar } from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import {
+  FaTimes,
+  FaUser,
+  FaPhone,
+  FaEnvelope,
+  FaComment,
+  FaCheck,
+  FaCar,
+} from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -137,7 +145,8 @@ const InputIcon = styled.div`
 
 const Input = styled.input`
   width: 100%;
-  padding: ${theme.spacing.md} ${theme.spacing.md} ${theme.spacing.md} ${theme.spacing.xxl};
+  padding: ${theme.spacing.md} ${theme.spacing.md} ${theme.spacing.md}
+    ${theme.spacing.xxl};
   border: 2px solid ${theme.colors.gray200};
   border-radius: ${theme.borderRadius.md};
   font-size: 1rem;
@@ -155,7 +164,8 @@ const Input = styled.input`
 
 const TextArea = styled.textarea`
   width: 100%;
-  padding: ${theme.spacing.md} ${theme.spacing.md} ${theme.spacing.md} ${theme.spacing.xxl};
+  padding: ${theme.spacing.md} ${theme.spacing.md} ${theme.spacing.md}
+    ${theme.spacing.xxl};
   border: 2px solid ${theme.colors.gray200};
   border-radius: ${theme.borderRadius.md};
   font-size: 1rem;
@@ -302,36 +312,31 @@ const SuccessText = styled.p`
   margin: 0 0 ${theme.spacing.xl} 0;
 `;
 
-const EnquiryModal = ({ 
-  isOpen, 
-  onClose, 
-  vehicle, 
-  userInfo = {} 
-}) => {
+const EnquiryModal = ({ isOpen, onClose, vehicle, userInfo = {} }) => {
   const [formData, setFormData] = useState({
-    name: userInfo.name || "",
-    phone: userInfo.phone || "",
-    email: userInfo.email || "",
-    message: "",
-    interestType: "purchase",
-    agreeToTerms: false
+    name: userInfo.name || '',
+    phone: userInfo.phone || '',
+    email: userInfo.email || '',
+    message: '',
+    interestType: 'purchase',
+    agreeToTerms: false,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [errors, setErrors] = useState({});
 
-  const handleInputChange = (e) => {
+  const handleInputChange = e => {
     const { name, value, type, checked } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: type === "checkbox" ? checked : value
+      [name]: type === 'checkbox' ? checked : value,
     }));
-    
+
     // Clear error when user starts typing
     if (errors[name]) {
       setErrors(prev => ({
         ...prev,
-        [name]: ""
+        [name]: '',
       }));
     }
   };
@@ -340,32 +345,32 @@ const EnquiryModal = ({
     const newErrors = {};
 
     if (!formData.name.trim()) {
-      newErrors.name = "Name is required";
+      newErrors.name = 'Name is required';
     }
 
     if (!formData.phone.trim()) {
-      newErrors.phone = "Phone number is required";
+      newErrors.phone = 'Phone number is required';
     } else if (!/^\+?[\d\s\-()]{10,}$/.test(formData.phone.trim())) {
-      newErrors.phone = "Please enter a valid phone number";
+      newErrors.phone = 'Please enter a valid phone number';
     }
 
     if (!formData.email.trim()) {
-      newErrors.email = "Email is required";
+      newErrors.email = 'Email is required';
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "Please enter a valid email address";
+      newErrors.email = 'Please enter a valid email address';
     }
 
     if (!formData.agreeToTerms) {
-      newErrors.agreeToTerms = "You must agree to the terms";
+      newErrors.agreeToTerms = 'You must agree to the terms';
     }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
@@ -375,7 +380,7 @@ const EnquiryModal = ({
     try {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1500));
-      
+
       // Here you would typically send the enquiry to your backend
       const enquiryData = {
         ...formData,
@@ -386,22 +391,26 @@ const EnquiryModal = ({
         vehicleMake: vehicle.make,
         vehicleModel: vehicle.model,
         timestamp: new Date().toISOString(),
-        status: "pending"
+        status: 'pending',
       };
 
-      
       // Store in localStorage for demo (in real app, this would be in your database)
-      const existingEnquiries = JSON.parse(localStorage.getItem("vehicleEnquiries") || "[]");
+      const existingEnquiries = JSON.parse(
+        localStorage.getItem('vehicleEnquiries') || '[]'
+      );
       const newEnquiry = {
         id: Date.now(),
-        ...enquiryData
+        ...enquiryData,
       };
-      localStorage.setItem("vehicleEnquiries", JSON.stringify([...existingEnquiries, newEnquiry]));
+      localStorage.setItem(
+        'vehicleEnquiries',
+        JSON.stringify([...existingEnquiries, newEnquiry])
+      );
 
       setIsSuccess(true);
     } catch (error) {
-      console.error("Error submitting enquiry:", error);
-      alert("Failed to submit enquiry. Please try again.");
+      console.error('Error submitting enquiry:', error);
+      alert('Failed to submit enquiry. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -411,22 +420,22 @@ const EnquiryModal = ({
     if (isSuccess) {
       setIsSuccess(false);
       setFormData({
-        name: userInfo.name || "",
-        phone: userInfo.phone || "",
-        email: userInfo.email || "",
-        message: "",
-        interestType: "purchase",
-        agreeToTerms: false
+        name: userInfo.name || '',
+        phone: userInfo.phone || '',
+        email: userInfo.email || '',
+        message: '',
+        interestType: 'purchase',
+        agreeToTerms: false,
       });
       setErrors({});
     }
     onClose();
   };
 
-  const formatPrice = (price) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
+  const formatPrice = price => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(price);
@@ -436,10 +445,10 @@ const EnquiryModal = ({
 
   return (
     <ModalOverlay onClick={handleClose}>
-      <ModalContainer onClick={(e) => e.stopPropagation()}>
+      <ModalContainer onClick={e => e.stopPropagation()}>
         <ModalHeader>
           <ModalTitle>
-            {isSuccess ? "Enquiry Submitted!" : "Vehicle Enquiry"}
+            {isSuccess ? 'Enquiry Submitted!' : 'Vehicle Enquiry'}
           </ModalTitle>
           <CloseButton onClick={handleClose}>
             <FaTimes />
@@ -454,8 +463,9 @@ const EnquiryModal = ({
               </SuccessIcon>
               <SuccessTitle>Enquiry Sent Successfully!</SuccessTitle>
               <SuccessText>
-                Thank you for your interest in the {vehicle.year} {vehicle.make} {vehicle.model}. 
-                The dealer will contact you soon via phone or email with pricing details and availability.
+                Thank you for your interest in the {vehicle.year} {vehicle.make}{' '}
+                {vehicle.model}. The dealer will contact you soon via phone or
+                email with pricing details and availability.
               </SuccessText>
               <SubmitButton onClick={handleClose}>
                 Continue Browsing
@@ -466,9 +476,14 @@ const EnquiryModal = ({
               <VehicleInfo>
                 <VehicleImage src={vehicle.image} alt={vehicle.name} />
                 <VehicleDetails>
-                  <VehicleName>{vehicle.year} {vehicle.make} {vehicle.model}</VehicleName>
+                  <VehicleName>
+                    {vehicle.year} {vehicle.make} {vehicle.model}
+                  </VehicleName>
                   <VehiclePrice>{formatPrice(vehicle.price)}</VehiclePrice>
-                  <VehicleYear>{vehicle.trim} • {vehicle.condition === "new" ? "New" : "Used"}</VehicleYear>
+                  <VehicleYear>
+                    {vehicle.trim} •{' '}
+                    {vehicle.condition === 'new' ? 'New' : 'Used'}
+                  </VehicleYear>
                 </VehicleDetails>
               </VehicleInfo>
 
@@ -489,12 +504,16 @@ const EnquiryModal = ({
                       onChange={handleInputChange}
                       placeholder="Enter your full name"
                       style={{
-                        borderColor: errors.name ? theme.colors.error : undefined
+                        borderColor: errors.name
+                          ? theme.colors.error
+                          : undefined,
                       }}
                     />
                   </InputWrapper>
                   {errors.name && (
-                    <span style={{ color: theme.colors.error, fontSize: "0.9rem" }}>
+                    <span
+                      style={{ color: theme.colors.error, fontSize: '0.9rem' }}
+                    >
                       {errors.name}
                     </span>
                   )}
@@ -516,12 +535,16 @@ const EnquiryModal = ({
                       onChange={handleInputChange}
                       placeholder="Enter your phone number"
                       style={{
-                        borderColor: errors.phone ? theme.colors.error : undefined
+                        borderColor: errors.phone
+                          ? theme.colors.error
+                          : undefined,
                       }}
                     />
                   </InputWrapper>
                   {errors.phone && (
-                    <span style={{ color: theme.colors.error, fontSize: "0.9rem" }}>
+                    <span
+                      style={{ color: theme.colors.error, fontSize: '0.9rem' }}
+                    >
                       {errors.phone}
                     </span>
                   )}
@@ -543,12 +566,16 @@ const EnquiryModal = ({
                       onChange={handleInputChange}
                       placeholder="Enter your email address"
                       style={{
-                        borderColor: errors.email ? theme.colors.error : undefined
+                        borderColor: errors.email
+                          ? theme.colors.error
+                          : undefined,
                       }}
                     />
                   </InputWrapper>
                   {errors.email && (
-                    <span style={{ color: theme.colors.error, fontSize: "0.9rem" }}>
+                    <span
+                      style={{ color: theme.colors.error, fontSize: '0.9rem' }}
+                    >
                       {errors.email}
                     </span>
                   )}
@@ -565,7 +592,7 @@ const EnquiryModal = ({
                         type="radio"
                         name="interestType"
                         value="purchase"
-                        checked={formData.interestType === "purchase"}
+                        checked={formData.interestType === 'purchase'}
                         onChange={handleInputChange}
                       />
                       Purchasing this vehicle
@@ -575,7 +602,7 @@ const EnquiryModal = ({
                         type="radio"
                         name="interestType"
                         value="financing"
-                        checked={formData.interestType === "financing"}
+                        checked={formData.interestType === 'financing'}
                         onChange={handleInputChange}
                       />
                       Financing options
@@ -585,7 +612,7 @@ const EnquiryModal = ({
                         type="radio"
                         name="interestType"
                         value="trade"
-                        checked={formData.interestType === "trade"}
+                        checked={formData.interestType === 'trade'}
                         onChange={handleInputChange}
                       />
                       Trade-in value
@@ -595,7 +622,7 @@ const EnquiryModal = ({
                         type="radio"
                         name="interestType"
                         value="test-drive"
-                        checked={formData.interestType === "test-drive"}
+                        checked={formData.interestType === 'test-drive'}
                         onChange={handleInputChange}
                       />
                       Scheduling test drive
@@ -630,12 +657,16 @@ const EnquiryModal = ({
                     onChange={handleInputChange}
                   />
                   <CheckboxLabel htmlFor="agreeToTerms">
-                    I agree to share my contact information with the dealer and receive communications about this vehicle. 
-                    By submitting this enquiry, I consent to the processing of my personal data.
+                    I agree to share my contact information with the dealer and
+                    receive communications about this vehicle. By submitting
+                    this enquiry, I consent to the processing of my personal
+                    data.
                   </CheckboxLabel>
                 </CheckboxWrapper>
                 {errors.agreeToTerms && (
-                  <span style={{ color: theme.colors.error, fontSize: "0.9rem" }}>
+                  <span
+                    style={{ color: theme.colors.error, fontSize: '0.9rem' }}
+                  >
                     {errors.agreeToTerms}
                   </span>
                 )}
@@ -645,7 +676,7 @@ const EnquiryModal = ({
                     Cancel
                   </CancelButton>
                   <SubmitButton type="submit" disabled={isSubmitting}>
-                    {isSubmitting ? "Sending..." : "Send Enquiry"}
+                    {isSubmitting ? 'Sending...' : 'Send Enquiry'}
                   </SubmitButton>
                 </ButtonGroup>
               </Form>

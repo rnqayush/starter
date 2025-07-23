@@ -1,6 +1,6 @@
-import React from "react";
-import styled from "styled-components";
-import { theme, media } from "../../../styles/GlobalStyle";
+import React from 'react';
+import styled from 'styled-components';
+import { theme, media } from '../../../styles/GlobalStyle';
 
 const FieldContainer = styled.div`
   margin-bottom: ${theme.spacing.lg};
@@ -29,12 +29,12 @@ const RequiredMark = styled.span`
 `;
 
 const Input = styled.input.withConfig({
-  shouldForwardProp: (prop) => prop !== "hasError",
+  shouldForwardProp: prop => prop !== 'hasError',
 })`
   width: 100%;
   padding: ${theme.spacing.md};
   border: 1px solid
-    ${(props) => (props.hasError ? theme.colors.error : theme.colors.gray300)};
+    ${props => (props.hasError ? theme.colors.error : theme.colors.gray300)};
   border-radius: ${theme.borderRadius.md};
   font-size: 0.9rem;
   background: ${theme.colors.white};
@@ -43,13 +43,13 @@ const Input = styled.input.withConfig({
 
   &:focus {
     outline: none;
-    border-color: ${(props) =>
+    border-color: ${props =>
       props.hasError ? theme.colors.error : theme.colors.primary};
     box-shadow: 0 0 0 3px
-      ${(props) =>
+      ${props =>
         props.hasError
-          ? theme.colors.error + "20"
-          : theme.colors.primary + "20"};
+          ? theme.colors.error + '20'
+          : theme.colors.primary + '20'};
   }
 
   &:disabled {
@@ -70,12 +70,12 @@ const Input = styled.input.withConfig({
 `;
 
 const Textarea = styled.textarea.withConfig({
-  shouldForwardProp: (prop) => prop !== "hasError",
+  shouldForwardProp: prop => prop !== 'hasError',
 })`
   width: 100%;
   padding: ${theme.spacing.md};
   border: 1px solid
-    ${(props) => (props.hasError ? theme.colors.error : theme.colors.gray300)};
+    ${props => (props.hasError ? theme.colors.error : theme.colors.gray300)};
   border-radius: ${theme.borderRadius.md};
   font-size: 0.9rem;
   background: ${theme.colors.white};
@@ -86,13 +86,13 @@ const Textarea = styled.textarea.withConfig({
 
   &:focus {
     outline: none;
-    border-color: ${(props) =>
+    border-color: ${props =>
       props.hasError ? theme.colors.error : theme.colors.primary};
     box-shadow: 0 0 0 3px
-      ${(props) =>
+      ${props =>
         props.hasError
-          ? theme.colors.error + "20"
-          : theme.colors.primary + "20"};
+          ? theme.colors.error + '20'
+          : theme.colors.primary + '20'};
   }
 
   &:disabled {
@@ -114,12 +114,12 @@ const Textarea = styled.textarea.withConfig({
 `;
 
 const Select = styled.select.withConfig({
-  shouldForwardProp: (prop) => prop !== "hasError",
+  shouldForwardProp: prop => prop !== 'hasError',
 })`
   width: 100%;
   padding: ${theme.spacing.md};
   border: 1px solid
-    ${(props) => (props.hasError ? theme.colors.error : theme.colors.gray300)};
+    ${props => (props.hasError ? theme.colors.error : theme.colors.gray300)};
   border-radius: ${theme.borderRadius.md};
   font-size: 0.9rem;
   background: ${theme.colors.white};
@@ -129,13 +129,13 @@ const Select = styled.select.withConfig({
 
   &:focus {
     outline: none;
-    border-color: ${(props) =>
+    border-color: ${props =>
       props.hasError ? theme.colors.error : theme.colors.primary};
     box-shadow: 0 0 0 3px
-      ${(props) =>
+      ${props =>
         props.hasError
-          ? theme.colors.error + "20"
-          : theme.colors.primary + "20"};
+          ? theme.colors.error + '20'
+          : theme.colors.primary + '20'};
   }
 
   &:disabled {
@@ -179,7 +179,7 @@ const HelpText = styled.span`
 
 const FormField = ({
   label,
-  type = "text",
+  type = 'text',
   name,
   value,
   onChange,
@@ -193,13 +193,13 @@ const FormField = ({
   children,
   ...props
 }) => {
-    const renderInput = () => {
+  const renderInput = () => {
     // If children are provided, render them instead of input elements
     if (children) {
       return children;
     }
 
-    if (type === "textarea") {
+    if (type === 'textarea') {
       return (
         <Textarea
           name={name}
@@ -215,7 +215,7 @@ const FormField = ({
       );
     }
 
-    if (type === "select") {
+    if (type === 'select') {
       return (
         <Select
           name={name}
@@ -227,7 +227,7 @@ const FormField = ({
           {...props}
         >
           <option value="">Select an option</option>
-          {options.map((option) => (
+          {options.map(option => (
             <option key={option.value} value={option.value}>
               {option.label}
             </option>

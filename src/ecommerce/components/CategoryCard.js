@@ -1,8 +1,8 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import styled from "styled-components";
-import { FaArrowRight } from "react-icons/fa";
-import { theme, media } from "../../styles/GlobalStyle";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+import { FaArrowRight } from 'react-icons/fa';
+import { theme, media } from '../../styles/GlobalStyle';
 
 const Card = styled(Link)`
   display: block;
@@ -170,8 +170,8 @@ const CategoryDescription = styled.p`
   }
 `;
 
-const CategoryCard = ({ category, storeSlug = "" }) => {
-  const getBaseUrl = () => (storeSlug ? `/${storeSlug}` : "/ecommerce");
+const CategoryCard = ({ category, storeSlug = '' }) => {
+  const getBaseUrl = () => (storeSlug ? `/${storeSlug}` : '/ecommerce');
 
   return (
     <Card to={`${getBaseUrl()}/products?category=${category.slug}`}>

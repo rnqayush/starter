@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { useParams, Link } from "react-router-dom";
-import styled from "styled-components";
+import React, { useState } from 'react';
+import { useParams, Link } from 'react-router-dom';
+import styled from 'styled-components';
 import {
   FaArrowLeft,
   FaUsers,
@@ -8,13 +8,13 @@ import {
   FaWifi,
   FaTv,
   FaSnowflake,
-} from "react-icons/fa";
-import Header from "../shared/Header";
-import { Button } from "../shared/Button";
-import { Card, CardContent, Badge } from "../shared/Card";
-import { Input, FormGroup, Label, InputGroup } from "../shared/Input";
-import { theme } from "../../styles/GlobalStyle";
-import { useAppContext } from "../../context/AppContext";
+} from 'react-icons/fa';
+import Header from '../shared/Header';
+import { Button } from '../shared/Button';
+import { Card, CardContent, Badge } from '../shared/Card';
+import { Input, FormGroup, Label, InputGroup } from '../shared/Input';
+import { theme } from '../../styles/GlobalStyle';
+import { useAppContext } from '../../context/AppContext';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -71,16 +71,16 @@ const ThumbnailRow = styled.div`
 `;
 
 const Thumbnail = styled.img.withConfig({
-  shouldForwardProp: (prop) => prop !== "active",
+  shouldForwardProp: prop => prop !== 'active',
 })`
   width: 80px;
   height: 60px;
   object-fit: cover;
   border-radius: ${theme.borderRadius.sm};
   cursor: pointer;
-  opacity: ${(props) => (props.active ? 1 : 0.7)};
+  opacity: ${props => (props.active ? 1 : 0.7)};
   border: 2px solid
-    ${(props) => (props.active ? theme.colors.primary : "transparent")};
+    ${props => (props.active ? theme.colors.primary : 'transparent')};
   transition: all 0.2s ease;
 
   &:hover {
@@ -171,7 +171,7 @@ const BookingForm = styled.form`
   gap: ${theme.spacing.lg};
 `;
 
-const getAmenityIcon = (amenity) => {
+const getAmenityIcon = amenity => {
   const icons = {
     WiFi: <FaWifi />,
     TV: <FaTv />,
@@ -185,19 +185,19 @@ const RoomPage = () => {
   const { hotels } = useAppContext();
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [bookingData, setBookingData] = useState({
-    checkIn: "",
-    checkOut: "",
-    guests: "2",
+    checkIn: '',
+    checkOut: '',
+    guests: '2',
   });
 
-  const hotel = hotels.find((h) => h.id === parseInt(hotelId));
-  const room = hotel?.rooms.find((r) => r.id === parseInt(roomId));
+  const hotel = hotels.find(h => h.id === parseInt(hotelId));
+  const room = hotel?.rooms.find(r => r.id === parseInt(roomId));
 
   if (!hotel || !room) {
     return <div>Room not found</div>;
   }
 
-  const handleInputChange = (e) => {
+  const handleInputChange = e => {
     setBookingData({
       ...bookingData,
       [e.target.name]: e.target.value,
@@ -266,7 +266,7 @@ const RoomPage = () => {
             <AmenitiesSection>
               <SectionTitle>Room Amenities</SectionTitle>
               <AmenitiesList>
-                {room.amenities.map((amenity) => (
+                {room.amenities.map(amenity => (
                   <Badge key={amenity} variant="primary">
                     {getAmenityIcon(amenity)} {amenity}
                   </Badge>
@@ -331,23 +331,23 @@ const RoomPage = () => {
                   >
                     <div
                       style={{
-                        display: "flex",
-                        justifyContent: "space-between",
+                        display: 'flex',
+                        justifyContent: 'space-between',
                         marginBottom: theme.spacing.sm,
                       }}
                     >
                       <span>
-                        ₹{room.price.toLocaleString()} x {calculateNights()}{" "}
+                        ₹{room.price.toLocaleString()} x {calculateNights()}{' '}
                         nights
                       </span>
                       <span>₹{calculateTotal().toLocaleString()}</span>
                     </div>
                     <div
                       style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        fontWeight: "bold",
-                        fontSize: "1.125rem",
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        fontWeight: 'bold',
+                        fontSize: '1.125rem',
                       }}
                     >
                       <span>Total</span>
@@ -361,7 +361,7 @@ const RoomPage = () => {
                   to={`/booking/${hotelId}/${roomId}?checkIn=${bookingData.checkIn}&checkOut=${bookingData.checkOut}&guests=${bookingData.guests}`}
                   size="large"
                   disabled={!bookingData.checkIn || !bookingData.checkOut}
-                  style={{ width: "100%" }}
+                  style={{ width: '100%' }}
                 >
                   Book Now
                 </Button>

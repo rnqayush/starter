@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { useSearchParams, useLocation } from "react-router-dom";
-import styled from "styled-components";
-import { FaTh, FaList, FaTimes } from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import ProductCard from "../components/ProductCard";
-import LoadingSpinner from "../components/LoadingSpinner";
-import { products, categories, getProductsByCategory } from "../data/products";
-import { getVendorByIdOrSlug } from "../data/vendors";
+import React, { useState, useEffect } from 'react';
+import { useSearchParams, useLocation } from 'react-router-dom';
+import styled from 'styled-components';
+import { FaTh, FaList, FaTimes } from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
+import ProductCard from '../components/ProductCard';
+import LoadingSpinner from '../components/LoadingSpinner';
+import { products, categories, getProductsByCategory } from '../data/products';
+import { getVendorByIdOrSlug } from '../data/vendors';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -109,19 +109,18 @@ const ViewToggle = styled.div`
 `;
 
 const ViewButton = styled.button.withConfig({
-  shouldForwardProp: (prop) => prop !== "active",
+  shouldForwardProp: prop => prop !== 'active',
 })`
   padding: ${theme.spacing.sm} ${theme.spacing.md};
-  background: ${(props) =>
+  background: ${props =>
     props.active ? theme.colors.primary : theme.colors.white};
-  color: ${(props) =>
-    props.active ? theme.colors.white : theme.colors.gray700};
+  color: ${props => (props.active ? theme.colors.white : theme.colors.gray700)};
   border: none;
   cursor: pointer;
   transition: all 0.2s ease;
 
   &:hover {
-    background: ${(props) =>
+    background: ${props =>
       props.active ? theme.colors.primaryDark : theme.colors.gray100};
   }
 `;
@@ -159,11 +158,11 @@ const RemoveFilterButton = styled.button`
 `;
 
 const ProductsGrid = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "view",
+  shouldForwardProp: prop => prop !== 'view',
 })`
   display: grid;
-  grid-template-columns: ${(props) =>
-    props.view === "list" ? "1fr" : "repeat(auto-fill, minmax(280px, 1fr))"};
+  grid-template-columns: ${props =>
+    props.view === 'list' ? '1fr' : 'repeat(auto-fill, minmax(280px, 1fr))'};
   gap: ${theme.spacing.xl};
   margin-bottom: ${theme.spacing.xl};
 
@@ -205,22 +204,22 @@ const ClearFiltersButton = styled.button`
   }
 `;
 
-const Products = () => {
+const ProductList = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const location = useLocation();
   const [filteredProducts, setFilteredProducts] = useState([]);
-  const [sortBy, setSortBy] = useState("name");
-  const [view, setView] = useState("grid");
-    const [loading, setLoading] = useState(true);
-  const [storeSlug, setStoreSlug] = useState("");
+  const [sortBy, setSortBy] = useState('name');
+  const [view, setView] = useState('grid');
+  const [loading, setLoading] = useState(true);
+  const [storeSlug, setStoreSlug] = useState('');
   const [vendor, setVendor] = useState(null);
 
   // Detect store slug from URL
   useEffect(() => {
     const path = location.pathname;
-    if (path !== "/ecommerce/products") {
+    if (path !== '/ecommerce/products') {
       // Extract store slug from URL like "/techmart-downtown/products"
-      const pathSegments = path.split("/").filter(Boolean);
+      const pathSegments = path.split('/').filter(Boolean);
       const slug = pathSegments[0];
       const foundVendor = getVendorByIdOrSlug(slug);
       if (foundVendor) {
@@ -231,10 +230,10 @@ const Products = () => {
   }, [location.pathname]);
 
   // Get URL parameters
-  const category = searchParams.get("category");
-  const searchQuery = searchParams.get("search");
-  const featured = searchParams.get("featured");
-  const sale = searchParams.get("sale");
+  const category = searchParams.get('category');
+  const searchQuery = searchParams.get('search');
+  const featured = searchParams.get('featured');
+  const sale = searchParams.get('sale');
 
   useEffect(() => {
     setLoading(true);
@@ -249,33 +248,33 @@ const Products = () => {
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
       result = result.filter(
-        (product) =>
+        product =>
           product.name.toLowerCase().includes(query) ||
           product.description.toLowerCase().includes(query) ||
-          product.category.toLowerCase().includes(query),
+          product.category.toLowerCase().includes(query)
       );
     }
 
     // Filter by featured
-    if (featured === "true") {
-      result = result.filter((product) => product.featured);
+    if (featured === 'true') {
+      result = result.filter(product => product.featured);
     }
 
     // Filter by sale
-    if (sale === "true") {
-      result = result.filter((product) => product.onSale);
+    if (sale === 'true') {
+      result = result.filter(product => product.onSale);
     }
 
     // Sort products
     result.sort((a, b) => {
       switch (sortBy) {
-        case "price-low":
+        case 'price-low':
           return a.price - b.price;
-        case "price-high":
+        case 'price-high':
           return b.price - a.price;
-        case "rating":
+        case 'rating':
           return b.rating - a.rating;
-        case "newest":
+        case 'newest':
           return b.id - a.id;
         default:
           return a.name.localeCompare(b.name);
@@ -286,36 +285,34 @@ const Products = () => {
     setLoading(false);
   }, [category, searchQuery, featured, sale, sortBy]);
 
-  
-
   const getPageTitle = () => {
     if (searchQuery) return `Search Results for "${searchQuery}"`;
     if (category) {
-      const cat = categories.find((c) => c.slug === category);
-      return cat ? cat.name : "Products";
+      const cat = categories.find(c => c.slug === category);
+      return cat ? cat.name : 'Products';
     }
-    if (featured === "true") return "Featured Products";
-    if (sale === "true") return "Sale Items";
-    return "All Products";
+    if (featured === 'true') return 'Featured Products';
+    if (sale === 'true') return 'Sale Items';
+    return 'All Products';
   };
 
   const getActiveFilters = () => {
     const filters = [];
     if (category) {
-      const cat = categories.find((c) => c.slug === category);
+      const cat = categories.find(c => c.slug === category);
       if (cat)
-        filters.push({ type: "category", value: cat.name, param: "category" });
+        filters.push({ type: 'category', value: cat.name, param: 'category' });
     }
     if (searchQuery)
-      filters.push({ type: "search", value: searchQuery, param: "search" });
-    if (featured === "true")
-      filters.push({ type: "featured", value: "Featured", param: "featured" });
-    if (sale === "true")
-      filters.push({ type: "sale", value: "On Sale", param: "sale" });
+      filters.push({ type: 'search', value: searchQuery, param: 'search' });
+    if (featured === 'true')
+      filters.push({ type: 'featured', value: 'Featured', param: 'featured' });
+    if (sale === 'true')
+      filters.push({ type: 'sale', value: 'On Sale', param: 'sale' });
     return filters;
   };
 
-  const removeFilter = (param) => {
+  const removeFilter = param => {
     const newParams = new URLSearchParams(searchParams);
     newParams.delete(param);
     setSearchParams(newParams);
@@ -325,12 +322,12 @@ const Products = () => {
     setSearchParams({});
   };
 
-  const setCategoryFilter = (categorySlug) => {
+  const setCategoryFilter = categorySlug => {
     const newParams = new URLSearchParams(searchParams);
     if (categorySlug) {
-      newParams.set("category", categorySlug);
+      newParams.set('category', categorySlug);
     } else {
-      newParams.delete("category");
+      newParams.delete('category');
     }
     setSearchParams(newParams);
   };
@@ -339,10 +336,10 @@ const Products = () => {
 
   if (loading) {
     return (
-            <PageContainer>
+      <PageContainer>
         <Navbar
-          storeName={vendor?.name || ""}
-          storeLogo={vendor?.logo || ""}
+          storeName={vendor?.name || ''}
+          storeLogo={vendor?.logo || ''}
           storeSlug={storeSlug}
           theme={vendor?.theme || {}}
         />
@@ -353,10 +350,10 @@ const Products = () => {
   }
 
   return (
-        <PageContainer>
+    <PageContainer>
       <Navbar
-        storeName={vendor?.name || ""}
-        storeLogo={vendor?.logo || ""}
+        storeName={vendor?.name || ''}
+        storeLogo={vendor?.logo || ''}
         storeSlug={storeSlug}
         theme={vendor?.theme || {}}
       />
@@ -366,22 +363,22 @@ const Products = () => {
           <PageTitle>{getPageTitle()}</PageTitle>
           <ResultsInfo>
             Showing {filteredProducts.length} product
-            {filteredProducts.length !== 1 ? "s" : ""}
+            {filteredProducts.length !== 1 ? 's' : ''}
           </ResultsInfo>
         </PageHeader>
 
         <FiltersBar>
           <FilterGroup>
             <FilterButton
-              className={!category ? "active" : ""}
-              onClick={() => setCategoryFilter("")}
+              className={!category ? 'active' : ''}
+              onClick={() => setCategoryFilter('')}
             >
               All
             </FilterButton>
-            {categories.map((cat) => (
+            {categories.map(cat => (
               <FilterButton
                 key={cat.id}
-                className={category === cat.slug ? "active" : ""}
+                className={category === cat.slug ? 'active' : ''}
                 onClick={() => setCategoryFilter(cat.slug)}
               >
                 {cat.name}
@@ -390,7 +387,7 @@ const Products = () => {
           </FilterGroup>
 
           <FilterGroup>
-            <Select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+            <Select value={sortBy} onChange={e => setSortBy(e.target.value)}>
               <option value="name">Sort by Name</option>
               <option value="price-low">Price: Low to High</option>
               <option value="price-high">Price: High to Low</option>
@@ -400,15 +397,15 @@ const Products = () => {
 
             <ViewToggle>
               <ViewButton
-                active={view === "grid"}
-                onClick={() => setView("grid")}
+                active={view === 'grid'}
+                onClick={() => setView('grid')}
                 title="Grid View"
               >
                 <FaTh />
               </ViewButton>
               <ViewButton
-                active={view === "list"}
-                onClick={() => setView("list")}
+                active={view === 'list'}
+                onClick={() => setView('list')}
                 title="List View"
               >
                 <FaList />
@@ -434,8 +431,8 @@ const Products = () => {
         )}
 
         {filteredProducts.length > 0 ? (
-                    <ProductsGrid view={view}>
-            {filteredProducts.map((product) => (
+          <ProductsGrid view={view}>
+            {filteredProducts.map(product => (
               <ProductCard
                 key={product.id}
                 product={product}
@@ -459,4 +456,4 @@ const Products = () => {
   );
 };
 
-export default Products;
+export default ProductList;

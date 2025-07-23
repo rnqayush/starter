@@ -1,8 +1,8 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import styled from "styled-components";
-import { FaPlus, FaEdit, FaTrash, FaBed, FaEye } from "react-icons/fa";
-import Sidebar from "./Sidebar";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+import { FaPlus, FaEdit, FaTrash, FaBed, FaEye } from 'react-icons/fa';
+import Sidebar from './Sidebar';
 import {
   Card,
   CardImage,
@@ -11,10 +11,10 @@ import {
   CardSubtitle,
   Badge,
   CardActions,
-} from "../shared/Card";
-import { Button } from "../shared/Button";
-import { theme } from "../../styles/GlobalStyle";
-import { useAppContext } from "../../context/AppContext";
+} from '../shared/Card';
+import { Button } from '../shared/Button';
+import { theme } from '../../styles/GlobalStyle';
+import { useAppContext } from '../../context/AppContext';
 
 const PageContainer = styled.div`
   display: flex;
@@ -114,9 +114,9 @@ const EmptyMessage = styled.p`
 const MyHotelsPage = () => {
   const { ownerHotels, setOwnerHotels } = useAppContext();
 
-  const handleDeleteHotel = (hotelId) => {
-    if (window.confirm("Are you sure you want to delete this hotel?")) {
-      setOwnerHotels((prev) => prev.filter((hotel) => hotel.id !== hotelId));
+  const handleDeleteHotel = hotelId => {
+    if (window.confirm('Are you sure you want to delete this hotel?')) {
+      setOwnerHotels(prev => prev.filter(hotel => hotel.id !== hotelId));
     }
   };
 
@@ -166,7 +166,7 @@ const MyHotelsPage = () => {
         </PageHeader>
 
         <HotelsGrid>
-          {ownerHotels.map((hotel) => (
+          {ownerHotels.map(hotel => (
             <HotelCard key={hotel.id}>
               <CardImage src={hotel.image} height="200px" />
               <CardContent>
@@ -176,7 +176,7 @@ const MyHotelsPage = () => {
                     <CardSubtitle>{hotel.location}</CardSubtitle>
                   </HotelDetails>
                   <Badge
-                    variant={hotel.status === "active" ? "success" : "warning"}
+                    variant={hotel.status === 'active' ? 'success' : 'warning'}
                   >
                     {hotel.status}
                   </Badge>

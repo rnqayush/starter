@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
-import styled from "styled-components";
+import React, { useEffect } from 'react';
+import { Link, useLocation, useParams } from 'react-router-dom';
+import styled from 'styled-components';
 import {
   FaCheckCircle,
   FaCalendarAlt,
@@ -10,10 +10,10 @@ import {
   FaPrint,
   FaDownload,
   FaHotel,
-} from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
-import HotelNavbar from "../components/HotelNavbar";
-import HotelFooter from "../components/HotelFooter";
+} from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
+import HotelNavbar from '../components/HotelNavbar';
+import HotelFooter from '../components/HotelFooter';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -159,14 +159,14 @@ const ActionButtons = styled.div`
 `;
 
 const ActionButton = styled.button.withConfig({
-  shouldForwardProp: (prop) => prop !== "primary",
+  shouldForwardProp: prop => prop !== 'primary',
 })`
-  background: ${(props) =>
+  background: ${props =>
     props.primary ? theme.colors.primary : theme.colors.white};
-  color: ${(props) =>
+  color: ${props =>
     props.primary ? theme.colors.white : theme.colors.gray700};
   border: 2px solid
-    ${(props) => (props.primary ? theme.colors.primary : theme.colors.gray200)};
+    ${props => (props.primary ? theme.colors.primary : theme.colors.gray200)};
   padding: ${theme.spacing.md} ${theme.spacing.lg};
   border-radius: ${theme.borderRadius.md};
   font-weight: 600;
@@ -177,7 +177,7 @@ const ActionButton = styled.button.withConfig({
   gap: ${theme.spacing.sm};
 
   &:hover {
-    background: ${(props) =>
+    background: ${props =>
       props.primary ? theme.colors.primaryDark : theme.colors.gray50};
     transform: translateY(-1px);
   }
@@ -278,15 +278,15 @@ const BookingConfirmation = () => {
   const location = useLocation();
   const booking = location.state?.booking || {
     id: Date.now(),
-    hotelName: "Sample Hotel",
-    roomName: "Sample Room",
-    checkIn: new Date().toISOString().split("T")[0],
-    checkOut: new Date(Date.now() + 86400000).toISOString().split("T")[0],
+    hotelName: 'Sample Hotel',
+    roomName: 'Sample Room',
+    checkIn: new Date().toISOString().split('T')[0],
+    checkOut: new Date(Date.now() + 86400000).toISOString().split('T')[0],
     guests: 2,
-    firstName: "John",
-    lastName: "Doe",
-    email: "john@example.com",
-    phone: "+91 9876543210",
+    firstName: 'John',
+    lastName: 'Doe',
+    email: 'john@example.com',
+    phone: '+91 9876543210',
     totalPrice: 10000,
   };
 
@@ -301,15 +301,15 @@ const BookingConfirmation = () => {
 
   const handleDownload = () => {
     // Mock download functionality
-    alert("Booking confirmation download would start here");
+    alert('Booking confirmation download would start here');
   };
 
-  const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
+  const formatDate = dateString => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
     });
   };
 
@@ -400,17 +400,17 @@ const BookingConfirmation = () => {
                   {booking.firstName} {booking.lastName}
                 </strong>
                 <br />
-                {booking.guests} Guest{booking.guests > 1 ? "s" : ""} •{" "}
-                {calculateNights()} Night{calculateNights() > 1 ? "s" : ""}
+                {booking.guests} Guest{booking.guests > 1 ? 's' : ''} •{' '}
+                {calculateNights()} Night{calculateNights() > 1 ? 's' : ''}
               </div>
             </InfoCard>
           </InfoGrid>
 
           <div
             style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
               paddingTop: theme.spacing.lg,
               borderTop: `1px solid ${theme.colors.gray200}`,
             }}
@@ -418,7 +418,7 @@ const BookingConfirmation = () => {
             <div>
               <div
                 style={{
-                  fontSize: "0.9rem",
+                  fontSize: '0.9rem',
                   color: theme.colors.gray600,
                   marginBottom: theme.spacing.xs,
                 }}
@@ -427,8 +427,8 @@ const BookingConfirmation = () => {
               </div>
               <div
                 style={{
-                  fontSize: "1.5rem",
-                  fontWeight: "700",
+                  fontSize: '1.5rem',
+                  fontWeight: '700',
                   color: theme.colors.primary,
                 }}
               >

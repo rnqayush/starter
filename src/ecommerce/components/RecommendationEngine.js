@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import { FaFire, FaEye, FaHeart, FaThumbsUp } from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
-import ProductCard from "./ProductCard";
-import { products } from "../data/products";
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import { FaFire, FaEye, FaHeart, FaThumbsUp } from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
+import ProductCard from './ProductCard';
+import { products } from '../data/products';
 
 const RecommendationContainer = styled.div`
   margin: ${theme.spacing.xl} 0;
@@ -60,17 +60,17 @@ const ProductGrid = styled.div`
   }
 `;
 
-const RecommendationEngine = ({ 
-  currentProduct = null, 
-  userBehavior = {}, 
-  storeSlug = "",
-  maxRecommendations = 4 
+const RecommendationEngine = ({
+  currentProduct = null,
+  userBehavior = {},
+  storeSlug = '',
+  maxRecommendations = 4,
 }) => {
   const [recommendations, setRecommendations] = useState({
     trending: [],
     similar: [],
     viewed: [],
-    collaborative: []
+    collaborative: [],
   });
 
   useEffect(() => {
@@ -88,9 +88,10 @@ const RecommendationEngine = ({
       if (currentProduct) {
         // Similar products (same category)
         similar = products
-          .filter(p =>
-            p.categoryId === currentProduct.categoryId &&
-            p.id !== currentProduct.id
+          .filter(
+            p =>
+              p.categoryId === currentProduct.categoryId &&
+              p.id !== currentProduct.id
           )
           .sort((a, b) => {
             // Sort by price similarity and rating
@@ -102,22 +103,26 @@ const RecommendationEngine = ({
 
         // Collaborative filtering (people who viewed this also viewed)
         collaborative = products
-          .filter(p =>
-            p.id !== currentProduct.id &&
-            (p.categoryId === currentProduct.categoryId ||
-             Math.abs(p.price - currentProduct.price) < 100)
+          .filter(
+            p =>
+              p.id !== currentProduct.id &&
+              (p.categoryId === currentProduct.categoryId ||
+                Math.abs(p.price - currentProduct.price) < 100)
           )
           .sort((a, b) => b.rating - a.rating)
           .slice(0, maxRecommendations);
       }
 
       // Recently viewed products (from localStorage)
-      const recentlyViewed = JSON.parse(localStorage.getItem("recentlyViewed") || "[]");
+      const recentlyViewed = JSON.parse(
+        localStorage.getItem('recentlyViewed') || '[]'
+      );
       if (recentlyViewed.length > 0) {
         viewed = products
-          .filter(p =>
-            recentlyViewed.includes(p.id) &&
-            (!currentProduct || p.id !== currentProduct.id)
+          .filter(
+            p =>
+              recentlyViewed.includes(p.id) &&
+              (!currentProduct || p.id !== currentProduct.id)
           )
           .slice(0, maxRecommendations);
       }
@@ -126,57 +131,66 @@ const RecommendationEngine = ({
         trending,
         similar,
         viewed,
-        collaborative
+        collaborative,
       });
     };
 
     generateRecommendations();
   }, [currentProduct, userBehavior, maxRecommendations]);
 
-  const trackProductView = (productId) => {
+  const trackProductView = productId => {
     // Track product views for future recommendations
-    const recentlyViewed = JSON.parse(localStorage.getItem("recentlyViewed") || "[]");
-    const updatedViewed = [productId, ...recentlyViewed.filter(id => id !== productId)].slice(0, 10);
-    localStorage.setItem("recentlyViewed", JSON.stringify(updatedViewed));
+    const recentlyViewed = JSON.parse(
+      localStorage.getItem('recentlyViewed') || '[]'
+    );
+    const updatedViewed = [
+      productId,
+      ...recentlyViewed.filter(id => id !== productId),
+    ].slice(0, 10);
+    localStorage.setItem('recentlyViewed', JSON.stringify(updatedViewed));
   };
 
   const recommendationSections = [
     {
-      key: "trending",
-      title: "Trending Now",
-      subtitle: "Popular products that customers are loving",
+      key: 'trending',
+      title: 'Trending Now',
+      subtitle: 'Popular products that customers are loving',
       icon: FaFire,
       products: recommendations.trending,
-      show: recommendations.trending.length > 0
+      show: recommendations.trending.length > 0,
     },
     {
-      key: "similar",
-      title: currentProduct ? `Similar to ${currentProduct.name}` : "You Might Like",
-      subtitle: "Products that match your interests",
+      key: 'similar',
+      title: currentProduct
+        ? `Similar to ${currentProduct.name}`
+        : 'You Might Like',
+      subtitle: 'Products that match your interests',
       icon: FaThumbsUp,
       products: recommendations.similar,
-      show: recommendations.similar.length > 0 && currentProduct
+      show: recommendations.similar.length > 0 && currentProduct,
     },
     {
-      key: "viewed",
-      title: "Recently Viewed",
-      subtitle: "Continue where you left off",
+      key: 'viewed',
+      title: 'Recently Viewed',
+      subtitle: 'Continue where you left off',
       icon: FaEye,
       products: recommendations.viewed,
-      show: recommendations.viewed.length > 0
+      show: recommendations.viewed.length > 0,
     },
     {
-      key: "collaborative",
-      title: "Customers Also Viewed",
-      subtitle: "Other products customers looked at",
+      key: 'collaborative',
+      title: 'Customers Also Viewed',
+      subtitle: 'Other products customers looked at',
       icon: FaHeart,
       products: recommendations.collaborative,
-      show: recommendations.collaborative.length > 0 && currentProduct
-    }
+      show: recommendations.collaborative.length > 0 && currentProduct,
+    },
   ];
 
   // Filter out sections with no products to show
-  const visibleSections = recommendationSections.filter(section => section.show);
+  const visibleSections = recommendationSections.filter(
+    section => section.show
+  );
 
   if (visibleSections.length === 0) {
     return null;
@@ -184,7 +198,7 @@ const RecommendationEngine = ({
 
   return (
     <RecommendationContainer>
-      {visibleSections.map((section) => (
+      {visibleSections.map(section => (
         <RecommendationSection key={section.key}>
           <SectionHeader>
             <SectionIcon>
@@ -197,7 +211,7 @@ const RecommendationEngine = ({
           </SectionHeader>
 
           <ProductGrid>
-            {section.products.map((product) => (
+            {section.products.map(product => (
               <ProductCard
                 key={product.id}
                 product={product}
@@ -213,22 +227,22 @@ const RecommendationEngine = ({
 };
 
 // Higher-order component for automatic recommendation tracking
-export const withRecommendationTracking = (WrappedComponent) => {
+export const withRecommendationTracking = WrappedComponent => {
   return function RecommendationTrackedComponent(props) {
     useEffect(() => {
       // Track page views for recommendation algorithm
       const currentTime = Date.now();
-      const pageViews = JSON.parse(localStorage.getItem("pageViews") || "{}");
-      
+      const pageViews = JSON.parse(localStorage.getItem('pageViews') || '{}');
+
       const currentPath = window.location.pathname;
       if (!pageViews[currentPath]) {
         pageViews[currentPath] = { count: 0, lastVisit: currentTime };
       }
-      
+
       pageViews[currentPath].count += 1;
       pageViews[currentPath].lastVisit = currentTime;
-      
-      localStorage.setItem("pageViews", JSON.stringify(pageViews));
+
+      localStorage.setItem('pageViews', JSON.stringify(pageViews));
     }, []);
 
     return <WrappedComponent {...props} />;
@@ -239,9 +253,11 @@ export const withRecommendationTracking = (WrappedComponent) => {
 export const RecommendationUtils = {
   // Get user preferences based on behavior
   getUserPreferences: () => {
-    const recentlyViewed = JSON.parse(localStorage.getItem("recentlyViewed") || "[]");
-    const enquiries = JSON.parse(localStorage.getItem("userEnquiries") || "[]");
-    const pageViews = JSON.parse(localStorage.getItem("pageViews") || "{}");
+    const recentlyViewed = JSON.parse(
+      localStorage.getItem('recentlyViewed') || '[]'
+    );
+    const enquiries = JSON.parse(localStorage.getItem('userEnquiries') || '[]');
+    const pageViews = JSON.parse(localStorage.getItem('pageViews') || '{}');
 
     // Analyze categories from viewed products
     const viewedProducts = products.filter(p => recentlyViewed.includes(p.id));
@@ -255,27 +271,30 @@ export const RecommendationUtils = {
     });
 
     // Calculate preferred price range
-    const avgPrice = priceRanges.length > 0 
-      ? priceRanges.reduce((sum, price) => sum + price, 0) / priceRanges.length 
-      : 0;
+    const avgPrice =
+      priceRanges.length > 0
+        ? priceRanges.reduce((sum, price) => sum + price, 0) /
+          priceRanges.length
+        : 0;
 
     return {
-      preferredCategories: Object.keys(categoryPreferences)
-        .sort((a, b) => categoryPreferences[b] - categoryPreferences[a]),
+      preferredCategories: Object.keys(categoryPreferences).sort(
+        (a, b) => categoryPreferences[b] - categoryPreferences[a]
+      ),
       averagePriceRange: avgPrice,
       totalViews: recentlyViewed.length,
       totalEnquiries: enquiries.length,
       lastActivity: Math.max(
         ...Object.values(pageViews).map(pv => pv.lastVisit),
         0
-      )
+      ),
     };
   },
 
   // Get personalized recommendations
   getPersonalizedRecommendations: (maxCount = 8) => {
     const preferences = RecommendationUtils.getUserPreferences();
-    
+
     if (preferences.preferredCategories.length === 0) {
       // New user - show trending products
       return products
@@ -289,9 +308,15 @@ export const RecommendationUtils = {
       .filter(p => preferences.preferredCategories.includes(p.category))
       .sort((a, b) => {
         // Score based on rating and price similarity
-        const priceScore = 1 - Math.abs(b.price - preferences.averagePriceRange) / 1000;
+        const priceScore =
+          1 - Math.abs(b.price - preferences.averagePriceRange) / 1000;
         const ratingScore = b.rating / 5;
-        return (ratingScore + priceScore) - (a.rating / 5 + Math.abs(a.price - preferences.averagePriceRange) / 1000);
+        return (
+          ratingScore +
+          priceScore -
+          (a.rating / 5 +
+            Math.abs(a.price - preferences.averagePriceRange) / 1000)
+        );
       })
       .slice(0, maxCount);
 
@@ -300,10 +325,10 @@ export const RecommendationUtils = {
 
   // Clear recommendation data (for privacy)
   clearRecommendationData: () => {
-    localStorage.removeItem("recentlyViewed");
-    localStorage.removeItem("pageViews");
-    localStorage.removeItem("userEnquiries");
-  }
+    localStorage.removeItem('recentlyViewed');
+    localStorage.removeItem('pageViews');
+    localStorage.removeItem('userEnquiries');
+  },
 };
 
 export default RecommendationEngine;

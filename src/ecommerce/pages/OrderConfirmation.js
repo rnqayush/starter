@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
-import styled from "styled-components";
+import React, { useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import styled from 'styled-components';
 import {
   FaCheckCircle,
   FaEnvelope,
@@ -9,10 +9,10 @@ import {
   FaPrint,
   FaDownload,
   FaShoppingBag,
-} from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+} from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -154,7 +154,7 @@ const Timeline = styled.div`
 `;
 
 const TimelineItem = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "completed",
+  shouldForwardProp: prop => prop !== 'completed',
 })`
   display: flex;
   gap: ${theme.spacing.lg};
@@ -162,24 +162,24 @@ const TimelineItem = styled.div.withConfig({
   position: relative;
 
   &:not(:last-child)::after {
-    content: "";
+    content: '';
     position: absolute;
     left: 12px;
     top: 30px;
     width: 2px;
     height: 40px;
-    background: ${(props) =>
+    background: ${props =>
       props.completed ? theme.colors.success : theme.colors.gray300};
   }
 `;
 
 const TimelineIcon = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "completed",
+  shouldForwardProp: prop => prop !== 'completed',
 })`
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background: ${(props) =>
+  background: ${props =>
     props.completed ? theme.colors.success : theme.colors.gray300};
   color: ${theme.colors.white};
   display: flex;
@@ -218,14 +218,14 @@ const ActionButtons = styled.div`
 `;
 
 const ActionButton = styled.button.withConfig({
-  shouldForwardProp: (prop) => prop !== "primary",
+  shouldForwardProp: prop => prop !== 'primary',
 })`
-  background: ${(props) =>
+  background: ${props =>
     props.primary ? theme.colors.primary : theme.colors.white};
-  color: ${(props) =>
+  color: ${props =>
     props.primary ? theme.colors.white : theme.colors.gray700};
   border: 2px solid
-    ${(props) => (props.primary ? theme.colors.primary : theme.colors.gray200)};
+    ${props => (props.primary ? theme.colors.primary : theme.colors.gray200)};
   padding: ${theme.spacing.md} ${theme.spacing.lg};
   border-radius: ${theme.borderRadius.md};
   font-weight: 600;
@@ -236,7 +236,7 @@ const ActionButton = styled.button.withConfig({
   gap: ${theme.spacing.sm};
 
   &:hover {
-    background: ${(props) =>
+    background: ${props =>
       props.primary ? theme.colors.primaryDark : theme.colors.gray50};
     transform: translateY(-1px);
   }
@@ -266,10 +266,10 @@ const ContinueShoppingButton = styled(Link)`
 const OrderConfirmation = () => {
   const location = useLocation();
   const orderData = location.state || {
-    orderNumber: "ORD-" + Date.now(),
+    orderNumber: 'ORD-' + Date.now(),
     total: 489.97,
-    paymentMethod: "card",
-    email: "customer@example.com",
+    paymentMethod: 'card',
+    email: 'customer@example.com',
   };
 
   useEffect(() => {
@@ -283,63 +283,63 @@ const OrderConfirmation = () => {
 
   const handleDownload = () => {
     // Mock download functionality
-    alert("Order receipt download would start here");
+    alert('Order receipt download would start here');
   };
 
   const getEstimatedDelivery = () => {
     const date = new Date();
     date.setDate(date.getDate() + 5); // Add 5 days
-    return date.toLocaleDateString("en-US", {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
+    return date.toLocaleDateString('en-US', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
     });
   };
 
-  const getPaymentMethodName = (method) => {
+  const getPaymentMethodName = method => {
     switch (method) {
-      case "card":
-        return "Credit Card";
-      case "paypal":
-        return "PayPal";
-      case "apple":
-        return "Apple Pay";
-      case "google":
-        return "Google Pay";
+      case 'card':
+        return 'Credit Card';
+      case 'paypal':
+        return 'PayPal';
+      case 'apple':
+        return 'Apple Pay';
+      case 'google':
+        return 'Google Pay';
       default:
-        return "Credit Card";
+        return 'Credit Card';
     }
   };
 
   const timelineSteps = [
     {
-      title: "Order Confirmed",
-      description: "Your order has been received and confirmed",
+      title: 'Order Confirmed',
+      description: 'Your order has been received and confirmed',
       date: new Date().toLocaleDateString(),
       completed: true,
     },
     {
-      title: "Payment Processed",
-      description: "Payment successfully processed",
+      title: 'Payment Processed',
+      description: 'Payment successfully processed',
       date: new Date().toLocaleDateString(),
       completed: true,
     },
     {
-      title: "Preparing for Shipment",
-      description: "Your items are being prepared for shipping",
-      date: "In progress",
+      title: 'Preparing for Shipment',
+      description: 'Your items are being prepared for shipping',
+      date: 'In progress',
       completed: false,
     },
     {
-      title: "Shipped",
-      description: "Your order is on its way",
-      date: "Pending",
+      title: 'Shipped',
+      description: 'Your order is on its way',
+      date: 'Pending',
       completed: false,
     },
     {
-      title: "Delivered",
-      description: "Your order has been delivered",
+      title: 'Delivered',
+      description: 'Your order has been delivered',
       date: getEstimatedDelivery(),
       completed: false,
     },
@@ -439,18 +439,18 @@ const OrderConfirmation = () => {
               background: theme.colors.gray50,
               padding: theme.spacing.lg,
               borderRadius: theme.borderRadius.md,
-              textAlign: "center",
+              textAlign: 'center',
             }}
           >
             <p style={{ margin: 0, color: theme.colors.gray700 }}>
-              <strong>Need help?</strong> Contact our customer support at{" "}
+              <strong>Need help?</strong> Contact our customer support at{' '}
               <a
                 href="mailto:support@shopmart.com"
                 style={{ color: theme.colors.primary }}
               >
                 support@shopmart.com
-              </a>{" "}
-              or call{" "}
+              </a>{' '}
+              or call{' '}
               <a
                 href="tel:+15551234567"
                 style={{ color: theme.colors.primary }}

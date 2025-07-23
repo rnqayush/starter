@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import React, { useState } from 'react';
+import styled from 'styled-components';
 import {
   FaHome,
   FaCar,
@@ -17,12 +17,12 @@ import {
   FaWrench,
   FaTags,
   FaArrowLeft,
-} from "react-icons/fa";
-import { theme, media } from "../../styles/GlobalStyle";
-import { useNavigate } from "react-router-dom";
+} from 'react-icons/fa';
+import { theme, media } from '../../styles/GlobalStyle';
+import { useNavigate } from 'react-router-dom';
 
 const SidebarContainer = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "isOpen",
+  shouldForwardProp: prop => prop !== 'isOpen',
 })`
   position: fixed;
   left: 0;
@@ -38,7 +38,7 @@ const SidebarContainer = styled.div.withConfig({
 
   ${media.tabletDown} {
     width: 260px;
-    transform: translateX(${(props) => (props.isOpen ? "0" : "-100%")});
+    transform: translateX(${props => (props.isOpen ? '0' : '-100%')});
     z-index: 1001;
   }
 
@@ -195,19 +195,22 @@ const SectionTitle = styled.h4`
 `;
 
 const NavItem = styled.button.withConfig({
-  shouldForwardProp: (prop) => prop !== "active",
+  shouldForwardProp: prop => prop !== 'active',
 })`
   width: 100%;
   display: flex;
   align-items: center;
   gap: ${theme.spacing.md};
   padding: ${theme.spacing.md} ${theme.spacing.xl};
-  background: ${(props) => (props.active ? `${theme.colors.primary}15` : "transparent")};
+  background: ${props =>
+    props.active ? `${theme.colors.primary}15` : 'transparent'};
   border: none;
-  border-left: 3px solid ${(props) => (props.active ? theme.colors.primary : "transparent")};
-  color: ${(props) => (props.active ? theme.colors.primary : theme.colors.gray700)};
+  border-left: 3px solid
+    ${props => (props.active ? theme.colors.primary : 'transparent')};
+  color: ${props =>
+    props.active ? theme.colors.primary : theme.colors.gray700};
   font-size: 0.9rem;
-  font-weight: ${(props) => (props.active ? "600" : "500")};
+  font-weight: ${props => (props.active ? '600' : '500')};
   cursor: pointer;
   transition: all 0.2s ease;
   text-align: left;
@@ -265,7 +268,7 @@ const MobileToggle = styled.button`
 `;
 
 const Overlay = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "isOpen",
+  shouldForwardProp: prop => prop !== 'isOpen',
 })`
   display: none;
   position: fixed;
@@ -275,8 +278,8 @@ const Overlay = styled.div.withConfig({
   bottom: 0;
   background: rgba(0, 0, 0, 0.5);
   z-index: 999;
-  opacity: ${(props) => (props.isOpen ? 1 : 0)};
-  visibility: ${(props) => (props.isOpen ? "visible" : "hidden")};
+  opacity: ${props => (props.isOpen ? 1 : 0)};
+  visibility: ${props => (props.isOpen ? 'visible' : 'hidden')};
   transition: all 0.3s ease;
 
   ${media.tabletDown} {
@@ -288,7 +291,7 @@ const DealerSidebar = ({ activeTab, onTabChange, dealer }) => {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const navigate = useNavigate();
 
-  const handleTabChange = (tab) => {
+  const handleTabChange = tab => {
     onTabChange(tab);
     setIsMobileOpen(false);
   };
@@ -299,43 +302,41 @@ const DealerSidebar = ({ activeTab, onTabChange, dealer }) => {
 
   const navItems = [
     {
-      section: "Overview",
-      items: [
-        { id: "dashboard", label: "Dashboard", icon: FaHome },
-      ]
+      section: 'Overview',
+      items: [{ id: 'dashboard', label: 'Dashboard', icon: FaHome }],
     },
     {
-      section: "Inventory Management",
+      section: 'Inventory Management',
       items: [
-        { id: "inventory", label: "Vehicle Inventory", icon: FaCar },
-        { id: "add-vehicle", label: "Add Vehicle", icon: FaPlus },
-        { id: "bulk-import", label: "Bulk Import", icon: FaFileImport },
-      ]
+        { id: 'inventory', label: 'Vehicle Inventory', icon: FaCar },
+        { id: 'add-vehicle', label: 'Add Vehicle', icon: FaPlus },
+        { id: 'bulk-import', label: 'Bulk Import', icon: FaFileImport },
+      ],
     },
     {
-      section: "Sales & Orders",
+      section: 'Sales & Orders',
       items: [
-        { id: "orders", label: "Sales & Orders", icon: FaShoppingCart },
-        { id: "enquiries", label: "Enquiries", icon: FaEnvelope },
-        { id: "customers", label: "Customers", icon: FaUsers },
-      ]
+        { id: 'orders', label: 'Sales & Orders', icon: FaShoppingCart },
+        { id: 'enquiries', label: 'Enquiries', icon: FaEnvelope },
+        { id: 'customers', label: 'Customers', icon: FaUsers },
+      ],
     },
     {
-      section: "Services",
+      section: 'Services',
       items: [
-        { id: "financing", label: "Financing", icon: FaDollarSign },
-        { id: "trade-ins", label: "Trade-Ins", icon: FaExchangeAlt },
-        { id: "service", label: "Service Center", icon: FaWrench },
-        { id: "promotions", label: "Promotions", icon: FaTags },
-      ]
+        { id: 'financing', label: 'Financing', icon: FaDollarSign },
+        { id: 'trade-ins', label: 'Trade-Ins', icon: FaExchangeAlt },
+        { id: 'service', label: 'Service Center', icon: FaWrench },
+        { id: 'promotions', label: 'Promotions', icon: FaTags },
+      ],
     },
     {
-      section: "Analytics & Settings",
+      section: 'Analytics & Settings',
       items: [
-        { id: "analytics", label: "Analytics", icon: FaChartLine },
-        { id: "dealer-settings", label: "Settings", icon: FaCog },
-      ]
-    }
+        { id: 'analytics', label: 'Analytics', icon: FaChartLine },
+        { id: 'dealer-settings', label: 'Settings', icon: FaCog },
+      ],
+    },
   ];
 
   return (
@@ -352,16 +353,14 @@ const DealerSidebar = ({ activeTab, onTabChange, dealer }) => {
             {dealer.logo ? (
               <DealerLogoImage src={dealer.logo} alt={dealer.name} />
             ) : (
-              <DealerLogo>
-                {dealer.name.charAt(0)}
-              </DealerLogo>
+              <DealerLogo>{dealer.name.charAt(0)}</DealerLogo>
             )}
             <DealerInfo>
               <DealerName>{dealer.name}</DealerName>
               <DealerRole>Dealer Dashboard</DealerRole>
             </DealerInfo>
           </DealerBranding>
-          
+
           <BackToDealership onClick={handleBackToDealership}>
             <FaArrowLeft />
             Back to Dealership
@@ -369,10 +368,10 @@ const DealerSidebar = ({ activeTab, onTabChange, dealer }) => {
         </SidebarHeader>
 
         <Navigation>
-          {navItems.map((section) => (
+          {navItems.map(section => (
             <NavSection key={section.section}>
               <SectionTitle>{section.section}</SectionTitle>
-              {section.items.map((item) => (
+              {section.items.map(item => (
                 <NavItem
                   key={item.id}
                   active={activeTab === item.id}

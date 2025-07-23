@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 import {
   FaStar,
   FaMapMarkerAlt,
@@ -22,15 +22,15 @@ import {
   FaClock,
   FaCheckCircle,
   FaSpinner,
-        FaArrowLeft,
+  FaArrowLeft,
   FaImages,
   FaCog,
   FaBars,
-  FaTimes
-} from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
-import { getVendorById } from "../data/vendors";
-import { useAuth } from "../../context/AuthContext";
+  FaTimes,
+} from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
+import { getVendorById } from '../data/vendors';
+import { useAuth } from '../../context/AuthContext';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -38,7 +38,7 @@ const PageContainer = styled.div`
 `;
 
 const BackToTopButton = styled.button.withConfig({
-  shouldForwardProp: (prop) => !['primaryColor', 'visible'].includes(prop),
+  shouldForwardProp: prop => !['primaryColor', 'visible'].includes(prop),
 })`
   position: fixed;
   bottom: 20px;
@@ -56,8 +56,8 @@ const BackToTopButton = styled.button.withConfig({
   box-shadow: ${theme.shadows.lg};
   transition: all 0.3s ease;
   z-index: 1000;
-  opacity: ${props => props.visible ? 1 : 0};
-  visibility: ${props => props.visible ? 'visible' : 'hidden'};
+  opacity: ${props => (props.visible ? 1 : 0)};
+  visibility: ${props => (props.visible ? 'visible' : 'hidden')};
 
   &:hover {
     transform: translateY(-2px);
@@ -73,7 +73,7 @@ const HeroSection = styled.section`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4));
+  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4));
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     height: 100vh;
@@ -107,7 +107,7 @@ const HeroOverlay = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5));
+  background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5));
   z-index: 1;
 `;
 
@@ -123,7 +123,7 @@ const HeroTitle = styled.h1`
   font-size: 4rem;
   font-weight: 700;
   margin-bottom: ${theme.spacing.md};
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 
   @media (max-width: ${theme.breakpoints.tablet}) {
     font-size: 3rem;
@@ -137,7 +137,7 @@ const HeroTitle = styled.h1`
 const HeroTagline = styled.p`
   font-size: 1.5rem;
   margin-bottom: ${theme.spacing.xl};
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     font-size: 1.2rem;
@@ -145,7 +145,7 @@ const HeroTagline = styled.p`
 `;
 
 const HeroButton = styled.button.withConfig({
-  shouldForwardProp: (prop) => !['primaryColor'].includes(prop),
+  shouldForwardProp: prop => !['primaryColor'].includes(prop),
 })`
   background: ${props => props.primaryColor || theme.colors.primary};
   color: white;
@@ -169,18 +169,20 @@ const HeroButton = styled.button.withConfig({
 `;
 
 const NavBar = styled.nav.withConfig({
-  shouldForwardProp: (prop) => !['scrolled'].includes(prop),
+  shouldForwardProp: prop => !['scrolled'].includes(prop),
 })`
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  background: ${props => props.scrolled ? 'rgba(255,255,255,0.95)' : 'transparent'};
-  backdrop-filter: ${props => props.scrolled ? 'blur(10px)' : 'none'};
+  background: ${props =>
+    props.scrolled ? 'rgba(255,255,255,0.95)' : 'transparent'};
+  backdrop-filter: ${props => (props.scrolled ? 'blur(10px)' : 'none')};
   padding: ${theme.spacing.md} 0;
   transition: all 0.3s ease;
   z-index: 1000;
-  border-bottom: ${props => props.scrolled ? `1px solid ${theme.colors.gray200}` : 'none'};
+  border-bottom: ${props =>
+    props.scrolled ? `1px solid ${theme.colors.gray200}` : 'none'};
 `;
 
 const NavContent = styled.div`
@@ -199,20 +201,20 @@ const NavContent = styled.div`
 `;
 
 const NavLogo = styled.div.withConfig({
-  shouldForwardProp: (prop) => !['scrolled'].includes(prop),
+  shouldForwardProp: prop => !['scrolled'].includes(prop),
 })`
   font-size: 1.5rem;
   font-weight: 700;
-  color: ${props => props.scrolled ? theme.colors.gray900 : 'white'};
+  color: ${props => (props.scrolled ? theme.colors.gray900 : 'white')};
 `;
 
 const MobileMenuButton = styled.button.withConfig({
-  shouldForwardProp: (prop) => !['scrolled'].includes(prop),
+  shouldForwardProp: prop => !['scrolled'].includes(prop),
 })`
   display: none;
   background: none;
   border: none;
-  color: ${props => props.scrolled ? theme.colors.gray700 : 'white'};
+  color: ${props => (props.scrolled ? theme.colors.gray700 : 'white')};
   font-size: 1.5rem;
   padding: ${theme.spacing.sm};
   cursor: pointer;
@@ -231,10 +233,8 @@ const MobileMenuButton = styled.button.withConfig({
 `;
 
 const MobileMenuOverlay = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "isOpen",
-})
-
-`
+  shouldForwardProp: prop => prop !== 'isOpen',
+})`
   display: none;
 
   @media (max-width: ${theme.breakpoints.mobile}) {
@@ -246,14 +246,16 @@ const MobileMenuOverlay = styled.div.withConfig({
     bottom: 0;
     background: rgba(0, 0, 0, 0.2);
     z-index: 1001;
-    opacity: ${(props) => (props.isOpen ? "1" : "0")};
-    visibility: ${(props) => (props.isOpen ? "visible" : "hidden")};
-    transition: opacity 0.3s ease, visibility 0.3s ease;
+    opacity: ${props => (props.isOpen ? '1' : '0')};
+    visibility: ${props => (props.isOpen ? 'visible' : 'hidden')};
+    transition:
+      opacity 0.3s ease,
+      visibility 0.3s ease;
   }
 `;
 
 const NavActions = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "isOpen",
+  shouldForwardProp: prop => prop !== 'isOpen',
 })`
   display: flex;
   gap: ${theme.spacing.md};
@@ -271,10 +273,10 @@ const NavActions = styled.div.withConfig({
     justify-content: center;
     gap: ${theme.spacing.lg};
     z-index: 1002;
-    transform: translateX(${(props) => (props.isOpen ? "0" : "100%")});
+    transform: translateX(${props => (props.isOpen ? '0' : '100%')});
     transition: transform 0.3s ease;
     padding: ${theme.spacing.xl};
-    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   }
 `;
 
@@ -306,11 +308,17 @@ const MobileCloseButton = styled.button`
 `;
 
 const NavButton = styled.button.withConfig({
-  shouldForwardProp: (prop) => !['primary', 'primaryColor', 'scrolled'].includes(prop),
+  shouldForwardProp: prop =>
+    !['primary', 'primaryColor', 'scrolled'].includes(prop),
 })`
-  background: ${props => props.primary ? (props.primaryColor || theme.colors.primary) : 'transparent'};
-  color: ${props => props.primary ? 'white' : (props.scrolled ? theme.colors.gray700 : 'white')};
-  border: ${props => props.primary ? 'none' : `2px solid ${props.scrolled ? theme.colors.gray300 : 'white'}`};
+  background: ${props =>
+    props.primary ? props.primaryColor || theme.colors.primary : 'transparent'};
+  color: ${props =>
+    props.primary ? 'white' : props.scrolled ? theme.colors.gray700 : 'white'};
+  border: ${props =>
+    props.primary
+      ? 'none'
+      : `2px solid ${props.scrolled ? theme.colors.gray300 : 'white'}`};
   padding: ${theme.spacing.sm} ${theme.spacing.md};
   border-radius: ${theme.borderRadius.md};
   font-weight: 600;
@@ -329,12 +337,18 @@ const NavButton = styled.button.withConfig({
     font-size: 1.1rem;
     justify-content: center;
     min-width: 200px;
-    color: ${props => props.primary ? 'white' : theme.colors.gray700};
-    border-color: ${props => props.primary ? 'none' : theme.colors.gray300};
-    background: ${props => props.primary ? (props.primaryColor || theme.colors.primary) : theme.colors.white};
+    color: ${props => (props.primary ? 'white' : theme.colors.gray700)};
+    border-color: ${props => (props.primary ? 'none' : theme.colors.gray300)};
+    background: ${props =>
+      props.primary
+        ? props.primaryColor || theme.colors.primary
+        : theme.colors.white};
 
     &:hover {
-      background: ${props => props.primary ? (props.primaryColor || theme.colors.primary) : theme.colors.gray50};
+      background: ${props =>
+        props.primary
+          ? props.primaryColor || theme.colors.primary
+          : theme.colors.gray50};
       transform: none;
     }
   }
@@ -342,7 +356,7 @@ const NavButton = styled.button.withConfig({
 
 // Section Components
 const Section = styled.section.withConfig({
-  shouldForwardProp: (prop) => !['backgroundColor'].includes(prop),
+  shouldForwardProp: prop => !['backgroundColor'].includes(prop),
 })`
   padding: ${theme.spacing.xxl} ${theme.spacing.md};
   background: ${props => props.backgroundColor || 'white'};
@@ -421,7 +435,7 @@ const StatCard = styled.div`
 `;
 
 const StatNumber = styled.div.withConfig({
-  shouldForwardProp: (prop) => !['primaryColor'].includes(prop),
+  shouldForwardProp: prop => !['primaryColor'].includes(prop),
 })`
   font-size: 2rem;
   font-weight: 700;
@@ -513,10 +527,11 @@ const GalleryTabs = styled.div`
 `;
 
 const GalleryTab = styled.button.withConfig({
-  shouldForwardProp: (prop) => !['active', 'primaryColor'].includes(prop),
+  shouldForwardProp: prop => !['active', 'primaryColor'].includes(prop),
 })`
-  background: ${props => props.active ? (props.primaryColor || theme.colors.primary) : 'transparent'};
-  color: ${props => props.active ? 'white' : theme.colors.gray700};
+  background: ${props =>
+    props.active ? props.primaryColor || theme.colors.primary : 'transparent'};
+  color: ${props => (props.active ? 'white' : theme.colors.gray700)};
   border: 2px solid ${props => props.primaryColor || theme.colors.primary};
   padding: ${theme.spacing.sm} ${theme.spacing.lg};
   border-radius: ${theme.borderRadius.md};
@@ -562,7 +577,7 @@ const PackagesGrid = styled.div`
 `;
 
 const PackageCard = styled.div.withConfig({
-  shouldForwardProp: (prop) => !['primaryColor'].includes(prop),
+  shouldForwardProp: prop => !['primaryColor'].includes(prop),
 })`
   background: white;
   border-radius: ${theme.borderRadius.lg};
@@ -587,7 +602,7 @@ const PackageName = styled.h3`
 `;
 
 const PackagePrice = styled.div.withConfig({
-  shouldForwardProp: (prop) => !['primaryColor'].includes(prop),
+  shouldForwardProp: prop => !['primaryColor'].includes(prop),
 })`
   font-size: 2rem;
   font-weight: 700;
@@ -608,7 +623,7 @@ const PackageFeatures = styled.ul`
 `;
 
 const PackageFeature = styled.li.withConfig({
-  shouldForwardProp: (prop) => !['primaryColor'].includes(prop),
+  shouldForwardProp: prop => !['primaryColor'].includes(prop),
 })`
   display: flex;
   align-items: center;
@@ -617,14 +632,14 @@ const PackageFeature = styled.li.withConfig({
   color: ${theme.colors.gray700};
 
   &:before {
-    content: "✓";
+    content: '✓';
     color: ${props => props.primaryColor || theme.colors.primary};
     font-weight: bold;
   }
 `;
 
 const PackageButton = styled.button.withConfig({
-  shouldForwardProp: (prop) => !['primaryColor'].includes(prop),
+  shouldForwardProp: prop => !['primaryColor'].includes(prop),
 })`
   background: ${props => props.primaryColor || theme.colors.primary};
   color: white;
@@ -650,7 +665,7 @@ const TestimonialsGrid = styled.div`
 `;
 
 const TestimonialCard = styled.div.withConfig({
-  shouldForwardProp: (prop) => !['primaryColor'].includes(prop),
+  shouldForwardProp: prop => !['primaryColor'].includes(prop),
 })`
   background: white;
   border-radius: ${theme.borderRadius.lg};
@@ -734,7 +749,7 @@ const FaqAnswer = styled.div`
   padding: 0 ${theme.spacing.lg} ${theme.spacing.lg};
   color: ${theme.colors.gray700};
   line-height: 1.6;
-  display: ${props => props.open ? 'block' : 'none'};
+  display: ${props => (props.open ? 'block' : 'none')};
 `;
 
 // Contact Section
@@ -767,7 +782,7 @@ const FormLabel = styled.label`
 `;
 
 const FormInput = styled.input.withConfig({
-  shouldForwardProp: (prop) => !['primaryColor'].includes(prop),
+  shouldForwardProp: prop => !['primaryColor'].includes(prop),
 })`
   padding: ${theme.spacing.md};
   border: 2px solid ${theme.colors.gray200};
@@ -783,7 +798,7 @@ const FormInput = styled.input.withConfig({
 `;
 
 const FormTextarea = styled.textarea.withConfig({
-  shouldForwardProp: (prop) => !['primaryColor'].includes(prop),
+  shouldForwardProp: prop => !['primaryColor'].includes(prop),
 })`
   padding: ${theme.spacing.md};
   border: 2px solid ${theme.colors.gray200};
@@ -801,7 +816,7 @@ const FormTextarea = styled.textarea.withConfig({
 `;
 
 const SubmitButton = styled.button.withConfig({
-  shouldForwardProp: (prop) => !['primaryColor'].includes(prop),
+  shouldForwardProp: prop => !['primaryColor'].includes(prop),
 })`
   background: ${props => props.primaryColor || theme.colors.primary};
   color: white;
@@ -841,7 +856,7 @@ const ContactItem = styled.div`
 `;
 
 const ContactIcon = styled.div.withConfig({
-  shouldForwardProp: (prop) => !['primaryColor'].includes(prop),
+  shouldForwardProp: prop => !['primaryColor'].includes(prop),
 })`
   background: ${props => props.primaryColor || theme.colors.primary};
   color: white;
@@ -884,7 +899,7 @@ const CitiesList = styled.div`
 `;
 
 const CityTag = styled.span.withConfig({
-  shouldForwardProp: (prop) => !['primaryColor'].includes(prop),
+  shouldForwardProp: prop => !['primaryColor'].includes(prop),
 })`
   background: ${props => props.primaryColor || theme.colors.primary}15;
   color: ${props => props.primaryColor || theme.colors.primary};
@@ -933,7 +948,7 @@ const SocialLinks = styled.div`
 `;
 
 const SocialLink = styled.a.withConfig({
-  shouldForwardProp: (prop) => !['primaryColor'].includes(prop),
+  shouldForwardProp: prop => !['primaryColor'].includes(prop),
 })`
   background: ${props => props.primaryColor || theme.colors.primary};
   color: white;
@@ -970,8 +985,12 @@ const LoadingSpinner = styled.div`
   font-size: 2rem;
 
   @keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
   }
 `;
 
@@ -979,8 +998,7 @@ const VendorPage = () => {
   const { vendorSlug } = useParams();
   const navigate = useNavigate();
   const { user } = useAuth();
-  
-  
+
   // Get vendor ID from URL path if not available in params
   const currentPath = window.location.pathname;
   const pathSegments = currentPath.split('/').filter(Boolean);
@@ -988,7 +1006,7 @@ const VendorPage = () => {
 
   const [vendor, setVendor] = useState(null);
   const [loading, setLoading] = useState(true);
-    const [scrolled, setScrolled] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeGalleryTab, setActiveGalleryTab] = useState('decor');
@@ -997,11 +1015,11 @@ const VendorPage = () => {
     name: '',
     email: '',
     phone: '',
-    message: ''
+    message: '',
   });
   const [submitting, setSubmitting] = useState(false);
 
-    useEffect(() => {
+  useEffect(() => {
     const vendorData = getVendorById(vendorId);
     setVendor(vendorData);
     setLoading(false);
@@ -1011,10 +1029,10 @@ const VendorPage = () => {
       setContactForm(prev => ({
         ...prev,
         name: user.name || '',
-        email: user.email || ''
+        email: user.email || '',
       }));
     }
-    }, [vendorId, user]);
+  }, [vendorId, user]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -1031,7 +1049,7 @@ const VendorPage = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-    const scrollToSection = (sectionId) => {
+  const scrollToSection = sectionId => {
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
@@ -1043,33 +1061,33 @@ const VendorPage = () => {
 
   // Close mobile menu on escape key
   useEffect(() => {
-    const handleEscapeKey = (event) => {
-      if (event.key === "Escape" && mobileMenuOpen) {
+    const handleEscapeKey = event => {
+      if (event.key === 'Escape' && mobileMenuOpen) {
         closeMobileMenu();
       }
     };
 
-    document.addEventListener("keydown", handleEscapeKey);
-    return () => document.removeEventListener("keydown", handleEscapeKey);
+    document.addEventListener('keydown', handleEscapeKey);
+    return () => document.removeEventListener('keydown', handleEscapeKey);
   }, [mobileMenuOpen]);
 
   // Prevent body scroll when mobile menu is open
   useEffect(() => {
     if (mobileMenuOpen) {
-      document.body.style.overflow = "hidden";
+      document.body.style.overflow = 'hidden';
     } else {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow = 'unset';
     }
 
     return () => {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow = 'unset';
     };
   }, [mobileMenuOpen]);
 
-  const handleContactSubmit = async (e) => {
+  const handleContactSubmit = async e => {
     e.preventDefault();
     setSubmitting(true);
-    
+
     // Simulate API call
     setTimeout(() => {
       alert('Thank you for your enquiry! We will get back to you soon.');
@@ -1078,12 +1096,12 @@ const VendorPage = () => {
     }, 1000);
   };
 
-  const handleInputChange = (e) => {
+  const handleInputChange = e => {
     const { name, value } = e.target;
     setContactForm(prev => ({ ...prev, [name]: value }));
   };
 
-  const toggleFaq = (index) => {
+  const toggleFaq = index => {
     setOpenFaq(openFaq === index ? null : index);
   };
 
@@ -1119,31 +1137,73 @@ const VendorPage = () => {
       <NavBar scrolled={scrolled}>
         <NavContent>
           <NavLogo scrolled={scrolled}>{vendor.name}</NavLogo>
-                    <NavActions isOpen={mobileMenuOpen}>
+          <NavActions isOpen={mobileMenuOpen}>
             <MobileCloseButton onClick={closeMobileMenu}>
               <FaTimes />
             </MobileCloseButton>
-            <NavButton onClick={() => { navigate('/weddings'); closeMobileMenu(); }} scrolled={scrolled}>
+            <NavButton
+              onClick={() => {
+                navigate('/weddings');
+                closeMobileMenu();
+              }}
+              scrolled={scrolled}
+            >
               <FaArrowLeft />
               Back
             </NavButton>
-                        <NavButton onClick={() => { alert('Vendor saved to your favorites!'); closeMobileMenu(); }} scrolled={scrolled}>
+            <NavButton
+              onClick={() => {
+                alert('Vendor saved to your favorites!');
+                closeMobileMenu();
+              }}
+              scrolled={scrolled}
+            >
               <FaHeart />
               Save
             </NavButton>
-            <NavButton onClick={() => { navigator.share ? navigator.share({title: vendor.name, url: window.location.href}) : alert('Share: ' + window.location.href); closeMobileMenu(); }} scrolled={scrolled}>
+            <NavButton
+              onClick={() => {
+                navigator.share
+                  ? navigator.share({
+                      title: vendor.name,
+                      url: window.location.href,
+                    })
+                  : alert('Share: ' + window.location.href);
+                closeMobileMenu();
+              }}
+              scrolled={scrolled}
+            >
               <FaShare />
               Share
             </NavButton>
-            <NavButton onClick={() => { navigate(`/${vendorId}/portfolio`); closeMobileMenu(); }} scrolled={scrolled}>
+            <NavButton
+              onClick={() => {
+                navigate(`/${vendorId}/portfolio`);
+                closeMobileMenu();
+              }}
+              scrolled={scrolled}
+            >
               <FaImages />
               Portfolio
             </NavButton>
-            <NavButton onClick={() => { navigate(`/${vendorId}/dashboard`); closeMobileMenu(); }} scrolled={scrolled}>
+            <NavButton
+              onClick={() => {
+                navigate(`/${vendorId}/weddingadminpanel`);
+                closeMobileMenu();
+              }}
+              scrolled={scrolled}
+            >
               <FaCog />
               Dashboard
             </NavButton>
-                        <NavButton primary primaryColor={primaryColor} onClick={() => { scrollToSection('contact'); closeMobileMenu(); }}>
+            <NavButton
+              primary
+              primaryColor={primaryColor}
+              onClick={() => {
+                scrollToSection('contact');
+                closeMobileMenu();
+              }}
+            >
               <FaCalendarAlt />
               Enquire Now
             </NavButton>
@@ -1151,7 +1211,7 @@ const VendorPage = () => {
           <MobileMenuButton
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             scrolled={scrolled}
-            aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+            aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
           >
             {mobileMenuOpen ? <FaTimes /> : <FaBars />}
           </MobileMenuButton>
@@ -1175,7 +1235,10 @@ const VendorPage = () => {
         <HeroContent>
           <HeroTitle>{vendor.name}</HeroTitle>
           <HeroTagline>{vendor.tagline}</HeroTagline>
-          <HeroButton primaryColor={primaryColor} onClick={() => scrollToSection('contact')}>
+          <HeroButton
+            primaryColor={primaryColor}
+            onClick={() => scrollToSection('contact')}
+          >
             <FaCalendarAlt />
             Enquire Now
           </HeroButton>
@@ -1191,15 +1254,21 @@ const VendorPage = () => {
               <AboutText>{vendor.aboutUs?.text}</AboutText>
               <AboutStats>
                 <StatCard>
-                  <StatNumber primaryColor={primaryColor}>{vendor.aboutUs?.experience}</StatNumber>
+                  <StatNumber primaryColor={primaryColor}>
+                    {vendor.aboutUs?.experience}
+                  </StatNumber>
                   <StatLabel>Experience</StatLabel>
                 </StatCard>
                 <StatCard>
-                  <StatNumber primaryColor={primaryColor}>{vendor.aboutUs?.completedWeddings}</StatNumber>
+                  <StatNumber primaryColor={primaryColor}>
+                    {vendor.aboutUs?.completedWeddings}
+                  </StatNumber>
                   <StatLabel>Weddings</StatLabel>
                 </StatCard>
                 <StatCard>
-                  <StatNumber primaryColor={primaryColor}>{vendor.aboutUs?.satisfiedCouples}</StatNumber>
+                  <StatNumber primaryColor={primaryColor}>
+                    {vendor.aboutUs?.satisfiedCouples}
+                  </StatNumber>
                   <StatLabel>Happy Couples</StatLabel>
                 </StatCard>
               </AboutStats>
@@ -1222,7 +1291,8 @@ const VendorPage = () => {
         <Container>
           <SectionTitle>Services Offered</SectionTitle>
           <SectionSubtitle>
-            We provide comprehensive wedding services to make your special day perfect
+            We provide comprehensive wedding services to make your special day
+            perfect
           </SectionSubtitle>
           <ServicesGrid>
             {vendor.services?.map((service, index) => (
@@ -1239,60 +1309,74 @@ const VendorPage = () => {
         </Container>
       </Section>
 
-            {/* Portfolio Preview Section */}
+      {/* Portfolio Preview Section */}
       {vendor.locationPortfolio && vendor.locationPortfolio.length > 0 && (
         <Section id="portfolio">
           <Container>
             <SectionTitle>Our Recent Work</SectionTitle>
             <SectionSubtitle>
-              Explore some of our beautiful weddings across different venues and locations
+              Explore some of our beautiful weddings across different venues and
+              locations
             </SectionSubtitle>
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-              gap: theme.spacing.xl,
-              marginBottom: theme.spacing.xl
-            }}>
-              {vendor.locationPortfolio.slice(0, 3).map((portfolio) => (
-                <div key={portfolio.id} style={{
-                  background: theme.colors.white,
-                  borderRadius: theme.borderRadius.lg,
-                  overflow: 'hidden',
-                  boxShadow: theme.shadows.md,
-                  transition: 'all 0.3s ease',
-                  cursor: 'pointer'
-                }} onClick={() => navigate(`/${vendorId}/portfolio`)}>
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+                gap: theme.spacing.xl,
+                marginBottom: theme.spacing.xl,
+              }}
+            >
+              {vendor.locationPortfolio.slice(0, 3).map(portfolio => (
+                <div
+                  key={portfolio.id}
+                  style={{
+                    background: theme.colors.white,
+                    borderRadius: theme.borderRadius.lg,
+                    overflow: 'hidden',
+                    boxShadow: theme.shadows.md,
+                    transition: 'all 0.3s ease',
+                    cursor: 'pointer',
+                  }}
+                  onClick={() => navigate(`/${vendorId}/portfolio`)}
+                >
                   <img
                     src={portfolio.coverImage}
                     alt={portfolio.location}
                     style={{
                       width: '100%',
                       height: '200px',
-                      objectFit: 'cover'
+                      objectFit: 'cover',
                     }}
                   />
                   <div style={{ padding: theme.spacing.lg }}>
-                    <h4 style={{
-                      margin: `0 0 ${theme.spacing.sm} 0`,
-                      fontSize: '1.2rem',
-                      fontWeight: 600,
-                      color: theme.colors.gray900
-                    }}>
+                    <h4
+                      style={{
+                        margin: `0 0 ${theme.spacing.sm} 0`,
+                        fontSize: '1.2rem',
+                        fontWeight: 600,
+                        color: theme.colors.gray900,
+                      }}
+                    >
                       {portfolio.location}
                     </h4>
-                    <p style={{
-                      margin: `0 0 ${theme.spacing.sm} 0`,
-                      color: theme.colors.gray600,
-                      fontSize: '0.9rem'
-                    }}>
-                      {portfolio.city}, {portfolio.state} • {portfolio.weddingDate}
+                    <p
+                      style={{
+                        margin: `0 0 ${theme.spacing.sm} 0`,
+                        color: theme.colors.gray600,
+                        fontSize: '0.9rem',
+                      }}
+                    >
+                      {portfolio.city}, {portfolio.state} •{' '}
+                      {portfolio.weddingDate}
                     </p>
-                    <p style={{
-                      margin: 0,
-                      color: theme.colors.gray700,
-                      fontSize: '0.9rem',
-                      lineHeight: 1.5
-                    }}>
+                    <p
+                      style={{
+                        margin: 0,
+                        color: theme.colors.gray700,
+                        fontSize: '0.9rem',
+                        lineHeight: 1.5,
+                      }}
+                    >
                       {portfolio.description.substring(0, 120)}...
                     </p>
                   </div>
@@ -1315,10 +1399,12 @@ const VendorPage = () => {
                   display: 'flex',
                   alignItems: 'center',
                   gap: theme.spacing.sm,
-                  margin: '0 auto'
+                  margin: '0 auto',
                 }}
-                onMouseOver={(e) => e.target.style.transform = 'translateY(-2px)'}
-                onMouseOut={(e) => e.target.style.transform = 'translateY(0)'}
+                onMouseOver={e =>
+                  (e.target.style.transform = 'translateY(-2px)')
+                }
+                onMouseOut={e => (e.target.style.transform = 'translateY(0)')}
               >
                 <FaImages />
                 View Complete Portfolio
@@ -1336,7 +1422,7 @@ const VendorPage = () => {
             Browse through our portfolio of beautiful weddings and events
           </SectionSubtitle>
           <GalleryTabs>
-            {Object.keys(vendor.gallery || {}).map((category) => (
+            {Object.keys(vendor.gallery || {}).map(category => (
               <GalleryTab
                 key={category}
                 active={activeGalleryTab === category}
@@ -1372,16 +1458,24 @@ const VendorPage = () => {
               {vendor.packages.map((pkg, index) => (
                 <PackageCard key={index} primaryColor={primaryColor}>
                   <PackageName>{pkg.name}</PackageName>
-                  <PackagePrice primaryColor={primaryColor}>{pkg.price}</PackagePrice>
+                  <PackagePrice primaryColor={primaryColor}>
+                    {pkg.price}
+                  </PackagePrice>
                   <PackageDescription>{pkg.description}</PackageDescription>
                   <PackageFeatures>
                     {pkg.features.map((feature, featureIndex) => (
-                      <PackageFeature key={featureIndex} primaryColor={primaryColor}>
+                      <PackageFeature
+                        key={featureIndex}
+                        primaryColor={primaryColor}
+                      >
                         {feature}
                       </PackageFeature>
                     ))}
                   </PackageFeatures>
-                  <PackageButton primaryColor={primaryColor} onClick={() => scrollToSection('contact')}>
+                  <PackageButton
+                    primaryColor={primaryColor}
+                    onClick={() => scrollToSection('contact')}
+                  >
                     Get a Quote
                   </PackageButton>
                 </PackageCard>
@@ -1392,7 +1486,10 @@ const VendorPage = () => {
       )}
 
       {/* Testimonials Section */}
-      <Section id="testimonials" backgroundColor={vendor.theme?.backgroundColor}>
+      <Section
+        id="testimonials"
+        backgroundColor={vendor.theme?.backgroundColor}
+      >
         <Container>
           <SectionTitle>What Our Couples Say</SectionTitle>
           <SectionSubtitle>
@@ -1433,9 +1530,7 @@ const VendorPage = () => {
                   {item.question}
                   {openFaq === index ? <FaChevronUp /> : <FaChevronDown />}
                 </FaqQuestion>
-                <FaqAnswer open={openFaq === index}>
-                  {item.answer}
-                </FaqAnswer>
+                <FaqAnswer open={openFaq === index}>{item.answer}</FaqAnswer>
               </FaqItem>
             ))}
           </FaqContainer>
@@ -1494,8 +1589,16 @@ const VendorPage = () => {
                   primaryColor={primaryColor}
                 />
               </FormGroup>
-              <SubmitButton type="submit" disabled={submitting} primaryColor={primaryColor}>
-                {submitting ? <FaSpinner className="spinning" /> : <FaEnvelope />}
+              <SubmitButton
+                type="submit"
+                disabled={submitting}
+                primaryColor={primaryColor}
+              >
+                {submitting ? (
+                  <FaSpinner className="spinning" />
+                ) : (
+                  <FaEnvelope />
+                )}
                 {submitting ? 'Sending...' : 'Send Enquiry'}
               </SubmitButton>
             </ContactForm>
@@ -1510,7 +1613,7 @@ const VendorPage = () => {
                   <ContactValue>{vendor.phone}</ContactValue>
                 </ContactDetails>
               </ContactItem>
-              
+
               <ContactItem>
                 <ContactIcon primaryColor={primaryColor}>
                   <FaEnvelope />
@@ -1520,7 +1623,7 @@ const VendorPage = () => {
                   <ContactValue>{vendor.email}</ContactValue>
                 </ContactDetails>
               </ContactItem>
-              
+
               <ContactItem>
                 <ContactIcon primaryColor={primaryColor}>
                   <FaMapMarkerAlt />
@@ -1530,7 +1633,7 @@ const VendorPage = () => {
                   <ContactValue>{vendor.address}</ContactValue>
                 </ContactDetails>
               </ContactItem>
-              
+
               <ContactItem>
                 <ContactIcon primaryColor={primaryColor}>
                   <FaClock />
@@ -1575,45 +1678,94 @@ const VendorPage = () => {
               <FooterText>{vendor.description}</FooterText>
               <SocialLinks>
                 {vendor.socialLinks?.instagram && (
-                  <SocialLink href={vendor.socialLinks.instagram} primaryColor={primaryColor}>
+                  <SocialLink
+                    href={vendor.socialLinks.instagram}
+                    primaryColor={primaryColor}
+                  >
                     <FaInstagram />
                   </SocialLink>
                 )}
                 {vendor.socialLinks?.facebook && (
-                  <SocialLink href={vendor.socialLinks.facebook} primaryColor={primaryColor}>
+                  <SocialLink
+                    href={vendor.socialLinks.facebook}
+                    primaryColor={primaryColor}
+                  >
                     <FaFacebook />
                   </SocialLink>
                 )}
                 {vendor.socialLinks?.pinterest && (
-                  <SocialLink href={vendor.socialLinks.pinterest} primaryColor={primaryColor}>
+                  <SocialLink
+                    href={vendor.socialLinks.pinterest}
+                    primaryColor={primaryColor}
+                  >
                     <FaPinterest />
                   </SocialLink>
                 )}
               </SocialLinks>
             </FooterSection>
-            
+
             <FooterSection>
               <FooterTitle>Contact Info</FooterTitle>
               <FooterText>
-                {vendor.phone}<br />
-                {vendor.email}<br />
+                {vendor.phone}
+                <br />
+                {vendor.email}
+                <br />
                 {vendor.address}
               </FooterText>
             </FooterSection>
-            
+
             <FooterSection>
               <FooterTitle>Quick Links</FooterTitle>
               <FooterText>
-                <a href="#about" style={{ color: theme.colors.gray300, textDecoration: 'none' }}>About Us</a><br />
-                <a href="#services" style={{ color: theme.colors.gray300, textDecoration: 'none' }}>Services</a><br />
-                <a href="#gallery" style={{ color: theme.colors.gray300, textDecoration: 'none' }}>Gallery</a><br />
-                <a href="#contact" style={{ color: theme.colors.gray300, textDecoration: 'none' }}>Contact</a>
+                <a
+                  href="#about"
+                  style={{
+                    color: theme.colors.gray300,
+                    textDecoration: 'none',
+                  }}
+                >
+                  About Us
+                </a>
+                <br />
+                <a
+                  href="#services"
+                  style={{
+                    color: theme.colors.gray300,
+                    textDecoration: 'none',
+                  }}
+                >
+                  Services
+                </a>
+                <br />
+                <a
+                  href="#gallery"
+                  style={{
+                    color: theme.colors.gray300,
+                    textDecoration: 'none',
+                  }}
+                >
+                  Gallery
+                </a>
+                <br />
+                <a
+                  href="#contact"
+                  style={{
+                    color: theme.colors.gray300,
+                    textDecoration: 'none',
+                  }}
+                >
+                  Contact
+                </a>
               </FooterText>
             </FooterSection>
           </FooterContent>
-          
+
           <FooterBottom>
-            <p>&copy; 2024 {vendor.name}. All rights reserved. | Terms & Conditions | Privacy Policy</p>
+            <p>
+              &copy; 2024 {vendor.name}. All rights reserved. | Terms &
+              Conditions | Privacy Policy
+            </p>
           </FooterBottom>
         </Container>
       </Footer>

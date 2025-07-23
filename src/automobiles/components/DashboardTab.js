@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
 import {
   FaCar,
   FaDollarSign,
@@ -12,8 +12,8 @@ import {
   FaArrowUp,
   FaArrowDown,
   FaEye,
-} from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
+} from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
 
 const DashboardContainer = styled.div`
   display: flex;
@@ -63,7 +63,7 @@ const StatIcon = styled.div`
   justify-content: center;
   font-size: 1.5rem;
   color: ${theme.colors.white};
-  background: ${(props) => props.color || theme.colors.primary};
+  background: ${props => props.color || theme.colors.primary};
 `;
 
 const StatValue = styled.div`
@@ -80,14 +80,15 @@ const StatLabel = styled.div`
 `;
 
 const StatChange = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "positive",
+  shouldForwardProp: prop => prop !== 'positive',
 })`
   display: flex;
   align-items: center;
   gap: ${theme.spacing.xs};
   font-size: 0.8rem;
   font-weight: 600;
-  color: ${(props) => (props.positive ? theme.colors.success : theme.colors.error)};
+  color: ${props =>
+    props.positive ? theme.colors.success : theme.colors.error};
 `;
 
 const ContentGrid = styled.div`
@@ -149,7 +150,7 @@ const ActivityIcon = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: ${(props) => props.color || theme.colors.primary};
+  background: ${props => props.color || theme.colors.primary};
   color: ${theme.colors.white};
   font-size: 0.9rem;
   flex-shrink: 0;
@@ -201,8 +202,8 @@ const ActionIcon = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: ${(props) => props.color || theme.colors.primary}20;
-  color: ${(props) => props.color || theme.colors.primary};
+  background: ${props => props.color || theme.colors.primary}20;
+  color: ${props => props.color || theme.colors.primary};
   font-size: 1.2rem;
   margin-bottom: ${theme.spacing.md};
 `;
@@ -251,33 +252,33 @@ const DashboardTab = ({ dealer }) => {
     setRecentActivity([
       {
         id: 1,
-        type: "sale",
-        text: "New sale: 2024 BMW X5 M50i",
-        time: "2 hours ago",
+        type: 'sale',
+        text: 'New sale: 2024 BMW X5 M50i',
+        time: '2 hours ago',
         icon: FaDollarSign,
         color: theme.colors.success,
       },
       {
         id: 2,
-        type: "enquiry",
-        text: "New enquiry for Tesla Model S Plaid",
-        time: "4 hours ago",
+        type: 'enquiry',
+        text: 'New enquiry for Tesla Model S Plaid',
+        time: '4 hours ago',
         icon: FaEnvelope,
         color: theme.colors.primary,
       },
       {
         id: 3,
-        type: "service",
-        text: "Service appointment scheduled",
-        time: "6 hours ago",
+        type: 'service',
+        text: 'Service appointment scheduled',
+        time: '6 hours ago',
         icon: FaCalendar,
         color: theme.colors.warning,
       },
       {
         id: 4,
-        type: "trade-in",
-        text: "Trade-in evaluation completed",
-        time: "1 day ago",
+        type: 'trade-in',
+        text: 'Trade-in evaluation completed',
+        time: '1 day ago',
         icon: FaExchangeAlt,
         color: theme.colors.info,
       },
@@ -286,88 +287,88 @@ const DashboardTab = ({ dealer }) => {
 
   const statCards = [
     {
-      label: "Total Vehicles",
+      label: 'Total Vehicles',
       value: stats.totalVehicles,
       icon: FaCar,
       color: theme.colors.primary,
-      change: { value: "+12%", positive: true },
+      change: { value: '+12%', positive: true },
     },
     {
-      label: "Monthly Sales",
+      label: 'Monthly Sales',
       value: stats.totalSales,
       icon: FaDollarSign,
       color: theme.colors.success,
-      change: { value: "+8%", positive: true },
+      change: { value: '+8%', positive: true },
     },
     {
-      label: "Revenue (YTD)",
+      label: 'Revenue (YTD)',
       value: `$${(stats.revenue / 1000000).toFixed(1)}M`,
       icon: FaChartLine,
       color: theme.colors.info,
-      change: { value: "+15%", positive: true },
+      change: { value: '+15%', positive: true },
     },
     {
-      label: "Total Customers",
+      label: 'Total Customers',
       value: stats.customers,
       icon: FaUsers,
       color: theme.colors.secondary,
-      change: { value: "+5%", positive: true },
+      change: { value: '+5%', positive: true },
     },
     {
-      label: "Active Enquiries",
+      label: 'Active Enquiries',
       value: stats.enquiries,
       icon: FaEnvelope,
       color: theme.colors.warning,
-      change: { value: "-3%", positive: false },
+      change: { value: '-3%', positive: false },
     },
     {
-      label: "Service Appointments",
+      label: 'Service Appointments',
       value: stats.serviceAppointments,
       icon: FaCalendar,
-      color: theme.colors.purple || "#8b5cf6",
-      change: { value: "+20%", positive: true },
+      color: theme.colors.purple || '#8b5cf6',
+      change: { value: '+20%', positive: true },
     },
     {
-      label: "Trade-Ins (Month)",
+      label: 'Trade-Ins (Month)',
       value: stats.tradeIns,
       icon: FaExchangeAlt,
-      color: theme.colors.orange || "#f59e0b",
-      change: { value: "+25%", positive: true },
+      color: theme.colors.orange || '#f59e0b',
+      change: { value: '+25%', positive: true },
     },
     {
-      label: "Average Rating",
+      label: 'Average Rating',
       value: stats.avgRating,
       icon: FaStar,
-      color: theme.colors.yellow || "#eab308",
-      change: { value: "+0.2", positive: true },
+      color: theme.colors.yellow || '#eab308',
+      change: { value: '+0.2', positive: true },
     },
   ];
 
   const quickActions = [
     {
-      title: "Add New Vehicle",
-      description: "Add a new vehicle to inventory",
+      title: 'Add New Vehicle',
+      description: 'Add a new vehicle to inventory',
       icon: FaCar,
       color: theme.colors.primary,
       action: () => {}, // Will be handled by parent
     },
     {
-      title: "View Enquiries",
-      description: "Check new customer enquiries",
+      title: 'View Enquiries',
+      description: 'Check new customer enquiries',
       icon: FaEnvelope,
       color: theme.colors.secondary,
       action: () => {},
     },
     {
-      title: "Sales Report",
-      description: "Generate monthly sales report",
+      title: 'Sales Report',
+      description: 'Generate monthly sales report',
       icon: FaChartLine,
       color: theme.colors.success,
       action: () => {},
     },
     {
-      title: "Customer Management",
-      description: "Manage customer database",
+      title: 'Customer Management',
+      description: 'Manage customer database',
       icon: FaUsers,
       color: theme.colors.info,
       action: () => {},
@@ -415,7 +416,7 @@ const DashboardTab = ({ dealer }) => {
             Recent Activity
           </SectionTitle>
           <ActivityList>
-            {recentActivity.map((activity) => (
+            {recentActivity.map(activity => (
               <ActivityItem key={activity.id}>
                 <ActivityIcon color={activity.color}>
                   <activity.icon />

@@ -1,6 +1,6 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import styled from "styled-components";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 import {
   FaStar,
   FaMapMarkerAlt,
@@ -8,8 +8,8 @@ import {
   FaSwimmingPool,
   FaCar,
   FaUtensils,
-} from "react-icons/fa";
-import { theme, media } from "../../styles/GlobalStyle";
+} from 'react-icons/fa';
+import { theme, media } from '../../styles/GlobalStyle';
 
 const Card = styled(Link)`
   display: block;
@@ -43,11 +43,11 @@ const Card = styled(Link)`
 `;
 
 const CardImage = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "image",
+  shouldForwardProp: prop => prop !== 'image',
 })`
   position: relative;
   height: 200px;
-  background-image: url(${(props) => props.image});
+  background-image: url(${props => props.image});
   background-size: cover;
   background-position: center;
   overflow: hidden;
@@ -226,9 +226,9 @@ const RatingStars = styled.div`
 `;
 
 const Star = styled(FaStar).withConfig({
-  shouldForwardProp: (prop) => prop !== "filled",
+  shouldForwardProp: prop => prop !== 'filled',
 })`
-  color: ${(props) => (props.filled ? "#fbbf24" : theme.colors.gray300)};
+  color: ${props => (props.filled ? '#fbbf24' : theme.colors.gray300)};
   font-size: 0.8rem;
 
   ${media.mobile} {
@@ -237,7 +237,7 @@ const Star = styled(FaStar).withConfig({
 `;
 
 const HotelCard = ({ hotel }) => {
-  const renderStars = (rating) => {
+  const renderStars = rating => {
     const stars = [];
     for (let i = 1; i <= 5; i++) {
       stars.push(<Star key={i} filled={i <= Math.floor(rating)} />);
@@ -245,7 +245,7 @@ const HotelCard = ({ hotel }) => {
     return stars;
   };
 
-  const getAmenityIcon = (amenity) => {
+  const getAmenityIcon = amenity => {
     const iconMap = {
       WiFi: FaWifi,
       Pool: FaSwimmingPool,
@@ -263,7 +263,7 @@ const HotelCard = ({ hotel }) => {
       <CardImage image={hotel.image}>
         <ImageOverlay />
         <StarRating>
-          <FaStar style={{ color: "#fbbf24" }} />
+          <FaStar style={{ color: '#fbbf24' }} />
           {hotel.starRating}
         </StarRating>
         <PriceBadge>₹{hotel.startingPrice.toLocaleString()}+</PriceBadge>

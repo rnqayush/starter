@@ -1,7 +1,15 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import { FaEnvelope, FaEye, FaReply, FaPhone, FaUser, FaCar, FaClock } from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import {
+  FaEnvelope,
+  FaEye,
+  FaReply,
+  FaPhone,
+  FaUser,
+  FaCar,
+  FaClock,
+} from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
 
 const Container = styled.div`
   background: ${theme.colors.white};
@@ -205,14 +213,16 @@ const EnquiriesTab = () => {
 
   useEffect(() => {
     // Load enquiries from localStorage (demo data)
-    const storedEnquiries = JSON.parse(localStorage.getItem("vehicleEnquiries") || "[]");
+    const storedEnquiries = JSON.parse(
+      localStorage.getItem('vehicleEnquiries') || '[]'
+    );
     setEnquiries(storedEnquiries);
   }, []);
 
   const stats = {
     total: enquiries.length,
-    new: enquiries.filter(e => e.status === "pending").length,
-    responded: enquiries.filter(e => e.status === "responded").length,
+    new: enquiries.filter(e => e.status === 'pending').length,
+    responded: enquiries.filter(e => e.status === 'responded').length,
     thisWeek: enquiries.filter(e => {
       const enquiryDate = new Date(e.timestamp);
       const weekAgo = new Date();
@@ -221,19 +231,19 @@ const EnquiriesTab = () => {
     }).length,
   };
 
-  const formatDate = (timestamp) => {
-    return new Date(timestamp).toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
+  const formatDate = timestamp => {
+    return new Date(timestamp).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
     });
   };
 
-  const formatPrice = (price) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
+  const formatPrice = price => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(price);
@@ -246,7 +256,7 @@ const EnquiriesTab = () => {
           <FaEnvelope />
           Customer Enquiries ({enquiries.length})
         </Title>
-        
+
         <StatsRow>
           <StatCard>
             <StatValue>{stats.total}</StatValue>
@@ -269,7 +279,7 @@ const EnquiriesTab = () => {
 
       <EnquiriesList>
         {enquiries.length > 0 ? (
-          enquiries.map((enquiry) => (
+          enquiries.map(enquiry => (
             <EnquiryItem key={enquiry.id}>
               <EnquiryHeader>
                 <CustomerInfo>
@@ -291,16 +301,17 @@ const EnquiriesTab = () => {
               {enquiry.vehicleName && (
                 <VehicleInfo>
                   <VehicleName>
-                    <FaCar /> {enquiry.vehicleYear} {enquiry.vehicleMake} {enquiry.vehicleModel}
+                    <FaCar /> {enquiry.vehicleYear} {enquiry.vehicleMake}{' '}
+                    {enquiry.vehicleModel}
                   </VehicleName>
-                  <VehiclePrice>{formatPrice(enquiry.vehiclePrice)}</VehiclePrice>
+                  <VehiclePrice>
+                    {formatPrice(enquiry.vehiclePrice)}
+                  </VehiclePrice>
                 </VehicleInfo>
               )}
 
               {enquiry.message && (
-                <EnquiryMessage>
-                  "{enquiry.message}"
-                </EnquiryMessage>
+                <EnquiryMessage>"{enquiry.message}"</EnquiryMessage>
               )}
 
               <ActionButtons>
@@ -323,7 +334,10 @@ const EnquiriesTab = () => {
           <EmptyState>
             <FaEnvelope className="icon" />
             <h3>No enquiries yet</h3>
-            <p>Customer enquiries will appear here when customers are interested in your vehicles.</p>
+            <p>
+              Customer enquiries will appear here when customers are interested
+              in your vehicles.
+            </p>
           </EmptyState>
         )}
       </EnquiriesList>

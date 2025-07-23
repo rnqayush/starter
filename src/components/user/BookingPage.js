@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import { useParams, useLocation, useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import { FaArrowLeft, FaCheckCircle } from "react-icons/fa";
-import Header from "../shared/Header";
-import { Button } from "../shared/Button";
-import { Card, CardContent } from "../shared/Card";
-import { Input, FormGroup, Label, TextArea, InputGroup } from "../shared/Input";
-import { theme } from "../../styles/GlobalStyle";
-import { useAppContext } from "../../context/AppContext";
+import React, { useState } from 'react';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import { FaArrowLeft, FaCheckCircle } from 'react-icons/fa';
+import Header from '../shared/Header';
+import { Button } from '../shared/Button';
+import { Card, CardContent } from '../shared/Card';
+import { Input, FormGroup, Label, TextArea, InputGroup } from '../shared/Input';
+import { theme } from '../../styles/GlobalStyle';
+import { useAppContext } from '../../context/AppContext';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -157,20 +157,20 @@ const BookingPage = () => {
 
   const [showSuccess, setShowSuccess] = useState(false);
   const [formData, setFormData] = useState({
-    fullName: "",
-    email: "",
-    phone: "",
-    specialRequests: "",
+    fullName: '',
+    email: '',
+    phone: '',
+    specialRequests: '',
   });
 
   // Parse URL parameters
   const urlParams = new URLSearchParams(location.search);
-  const checkIn = urlParams.get("checkIn");
-  const checkOut = urlParams.get("checkOut");
-  const guests = urlParams.get("guests");
+  const checkIn = urlParams.get('checkIn');
+  const checkOut = urlParams.get('checkOut');
+  const guests = urlParams.get('guests');
 
-  const hotel = hotels.find((h) => h.id === parseInt(hotelId));
-  const room = hotel?.rooms.find((r) => r.id === parseInt(roomId));
+  const hotel = hotels.find(h => h.id === parseInt(hotelId));
+  const room = hotel?.rooms.find(r => r.id === parseInt(roomId));
 
   if (!hotel || !room || !checkIn || !checkOut) {
     return <div>Invalid booking data</div>;
@@ -187,19 +187,19 @@ const BookingPage = () => {
     return room.price * calculateNights();
   };
 
-  const handleInputChange = (e) => {
+  const handleInputChange = e => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = e => {
     e.preventDefault();
 
     const newBooking = {
       id: Date.now(),
-      userId: "current-user",
+      userId: 'current-user',
       hotelId: parseInt(hotelId),
       roomId: parseInt(roomId),
       hotelName: hotel.name,
@@ -208,8 +208,8 @@ const BookingPage = () => {
       checkOut,
       guests: parseInt(guests),
       totalPrice: calculateTotal(),
-      status: "pending",
-      bookingDate: new Date().toISOString().split("T")[0],
+      status: 'pending',
+      bookingDate: new Date().toISOString().split('T')[0],
       guestName: formData.fullName,
       guestEmail: formData.email,
       guestPhone: formData.phone,
@@ -220,18 +220,18 @@ const BookingPage = () => {
     setShowSuccess(true);
   };
 
-  const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString("en-IN", {
-      weekday: "short",
-      year: "numeric",
-      month: "short",
-      day: "numeric",
+  const formatDate = dateString => {
+    return new Date(dateString).toLocaleDateString('en-IN', {
+      weekday: 'short',
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
     });
   };
 
   const handleSuccessClose = () => {
     setShowSuccess(false);
-    navigate("/my-bookings");
+    navigate('/my-bookings');
   };
 
   return (
@@ -298,7 +298,7 @@ const BookingPage = () => {
                   />
                 </FormGroup>
 
-                <Button type="submit" size="large" style={{ width: "100%" }}>
+                <Button type="submit" size="large" style={{ width: '100%' }}>
                   Confirm Booking
                 </Button>
               </BookingForm>
@@ -316,14 +316,14 @@ const BookingPage = () => {
                   {formatDate(checkIn)} - {formatDate(checkOut)}
                 </DateInfo>
                 <DateInfo>
-                  {guests} guest{guests > 1 ? "s" : ""}
+                  {guests} guest{guests > 1 ? 's' : ''}
                 </DateInfo>
               </HotelInfo>
 
               <SummaryItem>
                 <span>
                   ₹{room.price.toLocaleString()} x {calculateNights()} night
-                  {calculateNights() > 1 ? "s" : ""}
+                  {calculateNights() > 1 ? 's' : ''}
                 </span>
                 <span>₹{calculateTotal().toLocaleString()}</span>
               </SummaryItem>
@@ -339,7 +339,7 @@ const BookingPage = () => {
 
       {showSuccess && (
         <SuccessModal onClick={handleSuccessClose}>
-          <SuccessContent onClick={(e) => e.stopPropagation()}>
+          <SuccessContent onClick={e => e.stopPropagation()}>
             <CardContent>
               <SuccessIcon>
                 <FaCheckCircle />

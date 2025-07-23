@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import styled from "styled-components";
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import styled from 'styled-components';
 import {
   FaCheck,
   FaCalendarAlt,
@@ -13,9 +13,9 @@ import {
   FaHome,
   FaShare,
   FaPrint,
-} from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
-import { getVendorById } from "../data/vendors";
+} from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
+import { getVendorById } from '../data/vendors';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -55,11 +55,14 @@ const ActionButtons = styled.div`
 `;
 
 const ActionButton = styled.button.withConfig({
-  shouldForwardProp: (prop) => prop !== "primary",
+  shouldForwardProp: prop => prop !== 'primary',
 })`
-  background: ${(props) => props.primary ? theme.colors.primary : theme.colors.white};
-  color: ${(props) => props.primary ? theme.colors.white : theme.colors.gray700};
-  border: 2px solid ${(props) => props.primary ? theme.colors.primary : theme.colors.gray200};
+  background: ${props =>
+    props.primary ? theme.colors.primary : theme.colors.white};
+  color: ${props =>
+    props.primary ? theme.colors.white : theme.colors.gray700};
+  border: 2px solid
+    ${props => (props.primary ? theme.colors.primary : theme.colors.gray200)};
   padding: ${theme.spacing.sm} ${theme.spacing.md};
   border-radius: ${theme.borderRadius.md};
   font-weight: 600;
@@ -71,7 +74,8 @@ const ActionButton = styled.button.withConfig({
 
   &:hover {
     transform: translateY(-1px);
-    background: ${(props) => props.primary ? theme.colors.primaryDark : theme.colors.gray50};
+    background: ${props =>
+      props.primary ? theme.colors.primaryDark : theme.colors.gray50};
   }
 `;
 
@@ -89,7 +93,11 @@ const ConfirmationCard = styled.div`
 `;
 
 const SuccessHeader = styled.div`
-  background: linear-gradient(135deg, ${theme.colors.success} 0%, ${theme.colors.primary} 100%);
+  background: linear-gradient(
+    135deg,
+    ${theme.colors.success} 0%,
+    ${theme.colors.primary} 100%
+  );
   color: ${theme.colors.white};
   padding: ${theme.spacing.xxl};
   text-align: center;
@@ -237,7 +245,7 @@ const StepItem = styled.li`
   align-items: flex-start;
   gap: ${theme.spacing.sm};
   margin-bottom: ${theme.spacing.md};
-  
+
   &:last-child {
     margin-bottom: 0;
   }
@@ -271,17 +279,27 @@ const ButtonGroup = styled.div`
 `;
 
 const Button = styled.button.withConfig({
-  shouldForwardProp: (prop) => prop !== "primary" && prop !== "outline",
+  shouldForwardProp: prop => prop !== 'primary' && prop !== 'outline',
 })`
-  background: ${(props) => 
-    props.primary ? theme.colors.primary : 
-    props.outline ? theme.colors.white : theme.colors.gray100};
-  color: ${(props) => 
-    props.primary ? theme.colors.white : 
-    props.outline ? theme.colors.primary : theme.colors.gray700};
-  border: 2px solid ${(props) => 
-    props.primary ? theme.colors.primary : 
-    props.outline ? theme.colors.primary : theme.colors.gray200};
+  background: ${props =>
+    props.primary
+      ? theme.colors.primary
+      : props.outline
+        ? theme.colors.white
+        : theme.colors.gray100};
+  color: ${props =>
+    props.primary
+      ? theme.colors.white
+      : props.outline
+        ? theme.colors.primary
+        : theme.colors.gray700};
+  border: 2px solid
+    ${props =>
+      props.primary
+        ? theme.colors.primary
+        : props.outline
+          ? theme.colors.primary
+          : theme.colors.gray200};
   padding: ${theme.spacing.md} ${theme.spacing.lg};
   border-radius: ${theme.borderRadius.md};
   font-weight: 600;
@@ -293,9 +311,12 @@ const Button = styled.button.withConfig({
 
   &:hover {
     transform: translateY(-1px);
-    background: ${(props) => 
-      props.primary ? theme.colors.primaryDark : 
-      props.outline ? theme.colors.primary + '10' : theme.colors.gray200};
+    background: ${props =>
+      props.primary
+        ? theme.colors.primaryDark
+        : props.outline
+          ? theme.colors.primary + '10'
+          : theme.colors.gray200};
   }
 `;
 
@@ -308,7 +329,7 @@ const BookingConfirmation = () => {
   useEffect(() => {
     const vendorId = searchParams.get('vendor');
     const bookingId = searchParams.get('booking');
-    
+
     if (vendorId) {
       const vendorData = getVendorById(vendorId);
       setVendor(vendorData);
@@ -324,8 +345,13 @@ const BookingConfirmation = () => {
       eventTime: searchParams.get('time') || '3:00 PM',
       guestCount: searchParams.get('guests') || '150',
       eventType: searchParams.get('type') || 'Wedding',
-      services: searchParams.get('services')?.split(',') || ['Wedding Planning', 'Photography'],
-      message: searchParams.get('message') || 'Looking forward to making our special day perfect!',
+      services: searchParams.get('services')?.split(',') || [
+        'Wedding Planning',
+        'Photography',
+      ],
+      message:
+        searchParams.get('message') ||
+        'Looking forward to making our special day perfect!',
     });
   }, [searchParams]);
 
@@ -454,12 +480,17 @@ const BookingConfirmation = () => {
                   Event Details
                 </InfoLabel>
                 <InfoValue>
-                  <div>{new Date(bookingDetails.eventDate).toLocaleDateString('en-US', { 
-                    weekday: 'long', 
-                    year: 'numeric', 
-                    month: 'long', 
-                    day: 'numeric' 
-                  })}</div>
+                  <div>
+                    {new Date(bookingDetails.eventDate).toLocaleDateString(
+                      'en-US',
+                      {
+                        weekday: 'long',
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                      }
+                    )}
+                  </div>
                   <div>{bookingDetails.eventTime}</div>
                   <div>{bookingDetails.guestCount} guests</div>
                   <div>{bookingDetails.eventType}</div>
@@ -474,22 +505,16 @@ const BookingConfirmation = () => {
                   Requested Services
                 </SectionTitle>
                 <InfoCard style={{ marginBottom: theme.spacing.xl }}>
-                  <InfoValue>
-                    {bookingDetails.services.join(', ')}
-                  </InfoValue>
+                  <InfoValue>{bookingDetails.services.join(', ')}</InfoValue>
                 </InfoCard>
               </>
             )}
 
             {bookingDetails.message && (
               <>
-                <SectionTitle>
-                  Additional Information
-                </SectionTitle>
+                <SectionTitle>Additional Information</SectionTitle>
                 <InfoCard style={{ marginBottom: theme.spacing.xl }}>
-                  <InfoValue>
-                    {bookingDetails.message}
-                  </InfoValue>
+                  <InfoValue>{bookingDetails.message}</InfoValue>
                 </InfoCard>
               </>
             )}
@@ -500,25 +525,29 @@ const BookingConfirmation = () => {
                 <StepItem>
                   <StepNumber>1</StepNumber>
                   <StepText>
-                    <strong>{vendor.name}</strong> will review your request within 24 hours
+                    <strong>{vendor.name}</strong> will review your request
+                    within 24 hours
                   </StepText>
                 </StepItem>
                 <StepItem>
                   <StepNumber>2</StepNumber>
                   <StepText>
-                    They'll contact you to schedule a consultation at your convenience
+                    They'll contact you to schedule a consultation at your
+                    convenience
                   </StepText>
                 </StepItem>
                 <StepItem>
                   <StepNumber>3</StepNumber>
                   <StepText>
-                    During the consultation, you'll discuss your vision, requirements, and budget
+                    During the consultation, you'll discuss your vision,
+                    requirements, and budget
                   </StepText>
                 </StepItem>
                 <StepItem>
                   <StepNumber>4</StepNumber>
                   <StepText>
-                    You'll receive a customized proposal and quote for your wedding
+                    You'll receive a customized proposal and quote for your
+                    wedding
                   </StepText>
                 </StepItem>
               </StepsList>

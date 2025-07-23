@@ -1,9 +1,16 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import { FaTimes, FaUser, FaPhone, FaEnvelope, FaComment, FaCheck } from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
-import { useNotifications } from "./NotificationSystem";
-import { useAuth } from "../../context/AuthContext";
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import {
+  FaTimes,
+  FaUser,
+  FaPhone,
+  FaEnvelope,
+  FaComment,
+  FaCheck,
+} from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
+import { useNotifications } from './NotificationSystem';
+import { useAuth } from '../../context/AuthContext';
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -133,7 +140,8 @@ const InputIcon = styled.div`
 
 const Input = styled.input`
   width: 100%;
-  padding: ${theme.spacing.md} ${theme.spacing.md} ${theme.spacing.md} ${theme.spacing.xxl};
+  padding: ${theme.spacing.md} ${theme.spacing.md} ${theme.spacing.md}
+    ${theme.spacing.xxl};
   border: 2px solid ${theme.colors.gray200};
   border-radius: ${theme.borderRadius.md};
   font-size: 1rem;
@@ -151,7 +159,8 @@ const Input = styled.input`
 
 const TextArea = styled.textarea`
   width: 100%;
-  padding: ${theme.spacing.md} ${theme.spacing.md} ${theme.spacing.md} ${theme.spacing.xxl};
+  padding: ${theme.spacing.md} ${theme.spacing.md} ${theme.spacing.md}
+    ${theme.spacing.xxl};
   border: 2px solid ${theme.colors.gray200};
   border-radius: ${theme.borderRadius.md};
   font-size: 1rem;
@@ -261,41 +270,37 @@ const SuccessText = styled.p`
   margin: 0 0 ${theme.spacing.xl} 0;
 `;
 
-const EnquiryModal = ({ 
-  isOpen, 
-  onClose, 
-  product, 
-  userInfo = {} 
-}) => {
-  const { showSuccessNotification, showEnquiryNotification } = useNotifications();
+const EnquiryModal = ({ isOpen, onClose, product, userInfo = {} }) => {
+  const { showSuccessNotification, showEnquiryNotification } =
+    useNotifications();
   const { user, isAuthenticated } = useAuth();
 
   // Use authenticated user data if available, otherwise use passed userInfo
   const userData = isAuthenticated ? user : userInfo;
 
   const [formData, setFormData] = useState({
-    name: userData.name || "",
-    phone: userData.phone || "",
-    email: userData.email || "",
-    message: "",
-    agreeToTerms: false
+    name: userData.name || '',
+    phone: userData.phone || '',
+    email: userData.email || '',
+    message: '',
+    agreeToTerms: false,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [errors, setErrors] = useState({});
 
-  const handleInputChange = (e) => {
+  const handleInputChange = e => {
     const { name, value, type, checked } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: type === "checkbox" ? checked : value
+      [name]: type === 'checkbox' ? checked : value,
     }));
-    
+
     // Clear error when user starts typing
     if (errors[name]) {
       setErrors(prev => ({
         ...prev,
-        [name]: ""
+        [name]: '',
       }));
     }
   };
@@ -304,32 +309,32 @@ const EnquiryModal = ({
     const newErrors = {};
 
     if (!formData.name.trim()) {
-      newErrors.name = "Name is required";
+      newErrors.name = 'Name is required';
     }
 
     if (!formData.phone.trim()) {
-      newErrors.phone = "Phone number is required";
-        } else if (!/^\+?[\d\s\-()]{10,}$/.test(formData.phone.trim())) {
-      newErrors.phone = "Please enter a valid phone number";
+      newErrors.phone = 'Phone number is required';
+    } else if (!/^\+?[\d\s\-()]{10,}$/.test(formData.phone.trim())) {
+      newErrors.phone = 'Please enter a valid phone number';
     }
 
     if (!formData.email.trim()) {
-      newErrors.email = "Email is required";
+      newErrors.email = 'Email is required';
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "Please enter a valid email address";
+      newErrors.email = 'Please enter a valid email address';
     }
 
     if (!formData.agreeToTerms) {
-      newErrors.agreeToTerms = "You must agree to the terms";
+      newErrors.agreeToTerms = 'You must agree to the terms';
     }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
@@ -339,7 +344,7 @@ const EnquiryModal = ({
     try {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1500));
-      
+
       // Here you would typically send the enquiry to your backend
       const enquiryData = {
         ...formData,
@@ -347,21 +352,25 @@ const EnquiryModal = ({
         productName: product.name,
         productPrice: product.price,
         timestamp: new Date().toISOString(),
-        status: "pending"
+        status: 'pending',
       };
 
-      
       // Store in localStorage for demo (in real app, this would be in your database)
-      const existingEnquiries = JSON.parse(localStorage.getItem("userEnquiries") || "[]");
+      const existingEnquiries = JSON.parse(
+        localStorage.getItem('userEnquiries') || '[]'
+      );
       const newEnquiry = {
         id: Date.now(),
-        ...enquiryData
+        ...enquiryData,
       };
-            localStorage.setItem("userEnquiries", JSON.stringify([...existingEnquiries, newEnquiry]));
+      localStorage.setItem(
+        'userEnquiries',
+        JSON.stringify([...existingEnquiries, newEnquiry])
+      );
 
       // Show success notification
       showSuccessNotification(
-        "Enquiry Sent Successfully!",
+        'Enquiry Sent Successfully!',
         `Your enquiry for ${product.name} has been sent to the seller.`
       );
 
@@ -370,8 +379,7 @@ const EnquiryModal = ({
 
       setIsSuccess(true);
     } catch (error) {
-
-      alert("Failed to submit enquiry. Please try again.");
+      alert('Failed to submit enquiry. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -381,11 +389,11 @@ const EnquiryModal = ({
     if (isSuccess) {
       setIsSuccess(false);
       setFormData({
-        name: userInfo.name || "",
-        phone: userInfo.phone || "",
-        email: userInfo.email || "",
-        message: "",
-        agreeToTerms: false
+        name: userInfo.name || '',
+        phone: userInfo.phone || '',
+        email: userInfo.email || '',
+        message: '',
+        agreeToTerms: false,
       });
       setErrors({});
     }
@@ -396,10 +404,10 @@ const EnquiryModal = ({
 
   return (
     <ModalOverlay onClick={handleClose}>
-      <ModalContainer onClick={(e) => e.stopPropagation()}>
+      <ModalContainer onClick={e => e.stopPropagation()}>
         <ModalHeader>
           <ModalTitle>
-            {isSuccess ? "Enquiry Submitted!" : "Product Enquiry"}
+            {isSuccess ? 'Enquiry Submitted!' : 'Product Enquiry'}
           </ModalTitle>
           <CloseButton onClick={handleClose}>
             <FaTimes />
@@ -414,7 +422,8 @@ const EnquiryModal = ({
               </SuccessIcon>
               <SuccessTitle>Enquiry Sent Successfully!</SuccessTitle>
               <SuccessText>
-                Thank you for your interest in {product.name}. The seller will contact you soon via phone or email.
+                Thank you for your interest in {product.name}. The seller will
+                contact you soon via phone or email.
               </SuccessText>
               <SubmitButton onClick={handleClose}>
                 Continue Shopping
@@ -447,12 +456,16 @@ const EnquiryModal = ({
                       onChange={handleInputChange}
                       placeholder="Enter your full name"
                       style={{
-                        borderColor: errors.name ? theme.colors.error : undefined
+                        borderColor: errors.name
+                          ? theme.colors.error
+                          : undefined,
                       }}
                     />
                   </InputWrapper>
                   {errors.name && (
-                    <span style={{ color: theme.colors.error, fontSize: "0.9rem" }}>
+                    <span
+                      style={{ color: theme.colors.error, fontSize: '0.9rem' }}
+                    >
                       {errors.name}
                     </span>
                   )}
@@ -474,12 +487,16 @@ const EnquiryModal = ({
                       onChange={handleInputChange}
                       placeholder="Enter your phone number"
                       style={{
-                        borderColor: errors.phone ? theme.colors.error : undefined
+                        borderColor: errors.phone
+                          ? theme.colors.error
+                          : undefined,
                       }}
                     />
                   </InputWrapper>
                   {errors.phone && (
-                    <span style={{ color: theme.colors.error, fontSize: "0.9rem" }}>
+                    <span
+                      style={{ color: theme.colors.error, fontSize: '0.9rem' }}
+                    >
                       {errors.phone}
                     </span>
                   )}
@@ -501,12 +518,16 @@ const EnquiryModal = ({
                       onChange={handleInputChange}
                       placeholder="Enter your email address"
                       style={{
-                        borderColor: errors.email ? theme.colors.error : undefined
+                        borderColor: errors.email
+                          ? theme.colors.error
+                          : undefined,
                       }}
                     />
                   </InputWrapper>
                   {errors.email && (
-                    <span style={{ color: theme.colors.error, fontSize: "0.9rem" }}>
+                    <span
+                      style={{ color: theme.colors.error, fontSize: '0.9rem' }}
+                    >
                       {errors.email}
                     </span>
                   )}
@@ -539,12 +560,16 @@ const EnquiryModal = ({
                     onChange={handleInputChange}
                   />
                   <CheckboxLabel htmlFor="agreeToTerms">
-                    I agree to share my contact information with the seller and receive communications about this product. 
-                    By submitting this enquiry, I consent to the processing of my personal data.
+                    I agree to share my contact information with the seller and
+                    receive communications about this product. By submitting
+                    this enquiry, I consent to the processing of my personal
+                    data.
                   </CheckboxLabel>
                 </CheckboxWrapper>
                 {errors.agreeToTerms && (
-                  <span style={{ color: theme.colors.error, fontSize: "0.9rem" }}>
+                  <span
+                    style={{ color: theme.colors.error, fontSize: '0.9rem' }}
+                  >
                     {errors.agreeToTerms}
                   </span>
                 )}
@@ -554,7 +579,7 @@ const EnquiryModal = ({
                     Cancel
                   </CancelButton>
                   <SubmitButton type="submit" disabled={isSubmitting}>
-                    {isSubmitting ? "Sending..." : "Send Enquiry"}
+                    {isSubmitting ? 'Sending...' : 'Send Enquiry'}
                   </SubmitButton>
                 </ButtonGroup>
               </Form>

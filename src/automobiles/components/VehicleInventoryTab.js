@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
 import {
   FaCar,
   FaSearch,
@@ -9,9 +9,14 @@ import {
   FaEye,
   FaSortAmountUp,
   FaSortAmountDown,
-} from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
-import { vehicles, getAvailabilityStatus, getAvailabilityLabel, getAvailabilityColor } from "../data/vehicles";
+} from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
+import {
+  vehicles,
+  getAvailabilityStatus,
+  getAvailabilityLabel,
+  getAvailabilityColor,
+} from '../data/vehicles';
 
 const InventoryContainer = styled.div`
   background: ${theme.colors.white};
@@ -235,14 +240,14 @@ const VehicleSpec = styled.div`
 `;
 
 const StatusBadge = styled.span.withConfig({
-  shouldForwardProp: (prop) => prop !== "color",
+  shouldForwardProp: prop => prop !== 'color',
 })`
   padding: ${theme.spacing.xs} ${theme.spacing.sm};
   border-radius: ${theme.borderRadius.sm};
   font-size: 0.8rem;
   font-weight: 600;
   color: ${theme.colors.white};
-  background: ${(props) => props.color || theme.colors.gray500};
+  background: ${props => props.color || theme.colors.gray500};
 `;
 
 const Price = styled.div`
@@ -300,11 +305,11 @@ const EmptyState = styled.div`
 const VehicleInventoryTab = ({ dealer }) => {
   const [vehicleList, setVehicleList] = useState([]);
   const [filteredVehicles, setFilteredVehicles] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [categoryFilter, setCategoryFilter] = useState("");
-  const [conditionFilter, setConditionFilter] = useState("");
-  const [sortBy, setSortBy] = useState("name");
-  const [sortDirection, setSortDirection] = useState("asc");
+  const [searchTerm, setSearchTerm] = useState('');
+  const [categoryFilter, setCategoryFilter] = useState('');
+  const [conditionFilter, setConditionFilter] = useState('');
+  const [sortBy, setSortBy] = useState('name');
+  const [sortDirection, setSortDirection] = useState('asc');
 
   useEffect(() => {
     // In a real app, this would fetch vehicles for the specific dealer
@@ -317,48 +322,53 @@ const VehicleInventoryTab = ({ dealer }) => {
 
     // Search filter
     if (searchTerm) {
-      filtered = filtered.filter(vehicle =>
-        vehicle.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        vehicle.make.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        vehicle.model.toLowerCase().includes(searchTerm.toLowerCase())
+      filtered = filtered.filter(
+        vehicle =>
+          vehicle.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          vehicle.make.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          vehicle.model.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
     // Category filter
     if (categoryFilter) {
-      filtered = filtered.filter(vehicle => vehicle.category === categoryFilter);
+      filtered = filtered.filter(
+        vehicle => vehicle.category === categoryFilter
+      );
     }
 
     // Condition filter
     if (conditionFilter) {
-      filtered = filtered.filter(vehicle => vehicle.condition === conditionFilter);
+      filtered = filtered.filter(
+        vehicle => vehicle.condition === conditionFilter
+      );
     }
 
     // Sort
     filtered.sort((a, b) => {
       let aVal, bVal;
-      
+
       switch (sortBy) {
-        case "price":
+        case 'price':
           aVal = a.price;
           bVal = b.price;
           break;
-        case "year":
+        case 'year':
           aVal = a.year;
           bVal = b.year;
           break;
-        case "mileage":
+        case 'mileage':
           aVal = a.mileage;
           bVal = b.mileage;
           break;
-        case "name":
+        case 'name':
         default:
           aVal = a.name.toLowerCase();
           bVal = b.name.toLowerCase();
           break;
       }
 
-      if (sortDirection === "asc") {
+      if (sortDirection === 'asc') {
         return aVal > bVal ? 1 : -1;
       } else {
         return aVal < bVal ? 1 : -1;
@@ -366,21 +376,28 @@ const VehicleInventoryTab = ({ dealer }) => {
     });
 
     setFilteredVehicles(filtered);
-  }, [vehicleList, searchTerm, categoryFilter, conditionFilter, sortBy, sortDirection]);
+  }, [
+    vehicleList,
+    searchTerm,
+    categoryFilter,
+    conditionFilter,
+    sortBy,
+    sortDirection,
+  ]);
 
-  const handleSort = (field) => {
+  const handleSort = field => {
     if (sortBy === field) {
-      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
     } else {
       setSortBy(field);
-      setSortDirection("asc");
+      setSortDirection('asc');
     }
   };
 
-  const formatPrice = (price) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
+  const formatPrice = price => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(price);
@@ -388,9 +405,11 @@ const VehicleInventoryTab = ({ dealer }) => {
 
   const stats = {
     total: vehicleList.length,
-    available: vehicleList.filter(v => getAvailabilityStatus(v) === "in_stock").length,
-    sold: vehicleList.filter(v => getAvailabilityStatus(v) === "out_of_stock").length,
-    newVehicles: vehicleList.filter(v => v.condition === "new").length,
+    available: vehicleList.filter(v => getAvailabilityStatus(v) === 'in_stock')
+      .length,
+    sold: vehicleList.filter(v => getAvailabilityStatus(v) === 'out_of_stock')
+      .length,
+    newVehicles: vehicleList.filter(v => v.condition === 'new').length,
   };
 
   const categories = [...new Set(vehicleList.map(v => v.category))];
@@ -419,25 +438,27 @@ const VehicleInventoryTab = ({ dealer }) => {
               type="text"
               placeholder="Search vehicles by name, make, or model..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={e => setSearchTerm(e.target.value)}
             />
           </SearchContainer>
 
           <FilterSelect
             value={categoryFilter}
-            onChange={(e) => setCategoryFilter(e.target.value)}
+            onChange={e => setCategoryFilter(e.target.value)}
           >
             <option value="">All Categories</option>
             {categories.map(category => (
               <option key={category} value={category}>
-                {category.replace("-", " ").replace(/\b\w/g, l => l.toUpperCase())}
+                {category
+                  .replace('-', ' ')
+                  .replace(/\b\w/g, l => l.toUpperCase())}
               </option>
             ))}
           </FilterSelect>
 
           <FilterSelect
             value={conditionFilter}
-            onChange={(e) => setConditionFilter(e.target.value)}
+            onChange={e => setConditionFilter(e.target.value)}
           >
             <option value="">All Conditions</option>
             {conditions.map(condition => (
@@ -447,8 +468,12 @@ const VehicleInventoryTab = ({ dealer }) => {
             ))}
           </FilterSelect>
 
-          <SortButton onClick={() => handleSort("price")}>
-            {sortBy === "price" && sortDirection === "desc" ? <FaSortAmountDown /> : <FaSortAmountUp />}
+          <SortButton onClick={() => handleSort('price')}>
+            {sortBy === 'price' && sortDirection === 'desc' ? (
+              <FaSortAmountDown />
+            ) : (
+              <FaSortAmountUp />
+            )}
             Sort by Price
           </SortButton>
         </FiltersRow>
@@ -488,7 +513,7 @@ const VehicleInventoryTab = ({ dealer }) => {
               </TableRow>
             </TableHeader>
             <tbody>
-              {filteredVehicles.map((vehicle) => {
+              {filteredVehicles.map(vehicle => {
                 const status = getAvailabilityStatus(vehicle);
                 const statusLabel = getAvailabilityLabel(status);
                 const statusColor = getAvailabilityColor(status);
@@ -503,16 +528,22 @@ const VehicleInventoryTab = ({ dealer }) => {
                             {vehicle.year} {vehicle.make} {vehicle.model}
                           </VehicleName>
                           <VehicleSpec>
-                            {vehicle.trim} • {vehicle.mileage === 0 ? "New" : `${vehicle.mileage.toLocaleString()} mi`}
+                            {vehicle.trim} •{' '}
+                            {vehicle.mileage === 0
+                              ? 'New'
+                              : `${vehicle.mileage.toLocaleString()} mi`}
                           </VehicleSpec>
                         </VehicleDetails>
                       </VehicleInfo>
                     </TableCell>
                     <TableCell>
-                      {vehicle.category.replace("-", " ").replace(/\b\w/g, l => l.toUpperCase())}
+                      {vehicle.category
+                        .replace('-', ' ')
+                        .replace(/\b\w/g, l => l.toUpperCase())}
                     </TableCell>
                     <TableCell>
-                      {vehicle.condition.charAt(0).toUpperCase() + vehicle.condition.slice(1)}
+                      {vehicle.condition.charAt(0).toUpperCase() +
+                        vehicle.condition.slice(1)}
                     </TableCell>
                     <TableCell>
                       <Price>{formatPrice(vehicle.price)}</Price>
@@ -545,7 +576,10 @@ const VehicleInventoryTab = ({ dealer }) => {
           <EmptyState>
             <FaCar className="icon" />
             <h3>No vehicles found</h3>
-            <p>Try adjusting your search criteria or add new vehicles to your inventory.</p>
+            <p>
+              Try adjusting your search criteria or add new vehicles to your
+              inventory.
+            </p>
           </EmptyState>
         )}
       </TableContainer>

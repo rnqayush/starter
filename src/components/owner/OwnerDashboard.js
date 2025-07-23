@@ -1,12 +1,19 @@
-import React from "react";
-import styled from "styled-components";
-import { FaHotel, FaBed, FaCalendarCheck, FaEye, FaPlus, FaEdit } from "react-icons/fa";
-import { Link } from "react-router-dom";
-import Sidebar from "./Sidebar";
-import { Card, CardContent, Badge } from "../shared/Card";
-import { Button } from "../shared/Button";
-import { theme, media } from "../../styles/GlobalStyle";
-import { useAppContext } from "../../context/AppContext";
+import React from 'react';
+import styled from 'styled-components';
+import {
+  FaHotel,
+  FaBed,
+  FaCalendarCheck,
+  FaEye,
+  FaPlus,
+  FaEdit,
+} from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+import Sidebar from './Sidebar';
+import { Card, CardContent, Badge } from '../shared/Card';
+import { Button } from '../shared/Button';
+import { theme, media } from '../../styles/GlobalStyle';
+import { useAppContext } from '../../context/AppContext';
 
 const DashboardContainer = styled.div`
   display: flex;
@@ -54,7 +61,11 @@ const WelcomeTitle = styled.h1`
   font-weight: 700;
   margin-bottom: ${theme.spacing.sm};
   color: ${theme.colors.gray900};
-  background: linear-gradient(135deg, ${theme.colors.primary}, ${theme.colors.primaryDark});
+  background: linear-gradient(
+    135deg,
+    ${theme.colors.primary},
+    ${theme.colors.primaryDark}
+  );
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -108,11 +119,11 @@ const StatsGrid = styled.div`
 `;
 
 const StatCard = styled(Card)`
-  background: ${(props) => props.color || theme.colors.white};
-  color: ${(props) => props.textColor || theme.colors.gray900};
+  background: ${props => props.color || theme.colors.white};
+  color: ${props => props.textColor || theme.colors.gray900};
   border: 2px solid transparent;
   transition: all 0.3s ease;
-  
+
   &:hover {
     transform: translateY(-4px);
     box-shadow: ${theme.shadows.xl};
@@ -127,13 +138,13 @@ const StatCard = styled(Card)`
 `;
 
 const StatIcon = styled.div.withConfig({
-  shouldForwardProp: (prop) => !["iconBg", "iconColor"].includes(prop),
+  shouldForwardProp: prop => !['iconBg', 'iconColor'].includes(prop),
 })`
   width: 3.75rem;
   height: 3.75rem;
   border-radius: ${theme.borderRadius.lg};
-  background: ${(props) => props.iconBg || theme.colors.primary}20;
-  color: ${(props) => props.iconColor || theme.colors.primary};
+  background: ${props => props.iconBg || theme.colors.primary}20;
+  color: ${props => props.iconColor || theme.colors.primary};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -379,13 +390,13 @@ const MobileBookingDetails = styled.div`
 
     .detail {
       text-align: center;
-      
+
       .label {
         color: ${theme.colors.gray500};
         font-size: 0.8rem;
         margin-bottom: 2px;
       }
-      
+
       .value {
         font-weight: 600;
         color: ${theme.colors.gray900};
@@ -397,65 +408,66 @@ const MobileBookingDetails = styled.div`
 const OwnerDashboard = () => {
   const { ownerHotels, bookings } = useAppContext();
 
-  const ownerBookings = bookings.filter((booking) =>
-    ownerHotels.some((hotel) => hotel.id === booking.hotelId),
+  const ownerBookings = bookings.filter(booking =>
+    ownerHotels.some(hotel => hotel.id === booking.hotelId)
   );
 
   const stats = {
     totalHotels: ownerHotels.length,
     totalRooms: ownerHotels.reduce((sum, hotel) => sum + hotel.totalRooms, 0),
     totalBookings: ownerBookings.length,
-    pendingBookings: ownerBookings.filter((b) => b.status === "pending").length,
+    pendingBookings: ownerBookings.filter(b => b.status === 'pending').length,
   };
 
   const recentBookings = ownerBookings.slice(0, 5);
 
   const quickActions = [
     {
-      title: "Add New Hotel",
-      description: "Register a new hotel property with rooms and amenities",
+      title: 'Add New Hotel',
+      description: 'Register a new hotel property with rooms and amenities',
       icon: FaHotel,
-      link: "/owner/add-hotel",
+      link: '/owner/add-hotel',
     },
     {
-      title: "Manage Hotel Content",
-      description: "Edit hotel information, gallery, amenities and website content",
+      title: 'Manage Hotel Content',
+      description:
+        'Edit hotel information, gallery, amenities and website content',
       icon: FaEdit,
-      link: "/owner/content-manager",
+      link: '/owner/content-manager',
     },
     {
-      title: "Add Rooms",
-      description: "Add new rooms to your existing hotel properties",
+      title: 'Add Rooms',
+      description: 'Add new rooms to your existing hotel properties',
       icon: FaBed,
-      link: "/owner/my-hotels",
+      link: '/owner/my-hotels',
     },
     {
-      title: "Manage Bookings",
-      description: "Review and manage all incoming booking requests",
+      title: 'Manage Bookings',
+      description: 'Review and manage all incoming booking requests',
       icon: FaCalendarCheck,
-      link: "/owner/bookings",
+      link: '/owner/bookings',
     },
   ];
 
-  const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString("en-IN", {
-      month: "short",
-      day: "numeric",
+  const formatDate = dateString => {
+    return new Date(dateString).toLocaleDateString('en-IN', {
+      month: 'short',
+      day: 'numeric',
     });
   };
 
-  const getStatusVariant = (status) => {
+  const getStatusVariant = status => {
     switch (status) {
-      case "confirmed":
-        return "success";
-      case "pending":
-        return "warning";
-      case "cancelled":
-        return "error";
-      case "rejected":
-        return "error";
+      case 'confirmed':
+        return 'success';
+      case 'pending':
+        return 'warning';
+      case 'cancelled':
+        return 'error';
+      case 'rejected':
+        return 'error';
       default:
-        return "default";
+        return 'default';
     }
   };
 
@@ -527,8 +539,12 @@ const OwnerDashboard = () => {
 
         <SectionTitle>Quick Actions</SectionTitle>
         <QuickActionsGrid>
-          {quickActions.map((action) => (
-            <Link key={action.title} to={action.link} style={{ textDecoration: 'none' }}>
+          {quickActions.map(action => (
+            <Link
+              key={action.title}
+              to={action.link}
+              style={{ textDecoration: 'none' }}
+            >
               <ActionCard>
                 <CardContent>
                   <ActionIcon>
@@ -558,7 +574,7 @@ const OwnerDashboard = () => {
             </TableHeader>
 
             {recentBookings.length > 0 ? (
-              recentBookings.map((booking) => (
+              recentBookings.map(booking => (
                 <TableRow key={booking.id}>
                   <BookingInfo>
                     <GuestName>{booking.guestName}</GuestName>
@@ -566,8 +582,12 @@ const OwnerDashboard = () => {
                       {booking.hotelName} - {booking.roomName}
                     </HotelRoom>
                   </BookingInfo>
-                  <div className="desktop-only">{formatDate(booking.checkIn)}</div>
-                  <div className="desktop-only">{formatDate(booking.checkOut)}</div>
+                  <div className="desktop-only">
+                    {formatDate(booking.checkIn)}
+                  </div>
+                  <div className="desktop-only">
+                    {formatDate(booking.checkOut)}
+                  </div>
                   <div className="desktop-only">
                     <Badge variant={getStatusVariant(booking.status)}>
                       {booking.status.charAt(0).toUpperCase() +
@@ -580,7 +600,7 @@ const OwnerDashboard = () => {
                       View
                     </Button>
                   </div>
-                  
+
                   <MobileBookingDetails>
                     <div className="detail">
                       <div className="label">Check-in</div>
@@ -588,7 +608,9 @@ const OwnerDashboard = () => {
                     </div>
                     <div className="detail">
                       <div className="label">Check-out</div>
-                      <div className="value">{formatDate(booking.checkOut)}</div>
+                      <div className="value">
+                        {formatDate(booking.checkOut)}
+                      </div>
                     </div>
                     <div className="detail">
                       <div className="label">Status</div>
@@ -606,8 +628,8 @@ const OwnerDashboard = () => {
               <TableRow>
                 <div
                   style={{
-                    gridColumn: "1 / -1",
-                    textAlign: "center",
+                    gridColumn: '1 / -1',
+                    textAlign: 'center',
                     color: theme.colors.gray600,
                     padding: theme.spacing.xxl,
                   }}

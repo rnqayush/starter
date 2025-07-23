@@ -1,21 +1,21 @@
-import React, { useState, useRef, useEffect } from "react";
-import { Link } from "react-router-dom";
-import styled from "styled-components";
-import { FaHotel, FaBars, FaTimes, FaChevronDown } from "react-icons/fa";
-import { theme, media } from "../../styles/GlobalStyle";
-import { Button } from "./Button";
+import React, { useState, useRef, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+import { FaHotel, FaBars, FaTimes, FaChevronDown } from 'react-icons/fa';
+import { theme, media } from '../../styles/GlobalStyle';
+import { Button } from './Button';
 
 const HeaderContainer = styled.header.withConfig({
-  shouldForwardProp: (prop) => prop !== "isScrolled" && prop !== "isInHero",
+  shouldForwardProp: prop => prop !== 'isScrolled' && prop !== 'isInHero',
 })`
-  background: ${(props) => {
+  background: ${props => {
     if (props.isScrolled) return theme.colors.white;
     if (props.isInHero) {
       return 'linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.95) 35%, rgba(51, 65, 85, 0.9) 100%)';
     }
     return 'transparent';
   }};
-  box-shadow: ${(props) => {
+  box-shadow: ${props => {
     if (props.isScrolled) return theme.shadows.sm;
     if (props.isInHero) return '0 4px 20px rgba(0, 0, 0, 0.3)';
     return 'none';
@@ -25,18 +25,18 @@ const HeaderContainer = styled.header.withConfig({
   z-index: 100;
   width: 100%;
   transition: all 0.3s ease;
-  backdrop-filter: ${(props) => {
+  backdrop-filter: ${props => {
     if (props.isScrolled) return 'none';
     if (props.isInHero) return 'blur(20px)';
     return 'blur(10px)';
   }};
-  border-bottom: ${(props) => {
+  border-bottom: ${props => {
     if (props.isInHero) return '1px solid rgba(255, 255, 255, 0.1)';
     return 'none';
   }};
 
   ${media.mobile} {
-    backdrop-filter: ${(props) => {
+    backdrop-filter: ${props => {
       if (props.isScrolled) return 'none';
       if (props.isInHero) return 'blur(15px)';
       return 'blur(8px)';
@@ -77,14 +77,14 @@ const HeaderContent = styled.div`
 `;
 
 const Logo = styled(Link).withConfig({
-  shouldForwardProp: (prop) => prop !== "isScrolled" && prop !== "isInHero",
+  shouldForwardProp: prop => prop !== 'isScrolled' && prop !== 'isInHero',
 })`
   display: flex;
   align-items: center;
   gap: ${theme.spacing.sm};
   font-size: 1.25rem;
   font-weight: 700;
-  color: ${(props) => {
+  color: ${props => {
     if (props.isScrolled) return theme.colors.primary;
     return theme.colors.white;
   }};
@@ -95,7 +95,8 @@ const Logo = styled(Link).withConfig({
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  text-shadow: ${(props) => props.isInHero ? '0 2px 4px rgba(0, 0, 0, 0.3)' : 'none'};
+  text-shadow: ${props =>
+    props.isInHero ? '0 2px 4px rgba(0, 0, 0, 0.3)' : 'none'};
 
   ${media.mobile} {
     font-size: 1.125rem;
@@ -136,7 +137,7 @@ const DesktopNav = styled.nav`
 `;
 
 const MobileNav = styled.nav.withConfig({
-  shouldForwardProp: (prop) => prop !== "isOpen",
+  shouldForwardProp: prop => prop !== 'isOpen',
 })`
   position: fixed;
   top: 3.75rem;
@@ -147,9 +148,9 @@ const MobileNav = styled.nav.withConfig({
   flex-direction: column;
   padding: ${theme.spacing.lg} ${theme.spacing.md};
   box-shadow: ${theme.shadows.xl};
-  transform: translateY(${(props) => (props.isOpen ? "0" : "-100%")});
-  opacity: ${(props) => (props.isOpen ? "1" : "0")};
-  visibility: ${(props) => (props.isOpen ? "visible" : "hidden")};
+  transform: translateY(${props => (props.isOpen ? '0' : '-100%')});
+  opacity: ${props => (props.isOpen ? '1' : '0')};
+  visibility: ${props => (props.isOpen ? 'visible' : 'hidden')};
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 999;
   overflow-y: auto;
@@ -166,50 +167,47 @@ const MobileNav = styled.nav.withConfig({
 `;
 
 const NavLink = styled(Link).withConfig({
-  shouldForwardProp: (prop) => prop !== "isScrolled" && prop !== "isMobile",
+  shouldForwardProp: prop => prop !== 'isScrolled' && prop !== 'isMobile',
 })`
-  color: ${(props) => 
-    props.isMobile 
-      ? theme.colors.gray700 
-      : props.isScrolled 
-        ? theme.colors.gray700 
-        : 'rgba(255, 255, 255, 0.9)'
-  };
-  font-weight: ${(props) => props.isMobile ? '600' : '500'};
+  color: ${props =>
+    props.isMobile
+      ? theme.colors.gray700
+      : props.isScrolled
+        ? theme.colors.gray700
+        : 'rgba(255, 255, 255, 0.9)'};
+  font-weight: ${props => (props.isMobile ? '600' : '500')};
   text-decoration: none;
-  padding: ${(props) => 
-    props.isMobile 
-      ? `${theme.spacing.lg} ${theme.spacing.xl}` 
-      : `${theme.spacing.xs} ${theme.spacing.sm}`
-  };
-  border-radius: ${(props) => props.isMobile ? theme.borderRadius.lg : theme.borderRadius.md};
+  padding: ${props =>
+    props.isMobile
+      ? `${theme.spacing.lg} ${theme.spacing.xl}`
+      : `${theme.spacing.xs} ${theme.spacing.sm}`};
+  border-radius: ${props =>
+    props.isMobile ? theme.borderRadius.lg : theme.borderRadius.md};
   transition: all 0.3s ease;
   white-space: nowrap;
   display: flex;
   align-items: center;
   position: relative;
-  font-size: ${(props) => props.isMobile ? '1.125rem' : '0.875rem'};
-  width: ${(props) => props.isMobile ? '100%' : 'auto'};
-  text-align: ${(props) => props.isMobile ? 'center' : 'left'};
-  justify-content: ${(props) => props.isMobile ? 'center' : 'flex-start'};
-  min-height: ${(props) => props.isMobile ? '48px' : 'auto'};
+  font-size: ${props => (props.isMobile ? '1.125rem' : '0.875rem')};
+  width: ${props => (props.isMobile ? '100%' : 'auto')};
+  text-align: ${props => (props.isMobile ? 'center' : 'left')};
+  justify-content: ${props => (props.isMobile ? 'center' : 'flex-start')};
+  min-height: ${props => (props.isMobile ? '48px' : 'auto')};
 
   &:hover {
-    color: ${(props) => 
-      props.isMobile 
-        ? theme.colors.primary 
-        : props.isScrolled 
-          ? theme.colors.primary 
-          : theme.colors.white
-    };
-    background: ${(props) => 
-      props.isMobile 
-        ? theme.colors.gray50 
-        : props.isScrolled 
-          ? theme.colors.gray50 
-          : 'rgba(255, 255, 255, 0.1)'
-    };
-    transform: ${(props) => props.isMobile ? 'none' : 'translateY(-1px)'};
+    color: ${props =>
+      props.isMobile
+        ? theme.colors.primary
+        : props.isScrolled
+          ? theme.colors.primary
+          : theme.colors.white};
+    background: ${props =>
+      props.isMobile
+        ? theme.colors.gray50
+        : props.isScrolled
+          ? theme.colors.gray50
+          : 'rgba(255, 255, 255, 0.1)'};
+    transform: ${props => (props.isMobile ? 'none' : 'translateY(-1px)')};
   }
 
   &.active {
@@ -231,55 +229,53 @@ const NavLink = styled(Link).withConfig({
 const DropdownContainer = styled.div`
   position: relative;
   display: inline-block;
-  width: ${(props) => props.isMobile ? '100%' : 'auto'};
+  width: ${props => (props.isMobile ? '100%' : 'auto')};
 `;
 
 const DropdownButton = styled.button.withConfig({
-  shouldForwardProp: (prop) => prop !== "isOpen" && prop !== "isScrolled" && prop !== "isMobile",
+  shouldForwardProp: prop =>
+    prop !== 'isOpen' && prop !== 'isScrolled' && prop !== 'isMobile',
 })`
   display: flex;
   align-items: center;
-  justify-content: ${(props) => props.isMobile ? 'center' : 'flex-start'};
+  justify-content: ${props => (props.isMobile ? 'center' : 'flex-start')};
   gap: ${theme.spacing.xs};
-  color: ${(props) => 
-    props.isMobile 
-      ? theme.colors.gray700 
-      : props.isScrolled 
-        ? theme.colors.gray700 
-        : 'rgba(255, 255, 255, 0.9)'
-  };
-  font-weight: ${(props) => props.isMobile ? '600' : '500'};
+  color: ${props =>
+    props.isMobile
+      ? theme.colors.gray700
+      : props.isScrolled
+        ? theme.colors.gray700
+        : 'rgba(255, 255, 255, 0.9)'};
+  font-weight: ${props => (props.isMobile ? '600' : '500')};
   background: none;
   border: none;
-  padding: ${(props) => 
-    props.isMobile 
-      ? `${theme.spacing.lg} ${theme.spacing.xl}` 
-      : `${theme.spacing.xs} ${theme.spacing.sm}`
-  };
-  border-radius: ${(props) => props.isMobile ? theme.borderRadius.lg : theme.borderRadius.md};
+  padding: ${props =>
+    props.isMobile
+      ? `${theme.spacing.lg} ${theme.spacing.xl}`
+      : `${theme.spacing.xs} ${theme.spacing.sm}`};
+  border-radius: ${props =>
+    props.isMobile ? theme.borderRadius.lg : theme.borderRadius.md};
   transition: all 0.3s ease;
   cursor: pointer;
   white-space: nowrap;
-  font-size: ${(props) => props.isMobile ? '1.125rem' : '0.875rem'};
-  width: ${(props) => props.isMobile ? '100%' : 'auto'};
-  min-height: ${(props) => props.isMobile ? '48px' : 'auto'};
+  font-size: ${props => (props.isMobile ? '1.125rem' : '0.875rem')};
+  width: ${props => (props.isMobile ? '100%' : 'auto')};
+  min-height: ${props => (props.isMobile ? '48px' : 'auto')};
 
   &:hover {
-    color: ${(props) => 
-      props.isMobile 
-        ? theme.colors.primary 
-        : props.isScrolled 
-          ? theme.colors.primary 
-          : theme.colors.white
-    };
-    background: ${(props) => 
-      props.isMobile 
-        ? theme.colors.gray50 
-        : props.isScrolled 
-          ? theme.colors.gray50 
-          : 'rgba(255, 255, 255, 0.1)'
-    };
-    transform: ${(props) => props.isMobile ? 'none' : 'translateY(-1px)'};
+    color: ${props =>
+      props.isMobile
+        ? theme.colors.primary
+        : props.isScrolled
+          ? theme.colors.primary
+          : theme.colors.white};
+    background: ${props =>
+      props.isMobile
+        ? theme.colors.gray50
+        : props.isScrolled
+          ? theme.colors.gray50
+          : 'rgba(255, 255, 255, 0.1)'};
+    transform: ${props => (props.isMobile ? 'none' : 'translateY(-1px)')};
   }
 
   &:focus {
@@ -289,7 +285,7 @@ const DropdownButton = styled.button.withConfig({
 
   svg {
     transition: transform 0.2s ease;
-    transform: ${(props) => (props.isOpen ? "rotate(180deg)" : "rotate(0deg)")};
+    transform: ${props => (props.isOpen ? 'rotate(180deg)' : 'rotate(0deg)')};
     font-size: 0.875rem;
   }
 
@@ -310,23 +306,29 @@ const DropdownButton = styled.button.withConfig({
 `;
 
 const DropdownMenu = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "isOpen" && prop !== "isMobile",
+  shouldForwardProp: prop => prop !== 'isOpen' && prop !== 'isMobile',
 })`
-  position: ${(props) => props.isMobile ? 'static' : 'absolute'};
-  top: ${(props) => props.isMobile ? 'auto' : '100%'};
+  position: ${props => (props.isMobile ? 'static' : 'absolute')};
+  top: ${props => (props.isMobile ? 'auto' : '100%')};
   left: 0;
-  background: ${(props) => props.isMobile ? theme.colors.gray50 : theme.colors.white};
-  border-radius: ${(props) => props.isMobile ? theme.borderRadius.md : theme.borderRadius.lg};
-  box-shadow: ${(props) => props.isMobile ? 'none' : theme.shadows.xl};
-  border: ${(props) => props.isMobile ? 'none' : `1px solid ${theme.colors.gray200}`};
-  min-width: ${(props) => props.isMobile ? 'auto' : '12.5rem'};
+  background: ${props =>
+    props.isMobile ? theme.colors.gray50 : theme.colors.white};
+  border-radius: ${props =>
+    props.isMobile ? theme.borderRadius.md : theme.borderRadius.lg};
+  box-shadow: ${props => (props.isMobile ? 'none' : theme.shadows.xl)};
+  border: ${props =>
+    props.isMobile ? 'none' : `1px solid ${theme.colors.gray200}`};
+  min-width: ${props => (props.isMobile ? 'auto' : '12.5rem')};
   z-index: 1000;
-  opacity: ${(props) => (props.isOpen ? "1" : "0")};
-  visibility: ${(props) => (props.isOpen ? "visible" : "hidden")};
-  transform: ${(props) => props.isMobile ? 'none' : `translateY(${props.isOpen ? "0" : "-0.625rem"})`};
+  opacity: ${props => (props.isOpen ? '1' : '0')};
+  visibility: ${props => (props.isOpen ? 'visible' : 'hidden')};
+  transform: ${props =>
+    props.isMobile
+      ? 'none'
+      : `translateY(${props.isOpen ? '0' : '-0.625rem'})`};
   transition: all 0.2s ease;
-  margin-top: ${(props) => props.isMobile ? theme.spacing.sm : '0'};
-  width: ${(props) => props.isMobile ? '100%' : 'auto'};
+  margin-top: ${props => (props.isMobile ? theme.spacing.sm : '0')};
+  width: ${props => (props.isMobile ? '100%' : 'auto')};
 
   ${media.tablet} {
     min-width: 10rem;
@@ -376,7 +378,8 @@ const DropdownItem = styled(Link)`
       border-radius: 0;
     }
 
-    &:hover, &:focus {
+    &:hover,
+    &:focus {
       background: ${theme.colors.gray50};
       color: ${theme.colors.primary};
     }
@@ -404,9 +407,10 @@ const UserSection = styled.div`
 `;
 
 const LoginButton = styled(Link).withConfig({
-  shouldForwardProp: (prop) => prop !== "isScrolled",
+  shouldForwardProp: prop => prop !== 'isScrolled',
 })`
-  color: ${(props) => props.isScrolled ? theme.colors.gray700 : 'rgba(255, 255, 255, 0.9)'};
+  color: ${props =>
+    props.isScrolled ? theme.colors.gray700 : 'rgba(255, 255, 255, 0.9)'};
   font-weight: 500;
   text-decoration: none;
   padding: ${theme.spacing.sm} ${theme.spacing.md};
@@ -417,8 +421,10 @@ const LoginButton = styled(Link).withConfig({
   align-items: center;
 
   &:hover {
-    color: ${(props) => props.isScrolled ? theme.colors.primary : theme.colors.white};
-    background: ${(props) => props.isScrolled ? theme.colors.gray50 : 'rgba(255, 255, 255, 0.1)'};
+    color: ${props =>
+      props.isScrolled ? theme.colors.primary : theme.colors.white};
+    background: ${props =>
+      props.isScrolled ? theme.colors.gray50 : 'rgba(255, 255, 255, 0.1)'};
     transform: translateY(-1px);
   }
 
@@ -448,21 +454,24 @@ const LoginButton = styled(Link).withConfig({
 `;
 
 const RegisterButton = styled(Button).withConfig({
-  shouldForwardProp: (prop) => prop !== "isScrolled",
+  shouldForwardProp: prop => prop !== 'isScrolled',
 })`
-  background: ${(props) => props.isScrolled ? theme.colors.primary : 'rgba(255, 255, 255, 0.2)'};
+  background: ${props =>
+    props.isScrolled ? theme.colors.primary : 'rgba(255, 255, 255, 0.2)'};
   color: ${theme.colors.white};
-  border: ${(props) => props.isScrolled ? 'none' : '1px solid rgba(255, 255, 255, 0.3)'};
+  border: ${props =>
+    props.isScrolled ? 'none' : '1px solid rgba(255, 255, 255, 0.3)'};
   padding: ${theme.spacing.sm} ${theme.spacing.lg};
   border-radius: ${theme.borderRadius.md};
   font-weight: 500;
   transition: all 0.3s ease;
   white-space: nowrap;
-  box-shadow: ${(props) => props.isScrolled ? theme.shadows.sm : 'none'};
-  backdrop-filter: ${(props) => props.isScrolled ? 'none' : 'blur(10px)'};
+  box-shadow: ${props => (props.isScrolled ? theme.shadows.sm : 'none')};
+  backdrop-filter: ${props => (props.isScrolled ? 'none' : 'blur(10px)')};
 
   &:hover {
-    background: ${(props) => props.isScrolled ? theme.colors.primaryDark : 'rgba(255, 255, 255, 0.3)'};
+    background: ${props =>
+      props.isScrolled ? theme.colors.primaryDark : 'rgba(255, 255, 255, 0.3)'};
     transform: translateY(-1px);
     box-shadow: ${theme.shadows.md};
   }
@@ -498,22 +507,23 @@ const RegisterButton = styled(Button).withConfig({
 `;
 
 const MobileMenuButton = styled.button.withConfig({
-  shouldForwardProp: (prop) => prop !== "isScrolled" && prop !== "isInHero",
+  shouldForwardProp: prop => prop !== 'isScrolled' && prop !== 'isInHero',
 })`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: ${(props) => {
+  background: ${props => {
     if (props.isScrolled) return 'none';
     if (props.isInHero) return 'rgba(255, 255, 255, 0.1)';
     return 'none';
   }};
-  border: ${(props) => {
+  border: ${props => {
     if (props.isScrolled) return 'none';
     if (props.isInHero) return '1px solid rgba(255, 255, 255, 0.2)';
     return 'none';
   }};
-  color: ${(props) => props.isScrolled ? theme.colors.gray700 : theme.colors.white};
+  color: ${props =>
+    props.isScrolled ? theme.colors.gray700 : theme.colors.white};
   font-size: 1.25rem;
   padding: ${theme.spacing.sm};
   cursor: pointer;
@@ -527,20 +537,22 @@ const MobileMenuButton = styled.button.withConfig({
   min-width: 44px;
   min-height: 44px;
   touch-action: manipulation;
-  backdrop-filter: ${(props) => {
+  backdrop-filter: ${props => {
     if (props.isScrolled) return 'none';
     if (props.isInHero) return 'blur(10px)';
     return 'none';
   }};
-  text-shadow: ${(props) => {
+  text-shadow: ${props => {
     if (props.isScrolled) return 'none';
     if (props.isInHero) return '0 2px 4px rgba(0, 0, 0, 0.3)';
     return 'none';
   }};
 
   &:hover {
-    background: ${(props) => props.isScrolled ? theme.colors.gray50 : 'rgba(255, 255, 255, 0.1)'};
-    color: ${(props) => props.isScrolled ? theme.colors.primary : theme.colors.white};
+    background: ${props =>
+      props.isScrolled ? theme.colors.gray50 : 'rgba(255, 255, 255, 0.1)'};
+    color: ${props =>
+      props.isScrolled ? theme.colors.primary : theme.colors.white};
     transform: scale(1.05);
   }
 
@@ -550,7 +562,8 @@ const MobileMenuButton = styled.button.withConfig({
   }
 
   &:active {
-    background: ${(props) => props.isScrolled ? theme.colors.gray100 : 'rgba(255, 255, 255, 0.2)'};
+    background: ${props =>
+      props.isScrolled ? theme.colors.gray100 : 'rgba(255, 255, 255, 0.2)'};
     transform: scale(0.95);
   }
 
@@ -587,7 +600,8 @@ const MobileAuthButton = styled(Link)`
     color: ${theme.colors.gray700};
     background: ${theme.colors.gray100};
 
-    &:hover, &:focus {
+    &:hover,
+    &:focus {
       background: ${theme.colors.gray200};
       color: ${theme.colors.primary};
     }
@@ -601,7 +615,8 @@ const MobileAuthButton = styled(Link)`
     color: ${theme.colors.white};
     background: ${theme.colors.primary};
 
-    &:hover, &:focus {
+    &:hover,
+    &:focus {
       background: ${theme.colors.primaryDark};
     }
 
@@ -613,7 +628,7 @@ const MobileAuthButton = styled(Link)`
 `;
 
 const MobileMenuOverlay = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "isOpen",
+  shouldForwardProp: prop => prop !== 'isOpen',
 })`
   display: block;
   position: fixed;
@@ -623,8 +638,8 @@ const MobileMenuOverlay = styled.div.withConfig({
   bottom: 0;
   background: rgba(0, 0, 0, 0.5);
   z-index: 998;
-  opacity: ${(props) => (props.isOpen ? "1" : "0")};
-  visibility: ${(props) => (props.isOpen ? "visible" : "hidden")};
+  opacity: ${props => (props.isOpen ? '1' : '0')};
+  visibility: ${props => (props.isOpen ? 'visible' : 'hidden')};
   transition: all 0.3s ease;
   backdrop-filter: blur(4px);
 
@@ -646,22 +661,22 @@ const Header = ({ isOwnerView = false }) => {
 
   // Close dropdown when clicking outside
   useEffect(() => {
-    const handleClickOutside = (event) => {
+    const handleClickOutside = event => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         closeDropdown();
       }
     };
 
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
 
   // Handle escape key to close mobile menu and dropdown
   useEffect(() => {
-    const handleEscapeKey = (event) => {
-      if (event.key === "Escape") {
+    const handleEscapeKey = event => {
+      if (event.key === 'Escape') {
         if (mobileMenuOpen) {
           closeMobileMenu();
         }
@@ -671,22 +686,22 @@ const Header = ({ isOwnerView = false }) => {
       }
     };
 
-    document.addEventListener("keydown", handleEscapeKey);
+    document.addEventListener('keydown', handleEscapeKey);
     return () => {
-      document.removeEventListener("keydown", handleEscapeKey);
+      document.removeEventListener('keydown', handleEscapeKey);
     };
   }, [mobileMenuOpen, dropdownOpen]);
 
   // Prevent body scroll when mobile menu is open
   useEffect(() => {
     if (mobileMenuOpen) {
-      document.body.style.overflow = "hidden";
+      document.body.style.overflow = 'hidden';
     } else {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow = 'unset';
     }
 
     return () => {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow = 'unset';
     };
   }, [mobileMenuOpen]);
 
@@ -720,7 +735,7 @@ const Header = ({ isOwnerView = false }) => {
       <HeaderContainer isScrolled={isScrolled} isInHero={isInHero}>
         <HeaderContent>
           <Logo
-            to={isOwnerView ? "/" : "/"}
+            to={isOwnerView ? '/' : '/'}
             onClick={closeMobileMenu}
             isScrolled={isScrolled}
             isInHero={isInHero}
@@ -808,13 +823,25 @@ const Header = ({ isOwnerView = false }) => {
                 <NavLink to="/" onClick={closeMobileMenu} isMobile={true}>
                   Dashboard
                 </NavLink>
-                <NavLink to="/owner/my-hotels" onClick={closeMobileMenu} isMobile={true}>
+                <NavLink
+                  to="/owner/my-hotels"
+                  onClick={closeMobileMenu}
+                  isMobile={true}
+                >
                   My Hotels
                 </NavLink>
-                <NavLink to="/owner/bookings" onClick={closeMobileMenu} isMobile={true}>
+                <NavLink
+                  to="/owner/bookings"
+                  onClick={closeMobileMenu}
+                  isMobile={true}
+                >
                   Bookings
                 </NavLink>
-                <NavLink to="/owner/profile" onClick={closeMobileMenu} isMobile={true}>
+                <NavLink
+                  to="/owner/profile"
+                  onClick={closeMobileMenu}
+                  isMobile={true}
+                >
                   Profile
                 </NavLink>
               </>
@@ -823,7 +850,11 @@ const Header = ({ isOwnerView = false }) => {
                 <NavLink to="/" onClick={closeMobileMenu} isMobile={true}>
                   Home
                 </NavLink>
-                <NavLink to="/pricing" onClick={closeMobileMenu} isMobile={true}>
+                <NavLink
+                  to="/pricing"
+                  onClick={closeMobileMenu}
+                  isMobile={true}
+                >
                   Pricing
                 </NavLink>
                 <DropdownContainer isMobile={true}>
@@ -838,7 +869,11 @@ const Header = ({ isOwnerView = false }) => {
                     Explore Stores
                     <FaChevronDown />
                   </DropdownButton>
-                  <DropdownMenu isOpen={dropdownOpen} isMobile={true} role="menu">
+                  <DropdownMenu
+                    isOpen={dropdownOpen}
+                    isMobile={true}
+                    role="menu"
+                  >
                     <DropdownItem
                       to="/hotels"
                       onClick={handleDropdownItemClick}
@@ -891,7 +926,11 @@ const Header = ({ isOwnerView = false }) => {
           </MobileNav>
 
           <UserSection>
-            <LoginButton to="/login" onClick={closeMobileMenu} isScrolled={isScrolled}>
+            <LoginButton
+              to="/login"
+              onClick={closeMobileMenu}
+              isScrolled={isScrolled}
+            >
               Login
             </LoginButton>
             <RegisterButton
@@ -899,14 +938,14 @@ const Header = ({ isOwnerView = false }) => {
               to="/register"
               onClick={closeMobileMenu}
               isScrolled={isScrolled}
-              style={{ textDecoration: "none" }}
+              style={{ textDecoration: 'none' }}
             >
               Register
             </RegisterButton>
 
             <MobileMenuButton
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+              aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
               aria-expanded={mobileMenuOpen}
               isScrolled={isScrolled}
               isInHero={isInHero}

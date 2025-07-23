@@ -1,16 +1,16 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import { theme } from "../../styles/GlobalStyle";
-import SellerSidebar from "../components/SellerSidebar";
-import DashboardTabEnhanced from "../components/DashboardTabEnhanced";
-import ProductsTab from "../components/ProductsTab";
-import AddProductTabEnhanced from "../components/AddProductTabEnhanced";
-import CategoriesTab from "../components/CategoriesTab";
-import OrdersTabEnhanced from "../components/OrdersTabEnhanced";
-import EnquiriesTab from "../components/EnquiriesTab";
-import DiscountsTab from "../components/DiscountsTab";
-import ShopSettingsTab from "../components/ShopSettingsTab";
-import InsightsTab from "../components/InsightsTab";
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import { theme } from '../../styles/GlobalStyle';
+import SellerSidebar from '../components/SellerSidebar';
+import DashboardTabEnhanced from '../components/DashboardTabEnhanced';
+import ProductsTab from '../components/ProductsTab';
+import AddProductTabEnhanced from '../components/AddProductTabEnhanced';
+import CategoriesTab from '../components/CategoriesTab';
+import OrdersTabEnhanced from '../components/OrdersTabEnhanced';
+import EnquiriesTab from '../components/EnquiriesTab';
+import DiscountsTab from '../components/DiscountsTab';
+import ShopSettingsTab from '../components/ShopSettingsTab';
+import InsightsTab from '../components/InsightsTab';
 
 const DashboardContainer = styled.div`
   display: flex;
@@ -57,110 +57,110 @@ const PageSubtitle = styled.p`
 `;
 
 const SellerDashboard = () => {
-  const [activeTab, setActiveTab] = useState("dashboard");
+  const [activeTab, setActiveTab] = useState('dashboard');
 
-    const getPageTitle = () => {
+  const getPageTitle = () => {
     switch (activeTab) {
-      case "dashboard":
-        return "Dashboard Overview";
-      case "products":
-        return "Product Management";
-      case "add-product":
-        return "Add New Product";
-      case "categories":
-        return "Category Management";
-      case "bulk-import":
-        return "Bulk Import Products";
-      case "orders":
-        return "Order Management";
-      case "enquiries":
-        return "Enquiry Management";
-      case "discounts":
-        return "Discounts & Coupons";
-      case "customers":
-        return "Customer Management";
-      case "store-settings":
-        return "Store Settings";
-      case "appearance":
-        return "Store Appearance";
-      case "analytics":
-        return "Analytics & Reports";
+      case 'dashboard':
+        return 'Dashboard Overview';
+      case 'products':
+        return 'Product Management';
+      case 'add-product':
+        return 'Add New Product';
+      case 'categories':
+        return 'Category Management';
+      case 'bulk-import':
+        return 'Bulk Import Products';
+      case 'orders':
+        return 'Order Management';
+      case 'enquiries':
+        return 'Enquiry Management';
+      case 'discounts':
+        return 'Discounts & Coupons';
+      case 'customers':
+        return 'Customer Management';
+      case 'store-settings':
+        return 'Store Settings';
+      case 'appearance':
+        return 'Store Appearance';
+      case 'analytics':
+        return 'Analytics & Reports';
       default:
-        return "Dashboard";
+        return 'Dashboard';
     }
   };
 
-    const getPageSubtitle = () => {
+  const getPageSubtitle = () => {
     switch (activeTab) {
-      case "dashboard":
-        return "Monitor your store performance and key metrics";
-      case "products":
-        return "Manage your product catalog and inventory";
-      case "add-product":
-        return "Add a new product to your store";
-      case "categories":
-        return "Organize your products into categories";
-      case "bulk-import":
-        return "Import multiple products via CSV file";
-      case "orders":
-        return "Track and manage customer orders";
-      case "enquiries":
-        return "Manage customer enquiries and communications";
-      case "discounts":
-        return "Create and manage discount codes";
-      case "customers":
-        return "View and manage your customer base";
-      case "store-settings":
-        return "Configure your store settings and preferences";
-      case "appearance":
+      case 'dashboard':
+        return 'Monitor your store performance and key metrics';
+      case 'products':
+        return 'Manage your product catalog and inventory';
+      case 'add-product':
+        return 'Add a new product to your store';
+      case 'categories':
+        return 'Organize your products into categories';
+      case 'bulk-import':
+        return 'Import multiple products via CSV file';
+      case 'orders':
+        return 'Track and manage customer orders';
+      case 'enquiries':
+        return 'Manage customer enquiries and communications';
+      case 'discounts':
+        return 'Create and manage discount codes';
+      case 'customers':
+        return 'View and manage your customer base';
+      case 'store-settings':
+        return 'Configure your store settings and preferences';
+      case 'appearance':
         return "Customize your store's look and feel";
-      case "analytics":
-        return "Analyze your business data and trends";
+      case 'analytics':
+        return 'Analyze your business data and trends';
       default:
-        return "";
+        return '';
     }
   };
 
-    const renderContent = () => {
+  const renderContent = () => {
     switch (activeTab) {
-      case "dashboard":
+      case 'dashboard':
         return <DashboardTabEnhanced />;
-      case "products":
+      case 'products':
         return <ProductsTab />;
-      case "add-product":
+      case 'add-product':
         return <AddProductTabEnhanced />;
-      case "categories":
+      case 'categories':
         return <CategoriesTab />;
-      case "bulk-import":
+      case 'bulk-import':
         return (
-          <div style={{ padding: "2rem", textAlign: "center" }}>
+          <div style={{ padding: '2rem', textAlign: 'center' }}>
             <h3>Bulk Import - Coming Soon</h3>
             <p>CSV import functionality will be available soon.</p>
           </div>
         );
-      case "orders":
+      case 'orders':
         return <OrdersTabEnhanced />;
-      case "enquiries":
+      case 'enquiries':
         return <EnquiriesTab />;
-      case "discounts":
+      case 'discounts':
         return <DiscountsTab />;
-      case "customers":
+      case 'customers':
         return (
-          <div style={{ padding: "2rem", textAlign: "center" }}>
+          <div style={{ padding: '2rem', textAlign: 'center' }}>
             <h3>Customer Management - Coming Soon</h3>
             <p>Customer management features will be available soon.</p>
           </div>
         );
-            case "store-settings":
+      case 'store-settings':
         return <ShopSettingsTab />;
-      case "appearance":
+      case 'appearance':
         return (
-          <div style={{ padding: "2rem", textAlign: "center" }}>
+          <div style={{ padding: '2rem', textAlign: 'center' }}>
             <h3>Store Appearance - Coming Soon</h3>
             <p>Theme customization features will be available soon.</p>
           </div>
         );
-      case "analytics":
+      case 'analytics':
         return <InsightsTab />;
       default:
         return <DashboardTabEnhanced />;

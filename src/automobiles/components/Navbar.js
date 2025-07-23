@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 import {
   FaCar,
   FaUser,
@@ -11,8 +11,8 @@ import {
   FaEnvelope,
   FaHeart,
   FaTachometerAlt,
-} from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
+} from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
 
 const NavbarContainer = styled.nav`
   background: ${theme.colors.white};
@@ -49,11 +49,11 @@ const NavbarContent = styled.div`
 `;
 
 const Logo = styled(Link).withConfig({
-  shouldForwardProp: (prop) => prop !== "theme",
+  shouldForwardProp: prop => prop !== 'theme',
 })`
   font-size: 1.8rem;
   font-weight: 700;
-  color: ${(props) => props.theme?.primaryColor || theme.colors.primary};
+  color: ${props => props.theme?.primaryColor || theme.colors.primary};
   display: flex;
   align-items: center;
   gap: ${theme.spacing.sm};
@@ -83,7 +83,7 @@ const LogoImage = styled.img`
 
   &:hover {
     transform: scale(1.05);
-    border-color: ${(props) => props.theme?.primaryColor || theme.colors.primary};
+    border-color: ${props => props.theme?.primaryColor || theme.colors.primary};
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
@@ -218,7 +218,7 @@ const MobileMenuButton = styled.button`
 `;
 
 const MobileMenu = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "isOpen",
+  shouldForwardProp: prop => prop !== 'isOpen',
 })`
   position: fixed;
   top: 0;
@@ -227,7 +227,7 @@ const MobileMenu = styled.div.withConfig({
   bottom: 0;
   background: ${theme.colors.white};
   z-index: 200;
-  transform: translateX(${(props) => (props.isOpen ? "0" : "-100%")});
+  transform: translateX(${props => (props.isOpen ? '0' : '-100%')});
   transition: transform 0.3s ease;
   overflow-y: auto;
 
@@ -274,22 +274,24 @@ const MobileSearchContainer = styled.div`
 `;
 
 const Navbar = ({
-  dealerName = "Auto Dealer",
+  dealerName = 'Auto Dealer',
   dealerLogo,
-  dealerSlug = "",
+  dealerSlug = '',
   theme: customTheme = {},
 }) => {
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
 
-  const getBaseUrl = () => (dealerSlug ? `/${dealerSlug}` : "/automobiles");
+  const getBaseUrl = () => (dealerSlug ? `/${dealerSlug}` : '/automobiles');
 
-  const handleSearch = (e) => {
+  const handleSearch = e => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      navigate(`${getBaseUrl()}/vehicles?search=${encodeURIComponent(searchQuery)}`);
-      setSearchQuery("");
+      navigate(
+        `${getBaseUrl()}/vehicles?search=${encodeURIComponent(searchQuery)}`
+      );
+      setSearchQuery('');
       setIsMobileMenuOpen(false);
     }
   };
@@ -343,25 +345,25 @@ const Navbar = ({
                 type="text"
                 placeholder="Search vehicles..."
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={e => setSearchQuery(e.target.value)}
               />
             </form>
           </SearchContainer>
 
-                    <ActionButtons>
+          <ActionButtons>
             <IconButton
               title="Dealer Dashboard"
-              onClick={() => navigate(`${getBaseUrl()}/dealer-dashboard`)}
+              onClick={() => navigate(`${getBaseUrl()}/autoadmindasboard`)}
             >
               <FaTachometerAlt />
             </IconButton>
-                        <IconButton
+            <IconButton
               title="Wishlist"
               onClick={() => navigate(`${getBaseUrl()}/wishlist`)}
             >
               <FaHeart />
             </IconButton>
-                        <IconButton title="Contact">
+            <IconButton title="Contact">
               <FaEnvelope />
             </IconButton>
             <IconButton title="Account">
@@ -402,7 +404,7 @@ const Navbar = ({
                 type="text"
                 placeholder="Search vehicles..."
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={e => setSearchQuery(e.target.value)}
               />
             </form>
           </MobileSearchContainer>
@@ -411,31 +413,52 @@ const Navbar = ({
             <FaHome />
             Home
           </MobileNavLink>
-          <MobileNavLink to={`${getBaseUrl()}/vehicles`} onClick={closeMobileMenu}>
+          <MobileNavLink
+            to={`${getBaseUrl()}/vehicles`}
+            onClick={closeMobileMenu}
+          >
             <FaCar />
             All Vehicles
           </MobileNavLink>
-          <MobileNavLink to={`${getBaseUrl()}/vehicles?category=luxury-cars`} onClick={closeMobileMenu}>
+          <MobileNavLink
+            to={`${getBaseUrl()}/vehicles?category=luxury-cars`}
+            onClick={closeMobileMenu}
+          >
             <FaCar />
             Luxury Cars
           </MobileNavLink>
-          <MobileNavLink to={`${getBaseUrl()}/vehicles?category=electric-vehicles`} onClick={closeMobileMenu}>
+          <MobileNavLink
+            to={`${getBaseUrl()}/vehicles?category=electric-vehicles`}
+            onClick={closeMobileMenu}
+          >
             <FaCar />
             Electric Vehicles
           </MobileNavLink>
-          <MobileNavLink to={`${getBaseUrl()}/vehicles?category=suvs-trucks`} onClick={closeMobileMenu}>
+          <MobileNavLink
+            to={`${getBaseUrl()}/vehicles?category=suvs-trucks`}
+            onClick={closeMobileMenu}
+          >
             <FaCar />
             SUVs & Trucks
           </MobileNavLink>
-          <MobileNavLink to={`${getBaseUrl()}/vehicles?category=classic-cars`} onClick={closeMobileMenu}>
+          <MobileNavLink
+            to={`${getBaseUrl()}/vehicles?category=classic-cars`}
+            onClick={closeMobileMenu}
+          >
             <FaCar />
             Classic Cars
           </MobileNavLink>
-                              <MobileNavLink to={`${getBaseUrl()}/dealer-dashboard`} onClick={closeMobileMenu}>
+          <MobileNavLink
+            to={`${getBaseUrl()}/dealer-dashboard`}
+            onClick={closeMobileMenu}
+          >
             <FaTachometerAlt />
             Dealer Dashboard
           </MobileNavLink>
-                    <MobileNavLink to={`${getBaseUrl()}/wishlist`} onClick={closeMobileMenu}>
+          <MobileNavLink
+            to={`${getBaseUrl()}/wishlist`}
+            onClick={closeMobileMenu}
+          >
             <FaHeart />
             Wishlist
           </MobileNavLink>

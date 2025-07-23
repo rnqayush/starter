@@ -1,53 +1,55 @@
-import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate, Link } from "react-router-dom";
-import styled, { createGlobalStyle } from "styled-components";
-import { FaArrowRight, FaShoppingBag, FaHome } from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import ProductCard from "../components/ProductCard";
-import CategoryCard from "../components/CategoryCard";
-import BackToTop from "../components/BackToTop";
+import React, { useState, useEffect } from 'react';
+import { useLocation, useNavigate, Link, useParams } from 'react-router-dom';
+import styled, { createGlobalStyle } from 'styled-components';
+import { FaArrowRight, FaShoppingBag, FaHome } from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
+import ProductCard from '../components/ProductCard';
+import CategoryCard from '../components/CategoryCard';
+import BackToTop from '../components/BackToTop';
 import {
   categories,
   getFeaturedProducts,
   getOnSaleProducts,
-} from "../data/products";
-import { getVendorByIdOrSlug } from "../data/vendors";
+} from '../data/products';
+import { getVendorByIdOrSlug } from '../data/vendors';
 
 // Dynamic theme styles that override global styles
 const DynamicGlobalStyle = createGlobalStyle`
   :root {
-    --vendor-primary: ${(props) => props.primaryColor || theme.colors.primary};
-    --vendor-secondary: ${(props) => props.secondaryColor || theme.colors.secondary};
-    --vendor-background: ${(props) => props.backgroundColor || theme.colors.gray50};
-    --vendor-text: ${(props) => props.textColor || theme.colors.gray900};
+    --vendor-primary: ${props => props.primaryColor || theme.colors.primary};
+    --vendor-secondary: ${props => props.secondaryColor || theme.colors.secondary};
+    --vendor-background: ${props => props.backgroundColor || theme.colors.gray50};
+    --vendor-text: ${props => props.textColor || theme.colors.gray900};
   }
 `;
 
 const PageContainer = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "backgroundColor",
+  shouldForwardProp: prop => prop !== 'backgroundColor',
 })`
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: ${(props) => props.backgroundColor || theme.colors.gray50};
+  background: ${props => props.backgroundColor || theme.colors.gray50};
 `;
 
 const HeroSection = styled.section.withConfig({
-  shouldForwardProp: (prop) =>
-    !["primaryColor", "secondaryColor", "heroImage"].includes(prop),
+  shouldForwardProp: prop =>
+    !['primaryColor', 'secondaryColor', 'heroImage'].includes(prop),
 })`
   background:
-    linear-gradient(135deg,
-      ${(props) => props.primaryColor || "#667eea"}dd 0%,
-      ${(props) => props.secondaryColor || "#764ba2"}dd 100%),
-    ${(props) => props.heroImage ? `url("${props.heroImage}")` : 'none'};
+    linear-gradient(
+      135deg,
+      ${props => props.primaryColor || '#667eea'}dd 0%,
+      ${props => props.secondaryColor || '#764ba2'}dd 100%
+    ),
+    ${props => (props.heroImage ? `url("${props.heroImage}")` : 'none')};
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
   color: ${theme.colors.white};
-    padding: ${theme.spacing.xl} 0;
+  padding: ${theme.spacing.xl} 0;
   text-align: center;
   position: relative;
   overflow: hidden;
@@ -56,7 +58,7 @@ const HeroSection = styled.section.withConfig({
   align-items: center;
 
   &::before {
-    content: "";
+    content: '';
     position: absolute;
     top: 0;
     left: 0;
@@ -66,7 +68,7 @@ const HeroSection = styled.section.withConfig({
     z-index: 1;
   }
 
-    @media (max-width: ${theme.breakpoints.mobile}) {
+  @media (max-width: ${theme.breakpoints.mobile}) {
     min-height: 100vh;
     background-attachment: scroll;
     padding: ${theme.spacing.lg} 0;
@@ -170,10 +172,10 @@ const HeroActions = styled.div`
 `;
 
 const HeroButton = styled.button.withConfig({
-  shouldForwardProp: (prop) => prop !== "primaryColor",
+  shouldForwardProp: prop => prop !== 'primaryColor',
 })`
   background: ${theme.colors.white};
-  color: ${(props) => props.primaryColor || theme.colors.primary};
+  color: ${props => props.primaryColor || theme.colors.primary};
   padding: ${theme.spacing.lg} ${theme.spacing.xxl};
   border: none;
   border-radius: ${theme.borderRadius.xl};
@@ -216,7 +218,7 @@ const HeroButton = styled.button.withConfig({
 
 const Section = styled.section`
   padding: ${theme.spacing.xxl} 0;
-  background: ${(props) => props.background || theme.colors.white};
+  background: ${props => props.background || theme.colors.white};
 
   @media (max-width: ${theme.breakpoints.tablet}) {
     padding: ${theme.spacing.xl} 0;
@@ -256,11 +258,11 @@ const SectionHeader = styled.div`
 `;
 
 const SectionTitle = styled.h2.withConfig({
-  shouldForwardProp: (prop) => prop !== "textColor",
+  shouldForwardProp: prop => prop !== 'textColor',
 })`
   font-size: 2.5rem;
   font-weight: 600;
-  color: ${(props) => props.textColor || theme.colors.gray900};
+  color: ${props => props.textColor || theme.colors.gray900};
   margin-bottom: ${theme.spacing.md};
 
   @media (max-width: ${theme.breakpoints.tablet}) {
@@ -293,12 +295,12 @@ const SectionSubtitle = styled.p`
 `;
 
 const Grid = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "minWidth",
+  shouldForwardProp: prop => prop !== 'minWidth',
 })`
   display: grid;
   grid-template-columns: repeat(
     auto-fit,
-    minmax(${(props) => props.minWidth || "280px"}, 1fr)
+    minmax(${props => props.minWidth || '280px'}, 1fr)
   );
   gap: ${theme.spacing.xl};
 
@@ -387,22 +389,6 @@ const FallbackButton = styled.button`
   }
 `;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 const Breadcrumb = styled.div`
   background: ${theme.colors.white};
   padding: ${theme.spacing.md} 0;
@@ -441,49 +427,30 @@ const BreadcrumbNav = styled.nav`
 `;
 
 const EcommerceMain = () => {
+  const { slug } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
 
-      const [featuredProducts, setFeaturedProducts] = useState([]);
+  const [featuredProducts, setFeaturedProducts] = useState([]);
   const [saleProducts, setSaleProducts] = useState([]);
   const [selectedVendor, setSelectedVendor] = useState(null);
 
-  const getBaseUrl = () => selectedVendor ? `/${selectedVendor.slug}` : "/ecommerce";
-
   useEffect(() => {
     // Get vendor data from URL slug or navigation state (fallback)
-    const path = location.pathname;
-    let vendor = null;
 
-    if (path !== "/ecommerce") {
-      // Extract store slug from URL like "/techmart-downtown"
-      const pathSegments = path.split("/").filter(Boolean);
-      const storeSlug = pathSegments[0];
-      vendor = getVendorByIdOrSlug(storeSlug);
-    }
-
+    let vendor = getVendorByIdOrSlug(slug);
     // Fallback to location state if no vendor found by slug
-    if (!vendor) {
-      vendor = location.state?.selectedVendor;
-    }
-
     if (vendor) {
       setSelectedVendor(vendor);
-    } else {
-      // If no vendor found, redirect to store listing
-      navigate("/ecommerce-stores");
-      return;
     }
 
     // Load products (these would be filtered by vendor in a real app)
     setFeaturedProducts(getFeaturedProducts());
     setSaleProducts(getOnSaleProducts());
-  }, [location.pathname, location.state, navigate]);
-
-  
+  }, [location.pathname, location.state, navigate, slug]);
 
   const handleBackToStores = () => {
-    navigate("/ecommerce-stores");
+    navigate('/ecommerce-stores');
   };
 
   // Show fallback if no vendor is selected
@@ -520,7 +487,7 @@ const EcommerceMain = () => {
           Back to Stores
         </BackButton>
 
-                        <Navbar
+        <Navbar
           storeName={selectedVendor.name}
           storeLogo={selectedVendor.logo}
           storeSlug={selectedVendor.slug}
@@ -535,7 +502,7 @@ const EcommerceMain = () => {
           </BreadcrumbNav>
         </Breadcrumb>
 
-                <HeroSection
+        <HeroSection
           primaryColor={vendorTheme.primaryColor}
           secondaryColor={vendorTheme.secondaryColor}
           heroImage={selectedVendor.image}
@@ -554,14 +521,14 @@ const EcommerceMain = () => {
             <HeroActions>
               <HeroButton
                 primaryColor={vendorTheme.primaryColor}
-                onClick={() => navigate(`${getBaseUrl()}/products`)}
+                onClick={() => navigate(`products`)}
               >
                 <FaShoppingBag />
                 Shop Now
               </HeroButton>
               <HeroButton
                 className="secondary"
-                onClick={() => navigate(`${getBaseUrl()}/products?category=electronics`)}
+                onClick={() => navigate(`products?category=electronics`)}
               >
                 View Categories
                 <FaArrowRight />
@@ -570,20 +537,19 @@ const EcommerceMain = () => {
           </HeroContent>
         </HeroSection>
 
-                
-
-                <Section>
+        <Section>
           <Container>
             <SectionHeader>
               <SectionTitle textColor={vendorTheme.textColor}>
                 Shop by Category
               </SectionTitle>
               <SectionSubtitle>
-                Explore our diverse range of products across different categories
+                Explore our diverse range of products across different
+                categories
               </SectionSubtitle>
             </SectionHeader>
             <Grid minWidth="280px">
-              {categories.map((category) => (
+              {categories.map(category => (
                 <CategoryCard
                   key={category.id}
                   category={category}
@@ -607,8 +573,8 @@ const EcommerceMain = () => {
                 the most
               </SectionSubtitle>
             </SectionHeader>
-                        <Grid>
-              {featuredProducts.slice(0, 4).map((product) => (
+            <Grid>
+              {featuredProducts.slice(0, 4).map(product => (
                 <ProductCard
                   key={product.id}
                   product={product}
@@ -631,8 +597,8 @@ const EcommerceMain = () => {
                   to miss
                 </SectionSubtitle>
               </SectionHeader>
-                            <Grid>
-                {saleProducts.slice(0, 4).map((product) => (
+              <Grid>
+                {saleProducts.slice(0, 4).map(product => (
                   <ProductCard
                     key={product.id}
                     product={product}
@@ -644,7 +610,7 @@ const EcommerceMain = () => {
           </Section>
         )}
 
-                <Footer storeSlug={selectedVendor.slug} theme={vendorTheme} />
+        <Footer storeSlug={selectedVendor.slug} theme={vendorTheme} />
         <BackToTop />
       </PageContainer>
     </>

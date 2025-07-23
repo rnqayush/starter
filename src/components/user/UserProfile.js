@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import React, { useState } from 'react';
+import styled from 'styled-components';
 import {
   FaUser,
   FaCamera,
@@ -14,9 +14,9 @@ import {
   FaLinkedin,
   FaTwitter,
   FaInstagram,
-  FaFacebook
-} from "react-icons/fa";
-import { useAuth } from "../../context/AuthContext";
+  FaFacebook,
+} from 'react-icons/fa';
+import { useAuth } from '../../context/AuthContext';
 
 const ProfileContainer = styled.div`
   max-width: 800px;
@@ -107,7 +107,7 @@ const UserRole = styled.div`
 const UserStats = styled.div`
   display: flex;
   gap: 2rem;
-  
+
   @media (max-width: 768px) {
     justify-content: center;
   }
@@ -115,13 +115,13 @@ const UserStats = styled.div`
 
 const StatItem = styled.div`
   text-align: center;
-  
+
   .number {
     font-size: 1.5rem;
     font-weight: 700;
     color: #111827;
   }
-  
+
   .label {
     font-size: 0.875rem;
     color: #6b7280;
@@ -135,14 +135,15 @@ const TabContainer = styled.div`
 `;
 
 const Tab = styled.button.withConfig({
-  shouldForwardProp: (prop) => prop !== "active",
+  shouldForwardProp: prop => prop !== 'active',
 })`
   padding: 1rem 1.5rem;
   background: none;
   border: none;
-  border-bottom: 2px solid ${props => props.active ? '#3b82f6' : 'transparent'};
-  color: ${props => props.active ? '#3b82f6' : '#6b7280'};
-  font-weight: ${props => props.active ? '600' : '500'};
+  border-bottom: 2px solid
+    ${props => (props.active ? '#3b82f6' : 'transparent')};
+  color: ${props => (props.active ? '#3b82f6' : '#6b7280')};
+  font-weight: ${props => (props.active ? '600' : '500')};
   cursor: pointer;
   transition: all 0.2s ease;
 
@@ -152,9 +153,9 @@ const Tab = styled.button.withConfig({
 `;
 
 const TabContent = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "active",
+  shouldForwardProp: prop => prop !== 'active',
 })`
-  display: ${props => props.active ? 'block' : 'none'};
+  display: ${props => (props.active ? 'block' : 'none')};
 `;
 
 const FormSection = styled.div`
@@ -257,7 +258,7 @@ const ToggleLabel = styled.div`
     color: #111827;
     margin-bottom: 0.25rem;
   }
-  
+
   .desc {
     font-size: 0.875rem;
     color: #6b7280;
@@ -265,10 +266,10 @@ const ToggleLabel = styled.div`
 `;
 
 const ToggleIcon = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "enabled",
+  shouldForwardProp: prop => prop !== 'enabled',
 })`
   font-size: 1.5rem;
-  color: ${props => props.enabled ? '#10b981' : '#9ca3af'};
+  color: ${props => (props.enabled ? '#10b981' : '#9ca3af')};
 `;
 
 const SocialLinksGrid = styled.div`
@@ -355,33 +356,33 @@ const SecondaryButton = styled(Button)`
 
 const UserProfile = ({ onClose }) => {
   const { user, updateProfile, switchRole } = useAuth();
-  const [activeTab, setActiveTab] = useState("personal");
+  const [activeTab, setActiveTab] = useState('personal');
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
-    name: user?.name || "",
-    email: user?.email || "",
-    phone: user?.phone || "",
-    bio: user?.profile?.bio || "",
-    location: user?.profile?.location || "",
-    website: user?.profile?.website || "",
+    name: user?.name || '',
+    email: user?.email || '',
+    phone: user?.phone || '',
+    bio: user?.profile?.bio || '',
+    location: user?.profile?.location || '',
+    website: user?.profile?.website || '',
     socialLinks: {
-      linkedin: user?.profile?.socialLinks?.linkedin || "",
-      twitter: user?.profile?.socialLinks?.twitter || "",
-      instagram: user?.profile?.socialLinks?.instagram || "",
-      facebook: user?.profile?.socialLinks?.facebook || ""
+      linkedin: user?.profile?.socialLinks?.linkedin || '',
+      twitter: user?.profile?.socialLinks?.twitter || '',
+      instagram: user?.profile?.socialLinks?.instagram || '',
+      facebook: user?.profile?.socialLinks?.facebook || '',
     },
     preferences: {
       notifications: {
         email: user?.preferences?.notifications?.email ?? true,
         sms: user?.preferences?.notifications?.sms ?? false,
-        push: user?.preferences?.notifications?.push ?? true
+        push: user?.preferences?.notifications?.push ?? true,
       },
-      language: user?.preferences?.language || "en",
-      currency: user?.preferences?.currency || "USD"
-    }
+      language: user?.preferences?.language || 'en',
+      currency: user?.preferences?.currency || 'USD',
+    },
   });
 
-  const handleInputChange = (e) => {
+  const handleInputChange = e => {
     const { name, value } = e.target;
     if (name.includes('.')) {
       const [parent, child] = name.split('.');
@@ -389,13 +390,13 @@ const UserProfile = ({ onClose }) => {
         ...prev,
         [parent]: {
           ...prev[parent],
-          [child]: value
-        }
+          [child]: value,
+        },
       }));
     } else {
       setFormData(prev => ({
         ...prev,
-        [name]: value
+        [name]: value,
       }));
     }
   };
@@ -407,9 +408,9 @@ const UserProfile = ({ onClose }) => {
         ...prev.preferences,
         [section]: {
           ...prev.preferences[section],
-          [setting]: !prev.preferences[section][setting]
-        }
-      }
+          [setting]: !prev.preferences[section][setting],
+        },
+      },
     }));
   };
 
@@ -421,9 +422,9 @@ const UserProfile = ({ onClose }) => {
         bio: formData.bio,
         location: formData.location,
         website: formData.website,
-        socialLinks: formData.socialLinks
+        socialLinks: formData.socialLinks,
       },
-      preferences: formData.preferences
+      preferences: formData.preferences,
     });
 
     if (result.success) {
@@ -433,17 +434,25 @@ const UserProfile = ({ onClose }) => {
   };
 
   const getUserStats = () => {
-    if (user?.role === "seller") {
+    if (user?.role === 'seller') {
       return [
-        { number: user.seller?.totalProducts || 0, label: "Products" },
-        { number: user.seller?.totalSales || 0, label: "Sales" },
-        { number: user.seller?.rating || 0, label: "Rating" }
+        { number: user.seller?.totalProducts || 0, label: 'Products' },
+        { number: user.seller?.totalSales || 0, label: 'Sales' },
+        { number: user.seller?.rating || 0, label: 'Rating' },
       ];
     } else {
       return [
-        { number: JSON.parse(localStorage.getItem("userEnquiries") || "[]").length, label: "Enquiries" },
-        { number: JSON.parse(localStorage.getItem("recentlyViewed") || "[]").length, label: "Viewed" },
-        { number: "4.8", label: "Rating" }
+        {
+          number: JSON.parse(localStorage.getItem('userEnquiries') || '[]')
+            .length,
+          label: 'Enquiries',
+        },
+        {
+          number: JSON.parse(localStorage.getItem('recentlyViewed') || '[]')
+            .length,
+          label: 'Viewed',
+        },
+        { number: '4.8', label: 'Rating' },
       ];
     }
   };
@@ -466,9 +475,9 @@ const UserProfile = ({ onClose }) => {
         <UserInfo>
           <UserName>{user.name}</UserName>
           <UserRole>
-            {user.role === "seller" ? <FaStore /> : <FaUser />}
+            {user.role === 'seller' ? <FaStore /> : <FaUser />}
             {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
-            {user.seller?.verified && " • Verified"}
+            {user.seller?.verified && ' • Verified'}
           </UserRole>
           <UserStats>
             {getUserStats().map((stat, index) => (
@@ -482,23 +491,35 @@ const UserProfile = ({ onClose }) => {
       </ProfileHeader>
 
       <TabContainer>
-        <Tab active={activeTab === "personal"} onClick={() => setActiveTab("personal")}>
+        <Tab
+          active={activeTab === 'personal'}
+          onClick={() => setActiveTab('personal')}
+        >
           Personal Info
         </Tab>
-        <Tab active={activeTab === "preferences"} onClick={() => setActiveTab("preferences")}>
+        <Tab
+          active={activeTab === 'preferences'}
+          onClick={() => setActiveTab('preferences')}
+        >
           Preferences
         </Tab>
-        <Tab active={activeTab === "security"} onClick={() => setActiveTab("security")}>
+        <Tab
+          active={activeTab === 'security'}
+          onClick={() => setActiveTab('security')}
+        >
           Security
         </Tab>
-        {user.role === "customer" && (
-          <Tab active={activeTab === "seller"} onClick={() => setActiveTab("seller")}>
+        {user.role === 'customer' && (
+          <Tab
+            active={activeTab === 'seller'}
+            onClick={() => setActiveTab('seller')}
+          >
             Become Seller
           </Tab>
         )}
       </TabContainer>
 
-      <TabContent active={activeTab === "personal"}>
+      <TabContent active={activeTab === 'personal'}>
         <FormSection>
           <SectionTitle>
             <FaUser />
@@ -516,11 +537,7 @@ const UserProfile = ({ onClose }) => {
             </FormGroup>
             <FormGroup>
               <Label>Email Address</Label>
-              <Input
-                name="email"
-                value={formData.email}
-                disabled
-              />
+              <Input name="email" value={formData.email} disabled />
             </FormGroup>
             <FormGroup>
               <Label>Phone Number</Label>
@@ -572,7 +589,9 @@ const UserProfile = ({ onClose }) => {
           <Label>Social Links</Label>
           <SocialLinksGrid>
             <SocialInput>
-              <div className="icon"><FaLinkedin /></div>
+              <div className="icon">
+                <FaLinkedin />
+              </div>
               <input
                 name="socialLinks.linkedin"
                 value={formData.socialLinks.linkedin}
@@ -582,7 +601,9 @@ const UserProfile = ({ onClose }) => {
               />
             </SocialInput>
             <SocialInput>
-              <div className="icon"><FaTwitter /></div>
+              <div className="icon">
+                <FaTwitter />
+              </div>
               <input
                 name="socialLinks.twitter"
                 value={formData.socialLinks.twitter}
@@ -592,7 +613,9 @@ const UserProfile = ({ onClose }) => {
               />
             </SocialInput>
             <SocialInput>
-              <div className="icon"><FaInstagram /></div>
+              <div className="icon">
+                <FaInstagram />
+              </div>
               <input
                 name="socialLinks.instagram"
                 value={formData.socialLinks.instagram}
@@ -602,7 +625,9 @@ const UserProfile = ({ onClose }) => {
               />
             </SocialInput>
             <SocialInput>
-              <div className="icon"><FaFacebook /></div>
+              <div className="icon">
+                <FaFacebook />
+              </div>
               <input
                 name="socialLinks.facebook"
                 value={formData.socialLinks.facebook}
@@ -615,40 +640,56 @@ const UserProfile = ({ onClose }) => {
         </FormSection>
       </TabContent>
 
-      <TabContent active={activeTab === "preferences"}>
+      <TabContent active={activeTab === 'preferences'}>
         <FormSection>
           <SectionTitle>
             <FaBell />
             Notifications
           </SectionTitle>
-          <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-            <ToggleSwitch onClick={() => handleToggle("notifications", "email")}>
+          <div
+            style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}
+          >
+            <ToggleSwitch
+              onClick={() => handleToggle('notifications', 'email')}
+            >
               <ToggleLabel>
                 <div className="title">Email Notifications</div>
                 <div className="desc">Receive updates via email</div>
               </ToggleLabel>
               <ToggleIcon enabled={formData.preferences.notifications.email}>
-                {formData.preferences.notifications.email ? <FaToggleOn /> : <FaToggleOff />}
+                {formData.preferences.notifications.email ? (
+                  <FaToggleOn />
+                ) : (
+                  <FaToggleOff />
+                )}
               </ToggleIcon>
             </ToggleSwitch>
 
-            <ToggleSwitch onClick={() => handleToggle("notifications", "sms")}>
+            <ToggleSwitch onClick={() => handleToggle('notifications', 'sms')}>
               <ToggleLabel>
                 <div className="title">SMS Notifications</div>
                 <div className="desc">Receive updates via SMS</div>
               </ToggleLabel>
               <ToggleIcon enabled={formData.preferences.notifications.sms}>
-                {formData.preferences.notifications.sms ? <FaToggleOn /> : <FaToggleOff />}
+                {formData.preferences.notifications.sms ? (
+                  <FaToggleOn />
+                ) : (
+                  <FaToggleOff />
+                )}
               </ToggleIcon>
             </ToggleSwitch>
 
-            <ToggleSwitch onClick={() => handleToggle("notifications", "push")}>
+            <ToggleSwitch onClick={() => handleToggle('notifications', 'push')}>
               <ToggleLabel>
                 <div className="title">Push Notifications</div>
                 <div className="desc">Receive browser notifications</div>
               </ToggleLabel>
               <ToggleIcon enabled={formData.preferences.notifications.push}>
-                {formData.preferences.notifications.push ? <FaToggleOn /> : <FaToggleOff />}
+                {formData.preferences.notifications.push ? (
+                  <FaToggleOn />
+                ) : (
+                  <FaToggleOff />
+                )}
               </ToggleIcon>
             </ToggleSwitch>
           </div>
@@ -696,29 +737,31 @@ const UserProfile = ({ onClose }) => {
         </FormSection>
       </TabContent>
 
-      <TabContent active={activeTab === "security"}>
+      <TabContent active={activeTab === 'security'}>
         <FormSection>
           <SectionTitle>
-                          <FaLock />
+            <FaLock />
             Security Settings
           </SectionTitle>
-          <p style={{ color: "#6b7280", marginBottom: "2rem" }}>
-            Security features are coming soon. For now, you can update your basic information above.
+          <p style={{ color: '#6b7280', marginBottom: '2rem' }}>
+            Security features are coming soon. For now, you can update your
+            basic information above.
           </p>
         </FormSection>
       </TabContent>
 
-      {user.role === "customer" && (
-        <TabContent active={activeTab === "seller"}>
+      {user.role === 'customer' && (
+        <TabContent active={activeTab === 'seller'}>
           <FormSection>
             <SectionTitle>
               <FaStore />
               Become a Seller
             </SectionTitle>
-            <p style={{ color: "#6b7280", marginBottom: "2rem" }}>
-              Join thousands of sellers on our platform and start selling your products today!
+            <p style={{ color: '#6b7280', marginBottom: '2rem' }}>
+              Join thousands of sellers on our platform and start selling your
+              products today!
             </p>
-            <PrimaryButton onClick={() => switchRole("seller")}>
+            <PrimaryButton onClick={() => switchRole('seller')}>
               <FaStore />
               Switch to Seller Account
             </PrimaryButton>

@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import React, { useState } from 'react';
+import styled from 'styled-components';
 import {
   FaEdit,
   FaTrash,
@@ -7,9 +7,9 @@ import {
   FaFilter,
   FaPlus,
   FaEye,
-} from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
-import { sellerProducts } from "../data/sellerData";
+} from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
+import { sellerProducts } from '../data/sellerData';
 
 const ProductsContainer = styled.div`
   background: ${theme.colors.white};
@@ -200,7 +200,7 @@ const Price = styled.span`
 `;
 
 const StatusBadge = styled.span.withConfig({
-  shouldForwardProp: (prop) => prop !== "status",
+  shouldForwardProp: prop => prop !== 'status',
 })`
   padding: ${theme.spacing.xs} ${theme.spacing.sm};
   border-radius: ${theme.borderRadius.sm};
@@ -209,19 +209,19 @@ const StatusBadge = styled.span.withConfig({
   text-transform: uppercase;
   letter-spacing: 0.5px;
 
-  ${(props) => {
+  ${props => {
     switch (props.status) {
-      case "active":
+      case 'active':
         return `
           background: ${theme.colors.success}20;
           color: ${theme.colors.success};
         `;
-      case "out_of_stock":
+      case 'out_of_stock':
         return `
           background: ${theme.colors.error}20;
           color: ${theme.colors.error};
         `;
-      case "draft":
+      case 'draft':
         return `
           background: ${theme.colors.warning}20;
           color: ${theme.colors.warning};
@@ -242,11 +242,10 @@ const StockInfo = styled.div`
 `;
 
 const StockNumber = styled.span.withConfig({
-  shouldForwardProp: (prop) => prop !== "low",
+  shouldForwardProp: prop => prop !== 'low',
 })`
   font-weight: 500;
-  color: ${(props) =>
-    props.low ? theme.colors.warning : theme.colors.gray900};
+  color: ${props => (props.low ? theme.colors.warning : theme.colors.gray900)};
 `;
 
 const StockLabel = styled.span`
@@ -261,7 +260,7 @@ const ActionButtons = styled.div`
 `;
 
 const ActionButton = styled.button.withConfig({
-  shouldForwardProp: (prop) => prop !== "color",
+  shouldForwardProp: prop => prop !== 'color',
 })`
   width: 32px;
   height: 32px;
@@ -276,9 +275,9 @@ const ActionButton = styled.button.withConfig({
   transition: all 0.2s ease;
 
   &:hover {
-    border-color: ${(props) => props.color || theme.colors.primary};
-    color: ${(props) => props.color || theme.colors.primary};
-    background: ${(props) => (props.color || theme.colors.primary) + "10"};
+    border-color: ${props => props.color || theme.colors.primary};
+    color: ${props => props.color || theme.colors.primary};
+    background: ${props => (props.color || theme.colors.primary) + '10'};
   }
 
   &.danger:hover {
@@ -289,30 +288,30 @@ const ActionButton = styled.button.withConfig({
 `;
 
 const ProductsTab = () => {
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
   const [products] = useState(sellerProducts);
 
-  const formatCurrency = (value) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
+  const formatCurrency = value => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
     }).format(value);
   };
 
   const filteredProducts = products.filter(
-    (product) =>
+    product =>
       product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      product.category.toLowerCase().includes(searchTerm.toLowerCase()),
+      product.category.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const getStatusText = (status) => {
+  const getStatusText = status => {
     switch (status) {
-      case "active":
-        return "Active";
-      case "out_of_stock":
-        return "Out of Stock";
-      case "draft":
-        return "Draft";
+      case 'active':
+        return 'Active';
+      case 'out_of_stock':
+        return 'Out of Stock';
+      case 'draft':
+        return 'Draft';
       default:
         return status;
     }
@@ -335,7 +334,7 @@ const ProductsTab = () => {
               type="text"
               placeholder="Search products..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={e => setSearchTerm(e.target.value)}
             />
           </SearchBox>
 
@@ -365,7 +364,7 @@ const ProductsTab = () => {
             </TableRow>
           </TableHeader>
           <tbody>
-            {filteredProducts.map((product) => (
+            {filteredProducts.map(product => (
               <TableRow key={product.id}>
                 <TableCell>
                   <ProductInfo>

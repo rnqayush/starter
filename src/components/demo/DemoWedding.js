@@ -1,38 +1,44 @@
-import React from "react";
-import DemoWebsite from "./DemoWebsite";
+import React from 'react';
+import DemoWebsite from './DemoWebsite';
 
 const DemoWedding = () => {
   const features = [
     {
-      icon: "📸",
-      title: "Portfolio Gallery",
-      description: "Showcase your best work with stunning photo galleries that capture the magic of every wedding moment."
+      icon: '📸',
+      title: 'Portfolio Gallery',
+      description:
+        'Showcase your best work with stunning photo galleries that capture the magic of every wedding moment.',
     },
     {
-      icon: "💍",
-      title: "Wedding Packages",
-      description: "Display comprehensive wedding packages with transparent pricing and detailed service inclusions."
+      icon: '💍',
+      title: 'Wedding Packages',
+      description:
+        'Display comprehensive wedding packages with transparent pricing and detailed service inclusions.',
     },
     {
-      icon: "📅",
-      title: "Booking Calendar",
-      description: "Real-time availability calendar with easy online booking and consultation scheduling system."
+      icon: '📅',
+      title: 'Booking Calendar',
+      description:
+        'Real-time availability calendar with easy online booking and consultation scheduling system.',
     },
     {
-      icon: "💬",
-      title: "Client Testimonials",
-      description: "Share heartfelt reviews and testimonials from happy couples to build trust and credibility."
+      icon: '💬',
+      title: 'Client Testimonials',
+      description:
+        'Share heartfelt reviews and testimonials from happy couples to build trust and credibility.',
     },
     {
-      icon: "🎬",
-      title: "Video Highlights",
-      description: "Feature wedding highlight reels and behind-the-scenes videos to showcase your storytelling skills."
+      icon: '🎬',
+      title: 'Video Highlights',
+      description:
+        'Feature wedding highlight reels and behind-the-scenes videos to showcase your storytelling skills.',
     },
     {
-      icon: "📋",
-      title: "Planning Tools",
-      description: "Provide couples with interactive planning tools, checklists, and timeline management features."
-    }
+      icon: '📋',
+      title: 'Planning Tools',
+      description:
+        'Provide couples with interactive planning tools, checklists, and timeline management features.',
+    },
   ];
 
   return (

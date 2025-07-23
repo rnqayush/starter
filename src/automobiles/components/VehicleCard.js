@@ -1,10 +1,21 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import styled from "styled-components";
-import { FaStar, FaHeart, FaEnvelope, FaCar, FaGasPump, FaRoad } from "react-icons/fa";
-import { theme, media } from "../../styles/GlobalStyle";
-import EnquiryModal from "./EnquiryModal";
-import { getAvailabilityStatus, getAvailabilityLabel, getAvailabilityColor } from "../data/vehicles";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+import {
+  FaStar,
+  FaHeart,
+  FaEnvelope,
+  FaCar,
+  FaGasPump,
+  FaRoad,
+} from 'react-icons/fa';
+import { theme, media } from '../../styles/GlobalStyle';
+import EnquiryModal from './EnquiryModal';
+import {
+  getAvailabilityStatus,
+  getAvailabilityLabel,
+  getAvailabilityColor,
+} from '../data/vehicles';
 
 const Card = styled.div`
   background: ${theme.colors.white};
@@ -66,16 +77,21 @@ const VehicleImage = styled.img`
 `;
 
 const Badge = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "type",
+  shouldForwardProp: prop => prop !== 'type',
 })`
   position: absolute;
   top: ${theme.spacing.md};
   left: ${theme.spacing.md};
-  background: ${(props) =>
-    props.type === "sale" ? theme.colors.error : 
-    props.type === "featured" ? theme.colors.success :
-    props.type === "new" ? theme.colors.primary :
-    props.type === "certified" ? theme.colors.warning : theme.colors.gray600};
+  background: ${props =>
+    props.type === 'sale'
+      ? theme.colors.error
+      : props.type === 'featured'
+        ? theme.colors.success
+        : props.type === 'new'
+          ? theme.colors.primary
+          : props.type === 'certified'
+            ? theme.colors.warning
+            : theme.colors.gray600};
   color: ${theme.colors.white};
   padding: ${theme.spacing.xs} ${theme.spacing.sm};
   border-radius: ${theme.borderRadius.sm};
@@ -95,11 +111,14 @@ const ConditionBadge = styled.div`
   position: absolute;
   top: ${theme.spacing.md};
   right: ${theme.spacing.lg + 40}px;
-  background: ${(props) => 
-    props.condition === "new" ? theme.colors.success :
-    props.condition === "used" ? theme.colors.warning :
-    props.condition === "certified" ? theme.colors.primary :
-    theme.colors.gray600};
+  background: ${props =>
+    props.condition === 'new'
+      ? theme.colors.success
+      : props.condition === 'used'
+        ? theme.colors.warning
+        : props.condition === 'certified'
+          ? theme.colors.primary
+          : theme.colors.gray600};
   color: ${theme.colors.white};
   padding: ${theme.spacing.xs} ${theme.spacing.sm};
   border-radius: ${theme.borderRadius.sm};
@@ -235,7 +254,7 @@ const SpecItem = styled.div`
 
   ${media.mobile} {
     font-size: 0.75rem;
-    
+
     .icon {
       font-size: 0.8rem;
     }
@@ -278,9 +297,9 @@ const StarRating = styled.div`
 `;
 
 const Star = styled(FaStar).withConfig({
-  shouldForwardProp: (prop) => prop !== "filled",
+  shouldForwardProp: prop => prop !== 'filled',
 })`
-  color: ${(props) => (props.filled ? "#fbbf24" : theme.colors.gray300)};
+  color: ${props => (props.filled ? '#fbbf24' : theme.colors.gray300)};
   font-size: 0.8rem;
 `;
 
@@ -355,7 +374,11 @@ const ActionButtons = styled.div`
 
 const EnquireButton = styled.button`
   flex: 1;
-  background: linear-gradient(135deg, ${theme.colors.primary} 0%, ${theme.colors.primaryDark} 100%);
+  background: linear-gradient(
+    135deg,
+    ${theme.colors.primary} 0%,
+    ${theme.colors.primaryDark} 100%
+  );
   color: ${theme.colors.white};
   padding: ${theme.spacing.md} ${theme.spacing.lg};
   border-radius: ${theme.borderRadius.lg};
@@ -372,7 +395,11 @@ const EnquireButton = styled.button`
   font-size: 0.9rem;
 
   &:hover {
-    background: linear-gradient(135deg, ${theme.colors.primaryDark} 0%, ${theme.colors.primary} 100%);
+    background: linear-gradient(
+      135deg,
+      ${theme.colors.primaryDark} 0%,
+      ${theme.colors.primary} 100%
+    );
     transform: translateY(-3px);
     box-shadow: ${theme.shadows.lg};
   }
@@ -396,9 +423,9 @@ const EnquireButton = styled.button`
 `;
 
 const StockIndicator = styled.div.withConfig({
-  shouldForwardProp: (prop) => !["availability", "color"].includes(prop),
+  shouldForwardProp: prop => !['availability', 'color'].includes(prop),
 })`
-  color: ${(props) => props.color || theme.colors.gray600};
+  color: ${props => props.color || theme.colors.gray600};
   font-size: 0.8rem;
   font-weight: 600;
   margin-bottom: ${theme.spacing.sm};
@@ -413,11 +440,11 @@ const VehicleCard = ({
   vehicle,
   onToggleWishlist,
   isInWishlist = false,
-  dealerSlug = "",
+  dealerSlug = '',
 }) => {
   const [isEnquiryModalOpen, setIsEnquiryModalOpen] = useState(false);
 
-  const renderStars = (rating) => {
+  const renderStars = rating => {
     const stars = [];
     for (let i = 1; i <= 5; i++) {
       stars.push(<Star key={i} filled={i <= Math.floor(rating)} />);
@@ -429,17 +456,19 @@ const VehicleCard = ({
     return Math.round(((original - current) / original) * 100);
   };
 
-  const handleEnquireClick = (e) => {
+  const handleEnquireClick = e => {
     e.preventDefault();
     e.stopPropagation();
     setIsEnquiryModalOpen(true);
   };
 
-    const handleWishlistToggle = (e) => {
+  const handleWishlistToggle = e => {
     e.preventDefault();
     e.stopPropagation();
 
-    const wishlist = JSON.parse(localStorage.getItem("vehicleWishlist") || "[]");
+    const wishlist = JSON.parse(
+      localStorage.getItem('vehicleWishlist') || '[]'
+    );
     let newWishlist;
 
     if (isInWishlist) {
@@ -448,32 +477,32 @@ const VehicleCard = ({
       newWishlist = [...wishlist, vehicle.id];
     }
 
-    localStorage.setItem("vehicleWishlist", JSON.stringify(newWishlist));
+    localStorage.setItem('vehicleWishlist', JSON.stringify(newWishlist));
     onToggleWishlist?.(vehicle);
   };
 
-  const getBaseUrl = () => (dealerSlug ? `/${dealerSlug}` : "/automobiles");
+  const getBaseUrl = () => `/${dealerSlug}`;
 
-  const formatPrice = (price) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
+  const formatPrice = price => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(price);
   };
 
-  const formatMileage = (mileage) => {
-    if (mileage === 0) return "New";
-    return new Intl.NumberFormat("en-US").format(mileage) + " miles";
+  const formatMileage = mileage => {
+    if (mileage === 0) return 'New';
+    return new Intl.NumberFormat('en-US').format(mileage) + ' miles';
   };
 
   const availabilityStatus = getAvailabilityStatus(vehicle);
   const availabilityLabel = getAvailabilityLabel(availabilityStatus);
   const availabilityColor = getAvailabilityColor(availabilityStatus);
 
-    return (
-    <Link to={`${getBaseUrl()}/vehicle/${vehicle.id}`}>
+  return (
+    <Link to={`${getBaseUrl()}/vehicledetail/${vehicle.id}`}>
       <Card>
         <ImageContainer>
           <VehicleImage src={vehicle.image} alt={vehicle.name} />
@@ -488,19 +517,23 @@ const VehicleCard = ({
 
           {vehicle.condition && (
             <ConditionBadge condition={vehicle.condition}>
-              {vehicle.condition === "new" ? "New" : 
-               vehicle.condition === "certified" ? "Certified" : 
-               vehicle.condition === "restored" ? "Restored" : "Used"}
+              {vehicle.condition === 'new'
+                ? 'New'
+                : vehicle.condition === 'certified'
+                  ? 'Certified'
+                  : vehicle.condition === 'restored'
+                    ? 'Restored'
+                    : 'Used'}
             </ConditionBadge>
           )}
 
           <WishlistButton
             onClick={handleWishlistToggle}
-            title={isInWishlist ? "Remove from wishlist" : "Add to wishlist"}
+            title={isInWishlist ? 'Remove from wishlist' : 'Add to wishlist'}
           >
             <FaHeart
               style={{
-                color: isInWishlist ? theme.colors.error : "currentColor",
+                color: isInWishlist ? theme.colors.error : 'currentColor',
               }}
             />
           </WishlistButton>
@@ -508,18 +541,26 @@ const VehicleCard = ({
 
         <CardContent>
           <VehicleHeader>
-            <YearMake>{vehicle.year} {vehicle.make}</YearMake>
-            <VehicleName>{vehicle.model} {vehicle.trim}</VehicleName>
+            <YearMake>
+              {vehicle.year} {vehicle.make}
+            </YearMake>
+            <VehicleName>
+              {vehicle.model} {vehicle.trim}
+            </VehicleName>
           </VehicleHeader>
 
           <VehicleSpecs>
             <SpecItem>
               <FaCar className="icon" />
-              <span>{vehicle.specifications?.engine || "N/A"}</span>
+              <span>{vehicle.specifications?.engine || 'N/A'}</span>
             </SpecItem>
             <SpecItem>
               <FaGasPump className="icon" />
-              <span>{vehicle.specifications?.fuelEconomy || vehicle.specifications?.range || "N/A"}</span>
+              <span>
+                {vehicle.specifications?.fuelEconomy ||
+                  vehicle.specifications?.range ||
+                  'N/A'}
+              </span>
             </SpecItem>
             <SpecItem>
               <FaRoad className="icon" />
@@ -538,7 +579,9 @@ const VehicleCard = ({
             <CurrentPrice>{formatPrice(vehicle.price)}</CurrentPrice>
             {vehicle.originalPrice && vehicle.originalPrice > vehicle.price && (
               <>
-                <OriginalPrice>{formatPrice(vehicle.originalPrice)}</OriginalPrice>
+                <OriginalPrice>
+                  {formatPrice(vehicle.originalPrice)}
+                </OriginalPrice>
                 <Discount>
                   -{calculateDiscount(vehicle.originalPrice, vehicle.price)}%
                 </Discount>
@@ -550,7 +593,7 @@ const VehicleCard = ({
             availability={availabilityStatus}
             color={availabilityColor}
           >
-            {availabilityStatus === "in_stock" && vehicle.stock > 0
+            {availabilityStatus === 'in_stock' && vehicle.stock > 0
               ? `${vehicle.stock} available`
               : availabilityLabel}
           </StockIndicator>
@@ -558,10 +601,12 @@ const VehicleCard = ({
           <ActionButtons>
             <EnquireButton
               onClick={handleEnquireClick}
-              disabled={availabilityStatus === "out_of_stock"}
+              disabled={availabilityStatus === 'out_of_stock'}
             >
               <FaEnvelope />
-              {availabilityStatus === "out_of_stock" ? "Not Available" : "Get Quote"}
+              {availabilityStatus === 'out_of_stock'
+                ? 'Not Available'
+                : 'Get Quote'}
             </EnquireButton>
           </ActionButtons>
         </CardContent>

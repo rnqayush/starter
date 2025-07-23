@@ -1,70 +1,70 @@
-import styled from "styled-components";
-import { theme, media } from "../../styles/GlobalStyle";
+import styled from 'styled-components';
+import { theme, media } from '../../styles/GlobalStyle';
 
 export const Button = styled.button`
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: ${theme.spacing.xs};
-  padding: ${(props) =>
-    props.size === "large"
+  padding: ${props =>
+    props.size === 'large'
       ? `${theme.spacing.sm} ${theme.spacing.lg}`
-      : props.size === "small"
+      : props.size === 'small'
         ? `${theme.spacing.xs} ${theme.spacing.sm}`
         : `${theme.spacing.xs} ${theme.spacing.md}`};
-  font-size: ${(props) =>
-    props.size === "large"
-      ? "0.9375rem"
-      : props.size === "small"
-        ? "0.75rem"
-        : "0.8125rem"};
+  font-size: ${props =>
+    props.size === 'large'
+      ? '0.9375rem'
+      : props.size === 'small'
+        ? '0.75rem'
+        : '0.8125rem'};
   font-weight: 600;
   border-radius: ${theme.borderRadius.md};
   border: 2px solid transparent;
   cursor: pointer;
   transition: all 0.2s ease;
   text-decoration: none;
-  min-height: ${(props) =>
-    props.size === "large"
-      ? "2.25rem"
-      : props.size === "small"
-        ? "1.625rem"
-        : "1.875rem"};
+  min-height: ${props =>
+    props.size === 'large'
+      ? '2.25rem'
+      : props.size === 'small'
+        ? '1.625rem'
+        : '1.875rem'};
   white-space: nowrap;
 
   ${media.tabletUp} {
-    font-size: ${(props) =>
-      props.size === "large"
-        ? "0.9375rem"
-        : props.size === "small"
-          ? "0.78125rem"
-          : "0.8125rem"};
+    font-size: ${props =>
+      props.size === 'large'
+        ? '0.9375rem'
+        : props.size === 'small'
+          ? '0.78125rem'
+          : '0.8125rem'};
   }
 
   ${media.desktop} {
-    padding: ${(props) =>
-      props.size === "large"
+    padding: ${props =>
+      props.size === 'large'
         ? `${theme.spacing.md} ${theme.spacing.xl}`
-        : props.size === "small"
+        : props.size === 'small'
           ? `${theme.spacing.xs} ${theme.spacing.sm}`
           : `${theme.spacing.sm} ${theme.spacing.lg}`};
-    font-size: ${(props) =>
-      props.size === "large"
-        ? "1rem"
-        : props.size === "small"
-          ? "0.8125rem"
-          : "0.875rem"};
-    min-height: ${(props) =>
-      props.size === "large"
-        ? "2.5rem"
-        : props.size === "small"
-          ? "1.75rem"
-          : "2.125rem"};
+    font-size: ${props =>
+      props.size === 'large'
+        ? '1rem'
+        : props.size === 'small'
+          ? '0.8125rem'
+          : '0.875rem'};
+    min-height: ${props =>
+      props.size === 'large'
+        ? '2.5rem'
+        : props.size === 'small'
+          ? '1.75rem'
+          : '2.125rem'};
   }
 
-  ${(props) => {
+  ${props => {
     switch (props.variant) {
-      case "secondary":
+      case 'secondary':
         return `
           background: ${theme.colors.white};
           color: ${theme.colors.primary};
@@ -75,7 +75,7 @@ export const Button = styled.button`
             color: ${theme.colors.white};
           }
         `;
-      case "outline":
+      case 'outline':
         return `
           background: transparent;
           color: ${theme.colors.gray700};
@@ -86,7 +86,7 @@ export const Button = styled.button`
             border-color: ${theme.colors.gray400};
           }
         `;
-      case "danger":
+      case 'danger':
         return `
           background: ${theme.colors.error};
           color: ${theme.colors.white};
@@ -95,7 +95,7 @@ export const Button = styled.button`
             background: #dc2626;
           }
         `;
-      case "success":
+      case 'success':
         return `
           background: ${theme.colors.success};
           color: ${theme.colors.white};

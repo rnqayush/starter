@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import React, { useState } from 'react';
+import styled from 'styled-components';
 import {
   FaCar,
   FaUpload,
@@ -17,8 +17,8 @@ import {
   FaCogs,
   FaPalette,
   FaIdCard,
-} from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
+} from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
 
 const Container = styled.div`
   background: ${theme.colors.white};
@@ -124,10 +124,11 @@ const Label = styled.label`
 `;
 
 const Input = styled.input.withConfig({
-  shouldForwardProp: (prop) => prop !== "hasError",
+  shouldForwardProp: prop => prop !== 'hasError',
 })`
   padding: ${theme.spacing.md};
-  border: 2px solid ${(props) => props.hasError ? theme.colors.error : theme.colors.gray200};
+  border: 2px solid
+    ${props => (props.hasError ? theme.colors.error : theme.colors.gray200)};
   border-radius: ${theme.borderRadius.md};
   font-size: 1rem;
   transition: border-color 0.2s ease;
@@ -135,7 +136,8 @@ const Input = styled.input.withConfig({
 
   &:focus {
     outline: none;
-    border-color: ${(props) => props.hasError ? theme.colors.error : theme.colors.primary};
+    border-color: ${props =>
+      props.hasError ? theme.colors.error : theme.colors.primary};
   }
 
   &::placeholder {
@@ -149,10 +151,11 @@ const Input = styled.input.withConfig({
 `;
 
 const Select = styled.select.withConfig({
-  shouldForwardProp: (prop) => prop !== "hasError",
+  shouldForwardProp: prop => prop !== 'hasError',
 })`
   padding: ${theme.spacing.md};
-  border: 2px solid ${(props) => props.hasError ? theme.colors.error : theme.colors.gray200};
+  border: 2px solid
+    ${props => (props.hasError ? theme.colors.error : theme.colors.gray200)};
   border-radius: ${theme.borderRadius.md};
   font-size: 1rem;
   transition: border-color 0.2s ease;
@@ -161,7 +164,8 @@ const Select = styled.select.withConfig({
 
   &:focus {
     outline: none;
-    border-color: ${(props) => props.hasError ? theme.colors.error : theme.colors.primary};
+    border-color: ${props =>
+      props.hasError ? theme.colors.error : theme.colors.primary};
   }
 
   &:disabled {
@@ -171,10 +175,11 @@ const Select = styled.select.withConfig({
 `;
 
 const TextArea = styled.textarea.withConfig({
-  shouldForwardProp: (prop) => prop !== "hasError",
+  shouldForwardProp: prop => prop !== 'hasError',
 })`
   padding: ${theme.spacing.md};
-  border: 2px solid ${(props) => props.hasError ? theme.colors.error : theme.colors.gray200};
+  border: 2px solid
+    ${props => (props.hasError ? theme.colors.error : theme.colors.gray200)};
   border-radius: ${theme.borderRadius.md};
   font-size: 1rem;
   transition: border-color 0.2s ease;
@@ -185,7 +190,8 @@ const TextArea = styled.textarea.withConfig({
 
   &:focus {
     outline: none;
-    border-color: ${(props) => props.hasError ? theme.colors.error : theme.colors.primary};
+    border-color: ${props =>
+      props.hasError ? theme.colors.error : theme.colors.primary};
   }
 
   &::placeholder {
@@ -331,27 +337,35 @@ const StatusSection = styled.div`
 `;
 
 const StatusIndicator = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "status",
+  shouldForwardProp: prop => prop !== 'status',
 })`
   display: flex;
   align-items: center;
   gap: ${theme.spacing.sm};
   padding: ${theme.spacing.md};
   border-radius: ${theme.borderRadius.md};
-  background: ${(props) => {
+  background: ${props => {
     switch (props.status) {
-      case "draft": return theme.colors.gray100;
-      case "active": return theme.colors.success + "20";
-      case "pending": return theme.colors.warning + "20";
-      default: return theme.colors.gray100;
+      case 'draft':
+        return theme.colors.gray100;
+      case 'active':
+        return theme.colors.success + '20';
+      case 'pending':
+        return theme.colors.warning + '20';
+      default:
+        return theme.colors.gray100;
     }
   }};
-  color: ${(props) => {
+  color: ${props => {
     switch (props.status) {
-      case "draft": return theme.colors.gray700;
-      case "active": return theme.colors.success;
-      case "pending": return theme.colors.warning;
-      default: return theme.colors.gray700;
+      case 'draft':
+        return theme.colors.gray700;
+      case 'active':
+        return theme.colors.success;
+      case 'pending':
+        return theme.colors.warning;
+      default:
+        return theme.colors.gray700;
     }
   }};
   font-weight: 600;
@@ -372,7 +386,7 @@ const ActionButtons = styled.div`
 `;
 
 const Button = styled.button.withConfig({
-  shouldForwardProp: (prop) => prop !== "variant",
+  shouldForwardProp: prop => prop !== 'variant',
 })`
   padding: ${theme.spacing.md} ${theme.spacing.xl};
   border-radius: ${theme.borderRadius.md};
@@ -386,30 +400,42 @@ const Button = styled.button.withConfig({
   min-width: 140px;
   justify-content: center;
 
-  background: ${(props) => {
+  background: ${props => {
     switch (props.variant) {
-      case "primary": return theme.colors.primary;
-      case "success": return theme.colors.success;
-      case "secondary": return theme.colors.white;
-      default: return theme.colors.gray200;
+      case 'primary':
+        return theme.colors.primary;
+      case 'success':
+        return theme.colors.success;
+      case 'secondary':
+        return theme.colors.white;
+      default:
+        return theme.colors.gray200;
     }
   }};
 
-  color: ${(props) => {
+  color: ${props => {
     switch (props.variant) {
-      case "primary": return theme.colors.white;
-      case "success": return theme.colors.white;
-      case "secondary": return theme.colors.gray700;
-      default: return theme.colors.gray700;
+      case 'primary':
+        return theme.colors.white;
+      case 'success':
+        return theme.colors.white;
+      case 'secondary':
+        return theme.colors.gray700;
+      default:
+        return theme.colors.gray700;
     }
   }};
 
-  border: ${(props) => {
+  border: ${props => {
     switch (props.variant) {
-      case "primary": return "none";
-      case "success": return "none";
-      case "secondary": return `2px solid ${theme.colors.gray200}`;
-      default: return `1px solid ${theme.colors.gray300}`;
+      case 'primary':
+        return 'none';
+      case 'success':
+        return 'none';
+      case 'secondary':
+        return `2px solid ${theme.colors.gray200}`;
+      default:
+        return `1px solid ${theme.colors.gray300}`;
     }
   }};
 
@@ -417,12 +443,16 @@ const Button = styled.button.withConfig({
     transform: translateY(-1px);
     box-shadow: ${theme.shadows.md};
 
-    background: ${(props) => {
+    background: ${props => {
       switch (props.variant) {
-        case "primary": return theme.colors.primaryDark;
-        case "success": return theme.colors.successDark;
-        case "secondary": return theme.colors.gray50;
-        default: return theme.colors.gray300;
+        case 'primary':
+          return theme.colors.primaryDark;
+        case 'success':
+          return theme.colors.successDark;
+        case 'secondary':
+          return theme.colors.gray50;
+        default:
+          return theme.colors.gray300;
       }
     }};
   }
@@ -437,116 +467,147 @@ const Button = styled.button.withConfig({
 const AddVehicleTab = ({ dealer }) => {
   const [formData, setFormData] = useState({
     // Basic Information
-    vin: "",
-    year: "",
-    make: "",
-    model: "",
-    trim: "",
-    bodyStyle: "",
-    
+    vin: '',
+    year: '',
+    make: '',
+    model: '',
+    trim: '',
+    bodyStyle: '',
+
     // Engine & Performance
-    engine: "",
-    transmission: "",
-    drivetrain: "",
-    fuelType: "",
-    mpgCity: "",
-    mpgHighway: "",
-    
+    engine: '',
+    transmission: '',
+    drivetrain: '',
+    fuelType: '',
+    mpgCity: '',
+    mpgHighway: '',
+
     // Exterior & Interior
-    exteriorColor: "",
-    interiorColor: "",
-    interiorMaterial: "",
-    
+    exteriorColor: '',
+    interiorColor: '',
+    interiorMaterial: '',
+
     // Condition & History
-    condition: "",
-    mileage: "",
-    previousOwners: "1",
-    accidentHistory: "no",
-    serviceHistory: "yes",
-    
+    condition: '',
+    mileage: '',
+    previousOwners: '1',
+    accidentHistory: 'no',
+    serviceHistory: 'yes',
+
     // Pricing
-    msrp: "",
-    price: "",
-    costPrice: "",
-    
+    msrp: '',
+    price: '',
+    costPrice: '',
+
     // Inventory
-    stock: "1",
-    location: "",
-    
+    stock: '1',
+    location: '',
+
     // Description & Features
-    description: "",
-    features: "",
-    
+    description: '',
+    features: '',
+
     // Status
-    status: "draft",
+    status: 'draft',
   });
 
   const [images, setImages] = useState([]);
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState("");
+  const [submitStatus, setSubmitStatus] = useState('');
 
   const currentYear = new Date().getFullYear();
   const years = Array.from({ length: 30 }, (_, i) => currentYear - i);
 
   const makes = [
-    "Audi", "BMW", "Chevrolet", "Ford", "Honda", "Hyundai", "Kia", "Lexus",
-    "Mercedes-Benz", "Nissan", "Porsche", "Tesla", "Toyota", "Volkswagen", "Volvo"
+    'Audi',
+    'BMW',
+    'Chevrolet',
+    'Ford',
+    'Honda',
+    'Hyundai',
+    'Kia',
+    'Lexus',
+    'Mercedes-Benz',
+    'Nissan',
+    'Porsche',
+    'Tesla',
+    'Toyota',
+    'Volkswagen',
+    'Volvo',
   ];
 
   const bodyStyles = [
-    "Sedan", "SUV", "Hatchback", "Coupe", "Convertible", "Wagon", 
-    "Pickup Truck", "Van", "Crossover"
+    'Sedan',
+    'SUV',
+    'Hatchback',
+    'Coupe',
+    'Convertible',
+    'Wagon',
+    'Pickup Truck',
+    'Van',
+    'Crossover',
   ];
 
   const fuelTypes = [
-    "Gasoline", "Diesel", "Hybrid", "Electric", "Plug-in Hybrid"
+    'Gasoline',
+    'Diesel',
+    'Hybrid',
+    'Electric',
+    'Plug-in Hybrid',
   ];
 
   const transmissions = [
-    "Manual", "Automatic", "CVT", "Semi-Automatic", "Dual-Clutch"
+    'Manual',
+    'Automatic',
+    'CVT',
+    'Semi-Automatic',
+    'Dual-Clutch',
   ];
 
-  const drivetrains = ["FWD", "RWD", "AWD", "4WD"];
-  
-  const conditions = ["New", "Used", "Certified Pre-Owned"];
+  const drivetrains = ['FWD', 'RWD', 'AWD', '4WD'];
 
-  const handleInputChange = (e) => {
+  const conditions = ['New', 'Used', 'Certified Pre-Owned'];
+
+  const handleInputChange = e => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
-    
+
     // Clear error when user starts typing
     if (errors[name]) {
       setErrors(prev => ({
         ...prev,
-        [name]: ""
+        [name]: '',
       }));
     }
   };
 
-  const handleImageUpload = (e) => {
+  const handleImageUpload = e => {
     const files = Array.from(e.target.files);
-    
+
     files.forEach(file => {
       if (file.type.startsWith('image/')) {
         const reader = new FileReader();
-        reader.onload = (event) => {
-          setImages(prev => [...prev, {
-            id: Date.now() + Math.random(),
-            file,
-            url: event.target.result,
-            name: file.name
-          }]);
+        reader.onload = event => {
+          setImages(prev => [
+            ...prev,
+            {
+              id: Date.now() + Math.random(),
+              file,
+              url: event.target.result,
+              name: file.name,
+            },
+          ]);
         };
         reader.readAsDataURL(file);
       }
     });
   };
 
-  const removeImage = (imageId) => {
+  const removeImage = imageId => {
     setImages(prev => prev.filter(img => img.id !== imageId));
   };
 
@@ -555,7 +616,13 @@ const AddVehicleTab = ({ dealer }) => {
 
     // Required fields
     const requiredFields = [
-      'vin', 'year', 'make', 'model', 'condition', 'mileage', 'price'
+      'vin',
+      'year',
+      'make',
+      'model',
+      'condition',
+      'mileage',
+      'price',
     ];
 
     requiredFields.forEach(field => {
@@ -570,7 +637,10 @@ const AddVehicleTab = ({ dealer }) => {
     }
 
     // Year validation
-    if (formData.year && (formData.year < 1900 || formData.year > currentYear + 1)) {
+    if (
+      formData.year &&
+      (formData.year < 1900 || formData.year > currentYear + 1)
+    ) {
       newErrors.year = `Year must be between 1900 and ${currentYear + 1}`;
     }
 
@@ -589,7 +659,10 @@ const AddVehicleTab = ({ dealer }) => {
       newErrors.mpgCity = 'City MPG must be between 1 and 100';
     }
 
-    if (formData.mpgHighway && (formData.mpgHighway <= 0 || formData.mpgHighway > 100)) {
+    if (
+      formData.mpgHighway &&
+      (formData.mpgHighway <= 0 || formData.mpgHighway > 100)
+    ) {
       newErrors.mpgHighway = 'Highway MPG must be between 1 and 100';
     }
 
@@ -597,60 +670,80 @@ const AddVehicleTab = ({ dealer }) => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
-      setSubmitStatus("error");
+      setSubmitStatus('error');
       return;
     }
 
     setIsSubmitting(true);
-    setSubmitStatus("");
+    setSubmitStatus('');
 
     try {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      setSubmitStatus("success");
-      
+
+      setSubmitStatus('success');
+
       // Reset form after successful submission
       setTimeout(() => {
         setFormData({
-          vin: "", year: "", make: "", model: "", trim: "", bodyStyle: "",
-          engine: "", transmission: "", drivetrain: "", fuelType: "", 
-          mpgCity: "", mpgHighway: "", exteriorColor: "", interiorColor: "",
-          interiorMaterial: "", condition: "", mileage: "", previousOwners: "1",
-          accidentHistory: "no", serviceHistory: "yes", msrp: "", price: "",
-          costPrice: "", stock: "1", location: "", description: "", 
-          features: "", status: "draft",
+          vin: '',
+          year: '',
+          make: '',
+          model: '',
+          trim: '',
+          bodyStyle: '',
+          engine: '',
+          transmission: '',
+          drivetrain: '',
+          fuelType: '',
+          mpgCity: '',
+          mpgHighway: '',
+          exteriorColor: '',
+          interiorColor: '',
+          interiorMaterial: '',
+          condition: '',
+          mileage: '',
+          previousOwners: '1',
+          accidentHistory: 'no',
+          serviceHistory: 'yes',
+          msrp: '',
+          price: '',
+          costPrice: '',
+          stock: '1',
+          location: '',
+          description: '',
+          features: '',
+          status: 'draft',
         });
         setImages([]);
-        setSubmitStatus("");
+        setSubmitStatus('');
       }, 3000);
-
     } catch (error) {
-      setSubmitStatus("error");
+      setSubmitStatus('error');
     } finally {
       setIsSubmitting(false);
     }
   };
 
   const handleSaveDraft = () => {
-    setFormData(prev => ({ ...prev, status: "draft" }));
+    setFormData(prev => ({ ...prev, status: 'draft' }));
     handleSubmit();
   };
 
   const handlePublish = () => {
-    setFormData(prev => ({ ...prev, status: "active" }));
+    setFormData(prev => ({ ...prev, status: 'active' }));
     handleSubmit();
   };
 
-  const formatPrice = (price) => {
-    if (!price) return "$0";
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
+  const formatPrice = price => {
+    if (!price) return '$0';
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(price);
@@ -664,8 +757,9 @@ const AddVehicleTab = ({ dealer }) => {
           Add New Vehicle
         </Title>
         <Description>
-          Add a new vehicle to your inventory with detailed specifications, pricing, and images.
-          All required fields must be completed before publishing.
+          Add a new vehicle to your inventory with detailed specifications,
+          pricing, and images. All required fields must be completed before
+          publishing.
         </Description>
       </Header>
 
@@ -679,7 +773,7 @@ const AddVehicleTab = ({ dealer }) => {
                   <FaIdCard />
                   Basic Information
                 </SectionTitle>
-                
+
                 <FormRow>
                   <FormGroup>
                     <Label>
@@ -716,7 +810,9 @@ const AddVehicleTab = ({ dealer }) => {
                     >
                       <option value="">Select Year</option>
                       {years.map(year => (
-                        <option key={year} value={year}>{year}</option>
+                        <option key={year} value={year}>
+                          {year}
+                        </option>
                       ))}
                     </Select>
                     {errors.year && (
@@ -739,7 +835,9 @@ const AddVehicleTab = ({ dealer }) => {
                     >
                       <option value="">Select Make</option>
                       {makes.map(make => (
-                        <option key={make} value={make}>{make}</option>
+                        <option key={make} value={make}>
+                          {make}
+                        </option>
                       ))}
                     </Select>
                     {errors.make && (
@@ -794,7 +892,9 @@ const AddVehicleTab = ({ dealer }) => {
                     >
                       <option value="">Select Body Style</option>
                       {bodyStyles.map(style => (
-                        <option key={style} value={style}>{style}</option>
+                        <option key={style} value={style}>
+                          {style}
+                        </option>
                       ))}
                     </Select>
                   </FormGroup>
@@ -811,7 +911,9 @@ const AddVehicleTab = ({ dealer }) => {
                     >
                       <option value="">Select Condition</option>
                       {conditions.map(condition => (
-                        <option key={condition} value={condition}>{condition}</option>
+                        <option key={condition} value={condition}>
+                          {condition}
+                        </option>
                       ))}
                     </Select>
                     {errors.condition && (
@@ -852,7 +954,9 @@ const AddVehicleTab = ({ dealer }) => {
                     >
                       <option value="">Select Transmission</option>
                       {transmissions.map(trans => (
-                        <option key={trans} value={trans}>{trans}</option>
+                        <option key={trans} value={trans}>
+                          {trans}
+                        </option>
                       ))}
                     </Select>
                   </FormGroup>
@@ -868,7 +972,9 @@ const AddVehicleTab = ({ dealer }) => {
                     >
                       <option value="">Select Drivetrain</option>
                       {drivetrains.map(drive => (
-                        <option key={drive} value={drive}>{drive}</option>
+                        <option key={drive} value={drive}>
+                          {drive}
+                        </option>
                       ))}
                     </Select>
                   </FormGroup>
@@ -882,7 +988,9 @@ const AddVehicleTab = ({ dealer }) => {
                     >
                       <option value="">Select Fuel Type</option>
                       {fuelTypes.map(fuel => (
-                        <option key={fuel} value={fuel}>{fuel}</option>
+                        <option key={fuel} value={fuel}>
+                          {fuel}
+                        </option>
                       ))}
                     </Select>
                   </FormGroup>
@@ -979,7 +1087,9 @@ const AddVehicleTab = ({ dealer }) => {
                       <option value="">Select Material</option>
                       <option value="Cloth">Cloth</option>
                       <option value="Leather">Leather</option>
-                      <option value="Synthetic Leather">Synthetic Leather</option>
+                      <option value="Synthetic Leather">
+                        Synthetic Leather
+                      </option>
                       <option value="Alcantara">Alcantara</option>
                     </Select>
                   </FormGroup>
@@ -1089,7 +1199,8 @@ const AddVehicleTab = ({ dealer }) => {
                       rows="4"
                     />
                     <HelpText>
-                      Provide a detailed description that will help customers understand the vehicle's condition and features.
+                      Provide a detailed description that will help customers
+                      understand the vehicle's condition and features.
                     </HelpText>
                   </FormGroup>
                 </FormRow>
@@ -1105,7 +1216,8 @@ const AddVehicleTab = ({ dealer }) => {
                       rows="3"
                     />
                     <HelpText>
-                      List the key features and options that come with this vehicle, separated by commas.
+                      List the key features and options that come with this
+                      vehicle, separated by commas.
                     </HelpText>
                   </FormGroup>
                 </FormRow>
@@ -1180,26 +1292,35 @@ const AddVehicleTab = ({ dealer }) => {
 
                 {formData.price && formData.costPrice && (
                   <PricingSection>
-                    <div style={{ 
-                      display: 'flex', 
-                      justifyContent: 'space-between', 
-                      marginBottom: theme.spacing.sm,
-                      fontWeight: 600 
-                    }}>
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        marginBottom: theme.spacing.sm,
+                        fontWeight: 600,
+                      }}
+                    >
                       <span>Profit Margin:</span>
                       <span style={{ color: theme.colors.success }}>
                         {formatPrice(formData.price - formData.costPrice)}
                       </span>
                     </div>
-                    <div style={{ 
-                      display: 'flex', 
-                      justifyContent: 'space-between',
-                      fontSize: '0.9rem',
-                      color: theme.colors.gray600
-                    }}>
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        fontSize: '0.9rem',
+                        color: theme.colors.gray600,
+                      }}
+                    >
                       <span>Margin %:</span>
                       <span>
-                        {((formData.price - formData.costPrice) / formData.price * 100).toFixed(1)}%
+                        {(
+                          ((formData.price - formData.costPrice) /
+                            formData.price) *
+                          100
+                        ).toFixed(1)}
+                        %
                       </span>
                     </div>
                   </PricingSection>
@@ -1208,24 +1329,26 @@ const AddVehicleTab = ({ dealer }) => {
 
               {/* Status Section */}
               <StatusSection>
-                <SectionTitle>
-                  Status
-                </SectionTitle>
-                
+                <SectionTitle>Status</SectionTitle>
+
                 <StatusIndicator status={formData.status}>
-                  {formData.status === "draft" && <FaEdit />}
-                  {formData.status === "active" && <FaCheck />}
-                  {formData.status === "pending" && <FaClock />}
-                  
-                  {formData.status === "draft" && "Draft - Not Published"}
-                  {formData.status === "active" && "Active - Visible to Customers"}
-                  {formData.status === "pending" && "Pending Review"}
+                  {formData.status === 'draft' && <FaEdit />}
+                  {formData.status === 'active' && <FaCheck />}
+                  {formData.status === 'pending' && <FaClock />}
+
+                  {formData.status === 'draft' && 'Draft - Not Published'}
+                  {formData.status === 'active' &&
+                    'Active - Visible to Customers'}
+                  {formData.status === 'pending' && 'Pending Review'}
                 </StatusIndicator>
 
                 <HelpText>
-                  {formData.status === "draft" && "This vehicle is saved as a draft and not visible to customers yet."}
-                  {formData.status === "active" && "This vehicle is published and visible to customers on your website."}
-                  {formData.status === "pending" && "This vehicle is pending review before going live."}
+                  {formData.status === 'draft' &&
+                    'This vehicle is saved as a draft and not visible to customers yet.'}
+                  {formData.status === 'active' &&
+                    'This vehicle is published and visible to customers on your website.'}
+                  {formData.status === 'pending' &&
+                    'This vehicle is pending review before going live.'}
                 </HelpText>
               </StatusSection>
 
@@ -1236,7 +1359,9 @@ const AddVehicleTab = ({ dealer }) => {
                   Vehicle Images
                 </SectionTitle>
 
-                <ImageUploadSection onClick={() => document.getElementById('imageInput').click()}>
+                <ImageUploadSection
+                  onClick={() => document.getElementById('imageInput').click()}
+                >
                   <ImageUploadIcon>
                     <FaUpload />
                   </ImageUploadIcon>
@@ -1258,13 +1383,15 @@ const AddVehicleTab = ({ dealer }) => {
 
                 {images.length > 0 && (
                   <ImagePreviewGrid>
-                    {images.map((image) => (
+                    {images.map(image => (
                       <ImagePreview key={image.id}>
                         <PreviewImage src={image.url} alt={image.name} />
-                        <RemoveImageButton onClick={(e) => {
-                          e.stopPropagation();
-                          removeImage(image.id);
-                        }}>
+                        <RemoveImageButton
+                          onClick={e => {
+                            e.stopPropagation();
+                            removeImage(image.id);
+                          }}
+                        >
                           <FaTimes />
                         </RemoveImageButton>
                       </ImagePreview>
@@ -1273,7 +1400,8 @@ const AddVehicleTab = ({ dealer }) => {
                 )}
 
                 <HelpText>
-                  Upload high-quality images from multiple angles. The first image will be used as the main listing photo.
+                  Upload high-quality images from multiple angles. The first
+                  image will be used as the main listing photo.
                 </HelpText>
               </FormSection>
             </div>
@@ -1281,27 +1409,31 @@ const AddVehicleTab = ({ dealer }) => {
         </FormContainer>
 
         <ActionButtons>
-          {submitStatus === "success" && (
-            <div style={{ 
-              display: 'flex', 
-              alignItems: 'center', 
-              gap: theme.spacing.sm,
-              color: theme.colors.success,
-              fontWeight: 600 
-            }}>
+          {submitStatus === 'success' && (
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: theme.spacing.sm,
+                color: theme.colors.success,
+                fontWeight: 600,
+              }}
+            >
               <FaCheck />
               Vehicle saved successfully!
             </div>
           )}
 
-          {submitStatus === "error" && (
-            <div style={{ 
-              display: 'flex', 
-              alignItems: 'center', 
-              gap: theme.spacing.sm,
-              color: theme.colors.error,
-              fontWeight: 600 
-            }}>
+          {submitStatus === 'error' && (
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: theme.spacing.sm,
+                color: theme.colors.error,
+                fontWeight: 600,
+              }}
+            >
               <FaExclamationTriangle />
               Please fix the errors above
             </div>

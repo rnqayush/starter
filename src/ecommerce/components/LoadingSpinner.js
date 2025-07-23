@@ -1,6 +1,6 @@
-import React from "react";
-import styled, { keyframes } from "styled-components";
-import { theme } from "../../styles/GlobalStyle";
+import React from 'react';
+import styled, { keyframes } from 'styled-components';
+import { theme } from '../../styles/GlobalStyle';
 
 const spin = keyframes`
   0% { transform: rotate(0deg); }
@@ -8,20 +8,20 @@ const spin = keyframes`
 `;
 
 const SpinnerContainer = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "fullPage",
+  shouldForwardProp: prop => prop !== 'fullPage',
 })`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: ${(props) => (props.fullPage ? "4rem" : "2rem")};
-  min-height: ${(props) => (props.fullPage ? "200px" : "auto")};
+  padding: ${props => (props.fullPage ? '4rem' : '2rem')};
+  min-height: ${props => (props.fullPage ? '200px' : 'auto')};
 `;
 
 const Spinner = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "size",
+  shouldForwardProp: prop => prop !== 'size',
 })`
-  width: ${(props) => props.size || "40px"};
-  height: ${(props) => props.size || "40px"};
+  width: ${props => props.size || '40px'};
+  height: ${props => props.size || '40px'};
   border: 3px solid ${theme.colors.gray200};
   border-top: 3px solid ${theme.colors.primary};
   border-radius: 50%;
@@ -36,8 +36,8 @@ const LoadingText = styled.p`
 `;
 
 const LoadingSpinner = ({
-  size = "40px",
-  text = "Loading...",
+  size = '40px',
+  text = 'Loading...',
   fullPage = false,
   showText = true,
 }) => {

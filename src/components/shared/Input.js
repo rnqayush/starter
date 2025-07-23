@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { theme, media } from "../../styles/GlobalStyle";
+import styled from 'styled-components';
+import { theme, media } from '../../styles/GlobalStyle';
 
 export const FormGroup = styled.div`
   margin-bottom: ${theme.spacing.md};
@@ -137,12 +137,12 @@ export const SearchIcon = styled.div`
 `;
 
 export const SearchField = styled(Input).withConfig({
-  shouldForwardProp: (prop) => prop !== "hasIcon",
+  shouldForwardProp: prop => prop !== 'hasIcon',
 })`
-  padding-left: ${(props) => (props.hasIcon ? "2.25rem" : theme.spacing.sm)};
+  padding-left: ${props => (props.hasIcon ? '2.25rem' : theme.spacing.sm)};
 
   ${media.desktop} {
-    padding-left: ${(props) => (props.hasIcon ? "2.5rem" : theme.spacing.md)};
+    padding-left: ${props => (props.hasIcon ? '2.5rem' : theme.spacing.md)};
   }
 `;
 
@@ -152,7 +152,7 @@ export const InputGroup = styled.div`
   gap: ${theme.spacing.sm};
 
   ${media.tabletUp} {
-    grid-template-columns: ${(props) => props.columns || "1fr 1fr"};
+    grid-template-columns: ${props => props.columns || '1fr 1fr'};
     gap: ${theme.spacing.md};
   }
 
@@ -187,7 +187,7 @@ export const CheckboxItem = styled.label`
     background: ${theme.colors.gray50};
   }
 
-  input[type="checkbox"] {
+  input[type='checkbox'] {
     margin: 0;
     transform: scale(1);
   }
@@ -197,7 +197,7 @@ export const CheckboxItem = styled.label`
     font-size: 0.875rem;
     gap: ${theme.spacing.sm};
 
-    input[type="checkbox"] {
+    input[type='checkbox'] {
       transform: scale(1.1);
     }
   }

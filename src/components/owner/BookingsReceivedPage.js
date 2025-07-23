@@ -1,17 +1,17 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 import {
   FaCheck,
   FaTimes,
   FaEye,
   FaCalendarAlt,
   FaUsers,
-} from "react-icons/fa";
-import Sidebar from "./Sidebar";
-import { Card, CardContent, Badge } from "../shared/Card";
-import { Button } from "../shared/Button";
-import { theme } from "../../styles/GlobalStyle";
-import { useAppContext } from "../../context/AppContext";
+} from 'react-icons/fa';
+import Sidebar from './Sidebar';
+import { Card, CardContent, Badge } from '../shared/Card';
+import { Button } from '../shared/Button';
+import { theme } from '../../styles/GlobalStyle';
+import { useAppContext } from '../../context/AppContext';
 
 const PageContainer = styled.div`
   display: flex;
@@ -121,36 +121,36 @@ const BookingCard = styled(Card)`
 const BookingsReceivedPage = () => {
   const { bookings, setBookings, ownerHotels } = useAppContext();
 
-  const ownerBookings = bookings.filter((booking) =>
-    ownerHotels.some((hotel) => hotel.id === booking.hotelId),
+  const ownerBookings = bookings.filter(booking =>
+    ownerHotels.some(hotel => hotel.id === booking.hotelId)
   );
 
   const handleBookingAction = (bookingId, action) => {
-    setBookings((prev) =>
-      prev.map((booking) =>
-        booking.id === bookingId ? { ...booking, status: action } : booking,
-      ),
+    setBookings(prev =>
+      prev.map(booking =>
+        booking.id === bookingId ? { ...booking, status: action } : booking
+      )
     );
   };
 
-  const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString("en-IN", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
+  const formatDate = dateString => {
+    return new Date(dateString).toLocaleDateString('en-IN', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
     });
   };
 
-  const getStatusVariant = (status) => {
+  const getStatusVariant = status => {
     switch (status) {
-      case "confirmed":
-        return "success";
-      case "pending":
-        return "warning";
-      case "rejected":
-        return "error";
+      case 'confirmed':
+        return 'success';
+      case 'pending':
+        return 'warning';
+      case 'rejected':
+        return 'error';
       default:
-        return "default";
+        return 'default';
     }
   };
 
@@ -164,7 +164,7 @@ const BookingsReceivedPage = () => {
             <EmptyState>
               <div
                 style={{
-                  fontSize: "4rem",
+                  fontSize: '4rem',
                   marginBottom: theme.spacing.lg,
                   opacity: 0.5,
                 }}
@@ -173,7 +173,7 @@ const BookingsReceivedPage = () => {
               </div>
               <h3
                 style={{
-                  fontSize: "1.5rem",
+                  fontSize: '1.5rem',
                   fontWeight: 600,
                   marginBottom: theme.spacing.md,
                   color: theme.colors.gray700,
@@ -181,7 +181,7 @@ const BookingsReceivedPage = () => {
               >
                 No Bookings Yet
               </h3>
-              <p style={{ fontSize: "1.125rem", lineHeight: 1.6 }}>
+              <p style={{ fontSize: '1.125rem', lineHeight: 1.6 }}>
                 You haven't received any booking requests yet. Once customers
                 book your rooms, they'll appear here.
               </p>
@@ -210,7 +210,7 @@ const BookingsReceivedPage = () => {
             <div>Actions</div>
           </TableHeader>
 
-          {ownerBookings.map((booking) => (
+          {ownerBookings.map(booking => (
             <TableRow key={booking.id}>
               <BookingInfo>
                 <GuestName>{booking.guestName}</GuestName>
@@ -233,13 +233,13 @@ const BookingsReceivedPage = () => {
                 </Badge>
               </div>
               <BookingActions>
-                {booking.status === "pending" && (
+                {booking.status === 'pending' && (
                   <>
                     <Button
                       variant="success"
                       size="small"
                       onClick={() =>
-                        handleBookingAction(booking.id, "confirmed")
+                        handleBookingAction(booking.id, 'confirmed')
                       }
                     >
                       <FaCheck />
@@ -248,7 +248,7 @@ const BookingsReceivedPage = () => {
                       variant="danger"
                       size="small"
                       onClick={() =>
-                        handleBookingAction(booking.id, "rejected")
+                        handleBookingAction(booking.id, 'rejected')
                       }
                     >
                       <FaTimes />
@@ -264,15 +264,15 @@ const BookingsReceivedPage = () => {
         </BookingsTable>
 
         {/* Mobile Card View */}
-        <div style={{ display: "none" }}>
-          {ownerBookings.map((booking) => (
+        <div style={{ display: 'none' }}>
+          {ownerBookings.map(booking => (
             <BookingCard key={booking.id}>
               <CardContent>
                 <div
                   style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "flex-start",
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'flex-start',
                     marginBottom: theme.spacing.md,
                   }}
                 >
@@ -293,16 +293,16 @@ const BookingsReceivedPage = () => {
 
                 <div
                   style={{
-                    display: "flex",
+                    display: 'flex',
                     gap: theme.spacing.lg,
                     marginBottom: theme.spacing.md,
-                    fontSize: "0.875rem",
+                    fontSize: '0.875rem',
                     color: theme.colors.gray600,
                   }}
                 >
                   <div>
                     <FaCalendarAlt style={{ marginRight: theme.spacing.xs }} />
-                    {formatDate(booking.checkIn)} -{" "}
+                    {formatDate(booking.checkIn)} -{' '}
                     {formatDate(booking.checkOut)}
                   </div>
                   <div>
@@ -318,7 +318,7 @@ const BookingsReceivedPage = () => {
                       padding: theme.spacing.sm,
                       background: theme.colors.gray50,
                       borderRadius: theme.borderRadius.md,
-                      fontSize: "0.875rem",
+                      fontSize: '0.875rem',
                     }}
                   >
                     <strong>Special Requests:</strong> {booking.specialRequests}
@@ -326,13 +326,13 @@ const BookingsReceivedPage = () => {
                 )}
 
                 <BookingActions>
-                  {booking.status === "pending" && (
+                  {booking.status === 'pending' && (
                     <>
                       <Button
                         variant="success"
                         size="small"
                         onClick={() =>
-                          handleBookingAction(booking.id, "confirmed")
+                          handleBookingAction(booking.id, 'confirmed')
                         }
                         style={{ flex: 1 }}
                       >
@@ -343,7 +343,7 @@ const BookingsReceivedPage = () => {
                         variant="danger"
                         size="small"
                         onClick={() =>
-                          handleBookingAction(booking.id, "rejected")
+                          handleBookingAction(booking.id, 'rejected')
                         }
                         style={{ flex: 1 }}
                       >

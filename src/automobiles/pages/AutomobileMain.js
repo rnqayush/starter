@@ -1,48 +1,50 @@
-import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate, Link } from "react-router-dom";
-import styled, { createGlobalStyle } from "styled-components";
-import { FaArrowRight, FaCar, FaHome } from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import VehicleCard from "../components/VehicleCard";
-import CategoryCard from "../components/CategoryCard";
-import BackToTop from "../../ecommerce/components/BackToTop";
+import React, { useState, useEffect } from 'react';
+import { useLocation, useNavigate, Link } from 'react-router-dom';
+import styled, { createGlobalStyle } from 'styled-components';
+import { FaArrowRight, FaCar, FaHome } from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
+import VehicleCard from '../components/VehicleCard';
+import CategoryCard from '../components/CategoryCard';
+import BackToTop from '../../ecommerce/components/BackToTop';
 import {
   categories,
   getFeaturedVehicles,
   getOnSaleVehicles,
-} from "../data/vehicles";
-import { getVendorByIdOrSlug } from "../data/vendors";
+} from '../data/vehicles';
+import { getVendorByIdOrSlug } from '../data/vendors';
 
 // Dynamic theme styles that override global styles
 const DynamicGlobalStyle = createGlobalStyle`
   :root {
-    --dealer-primary: ${(props) => props.primaryColor || theme.colors.primary};
-    --dealer-secondary: ${(props) => props.secondaryColor || theme.colors.secondary};
-    --dealer-background: ${(props) => props.backgroundColor || theme.colors.gray50};
-    --dealer-text: ${(props) => props.textColor || theme.colors.gray900};
+    --dealer-primary: ${props => props.primaryColor || theme.colors.primary};
+    --dealer-secondary: ${props => props.secondaryColor || theme.colors.secondary};
+    --dealer-background: ${props => props.backgroundColor || theme.colors.gray50};
+    --dealer-text: ${props => props.textColor || theme.colors.gray900};
   }
 `;
 
 const PageContainer = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "backgroundColor",
+  shouldForwardProp: prop => prop !== 'backgroundColor',
 })`
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: ${(props) => props.backgroundColor || theme.colors.gray50};
+  background: ${props => props.backgroundColor || theme.colors.gray50};
 `;
 
 const HeroSection = styled.section.withConfig({
-  shouldForwardProp: (prop) =>
-    !["primaryColor", "secondaryColor", "heroImage"].includes(prop),
+  shouldForwardProp: prop =>
+    !['primaryColor', 'secondaryColor', 'heroImage'].includes(prop),
 })`
   background:
-    linear-gradient(135deg,
-      ${(props) => props.primaryColor || "#1f2937"}dd 0%,
-      ${(props) => props.secondaryColor || "#374151"}dd 100%),
-    ${(props) => props.heroImage ? `url("${props.heroImage}")` : 'none'};
+    linear-gradient(
+      135deg,
+      ${props => props.primaryColor || '#1f2937'}dd 0%,
+      ${props => props.secondaryColor || '#374151'}dd 100%
+    ),
+    ${props => (props.heroImage ? `url("${props.heroImage}")` : 'none')};
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -56,7 +58,7 @@ const HeroSection = styled.section.withConfig({
   align-items: center;
 
   &::before {
-    content: "";
+    content: '';
     position: absolute;
     top: 0;
     left: 0;
@@ -169,10 +171,10 @@ const HeroActions = styled.div`
 `;
 
 const HeroButton = styled.button.withConfig({
-  shouldForwardProp: (prop) => prop !== "primaryColor",
+  shouldForwardProp: prop => prop !== 'primaryColor',
 })`
   background: ${theme.colors.white};
-  color: ${(props) => props.primaryColor || theme.colors.primary};
+  color: ${props => props.primaryColor || theme.colors.primary};
   padding: ${theme.spacing.lg} ${theme.spacing.xxl};
   border: none;
   border-radius: ${theme.borderRadius.xl};
@@ -215,7 +217,7 @@ const HeroButton = styled.button.withConfig({
 
 const Section = styled.section`
   padding: ${theme.spacing.xxl} 0;
-  background: ${(props) => props.background || theme.colors.white};
+  background: ${props => props.background || theme.colors.white};
 
   @media (max-width: ${theme.breakpoints.tablet}) {
     padding: ${theme.spacing.xl} 0;
@@ -255,11 +257,11 @@ const SectionHeader = styled.div`
 `;
 
 const SectionTitle = styled.h2.withConfig({
-  shouldForwardProp: (prop) => prop !== "textColor",
+  shouldForwardProp: prop => prop !== 'textColor',
 })`
   font-size: 2.5rem;
   font-weight: 600;
-  color: ${(props) => props.textColor || theme.colors.gray900};
+  color: ${props => props.textColor || theme.colors.gray900};
   margin-bottom: ${theme.spacing.md};
 
   @media (max-width: ${theme.breakpoints.tablet}) {
@@ -292,12 +294,12 @@ const SectionSubtitle = styled.p`
 `;
 
 const Grid = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "minWidth",
+  shouldForwardProp: prop => prop !== 'minWidth',
 })`
   display: grid;
   grid-template-columns: repeat(
     auto-fit,
-    minmax(${(props) => props.minWidth || "280px"}, 1fr)
+    minmax(${props => props.minWidth || '280px'}, 1fr)
   );
   gap: ${theme.spacing.xl};
 
@@ -431,16 +433,17 @@ const AutomobileMain = () => {
   const [saleVehicles, setSaleVehicles] = useState([]);
   const [selectedDealer, setSelectedDealer] = useState(null);
 
-  const getBaseUrl = () => selectedDealer ? `/${selectedDealer.slug}` : "/automobiles";
+  const getBaseUrl = () =>
+    selectedDealer ? `/${selectedDealer.slug}` : '/automobiles';
 
   useEffect(() => {
     // Get dealer data from URL slug or navigation state (fallback)
     const path = location.pathname;
     let dealer = null;
 
-    if (path !== "/automobiles") {
+    if (path !== '/automobiles') {
       // Extract dealer slug from URL like "/luxury-auto-gallery"
-      const pathSegments = path.split("/").filter(Boolean);
+      const pathSegments = path.split('/').filter(Boolean);
       const dealerSlug = pathSegments[0];
       dealer = getVendorByIdOrSlug(dealerSlug);
     }
@@ -454,7 +457,7 @@ const AutomobileMain = () => {
       setSelectedDealer(dealer);
     } else {
       // If no dealer found, redirect to dealer listing
-      navigate("/auto-dealers");
+      navigate('/auto-dealers');
       return;
     }
 
@@ -464,7 +467,7 @@ const AutomobileMain = () => {
   }, [location.pathname, location.state, navigate]);
 
   const handleBackToDealers = () => {
-    navigate("/auto-dealers");
+    navigate('/auto-dealers');
   };
 
   // Show fallback if no dealer is selected
@@ -542,7 +545,9 @@ const AutomobileMain = () => {
               </HeroButton>
               <HeroButton
                 className="secondary"
-                onClick={() => navigate(`${getBaseUrl()}/vehicles?category=luxury-cars`)}
+                onClick={() =>
+                  navigate(`${getBaseUrl()}/vehicles?category=luxury-cars`)
+                }
               >
                 View Categories
                 <FaArrowRight />
@@ -558,11 +563,12 @@ const AutomobileMain = () => {
                 Browse by Category
               </SectionTitle>
               <SectionSubtitle>
-                Explore our diverse range of vehicles across different categories
+                Explore our diverse range of vehicles across different
+                categories
               </SectionSubtitle>
             </SectionHeader>
             <Grid minWidth="280px">
-              {categories.map((category) => (
+              {categories.map(category => (
                 <CategoryCard
                   key={category.id}
                   category={category}
@@ -582,12 +588,12 @@ const AutomobileMain = () => {
                 Featured Vehicles
               </SectionTitle>
               <SectionSubtitle>
-                Handpicked vehicles from {selectedDealer.name} that customers love
-                the most
+                Handpicked vehicles from {selectedDealer.name} that customers
+                love the most
               </SectionSubtitle>
             </SectionHeader>
             <Grid>
-              {featuredVehicles.slice(0, 4).map((vehicle) => (
+              {featuredVehicles.slice(0, 4).map(vehicle => (
                 <VehicleCard
                   key={vehicle.id}
                   vehicle={vehicle}
@@ -611,7 +617,7 @@ const AutomobileMain = () => {
                 </SectionSubtitle>
               </SectionHeader>
               <Grid>
-                {saleVehicles.slice(0, 4).map((vehicle) => (
+                {saleVehicles.slice(0, 4).map(vehicle => (
                   <VehicleCard
                     key={vehicle.id}
                     vehicle={vehicle}
@@ -619,11 +625,15 @@ const AutomobileMain = () => {
                   />
                 ))}
               </Grid>
-                        </Container>
+            </Container>
           </Section>
         )}
 
-                <Footer dealerSlug={selectedDealer.slug} dealer={selectedDealer} theme={dealerTheme} />
+        <Footer
+          dealerSlug={selectedDealer.slug}
+          dealer={selectedDealer}
+          theme={dealerTheme}
+        />
         <BackToTop />
       </PageContainer>
     </>

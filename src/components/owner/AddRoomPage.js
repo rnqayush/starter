@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import { FaArrowLeft } from "react-icons/fa";
-import Sidebar from "./Sidebar";
-import { Card, CardContent } from "../shared/Card";
-import { Button } from "../shared/Button";
+import React, { useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import { FaArrowLeft } from 'react-icons/fa';
+import Sidebar from './Sidebar';
+import { Card, CardContent } from '../shared/Card';
+import { Button } from '../shared/Button';
 import {
   Input,
   FormGroup,
@@ -14,10 +14,10 @@ import {
   InputGroup,
   CheckboxGroup,
   CheckboxItem,
-} from "../shared/Input";
-import { theme } from "../../styles/GlobalStyle";
-import { useAppContext } from "../../context/AppContext";
-import { amenitiesList } from "../../data/mockData";
+} from '../shared/Input';
+import { theme } from '../../styles/GlobalStyle';
+import { useAppContext } from '../../context/AppContext';
+import { amenitiesList } from '../../data/mockData';
 
 const PageContainer = styled.div`
   display: flex;
@@ -103,43 +103,43 @@ const AddRoomPage = () => {
   const { hotels, setHotels, setOwnerHotels } = useAppContext();
 
   const [formData, setFormData] = useState({
-    name: "",
-    type: "Standard",
-    price: "",
-    maxGuests: "2",
-    bedType: "Double Bed",
-    description: "",
+    name: '',
+    type: 'Standard',
+    price: '',
+    maxGuests: '2',
+    bedType: 'Double Bed',
+    description: '',
     amenities: [],
     images: [],
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const hotel = hotels.find((h) => h.id === parseInt(hotelId));
+  const hotel = hotels.find(h => h.id === parseInt(hotelId));
 
-  const handleInputChange = (e) => {
+  const handleInputChange = e => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
+    setFormData(prev => ({
       ...prev,
       [name]: value,
     }));
   };
 
   const handleAmenityChange = (amenityId, checked) => {
-    setFormData((prev) => ({
+    setFormData(prev => ({
       ...prev,
       amenities: checked
         ? [...prev.amenities, amenityId]
-        : prev.amenities.filter((id) => id !== amenityId),
+        : prev.amenities.filter(id => id !== amenityId),
     }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
     setIsSubmitting(true);
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise(resolve => setTimeout(resolve, 1000));
 
       const newRoom = {
         id: Date.now(),
@@ -153,32 +153,31 @@ const AddRoomPage = () => {
           formData.images.length > 0
             ? formData.images
             : [
-                "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?ixlib=rb-4.0.3",
+                'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?ixlib=rb-4.0.3',
               ],
         amenities: formData.amenities,
       };
 
       // Update hotels data
-      setHotels((prev) =>
-        prev.map((h) =>
+      setHotels(prev =>
+        prev.map(h =>
           h.id === parseInt(hotelId)
             ? { ...h, rooms: [...h.rooms, newRoom] }
-            : h,
-        ),
+            : h
+        )
       );
 
       // Update owner hotels data
-      setOwnerHotels((prev) =>
-        prev.map((h) =>
+      setOwnerHotels(prev =>
+        prev.map(h =>
           h.id === parseInt(hotelId)
             ? { ...h, totalRooms: h.totalRooms + 1 }
-            : h,
-        ),
+            : h
+        )
       );
 
-      navigate("/owner/my-hotels");
+      navigate('/owner/my-hotels');
     } catch (error) {
-
     } finally {
       setIsSubmitting(false);
     }
@@ -193,7 +192,7 @@ const AddRoomPage = () => {
       <Sidebar />
 
       <MainContent>
-        <BackButton onClick={() => navigate("/owner/my-hotels")}>
+        <BackButton onClick={() => navigate('/owner/my-hotels')}>
           <FaArrowLeft />
           Back to My Hotels
         </BackButton>
@@ -294,12 +293,12 @@ const AddRoomPage = () => {
                 <FormGroup>
                   <Label>Select Room Amenities</Label>
                   <CheckboxGroup>
-                    {amenitiesList.slice(0, 10).map((amenity) => (
+                    {amenitiesList.slice(0, 10).map(amenity => (
                       <CheckboxItem key={amenity.id}>
                         <input
                           type="checkbox"
                           checked={formData.amenities.includes(amenity.id)}
-                          onChange={(e) =>
+                          onChange={e =>
                             handleAmenityChange(amenity.id, e.target.checked)
                           }
                         />
@@ -316,12 +315,12 @@ const AddRoomPage = () => {
                 <Button
                   type="button"
                   variant="outline"
-                  onClick={() => navigate("/owner/my-hotels")}
+                  onClick={() => navigate('/owner/my-hotels')}
                 >
                   Cancel
                 </Button>
                 <Button type="submit" disabled={isSubmitting} size="large">
-                  {isSubmitting ? "Adding Room..." : "Add Room"}
+                  {isSubmitting ? 'Adding Room...' : 'Add Room'}
                 </Button>
               </FormActions>
             </RoomForm>

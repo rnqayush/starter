@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 import {
   FaMapMarkerAlt,
   FaStar,
@@ -14,12 +14,12 @@ import {
   FaUmbrellaBeach,
   FaBusinessTime,
   FaTaxi,
-} from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
-import HotelNavbar from "../components/HotelNavbar";
-import HotelFooter from "../components/HotelFooter";
+} from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
+import HotelNavbar from '../components/HotelNavbar';
+import HotelFooter from '../components/HotelFooter';
 
-import { getHotelByIdOrSlug } from "../data/hotels";
+import { getHotelByIdOrSlug } from '../data/hotels';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -29,11 +29,11 @@ const PageContainer = styled.div`
 `;
 
 const HeroBanner = styled.section.withConfig({
-  shouldForwardProp: (prop) => prop !== "image",
+  shouldForwardProp: prop => prop !== 'image',
 })`
   position: relative;
   height: 100vh;
-  background-image: url(${(props) => props.image});
+  background-image: url(${props => props.image});
   background-size: cover;
   background-position: center;
   display: flex;
@@ -41,7 +41,7 @@ const HeroBanner = styled.section.withConfig({
   overflow: hidden;
 
   &::before {
-    content: "";
+    content: '';
     position: absolute;
     top: 0;
     left: 0;
@@ -61,7 +61,11 @@ const HeroBanner = styled.section.withConfig({
     background-position: center center;
 
     &::before {
-      background: linear-gradient(135deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5));
+      background: linear-gradient(
+        135deg,
+        rgba(0, 0, 0, 0.3),
+        rgba(0, 0, 0, 0.5)
+      );
     }
   }
 `;
@@ -145,7 +149,11 @@ const HeroActions = styled.div`
 `;
 
 const CTAButton = styled.button`
-  background: linear-gradient(135deg, ${theme.colors.primary}, ${theme.colors.primaryDark});
+  background: linear-gradient(
+    135deg,
+    ${theme.colors.primary},
+    ${theme.colors.primaryDark}
+  );
   color: ${theme.colors.white};
   padding: ${theme.spacing.md} ${theme.spacing.xxl};
   border: none;
@@ -165,7 +173,12 @@ const CTAButton = styled.button`
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
     transition: left 0.5s;
   }
 
@@ -515,22 +528,22 @@ const GalleryGrid = styled.div`
 `;
 
 const GalleryItem = styled.div.withConfig({
-  shouldForwardProp: (prop) => !['image', 'span'].includes(prop),
+  shouldForwardProp: prop => !['image', 'span'].includes(prop),
 })`
-  background-image: url(${(props) => props.image});
+  background-image: url(${props => props.image});
   background-size: cover;
   background-position: center;
   position: relative;
   cursor: pointer;
   transition: transform 0.3s ease;
-  ${(props) => props.span && `grid-row: span ${props.span};`}
+  ${props => props.span && `grid-row: span ${props.span};`}
 
   &:hover {
     transform: scale(1.02);
   }
 
   &::before {
-    content: "";
+    content: '';
     position: absolute;
     top: 0;
     left: 0;
@@ -559,7 +572,11 @@ const GalleryOverlay = styled.div`
 `;
 
 const TestimonialsSection = styled.div`
-  background: linear-gradient(135deg, ${theme.colors.primary}, ${theme.colors.primaryDark});
+  background: linear-gradient(
+    135deg,
+    ${theme.colors.primary},
+    ${theme.colors.primaryDark}
+  );
   border-radius: ${theme.borderRadius.xl};
   padding: ${theme.spacing.xxl};
   color: ${theme.colors.white};
@@ -597,7 +614,7 @@ const TestimonialQuote = styled.blockquote`
   position: relative;
 
   &::before {
-    content: "";
+    content: '';
     position: absolute;
     top: -20px;
     left: 50%;
@@ -734,7 +751,11 @@ const ContactItem = styled.div`
 `;
 
 const MapPlaceholder = styled.div`
-  background: linear-gradient(135deg, ${theme.colors.gray100}, ${theme.colors.gray200});
+  background: linear-gradient(
+    135deg,
+    ${theme.colors.gray100},
+    ${theme.colors.gray200}
+  );
   border-radius: ${theme.borderRadius.lg};
   height: 300px;
   display: flex;
@@ -798,7 +819,7 @@ const HotelDetail = () => {
     return (
       <PageContainer>
         <HotelNavbar />
-        <div style={{ padding: "4rem", textAlign: "center" }}>
+        <div style={{ padding: '4rem', textAlign: 'center' }}>
           <h2>Loading...</h2>
         </div>
         <HotelFooter />
@@ -810,7 +831,7 @@ const HotelDetail = () => {
     return (
       <PageContainer>
         <HotelNavbar />
-        <div style={{ padding: "4rem", textAlign: "center" }}>
+        <div style={{ padding: '4rem', textAlign: 'center' }}>
           <h2>Hotel not found</h2>
           <p>The hotel you're looking for doesn't exist.</p>
         </div>
@@ -822,47 +843,74 @@ const HotelDetail = () => {
   const features = [
     {
       icon: FaConciergeBell,
-      title: "24/7 Concierge",
-      description: "Our dedicated concierge team is available round-the-clock to assist with all your needs."
+      title: '24/7 Concierge',
+      description:
+        'Our dedicated concierge team is available round-the-clock to assist with all your needs.',
     },
     {
       icon: FaUmbrellaBeach,
-      title: "Luxury Amenities",
-      description: "Enjoy world-class facilities including spa, pool, and fine dining restaurants."
+      title: 'Luxury Amenities',
+      description:
+        'Enjoy world-class facilities including spa, pool, and fine dining restaurants.',
     },
     {
       icon: FaBusinessTime,
-      title: "Business Center",
-      description: "Fully equipped business facilities for meetings and corporate events."
+      title: 'Business Center',
+      description:
+        'Fully equipped business facilities for meetings and corporate events.',
     },
     {
       icon: FaTaxi,
-      title: "Airport Transfer",
-      description: "Complimentary airport shuttle service for all our guests."
-    }
+      title: 'Airport Transfer',
+      description: 'Complimentary airport shuttle service for all our guests.',
+    },
   ];
 
   const amenityCategories = [
     {
-      title: "Recreation",
+      title: 'Recreation',
       icon: FaSwimmingPool,
-      items: ["Swimming Pool", "Fitness Center", "Spa & Wellness", "Game Room", "Tennis Court"]
+      items: [
+        'Swimming Pool',
+        'Fitness Center',
+        'Spa & Wellness',
+        'Game Room',
+        'Tennis Court',
+      ],
     },
     {
-      title: "Dining",
+      title: 'Dining',
       icon: FaUtensils,
-      items: ["Fine Dining Restaurant", "Rooftop Bar", "Room Service", "Breakfast Buffet", "Coffee Shop"]
+      items: [
+        'Fine Dining Restaurant',
+        'Rooftop Bar',
+        'Room Service',
+        'Breakfast Buffet',
+        'Coffee Shop',
+      ],
     },
     {
-      title: "Business",
+      title: 'Business',
       icon: FaBusinessTime,
-      items: ["Business Center", "Meeting Rooms", "Conference Hall", "Free WiFi", "Printing Services"]
+      items: [
+        'Business Center',
+        'Meeting Rooms',
+        'Conference Hall',
+        'Free WiFi',
+        'Printing Services',
+      ],
     },
     {
-      title: "Services",
+      title: 'Services',
       icon: FaConciergeBell,
-      items: ["24/7 Concierge", "Valet Parking", "Laundry Service", "Airport Transfer", "Tour Desk"]
-    }
+      items: [
+        '24/7 Concierge',
+        'Valet Parking',
+        'Laundry Service',
+        'Airport Transfer',
+        'Tour Desk',
+      ],
+    },
   ];
 
   return (
@@ -896,7 +944,7 @@ const HotelDetail = () => {
                 </QuickInfoText>
               </QuickInfoCard>
             </MobileQuickInfoContainer>
-            <CTAButton onClick={() => navigate(`/${hotel.slug}/booking`)}>
+            <CTAButton onClick={() => navigate(`/${slug}/rooms`)}>
               Book Your Stay
             </CTAButton>
           </HeroActions>
@@ -908,15 +956,26 @@ const HotelDetail = () => {
           <SectionHeader>
             <SectionTitle>About {hotel.name}</SectionTitle>
             <SectionSubtitle>
-              Learn more about our heritage, mission, and commitment to excellence
+              Learn more about our heritage, mission, and commitment to
+              excellence
             </SectionSubtitle>
           </SectionHeader>
-          <Description style={{ fontSize: '1.1rem', lineHeight: '1.8', textAlign: 'center', maxWidth: '800px', margin: '0 auto' }}>
-            {hotel.name} stands as a beacon of luxury and elegance in the heart of {hotel.city}. 
-            With our rich heritage of hospitality excellence spanning decades, we have been creating 
-            unforgettable experiences for discerning travelers from around the world. Our commitment 
-            to impeccable service, combined with our stunning architecture and world-class amenities, 
-            makes us the preferred choice for those seeking the finest in luxury accommodation.
+          <Description
+            style={{
+              fontSize: '1.1rem',
+              lineHeight: '1.8',
+              textAlign: 'center',
+              maxWidth: '800px',
+              margin: '0 auto',
+            }}
+          >
+            {hotel.name} stands as a beacon of luxury and elegance in the heart
+            of {hotel.city}. With our rich heritage of hospitality excellence
+            spanning decades, we have been creating unforgettable experiences
+            for discerning travelers from around the world. Our commitment to
+            impeccable service, combined with our stunning architecture and
+            world-class amenities, makes us the preferred choice for those
+            seeking the finest in luxury accommodation.
           </Description>
         </Container>
       </ContentSection>
@@ -926,7 +985,8 @@ const HotelDetail = () => {
           <SectionHeader>
             <SectionTitle>Why Choose {hotel.name}?</SectionTitle>
             <SectionSubtitle>
-              Discover the perfect blend of luxury, comfort, and exceptional service
+              Discover the perfect blend of luxury, comfort, and exceptional
+              service
             </SectionSubtitle>
           </SectionHeader>
           <FeaturesGrid>
@@ -1008,20 +1068,27 @@ const HotelDetail = () => {
         <Container>
           <TestimonialsSection>
             <SectionHeader>
-              <SectionTitle style={{ color: 'white' }}>Guest Reviews</SectionTitle>
+              <SectionTitle style={{ color: 'white' }}>
+                Guest Reviews
+              </SectionTitle>
               <SectionSubtitle style={{ color: 'rgba(255,255,255,0.8)' }}>
                 Hear what our valued guests have to say about their experience
               </SectionSubtitle>
             </SectionHeader>
             <TestimonialCard>
               <TestimonialQuote>
-                "Absolutely exceptional service and stunning accommodations. The staff went above and beyond to make our anniversary celebration truly memorable. The attention to detail and luxury amenities exceeded all our expectations."
+                "Absolutely exceptional service and stunning accommodations. The
+                staff went above and beyond to make our anniversary celebration
+                truly memorable. The attention to detail and luxury amenities
+                exceeded all our expectations."
               </TestimonialQuote>
               <TestimonialAuthor>
                 <div className="avatar">RS</div>
                 <div className="info">
                   <div className="name">Raj & Priya Sharma</div>
-                  <div className="details">Anniversary Celebration • Mumbai</div>
+                  <div className="details">
+                    Anniversary Celebration • Mumbai
+                  </div>
                 </div>
               </TestimonialAuthor>
             </TestimonialCard>
@@ -1066,15 +1133,25 @@ const HotelDetail = () => {
                   <FaClock className="icon" />
                   <div className="content">
                     <div className="label">Check-in / Check-out</div>
-                    <div className="value">{hotel.checkInTime} / {hotel.checkOutTime}</div>
+                    <div className="value">
+                      {hotel.checkInTime} / {hotel.checkOutTime}
+                    </div>
                   </div>
                 </ContactItem>
               </ContactInfo>
               <MapPlaceholder>
                 <div>
-                  <FaMapMarkerAlt style={{ fontSize: '2rem', marginBottom: '1rem' }} />
+                  <FaMapMarkerAlt
+                    style={{ fontSize: '2rem', marginBottom: '1rem' }}
+                  />
                   <div>Interactive Map View</div>
-                  <div style={{ fontSize: '0.9rem', opacity: 0.7, marginTop: '0.5rem' }}>
+                  <div
+                    style={{
+                      fontSize: '0.9rem',
+                      opacity: 0.7,
+                      marginTop: '0.5rem',
+                    }}
+                  >
                     Prime location in {hotel.city}
                   </div>
                 </div>
@@ -1084,9 +1161,7 @@ const HotelDetail = () => {
         </Container>
       </ContentSection>
 
-      <BackToTop onClick={scrollToTop}>
-        ↑
-      </BackToTop>
+      <BackToTop onClick={scrollToTop}>↑</BackToTop>
 
       <HotelFooter />
     </PageContainer>

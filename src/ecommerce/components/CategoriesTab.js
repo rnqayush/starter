@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import React, { useState } from 'react';
+import styled from 'styled-components';
 import {
   FaPlus,
   FaEdit,
@@ -7,11 +7,11 @@ import {
   FaImage,
   FaGripVertical,
   FaFolder,
-} from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
-import Modal from "./shared/Modal";
-import FormField from "./shared/FormField";
-import Button from "./shared/Button";
+} from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
+import Modal from './shared/Modal';
+import FormField from './shared/FormField';
+import Button from './shared/Button';
 
 const CategoriesContainer = styled.div`
   background: ${theme.colors.white};
@@ -219,18 +219,18 @@ const CategoriesTab = () => {
   const [categories, setCategories] = useState([
     {
       id: 1,
-      name: "Electronics",
-      description: "Digital devices and gadgets",
+      name: 'Electronics',
+      description: 'Digital devices and gadgets',
       image:
-        "https://images.unsplash.com/photo-1498049794561-7780e7231661?w=100&q=80",
+        'https://images.unsplash.com/photo-1498049794561-7780e7231661?w=100&q=80',
       productCount: 45,
       isActive: true,
       sortOrder: 1,
     },
     {
       id: 2,
-      name: "Fashion",
-      description: "Clothing and accessories",
+      name: 'Fashion',
+      description: 'Clothing and accessories',
       image: null,
       productCount: 32,
       isActive: true,
@@ -238,10 +238,10 @@ const CategoriesTab = () => {
     },
     {
       id: 3,
-      name: "Home & Garden",
-      description: "Home improvement and gardening",
+      name: 'Home & Garden',
+      description: 'Home improvement and gardening',
       image:
-        "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=100&q=80",
+        'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=100&q=80',
       productCount: 28,
       isActive: true,
       sortOrder: 3,
@@ -251,18 +251,18 @@ const CategoriesTab = () => {
   const [showModal, setShowModal] = useState(false);
   const [editingCategory, setEditingCategory] = useState(null);
   const [formData, setFormData] = useState({
-    name: "",
-    description: "",
+    name: '',
+    description: '',
     image: null,
   });
 
   const handleAddCategory = () => {
     setEditingCategory(null);
-    setFormData({ name: "", description: "", image: null });
+    setFormData({ name: '', description: '', image: null });
     setShowModal(true);
   };
 
-  const handleEditCategory = (category) => {
+  const handleEditCategory = category => {
     setEditingCategory(category);
     setFormData({
       name: category.name,
@@ -272,21 +272,21 @@ const CategoriesTab = () => {
     setShowModal(true);
   };
 
-  const handleDeleteCategory = (categoryId) => {
-    if (window.confirm("Are you sure you want to delete this category?")) {
-      setCategories(categories.filter((cat) => cat.id !== categoryId));
+  const handleDeleteCategory = categoryId => {
+    if (window.confirm('Are you sure you want to delete this category?')) {
+      setCategories(categories.filter(cat => cat.id !== categoryId));
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = e => {
     e.preventDefault();
 
     if (editingCategory) {
       // Update existing category
       setCategories(
-        categories.map((cat) =>
-          cat.id === editingCategory.id ? { ...cat, ...formData } : cat,
-        ),
+        categories.map(cat =>
+          cat.id === editingCategory.id ? { ...cat, ...formData } : cat
+        )
       );
     } else {
       // Add new category
@@ -303,11 +303,11 @@ const CategoriesTab = () => {
     setShowModal(false);
   };
 
-  const handleImageUpload = (e) => {
+  const handleImageUpload = e => {
     const file = e.target.files[0];
     if (file) {
       const imageUrl = URL.createObjectURL(file);
-      setFormData((prev) => ({ ...prev, image: imageUrl }));
+      setFormData(prev => ({ ...prev, image: imageUrl }));
     }
   };
 
@@ -317,7 +317,7 @@ const CategoriesTab = () => {
         Cancel
       </Button>
       <Button variant="primary" onClick={handleSubmit}>
-        {editingCategory ? "Update Category" : "Add Category"}
+        {editingCategory ? 'Update Category' : 'Add Category'}
       </Button>
     </>
   );
@@ -355,7 +355,7 @@ const CategoriesTab = () => {
               </Button>
             </EmptyState>
           ) : (
-            categories.map((category) => (
+            categories.map(category => (
               <CategoryItem key={category.id}>
                 <DragHandle>
                   <FaGripVertical />
@@ -403,7 +403,7 @@ const CategoriesTab = () => {
       <Modal
         isOpen={showModal}
         onClose={() => setShowModal(false)}
-        title={editingCategory ? "Edit Category" : "Add New Category"}
+        title={editingCategory ? 'Edit Category' : 'Add New Category'}
         footer={modalFooter}
       >
         <form onSubmit={handleSubmit}>
@@ -411,8 +411,8 @@ const CategoriesTab = () => {
             label="Category Name"
             name="name"
             value={formData.name}
-            onChange={(e) =>
-              setFormData((prev) => ({ ...prev, name: e.target.value }))
+            onChange={e =>
+              setFormData(prev => ({ ...prev, name: e.target.value }))
             }
             placeholder="Enter category name"
             required
@@ -423,8 +423,8 @@ const CategoriesTab = () => {
             type="textarea"
             name="description"
             value={formData.description}
-            onChange={(e) =>
-              setFormData((prev) => ({ ...prev, description: e.target.value }))
+            onChange={e =>
+              setFormData(prev => ({ ...prev, description: e.target.value }))
             }
             placeholder="Describe this category"
             rows={3}
@@ -433,7 +433,7 @@ const CategoriesTab = () => {
           <FormField label="Category Image">
             <ImageUploadArea
               onClick={() =>
-                document.getElementById("categoryImageInput").click()
+                document.getElementById('categoryImageInput').click()
               }
             >
               {formData.image ? (
@@ -441,19 +441,19 @@ const CategoriesTab = () => {
                   src={formData.image}
                   alt="Preview"
                   style={{
-                    width: "100px",
-                    height: "100px",
-                    objectFit: "cover",
-                    borderRadius: "8px",
+                    width: '100px',
+                    height: '100px',
+                    objectFit: 'cover',
+                    borderRadius: '8px',
                   }}
                 />
               ) : (
                 <>
                   <FaImage
                     style={{
-                      fontSize: "2rem",
+                      fontSize: '2rem',
                       color: theme.colors.gray400,
-                      marginBottom: "8px",
+                      marginBottom: '8px',
                     }}
                   />
                   <p style={{ margin: 0, color: theme.colors.gray600 }}>

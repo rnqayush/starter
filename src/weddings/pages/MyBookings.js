@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 import {
   FaArrowLeft,
   FaCalendarAlt,
@@ -19,9 +19,9 @@ import {
   FaFilter,
   FaSearch,
   FaStar,
-} from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
-import { weddingVendors } from "../data/vendors";
+} from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
+import { weddingVendors } from '../data/vendors';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -93,7 +93,7 @@ const StatCard = styled.div`
   border-radius: ${theme.borderRadius.lg};
   box-shadow: ${theme.shadows.sm};
   text-align: center;
-  border-left: 4px solid ${(props) => props.color || theme.colors.primary};
+  border-left: 4px solid ${props => props.color || theme.colors.primary};
 `;
 
 const StatNumber = styled.div`
@@ -149,11 +149,13 @@ const SearchInput = styled.input`
 `;
 
 const FilterButton = styled.button.withConfig({
-  shouldForwardProp: (prop) => prop !== "active",
+  shouldForwardProp: prop => prop !== 'active',
 })`
-  background: ${(props) => props.active ? theme.colors.primary : theme.colors.white};
-  color: ${(props) => props.active ? theme.colors.white : theme.colors.gray700};
-  border: 2px solid ${(props) => props.active ? theme.colors.primary : theme.colors.gray200};
+  background: ${props =>
+    props.active ? theme.colors.primary : theme.colors.white};
+  color: ${props => (props.active ? theme.colors.white : theme.colors.gray700)};
+  border: 2px solid
+    ${props => (props.active ? theme.colors.primary : theme.colors.gray200)};
   padding: ${theme.spacing.sm} ${theme.spacing.md};
   border-radius: ${theme.borderRadius.md};
   font-weight: 500;
@@ -189,14 +191,19 @@ const BookingCard = styled.div`
   border-radius: ${theme.borderRadius.lg};
   box-shadow: ${theme.shadows.sm};
   overflow: hidden;
-  border-left: 4px solid ${(props) => {
-    switch (props.status) {
-      case 'confirmed': return theme.colors.success;
-      case 'pending': return theme.colors.warning;
-      case 'cancelled': return theme.colors.error;
-      default: return theme.colors.gray300;
-    }
-  }};
+  border-left: 4px solid
+    ${props => {
+      switch (props.status) {
+        case 'confirmed':
+          return theme.colors.success;
+        case 'pending':
+          return theme.colors.warning;
+        case 'cancelled':
+          return theme.colors.error;
+        default:
+          return theme.colors.gray300;
+      }
+    }};
 `;
 
 const BookingHeader = styled.div`
@@ -232,7 +239,7 @@ const BookingNumber = styled.div`
 `;
 
 const BookingStatus = styled.span.withConfig({
-  shouldForwardProp: (prop) => prop !== "status",
+  shouldForwardProp: prop => prop !== 'status',
 })`
   display: inline-flex;
   align-items: center;
@@ -242,20 +249,28 @@ const BookingStatus = styled.span.withConfig({
   font-size: 0.8rem;
   font-weight: 600;
   text-transform: uppercase;
-  background: ${(props) => {
+  background: ${props => {
     switch (props.status) {
-      case 'confirmed': return theme.colors.success + '20';
-      case 'pending': return theme.colors.warning + '20';
-      case 'cancelled': return theme.colors.error + '20';
-      default: return theme.colors.gray200;
+      case 'confirmed':
+        return theme.colors.success + '20';
+      case 'pending':
+        return theme.colors.warning + '20';
+      case 'cancelled':
+        return theme.colors.error + '20';
+      default:
+        return theme.colors.gray200;
     }
   }};
-  color: ${(props) => {
+  color: ${props => {
     switch (props.status) {
-      case 'confirmed': return theme.colors.success;
-      case 'pending': return theme.colors.warning;
-      case 'cancelled': return theme.colors.error;
-      default: return theme.colors.gray600;
+      case 'confirmed':
+        return theme.colors.success;
+      case 'pending':
+        return theme.colors.warning;
+      case 'cancelled':
+        return theme.colors.error;
+      default:
+        return theme.colors.gray600;
     }
   }};
 `;
@@ -333,16 +348,23 @@ const BookingActions = styled.div`
 `;
 
 const ActionButton = styled.button.withConfig({
-  shouldForwardProp: (prop) => prop !== "primary" && prop !== "danger",
+  shouldForwardProp: prop => prop !== 'primary' && prop !== 'danger',
 })`
-  background: ${(props) => 
-    props.primary ? theme.colors.primary : 
-    props.danger ? theme.colors.error : theme.colors.white};
-  color: ${(props) => 
+  background: ${props =>
+    props.primary
+      ? theme.colors.primary
+      : props.danger
+        ? theme.colors.error
+        : theme.colors.white};
+  color: ${props =>
     props.primary || props.danger ? theme.colors.white : theme.colors.gray700};
-  border: 2px solid ${(props) => 
-    props.primary ? theme.colors.primary : 
-    props.danger ? theme.colors.error : theme.colors.gray200};
+  border: 2px solid
+    ${props =>
+      props.primary
+        ? theme.colors.primary
+        : props.danger
+          ? theme.colors.error
+          : theme.colors.gray200};
   padding: ${theme.spacing.sm} ${theme.spacing.md};
   border-radius: ${theme.borderRadius.md};
   font-weight: 600;
@@ -355,9 +377,12 @@ const ActionButton = styled.button.withConfig({
 
   &:hover {
     transform: translateY(-1px);
-    background: ${(props) => 
-      props.primary ? theme.colors.primaryDark : 
-      props.danger ? theme.colors.error + 'dd' : theme.colors.gray50};
+    background: ${props =>
+      props.primary
+        ? theme.colors.primaryDark
+        : props.danger
+          ? theme.colors.error + 'dd'
+          : theme.colors.gray50};
   }
 `;
 
@@ -382,56 +407,56 @@ const MyBookings = () => {
   const navigate = useNavigate();
   const [bookings, setBookings] = useState([]);
   const [filteredBookings, setFilteredBookings] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState("all");
-  const [sortBy, setSortBy] = useState("date");
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('all');
+  const [sortBy, setSortBy] = useState('date');
 
   // Mock bookings data
   const mockBookings = [
     {
-      id: "WED-123456",
-      vendorId: "elegant-events",
-      status: "confirmed",
-      date: "2024-06-15",
-      time: "3:00 PM",
+      id: 'WED-123456',
+      vendorId: 'elegant-events',
+      status: 'confirmed',
+      date: '2024-06-15',
+      time: '3:00 PM',
       guestCount: 150,
-      eventType: "Wedding",
-      services: ["Wedding Planning", "Photography", "Catering"],
-      createdAt: "2024-01-15",
-      contactName: "John & Sarah Doe",
-      email: "john.sarah@example.com",
-      phone: "+1 (555) 123-4567",
-      message: "Looking for a magical outdoor wedding experience",
+      eventType: 'Wedding',
+      services: ['Wedding Planning', 'Photography', 'Catering'],
+      createdAt: '2024-01-15',
+      contactName: 'John & Sarah Doe',
+      email: 'john.sarah@example.com',
+      phone: '+1 (555) 123-4567',
+      message: 'Looking for a magical outdoor wedding experience',
     },
     {
-      id: "WED-123457",
-      vendorId: "capture-moments",
-      status: "pending",
-      date: "2024-08-22",
-      time: "4:00 PM",
+      id: 'WED-123457',
+      vendorId: 'capture-moments',
+      status: 'pending',
+      date: '2024-08-22',
+      time: '4:00 PM',
       guestCount: 80,
-      eventType: "Engagement Party",
-      services: ["Photography", "Videography"],
-      createdAt: "2024-01-20",
-      contactName: "Michael & Emma Smith",
-      email: "michael.emma@example.com",
-      phone: "+1 (555) 234-5678",
-      message: "Intimate engagement celebration with close family",
+      eventType: 'Engagement Party',
+      services: ['Photography', 'Videography'],
+      createdAt: '2024-01-20',
+      contactName: 'Michael & Emma Smith',
+      email: 'michael.emma@example.com',
+      phone: '+1 (555) 234-5678',
+      message: 'Intimate engagement celebration with close family',
     },
     {
-      id: "WED-123458",
-      vendorId: "floral-dreams",
-      status: "cancelled",
-      date: "2024-05-10",
-      time: "2:00 PM",
+      id: 'WED-123458',
+      vendorId: 'floral-dreams',
+      status: 'cancelled',
+      date: '2024-05-10',
+      time: '2:00 PM',
       guestCount: 200,
-      eventType: "Wedding",
-      services: ["Floral Arrangements", "Venue Decoration"],
-      createdAt: "2024-01-10",
-      contactName: "David & Lisa Johnson",
-      email: "david.lisa@example.com",
-      phone: "+1 (555) 345-6789",
-      message: "Traditional wedding with elegant floral arrangements",
+      eventType: 'Wedding',
+      services: ['Floral Arrangements', 'Venue Decoration'],
+      createdAt: '2024-01-10',
+      contactName: 'David & Lisa Johnson',
+      email: 'david.lisa@example.com',
+      phone: '+1 (555) 345-6789',
+      message: 'Traditional wedding with elegant floral arrangements',
     },
   ];
 
@@ -445,27 +470,30 @@ const MyBookings = () => {
 
     // Filter by search term
     if (searchTerm) {
-      filtered = filtered.filter(booking => 
-        booking.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        booking.contactName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        booking.eventType.toLowerCase().includes(searchTerm.toLowerCase())
+      filtered = filtered.filter(
+        booking =>
+          booking.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          booking.contactName
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase()) ||
+          booking.eventType.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
     // Filter by status
-    if (statusFilter !== "all") {
+    if (statusFilter !== 'all') {
       filtered = filtered.filter(booking => booking.status === statusFilter);
     }
 
     // Sort bookings
     switch (sortBy) {
-      case "date":
+      case 'date':
         filtered.sort((a, b) => new Date(a.date) - new Date(b.date));
         break;
-      case "created":
+      case 'created':
         filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         break;
-      case "status":
+      case 'status':
         filtered.sort((a, b) => a.status.localeCompare(b.status));
         break;
       default:
@@ -475,27 +503,33 @@ const MyBookings = () => {
     setFilteredBookings(filtered);
   }, [bookings, searchTerm, statusFilter, sortBy]);
 
-  const getVendorDetails = (vendorId) => {
+  const getVendorDetails = vendorId => {
     return weddingVendors.find(vendor => vendor.id === vendorId);
   };
 
-  const getStatusIcon = (status) => {
+  const getStatusIcon = status => {
     switch (status) {
-      case 'confirmed': return <FaCheckCircle />;
-      case 'pending': return <FaExclamationCircle />;
-      case 'cancelled': return <FaTimesCircle />;
-      default: return <FaClock />;
+      case 'confirmed':
+        return <FaCheckCircle />;
+      case 'pending':
+        return <FaExclamationCircle />;
+      case 'cancelled':
+        return <FaTimesCircle />;
+      default:
+        return <FaClock />;
     }
   };
 
-  const handleViewBooking = (booking) => {
+  const handleViewBooking = booking => {
     const vendor = getVendorDetails(booking.vendorId);
     if (vendor) {
-      navigate(`/weddings/booking-confirmation?booking=${booking.id}&vendor=${booking.vendorId}&name=${booking.contactName}&email=${booking.email}&phone=${booking.phone}&date=${booking.date}&time=${booking.time}&guests=${booking.guestCount}&type=${booking.eventType}&services=${booking.services.join(',')}&message=${booking.message}`);
+      navigate(
+        `/weddings/booking-confirmation?booking=${booking.id}&vendor=${booking.vendorId}&name=${booking.contactName}&email=${booking.email}&phone=${booking.phone}&date=${booking.date}&time=${booking.time}&guests=${booking.guestCount}&type=${booking.eventType}&services=${booking.services.join(',')}&message=${booking.message}`
+      );
     }
   };
 
-  const handleViewVendor = (vendorId) => {
+  const handleViewVendor = vendorId => {
     navigate(`/${vendorId}`);
   };
 
@@ -510,7 +544,7 @@ const MyBookings = () => {
     <PageContainer>
       <NavHeader>
         <NavContent>
-          <BackButton onClick={() => navigate("/weddings")}>
+          <BackButton onClick={() => navigate('/weddings')}>
             <FaArrowLeft />
             Back to Vendors
           </BackButton>
@@ -548,39 +582,42 @@ const MyBookings = () => {
                 type="text"
                 placeholder="Search bookings..."
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={e => setSearchTerm(e.target.value)}
               />
             </FilterGroup>
 
             <FilterGroup>
               <FilterButton
-                active={statusFilter === "all"}
-                onClick={() => setStatusFilter("all")}
+                active={statusFilter === 'all'}
+                onClick={() => setStatusFilter('all')}
               >
                 All Status
               </FilterButton>
               <FilterButton
-                active={statusFilter === "confirmed"}
-                onClick={() => setStatusFilter("confirmed")}
+                active={statusFilter === 'confirmed'}
+                onClick={() => setStatusFilter('confirmed')}
               >
                 Confirmed
               </FilterButton>
               <FilterButton
-                active={statusFilter === "pending"}
-                onClick={() => setStatusFilter("pending")}
+                active={statusFilter === 'pending'}
+                onClick={() => setStatusFilter('pending')}
               >
                 Pending
               </FilterButton>
               <FilterButton
-                active={statusFilter === "cancelled"}
-                onClick={() => setStatusFilter("cancelled")}
+                active={statusFilter === 'cancelled'}
+                onClick={() => setStatusFilter('cancelled')}
               >
                 Cancelled
               </FilterButton>
             </FilterGroup>
 
             <FilterGroup>
-              <SortSelect value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+              <SortSelect
+                value={sortBy}
+                onChange={e => setSortBy(e.target.value)}
+              >
                 <option value="date">Sort by Event Date</option>
                 <option value="created">Sort by Created Date</option>
                 <option value="status">Sort by Status</option>
@@ -591,7 +628,7 @@ const MyBookings = () => {
 
         {filteredBookings.length > 0 ? (
           <BookingsGrid>
-            {filteredBookings.map((booking) => {
+            {filteredBookings.map(booking => {
               const vendor = getVendorDetails(booking.vendorId);
               return (
                 <BookingCard key={booking.id} status={booking.status}>
@@ -605,12 +642,13 @@ const MyBookings = () => {
                         </BookingStatus>
                         <MetaItem>
                           <FaCalendarAlt />
-                          {new Date(booking.date).toLocaleDateString('en-US', { 
-                            weekday: 'short', 
-                            month: 'short', 
+                          {new Date(booking.date).toLocaleDateString('en-US', {
+                            weekday: 'short',
+                            month: 'short',
                             day: 'numeric',
-                            year: 'numeric'
-                          })} at {booking.time}
+                            year: 'numeric',
+                          })}{' '}
+                          at {booking.time}
                         </MetaItem>
                         <MetaItem>
                           <FaUser />
@@ -660,11 +698,14 @@ const MyBookings = () => {
                       <DetailGroup>
                         <DetailLabel>Booking Created</DetailLabel>
                         <DetailValue>
-                          {new Date(booking.createdAt).toLocaleDateString('en-US', { 
-                            month: 'short', 
-                            day: 'numeric',
-                            year: 'numeric'
-                          })}
+                          {new Date(booking.createdAt).toLocaleDateString(
+                            'en-US',
+                            {
+                              month: 'short',
+                              day: 'numeric',
+                              year: 'numeric',
+                            }
+                          )}
                         </DetailValue>
                       </DetailGroup>
                     </BookingDetails>
@@ -675,7 +716,9 @@ const MyBookings = () => {
                         View Details
                       </ActionButton>
                       {vendor && (
-                        <ActionButton onClick={() => handleViewVendor(vendor.id)}>
+                        <ActionButton
+                          onClick={() => handleViewVendor(vendor.id)}
+                        >
                           <FaRing />
                           View Vendor
                         </ActionButton>
@@ -696,10 +739,9 @@ const MyBookings = () => {
           <EmptyState>
             <h3>No bookings found</h3>
             <p>
-              {statusFilter !== "all" 
+              {statusFilter !== 'all'
                 ? `No ${statusFilter} bookings match your criteria.`
-                : "You haven't made any wedding bookings yet."
-              }
+                : "You haven't made any wedding bookings yet."}
             </p>
             <ActionButton primary onClick={() => navigate('/weddings')}>
               <FaRing />

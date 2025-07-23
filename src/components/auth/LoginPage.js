@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
-import { theme, media } from "../../styles/GlobalStyle";
-import { Button } from "../shared/Button";
-import { Input } from "../shared/Input";
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
+import { theme, media } from '../../styles/GlobalStyle';
+import { Button } from '../shared/Button';
+import { Input } from '../shared/Input';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -248,7 +248,7 @@ const Divider = styled.div`
   position: relative;
 
   &::before {
-    content: "";
+    content: '';
     position: absolute;
     top: 50%;
     left: 0;
@@ -317,21 +317,21 @@ const BackToHome = styled(Link)`
 const LoginPage = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    email: "",
-    password: "",
+    email: '',
+    password: '',
   });
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleInputChange = (e) => {
+  const handleInputChange = e => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
+    setFormData(prev => ({
       ...prev,
       [name]: value,
     }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
     setIsLoading(true);
 
@@ -339,7 +339,7 @@ const LoginPage = () => {
     setTimeout(() => {
       setIsLoading(false);
       // Navigate to dashboard or home page
-      navigate("/");
+      navigate('/');
     }, 1500);
   };
 
@@ -385,7 +385,7 @@ const LoginPage = () => {
                 <FaLock />
               </InputIcon>
               <StyledInput
-                type={showPassword ? "text" : "password"}
+                type={showPassword ? 'text' : 'password'}
                 id="password"
                 name="password"
                 placeholder="Enter your password"
@@ -403,7 +403,7 @@ const LoginPage = () => {
           </FormGroup>
 
           <LoginButton type="submit" disabled={isLoading}>
-            {isLoading ? "Signing In..." : "Sign In"}
+            {isLoading ? 'Signing In...' : 'Sign In'}
           </LoginButton>
         </Form>
 

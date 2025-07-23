@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import { FaHeart, FaHome, FaTrash } from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import VehicleCard from "../components/VehicleCard";
-import BackToTop from "../../ecommerce/components/BackToTop";
-import { getVehicleById } from "../data/vehicles";
-import { getVendorByIdOrSlug } from "../data/vendors";
+import React, { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import { FaHeart, FaHome, FaTrash } from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
+import VehicleCard from '../components/VehicleCard';
+import BackToTop from '../../ecommerce/components/BackToTop';
+import { getVehicleById } from '../data/vehicles';
+import { getVendorByIdOrSlug } from '../data/vendors';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -107,7 +107,7 @@ const ClearAllButton = styled.button`
   gap: ${theme.spacing.sm};
 
   &:hover {
-    background: ${theme.colors.errorDark || "#dc2626"};
+    background: ${theme.colors.errorDark || '#dc2626'};
     transform: translateY(-1px);
   }
 
@@ -191,8 +191,8 @@ const Wishlist = () => {
     const path = location.pathname;
     let dealer = null;
 
-    if (path !== "/automobiles/wishlist") {
-      const pathSegments = path.split("/").filter(Boolean);
+    if (path !== '/automobiles/wishlist') {
+      const pathSegments = path.split('/').filter(Boolean);
       const dealerSlug = pathSegments[0];
       dealer = getVendorByIdOrSlug(dealerSlug);
     }
@@ -201,7 +201,7 @@ const Wishlist = () => {
       setSelectedDealer(dealer);
     } else {
       // If no dealer found, redirect to dealer listing
-      navigate("/auto-dealers");
+      navigate('/auto-dealers');
       return;
     }
 
@@ -210,19 +210,25 @@ const Wishlist = () => {
   }, [location.pathname, navigate]);
 
   const loadWishlist = () => {
-    const wishlist = JSON.parse(localStorage.getItem("vehicleWishlist") || "[]");
+    const wishlist = JSON.parse(
+      localStorage.getItem('vehicleWishlist') || '[]'
+    );
     const vehicles = wishlist.map(id => getVehicleById(id)).filter(Boolean);
     setWishlistedVehicles(vehicles);
   };
 
   const handleClearAll = () => {
-    if (window.confirm("Are you sure you want to remove all vehicles from your wishlist?")) {
-      localStorage.setItem("vehicleWishlist", JSON.stringify([]));
+    if (
+      window.confirm(
+        'Are you sure you want to remove all vehicles from your wishlist?'
+      )
+    ) {
+      localStorage.setItem('vehicleWishlist', JSON.stringify([]));
       setWishlistedVehicles([]);
     }
   };
 
-  const handleVehicleRemoved = (vehicleId) => {
+  const handleVehicleRemoved = vehicleId => {
     // This will be called when a vehicle is removed from wishlist via VehicleCard
     loadWishlist();
   };
@@ -231,7 +237,7 @@ const Wishlist = () => {
     if (selectedDealer) {
       navigate(`/${selectedDealer.slug}`);
     } else {
-      navigate("/auto-dealers");
+      navigate('/auto-dealers');
     }
   };
 
@@ -270,7 +276,8 @@ const Wishlist = () => {
           <>
             <WishlistActions>
               <WishlistCount>
-                {wishlistedVehicles.length} Vehicle{wishlistedVehicles.length !== 1 ? "s" : ""} in Wishlist
+                {wishlistedVehicles.length} Vehicle
+                {wishlistedVehicles.length !== 1 ? 's' : ''} in Wishlist
               </WishlistCount>
               <ClearAllButton onClick={handleClearAll}>
                 <FaTrash />
@@ -279,7 +286,7 @@ const Wishlist = () => {
             </WishlistActions>
 
             <VehiclesGrid>
-              {wishlistedVehicles.map((vehicle) => (
+              {wishlistedVehicles.map(vehicle => (
                 <VehicleCard
                   key={vehicle.id}
                   vehicle={vehicle}
@@ -295,17 +302,23 @@ const Wishlist = () => {
             <FaHeart className="icon" />
             <h3>Your Wishlist is Empty</h3>
             <p>
-              Start browsing our vehicle inventory to add your favorite cars to your wishlist. 
-              We'll keep them saved here for you!
+              Start browsing our vehicle inventory to add your favorite cars to
+              your wishlist. We'll keep them saved here for you!
             </p>
-            <BrowseButton onClick={() => navigate(`/${selectedDealer.slug}/vehicles`)}>
+            <BrowseButton
+              onClick={() => navigate(`/${selectedDealer.slug}/vehicles`)}
+            >
               Browse Vehicles
             </BrowseButton>
           </EmptyState>
         )}
       </Container>
 
-      <Footer dealerSlug={selectedDealer.slug} dealer={selectedDealer} theme={dealerTheme} />
+      <Footer
+        dealerSlug={selectedDealer.slug}
+        dealer={selectedDealer}
+        theme={dealerTheme}
+      />
       <BackToTop />
     </PageContainer>
   );

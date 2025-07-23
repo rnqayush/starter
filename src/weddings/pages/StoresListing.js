@@ -1,23 +1,23 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import React, { useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 import {
   FaMapMarkerAlt,
   FaSearch,
   FaLocationArrow,
   FaHome,
   FaRing,
-} from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
-import StoreCard from "../../components/shared/StoreCard";
-import { weddingVendors } from "../data/vendors";
+} from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
+import StoreCard from '../../components/shared/StoreCard';
+import { weddingVendors } from '../data/vendors';
 import {
   getCurrentLocation,
   getLocationFromZip,
   searchLocationByCity,
   updateVendorsWithDistance,
   getDefaultLocation,
-} from "../../utils/location";
+} from '../../utils/location';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -243,14 +243,13 @@ const FilterGroup = styled.div`
 `;
 
 const FilterButton = styled.button.withConfig({
-  shouldForwardProp: (prop) => prop !== "active",
+  shouldForwardProp: prop => prop !== 'active',
 })`
-  background: ${(props) =>
+  background: ${props =>
     props.active ? theme.colors.primary : theme.colors.white};
-  color: ${(props) =>
-    props.active ? theme.colors.white : theme.colors.gray700};
+  color: ${props => (props.active ? theme.colors.white : theme.colors.gray700)};
   border: 2px solid
-    ${(props) => (props.active ? theme.colors.primary : theme.colors.gray200)};
+    ${props => (props.active ? theme.colors.primary : theme.colors.gray200)};
   padding: ${theme.spacing.sm} ${theme.spacing.md};
   border-radius: ${theme.borderRadius.md};
   font-weight: 500;
@@ -343,16 +342,16 @@ const WeddingStoresListing = () => {
   const [stores, setStores] = useState([]);
   const [filteredStores, setFilteredStores] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
   const [currentLocation, setCurrentLocation] = useState(null);
-  const [activeFilter, setActiveFilter] = useState("all");
-  const [sortBy, setSortBy] = useState("distance");
+  const [activeFilter, setActiveFilter] = useState('all');
+  const [sortBy, setSortBy] = useState('distance');
   const [locationLoading, setLocationLoading] = useState(false);
 
-  const loadStoresForLocation = useCallback((location) => {
+  const loadStoresForLocation = useCallback(location => {
     const vendorsWithDistance = updateVendorsWithDistance(
       weddingVendors,
-      location,
+      location
     );
     setStores(vendorsWithDistance);
     setFilteredStores(vendorsWithDistance);
@@ -366,14 +365,14 @@ const WeddingStoresListing = () => {
       setCurrentLocation(location);
       loadStoresForLocation(location);
     } catch (error) {
-      console.error("Failed to get location:", error);
+      console.error('Failed to get location:', error);
       const defaultLocation = getDefaultLocation();
       setCurrentLocation(defaultLocation);
       loadStoresForLocation(defaultLocation);
     }
   }, [loadStoresForLocation]);
 
-  const handleLocationSearch = async (e) => {
+  const handleLocationSearch = async e => {
     e.preventDefault();
     if (!searchTerm.trim()) return;
 
@@ -389,9 +388,9 @@ const WeddingStoresListing = () => {
 
       setCurrentLocation(newLocation);
       loadStoresForLocation(newLocation);
-      setSearchTerm("");
+      setSearchTerm('');
     } catch (error) {
-      alert("Location not found. Please try a different city or ZIP code.");
+      alert('Location not found. Please try a different city or ZIP code.');
     } finally {
       setLocationLoading(false);
     }
@@ -405,7 +404,7 @@ const WeddingStoresListing = () => {
       loadStoresForLocation(location);
     } catch (error) {
       alert(
-        "Unable to get your current location. Please check your browser settings.",
+        'Unable to get your current location. Please check your browser settings.'
       );
     } finally {
       setLocationLoading(false);
@@ -415,18 +414,18 @@ const WeddingStoresListing = () => {
   const applyFilters = useCallback(() => {
     let filtered = [...stores];
 
-    if (activeFilter === "featured") {
-      filtered = filtered.filter((store) => store.featured);
+    if (activeFilter === 'featured') {
+      filtered = filtered.filter(store => store.featured);
     }
 
     switch (sortBy) {
-      case "distance":
+      case 'distance':
         filtered.sort((a, b) => a.distance - b.distance);
         break;
-      case "rating":
+      case 'rating':
         filtered.sort((a, b) => b.rating - a.rating);
         break;
-      case "name":
+      case 'name':
         filtered.sort((a, b) => a.name.localeCompare(b.name));
         break;
       default:
@@ -452,7 +451,7 @@ const WeddingStoresListing = () => {
             <Logo>
               <FaRing /> Wedding Vendors
             </Logo>
-            <BackButton onClick={() => navigate("/")}>
+            <BackButton onClick={() => navigate('/')}>
               <FaHome />
               Back to Home
             </BackButton>
@@ -474,7 +473,7 @@ const WeddingStoresListing = () => {
           <Logo>
             <FaRing /> Wedding Vendors
           </Logo>
-          <BackButton onClick={() => navigate("/")}>
+          <BackButton onClick={() => navigate('/')}>
             <FaHome />
             Back to Home
           </BackButton>
@@ -492,7 +491,7 @@ const WeddingStoresListing = () => {
               <FaMapMarkerAlt />
               <span>
                 {currentLocation.city}, {currentLocation.state}
-                {currentLocation.isDefault && " (Default Location)"}
+                {currentLocation.isDefault && ' (Default Location)'}
               </span>
             </LocationDisplay>
           )}
@@ -508,7 +507,7 @@ const WeddingStoresListing = () => {
                 type="text"
                 placeholder="Enter city name or ZIP code..."
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={e => setSearchTerm(e.target.value)}
               />
             </SearchInputContainer>
 
@@ -522,7 +521,7 @@ const WeddingStoresListing = () => {
             </LocationButton>
 
             <SearchButton type="submit" disabled={locationLoading}>
-              {locationLoading ? "Searching..." : "Search"}
+              {locationLoading ? 'Searching...' : 'Search'}
             </SearchButton>
           </SearchForm>
         </SearchSection>
@@ -530,14 +529,14 @@ const WeddingStoresListing = () => {
         <FiltersSection>
           <FilterGroup>
             <FilterButton
-              active={activeFilter === "all"}
-              onClick={() => setActiveFilter("all")}
+              active={activeFilter === 'all'}
+              onClick={() => setActiveFilter('all')}
             >
               All Vendors
             </FilterButton>
             <FilterButton
-              active={activeFilter === "featured"}
-              onClick={() => setActiveFilter("featured")}
+              active={activeFilter === 'featured'}
+              onClick={() => setActiveFilter('featured')}
             >
               Featured
             </FilterButton>
@@ -546,7 +545,7 @@ const WeddingStoresListing = () => {
           <FilterGroup>
             <SortSelect
               value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
+              onChange={e => setSortBy(e.target.value)}
             >
               <option value="distance">Sort by Distance</option>
               <option value="rating">Sort by Rating</option>
@@ -558,13 +557,13 @@ const WeddingStoresListing = () => {
         <ResultsInfo>
           <span>
             {filteredStores.length} vendor
-            {filteredStores.length !== 1 ? "s" : ""} found
+            {filteredStores.length !== 1 ? 's' : ''} found
           </span>
         </ResultsInfo>
 
         {filteredStores.length > 0 ? (
           <StoresGrid>
-            {filteredStores.map((store) => (
+            {filteredStores.map(store => (
               <StoreCard key={store.id} store={store} category="weddings" />
             ))}
           </StoresGrid>

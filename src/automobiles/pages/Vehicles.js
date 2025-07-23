@@ -1,18 +1,14 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
-import styled from "styled-components";
-import { FaFilter, FaSort, FaTh, FaList, FaHome } from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import VehicleCard from "../components/VehicleCard";
-import BackToTop from "../../ecommerce/components/BackToTop";
-import {
-  vehicles,
-  categories,
-  getVehiclesByCategory,
-} from "../data/vehicles";
-import { getVendorByIdOrSlug } from "../data/vendors";
+import React, { useState, useEffect, useCallback } from 'react';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import styled from 'styled-components';
+import { FaFilter, FaSort, FaTh, FaList, FaHome } from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
+import VehicleCard from '../components/VehicleCard';
+import BackToTop from '../../ecommerce/components/BackToTop';
+import { vehicles, categories, getVehiclesByCategory } from '../data/vehicles';
+import { getVendorByIdOrSlug } from '../data/vendors';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -108,16 +104,17 @@ const ViewToggle = styled.div`
 `;
 
 const ViewButton = styled.button.withConfig({
-  shouldForwardProp: (prop) => prop !== "active",
+  shouldForwardProp: prop => prop !== 'active',
 })`
-  background: ${(props) => (props.active ? theme.colors.white : "transparent")};
+  background: ${props => (props.active ? theme.colors.white : 'transparent')};
   border: none;
   padding: ${theme.spacing.sm} ${theme.spacing.md};
   border-radius: ${theme.borderRadius.sm};
   cursor: pointer;
   transition: all 0.2s ease;
-  color: ${(props) => (props.active ? theme.colors.primary : theme.colors.gray600)};
-  box-shadow: ${(props) => (props.active ? theme.shadows.sm : "none")};
+  color: ${props =>
+    props.active ? theme.colors.primary : theme.colors.gray600};
+  box-shadow: ${props => (props.active ? theme.shadows.sm : 'none')};
 `;
 
 const FilterGrid = styled.div`
@@ -202,13 +199,13 @@ const SortContainer = styled.div`
 `;
 
 const VehiclesGrid = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "viewMode",
+  shouldForwardProp: prop => prop !== 'viewMode',
 })`
   display: grid;
-  grid-template-columns: ${(props) =>
-    props.viewMode === "list"
-      ? "1fr"
-      : "repeat(auto-fill, minmax(350px, 1fr))"};
+  grid-template-columns: ${props =>
+    props.viewMode === 'list'
+      ? '1fr'
+      : 'repeat(auto-fill, minmax(350px, 1fr))'};
   gap: ${theme.spacing.xl};
 
   @media (max-width: ${theme.breakpoints.tablet}) {
@@ -262,16 +259,14 @@ const Vehicles = () => {
   const [selectedDealer, setSelectedDealer] = useState(null);
   const [filteredVehicles, setFilteredVehicles] = useState(vehicles);
   const [filters, setFilters] = useState({
-    category: searchParams.get("category") || "",
-    make: searchParams.get("make") || "",
-    condition: searchParams.get("condition") || "",
-    minPrice: searchParams.get("minPrice") || "",
-    maxPrice: searchParams.get("maxPrice") || "",
-    sortBy: searchParams.get("sort") || "name",
+    category: searchParams.get('category') || '',
+    make: searchParams.get('make') || '',
+    condition: searchParams.get('condition') || '',
+    minPrice: searchParams.get('minPrice') || '',
+    maxPrice: searchParams.get('maxPrice') || '',
+    sortBy: searchParams.get('sort') || 'name',
   });
-  const [viewMode, setViewMode] = useState("grid");
-
-
+  const [viewMode, setViewMode] = useState('grid');
 
   const makes = [...new Set(vehicles.map(v => v.make))].sort();
   const conditions = [...new Set(vehicles.map(v => v.condition))].sort();
@@ -281,8 +276,8 @@ const Vehicles = () => {
     const path = location.pathname;
     let dealer = null;
 
-    if (path !== "/automobiles/vehicles") {
-      const pathSegments = path.split("/").filter(Boolean);
+    if (path !== '/automobiles/vehicles') {
+      const pathSegments = path.split('/').filter(Boolean);
       const dealerSlug = pathSegments[0];
       dealer = getVendorByIdOrSlug(dealerSlug);
     }
@@ -291,7 +286,7 @@ const Vehicles = () => {
       setSelectedDealer(dealer);
     } else {
       // If no dealer found, redirect to dealer listing
-      navigate("/auto-dealers");
+      navigate('/auto-dealers');
       return;
     }
   }, [location.pathname, navigate]);
@@ -324,19 +319,19 @@ const Vehicles = () => {
 
     // Sort
     switch (filters.sortBy) {
-      case "price-low":
+      case 'price-low':
         filtered.sort((a, b) => a.price - b.price);
         break;
-      case "price-high":
+      case 'price-high':
         filtered.sort((a, b) => b.price - a.price);
         break;
-      case "year-new":
+      case 'year-new':
         filtered.sort((a, b) => b.year - a.year);
         break;
-      case "year-old":
+      case 'year-old':
         filtered.sort((a, b) => a.year - b.year);
         break;
-      case "name":
+      case 'name':
       default:
         filtered.sort((a, b) => a.name.localeCompare(b.name));
         break;
@@ -363,12 +358,12 @@ const Vehicles = () => {
 
   const clearFilters = () => {
     const clearedFilters = {
-      category: "",
-      make: "",
-      condition: "",
-      minPrice: "",
-      maxPrice: "",
-      sortBy: "name",
+      category: '',
+      make: '',
+      condition: '',
+      minPrice: '',
+      maxPrice: '',
+      sortBy: 'name',
     };
     setFilters(clearedFilters);
     setSearchParams({});
@@ -378,7 +373,7 @@ const Vehicles = () => {
     if (selectedDealer) {
       navigate(`/${selectedDealer.slug}`);
     } else {
-      navigate("/auto-dealers");
+      navigate('/auto-dealers');
     }
   };
 
@@ -417,16 +412,16 @@ const Vehicles = () => {
               Filter & Search
             </FilterTitle>
             <ViewToggle>
-                            <ViewButton
-                active={viewMode === "grid"}
-                onClick={() => setViewMode("grid")}
+              <ViewButton
+                active={viewMode === 'grid'}
+                onClick={() => setViewMode('grid')}
               >
                 <FaTh />
                 Grid
               </ViewButton>
               <ViewButton
-                active={viewMode === "list"}
-                onClick={() => setViewMode("list")}
+                active={viewMode === 'list'}
+                onClick={() => setViewMode('list')}
               >
                 <FaList />
                 List
@@ -439,10 +434,10 @@ const Vehicles = () => {
               <FilterLabel>Category</FilterLabel>
               <Select
                 value={filters.category}
-                onChange={(e) => handleFilterChange("category", e.target.value)}
+                onChange={e => handleFilterChange('category', e.target.value)}
               >
                 <option value="">All Categories</option>
-                {categories.map((cat) => (
+                {categories.map(cat => (
                   <option key={cat.id} value={cat.slug}>
                     {cat.name}
                   </option>
@@ -454,10 +449,10 @@ const Vehicles = () => {
               <FilterLabel>Make</FilterLabel>
               <Select
                 value={filters.make}
-                onChange={(e) => handleFilterChange("make", e.target.value)}
+                onChange={e => handleFilterChange('make', e.target.value)}
               >
                 <option value="">All Makes</option>
-                {makes.map((make) => (
+                {makes.map(make => (
                   <option key={make} value={make}>
                     {make}
                   </option>
@@ -469,10 +464,10 @@ const Vehicles = () => {
               <FilterLabel>Condition</FilterLabel>
               <Select
                 value={filters.condition}
-                onChange={(e) => handleFilterChange("condition", e.target.value)}
+                onChange={e => handleFilterChange('condition', e.target.value)}
               >
                 <option value="">All Conditions</option>
-                {conditions.map((condition) => (
+                {conditions.map(condition => (
                   <option key={condition} value={condition}>
                     {condition.charAt(0).toUpperCase() + condition.slice(1)}
                   </option>
@@ -487,21 +482,21 @@ const Vehicles = () => {
                   type="number"
                   placeholder="Min"
                   value={filters.minPrice}
-                  onChange={(e) => handleFilterChange("minPrice", e.target.value)}
+                  onChange={e => handleFilterChange('minPrice', e.target.value)}
                 />
                 <span>-</span>
                 <PriceInput
                   type="number"
                   placeholder="Max"
                   value={filters.maxPrice}
-                  onChange={(e) => handleFilterChange("maxPrice", e.target.value)}
+                  onChange={e => handleFilterChange('maxPrice', e.target.value)}
                 />
               </PriceRangeContainer>
             </FilterGroup>
           </FilterGrid>
 
-          {Object.values(filters).some(v => v && v !== "name") && (
-            <div style={{ marginTop: theme.spacing.lg, textAlign: "center" }}>
+          {Object.values(filters).some(v => v && v !== 'name') && (
+            <div style={{ marginTop: theme.spacing.lg, textAlign: 'center' }}>
               <ClearFiltersButton onClick={clearFilters}>
                 Clear All Filters
               </ClearFiltersButton>
@@ -511,13 +506,14 @@ const Vehicles = () => {
 
         <ResultsHeader>
           <ResultsCount>
-            {filteredVehicles.length} Vehicle{filteredVehicles.length !== 1 ? "s" : ""} Found
+            {filteredVehicles.length} Vehicle
+            {filteredVehicles.length !== 1 ? 's' : ''} Found
           </ResultsCount>
           <SortContainer>
             <FaSort />
             <Select
               value={filters.sortBy}
-              onChange={(e) => handleFilterChange("sortBy", e.target.value)}
+              onChange={e => handleFilterChange('sortBy', e.target.value)}
             >
               <option value="name">Sort by Name</option>
               <option value="price-low">Price: Low to High</option>
@@ -530,7 +526,7 @@ const Vehicles = () => {
 
         {filteredVehicles.length > 0 ? (
           <VehiclesGrid viewMode={viewMode}>
-            {filteredVehicles.map((vehicle) => (
+            {filteredVehicles.map(vehicle => (
               <VehicleCard
                 key={vehicle.id}
                 vehicle={vehicle}
@@ -542,7 +538,8 @@ const Vehicles = () => {
           <EmptyState>
             <h3>No vehicles found</h3>
             <p>
-              Try adjusting your filters or search criteria to find more vehicles.
+              Try adjusting your filters or search criteria to find more
+              vehicles.
             </p>
             <ClearFiltersButton onClick={clearFilters}>
               Clear All Filters
@@ -551,7 +548,11 @@ const Vehicles = () => {
         )}
       </Container>
 
-      <Footer dealerSlug={selectedDealer.slug} dealer={selectedDealer} theme={dealerTheme} />
+      <Footer
+        dealerSlug={selectedDealer.slug}
+        dealer={selectedDealer}
+        theme={dealerTheme}
+      />
       <BackToTop />
     </PageContainer>
   );

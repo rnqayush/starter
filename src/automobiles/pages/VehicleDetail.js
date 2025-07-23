@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
-import styled from "styled-components";
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate, Link } from 'react-router-dom';
+import styled from 'styled-components';
 import {
   FaArrowLeft,
   FaHeart,
@@ -14,21 +14,21 @@ import {
   FaCog,
   FaCheckCircle,
   FaStar,
-} from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import VehicleCard from "../components/VehicleCard";
-import EnquiryModal from "../components/EnquiryModal";
-import BackToTop from "../../ecommerce/components/BackToTop";
+} from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
+import VehicleCard from '../components/VehicleCard';
+import EnquiryModal from '../components/EnquiryModal';
+import BackToTop from '../../ecommerce/components/BackToTop';
 import {
   getVehicleById,
   getFeaturedVehicles,
   getAvailabilityStatus,
   getAvailabilityLabel,
   getAvailabilityColor,
-} from "../data/vehicles";
-import { getVendorByIdOrSlug } from "../data/vendors";
+} from '../data/vehicles';
+import { getVendorByIdOrSlug } from '../data/vendors';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -120,7 +120,7 @@ const ImageThumbnails = styled.div`
 `;
 
 const Thumbnail = styled.img.withConfig({
-  shouldForwardProp: (prop) => prop !== "active",
+  shouldForwardProp: prop => prop !== 'active',
 })`
   width: 100%;
   height: 80px;
@@ -128,7 +128,8 @@ const Thumbnail = styled.img.withConfig({
   border-radius: ${theme.borderRadius.md};
   cursor: pointer;
   transition: all 0.2s ease;
-  border: 3px solid ${(props) => props.active ? theme.colors.primary : "transparent"};
+  border: 3px solid
+    ${props => (props.active ? theme.colors.primary : 'transparent')};
 
   &:hover {
     transform: translateY(-2px);
@@ -195,18 +196,18 @@ const Savings = styled.div`
 `;
 
 const AvailabilityStatus = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "color",
+  shouldForwardProp: prop => prop !== 'color',
 })`
   display: flex;
   align-items: center;
   gap: ${theme.spacing.sm};
   margin-bottom: ${theme.spacing.lg};
   padding: ${theme.spacing.md};
-  background: ${(props) => props.color}20;
-  border: 2px solid ${(props) => props.color};
+  background: ${props => props.color}20;
+  border: 2px solid ${props => props.color};
   border-radius: ${theme.borderRadius.md};
   font-weight: 600;
-  color: ${(props) => props.color};
+  color: ${props => props.color};
 `;
 
 const ActionButtons = styled.div`
@@ -217,7 +218,11 @@ const ActionButtons = styled.div`
 `;
 
 const PrimaryButton = styled.button`
-  background: linear-gradient(135deg, ${theme.colors.primary} 0%, ${theme.colors.primaryDark} 100%);
+  background: linear-gradient(
+    135deg,
+    ${theme.colors.primary} 0%,
+    ${theme.colors.primaryDark} 100%
+  );
   color: ${theme.colors.white};
   padding: ${theme.spacing.lg};
   border: none;
@@ -407,7 +412,7 @@ const RelatedGrid = styled.div`
 `;
 
 const VehicleDetail = () => {
-  const { id } = useParams();
+  const { vehicleId } = useParams();
   const navigate = useNavigate();
   const [vehicle, setVehicle] = useState(null);
   const [selectedDealer, setSelectedDealer] = useState(null);
@@ -418,38 +423,42 @@ const VehicleDetail = () => {
 
   useEffect(() => {
     // Get vehicle data
-    const vehicleData = getVehicleById(parseInt(id));
+    const vehicleData = getVehicleById(parseInt(vehicleId));
     if (!vehicleData) {
-      navigate("/auto-dealers");
+      navigate('/auto-dealers');
       return;
     }
     setVehicle(vehicleData);
 
     // Get dealer data from URL
-    const pathSegments = window.location.pathname.split("/").filter(Boolean);
+    const pathSegments = window.location.pathname.split('/').filter(Boolean);
     const dealerSlug = pathSegments[0];
     const dealer = getVendorByIdOrSlug(dealerSlug);
-    
+
     if (dealer) {
       setSelectedDealer(dealer);
     } else {
-      navigate("/auto-dealers");
+      navigate('/auto-dealers');
       return;
     }
 
     // Get related vehicles (same category)
-    const featured = getFeaturedVehicles().filter(v => v.id !== vehicleData.id);
+    const featured = getFeaturedVehicles().filter(
+      v => v.vehicleId !== vehicleData.vehicleId
+    );
     setRelatedVehicles(featured.slice(0, 3));
 
     // Check wishlist status
-    const wishlist = JSON.parse(localStorage.getItem("vehicleWishlist") || "[]");
-    setIsWishlisted(wishlist.includes(vehicleData.id));
-  }, [id, navigate]);
+    const wishlist = JSON.parse(
+      localStorage.getItem('vehicleWishlist') || '[]'
+    );
+    setIsWishlisted(wishlist.includes(vehicleData.vehicleId));
+  }, [vehicleId, navigate]);
 
-  const formatPrice = (price) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
+  const formatPrice = price => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(price);
@@ -460,16 +469,20 @@ const VehicleDetail = () => {
   };
 
   const handleWishlistToggle = () => {
-    const wishlist = JSON.parse(localStorage.getItem("vehicleWishlist") || "[]");
+    const wishlist = JSON.parse(
+      localStorage.getItem('vehicleWishlist') || '[]'
+    );
     let newWishlist;
-    
+
     if (isWishlisted) {
-      newWishlist = wishlist.filter(id => id !== vehicle.id);
+      newWishlist = wishlist.filter(
+        vehicleId => vehicleId !== vehicle.vehicleId
+      );
     } else {
-      newWishlist = [...wishlist, vehicle.id];
+      newWishlist = [...wishlist, vehicle.vehicleId];
     }
-    
-    localStorage.setItem("vehicleWishlist", JSON.stringify(newWishlist));
+
+    localStorage.setItem('vehicleWishlist', JSON.stringify(newWishlist));
     setIsWishlisted(!isWishlisted);
   };
 
@@ -482,7 +495,7 @@ const VehicleDetail = () => {
       });
     } else {
       navigator.clipboard.writeText(window.location.href);
-      alert("Link copied to clipboard!");
+      alert('Link copied to clipboard!');
     }
   };
 
@@ -510,18 +523,24 @@ const VehicleDetail = () => {
           <span className="separator">›</span>
           <Link to={`/${selectedDealer.slug}/vehicles`}>Vehicles</Link>
           <span className="separator">›</span>
-          <span className="current">{vehicle.year} {vehicle.make} {vehicle.model}</span>
+          <span className="current">
+            {vehicle.year} {vehicle.make} {vehicle.model}
+          </span>
         </Breadcrumb>
 
         <VehicleDetailContainer>
           <VehicleImages>
             <MainImage>
               <MainImageContainer
-                src={vehicle.images ? vehicle.images[currentImageIndex] : vehicle.image}
+                src={
+                  vehicle.images
+                    ? vehicle.images[currentImageIndex]
+                    : vehicle.image
+                }
                 alt={vehicle.name}
               />
             </MainImage>
-            
+
             {vehicle.images && vehicle.images.length > 1 && (
               <ImageThumbnails>
                 {vehicle.images.map((img, index) => (
@@ -539,24 +558,38 @@ const VehicleDetail = () => {
 
           <VehicleInfo>
             <VehicleHeader>
-              <VehicleTitle>{vehicle.year} {vehicle.make} {vehicle.model}</VehicleTitle>
-              <VehicleSubtitle>{vehicle.trim} • {vehicle.condition === "new" ? "New" : "Used"}</VehicleSubtitle>
+              <VehicleTitle>
+                {vehicle.year} {vehicle.make} {vehicle.model}
+              </VehicleTitle>
+              <VehicleSubtitle>
+                {vehicle.trim} • {vehicle.condition === 'new' ? 'New' : 'Used'}
+              </VehicleSubtitle>
             </VehicleHeader>
 
             <PriceContainer>
               <CurrentPrice>{formatPrice(vehicle.price)}</CurrentPrice>
-              {vehicle.originalPrice && vehicle.originalPrice > vehicle.price && (
-                <>
-                  <OriginalPrice>{formatPrice(vehicle.originalPrice)}</OriginalPrice>
-                  <Savings>Save {formatPrice(calculateSavings(vehicle.originalPrice, vehicle.price))}</Savings>
-                </>
-              )}
+              {vehicle.originalPrice &&
+                vehicle.originalPrice > vehicle.price && (
+                  <>
+                    <OriginalPrice>
+                      {formatPrice(vehicle.originalPrice)}
+                    </OriginalPrice>
+                    <Savings>
+                      Save{' '}
+                      {formatPrice(
+                        calculateSavings(vehicle.originalPrice, vehicle.price)
+                      )}
+                    </Savings>
+                  </>
+                )}
             </PriceContainer>
 
             <AvailabilityStatus color={availabilityColor}>
               <FaCheckCircle />
               {availabilityLabel}
-              {availabilityStatus === "in_stock" && vehicle.stock > 0 && ` (${vehicle.stock} available)`}
+              {availabilityStatus === 'in_stock' &&
+                vehicle.stock > 0 &&
+                ` (${vehicle.stock} available)`}
             </AvailabilityStatus>
 
             <SpecsGrid>
@@ -571,21 +604,31 @@ const VehicleDetail = () => {
                 <FaRoad className="icon" />
                 <div>
                   <div className="label">Mileage</div>
-                  <div className="value">{vehicle.mileage === 0 ? "New" : `${vehicle.mileage.toLocaleString()} mi`}</div>
+                  <div className="value">
+                    {vehicle.mileage === 0
+                      ? 'New'
+                      : `${vehicle.mileage.toLocaleString()} mi`}
+                  </div>
                 </div>
               </SpecItem>
               <SpecItem>
                 <FaCar className="icon" />
                 <div>
                   <div className="label">Engine</div>
-                  <div className="value">{vehicle.specifications?.engine || "N/A"}</div>
+                  <div className="value">
+                    {vehicle.specifications?.engine || 'N/A'}
+                  </div>
                 </div>
               </SpecItem>
               <SpecItem>
                 <FaGasPump className="icon" />
                 <div>
                   <div className="label">Fuel Economy</div>
-                  <div className="value">{vehicle.specifications?.fuelEconomy || vehicle.specifications?.range || "N/A"}</div>
+                  <div className="value">
+                    {vehicle.specifications?.fuelEconomy ||
+                      vehicle.specifications?.range ||
+                      'N/A'}
+                  </div>
                 </div>
               </SpecItem>
             </SpecsGrid>
@@ -593,25 +636,37 @@ const VehicleDetail = () => {
             <ActionButtons>
               <PrimaryButton
                 onClick={() => setIsEnquiryModalOpen(true)}
-                disabled={availabilityStatus === "out_of_stock"}
+                disabled={availabilityStatus === 'out_of_stock'}
               >
                 <FaEnvelope />
-                {availabilityStatus === "out_of_stock" ? "Not Available" : "Get Quote"}
+                {availabilityStatus === 'out_of_stock'
+                  ? 'Not Available'
+                  : 'Get Quote'}
               </PrimaryButton>
-              
+
               <SecondaryButton>
                 <FaPhone />
                 Call Dealer
               </SecondaryButton>
 
               <IconButtonsRow>
-                <IconButton onClick={handleWishlistToggle} title="Add to Wishlist">
-                  <FaHeart style={{ color: isWishlisted ? theme.colors.error : "currentColor" }} />
+                <IconButton
+                  onClick={handleWishlistToggle}
+                  title="Add to Wishlist"
+                >
+                  <FaHeart
+                    style={{
+                      color: isWishlisted ? theme.colors.error : 'currentColor',
+                    }}
+                  />
                 </IconButton>
                 <IconButton onClick={handleShare} title="Share">
                   <FaShare />
                 </IconButton>
-                <IconButton onClick={() => navigate(`/${selectedDealer.slug}/vehicles`)} title="Back to Vehicles">
+                <IconButton
+                  onClick={() => navigate(`/${selectedDealer.slug}/vehicles`)}
+                  title="Back to Vehicles"
+                >
                   <FaArrowLeft />
                 </IconButton>
               </IconButtonsRow>
@@ -654,7 +709,10 @@ const VehicleDetail = () => {
               <SpecificationsTable>
                 {Object.entries(vehicle.specifications).map(([key, value]) => (
                   <SpecRow key={key}>
-                    <SpecLabel>{key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1')}</SpecLabel>
+                    <SpecLabel>
+                      {key.charAt(0).toUpperCase() +
+                        key.slice(1).replace(/([A-Z])/g, ' $1')}
+                    </SpecLabel>
                     <SpecValue>{value}</SpecValue>
                   </SpecRow>
                 ))}
@@ -670,9 +728,9 @@ const VehicleDetail = () => {
               You Might Also Like
             </SectionTitle>
             <RelatedGrid>
-              {relatedVehicles.map((relatedVehicle) => (
+              {relatedVehicles.map(relatedVehicle => (
                 <VehicleCard
-                  key={relatedVehicle.id}
+                  key={relatedVehicle.vehicleId}
                   vehicle={relatedVehicle}
                   dealerSlug={selectedDealer.slug}
                 />
@@ -682,7 +740,11 @@ const VehicleDetail = () => {
         )}
       </Container>
 
-      <Footer dealerSlug={selectedDealer.slug} dealer={selectedDealer} theme={dealerTheme} />
+      <Footer
+        dealerSlug={selectedDealer.slug}
+        dealer={selectedDealer}
+        theme={dealerTheme}
+      />
       <BackToTop />
 
       <EnquiryModal

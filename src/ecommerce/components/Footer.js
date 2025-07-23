@@ -1,6 +1,6 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import styled from "styled-components";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 import {
   FaFacebook,
   FaTwitter,
@@ -14,8 +14,8 @@ import {
   FaShieldAlt,
   FaTruck,
   FaUndoAlt,
-} from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
+} from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
 
 const FooterContainer = styled.footer`
   background: ${theme.colors.gray900};
@@ -246,35 +246,35 @@ const PaymentIcon = styled.div`
   font-weight: 600;
 `;
 
-const Footer = ({ storeSlug = "" }) => {
-  const getBaseUrl = () => (storeSlug ? `/${storeSlug}` : "/ecommerce");
+const Footer = ({ storeSlug = '' }) => {
+  const getBaseUrl = () => (storeSlug ? `/${storeSlug}` : '/ecommerce');
 
-  const handleNewsletterSubmit = (e) => {
+  const handleNewsletterSubmit = e => {
     e.preventDefault();
     // Handle newsletter subscription
-    alert("Thank you for subscribing to our newsletter!");
+    alert('Thank you for subscribing to our newsletter!');
   };
 
   const features = [
     {
       icon: FaTruck,
-      title: "Free Shipping",
-      description: "On orders over $99",
+      title: 'Free Shipping',
+      description: 'On orders over $99',
     },
     {
       icon: FaUndoAlt,
-      title: "30-Day Returns",
-      description: "Money back guarantee",
+      title: '30-Day Returns',
+      description: 'Money back guarantee',
     },
     {
       icon: FaShieldAlt,
-      title: "Secure Payment",
-      description: "100% secure checkout",
+      title: 'Secure Payment',
+      description: '100% secure checkout',
     },
     {
       icon: FaCreditCard,
-      title: "Multiple Payment",
-      description: "All major cards accepted",
+      title: 'Multiple Payment',
+      description: 'All major cards accepted',
     },
   ];
 
@@ -391,7 +391,7 @@ const Footer = ({ storeSlug = "" }) => {
               <FaMapMarkerAlt />
               <span>123 Commerce St, Shopping City, SC 12345</span>
             </ContactInfo>
-            <p style={{ marginTop: theme.spacing.md, fontSize: "0.8rem" }}>
+            <p style={{ marginTop: theme.spacing.md, fontSize: '0.8rem' }}>
               <strong>Store Hours:</strong>
               <br />
               Mon-Fri: 9AM-9PM
@@ -410,7 +410,7 @@ const Footer = ({ storeSlug = "" }) => {
                 style={{ marginLeft: theme.spacing.sm }}
               >
                 Privacy Policy
-              </FooterLink>{" "}
+              </FooterLink>{' '}
               |
               <FooterLink to="/terms" style={{ marginLeft: theme.spacing.sm }}>
                 Terms of Service
@@ -419,7 +419,7 @@ const Footer = ({ storeSlug = "" }) => {
           </div>
 
           <PaymentMethods>
-            <span style={{ marginRight: theme.spacing.sm, fontSize: "0.8rem" }}>
+            <span style={{ marginRight: theme.spacing.sm, fontSize: '0.8rem' }}>
               We Accept:
             </span>
             <PaymentIcon>VISA</PaymentIcon>

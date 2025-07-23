@@ -1,5 +1,5 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 import {
   FaDollarSign,
   FaShoppingCart,
@@ -7,14 +7,13 @@ import {
   FaArrowUp,
   FaArrowDown,
   FaBell,
-
-} from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
+} from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
 import {
   dashboardStats,
   salesTrendData,
   recentActivity,
-} from "../data/sellerData";
+} from '../data/sellerData';
 
 const DashboardGrid = styled.div`
   display: grid;
@@ -61,7 +60,7 @@ const StatsIcon = styled.div`
   justify-content: center;
   font-size: 1.2rem;
   color: ${theme.colors.white};
-  background: ${(props) =>
+  background: ${props =>
     props.gradient ||
     `linear-gradient(135deg, ${theme.colors.primary}, ${theme.colors.secondary})`};
 `;
@@ -84,14 +83,14 @@ const StatsLabel = styled.p`
 `;
 
 const StatsChange = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "positive",
+  shouldForwardProp: prop => prop !== 'positive',
 })`
   display: flex;
   align-items: center;
   gap: ${theme.spacing.xs};
   font-size: 0.85rem;
   font-weight: 500;
-  color: ${(props) =>
+  color: ${props =>
     props.positive ? theme.colors.success : theme.colors.error};
 `;
 
@@ -220,33 +219,33 @@ const ActivityTime = styled.p`
 `;
 
 const DashboardTab = () => {
-  const formatCurrency = (value, currency = "USD") => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
+  const formatCurrency = (value, currency = 'USD') => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
       currency: currency,
     }).format(value);
   };
 
-  const formatNumber = (value) => {
-    return new Intl.NumberFormat("en-US").format(value);
+  const formatNumber = value => {
+    return new Intl.NumberFormat('en-US').format(value);
   };
 
-  const getActivityIcon = (type) => {
+  const getActivityIcon = type => {
     switch (type) {
-      case "order":
+      case 'order':
         return FaShoppingCart;
-      case "product":
+      case 'product':
         return FaBox;
-      case "payment":
+      case 'payment':
         return FaDollarSign;
-      case "review":
+      case 'review':
         return FaArrowUp;
       default:
         return FaBell;
     }
   };
 
-  const maxSales = Math.max(...salesTrendData.map((d) => d.sales));
+  const maxSales = Math.max(...salesTrendData.map(d => d.sales));
 
   return (
     <>
@@ -268,7 +267,7 @@ const DashboardTab = () => {
               ) : (
                 <FaArrowDown />
               )}
-              {Math.abs(dashboardStats.totalSales.change)}%{" "}
+              {Math.abs(dashboardStats.totalSales.change)}%{' '}
               {dashboardStats.totalSales.period}
             </StatsChange>
           </StatsContent>
@@ -291,7 +290,7 @@ const DashboardTab = () => {
               ) : (
                 <FaArrowDown />
               )}
-              {Math.abs(dashboardStats.totalOrders.change)}%{" "}
+              {Math.abs(dashboardStats.totalOrders.change)}%{' '}
               {dashboardStats.totalOrders.period}
             </StatsChange>
           </StatsContent>
@@ -314,7 +313,7 @@ const DashboardTab = () => {
               ) : (
                 <FaArrowDown />
               )}
-              {Math.abs(dashboardStats.totalProducts.change)}%{" "}
+              {Math.abs(dashboardStats.totalProducts.change)}%{' '}
               {dashboardStats.totalProducts.period}
             </StatsChange>
           </StatsContent>
@@ -337,7 +336,7 @@ const DashboardTab = () => {
               ) : (
                 <FaArrowDown />
               )}
-              {Math.abs(dashboardStats.averageOrderValue.change)}%{" "}
+              {Math.abs(dashboardStats.averageOrderValue.change)}%{' '}
               {dashboardStats.averageOrderValue.period}
             </StatsChange>
           </StatsContent>
@@ -369,7 +368,7 @@ const DashboardTab = () => {
             <ChartSubtitle>Latest updates from your store</ChartSubtitle>
           </ChartHeader>
           <ActivityList>
-            {recentActivity.map((activity) => {
+            {recentActivity.map(activity => {
               const IconComponent = getActivityIcon(activity.type);
               return (
                 <ActivityItem key={activity.id}>

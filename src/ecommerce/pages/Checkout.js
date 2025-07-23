@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 import {
   FaLock,
   FaArrowLeft,
@@ -9,10 +9,10 @@ import {
   FaApplePay,
   FaGooglePay,
   FaShieldAlt,
-} from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+} from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -90,10 +90,10 @@ const SectionTitle = styled.h2`
 `;
 
 const FormGrid = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "columns",
+  shouldForwardProp: prop => prop !== 'columns',
 })`
   display: grid;
-  grid-template-columns: ${(props) => props.columns || "1fr"};
+  grid-template-columns: ${props => props.columns || '1fr'};
   gap: ${theme.spacing.lg};
 
   @media (max-width: ${theme.breakpoints.mobile}) {
@@ -172,18 +172,18 @@ const PaymentMethods = styled.div`
 `;
 
 const PaymentMethod = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "selected",
+  shouldForwardProp: prop => prop !== 'selected',
 })`
   border: 2px solid
-    ${(props) => (props.selected ? theme.colors.primary : theme.colors.gray200)};
+    ${props => (props.selected ? theme.colors.primary : theme.colors.gray200)};
   border-radius: ${theme.borderRadius.md};
   padding: ${theme.spacing.lg};
   text-align: center;
   cursor: pointer;
   transition: all 0.2s ease;
-  background: ${(props) =>
+  background: ${props =>
     props.selected ? theme.colors.primary : theme.colors.white};
-  color: ${(props) =>
+  color: ${props =>
     props.selected ? theme.colors.white : theme.colors.gray700};
 
   &:hover {
@@ -264,16 +264,15 @@ const ItemDetails = styled.div`
 `;
 
 const SummaryRow = styled.div.withConfig({
-  shouldForwardProp: (prop) => !["large", "bold"].includes(prop),
+  shouldForwardProp: prop => !['large', 'bold'].includes(prop),
 })`
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: ${theme.spacing.md};
-  font-size: ${(props) => (props.large ? "1.1rem" : "0.9rem")};
-  font-weight: ${(props) => (props.bold ? "600" : "400")};
-  color: ${(props) =>
-    props.bold ? theme.colors.gray900 : theme.colors.gray600};
+  font-size: ${props => (props.large ? '1.1rem' : '0.9rem')};
+  font-weight: ${props => (props.bold ? '600' : '400')};
+  color: ${props => (props.bold ? theme.colors.gray900 : theme.colors.gray600)};
 
   &.total {
     font-size: 1.2rem;
@@ -341,21 +340,21 @@ const ErrorMessage = styled.div`
 
 const Checkout = () => {
   const navigate = useNavigate();
-  const [paymentMethod, setPaymentMethod] = useState("card");
+  const [paymentMethod, setPaymentMethod] = useState('card');
   const [formData, setFormData] = useState({
-    email: "",
-    firstName: "",
-    lastName: "",
-    address: "",
-    city: "",
-    state: "",
-    zipCode: "",
-    country: "US",
-    phone: "",
-    cardNumber: "",
-    expiryDate: "",
-    cvv: "",
-    cardName: "",
+    email: '',
+    firstName: '',
+    lastName: '',
+    address: '',
+    city: '',
+    state: '',
+    zipCode: '',
+    country: 'US',
+    phone: '',
+    cardNumber: '',
+    expiryDate: '',
+    cvv: '',
+    cardName: '',
     saveInfo: false,
     terms: false,
   });
@@ -366,41 +365,41 @@ const Checkout = () => {
   const orderItems = [
     {
       id: 1,
-      name: "Premium Wireless Headphones",
+      name: 'Premium Wireless Headphones',
       price: 299.99,
       quantity: 1,
       image:
-        "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80",
+        'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80',
     },
     {
       id: 4,
-      name: "Classic Denim Jacket",
+      name: 'Classic Denim Jacket',
       price: 89.99,
       quantity: 2,
-      size: "M",
+      size: 'M',
       image:
-        "https://images.unsplash.com/photo-1544022613-e87ca75a784a?w=500&q=80",
+        'https://images.unsplash.com/photo-1544022613-e87ca75a784a?w=500&q=80',
     },
   ];
 
   const subtotal = orderItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
-    0,
+    0
   );
   const shipping = subtotal >= 99 ? 0 : 9.99;
   const tax = subtotal * 0.08; // 8% tax
   const total = subtotal + shipping + tax;
 
-  const handleInputChange = (e) => {
+  const handleInputChange = e => {
     const { name, value, type, checked } = e.target;
-    setFormData((prev) => ({
+    setFormData(prev => ({
       ...prev,
-      [name]: type === "checkbox" ? checked : value,
+      [name]: type === 'checkbox' ? checked : value,
     }));
 
     // Clear error when user starts typing
     if (errors[name]) {
-      setErrors((prev) => ({ ...prev, [name]: "" }));
+      setErrors(prev => ({ ...prev, [name]: '' }));
     }
   };
 
@@ -409,60 +408,60 @@ const Checkout = () => {
 
     // Email validation
     if (!formData.email) {
-      newErrors.email = "Email is required";
+      newErrors.email = 'Email is required';
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Please enter a valid email";
+      newErrors.email = 'Please enter a valid email';
     }
 
     // Required fields
     const requiredFields = [
-      "firstName",
-      "lastName",
-      "address",
-      "city",
-      "state",
-      "zipCode",
-      "phone",
+      'firstName',
+      'lastName',
+      'address',
+      'city',
+      'state',
+      'zipCode',
+      'phone',
     ];
-    requiredFields.forEach((field) => {
+    requiredFields.forEach(field => {
       if (!formData[field]) {
-        newErrors[field] = "This field is required";
+        newErrors[field] = 'This field is required';
       }
     });
 
     // Payment validation
-    if (paymentMethod === "card") {
+    if (paymentMethod === 'card') {
       if (!formData.cardNumber) {
-        newErrors.cardNumber = "Card number is required";
-      } else if (formData.cardNumber.replace(/\s/g, "").length < 16) {
-        newErrors.cardNumber = "Please enter a valid card number";
+        newErrors.cardNumber = 'Card number is required';
+      } else if (formData.cardNumber.replace(/\s/g, '').length < 16) {
+        newErrors.cardNumber = 'Please enter a valid card number';
       }
 
       if (!formData.expiryDate) {
-        newErrors.expiryDate = "Expiry date is required";
+        newErrors.expiryDate = 'Expiry date is required';
       }
 
       if (!formData.cvv) {
-        newErrors.cvv = "CVV is required";
+        newErrors.cvv = 'CVV is required';
       } else if (formData.cvv.length < 3) {
-        newErrors.cvv = "Please enter a valid CVV";
+        newErrors.cvv = 'Please enter a valid CVV';
       }
 
       if (!formData.cardName) {
-        newErrors.cardName = "Cardholder name is required";
+        newErrors.cardName = 'Cardholder name is required';
       }
     }
 
     // Terms acceptance
     if (!formData.terms) {
-      newErrors.terms = "You must accept the terms and conditions";
+      newErrors.terms = 'You must accept the terms and conditions';
     }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
 
     if (!validateForm()) {
@@ -473,42 +472,42 @@ const Checkout = () => {
 
     // Simulate payment processing
     try {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await new Promise(resolve => setTimeout(resolve, 2000));
 
       // Navigate to order confirmation
-      navigate("/ecommerce/order-confirmation", {
+      navigate('/ecommerce/order-confirmation', {
         state: {
-          orderNumber: "ORD-" + Date.now(),
+          orderNumber: 'ORD-' + Date.now(),
           total: total,
           paymentMethod: paymentMethod,
           email: formData.email,
         },
       });
     } catch (error) {
-      alert("Payment failed. Please try again.");
+      alert('Payment failed. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
-  const formatCardNumber = (value) => {
-    const v = value.replace(/\s+/g, "").replace(/[^0-9]/gi, "");
+  const formatCardNumber = value => {
+    const v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
     const matches = v.match(/\d{4,16}/g);
-    const match = (matches && matches[0]) || "";
+    const match = (matches && matches[0]) || '';
     const parts = [];
     for (let i = 0, len = match.length; i < len; i += 4) {
       parts.push(match.substring(i, i + 4));
     }
     if (parts.length) {
-      return parts.join(" ");
+      return parts.join(' ');
     } else {
       return v;
     }
   };
 
-  const handleCardNumberChange = (e) => {
+  const handleCardNumberChange = e => {
     const formatted = formatCardNumber(e.target.value);
-    setFormData((prev) => ({ ...prev, cardNumber: formatted }));
+    setFormData(prev => ({ ...prev, cardNumber: formatted }));
   };
 
   return (
@@ -516,12 +515,12 @@ const Checkout = () => {
       <Navbar
         cartItemsCount={orderItems.reduce(
           (sum, item) => sum + item.quantity,
-          0,
+          0
         )}
       />
 
       <Container>
-        <BackButton onClick={() => navigate("/ecommerce/cart")}>
+        <BackButton onClick={() => navigate('/ecommerce/cart')}>
           <FaArrowLeft />
           Back to Cart
         </BackButton>
@@ -547,7 +546,7 @@ const Checkout = () => {
                   name="email"
                   value={formData.email}
                   onChange={handleInputChange}
-                  className={errors.email ? "error" : ""}
+                  className={errors.email ? 'error' : ''}
                   placeholder="Enter your email"
                 />
                 {errors.email && <ErrorMessage>{errors.email}</ErrorMessage>}
@@ -566,7 +565,7 @@ const Checkout = () => {
                     name="firstName"
                     value={formData.firstName}
                     onChange={handleInputChange}
-                    className={errors.firstName ? "error" : ""}
+                    className={errors.firstName ? 'error' : ''}
                     placeholder="First name"
                   />
                   {errors.firstName && (
@@ -582,7 +581,7 @@ const Checkout = () => {
                     name="lastName"
                     value={formData.lastName}
                     onChange={handleInputChange}
-                    className={errors.lastName ? "error" : ""}
+                    className={errors.lastName ? 'error' : ''}
                     placeholder="Last name"
                   />
                   {errors.lastName && (
@@ -599,7 +598,7 @@ const Checkout = () => {
                   name="address"
                   value={formData.address}
                   onChange={handleInputChange}
-                  className={errors.address ? "error" : ""}
+                  className={errors.address ? 'error' : ''}
                   placeholder="Street address"
                 />
                 {errors.address && (
@@ -616,7 +615,7 @@ const Checkout = () => {
                     name="city"
                     value={formData.city}
                     onChange={handleInputChange}
-                    className={errors.city ? "error" : ""}
+                    className={errors.city ? 'error' : ''}
                     placeholder="City"
                   />
                   {errors.city && <ErrorMessage>{errors.city}</ErrorMessage>}
@@ -648,7 +647,7 @@ const Checkout = () => {
                     name="zipCode"
                     value={formData.zipCode}
                     onChange={handleInputChange}
-                    className={errors.zipCode ? "error" : ""}
+                    className={errors.zipCode ? 'error' : ''}
                     placeholder="ZIP"
                   />
                   {errors.zipCode && (
@@ -665,7 +664,7 @@ const Checkout = () => {
                   name="phone"
                   value={formData.phone}
                   onChange={handleInputChange}
-                  className={errors.phone ? "error" : ""}
+                  className={errors.phone ? 'error' : ''}
                   placeholder="(555) 123-4567"
                 />
                 {errors.phone && <ErrorMessage>{errors.phone}</ErrorMessage>}
@@ -677,36 +676,36 @@ const Checkout = () => {
 
               <PaymentMethods>
                 <PaymentMethod
-                  selected={paymentMethod === "card"}
-                  onClick={() => setPaymentMethod("card")}
+                  selected={paymentMethod === 'card'}
+                  onClick={() => setPaymentMethod('card')}
                 >
                   <FaCreditCard className="icon" />
                   <div className="label">Credit Card</div>
                 </PaymentMethod>
                 <PaymentMethod
-                  selected={paymentMethod === "paypal"}
-                  onClick={() => setPaymentMethod("paypal")}
+                  selected={paymentMethod === 'paypal'}
+                  onClick={() => setPaymentMethod('paypal')}
                 >
                   <FaPaypal className="icon" />
                   <div className="label">PayPal</div>
                 </PaymentMethod>
                 <PaymentMethod
-                  selected={paymentMethod === "apple"}
-                  onClick={() => setPaymentMethod("apple")}
+                  selected={paymentMethod === 'apple'}
+                  onClick={() => setPaymentMethod('apple')}
                 >
                   <FaApplePay className="icon" />
                   <div className="label">Apple Pay</div>
                 </PaymentMethod>
                 <PaymentMethod
-                  selected={paymentMethod === "google"}
-                  onClick={() => setPaymentMethod("google")}
+                  selected={paymentMethod === 'google'}
+                  onClick={() => setPaymentMethod('google')}
                 >
                   <FaGooglePay className="icon" />
                   <div className="label">Google Pay</div>
                 </PaymentMethod>
               </PaymentMethods>
 
-              {paymentMethod === "card" && (
+              {paymentMethod === 'card' && (
                 <>
                   <FormGroup>
                     <Label htmlFor="cardNumber">Card Number</Label>
@@ -716,7 +715,7 @@ const Checkout = () => {
                       name="cardNumber"
                       value={formData.cardNumber}
                       onChange={handleCardNumberChange}
-                      className={errors.cardNumber ? "error" : ""}
+                      className={errors.cardNumber ? 'error' : ''}
                       placeholder="1234 5678 9012 3456"
                       maxLength="19"
                     />
@@ -734,7 +733,7 @@ const Checkout = () => {
                         name="expiryDate"
                         value={formData.expiryDate}
                         onChange={handleInputChange}
-                        className={errors.expiryDate ? "error" : ""}
+                        className={errors.expiryDate ? 'error' : ''}
                         placeholder="MM/YY"
                         maxLength="5"
                       />
@@ -751,7 +750,7 @@ const Checkout = () => {
                         name="cvv"
                         value={formData.cvv}
                         onChange={handleInputChange}
-                        className={errors.cvv ? "error" : ""}
+                        className={errors.cvv ? 'error' : ''}
                         placeholder="123"
                         maxLength="4"
                       />
@@ -767,7 +766,7 @@ const Checkout = () => {
                       name="cardName"
                       value={formData.cardName}
                       onChange={handleInputChange}
-                      className={errors.cardName ? "error" : ""}
+                      className={errors.cardName ? 'error' : ''}
                       placeholder="Name on card"
                     />
                     {errors.cardName && (
@@ -808,7 +807,7 @@ const Checkout = () => {
             <Section>
               <PlaceOrderButton type="submit" disabled={loading}>
                 {loading ? (
-                  "Processing..."
+                  'Processing...'
                 ) : (
                   <>
                     <FaLock />
@@ -822,7 +821,7 @@ const Checkout = () => {
           <OrderSummary>
             <SummaryTitle>Order Summary</SummaryTitle>
 
-            {orderItems.map((item) => (
+            {orderItems.map(item => (
               <OrderItem key={item.id}>
                 <ItemImage src={item.image} alt={item.name} />
                 <ItemDetails>
@@ -847,7 +846,7 @@ const Checkout = () => {
               <SummaryRow>
                 <span>Shipping</span>
                 <span>
-                  {shipping === 0 ? "FREE" : `$${shipping.toFixed(2)}`}
+                  {shipping === 0 ? 'FREE' : `$${shipping.toFixed(2)}`}
                 </span>
               </SummaryRow>
 
@@ -864,13 +863,13 @@ const Checkout = () => {
 
             <div
               style={{
-                textAlign: "center",
+                textAlign: 'center',
                 marginTop: theme.spacing.lg,
-                fontSize: "0.8rem",
+                fontSize: '0.8rem',
                 color: theme.colors.gray500,
               }}
             >
-              <FaShieldAlt style={{ marginRight: "4px" }} />
+              <FaShieldAlt style={{ marginRight: '4px' }} />
               Your payment information is secure and encrypted
             </div>
           </OrderSummary>

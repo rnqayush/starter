@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
-import styled from "styled-components";
+import React, { useState, useEffect } from 'react';
+import { useParams, Link } from 'react-router-dom';
+import styled from 'styled-components';
 import {
   FaArrowRight,
   FaShoppingBag,
   FaStar,
   FaMapMarkerAlt,
   FaPhone,
-} from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import ProductCard from "../components/ProductCard";
-import { ecommerceVendors } from "../data/vendors";
+} from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
+import ProductCard from '../components/ProductCard';
+import { ecommerceVendors } from '../data/vendors';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -22,11 +22,11 @@ const PageContainer = styled.div`
 `;
 
 const StoreHeroSection = styled.section.withConfig({
-  shouldForwardProp: (prop) => prop !== "bgImage",
+  shouldForwardProp: prop => prop !== 'bgImage',
 })`
   background-image:
     linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
-    url(${(props) => props.bgImage});
+    url(${props => props.bgImage});
   background-size: cover;
   background-position: center;
   color: ${theme.colors.white};
@@ -231,7 +231,7 @@ const StoreHome = () => {
 
   useEffect(() => {
     // Find the store
-    const foundStore = ecommerceVendors.find((v) => v.id === storeId);
+    const foundStore = ecommerceVendors.find(v => v.id === storeId);
     setStore(foundStore);
 
     // Generate mock products for this store based on its specialties
@@ -241,182 +241,182 @@ const StoreHome = () => {
     }
   }, [storeId]);
 
-  const generateStoreProducts = (store) => {
+  const generateStoreProducts = store => {
     const productTemplates = {
-      "techmart-downtown": [
+      'techmart-downtown': [
         {
-          name: "Premium Smartphone",
+          name: 'Premium Smartphone',
           price: 899.99,
-          category: "Electronics",
+          category: 'Electronics',
           image:
-            "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500&q=80",
+            'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500&q=80',
         },
         {
-          name: "Wireless Headphones",
+          name: 'Wireless Headphones',
           price: 249.99,
-          category: "Electronics",
+          category: 'Electronics',
           image:
-            "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80",
+            'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80',
         },
         {
-          name: "Smart Watch",
+          name: 'Smart Watch',
           price: 399.99,
-          category: "Electronics",
+          category: 'Electronics',
           image:
-            "https://images.unsplash.com/photo-1544117519-31a4b719223d?w=500&q=80",
+            'https://images.unsplash.com/photo-1544117519-31a4b719223d?w=500&q=80',
         },
         {
-          name: "Bluetooth Speaker",
+          name: 'Bluetooth Speaker',
           price: 129.99,
-          category: "Electronics",
+          category: 'Electronics',
           image:
-            "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=500&q=80",
+            'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=500&q=80',
         },
         {
-          name: "Laptop Computer",
+          name: 'Laptop Computer',
           price: 1299.99,
-          category: "Electronics",
+          category: 'Electronics',
           image:
-            "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=500&q=80",
+            'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=500&q=80',
         },
         {
-          name: "Gaming Mouse",
+          name: 'Gaming Mouse',
           price: 79.99,
-          category: "Electronics",
+          category: 'Electronics',
           image:
-            "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=500&q=80",
+            'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=500&q=80',
         },
       ],
-      "fashion-forward": [
+      'fashion-forward': [
         {
-          name: "Designer Dress",
+          name: 'Designer Dress',
           price: 199.99,
-          category: "Fashion",
+          category: 'Fashion',
           image:
-            "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=500&q=80",
+            'https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=500&q=80',
         },
         {
-          name: "Leather Handbag",
+          name: 'Leather Handbag',
           price: 299.99,
-          category: "Fashion",
+          category: 'Fashion',
           image:
-            "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500&q=80",
+            'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500&q=80',
         },
         {
-          name: "Casual Sneakers",
+          name: 'Casual Sneakers',
           price: 149.99,
-          category: "Fashion",
+          category: 'Fashion',
           image:
-            "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=500&q=80",
+            'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=500&q=80',
         },
         {
-          name: "Elegant Watch",
+          name: 'Elegant Watch',
           price: 459.99,
-          category: "Fashion",
+          category: 'Fashion',
           image:
-            "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&q=80",
+            'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&q=80',
         },
         {
-          name: "Summer Jacket",
+          name: 'Summer Jacket',
           price: 179.99,
-          category: "Fashion",
+          category: 'Fashion',
           image:
-            "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=500&q=80",
+            'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=500&q=80',
         },
         {
-          name: "Stylish Sunglasses",
+          name: 'Stylish Sunglasses',
           price: 89.99,
-          category: "Fashion",
+          category: 'Fashion',
           image:
-            "https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?w=500&q=80",
+            'https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?w=500&q=80',
         },
       ],
-      "home-essentials": [
+      'home-essentials': [
         {
-          name: "Coffee Maker",
+          name: 'Coffee Maker',
           price: 159.99,
-          category: "Home & Kitchen",
+          category: 'Home & Kitchen',
           image:
-            "https://images.unsplash.com/photo-1514066558159-fc8c737ef259?w=500&q=80",
+            'https://images.unsplash.com/photo-1514066558159-fc8c737ef259?w=500&q=80',
         },
         {
-          name: "Throw Pillows Set",
+          name: 'Throw Pillows Set',
           price: 49.99,
-          category: "Home Decor",
+          category: 'Home Decor',
           image:
-            "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=500&q=80",
+            'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=500&q=80',
         },
         {
-          name: "Indoor Plant",
+          name: 'Indoor Plant',
           price: 29.99,
-          category: "Home & Garden",
+          category: 'Home & Garden',
           image:
-            "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=500&q=80",
+            'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=500&q=80',
         },
         {
-          name: "Kitchen Knife Set",
+          name: 'Kitchen Knife Set',
           price: 89.99,
-          category: "Home & Kitchen",
+          category: 'Home & Kitchen',
           image:
-            "https://images.unsplash.com/photo-1563135465-3ba3f6a71b59?w=500&q=80",
+            'https://images.unsplash.com/photo-1563135465-3ba3f6a71b59?w=500&q=80',
         },
         {
-          name: "Bedding Set",
+          name: 'Bedding Set',
           price: 119.99,
-          category: "Home & Garden",
+          category: 'Home & Garden',
           image:
-            "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=500&q=80",
+            'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=500&q=80',
         },
         {
-          name: "Table Lamp",
+          name: 'Table Lamp',
           price: 79.99,
-          category: "Home Decor",
+          category: 'Home Decor',
           image:
-            "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&q=80",
+            'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&q=80',
         },
       ],
-      "sports-zone": [
+      'sports-zone': [
         {
-          name: "Running Shoes",
+          name: 'Running Shoes',
           price: 129.99,
-          category: "Sports",
+          category: 'Sports',
           image:
-            "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500&q=80",
+            'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500&q=80',
         },
         {
-          name: "Yoga Mat",
+          name: 'Yoga Mat',
           price: 39.99,
-          category: "Sports",
+          category: 'Sports',
           image:
-            "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=500&q=80",
+            'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=500&q=80',
         },
         {
-          name: "Basketball",
+          name: 'Basketball',
           price: 29.99,
-          category: "Sports",
+          category: 'Sports',
           image:
-            "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=500&q=80",
+            'https://images.unsplash.com/photo-1546519638-68e109498ffc?w=500&q=80',
         },
         {
-          name: "Workout Clothes",
+          name: 'Workout Clothes',
           price: 69.99,
-          category: "Sports",
+          category: 'Sports',
           image:
-            "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&q=80",
+            'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&q=80',
         },
         {
-          name: "Protein Shaker",
+          name: 'Protein Shaker',
           price: 19.99,
-          category: "Sports",
+          category: 'Sports',
           image:
-            "https://images.unsplash.com/photo-1594737626072-90dc274bc2bd?w=500&q=80",
+            'https://images.unsplash.com/photo-1594737626072-90dc274bc2bd?w=500&q=80',
         },
         {
-          name: "Resistance Bands",
+          name: 'Resistance Bands',
           price: 24.99,
-          category: "Sports",
+          category: 'Sports',
           image:
-            "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&q=80",
+            'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&q=80',
         },
       ],
     };
@@ -425,7 +425,7 @@ const StoreHome = () => {
     return templates.map((template, index) => ({
       id: `${store.id}-${index + 1}`,
       ...template,
-      slug: template.name.toLowerCase().replace(/\s+/g, "-"),
+      slug: template.name.toLowerCase().replace(/\s+/g, '-'),
       rating: (4.0 + Math.random() * 1).toFixed(1),
       reviewCount: Math.floor(Math.random() * 500) + 50,
       inStock: true,
@@ -433,14 +433,14 @@ const StoreHome = () => {
     }));
   };
 
-  const handleAddToCart = (product) => {
-    setCartItems((prev) => {
-      const existingItem = prev.find((item) => item.id === product.id);
+  const handleAddToCart = product => {
+    setCartItems(prev => {
+      const existingItem = prev.find(item => item.id === product.id);
       if (existingItem) {
-        return prev.map((item) =>
+        return prev.map(item =>
           item.id === product.id
             ? { ...item, quantity: item.quantity + 1 }
-            : item,
+            : item
         );
       }
       return [...prev, { ...product, quantity: 1 }];
@@ -448,11 +448,11 @@ const StoreHome = () => {
     alert(`${product.name} added to cart!`);
   };
 
-  const renderStars = (rating) => {
+  const renderStars = rating => {
     const stars = [];
     const fullStars = Math.floor(rating);
     for (let i = 0; i < fullStars; i++) {
-      stars.push(<FaStar key={i} style={{ color: "#fbbf24" }} />);
+      stars.push(<FaStar key={i} style={{ color: '#fbbf24' }} />);
     }
     return stars;
   };
@@ -463,10 +463,10 @@ const StoreHome = () => {
         <Navbar
           cartItemsCount={cartItems.reduce(
             (sum, item) => sum + item.quantity,
-            0,
+            0
           )}
         />
-        <div style={{ padding: "4rem", textAlign: "center" }}>
+        <div style={{ padding: '4rem', textAlign: 'center' }}>
           <h2>Store not found</h2>
           <Link to="/ecommerce-stores">← Back to Store Listings</Link>
         </div>
@@ -521,7 +521,7 @@ const StoreHome = () => {
         <Section>
           <SectionTitle>Featured Products</SectionTitle>
           <ProductsGrid>
-            {storeProducts.slice(0, 6).map((product) => (
+            {storeProducts.slice(0, 6).map(product => (
               <ProductCard
                 key={product.id}
                 product={product}

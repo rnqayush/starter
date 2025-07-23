@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
 import {
   FaShoppingCart,
   FaSearch,
@@ -12,8 +12,8 @@ import {
   FaDownload,
   FaChevronLeft,
   FaChevronRight,
-} from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
+} from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
 
 const Container = styled.div`
   background: ${theme.colors.white};
@@ -62,12 +62,15 @@ const HeaderActions = styled.div`
 `;
 
 const ActionButton = styled.button.withConfig({
-  shouldForwardProp: (prop) => prop !== "primary",
+  shouldForwardProp: prop => prop !== 'primary',
 })`
-  background: ${(props) => props.primary ? theme.colors.primary : theme.colors.white};
-  color: ${(props) => props.primary ? theme.colors.white : theme.colors.gray700};
+  background: ${props =>
+    props.primary ? theme.colors.primary : theme.colors.white};
+  color: ${props =>
+    props.primary ? theme.colors.white : theme.colors.gray700};
   padding: ${theme.spacing.md} ${theme.spacing.lg};
-  border: ${(props) => props.primary ? 'none' : `2px solid ${theme.colors.gray200}`};
+  border: ${props =>
+    props.primary ? 'none' : `2px solid ${theme.colors.gray200}`};
   border-radius: ${theme.borderRadius.md};
   font-weight: 600;
   cursor: pointer;
@@ -77,9 +80,11 @@ const ActionButton = styled.button.withConfig({
   gap: ${theme.spacing.sm};
 
   &:hover {
-    background: ${(props) => props.primary ? theme.colors.primaryDark : theme.colors.gray50};
+    background: ${props =>
+      props.primary ? theme.colors.primaryDark : theme.colors.gray50};
     transform: translateY(-1px);
-    border-color: ${(props) => props.primary ? theme.colors.primaryDark : theme.colors.primary};
+    border-color: ${props =>
+      props.primary ? theme.colors.primaryDark : theme.colors.primary};
   }
 `;
 
@@ -160,7 +165,7 @@ const StatCard = styled.div`
 const StatValue = styled.div`
   font-size: 1.8rem;
   font-weight: 700;
-  color: ${(props) => props.color || theme.colors.primary};
+  color: ${props => props.color || theme.colors.primary};
   margin-bottom: ${theme.spacing.xs};
 `;
 
@@ -269,22 +274,29 @@ const VehicleSpec = styled.div`
 `;
 
 const StatusBadge = styled.span.withConfig({
-  shouldForwardProp: (prop) => prop !== "status",
+  shouldForwardProp: prop => prop !== 'status',
 })`
   padding: ${theme.spacing.xs} ${theme.spacing.sm};
   border-radius: ${theme.borderRadius.sm};
   font-size: 0.8rem;
   font-weight: 600;
   color: ${theme.colors.white};
-  background: ${(props) => {
+  background: ${props => {
     switch (props.status) {
-      case "pending": return theme.colors.warning;
-      case "confirmed": return theme.colors.info;
-      case "processing": return theme.colors.purple || "#8b5cf6";
-      case "shipped": return theme.colors.primary;
-      case "delivered": return theme.colors.success;
-      case "cancelled": return theme.colors.error;
-      default: return theme.colors.gray500;
+      case 'pending':
+        return theme.colors.warning;
+      case 'confirmed':
+        return theme.colors.info;
+      case 'processing':
+        return theme.colors.purple || '#8b5cf6';
+      case 'shipped':
+        return theme.colors.primary;
+      case 'delivered':
+        return theme.colors.success;
+      case 'cancelled':
+        return theme.colors.error;
+      default:
+        return theme.colors.gray500;
     }
   }};
 `;
@@ -384,9 +396,9 @@ const PaginationInfo = styled.span`
 const SalesOrdersTab = ({ dealer }) => {
   const [orders, setOrders] = useState([]);
   const [filteredOrders, setFilteredOrders] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState("");
-  const [dateFilter, setDateFilter] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('');
+  const [dateFilter, setDateFilter] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const ordersPerPage = 10;
 
@@ -394,117 +406,123 @@ const SalesOrdersTab = ({ dealer }) => {
     // Mock orders data - in real app, fetch from API
     const mockOrders = [
       {
-        id: "ORD-001",
-        orderNumber: "24001",
+        id: 'ORD-001',
+        orderNumber: '24001',
         customerId: 1,
-        customerName: "John Smith",
-        customerEmail: "john.smith@email.com",
-        customerPhone: "(555) 123-4567",
+        customerName: 'John Smith',
+        customerEmail: 'john.smith@email.com',
+        customerPhone: '(555) 123-4567',
         vehicleId: 1,
-        vehicleName: "2024 BMW X5 M50i",
-        vehicleImage: "https://images.unsplash.com/photo-1555215695-3004980ad54e?w=300&h=200&fit=crop",
+        vehicleName: '2024 BMW X5 M50i',
+        vehicleImage:
+          'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=300&h=200&fit=crop',
         vehiclePrice: 75000,
-        orderDate: "2024-02-15T10:30:00Z",
-        status: "confirmed",
-        paymentStatus: "paid",
-        deliveryDate: "2024-03-01",
-        notes: "Customer prefers early morning delivery",
-        salesPerson: "Mike Johnson",
+        orderDate: '2024-02-15T10:30:00Z',
+        status: 'confirmed',
+        paymentStatus: 'paid',
+        deliveryDate: '2024-03-01',
+        notes: 'Customer prefers early morning delivery',
+        salesPerson: 'Mike Johnson',
         commission: 3750,
       },
       {
-        id: "ORD-002",
-        orderNumber: "24002",
+        id: 'ORD-002',
+        orderNumber: '24002',
         customerId: 2,
-        customerName: "Sarah Johnson",
-        customerEmail: "sarah.j@email.com",
-        customerPhone: "(555) 234-5678",
+        customerName: 'Sarah Johnson',
+        customerEmail: 'sarah.j@email.com',
+        customerPhone: '(555) 234-5678',
         vehicleId: 2,
-        vehicleName: "2023 Tesla Model S Plaid",
-        vehicleImage: "https://images.unsplash.com/photo-1560958089-b8a1929cea89?w=300&h=200&fit=crop",
+        vehicleName: '2023 Tesla Model S Plaid',
+        vehicleImage:
+          'https://images.unsplash.com/photo-1560958089-b8a1929cea89?w=300&h=200&fit=crop',
         vehiclePrice: 120000,
-        orderDate: "2024-02-14T14:20:00Z",
-        status: "processing",
-        paymentStatus: "pending",
-        deliveryDate: "2024-03-15",
-        notes: "Financing application in progress",
-        salesPerson: "Lisa Chen",
+        orderDate: '2024-02-14T14:20:00Z',
+        status: 'processing',
+        paymentStatus: 'pending',
+        deliveryDate: '2024-03-15',
+        notes: 'Financing application in progress',
+        salesPerson: 'Lisa Chen',
         commission: 6000,
       },
       {
-        id: "ORD-003",
-        orderNumber: "24003",
+        id: 'ORD-003',
+        orderNumber: '24003',
         customerId: 3,
-        customerName: "Michael Brown",
-        customerEmail: "m.brown@email.com",
-        customerPhone: "(555) 345-6789",
+        customerName: 'Michael Brown',
+        customerEmail: 'm.brown@email.com',
+        customerPhone: '(555) 345-6789',
         vehicleId: 3,
-        vehicleName: "2024 Ford F-150 Lightning",
-        vehicleImage: "https://images.unsplash.com/photo-1593950315186-76a92975b60c?w=300&h=200&fit=crop",
+        vehicleName: '2024 Ford F-150 Lightning',
+        vehicleImage:
+          'https://images.unsplash.com/photo-1593950315186-76a92975b60c?w=300&h=200&fit=crop',
         vehiclePrice: 65000,
-        orderDate: "2024-02-13T09:15:00Z",
-        status: "shipped",
-        paymentStatus: "paid",
-        deliveryDate: "2024-02-20",
-        notes: "Fleet purchase - 3 units",
-        salesPerson: "David Wilson",
+        orderDate: '2024-02-13T09:15:00Z',
+        status: 'shipped',
+        paymentStatus: 'paid',
+        deliveryDate: '2024-02-20',
+        notes: 'Fleet purchase - 3 units',
+        salesPerson: 'David Wilson',
         commission: 3250,
       },
       {
-        id: "ORD-004",
-        orderNumber: "24004",
+        id: 'ORD-004',
+        orderNumber: '24004',
         customerId: 4,
-        customerName: "Emily Davis",
-        customerEmail: "emily.davis@email.com",
-        customerPhone: "(555) 456-7890",
+        customerName: 'Emily Davis',
+        customerEmail: 'emily.davis@email.com',
+        customerPhone: '(555) 456-7890',
         vehicleId: 4,
-        vehicleName: "2023 Honda Civic Type R",
-        vehicleImage: "https://images.unsplash.com/photo-1606152421802-db97b9c7a11b?w=300&h=200&fit=crop",
+        vehicleName: '2023 Honda Civic Type R',
+        vehicleImage:
+          'https://images.unsplash.com/photo-1606152421802-db97b9c7a11b?w=300&h=200&fit=crop',
         vehiclePrice: 42000,
-        orderDate: "2024-02-12T16:45:00Z",
-        status: "delivered",
-        paymentStatus: "paid",
-        deliveryDate: "2024-02-18",
-        notes: "First-time buyer discount applied",
-        salesPerson: "Jennifer Lee",
+        orderDate: '2024-02-12T16:45:00Z',
+        status: 'delivered',
+        paymentStatus: 'paid',
+        deliveryDate: '2024-02-18',
+        notes: 'First-time buyer discount applied',
+        salesPerson: 'Jennifer Lee',
         commission: 2100,
       },
       {
-        id: "ORD-005",
-        orderNumber: "24005",
+        id: 'ORD-005',
+        orderNumber: '24005',
         customerId: 5,
-        customerName: "Robert Wilson",
-        customerEmail: "r.wilson@email.com",
-        customerPhone: "(555) 567-8901",
+        customerName: 'Robert Wilson',
+        customerEmail: 'r.wilson@email.com',
+        customerPhone: '(555) 567-8901',
         vehicleId: 5,
-        vehicleName: "2024 Porsche 911 Turbo S",
-        vehicleImage: "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=300&h=200&fit=crop",
+        vehicleName: '2024 Porsche 911 Turbo S',
+        vehicleImage:
+          'https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=300&h=200&fit=crop',
         vehiclePrice: 230000,
-        orderDate: "2024-02-11T11:00:00Z",
-        status: "pending",
-        paymentStatus: "deposit",
-        deliveryDate: "2024-04-01",
-        notes: "Special order - custom configuration",
-        salesPerson: "Alex Rodriguez",
+        orderDate: '2024-02-11T11:00:00Z',
+        status: 'pending',
+        paymentStatus: 'deposit',
+        deliveryDate: '2024-04-01',
+        notes: 'Special order - custom configuration',
+        salesPerson: 'Alex Rodriguez',
         commission: 11500,
       },
       {
-        id: "ORD-006",
-        orderNumber: "24006",
+        id: 'ORD-006',
+        orderNumber: '24006',
         customerId: 6,
-        customerName: "Lisa Anderson",
-        customerEmail: "lisa.anderson@email.com",
-        customerPhone: "(555) 678-9012",
+        customerName: 'Lisa Anderson',
+        customerEmail: 'lisa.anderson@email.com',
+        customerPhone: '(555) 678-9012',
         vehicleId: 6,
-        vehicleName: "2023 Volvo XC90 Recharge",
-        vehicleImage: "https://images.unsplash.com/photo-1606016872875-84d1177d27bb?w=300&h=200&fit=crop",
+        vehicleName: '2023 Volvo XC90 Recharge',
+        vehicleImage:
+          'https://images.unsplash.com/photo-1606016872875-84d1177d27bb?w=300&h=200&fit=crop',
         vehiclePrice: 68000,
-        orderDate: "2024-02-10T13:30:00Z",
-        status: "cancelled",
-        paymentStatus: "refunded",
+        orderDate: '2024-02-10T13:30:00Z',
+        status: 'cancelled',
+        paymentStatus: 'refunded',
         deliveryDate: null,
-        notes: "Customer changed mind - full refund processed",
-        salesPerson: "Mark Thompson",
+        notes: 'Customer changed mind - full refund processed',
+        salesPerson: 'Mark Thompson',
         commission: 0,
       },
     ];
@@ -518,11 +536,12 @@ const SalesOrdersTab = ({ dealer }) => {
 
     // Search filter
     if (searchTerm) {
-      filtered = filtered.filter(order =>
-        order.orderNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        order.customerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        order.vehicleName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        order.salesPerson.toLowerCase().includes(searchTerm.toLowerCase())
+      filtered = filtered.filter(
+        order =>
+          order.orderNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          order.customerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          order.vehicleName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          order.salesPerson.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
@@ -535,24 +554,24 @@ const SalesOrdersTab = ({ dealer }) => {
     if (dateFilter) {
       const today = new Date();
       const filterDate = new Date();
-      
+
       switch (dateFilter) {
-        case "today":
+        case 'today':
           filterDate.setHours(0, 0, 0, 0);
-          filtered = filtered.filter(order =>
-            new Date(order.orderDate) >= filterDate
+          filtered = filtered.filter(
+            order => new Date(order.orderDate) >= filterDate
           );
           break;
-        case "week":
+        case 'week':
           filterDate.setDate(today.getDate() - 7);
-          filtered = filtered.filter(order =>
-            new Date(order.orderDate) >= filterDate
+          filtered = filtered.filter(
+            order => new Date(order.orderDate) >= filterDate
           );
           break;
-        case "month":
+        case 'month':
           filterDate.setMonth(today.getMonth() - 1);
-          filtered = filtered.filter(order =>
-            new Date(order.orderDate) >= filterDate
+          filtered = filtered.filter(
+            order => new Date(order.orderDate) >= filterDate
           );
           break;
         default:
@@ -564,50 +583,64 @@ const SalesOrdersTab = ({ dealer }) => {
     setCurrentPage(1);
   }, [orders, searchTerm, statusFilter, dateFilter]);
 
-  const formatCurrency = (amount) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
+  const formatCurrency = amount => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(amount);
   };
 
-  const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
+  const formatDate = dateString => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
     });
   };
 
-  const getStatusLabel = (status) => {
+  const getStatusLabel = status => {
     switch (status) {
-      case "pending": return "Pending";
-      case "confirmed": return "Confirmed";
-      case "processing": return "Processing";
-      case "shipped": return "Shipped";
-      case "delivered": return "Delivered";
-      case "cancelled": return "Cancelled";
-      default: return status;
+      case 'pending':
+        return 'Pending';
+      case 'confirmed':
+        return 'Confirmed';
+      case 'processing':
+        return 'Processing';
+      case 'shipped':
+        return 'Shipped';
+      case 'delivered':
+        return 'Delivered';
+      case 'cancelled':
+        return 'Cancelled';
+      default:
+        return status;
     }
   };
 
   const stats = {
     total: orders.length,
-    pending: orders.filter(o => o.status === "pending").length,
-    confirmed: orders.filter(o => o.status === "confirmed").length,
-    shipped: orders.filter(o => o.status === "shipped").length,
-    delivered: orders.filter(o => o.status === "delivered").length,
-    cancelled: orders.filter(o => o.status === "cancelled").length,
-    totalRevenue: orders.filter(o => o.paymentStatus === "paid").reduce((sum, o) => sum + o.vehiclePrice, 0),
-    totalCommission: orders.filter(o => o.paymentStatus === "paid").reduce((sum, o) => sum + o.commission, 0),
+    pending: orders.filter(o => o.status === 'pending').length,
+    confirmed: orders.filter(o => o.status === 'confirmed').length,
+    shipped: orders.filter(o => o.status === 'shipped').length,
+    delivered: orders.filter(o => o.status === 'delivered').length,
+    cancelled: orders.filter(o => o.status === 'cancelled').length,
+    totalRevenue: orders
+      .filter(o => o.paymentStatus === 'paid')
+      .reduce((sum, o) => sum + o.vehiclePrice, 0),
+    totalCommission: orders
+      .filter(o => o.paymentStatus === 'paid')
+      .reduce((sum, o) => sum + o.commission, 0),
   };
 
   // Pagination
   const indexOfLastOrder = currentPage * ordersPerPage;
   const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
-  const currentOrders = filteredOrders.slice(indexOfFirstOrder, indexOfLastOrder);
+  const currentOrders = filteredOrders.slice(
+    indexOfFirstOrder,
+    indexOfLastOrder
+  );
   const totalPages = Math.ceil(filteredOrders.length / ordersPerPage);
 
   return (
@@ -639,13 +672,13 @@ const SalesOrdersTab = ({ dealer }) => {
               type="text"
               placeholder="Search orders by number, customer, vehicle, or salesperson..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={e => setSearchTerm(e.target.value)}
             />
           </SearchContainer>
 
           <FilterSelect
             value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
+            onChange={e => setStatusFilter(e.target.value)}
           >
             <option value="">All Statuses</option>
             <option value="pending">Pending</option>
@@ -658,7 +691,7 @@ const SalesOrdersTab = ({ dealer }) => {
 
           <FilterSelect
             value={dateFilter}
-            onChange={(e) => setDateFilter(e.target.value)}
+            onChange={e => setDateFilter(e.target.value)}
           >
             <option value="">All Time</option>
             <option value="today">Today</option>
@@ -693,11 +726,15 @@ const SalesOrdersTab = ({ dealer }) => {
           <StatLabel>Cancelled</StatLabel>
         </StatCard>
         <StatCard>
-          <StatValue color={theme.colors.success}>{formatCurrency(stats.totalRevenue)}</StatValue>
+          <StatValue color={theme.colors.success}>
+            {formatCurrency(stats.totalRevenue)}
+          </StatValue>
           <StatLabel>Total Revenue</StatLabel>
         </StatCard>
         <StatCard>
-          <StatValue color={theme.colors.info}>{formatCurrency(stats.totalCommission)}</StatValue>
+          <StatValue color={theme.colors.info}>
+            {formatCurrency(stats.totalCommission)}
+          </StatValue>
           <StatLabel>Total Commission</StatLabel>
         </StatCard>
       </StatsRow>
@@ -718,13 +755,15 @@ const SalesOrdersTab = ({ dealer }) => {
               </TableRow>
             </TableHeader>
             <tbody>
-              {currentOrders.map((order) => (
+              {currentOrders.map(order => (
                 <TableRow key={order.id}>
                   <TableCell>
                     <OrderInfo>
                       <OrderId>#{order.orderNumber}</OrderId>
                       <OrderDate>
-                        <FaCalendar style={{ marginRight: '4px', fontSize: '0.7rem' }} />
+                        <FaCalendar
+                          style={{ marginRight: '4px', fontSize: '0.7rem' }}
+                        />
                         {formatDate(order.orderDate)}
                       </OrderDate>
                     </OrderInfo>
@@ -738,7 +777,10 @@ const SalesOrdersTab = ({ dealer }) => {
                   </TableCell>
                   <TableCell>
                     <VehicleInfo>
-                      <VehicleImage src={order.vehicleImage} alt={order.vehicleName} />
+                      <VehicleImage
+                        src={order.vehicleImage}
+                        alt={order.vehicleName}
+                      />
                       <VehicleDetails>
                         <VehicleName>{order.vehicleName}</VehicleName>
                         <VehicleSpec>
@@ -757,7 +799,9 @@ const SalesOrdersTab = ({ dealer }) => {
                   </TableCell>
                   <TableCell>{order.salesPerson}</TableCell>
                   <TableCell>
-                    {order.deliveryDate ? formatDate(order.deliveryDate) : "TBD"}
+                    {order.deliveryDate
+                      ? formatDate(order.deliveryDate)
+                      : 'TBD'}
                   </TableCell>
                   <TableCell>
                     <ActionButtons>
@@ -767,10 +811,16 @@ const SalesOrdersTab = ({ dealer }) => {
                       <ActionButtonSmall className="edit" title="Edit Order">
                         <FaEdit />
                       </ActionButtonSmall>
-                      <ActionButtonSmall className="print" title="Print Invoice">
+                      <ActionButtonSmall
+                        className="print"
+                        title="Print Invoice"
+                      >
                         <FaPrint />
                       </ActionButtonSmall>
-                      <ActionButtonSmall className="delete" title="Cancel Order">
+                      <ActionButtonSmall
+                        className="delete"
+                        title="Cancel Order"
+                      >
                         <FaTimes />
                       </ActionButtonSmall>
                     </ActionButtons>
@@ -797,11 +847,11 @@ const SalesOrdersTab = ({ dealer }) => {
             <FaChevronLeft />
             Previous
           </PaginationButton>
-          
+
           <PaginationInfo>
             Page {currentPage} of {totalPages} ({filteredOrders.length} orders)
           </PaginationInfo>
-          
+
           <PaginationButton
             onClick={() => setCurrentPage(currentPage + 1)}
             disabled={currentPage === totalPages}

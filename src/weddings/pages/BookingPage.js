@@ -1,25 +1,22 @@
-import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 import {
   FaArrowLeft,
   FaCalendarAlt,
-
   FaMapMarkerAlt,
   FaEnvelope,
   FaPhoneAlt,
-
   FaRing,
   FaCheck,
   FaExclamationTriangle,
   FaInfoCircle,
-
   FaClock,
   FaUser,
   FaComment,
-} from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
-import { getVendorById } from "../data/vendors";
+} from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
+import { getVendorById } from '../data/vendors';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -142,10 +139,11 @@ const Label = styled.label`
 `;
 
 const Input = styled.input.withConfig({
-  shouldForwardProp: (prop) => prop !== "hasError",
+  shouldForwardProp: prop => prop !== 'hasError',
 })`
   padding: ${theme.spacing.md};
-  border: 2px solid ${(props) => props.hasError ? theme.colors.error : theme.colors.gray200};
+  border: 2px solid
+    ${props => (props.hasError ? theme.colors.error : theme.colors.gray200)};
   border-radius: ${theme.borderRadius.md};
   font-size: 1rem;
   transition: border-color 0.2s ease;
@@ -153,7 +151,8 @@ const Input = styled.input.withConfig({
 
   &:focus {
     outline: none;
-    border-color: ${(props) => props.hasError ? theme.colors.error : theme.colors.primary};
+    border-color: ${props =>
+      props.hasError ? theme.colors.error : theme.colors.primary};
   }
 
   &::placeholder {
@@ -162,10 +161,11 @@ const Input = styled.input.withConfig({
 `;
 
 const Select = styled.select.withConfig({
-  shouldForwardProp: (prop) => prop !== "hasError",
+  shouldForwardProp: prop => prop !== 'hasError',
 })`
   padding: ${theme.spacing.md};
-  border: 2px solid ${(props) => props.hasError ? theme.colors.error : theme.colors.gray200};
+  border: 2px solid
+    ${props => (props.hasError ? theme.colors.error : theme.colors.gray200)};
   border-radius: ${theme.borderRadius.md};
   font-size: 1rem;
   transition: border-color 0.2s ease;
@@ -174,15 +174,17 @@ const Select = styled.select.withConfig({
 
   &:focus {
     outline: none;
-    border-color: ${(props) => props.hasError ? theme.colors.error : theme.colors.primary};
+    border-color: ${props =>
+      props.hasError ? theme.colors.error : theme.colors.primary};
   }
 `;
 
 const TextArea = styled.textarea.withConfig({
-  shouldForwardProp: (prop) => prop !== "hasError",
+  shouldForwardProp: prop => prop !== 'hasError',
 })`
   padding: ${theme.spacing.md};
-  border: 2px solid ${(props) => props.hasError ? theme.colors.error : theme.colors.gray200};
+  border: 2px solid
+    ${props => (props.hasError ? theme.colors.error : theme.colors.gray200)};
   border-radius: ${theme.borderRadius.md};
   font-size: 1rem;
   transition: border-color 0.2s ease;
@@ -193,7 +195,8 @@ const TextArea = styled.textarea.withConfig({
 
   &:focus {
     outline: none;
-    border-color: ${(props) => props.hasError ? theme.colors.error : theme.colors.primary};
+    border-color: ${props =>
+      props.hasError ? theme.colors.error : theme.colors.primary};
   }
 
   &::placeholder {
@@ -427,39 +430,39 @@ const BookingPage = () => {
 
   const [formData, setFormData] = useState({
     // Contact Information
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+
     // Event Details
-    eventDate: "",
-    eventTime: "",
-    guestCount: "",
-    eventType: "wedding",
-    venue: "",
-    budget: "",
-    
+    eventDate: '',
+    eventTime: '',
+    guestCount: '',
+    eventType: 'wedding',
+    venue: '',
+    budget: '',
+
     // Services
     services: [],
-    
+
     // Additional Information
-    message: "",
-    contactPreference: "email",
-    timeline: "",
+    message: '',
+    contactPreference: 'email',
+    timeline: '',
   });
 
   const serviceOptions = [
-    "Wedding Planning",
-    "Venue Decoration",
-    "Floral Arrangements",
-    "Photography",
-    "Videography",
-    "Catering",
-    "Music & DJ",
-    "Transportation",
-    "Cake & Desserts",
-    "Hair & Makeup",
+    'Wedding Planning',
+    'Venue Decoration',
+    'Floral Arrangements',
+    'Photography',
+    'Videography',
+    'Catering',
+    'Music & DJ',
+    'Transportation',
+    'Cake & Desserts',
+    'Hair & Makeup',
   ];
 
   useEffect(() => {
@@ -468,28 +471,28 @@ const BookingPage = () => {
     setLoading(false);
   }, [vendorSlug]);
 
-  const handleInputChange = (e) => {
+  const handleInputChange = e => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
-    
+
     // Clear error when user starts typing
     if (errors[name]) {
       setErrors(prev => ({
         ...prev,
-        [name]: ""
+        [name]: '',
       }));
     }
   };
 
-  const handleCheckboxChange = (service) => {
+  const handleCheckboxChange = service => {
     setFormData(prev => ({
       ...prev,
       services: prev.services.includes(service)
         ? prev.services.filter(s => s !== service)
-        : [...prev.services, service]
+        : [...prev.services, service],
     }));
   };
 
@@ -498,7 +501,12 @@ const BookingPage = () => {
 
     // Required fields
     const requiredFields = [
-      'firstName', 'lastName', 'email', 'phone', 'eventDate', 'guestCount'
+      'firstName',
+      'lastName',
+      'email',
+      'phone',
+      'eventDate',
+      'guestCount',
     ];
 
     requiredFields.forEach(field => {
@@ -522,14 +530,17 @@ const BookingPage = () => {
       const eventDate = new Date(formData.eventDate);
       const today = new Date();
       today.setHours(0, 0, 0, 0);
-      
+
       if (eventDate < today) {
         newErrors.eventDate = 'Event date must be in the future';
       }
     }
 
     // Guest count validation
-    if (formData.guestCount && (formData.guestCount < 1 || formData.guestCount > 1000)) {
+    if (
+      formData.guestCount &&
+      (formData.guestCount < 1 || formData.guestCount > 1000)
+    ) {
       newErrors.guestCount = 'Guest count must be between 1 and 1000';
     }
 
@@ -537,9 +548,9 @@ const BookingPage = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
@@ -549,7 +560,6 @@ const BookingPage = () => {
     try {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 2000));
-      
 
       // Generate booking ID and redirect to confirmation
       const bookingId = 'WED-' + Date.now().toString().slice(-6);
@@ -567,10 +577,11 @@ const BookingPage = () => {
         message: formData.message,
       });
 
-      navigate(`/weddings/booking-confirmation?${confirmationParams.toString()}`);
-      
+      navigate(
+        `/weddings/booking-confirmation?${confirmationParams.toString()}`
+      );
     } catch (error) {
-      alert("Failed to submit booking request. Please try again.");
+      alert('Failed to submit booking request. Please try again.');
     } finally {
       setSubmitting(false);
     }
@@ -589,7 +600,7 @@ const BookingPage = () => {
       <PageContainer>
         <NavHeader>
           <NavContent>
-            <BackButton onClick={() => navigate("/weddings")}>
+            <BackButton onClick={() => navigate('/weddings')}>
               <FaArrowLeft />
               Back to Vendors
             </BackButton>
@@ -627,13 +638,28 @@ const BookingPage = () => {
             </SuccessIcon>
             <SuccessTitle>Request Sent Successfully!</SuccessTitle>
             <SuccessText>
-              Thank you for your booking request with {vendor.name}. They will review your information and get back to you within 24 hours to discuss your wedding plans and check availability.
+              Thank you for your booking request with {vendor.name}. They will
+              review your information and get back to you within 24 hours to
+              discuss your wedding plans and check availability.
             </SuccessText>
-            <div style={{ display: 'flex', gap: theme.spacing.md, justifyContent: 'center' }}>
+            <div
+              style={{
+                display: 'flex',
+                gap: theme.spacing.md,
+                justifyContent: 'center',
+              }}
+            >
               <SubmitButton onClick={() => navigate(`/${vendor.id}`)}>
                 Back to Vendor
               </SubmitButton>
-              <SubmitButton onClick={() => navigate("/weddings")} style={{ background: theme.colors.white, color: theme.colors.primary, border: `2px solid ${theme.colors.primary}` }}>
+              <SubmitButton
+                onClick={() => navigate('/weddings')}
+                style={{
+                  background: theme.colors.white,
+                  color: theme.colors.primary,
+                  border: `2px solid ${theme.colors.primary}`,
+                }}
+              >
                 Browse More Vendors
               </SubmitButton>
             </div>
@@ -669,7 +695,14 @@ const BookingPage = () => {
             <form onSubmit={handleSubmit}>
               {/* Contact Information */}
               <div style={{ marginBottom: theme.spacing.xl }}>
-                <h3 style={{ marginBottom: theme.spacing.lg, color: theme.colors.gray900 }}>Contact Information</h3>
+                <h3
+                  style={{
+                    marginBottom: theme.spacing.lg,
+                    color: theme.colors.gray900,
+                  }}
+                >
+                  Contact Information
+                </h3>
                 <FormRow>
                   <FormGroup>
                     <Label>
@@ -757,7 +790,14 @@ const BookingPage = () => {
 
               {/* Event Details */}
               <div style={{ marginBottom: theme.spacing.xl }}>
-                <h3 style={{ marginBottom: theme.spacing.lg, color: theme.colors.gray900 }}>Event Details</h3>
+                <h3
+                  style={{
+                    marginBottom: theme.spacing.lg,
+                    color: theme.colors.gray900,
+                  }}
+                >
+                  Event Details
+                </h3>
                 <FormRow>
                   <FormGroup>
                     <Label>
@@ -824,7 +864,9 @@ const BookingPage = () => {
                       <option value="reception">Reception</option>
                       <option value="rehearsal">Rehearsal Dinner</option>
                       <option value="bridal-shower">Bridal Shower</option>
-                      <option value="bachelor-party">Bachelor/Bachelorette Party</option>
+                      <option value="bachelor-party">
+                        Bachelor/Bachelorette Party
+                      </option>
                     </Select>
                   </FormGroup>
                 </FormRow>
@@ -840,7 +882,8 @@ const BookingPage = () => {
                       placeholder="Enter venue name or location"
                     />
                     <HelpText>
-                      If you already have a venue, please provide the name and address
+                      If you already have a venue, please provide the name and
+                      address
                     </HelpText>
                   </FormGroup>
 
@@ -865,9 +908,16 @@ const BookingPage = () => {
 
               {/* Services Needed */}
               <div style={{ marginBottom: theme.spacing.xl }}>
-                <h3 style={{ marginBottom: theme.spacing.lg, color: theme.colors.gray900 }}>Services Needed</h3>
+                <h3
+                  style={{
+                    marginBottom: theme.spacing.lg,
+                    color: theme.colors.gray900,
+                  }}
+                >
+                  Services Needed
+                </h3>
                 <CheckboxGroup>
-                  {serviceOptions.map((service) => (
+                  {serviceOptions.map(service => (
                     <CheckboxItem key={service}>
                       <Checkbox
                         type="checkbox"
@@ -882,7 +932,14 @@ const BookingPage = () => {
 
               {/* Additional Information */}
               <div style={{ marginBottom: theme.spacing.xl }}>
-                <h3 style={{ marginBottom: theme.spacing.lg, color: theme.colors.gray900 }}>Additional Information</h3>
+                <h3
+                  style={{
+                    marginBottom: theme.spacing.lg,
+                    color: theme.colors.gray900,
+                  }}
+                >
+                  Additional Information
+                </h3>
                 <FormRow className="single">
                   <FormGroup>
                     <Label>
@@ -896,7 +953,8 @@ const BookingPage = () => {
                       placeholder="Describe your dream wedding, style preferences, special requirements, or any questions you have..."
                     />
                     <HelpText>
-                      Share any specific ideas, themes, or requirements to help us understand your vision better
+                      Share any specific ideas, themes, or requirements to help
+                      us understand your vision better
                     </HelpText>
                   </FormGroup>
                 </FormRow>
@@ -981,23 +1039,33 @@ const BookingPage = () => {
               </InfoTitle>
               <InfoList>
                 <InfoItem>
-                  <CheckIcon><FaCheck /></CheckIcon>
+                  <CheckIcon>
+                    <FaCheck />
+                  </CheckIcon>
                   We'll review your request within 24 hours
                 </InfoItem>
                 <InfoItem>
-                  <CheckIcon><FaCheck /></CheckIcon>
+                  <CheckIcon>
+                    <FaCheck />
+                  </CheckIcon>
                   Schedule a consultation at your convenience
                 </InfoItem>
                 <InfoItem>
-                  <CheckIcon><FaCheck /></CheckIcon>
+                  <CheckIcon>
+                    <FaCheck />
+                  </CheckIcon>
                   Discuss your vision and requirements in detail
                 </InfoItem>
                 <InfoItem>
-                  <CheckIcon><FaCheck /></CheckIcon>
+                  <CheckIcon>
+                    <FaCheck />
+                  </CheckIcon>
                   Receive a customized proposal and quote
                 </InfoItem>
                 <InfoItem>
-                  <CheckIcon><FaCheck /></CheckIcon>
+                  <CheckIcon>
+                    <FaCheck />
+                  </CheckIcon>
                   No obligation - free consultation
                 </InfoItem>
               </InfoList>

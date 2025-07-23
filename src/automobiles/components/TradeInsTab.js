@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
 import {
   FaExchangeAlt,
   FaSearch,
@@ -15,8 +15,8 @@ import {
   FaDownload,
   FaPrint,
   FaCamera,
-} from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
+} from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
 
 const Container = styled.div`
   background: ${theme.colors.white};
@@ -65,12 +65,15 @@ const HeaderActions = styled.div`
 `;
 
 const ActionButton = styled.button.withConfig({
-  shouldForwardProp: (prop) => prop !== "primary",
+  shouldForwardProp: prop => prop !== 'primary',
 })`
-  background: ${(props) => props.primary ? theme.colors.primary : theme.colors.white};
-  color: ${(props) => props.primary ? theme.colors.white : theme.colors.gray700};
+  background: ${props =>
+    props.primary ? theme.colors.primary : theme.colors.white};
+  color: ${props =>
+    props.primary ? theme.colors.white : theme.colors.gray700};
   padding: ${theme.spacing.md} ${theme.spacing.lg};
-  border: ${(props) => props.primary ? 'none' : `2px solid ${theme.colors.gray200}`};
+  border: ${props =>
+    props.primary ? 'none' : `2px solid ${theme.colors.gray200}`};
   border-radius: ${theme.borderRadius.md};
   font-weight: 600;
   cursor: pointer;
@@ -80,9 +83,11 @@ const ActionButton = styled.button.withConfig({
   gap: ${theme.spacing.sm};
 
   &:hover {
-    background: ${(props) => props.primary ? theme.colors.primaryDark : theme.colors.gray50};
+    background: ${props =>
+      props.primary ? theme.colors.primaryDark : theme.colors.gray50};
     transform: translateY(-1px);
-    border-color: ${(props) => props.primary ? theme.colors.primaryDark : theme.colors.primary};
+    border-color: ${props =>
+      props.primary ? theme.colors.primaryDark : theme.colors.primary};
   }
 `;
 
@@ -163,7 +168,7 @@ const StatCard = styled.div`
 const StatValue = styled.div`
   font-size: 1.8rem;
   font-weight: 700;
-  color: ${(props) => props.color || theme.colors.primary};
+  color: ${props => props.color || theme.colors.primary};
   margin-bottom: ${theme.spacing.xs};
 `;
 
@@ -224,22 +229,29 @@ const TradeInDate = styled.div`
 `;
 
 const StatusBadge = styled.span.withConfig({
-  shouldForwardProp: (prop) => prop !== "status",
+  shouldForwardProp: prop => prop !== 'status',
 })`
   padding: ${theme.spacing.xs} ${theme.spacing.sm};
   border-radius: ${theme.borderRadius.sm};
   font-size: 0.8rem;
   font-weight: 600;
   color: ${theme.colors.white};
-  background: ${(props) => {
+  background: ${props => {
     switch (props.status) {
-      case "pending": return theme.colors.warning;
-      case "evaluating": return theme.colors.info;
-      case "appraised": return theme.colors.purple || "#8b5cf6";
-      case "accepted": return theme.colors.success;
-      case "rejected": return theme.colors.error;
-      case "completed": return theme.colors.gray600;
-      default: return theme.colors.gray500;
+      case 'pending':
+        return theme.colors.warning;
+      case 'evaluating':
+        return theme.colors.info;
+      case 'appraised':
+        return theme.colors.purple || '#8b5cf6';
+      case 'accepted':
+        return theme.colors.success;
+      case 'rejected':
+        return theme.colors.error;
+      case 'completed':
+        return theme.colors.gray600;
+      default:
+        return theme.colors.gray500;
     }
   }};
 `;
@@ -318,7 +330,7 @@ const PriceItem = styled.div`
 
 const PriceValue = styled.div`
   font-weight: 700;
-  color: ${(props) => props.color || theme.colors.gray900};
+  color: ${props => props.color || theme.colors.gray900};
   font-size: 1rem;
   margin-bottom: ${theme.spacing.xs};
 `;
@@ -358,20 +370,29 @@ const ActionButtons = styled.div`
 `;
 
 const ActionButtonSmall = styled.button.withConfig({
-  shouldForwardProp: (prop) => prop !== "variant",
+  shouldForwardProp: prop => prop !== 'variant',
 })`
-  background: ${(props) => 
-    props.variant === 'accept' ? theme.colors.success : 
-    props.variant === 'reject' ? theme.colors.error : 
-    props.variant === 'primary' ? theme.colors.primary :
-    theme.colors.white};
-  color: ${(props) => 
-    props.variant === 'accept' || props.variant === 'reject' || props.variant === 'primary' ? 
-    theme.colors.white : theme.colors.gray700};
+  background: ${props =>
+    props.variant === 'accept'
+      ? theme.colors.success
+      : props.variant === 'reject'
+        ? theme.colors.error
+        : props.variant === 'primary'
+          ? theme.colors.primary
+          : theme.colors.white};
+  color: ${props =>
+    props.variant === 'accept' ||
+    props.variant === 'reject' ||
+    props.variant === 'primary'
+      ? theme.colors.white
+      : theme.colors.gray700};
   padding: ${theme.spacing.xs} ${theme.spacing.sm};
-  border: ${(props) => 
-    props.variant === 'accept' || props.variant === 'reject' || props.variant === 'primary' ? 
-    'none' : `1px solid ${theme.colors.gray300}`};
+  border: ${props =>
+    props.variant === 'accept' ||
+    props.variant === 'reject' ||
+    props.variant === 'primary'
+      ? 'none'
+      : `1px solid ${theme.colors.gray300}`};
   border-radius: ${theme.borderRadius.sm};
   font-size: 0.8rem;
   font-weight: 500;
@@ -409,31 +430,32 @@ const EmptyState = styled.div`
 const TradeInsTab = ({ dealer }) => {
   const [tradeIns, setTradeIns] = useState([]);
   const [filteredTradeIns, setFilteredTradeIns] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('');
 
   useEffect(() => {
     // Mock trade-in data
     const mockTradeIns = [
       {
-        id: "TI-001",
-        tradeInId: "24-TI-001",
+        id: 'TI-001',
+        tradeInId: '24-TI-001',
         customerId: 1,
-        customerName: "John Smith",
-        customerEmail: "john.smith@email.com",
-        customerPhone: "(555) 123-4567",
+        customerName: 'John Smith',
+        customerEmail: 'john.smith@email.com',
+        customerPhone: '(555) 123-4567',
         vehicle: {
           year: 2019,
-          make: "BMW",
-          model: "X3",
-          trim: "xDrive30i",
+          make: 'BMW',
+          model: 'X3',
+          trim: 'xDrive30i',
           mileage: 45000,
-          color: "Black",
-          vin: "5UXTY3C52K9A12345",
-          image: "https://images.unsplash.com/photo-1555215695-3004980ad54e?w=300&h=200&fit=crop",
+          color: 'Black',
+          vin: '5UXTY3C52K9A12345',
+          image:
+            'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=300&h=200&fit=crop',
         },
-        submissionDate: "2024-02-15T10:30:00Z",
-        status: "evaluating",
+        submissionDate: '2024-02-15T10:30:00Z',
+        status: 'evaluating',
         condition: {
           overall: 4,
           exterior: 4,
@@ -445,29 +467,31 @@ const TradeInsTab = ({ dealer }) => {
           offerAmount: 26500,
           marketValue: 30000,
         },
-        appraiser: "Mike Johnson",
-        notes: "Good condition, minor scratches on rear bumper, recent maintenance records available",
+        appraiser: 'Mike Johnson',
+        notes:
+          'Good condition, minor scratches on rear bumper, recent maintenance records available',
         photos: 8,
       },
       {
-        id: "TI-002",
-        tradeInId: "24-TI-002",
+        id: 'TI-002',
+        tradeInId: '24-TI-002',
         customerId: 2,
-        customerName: "Sarah Johnson",
-        customerEmail: "sarah.j@email.com",
-        customerPhone: "(555) 234-5678",
+        customerName: 'Sarah Johnson',
+        customerEmail: 'sarah.j@email.com',
+        customerPhone: '(555) 234-5678',
         vehicle: {
           year: 2020,
-          make: "Toyota",
-          model: "Camry",
-          trim: "XLE",
+          make: 'Toyota',
+          model: 'Camry',
+          trim: 'XLE',
           mileage: 32000,
-          color: "Silver",
-          vin: "4T1G11AK4LU123456",
-          image: "https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=300&h=200&fit=crop",
+          color: 'Silver',
+          vin: '4T1G11AK4LU123456',
+          image:
+            'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=300&h=200&fit=crop',
         },
-        submissionDate: "2024-02-14T14:20:00Z",
-        status: "accepted",
+        submissionDate: '2024-02-14T14:20:00Z',
+        status: 'accepted',
         condition: {
           overall: 5,
           exterior: 5,
@@ -479,29 +503,30 @@ const TradeInsTab = ({ dealer }) => {
           offerAmount: 21500,
           marketValue: 24000,
         },
-        appraiser: "Lisa Chen",
-        notes: "Excellent condition, single owner, full service history",
+        appraiser: 'Lisa Chen',
+        notes: 'Excellent condition, single owner, full service history',
         photos: 12,
       },
       {
-        id: "TI-003",
-        tradeInId: "24-TI-003",
+        id: 'TI-003',
+        tradeInId: '24-TI-003',
         customerId: 3,
-        customerName: "Michael Brown",
-        customerEmail: "m.brown@email.com",
-        customerPhone: "(555) 345-6789",
+        customerName: 'Michael Brown',
+        customerEmail: 'm.brown@email.com',
+        customerPhone: '(555) 345-6789',
         vehicle: {
           year: 2018,
-          make: "Ford",
-          model: "F-150",
-          trim: "Lariat",
+          make: 'Ford',
+          model: 'F-150',
+          trim: 'Lariat',
           mileage: 68000,
-          color: "Blue",
-          vin: "1FTEW1EG5JKF12345",
-          image: "https://images.unsplash.com/photo-1593950315186-76a92975b60c?w=300&h=200&fit=crop",
+          color: 'Blue',
+          vin: '1FTEW1EG5JKF12345',
+          image:
+            'https://images.unsplash.com/photo-1593950315186-76a92975b60c?w=300&h=200&fit=crop',
         },
-        submissionDate: "2024-02-13T09:15:00Z",
-        status: "appraised",
+        submissionDate: '2024-02-13T09:15:00Z',
+        status: 'appraised',
         condition: {
           overall: 3,
           exterior: 3,
@@ -513,29 +538,31 @@ const TradeInsTab = ({ dealer }) => {
           offerAmount: 29500,
           marketValue: 35000,
         },
-        appraiser: "David Wilson",
-        notes: "Work truck with some wear, bed liner installed, maintenance up to date",
+        appraiser: 'David Wilson',
+        notes:
+          'Work truck with some wear, bed liner installed, maintenance up to date',
         photos: 6,
       },
       {
-        id: "TI-004",
-        tradeInId: "24-TI-004",
+        id: 'TI-004',
+        tradeInId: '24-TI-004',
         customerId: 4,
-        customerName: "Emily Davis",
-        customerEmail: "emily.davis@email.com",
-        customerPhone: "(555) 456-7890",
+        customerName: 'Emily Davis',
+        customerEmail: 'emily.davis@email.com',
+        customerPhone: '(555) 456-7890',
         vehicle: {
           year: 2021,
-          make: "Honda",
-          model: "Civic",
-          trim: "Sport",
+          make: 'Honda',
+          model: 'Civic',
+          trim: 'Sport',
           mileage: 25000,
-          color: "Red",
-          vin: "2HGFC2F56MH123456",
-          image: "https://images.unsplash.com/photo-1606152421802-db97b9c7a11b?w=300&h=200&fit=crop",
+          color: 'Red',
+          vin: '2HGFC2F56MH123456',
+          image:
+            'https://images.unsplash.com/photo-1606152421802-db97b9c7a11b?w=300&h=200&fit=crop',
         },
-        submissionDate: "2024-02-12T16:45:00Z",
-        status: "pending",
+        submissionDate: '2024-02-12T16:45:00Z',
+        status: 'pending',
         condition: {
           overall: 0,
           exterior: 0,
@@ -548,28 +575,29 @@ const TradeInsTab = ({ dealer }) => {
           marketValue: 0,
         },
         appraiser: null,
-        notes: "Initial submission, awaiting inspection appointment",
+        notes: 'Initial submission, awaiting inspection appointment',
         photos: 4,
       },
       {
-        id: "TI-005",
-        tradeInId: "24-TI-005",
+        id: 'TI-005',
+        tradeInId: '24-TI-005',
         customerId: 5,
-        customerName: "Robert Wilson",
-        customerEmail: "r.wilson@email.com",
-        customerPhone: "(555) 567-8901",
+        customerName: 'Robert Wilson',
+        customerEmail: 'r.wilson@email.com',
+        customerPhone: '(555) 567-8901',
         vehicle: {
           year: 2017,
-          make: "Mercedes-Benz",
-          model: "C300",
-          trim: "4MATIC",
+          make: 'Mercedes-Benz',
+          model: 'C300',
+          trim: '4MATIC',
           mileage: 75000,
-          color: "White",
-          vin: "55SWF4KB4HU123456",
-          image: "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=300&h=200&fit=crop",
+          color: 'White',
+          vin: '55SWF4KB4HU123456',
+          image:
+            'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=300&h=200&fit=crop',
         },
-        submissionDate: "2024-02-11T11:00:00Z",
-        status: "rejected",
+        submissionDate: '2024-02-11T11:00:00Z',
+        status: 'rejected',
         condition: {
           overall: 2,
           exterior: 2,
@@ -581,8 +609,9 @@ const TradeInsTab = ({ dealer }) => {
           offerAmount: 0,
           marketValue: 22000,
         },
-        appraiser: "Alex Rodriguez",
-        notes: "High mileage, multiple accident history, extensive wear and tear",
+        appraiser: 'Alex Rodriguez',
+        notes:
+          'High mileage, multiple accident history, extensive wear and tear',
         photos: 10,
       },
     ];
@@ -596,11 +625,17 @@ const TradeInsTab = ({ dealer }) => {
 
     // Search filter
     if (searchTerm) {
-      filtered = filtered.filter(tradeIn =>
-        tradeIn.tradeInId.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        tradeIn.customerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        `${tradeIn.vehicle.year} ${tradeIn.vehicle.make} ${tradeIn.vehicle.model}`.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (tradeIn.appraiser && tradeIn.appraiser.toLowerCase().includes(searchTerm.toLowerCase()))
+      filtered = filtered.filter(
+        tradeIn =>
+          tradeIn.tradeInId.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          tradeIn.customerName
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase()) ||
+          `${tradeIn.vehicle.year} ${tradeIn.vehicle.make} ${tradeIn.vehicle.model}`
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase()) ||
+          (tradeIn.appraiser &&
+            tradeIn.appraiser.toLowerCase().includes(searchTerm.toLowerCase()))
       );
     }
 
@@ -612,52 +647,73 @@ const TradeInsTab = ({ dealer }) => {
     setFilteredTradeIns(filtered);
   }, [tradeIns, searchTerm, statusFilter]);
 
-  const formatCurrency = (amount) => {
-    if (amount === 0) return "TBD";
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
+  const formatCurrency = amount => {
+    if (amount === 0) return 'TBD';
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(amount);
   };
 
-  const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
+  const formatDate = dateString => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
     });
   };
 
-  const getStatusLabel = (status) => {
+  const getStatusLabel = status => {
     switch (status) {
-      case "pending": return "Pending";
-      case "evaluating": return "Evaluating";
-      case "appraised": return "Appraised";
-      case "accepted": return "Accepted";
-      case "rejected": return "Rejected";
-      case "completed": return "Completed";
-      default: return status;
+      case 'pending':
+        return 'Pending';
+      case 'evaluating':
+        return 'Evaluating';
+      case 'appraised':
+        return 'Appraised';
+      case 'accepted':
+        return 'Accepted';
+      case 'rejected':
+        return 'Rejected';
+      case 'completed':
+        return 'Completed';
+      default:
+        return status;
     }
   };
 
-  const renderStars = (rating) => {
+  const renderStars = rating => {
     return Array.from({ length: 5 }, (_, i) => (
-      <FaStar key={i} style={{ color: i < rating ? theme.colors.warning : theme.colors.gray300 }} />
+      <FaStar
+        key={i}
+        style={{
+          color: i < rating ? theme.colors.warning : theme.colors.gray300,
+        }}
+      />
     ));
   };
 
   const stats = {
     total: tradeIns.length,
-    pending: tradeIns.filter(t => t.status === "pending").length,
-    evaluating: tradeIns.filter(t => t.status === "evaluating").length,
-    accepted: tradeIns.filter(t => t.status === "accepted").length,
-    rejected: tradeIns.filter(t => t.status === "rejected").length,
-    totalValue: tradeIns.filter(t => t.status === "accepted").reduce((sum, t) => sum + t.pricing.offerAmount, 0),
-    avgCondition: tradeIns.length > 0 ? 
-      Math.round(tradeIns.filter(t => t.condition.overall > 0).reduce((sum, t) => sum + t.condition.overall, 0) / 
-      tradeIns.filter(t => t.condition.overall > 0).length * 10) / 10 : 0,
+    pending: tradeIns.filter(t => t.status === 'pending').length,
+    evaluating: tradeIns.filter(t => t.status === 'evaluating').length,
+    accepted: tradeIns.filter(t => t.status === 'accepted').length,
+    rejected: tradeIns.filter(t => t.status === 'rejected').length,
+    totalValue: tradeIns
+      .filter(t => t.status === 'accepted')
+      .reduce((sum, t) => sum + t.pricing.offerAmount, 0),
+    avgCondition:
+      tradeIns.length > 0
+        ? Math.round(
+            (tradeIns
+              .filter(t => t.condition.overall > 0)
+              .reduce((sum, t) => sum + t.condition.overall, 0) /
+              tradeIns.filter(t => t.condition.overall > 0).length) *
+              10
+          ) / 10
+        : 0,
   };
 
   return (
@@ -693,13 +749,13 @@ const TradeInsTab = ({ dealer }) => {
               type="text"
               placeholder="Search by trade-in ID, customer, vehicle, or appraiser..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={e => setSearchTerm(e.target.value)}
             />
           </SearchContainer>
 
           <FilterSelect
             value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
+            onChange={e => setStatusFilter(e.target.value)}
           >
             <option value="">All Statuses</option>
             <option value="pending">Pending</option>
@@ -749,18 +805,22 @@ const TradeInsTab = ({ dealer }) => {
           <StatLabel>Rejected</StatLabel>
         </StatCard>
         <StatCard>
-          <StatValue color={theme.colors.success}>{formatCurrency(stats.totalValue)}</StatValue>
+          <StatValue color={theme.colors.success}>
+            {formatCurrency(stats.totalValue)}
+          </StatValue>
           <StatLabel>Total Value</StatLabel>
         </StatCard>
         <StatCard>
-          <StatValue color={theme.colors.warning}>{stats.avgCondition}</StatValue>
+          <StatValue color={theme.colors.warning}>
+            {stats.avgCondition}
+          </StatValue>
           <StatLabel>Avg Condition</StatLabel>
         </StatCard>
       </StatsGrid>
 
       <TradeInsGrid>
         {filteredTradeIns.length > 0 ? (
-          filteredTradeIns.map((tradeIn) => (
+          filteredTradeIns.map(tradeIn => (
             <TradeInCard key={tradeIn.id}>
               <TradeInHeader>
                 <div>
@@ -786,14 +846,22 @@ const TradeInsTab = ({ dealer }) => {
 
               <VehicleSection>
                 <VehicleInfo>
-                  <VehicleImage src={tradeIn.vehicle.image} alt={`${tradeIn.vehicle.year} ${tradeIn.vehicle.make} ${tradeIn.vehicle.model}`} />
+                  <VehicleImage
+                    src={tradeIn.vehicle.image}
+                    alt={`${tradeIn.vehicle.year} ${tradeIn.vehicle.make} ${tradeIn.vehicle.model}`}
+                  />
                   <VehicleDetails>
                     <VehicleName>
-                      {tradeIn.vehicle.year} {tradeIn.vehicle.make} {tradeIn.vehicle.model}
+                      {tradeIn.vehicle.year} {tradeIn.vehicle.make}{' '}
+                      {tradeIn.vehicle.model}
                     </VehicleName>
                     <VehicleSpecs>
-                      <div>{tradeIn.vehicle.trim} • {tradeIn.vehicle.color}</div>
-                      <div>{tradeIn.vehicle.mileage.toLocaleString()} miles</div>
+                      <div>
+                        {tradeIn.vehicle.trim} • {tradeIn.vehicle.color}
+                      </div>
+                      <div>
+                        {tradeIn.vehicle.mileage.toLocaleString()} miles
+                      </div>
                       <div>VIN: {tradeIn.vehicle.vin}</div>
                     </VehicleSpecs>
                   </VehicleDetails>
@@ -811,27 +879,46 @@ const TradeInsTab = ({ dealer }) => {
 
               <PricingSection>
                 <PriceItem>
-                  <PriceValue color={theme.colors.info}>{formatCurrency(tradeIn.pricing.marketValue)}</PriceValue>
+                  <PriceValue color={theme.colors.info}>
+                    {formatCurrency(tradeIn.pricing.marketValue)}
+                  </PriceValue>
                   <PriceLabel>Market Value</PriceLabel>
                 </PriceItem>
                 <PriceItem>
-                  <PriceValue>{formatCurrency(tradeIn.pricing.estimatedValue)}</PriceValue>
+                  <PriceValue>
+                    {formatCurrency(tradeIn.pricing.estimatedValue)}
+                  </PriceValue>
                   <PriceLabel>Estimated</PriceLabel>
                 </PriceItem>
                 <PriceItem>
-                  <PriceValue color={theme.colors.success}>{formatCurrency(tradeIn.pricing.offerAmount)}</PriceValue>
+                  <PriceValue color={theme.colors.success}>
+                    {formatCurrency(tradeIn.pricing.offerAmount)}
+                  </PriceValue>
                   <PriceLabel>Our Offer</PriceLabel>
                 </PriceItem>
               </PricingSection>
 
               {tradeIn.appraiser && (
-                <div style={{ marginBottom: theme.spacing.md, fontSize: '0.9rem', color: theme.colors.gray600 }}>
+                <div
+                  style={{
+                    marginBottom: theme.spacing.md,
+                    fontSize: '0.9rem',
+                    color: theme.colors.gray600,
+                  }}
+                >
                   Appraiser: {tradeIn.appraiser} • {tradeIn.photos} photos
                 </div>
               )}
 
               {tradeIn.notes && (
-                <div style={{ marginBottom: theme.spacing.md, fontSize: '0.9rem', color: theme.colors.gray600, fontStyle: 'italic' }}>
+                <div
+                  style={{
+                    marginBottom: theme.spacing.md,
+                    fontSize: '0.9rem',
+                    color: theme.colors.gray600,
+                    fontStyle: 'italic',
+                  }}
+                >
                   Notes: {tradeIn.notes}
                 </div>
               )}
@@ -845,13 +932,13 @@ const TradeInsTab = ({ dealer }) => {
                   <FaCamera />
                   Photos ({tradeIn.photos})
                 </ActionButtonSmall>
-                {tradeIn.status === "pending" && (
+                {tradeIn.status === 'pending' && (
                   <ActionButtonSmall variant="primary">
                     <FaClipboardList />
                     Start Appraisal
                   </ActionButtonSmall>
                 )}
-                {tradeIn.status === "appraised" && (
+                {tradeIn.status === 'appraised' && (
                   <>
                     <ActionButtonSmall variant="accept">
                       <FaCheck />
@@ -863,7 +950,7 @@ const TradeInsTab = ({ dealer }) => {
                     </ActionButtonSmall>
                   </>
                 )}
-                {tradeIn.status === "accepted" && (
+                {tradeIn.status === 'accepted' && (
                   <ActionButtonSmall>
                     <FaPrint />
                     Print Contract
@@ -880,7 +967,10 @@ const TradeInsTab = ({ dealer }) => {
           <EmptyState>
             <FaExchangeAlt className="icon" />
             <h3>No trade-ins found</h3>
-            <p>Try adjusting your search criteria or add a new trade-in evaluation.</p>
+            <p>
+              Try adjusting your search criteria or add a new trade-in
+              evaluation.
+            </p>
           </EmptyState>
         )}
       </TradeInsGrid>

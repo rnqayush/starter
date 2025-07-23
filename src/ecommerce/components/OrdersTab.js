@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import React, { useState } from 'react';
+import styled from 'styled-components';
 import {
   FaSearch,
   FaFilter,
@@ -9,9 +9,9 @@ import {
   FaCheck,
   FaClock,
   FaTimes,
-} from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
-import { sellerOrders } from "../data/sellerData";
+} from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
+import { sellerOrders } from '../data/sellerData';
 
 const OrdersContainer = styled.div`
   background: ${theme.colors.white};
@@ -166,7 +166,7 @@ const TableCell = styled.td`
 `;
 
 const OrderId = styled.span`
-  font-family: "Courier New", monospace;
+  font-family: 'Courier New', monospace;
   font-weight: 600;
   color: ${theme.colors.primary};
 `;
@@ -209,7 +209,7 @@ const TotalAmount = styled.span`
 `;
 
 const StatusBadge = styled.span.withConfig({
-  shouldForwardProp: (prop) => prop !== "status",
+  shouldForwardProp: prop => prop !== 'status',
 })`
   padding: ${theme.spacing.xs} ${theme.spacing.sm};
   border-radius: ${theme.borderRadius.sm};
@@ -222,29 +222,29 @@ const StatusBadge = styled.span.withConfig({
   gap: ${theme.spacing.xs};
   width: fit-content;
 
-  ${(props) => {
+  ${props => {
     switch (props.status) {
-      case "completed":
+      case 'completed':
         return `
           background: ${theme.colors.success}20;
           color: ${theme.colors.success};
         `;
-      case "shipped":
+      case 'shipped':
         return `
           background: ${theme.colors.info}20;
           color: ${theme.colors.info};
         `;
-      case "processing":
+      case 'processing':
         return `
           background: ${theme.colors.warning}20;
           color: ${theme.colors.warning};
         `;
-      case "pending":
+      case 'pending':
         return `
           background: ${theme.colors.gray200};
           color: ${theme.colors.gray600};
         `;
-      case "cancelled":
+      case 'cancelled':
         return `
           background: ${theme.colors.error}20;
           color: ${theme.colors.error};
@@ -259,7 +259,7 @@ const StatusBadge = styled.span.withConfig({
 `;
 
 const PaymentBadge = styled.span.withConfig({
-  shouldForwardProp: (prop) => prop !== "status",
+  shouldForwardProp: prop => prop !== 'status',
 })`
   padding: ${theme.spacing.xs} ${theme.spacing.sm};
   border-radius: ${theme.borderRadius.sm};
@@ -268,19 +268,19 @@ const PaymentBadge = styled.span.withConfig({
   text-transform: uppercase;
   letter-spacing: 0.5px;
 
-  ${(props) => {
+  ${props => {
     switch (props.status) {
-      case "paid":
+      case 'paid':
         return `
           background: ${theme.colors.success}20;
           color: ${theme.colors.success};
         `;
-      case "pending":
+      case 'pending':
         return `
           background: ${theme.colors.warning}20;
           color: ${theme.colors.warning};
         `;
-      case "refunded":
+      case 'refunded':
         return `
           background: ${theme.colors.error}20;
           color: ${theme.colors.error};
@@ -328,13 +328,11 @@ const FilterTabs = styled.div`
 `;
 
 const FilterTab = styled.button.withConfig({
-  shouldForwardProp: (prop) => prop !== "active",
+  shouldForwardProp: prop => prop !== 'active',
 })`
   padding: ${theme.spacing.sm} ${theme.spacing.md};
-  background: ${(props) =>
-    props.active ? theme.colors.primary : "transparent"};
-  color: ${(props) =>
-    props.active ? theme.colors.white : theme.colors.gray600};
+  background: ${props => (props.active ? theme.colors.primary : 'transparent')};
+  color: ${props => (props.active ? theme.colors.white : theme.colors.gray600)};
   border: none;
   border-radius: ${theme.borderRadius.sm};
   font-size: 0.85rem;
@@ -343,97 +341,97 @@ const FilterTab = styled.button.withConfig({
   transition: all 0.2s ease;
 
   &:hover {
-    background: ${(props) =>
+    background: ${props =>
       props.active ? theme.colors.primaryDark : theme.colors.gray200};
   }
 `;
 
 const OrdersTab = () => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState("all");
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('all');
   const [orders] = useState(sellerOrders);
 
-  const formatCurrency = (value) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
+  const formatCurrency = value => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
     }).format(value);
   };
 
-  const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
+  const formatDate = dateString => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
     });
   };
 
-  const getStatusIcon = (status) => {
+  const getStatusIcon = status => {
     switch (status) {
-      case "completed":
+      case 'completed':
         return <FaCheck />;
-      case "shipped":
+      case 'shipped':
         return <FaTruck />;
-      case "processing":
+      case 'processing':
         return <FaClock />;
-      case "pending":
+      case 'pending':
         return <FaClock />;
-      case "cancelled":
+      case 'cancelled':
         return <FaTimes />;
       default:
         return <FaClock />;
     }
   };
 
-  const getStatusText = (status) => {
+  const getStatusText = status => {
     switch (status) {
-      case "completed":
-        return "Completed";
-      case "shipped":
-        return "Shipped";
-      case "processing":
-        return "Processing";
-      case "pending":
-        return "Pending";
-      case "cancelled":
-        return "Cancelled";
+      case 'completed':
+        return 'Completed';
+      case 'shipped':
+        return 'Shipped';
+      case 'processing':
+        return 'Processing';
+      case 'pending':
+        return 'Pending';
+      case 'cancelled':
+        return 'Cancelled';
       default:
         return status;
     }
   };
 
-  const getPaymentText = (status) => {
+  const getPaymentText = status => {
     switch (status) {
-      case "paid":
-        return "Paid";
-      case "pending":
-        return "Pending";
-      case "refunded":
-        return "Refunded";
+      case 'paid':
+        return 'Paid';
+      case 'pending':
+        return 'Pending';
+      case 'refunded':
+        return 'Refunded';
       default:
         return status;
     }
   };
 
-  const filteredOrders = orders.filter((order) => {
+  const filteredOrders = orders.filter(order => {
     const matchesSearch =
       order.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
       order.customerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       order.customerEmail.toLowerCase().includes(searchTerm.toLowerCase());
 
     const matchesStatus =
-      statusFilter === "all" || order.status === statusFilter;
+      statusFilter === 'all' || order.status === statusFilter;
 
     return matchesSearch && matchesStatus;
   });
 
   const statusCounts = {
     all: orders.length,
-    pending: orders.filter((o) => o.status === "pending").length,
-    processing: orders.filter((o) => o.status === "processing").length,
-    shipped: orders.filter((o) => o.status === "shipped").length,
-    completed: orders.filter((o) => o.status === "completed").length,
-    cancelled: orders.filter((o) => o.status === "cancelled").length,
+    pending: orders.filter(o => o.status === 'pending').length,
+    processing: orders.filter(o => o.status === 'processing').length,
+    shipped: orders.filter(o => o.status === 'shipped').length,
+    completed: orders.filter(o => o.status === 'completed').length,
+    cancelled: orders.filter(o => o.status === 'cancelled').length,
   };
 
   return (
@@ -451,7 +449,7 @@ const OrdersTab = () => {
               type="text"
               placeholder="Search orders..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={e => setSearchTerm(e.target.value)}
             />
           </SearchBox>
 
@@ -469,38 +467,38 @@ const OrdersTab = () => {
 
       <FilterTabs>
         <FilterTab
-          active={statusFilter === "all"}
-          onClick={() => setStatusFilter("all")}
+          active={statusFilter === 'all'}
+          onClick={() => setStatusFilter('all')}
         >
           All ({statusCounts.all})
         </FilterTab>
         <FilterTab
-          active={statusFilter === "pending"}
-          onClick={() => setStatusFilter("pending")}
+          active={statusFilter === 'pending'}
+          onClick={() => setStatusFilter('pending')}
         >
           Pending ({statusCounts.pending})
         </FilterTab>
         <FilterTab
-          active={statusFilter === "processing"}
-          onClick={() => setStatusFilter("processing")}
+          active={statusFilter === 'processing'}
+          onClick={() => setStatusFilter('processing')}
         >
           Processing ({statusCounts.processing})
         </FilterTab>
         <FilterTab
-          active={statusFilter === "shipped"}
-          onClick={() => setStatusFilter("shipped")}
+          active={statusFilter === 'shipped'}
+          onClick={() => setStatusFilter('shipped')}
         >
           Shipped ({statusCounts.shipped})
         </FilterTab>
         <FilterTab
-          active={statusFilter === "completed"}
-          onClick={() => setStatusFilter("completed")}
+          active={statusFilter === 'completed'}
+          onClick={() => setStatusFilter('completed')}
         >
           Completed ({statusCounts.completed})
         </FilterTab>
         <FilterTab
-          active={statusFilter === "cancelled"}
-          onClick={() => setStatusFilter("cancelled")}
+          active={statusFilter === 'cancelled'}
+          onClick={() => setStatusFilter('cancelled')}
         >
           Cancelled ({statusCounts.cancelled})
         </FilterTab>
@@ -521,7 +519,7 @@ const OrdersTab = () => {
             </TableRow>
           </TableHeader>
           <tbody>
-            {filteredOrders.map((order) => (
+            {filteredOrders.map(order => (
               <TableRow key={order.id}>
                 <TableCell>
                   <OrderId>{order.id}</OrderId>

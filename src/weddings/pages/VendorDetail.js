@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 import {
   FaArrowLeft,
   FaStar,
@@ -20,9 +20,9 @@ import {
   FaRing,
   FaGem,
   FaLeaf,
-} from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
-import { getVendorById } from "../data/vendors";
+} from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
+import { getVendorById } from '../data/vendors';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -78,11 +78,14 @@ const ActionButtons = styled.div`
 `;
 
 const ActionButton = styled.button.withConfig({
-  shouldForwardProp: (prop) => prop !== "primary",
+  shouldForwardProp: prop => prop !== 'primary',
 })`
-  background: ${(props) => props.primary ? theme.colors.primary : theme.colors.white};
-  color: ${(props) => props.primary ? theme.colors.white : theme.colors.gray700};
-  border: 2px solid ${(props) => props.primary ? theme.colors.primary : theme.colors.gray200};
+  background: ${props =>
+    props.primary ? theme.colors.primary : theme.colors.white};
+  color: ${props =>
+    props.primary ? theme.colors.white : theme.colors.gray700};
+  border: 2px solid
+    ${props => (props.primary ? theme.colors.primary : theme.colors.gray200)};
   padding: ${theme.spacing.sm} ${theme.spacing.md};
   border-radius: ${theme.borderRadius.md};
   font-weight: 600;
@@ -94,7 +97,8 @@ const ActionButton = styled.button.withConfig({
 
   &:hover {
     transform: translateY(-1px);
-    background: ${(props) => props.primary ? theme.colors.primaryDark : theme.colors.gray50};
+    background: ${props =>
+      props.primary ? theme.colors.primaryDark : theme.colors.gray50};
   }
 `;
 
@@ -382,7 +386,7 @@ const HourRow = styled.div`
   justify-content: space-between;
   padding: ${theme.spacing.sm} 0;
   border-bottom: 1px solid ${theme.colors.gray200};
-  
+
   &:last-child {
     border-bottom: none;
   }
@@ -527,53 +531,53 @@ const VendorDetail = () => {
       });
     } else {
       navigator.clipboard.writeText(window.location.href);
-      alert("Link copied to clipboard!");
+      alert('Link copied to clipboard!');
     }
   };
 
   const mockReviews = [
     {
       id: 1,
-      name: "Sarah Johnson",
+      name: 'Sarah Johnson',
       rating: 5,
-      date: "2 weeks ago",
-      text: "Absolutely amazing service! They made our wedding day perfect. The attention to detail was incredible and the team was so professional throughout the entire process.",
+      date: '2 weeks ago',
+      text: 'Absolutely amazing service! They made our wedding day perfect. The attention to detail was incredible and the team was so professional throughout the entire process.',
     },
     {
       id: 2,
-      name: "Michael & Emma",
+      name: 'Michael & Emma',
       rating: 5,
-      date: "1 month ago",
+      date: '1 month ago',
       text: "We couldn't have asked for better vendors. From the initial consultation to the final execution, everything was flawless. Highly recommend to any couple planning their special day!",
     },
     {
       id: 3,
-      name: "Jennifer Chen",
+      name: 'Jennifer Chen',
       rating: 4,
-      date: "2 months ago",
-      text: "Great experience overall. Very responsive and accommodating to our needs. The quality of work exceeded our expectations and the pricing was fair.",
+      date: '2 months ago',
+      text: 'Great experience overall. Very responsive and accommodating to our needs. The quality of work exceeded our expectations and the pricing was fair.',
     },
   ];
 
   const services = [
     {
-      name: "Wedding Planning",
-      description: "Complete wedding planning from start to finish",
+      name: 'Wedding Planning',
+      description: 'Complete wedding planning from start to finish',
       icon: FaRing,
     },
     {
-      name: "Venue Decoration",
-      description: "Beautiful decorations to transform your venue",
+      name: 'Venue Decoration',
+      description: 'Beautiful decorations to transform your venue',
       icon: FaLeaf,
     },
     {
-      name: "Floral Arrangements",
-      description: "Custom bouquets and centerpieces",
+      name: 'Floral Arrangements',
+      description: 'Custom bouquets and centerpieces',
       icon: FaLeaf,
     },
     {
-      name: "Photography",
-      description: "Professional wedding photography services",
+      name: 'Photography',
+      description: 'Professional wedding photography services',
       icon: FaCamera,
     },
   ];
@@ -591,7 +595,7 @@ const VendorDetail = () => {
       <PageContainer>
         <NavHeader>
           <NavContent>
-            <BackButton onClick={() => navigate("/weddings")}>
+            <BackButton onClick={() => navigate('/weddings')}>
               <FaArrowLeft />
               Back to Vendors
             </BackButton>
@@ -599,8 +603,11 @@ const VendorDetail = () => {
         </NavHeader>
         <NotFound>
           <h2>Vendor Not Found</h2>
-          <p>The vendor you're looking for doesn't exist or may have been removed.</p>
-          <ActionButton primary onClick={() => navigate("/weddings")}>
+          <p>
+            The vendor you're looking for doesn't exist or may have been
+            removed.
+          </p>
+          <ActionButton primary onClick={() => navigate('/weddings')}>
             Back to Vendors
           </ActionButton>
         </NotFound>
@@ -612,13 +619,15 @@ const VendorDetail = () => {
     <PageContainer>
       <NavHeader>
         <NavContent>
-          <BackButton onClick={() => navigate("/weddings")}>
+          <BackButton onClick={() => navigate('/weddings')}>
             <FaArrowLeft />
             Back to Vendors
           </BackButton>
           <ActionButtons>
             <ActionButton onClick={() => setIsLiked(!isLiked)}>
-              <FaHeart style={{ color: isLiked ? theme.colors.error : 'inherit' }} />
+              <FaHeart
+                style={{ color: isLiked ? theme.colors.error : 'inherit' }}
+              />
               {isLiked ? 'Liked' : 'Like'}
             </ActionButton>
             <ActionButton onClick={handleShare}>
@@ -701,7 +710,11 @@ const VendorDetail = () => {
               </SectionTitle>
               <GalleryGrid>
                 {vendor.portfolioImages.map((image, index) => (
-                  <GalleryItem key={index} src={image} alt={`${vendor.name} portfolio ${index + 1}`} />
+                  <GalleryItem
+                    key={index}
+                    src={image}
+                    alt={`${vendor.name} portfolio ${index + 1}`}
+                  />
                 ))}
               </GalleryGrid>
             </Section>
@@ -711,7 +724,7 @@ const VendorDetail = () => {
                 <FaQuoteLeft />
                 Customer Reviews
               </SectionTitle>
-              {mockReviews.map((review) => (
+              {mockReviews.map(review => (
                 <ReviewCard key={review.id}>
                   <ReviewHeader>
                     <ReviewerInfo>
@@ -742,7 +755,9 @@ const VendorDetail = () => {
                     </ServiceIcon>
                     <ServiceInfo>
                       <ServiceName>{service.name}</ServiceName>
-                      <ServiceDescription>{service.description}</ServiceDescription>
+                      <ServiceDescription>
+                        {service.description}
+                      </ServiceDescription>
                     </ServiceInfo>
                   </ServiceItem>
                 ))}
@@ -754,7 +769,8 @@ const VendorDetail = () => {
             <BookingCard>
               <BookingTitle>Ready to Book?</BookingTitle>
               <BookingDescription>
-                Get in touch with {vendor.name} to discuss your wedding plans and check availability for your special day.
+                Get in touch with {vendor.name} to discuss your wedding plans
+                and check availability for your special day.
               </BookingDescription>
               <BookingButton onClick={handleBooking}>
                 <FaCalendarAlt />
@@ -789,7 +805,9 @@ const VendorDetail = () => {
                   </ServiceIcon>
                   <ServiceInfo>
                     <ServiceName>Location</ServiceName>
-                    <ServiceDescription>{vendor.city}, {vendor.state}</ServiceDescription>
+                    <ServiceDescription>
+                      {vendor.city}, {vendor.state}
+                    </ServiceDescription>
                   </ServiceInfo>
                 </ServiceItem>
                 <ServiceItem>
@@ -798,7 +816,9 @@ const VendorDetail = () => {
                   </ServiceIcon>
                   <ServiceInfo>
                     <ServiceName>Rating</ServiceName>
-                    <ServiceDescription>{vendor.rating}/5 from {vendor.reviewCount} reviews</ServiceDescription>
+                    <ServiceDescription>
+                      {vendor.rating}/5 from {vendor.reviewCount} reviews
+                    </ServiceDescription>
                   </ServiceInfo>
                 </ServiceItem>
                 <ServiceItem>
@@ -807,7 +827,9 @@ const VendorDetail = () => {
                   </ServiceIcon>
                   <ServiceInfo>
                     <ServiceName>Specialties</ServiceName>
-                    <ServiceDescription>{vendor.specialties.length} services offered</ServiceDescription>
+                    <ServiceDescription>
+                      {vendor.specialties.length} services offered
+                    </ServiceDescription>
                   </ServiceInfo>
                 </ServiceItem>
               </ServicesList>

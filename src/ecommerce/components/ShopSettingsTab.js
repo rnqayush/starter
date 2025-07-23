@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
 import {
   FaStore,
   FaUser,
@@ -17,9 +17,9 @@ import {
   FaToggleOff,
   FaShieldAlt,
   FaTimes,
-  FaExclamationTriangle
-} from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
+  FaExclamationTriangle,
+} from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
 
 const Container = styled.div`
   display: flex;
@@ -220,7 +220,7 @@ const UploadButton = styled.label`
 `;
 
 const ToggleSwitch = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "enabled"
+  shouldForwardProp: prop => prop !== 'enabled',
 })`
   display: flex;
   align-items: center;
@@ -229,7 +229,8 @@ const ToggleSwitch = styled.div.withConfig({
 
   .toggle-icon {
     font-size: 1.5rem;
-    color: ${props => props.enabled ? theme.colors.success : theme.colors.gray400};
+    color: ${props =>
+      props.enabled ? theme.colors.success : theme.colors.gray400};
     transition: color 0.2s ease;
   }
 
@@ -290,8 +291,6 @@ const SecondaryButton = styled(Button)`
   }
 `;
 
-
-
 const HoursContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -323,7 +322,7 @@ const TimeInput = styled(Input)`
 `;
 
 const AlertBox = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "type"
+  shouldForwardProp: prop => prop !== 'type',
 })`
   padding: ${theme.spacing.md};
   border-radius: ${theme.borderRadius.md};
@@ -331,16 +330,16 @@ const AlertBox = styled.div.withConfig({
   align-items: center;
   gap: ${theme.spacing.sm};
   margin-bottom: ${theme.spacing.lg};
-  
+
   ${props => {
     switch (props.type) {
-      case "warning":
+      case 'warning':
         return `
           background: ${theme.colors.warning}20;
           border: 1px solid ${theme.colors.warning}40;
           color: ${theme.colors.warning};
         `;
-      case "error":
+      case 'error':
         return `
           background: ${theme.colors.error}20;
           border: 1px solid ${theme.colors.error}40;
@@ -359,58 +358,59 @@ const AlertBox = styled.div.withConfig({
 const ShopSettingsTab = () => {
   const [settings, setSettings] = useState({
     // Basic Info
-    shopName: "TechMart Downtown",
-    description: "Your one-stop destination for the latest electronics and gadgets.",
-    category: "Electronics",
+    shopName: 'TechMart Downtown',
+    description:
+      'Your one-stop destination for the latest electronics and gadgets.',
+    category: 'Electronics',
     logo: null,
     banner: null,
-    
+
     // Contact Info
-    ownerName: "John Doe",
-    email: "john@techmart.com",
-    phone: "+1 (555) 123-4567",
-    website: "https://techmart.com",
-    
+    ownerName: 'John Doe',
+    email: 'john@techmart.com',
+    phone: '+1 (555) 123-4567',
+    website: 'https://techmart.com',
+
     // Address
-    address: "123 Main Street",
-    city: "Downtown",
-    state: "CA",
-    zipCode: "90210",
-    country: "United States",
-    
+    address: '123 Main Street',
+    city: 'Downtown',
+    state: 'CA',
+    zipCode: '90210',
+    country: 'United States',
+
     // Business Hours
     businessHours: {
-      monday: { open: "09:00", close: "18:00", closed: false },
-      tuesday: { open: "09:00", close: "18:00", closed: false },
-      wednesday: { open: "09:00", close: "18:00", closed: false },
-      thursday: { open: "09:00", close: "18:00", closed: false },
-      friday: { open: "09:00", close: "18:00", closed: false },
-      saturday: { open: "10:00", close: "16:00", closed: false },
-      sunday: { open: "12:00", close: "16:00", closed: false }
+      monday: { open: '09:00', close: '18:00', closed: false },
+      tuesday: { open: '09:00', close: '18:00', closed: false },
+      wednesday: { open: '09:00', close: '18:00', closed: false },
+      thursday: { open: '09:00', close: '18:00', closed: false },
+      friday: { open: '09:00', close: '18:00', closed: false },
+      saturday: { open: '10:00', close: '16:00', closed: false },
+      sunday: { open: '12:00', close: '16:00', closed: false },
     },
-    
+
     // Notification Settings
     notifications: {
       newEnquiries: true,
       orderUpdates: true,
       emailNotifications: true,
       smsNotifications: false,
-      weeklyReports: true
+      weeklyReports: true,
     },
-    
+
     // Shop Settings
     autoRespond: true,
     showLocation: true,
     allowReviews: true,
-    requireApproval: false
+    requireApproval: false,
   });
 
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
-    useEffect(() => {
+  useEffect(() => {
     // Load settings from localStorage or API
-    const savedSettings = localStorage.getItem("shopSettings");
+    const savedSettings = localStorage.getItem('shopSettings');
     if (savedSettings) {
       setSettings(prev => ({ ...prev, ...JSON.parse(savedSettings) }));
     }
@@ -419,7 +419,7 @@ const ShopSettingsTab = () => {
   const handleInputChange = (field, value) => {
     setSettings(prev => ({
       ...prev,
-      [field]: value
+      [field]: value,
     }));
   };
 
@@ -428,8 +428,8 @@ const ShopSettingsTab = () => {
       ...prev,
       [section]: {
         ...prev[section],
-        [field]: value
-      }
+        [field]: value,
+      },
     }));
   };
 
@@ -440,19 +440,19 @@ const ShopSettingsTab = () => {
         ...prev.businessHours,
         [day]: {
           ...prev.businessHours[day],
-          [field]: value
-        }
-      }
+          [field]: value,
+        },
+      },
     }));
   };
 
   const handleImageUpload = (field, file) => {
     if (file) {
       const reader = new FileReader();
-      reader.onload = (e) => {
+      reader.onload = e => {
         setSettings(prev => ({
           ...prev,
-          [field]: e.target.result
+          [field]: e.target.result,
         }));
       };
       reader.readAsDataURL(file);
@@ -464,15 +464,14 @@ const ShopSettingsTab = () => {
     try {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // Save to localStorage (in real app, this would be API call)
-      localStorage.setItem("shopSettings", JSON.stringify(settings));
-      
-      setIsEditing(false);
-      alert("Settings saved successfully!");
-    } catch (error) {
 
-      alert("Failed to save settings. Please try again.");
+      // Save to localStorage (in real app, this would be API call)
+      localStorage.setItem('shopSettings', JSON.stringify(settings));
+
+      setIsEditing(false);
+      alert('Settings saved successfully!');
+    } catch (error) {
+      alert('Failed to save settings. Please try again.');
     } finally {
       setIsSaving(false);
     }
@@ -481,20 +480,31 @@ const ShopSettingsTab = () => {
   const handleCancel = () => {
     setIsEditing(false);
     // Reload settings from localStorage
-    const savedSettings = localStorage.getItem("shopSettings");
+    const savedSettings = localStorage.getItem('shopSettings');
     if (savedSettings) {
       setSettings({ ...settings, ...JSON.parse(savedSettings) });
     }
   };
 
   const days = [
-    "monday", "tuesday", "wednesday", "thursday", 
-    "friday", "saturday", "sunday"
+    'monday',
+    'tuesday',
+    'wednesday',
+    'thursday',
+    'friday',
+    'saturday',
+    'sunday',
   ];
 
   const categories = [
-    "Electronics", "Fashion", "Home & Garden", "Sports", 
-    "Books", "Automotive", "Health & Beauty", "Food & Beverages"
+    'Electronics',
+    'Fashion',
+    'Home & Garden',
+    'Sports',
+    'Books',
+    'Automotive',
+    'Health & Beauty',
+    'Food & Beverages',
   ];
 
   return (
@@ -506,10 +516,12 @@ const ShopSettingsTab = () => {
           </SectionIcon>
           <div>
             <SectionTitle>Basic Information</SectionTitle>
-            <SectionSubtitle>Manage your shop's basic details and branding</SectionSubtitle>
+            <SectionSubtitle>
+              Manage your shop's basic details and branding
+            </SectionSubtitle>
           </div>
         </SectionHeader>
-        
+
         <SectionContent>
           <ImageUploadSection>
             <Label>Shop Logo & Banner</Label>
@@ -531,19 +543,25 @@ const ShopSettingsTab = () => {
                   <input
                     type="file"
                     accept="image/*"
-                    onChange={(e) => handleImageUpload("logo", e.target.files[0])}
+                    onChange={e => handleImageUpload('logo', e.target.files[0])}
                     disabled={!isEditing}
                   />
                 </UploadButton>
               </div>
-              
+
               <div>
                 <Label>Banner</Label>
                 <ImageContainer>
                   {settings.banner ? (
-                    <Image src={settings.banner} alt="Shop Banner" style={{ width: "240px", height: "120px" }} />
+                    <Image
+                      src={settings.banner}
+                      alt="Shop Banner"
+                      style={{ width: '240px', height: '120px' }}
+                    />
                   ) : (
-                    <ImagePlaceholder style={{ width: "240px", height: "120px" }}>
+                    <ImagePlaceholder
+                      style={{ width: '240px', height: '120px' }}
+                    >
                       <FaCamera />
                     </ImagePlaceholder>
                   )}
@@ -554,7 +572,9 @@ const ShopSettingsTab = () => {
                   <input
                     type="file"
                     accept="image/*"
-                    onChange={(e) => handleImageUpload("banner", e.target.files[0])}
+                    onChange={e =>
+                      handleImageUpload('banner', e.target.files[0])
+                    }
                     disabled={!isEditing}
                   />
                 </UploadButton>
@@ -571,7 +591,7 @@ const ShopSettingsTab = () => {
               <Input
                 type="text"
                 value={settings.shopName}
-                onChange={(e) => handleInputChange("shopName", e.target.value)}
+                onChange={e => handleInputChange('shopName', e.target.value)}
                 disabled={!isEditing}
                 placeholder="Enter your shop name"
               />
@@ -581,20 +601,22 @@ const ShopSettingsTab = () => {
               <Label>Category</Label>
               <Select
                 value={settings.category}
-                onChange={(e) => handleInputChange("category", e.target.value)}
+                onChange={e => handleInputChange('category', e.target.value)}
                 disabled={!isEditing}
               >
                 {categories.map(category => (
-                  <option key={category} value={category}>{category}</option>
+                  <option key={category} value={category}>
+                    {category}
+                  </option>
                 ))}
               </Select>
             </FormGroup>
 
-            <FormGroup style={{ gridColumn: "1 / -1" }}>
+            <FormGroup style={{ gridColumn: '1 / -1' }}>
               <Label>Description</Label>
               <TextArea
                 value={settings.description}
-                onChange={(e) => handleInputChange("description", e.target.value)}
+                onChange={e => handleInputChange('description', e.target.value)}
                 disabled={!isEditing}
                 placeholder="Describe your shop and what you offer"
               />
@@ -610,10 +632,12 @@ const ShopSettingsTab = () => {
           </SectionIcon>
           <div>
             <SectionTitle>Contact Information</SectionTitle>
-            <SectionSubtitle>Your contact details for customers</SectionSubtitle>
+            <SectionSubtitle>
+              Your contact details for customers
+            </SectionSubtitle>
           </div>
         </SectionHeader>
-        
+
         <SectionContent>
           <FormGrid>
             <FormGroup>
@@ -624,7 +648,7 @@ const ShopSettingsTab = () => {
               <Input
                 type="text"
                 value={settings.ownerName}
-                onChange={(e) => handleInputChange("ownerName", e.target.value)}
+                onChange={e => handleInputChange('ownerName', e.target.value)}
                 disabled={!isEditing}
                 placeholder="Your full name"
               />
@@ -638,7 +662,7 @@ const ShopSettingsTab = () => {
               <Input
                 type="email"
                 value={settings.email}
-                onChange={(e) => handleInputChange("email", e.target.value)}
+                onChange={e => handleInputChange('email', e.target.value)}
                 disabled={!isEditing}
                 placeholder="your@email.com"
               />
@@ -652,7 +676,7 @@ const ShopSettingsTab = () => {
               <Input
                 type="tel"
                 value={settings.phone}
-                onChange={(e) => handleInputChange("phone", e.target.value)}
+                onChange={e => handleInputChange('phone', e.target.value)}
                 disabled={!isEditing}
                 placeholder="+1 (555) 123-4567"
               />
@@ -666,7 +690,7 @@ const ShopSettingsTab = () => {
               <Input
                 type="url"
                 value={settings.website}
-                onChange={(e) => handleInputChange("website", e.target.value)}
+                onChange={e => handleInputChange('website', e.target.value)}
                 disabled={!isEditing}
                 placeholder="https://yourwebsite.com"
               />
@@ -685,15 +709,15 @@ const ShopSettingsTab = () => {
             <SectionSubtitle>Your business location</SectionSubtitle>
           </div>
         </SectionHeader>
-        
+
         <SectionContent>
           <FormGrid>
-            <FormGroup style={{ gridColumn: "1 / -1" }}>
+            <FormGroup style={{ gridColumn: '1 / -1' }}>
               <Label>Street Address</Label>
               <Input
                 type="text"
                 value={settings.address}
-                onChange={(e) => handleInputChange("address", e.target.value)}
+                onChange={e => handleInputChange('address', e.target.value)}
                 disabled={!isEditing}
                 placeholder="123 Main Street"
               />
@@ -704,7 +728,7 @@ const ShopSettingsTab = () => {
               <Input
                 type="text"
                 value={settings.city}
-                onChange={(e) => handleInputChange("city", e.target.value)}
+                onChange={e => handleInputChange('city', e.target.value)}
                 disabled={!isEditing}
                 placeholder="City name"
               />
@@ -715,7 +739,7 @@ const ShopSettingsTab = () => {
               <Input
                 type="text"
                 value={settings.state}
-                onChange={(e) => handleInputChange("state", e.target.value)}
+                onChange={e => handleInputChange('state', e.target.value)}
                 disabled={!isEditing}
                 placeholder="State or Province"
               />
@@ -726,7 +750,7 @@ const ShopSettingsTab = () => {
               <Input
                 type="text"
                 value={settings.zipCode}
-                onChange={(e) => handleInputChange("zipCode", e.target.value)}
+                onChange={e => handleInputChange('zipCode', e.target.value)}
                 disabled={!isEditing}
                 placeholder="12345"
               />
@@ -737,7 +761,7 @@ const ShopSettingsTab = () => {
               <Input
                 type="text"
                 value={settings.country}
-                onChange={(e) => handleInputChange("country", e.target.value)}
+                onChange={e => handleInputChange('country', e.target.value)}
                 disabled={!isEditing}
                 placeholder="Country"
               />
@@ -753,30 +777,43 @@ const ShopSettingsTab = () => {
           </SectionIcon>
           <div>
             <SectionTitle>Business Hours</SectionTitle>
-            <SectionSubtitle>Set your operating hours for each day</SectionSubtitle>
+            <SectionSubtitle>
+              Set your operating hours for each day
+            </SectionSubtitle>
           </div>
         </SectionHeader>
-        
+
         <SectionContent>
           <HoursContainer>
             {days.map(day => (
               <DayRow key={day}>
-                <DayLabel>{day.charAt(0).toUpperCase() + day.slice(1)}</DayLabel>
+                <DayLabel>
+                  {day.charAt(0).toUpperCase() + day.slice(1)}
+                </DayLabel>
                 <TimeInput
                   type="time"
                   value={settings.businessHours[day].open}
-                  onChange={(e) => handleHoursChange(day, "open", e.target.value)}
+                  onChange={e => handleHoursChange(day, 'open', e.target.value)}
                   disabled={!isEditing || settings.businessHours[day].closed}
                 />
                 <TimeInput
                   type="time"
                   value={settings.businessHours[day].close}
-                  onChange={(e) => handleHoursChange(day, "close", e.target.value)}
+                  onChange={e =>
+                    handleHoursChange(day, 'close', e.target.value)
+                  }
                   disabled={!isEditing || settings.businessHours[day].closed}
                 />
                 <ToggleSwitch
                   enabled={!settings.businessHours[day].closed}
-                  onClick={() => isEditing && handleHoursChange(day, "closed", !settings.businessHours[day].closed)}
+                  onClick={() =>
+                    isEditing &&
+                    handleHoursChange(
+                      day,
+                      'closed',
+                      !settings.businessHours[day].closed
+                    )
+                  }
                 >
                   {settings.businessHours[day].closed ? (
                     <FaToggleOff className="toggle-icon" />
@@ -784,7 +821,7 @@ const ShopSettingsTab = () => {
                     <FaToggleOn className="toggle-icon" />
                   )}
                   <span className="toggle-label">
-                    {settings.businessHours[day].closed ? "Closed" : "Open"}
+                    {settings.businessHours[day].closed ? 'Closed' : 'Open'}
                   </span>
                 </ToggleSwitch>
               </DayRow>
@@ -803,13 +840,20 @@ const ShopSettingsTab = () => {
             <SectionSubtitle>Manage how you receive updates</SectionSubtitle>
           </div>
         </SectionHeader>
-        
+
         <SectionContent>
           <FormGrid>
             <FormGroup>
               <ToggleSwitch
                 enabled={settings.notifications.newEnquiries}
-                onClick={() => isEditing && handleNestedChange("notifications", "newEnquiries", !settings.notifications.newEnquiries)}
+                onClick={() =>
+                  isEditing &&
+                  handleNestedChange(
+                    'notifications',
+                    'newEnquiries',
+                    !settings.notifications.newEnquiries
+                  )
+                }
               >
                 {settings.notifications.newEnquiries ? (
                   <FaToggleOn className="toggle-icon" />
@@ -823,7 +867,14 @@ const ShopSettingsTab = () => {
             <FormGroup>
               <ToggleSwitch
                 enabled={settings.notifications.emailNotifications}
-                onClick={() => isEditing && handleNestedChange("notifications", "emailNotifications", !settings.notifications.emailNotifications)}
+                onClick={() =>
+                  isEditing &&
+                  handleNestedChange(
+                    'notifications',
+                    'emailNotifications',
+                    !settings.notifications.emailNotifications
+                  )
+                }
               >
                 {settings.notifications.emailNotifications ? (
                   <FaToggleOn className="toggle-icon" />
@@ -837,7 +888,14 @@ const ShopSettingsTab = () => {
             <FormGroup>
               <ToggleSwitch
                 enabled={settings.notifications.smsNotifications}
-                onClick={() => isEditing && handleNestedChange("notifications", "smsNotifications", !settings.notifications.smsNotifications)}
+                onClick={() =>
+                  isEditing &&
+                  handleNestedChange(
+                    'notifications',
+                    'smsNotifications',
+                    !settings.notifications.smsNotifications
+                  )
+                }
               >
                 {settings.notifications.smsNotifications ? (
                   <FaToggleOn className="toggle-icon" />
@@ -851,7 +909,14 @@ const ShopSettingsTab = () => {
             <FormGroup>
               <ToggleSwitch
                 enabled={settings.notifications.weeklyReports}
-                onClick={() => isEditing && handleNestedChange("notifications", "weeklyReports", !settings.notifications.weeklyReports)}
+                onClick={() =>
+                  isEditing &&
+                  handleNestedChange(
+                    'notifications',
+                    'weeklyReports',
+                    !settings.notifications.weeklyReports
+                  )
+                }
               >
                 {settings.notifications.weeklyReports ? (
                   <FaToggleOn className="toggle-icon" />
@@ -872,21 +937,29 @@ const ShopSettingsTab = () => {
           </SectionIcon>
           <div>
             <SectionTitle>Privacy & Security</SectionTitle>
-            <SectionSubtitle>Control your shop's privacy settings</SectionSubtitle>
+            <SectionSubtitle>
+              Control your shop's privacy settings
+            </SectionSubtitle>
           </div>
         </SectionHeader>
-        
+
         <SectionContent>
           <AlertBox type="warning">
             <FaExclamationTriangle />
-            <span>Changes to privacy settings will affect how customers can interact with your shop.</span>
+            <span>
+              Changes to privacy settings will affect how customers can interact
+              with your shop.
+            </span>
           </AlertBox>
 
           <FormGrid>
             <FormGroup>
               <ToggleSwitch
                 enabled={settings.showLocation}
-                onClick={() => isEditing && handleInputChange("showLocation", !settings.showLocation)}
+                onClick={() =>
+                  isEditing &&
+                  handleInputChange('showLocation', !settings.showLocation)
+                }
               >
                 {settings.showLocation ? (
                   <FaToggleOn className="toggle-icon" />
@@ -900,7 +973,10 @@ const ShopSettingsTab = () => {
             <FormGroup>
               <ToggleSwitch
                 enabled={settings.allowReviews}
-                onClick={() => isEditing && handleInputChange("allowReviews", !settings.allowReviews)}
+                onClick={() =>
+                  isEditing &&
+                  handleInputChange('allowReviews', !settings.allowReviews)
+                }
               >
                 {settings.allowReviews ? (
                   <FaToggleOn className="toggle-icon" />
@@ -914,7 +990,10 @@ const ShopSettingsTab = () => {
             <FormGroup>
               <ToggleSwitch
                 enabled={settings.autoRespond}
-                onClick={() => isEditing && handleInputChange("autoRespond", !settings.autoRespond)}
+                onClick={() =>
+                  isEditing &&
+                  handleInputChange('autoRespond', !settings.autoRespond)
+                }
               >
                 {settings.autoRespond ? (
                   <FaToggleOn className="toggle-icon" />
@@ -928,14 +1007,22 @@ const ShopSettingsTab = () => {
             <FormGroup>
               <ToggleSwitch
                 enabled={settings.requireApproval}
-                onClick={() => isEditing && handleInputChange("requireApproval", !settings.requireApproval)}
+                onClick={() =>
+                  isEditing &&
+                  handleInputChange(
+                    'requireApproval',
+                    !settings.requireApproval
+                  )
+                }
               >
                 {settings.requireApproval ? (
                   <FaToggleOn className="toggle-icon" />
                 ) : (
                   <FaToggleOff className="toggle-icon" />
                 )}
-                <span className="toggle-label">Require Admin Approval for Products</span>
+                <span className="toggle-label">
+                  Require Admin Approval for Products
+                </span>
               </ToggleSwitch>
             </FormGroup>
           </FormGrid>
@@ -951,7 +1038,7 @@ const ShopSettingsTab = () => {
             </SecondaryButton>
             <PrimaryButton onClick={handleSave} disabled={isSaving}>
               <FaSave />
-              {isSaving ? "Saving..." : "Save Changes"}
+              {isSaving ? 'Saving...' : 'Save Changes'}
             </PrimaryButton>
           </>
         ) : (

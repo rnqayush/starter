@@ -1,15 +1,17 @@
-import React from "react";
-import { useParams, useLocation } from "react-router-dom";
-import HotelModule from "../hotel";
-import EcommerceModule from "../ecommerce";
-import AutomobileModule from "../automobiles";
-import WeddingModule from "../weddings";
-import BusinessModule from "../business";
-import { getHotelBySlug } from "../hotel/data/hotels";
-import { getVendorBySlug } from "../ecommerce/data/vendors";
-import { getVendorBySlug as getAutomobileVendorBySlug } from "../automobiles/data/vendors";
-import { getVendorById } from "../weddings/data/vendors";
-import { getBusinessTemplate } from "../business/data/businessTemplates";
+import React from 'react';
+import { useParams, useLocation } from 'react-router-dom';
+import HotelModule from '../hotel';
+import EcommerceModule from '../ecommerce';
+import AutomobileModule from '../automobiles';
+import WeddingModule from '../weddings';
+import BusinessModule from '../business';
+import { getHotelBySlug } from '../hotel/data/hotels';
+import { getVendorBySlug } from '../ecommerce/data/vendors';
+import { getVendorBySlug as getAutomobileVendorBySlug } from '../automobiles/data/vendors';
+import { getVendorById } from '../weddings/data/vendors';
+import { getBusinessTemplate } from '../business/data/businessTemplates';
+import HotelDetail from '../hotel/pages/HotelDetail';
+import EcommerceMain from '../ecommerce/pages/EcommerceMain';
 
 const SmartRouter = () => {
   const { slug } = useParams();
@@ -17,8 +19,8 @@ const SmartRouter = () => {
   const path = location.pathname;
 
   // Helper function to determine module type based on slug
-  const getModuleType = (slug) => {
-    // Check each data source to determine the module type
+  const getModuleType = slug => {
+    // Check each data source to determine the module type // api call to find type
     const hotel = getHotelBySlug(slug);
     if (hotel) return 'hotel';
 
@@ -42,30 +44,34 @@ const SmartRouter = () => {
   // If no module found, show 404
   if (!moduleType) {
     return (
-      <div style={{
-        padding: "4rem",
-        textAlign: "center",
-        backgroundColor: "#f8fafc",
-        minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center"
-      }}>
-        <h2 style={{ fontSize: "2rem", marginBottom: "1rem", color: "#1f2937" }}>
+      <div
+        style={{
+          padding: '4rem',
+          textAlign: 'center',
+          backgroundColor: '#f8fafc',
+          minHeight: '100vh',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <h2
+          style={{ fontSize: '2rem', marginBottom: '1rem', color: '#1f2937' }}
+        >
           Page not found
         </h2>
-        <p style={{ color: "#6b7280", marginBottom: "2rem" }}>
+        <p style={{ color: '#6b7280', marginBottom: '2rem' }}>
           The page you're looking for doesn't exist.
         </p>
         <a
           href="/"
           style={{
-            color: "#3b82f6",
-            textDecoration: "none",
-            padding: "0.5rem 1rem",
-            border: "1px solid #3b82f6",
-            borderRadius: "0.5rem"
+            color: '#3b82f6',
+            textDecoration: 'none',
+            padding: '0.5rem 1rem',
+            border: '1px solid #3b82f6',
+            borderRadius: '0.5rem',
           }}
         >
           Go Home
@@ -88,7 +94,7 @@ const SmartRouter = () => {
       return <BusinessModule />;
     default:
       return (
-        <div style={{ padding: "4rem", textAlign: "center" }}>
+        <div style={{ padding: '4rem', textAlign: 'center' }}>
           <h2>Page not found</h2>
           <p>The page you're looking for doesn't exist.</p>
         </div>

@@ -1,10 +1,10 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import { FaArrowLeft } from "react-icons/fa";
-import Header from "../shared/Header";
-import { Button } from "../shared/Button";
-import { theme, media } from "../../styles/GlobalStyle";
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import { FaArrowLeft } from 'react-icons/fa';
+import Header from '../shared/Header';
+import { Button } from '../shared/Button';
+import { theme, media } from '../../styles/GlobalStyle';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -41,9 +41,9 @@ const DemoLabel = styled.div`
   align-items: center;
   gap: ${theme.spacing.sm};
   font-weight: 600;
-  
+
   &::before {
-    content: "🚀";
+    content: '🚀';
     font-size: 1.2rem;
   }
 `;
@@ -65,7 +65,8 @@ const BackToCategoryButton = styled(Button)`
 `;
 
 const HeroSection = styled.section`
-  background: ${(props) => props.gradient || "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"};
+  background: ${props =>
+    props.gradient || 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'};
   color: ${theme.colors.white};
   padding: ${theme.spacing.xxl} 0;
   text-align: center;
@@ -73,7 +74,7 @@ const HeroSection = styled.section`
   overflow: hidden;
 
   &::before {
-    content: "";
+    content: '';
     position: absolute;
     top: 0;
     left: 0;
@@ -225,7 +226,7 @@ const CTADescription = styled.p`
 `;
 
 const CTAButton = styled(Button)`
-  background: ${(props) => props.gradient || theme.colors.primary};
+  background: ${props => props.gradient || theme.colors.primary};
   color: ${theme.colors.white};
   border: none;
   padding: ${theme.spacing.lg} ${theme.spacing.xxl};
@@ -241,13 +242,13 @@ const CTAButton = styled(Button)`
   }
 `;
 
-const DemoWebsite = ({ 
-  title, 
-  subtitle, 
-  gradient, 
-  features = [], 
+const DemoWebsite = ({
+  title,
+  subtitle,
+  gradient,
+  features = [],
   categoryPath,
-  ctaText = "Get Started Today"
+  ctaText = 'Get Started Today',
 }) => {
   const navigate = useNavigate();
 
@@ -256,18 +257,16 @@ const DemoWebsite = ({
   };
 
   const handleCTA = () => {
-    navigate("/register");
+    navigate('/register');
   };
 
   return (
     <PageContainer>
       <Header />
-      
+
       <DemoHeader>
         <DemoHeaderContent>
-          <DemoLabel>
-            Demo Website - See it in action
-          </DemoLabel>
+          <DemoLabel>Demo Website - See it in action</DemoLabel>
           <BackToCategoryButton onClick={handleBackToCategory}>
             <FaArrowLeft />
             Back to Category
@@ -301,7 +300,8 @@ const DemoWebsite = ({
         <ContentContainer>
           <CTATitle>Ready to Build Your Own?</CTATitle>
           <CTADescription>
-            This is just a demo of what your website could look like. Create your own professional website in minutes.
+            This is just a demo of what your website could look like. Create
+            your own professional website in minutes.
           </CTADescription>
           <CTAButton gradient={gradient} onClick={handleCTA}>
             {ctaText}

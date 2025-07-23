@@ -1,10 +1,10 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import { FaArrowLeft, FaExternalLinkAlt } from "react-icons/fa";
-import Header from "../shared/Header";
-import { Button } from "../shared/Button";
-import { theme, media } from "../../styles/GlobalStyle";
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import { FaArrowLeft, FaExternalLinkAlt } from 'react-icons/fa';
+import Header from '../shared/Header';
+import { Button } from '../shared/Button';
+import { theme, media } from '../../styles/GlobalStyle';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -52,7 +52,7 @@ const CategoryTitle = styled.h1`
   font-weight: 800;
   margin-bottom: ${theme.spacing.md};
   color: ${theme.colors.gray900};
-  background: ${(props) => props.gradient || theme.colors.primary};
+  background: ${props => props.gradient || theme.colors.primary};
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -122,12 +122,12 @@ const MockupCard = styled.div`
 
 const MockupImage = styled.div`
   height: 250px;
-  background: url(${(props) => props.src}) center/cover;
+  background: url(${props => props.src}) center/cover;
   background-color: ${theme.colors.gray100};
   position: relative;
 
   &::after {
-    content: "";
+    content: '';
     position: absolute;
     inset: 0;
     background: linear-gradient(
@@ -178,7 +178,7 @@ const MockupFeatures = styled.ul`
     margin-bottom: ${theme.spacing.xs};
 
     &::before {
-      content: "✓";
+      content: '✓';
       color: ${theme.colors.primary};
       font-weight: bold;
     }
@@ -231,7 +231,7 @@ const DemoButtonsContainer = styled.div`
 `;
 
 const DemoButton = styled(Button)`
-  background: ${(props) => props.gradient || theme.colors.primary};
+  background: ${props => props.gradient || theme.colors.primary};
   color: ${theme.colors.white};
   border: none;
   padding: ${theme.spacing.lg} ${theme.spacing.xxl};
@@ -259,11 +259,14 @@ const DemoButton = styled(Button)`
 
 const SecondaryDemoButton = styled(DemoButton)`
   background: ${theme.colors.white};
-  color: ${(props) => props.gradient ? theme.colors.primary : theme.colors.primary};
-  border: 2px solid ${(props) => props.gradient ? theme.colors.primary : theme.colors.primary};
+  color: ${props =>
+    props.gradient ? theme.colors.primary : theme.colors.primary};
+  border: 2px solid
+    ${props => (props.gradient ? theme.colors.primary : theme.colors.primary)};
 
   &:hover {
-    background: ${(props) => props.gradient ? theme.colors.primary : theme.colors.primary};
+    background: ${props =>
+      props.gradient ? theme.colors.primary : theme.colors.primary};
     color: ${theme.colors.white};
     transform: translateY(-2px);
     box-shadow: ${theme.shadows.xl};
@@ -277,14 +280,14 @@ const CategoryLanding = ({
   gradient,
   mockups = [],
   demoUrl,
-  demoButtonText = "See Demo Website",
+  demoButtonText = 'See Demo Website',
   secondaryDemoUrl,
-  secondaryDemoButtonText
+  secondaryDemoButtonText,
 }) => {
   const navigate = useNavigate();
 
   const handleBack = () => {
-    navigate("/");
+    navigate('/');
   };
 
   const handleDemoClick = () => {
@@ -332,7 +335,8 @@ const CategoryLanding = ({
         <CTASection>
           <CTATitle>Experience a Live {title} Website</CTATitle>
           <CTADescription>
-            See how beautiful and functional your {category} website could be with our professional templates and features.
+            See how beautiful and functional your {category} website could be
+            with our professional templates and features.
           </CTADescription>
           <DemoButtonsContainer>
             <DemoButton gradient={gradient} onClick={handleDemoClick}>
@@ -340,7 +344,10 @@ const CategoryLanding = ({
               <FaExternalLinkAlt />
             </DemoButton>
             {secondaryDemoUrl && secondaryDemoButtonText && (
-              <SecondaryDemoButton gradient={gradient} onClick={handleSecondaryDemoClick}>
+              <SecondaryDemoButton
+                gradient={gradient}
+                onClick={handleSecondaryDemoClick}
+              >
                 {secondaryDemoButtonText}
                 <FaExternalLinkAlt />
               </SecondaryDemoButton>

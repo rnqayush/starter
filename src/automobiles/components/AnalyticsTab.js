@@ -1,7 +1,7 @@
-import React from "react";
-import styled from "styled-components";
-import { FaChartLine } from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
+import React from 'react';
+import styled from 'styled-components';
+import { FaChartLine } from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
 
 const Container = styled.div`
   background: ${theme.colors.white};
@@ -54,7 +54,10 @@ const AnalyticsTab = () => {
       <ComingSoon>
         <FaChartLine className="icon" />
         <h3>Analytics & Reports Coming Soon</h3>
-        <p>Comprehensive analytics dashboard with sales reports, customer insights, inventory analysis, and business performance metrics.</p>
+        <p>
+          Comprehensive analytics dashboard with sales reports, customer
+          insights, inventory analysis, and business performance metrics.
+        </p>
       </ComingSoon>
     </Container>
   );

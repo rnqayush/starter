@@ -1,20 +1,20 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 import {
   FaMinus,
   FaPlus,
   FaTrash,
   FaShoppingCart,
-    FaArrowLeft,
+  FaArrowLeft,
   FaTruck,
   FaTags,
   FaTimes,
   FaEnvelope,
-} from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+} from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -217,16 +217,15 @@ const SummaryTitle = styled.h2`
 `;
 
 const SummaryRow = styled.div.withConfig({
-  shouldForwardProp: (prop) => !["large", "bold"].includes(prop),
+  shouldForwardProp: prop => !['large', 'bold'].includes(prop),
 })`
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: ${theme.spacing.md};
-  font-size: ${(props) => (props.large ? "1.1rem" : "0.9rem")};
-  font-weight: ${(props) => (props.bold ? "600" : "400")};
-  color: ${(props) =>
-    props.bold ? theme.colors.gray900 : theme.colors.gray600};
+  font-size: ${props => (props.large ? '1.1rem' : '0.9rem')};
+  font-weight: ${props => (props.bold ? '600' : '400')};
+  color: ${props => (props.bold ? theme.colors.gray900 : theme.colors.gray600)};
 
   &.total {
     font-size: 1.2rem;
@@ -381,57 +380,57 @@ const Cart = () => {
     // Mock cart items for demonstration
     {
       id: 1,
-      name: "Premium Wireless Headphones",
-      category: "electronics",
+      name: 'Premium Wireless Headphones',
+      category: 'electronics',
       price: 299.99,
       originalPrice: 399.99,
       image:
-        "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80",
+        'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80',
       quantity: 1,
       stock: 15,
     },
     {
       id: 4,
-      name: "Classic Denim Jacket",
-      category: "fashion",
+      name: 'Classic Denim Jacket',
+      category: 'fashion',
       price: 89.99,
       image:
-        "https://images.unsplash.com/photo-1544022613-e87ca75a784a?w=500&q=80",
+        'https://images.unsplash.com/photo-1544022613-e87ca75a784a?w=500&q=80',
       quantity: 2,
-      selectedSize: "M",
+      selectedSize: 'M',
       stock: 28,
     },
   ]);
-  const [promoCode, setPromoCode] = useState("");
+  const [promoCode, setPromoCode] = useState('');
   const [appliedPromo, setAppliedPromo] = useState(null);
 
   const updateQuantity = (id, selectedSize, newQuantity) => {
-    setCartItems((prev) =>
-      prev.map((item) =>
+    setCartItems(prev =>
+      prev.map(item =>
         item.id === id && item.selectedSize === selectedSize
           ? {
               ...item,
               quantity: Math.max(1, Math.min(item.stock, newQuantity)),
             }
-          : item,
-      ),
+          : item
+      )
     );
   };
 
   const removeItem = (id, selectedSize) => {
-    setCartItems((prev) =>
+    setCartItems(prev =>
       prev.filter(
-        (item) => !(item.id === id && item.selectedSize === selectedSize),
-      ),
+        item => !(item.id === id && item.selectedSize === selectedSize)
+      )
     );
   };
 
   const applyPromoCode = () => {
     // Mock promo code logic
     const validCodes = {
-      SAVE10: { type: "percentage", value: 10, description: "10% off" },
-      WELCOME: { type: "fixed", value: 20, description: "$20 off" },
-      FREESHIP: { type: "shipping", value: 0, description: "Free shipping" },
+      SAVE10: { type: 'percentage', value: 10, description: '10% off' },
+      WELCOME: { type: 'fixed', value: 20, description: '$20 off' },
+      FREESHIP: { type: 'shipping', value: 0, description: 'Free shipping' },
     };
 
     if (validCodes[promoCode.toUpperCase()]) {
@@ -439,9 +438,9 @@ const Cart = () => {
         code: promoCode.toUpperCase(),
         ...validCodes[promoCode.toUpperCase()],
       });
-      setPromoCode("");
+      setPromoCode('');
     } else {
-      alert("Invalid promo code");
+      alert('Invalid promo code');
     }
   };
 
@@ -457,9 +456,9 @@ const Cart = () => {
     if (!appliedPromo) return 0;
 
     const subtotal = calculateSubtotal();
-    if (appliedPromo.type === "percentage") {
+    if (appliedPromo.type === 'percentage') {
       return subtotal * (appliedPromo.value / 100);
-    } else if (appliedPromo.type === "fixed") {
+    } else if (appliedPromo.type === 'fixed') {
       return Math.min(appliedPromo.value, subtotal);
     }
     return 0;
@@ -467,7 +466,7 @@ const Cart = () => {
 
   const calculateShipping = () => {
     const subtotal = calculateSubtotal();
-    if (appliedPromo?.type === "shipping" || subtotal >= 99) {
+    if (appliedPromo?.type === 'shipping' || subtotal >= 99) {
       return 0;
     }
     return 9.99;
@@ -477,9 +476,9 @@ const Cart = () => {
     return calculateSubtotal() - calculateDiscount() + calculateShipping();
   };
 
-    const handleEnquireAll = () => {
+  const handleEnquireAll = () => {
     // Since this is an enquiry system, we'll convert cart to enquiries
-    navigate("/ecommerce/my-enquiries");
+    navigate('/ecommerce/my-enquiries');
   };
 
   if (cartItems.length === 0) {
@@ -530,14 +529,14 @@ const Cart = () => {
           <CartItems>
             {cartItems.map((item, index) => (
               <CartItem
-                key={`${item.id}-${item.selectedSize || "no-size"}-${index}`}
+                key={`${item.id}-${item.selectedSize || 'no-size'}-${index}`}
               >
                 <ItemImage src={item.image} alt={item.name} />
 
                 <ItemDetails>
                   <h3>{item.name}</h3>
                   <div className="category">
-                    {item.category.replace("-", " ")}
+                    {item.category.replace('-', ' ')}
                   </div>
                   {item.selectedSize && (
                     <div className="size">Size: {item.selectedSize}</div>
@@ -547,10 +546,10 @@ const Cart = () => {
                     {item.originalPrice && item.originalPrice > item.price && (
                       <span
                         style={{
-                          marginLeft: "8px",
-                          fontSize: "0.9rem",
+                          marginLeft: '8px',
+                          fontSize: '0.9rem',
                           color: theme.colors.gray500,
-                          textDecoration: "line-through",
+                          textDecoration: 'line-through',
                         }}
                       >
                         ${item.originalPrice}
@@ -566,7 +565,7 @@ const Cart = () => {
                         updateQuantity(
                           item.id,
                           item.selectedSize,
-                          item.quantity - 1,
+                          item.quantity - 1
                         )
                       }
                       disabled={item.quantity <= 1}
@@ -579,7 +578,7 @@ const Cart = () => {
                         updateQuantity(
                           item.id,
                           item.selectedSize,
-                          item.quantity + 1,
+                          item.quantity + 1
                         )
                       }
                       disabled={item.quantity >= item.stock}
@@ -617,11 +616,11 @@ const Cart = () => {
                   <button
                     onClick={removePromoCode}
                     style={{
-                      marginLeft: "8px",
-                      background: "none",
-                      border: "none",
+                      marginLeft: '8px',
+                      background: 'none',
+                      border: 'none',
                       color: theme.colors.error,
-                      cursor: "pointer",
+                      cursor: 'pointer',
                     }}
                   >
                     <FaTimes />
@@ -633,7 +632,7 @@ const Cart = () => {
 
             <PromoSection>
               <div
-                style={{ marginBottom: theme.spacing.sm, fontWeight: "600" }}
+                style={{ marginBottom: theme.spacing.sm, fontWeight: '600' }}
               >
                 <FaTags style={{ marginRight: theme.spacing.sm }} />
                 Promo Code
@@ -643,11 +642,11 @@ const Cart = () => {
                   type="text"
                   placeholder="Enter promo code"
                   value={promoCode}
-                  onChange={(e) => setPromoCode(e.target.value)}
+                  onChange={e => setPromoCode(e.target.value)}
                 />
                 <ApplyButton onClick={applyPromoCode}>Apply</ApplyButton>
               </PromoInput>
-              <div style={{ fontSize: "0.8rem", color: theme.colors.gray500 }}>
+              <div style={{ fontSize: '0.8rem', color: theme.colors.gray500 }}>
                 Try: SAVE10, WELCOME, or FREESHIP
               </div>
             </PromoSection>
@@ -656,7 +655,7 @@ const Cart = () => {
               <div className="shipping-option">
                 <FaTruck />
                 <span>Shipping</span>
-                <span style={{ marginLeft: "auto" }}>
+                <span style={{ marginLeft: 'auto' }}>
                   {calculateShipping() === 0 ? (
                     <span className="free-shipping">FREE</span>
                   ) : (
@@ -666,7 +665,7 @@ const Cart = () => {
               </div>
               {calculateShipping() > 0 && (
                 <div
-                  style={{ fontSize: "0.8rem", color: theme.colors.gray600 }}
+                  style={{ fontSize: '0.8rem', color: theme.colors.gray600 }}
                 >
                   Free shipping on orders over $99
                 </div>
@@ -678,16 +677,16 @@ const Cart = () => {
               <span>${calculateTotal().toFixed(2)}</span>
             </SummaryRow>
 
-                        <CheckoutButton onClick={handleEnquireAll}>
+            <CheckoutButton onClick={handleEnquireAll}>
               Enquire About All Items
               <FaEnvelope />
             </CheckoutButton>
 
             <div
               style={{
-                textAlign: "center",
+                textAlign: 'center',
                 marginTop: theme.spacing.md,
-                fontSize: "0.8rem",
+                fontSize: '0.8rem',
                 color: theme.colors.gray500,
               }}
             >

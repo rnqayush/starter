@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 import {
   FaEnvelope,
   FaLock,
@@ -12,10 +12,10 @@ import {
   FaMapMarkerAlt,
   FaGlobe,
   FaShoppingBag,
-} from "react-icons/fa";
-import { theme, media } from "../../styles/GlobalStyle";
-import { Button } from "../shared/Button";
-import { Input } from "../shared/Input";
+} from 'react-icons/fa';
+import { theme, media } from '../../styles/GlobalStyle';
+import { Button } from '../shared/Button';
+import { Input } from '../shared/Input';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -134,7 +134,7 @@ const ToggleContainer = styled.div`
 `;
 
 const ToggleButton = styled.button.withConfig({
-  shouldForwardProp: (prop) => prop !== "active",
+  shouldForwardProp: prop => prop !== 'active',
 })`
   flex: 1;
   padding: ${theme.spacing.md};
@@ -150,7 +150,7 @@ const ToggleButton = styled.button.withConfig({
     font-size: 0.8125rem;
   }
 
-  ${(props) =>
+  ${props =>
     props.active
       ? `
     background: ${theme.colors.white};
@@ -310,7 +310,7 @@ const Divider = styled.div`
   position: relative;
 
   &::before {
-    content: "";
+    content: '';
     position: absolute;
     top: 50%;
     left: 0;
@@ -359,53 +359,53 @@ const BackToHome = styled(Link)`
 
 const RegisterPage = () => {
   const navigate = useNavigate();
-  const [userType, setUserType] = useState("buyer");
+  const [userType, setUserType] = useState('buyer');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const [buyerData, setBuyerData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
   });
 
   const [sellerData, setSellerData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    businessName: "",
-    businessCategory: "",
-    phone: "",
-    address: "",
-    website: "",
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    businessName: '',
+    businessCategory: '',
+    phone: '',
+    address: '',
+    website: '',
   });
 
-  const handleBuyerInputChange = (e) => {
+  const handleBuyerInputChange = e => {
     const { name, value } = e.target;
-    setBuyerData((prev) => ({
+    setBuyerData(prev => ({
       ...prev,
       [name]: value,
     }));
   };
 
-  const handleSellerInputChange = (e) => {
+  const handleSellerInputChange = e => {
     const { name, value } = e.target;
-    setSellerData((prev) => ({
+    setSellerData(prev => ({
       ...prev,
       [name]: value,
     }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
     setIsLoading(true);
 
-    const currentData = userType === "buyer" ? buyerData : sellerData;
+    const currentData = userType === 'buyer' ? buyerData : sellerData;
 
     // Validate passwords match
     if (currentData.password !== currentData.confirmPassword) {
@@ -418,23 +418,23 @@ const RegisterPage = () => {
     setTimeout(() => {
       setIsLoading(false);
       // Navigate to appropriate page
-      if (userType === "seller") {
-        navigate("/seller-dashboard");
+      if (userType === 'seller') {
+        navigate('/seller-dashboard');
       } else {
-        navigate("/");
+        navigate('/');
       }
     }, 1500);
   };
 
   const categories = [
-    { value: "", label: "Select Business Category" },
-    { value: "hotels", label: "Hotels & Hospitality" },
-    { value: "ecommerce", label: "Ecommerce & Retail" },
-    { value: "weddings", label: "Weddings & Events" },
-    { value: "automobiles", label: "Automobiles & Transport" },
-    { value: "restaurants", label: "Restaurants & Food" },
-    { value: "services", label: "Professional Services" },
-    { value: "other", label: "Other" },
+    { value: '', label: 'Select Business Category' },
+    { value: 'hotels', label: 'Hotels & Hospitality' },
+    { value: 'ecommerce', label: 'Ecommerce & Retail' },
+    { value: 'weddings', label: 'Weddings & Events' },
+    { value: 'automobiles', label: 'Automobiles & Transport' },
+    { value: 'restaurants', label: 'Restaurants & Food' },
+    { value: 'services', label: 'Professional Services' },
+    { value: 'other', label: 'Other' },
   ];
 
   return (
@@ -452,22 +452,22 @@ const RegisterPage = () => {
         <ToggleContainer>
           <ToggleButton
             type="button"
-            active={userType === "buyer"}
-            onClick={() => setUserType("buyer")}
+            active={userType === 'buyer'}
+            onClick={() => setUserType('buyer')}
           >
             Register as Buyer
           </ToggleButton>
           <ToggleButton
             type="button"
-            active={userType === "seller"}
-            onClick={() => setUserType("seller")}
+            active={userType === 'seller'}
+            onClick={() => setUserType('seller')}
           >
             Register as Seller
           </ToggleButton>
         </ToggleContainer>
 
         <Form onSubmit={handleSubmit}>
-          {userType === "buyer" ? (
+          {userType === 'buyer' ? (
             // Buyer Form
             <>
               <FormRow>
@@ -532,7 +532,7 @@ const RegisterPage = () => {
                     <FaLock />
                   </InputIcon>
                   <StyledInput
-                    type={showPassword ? "text" : "password"}
+                    type={showPassword ? 'text' : 'password'}
                     id="password"
                     name="password"
                     placeholder="Create a password"
@@ -556,7 +556,7 @@ const RegisterPage = () => {
                     <FaLock />
                   </InputIcon>
                   <StyledInput
-                    type={showConfirmPassword ? "text" : "password"}
+                    type={showConfirmPassword ? 'text' : 'password'}
                     id="confirmPassword"
                     name="confirmPassword"
                     placeholder="Confirm your password"
@@ -662,7 +662,7 @@ const RegisterPage = () => {
                     onChange={handleSellerInputChange}
                     required
                   >
-                    {categories.map((category) => (
+                    {categories.map(category => (
                       <option key={category.value} value={category.value}>
                         {category.label}
                       </option>
@@ -732,7 +732,7 @@ const RegisterPage = () => {
                     <FaLock />
                   </InputIcon>
                   <StyledInput
-                    type={showPassword ? "text" : "password"}
+                    type={showPassword ? 'text' : 'password'}
                     id="password"
                     name="password"
                     placeholder="Create a password"
@@ -756,7 +756,7 @@ const RegisterPage = () => {
                     <FaLock />
                   </InputIcon>
                   <StyledInput
-                    type={showConfirmPassword ? "text" : "password"}
+                    type={showConfirmPassword ? 'text' : 'password'}
                     id="confirmPassword"
                     name="confirmPassword"
                     placeholder="Confirm your password"
@@ -777,8 +777,8 @@ const RegisterPage = () => {
 
           <RegisterButton type="submit" disabled={isLoading}>
             {isLoading
-              ? "Creating Account..."
-              : `Create ${userType === "buyer" ? "Buyer" : "Seller"} Account`}
+              ? 'Creating Account...'
+              : `Create ${userType === 'buyer' ? 'Buyer' : 'Seller'} Account`}
           </RegisterButton>
         </Form>
 

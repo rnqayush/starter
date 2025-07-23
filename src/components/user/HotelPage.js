@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { useParams, Link } from "react-router-dom";
-import styled from "styled-components";
+import React, { useState } from 'react';
+import { useParams, Link } from 'react-router-dom';
+import styled from 'styled-components';
 import {
   FaMapMarkerAlt,
   FaStar,
@@ -10,9 +10,9 @@ import {
   FaUtensils,
   FaDumbbell,
   FaSpa,
-} from "react-icons/fa";
-import Header from "../shared/Header";
-import { Button } from "../shared/Button";
+} from 'react-icons/fa';
+import Header from '../shared/Header';
+import { Button } from '../shared/Button';
 import {
   Card,
   CardImage,
@@ -22,9 +22,9 @@ import {
   Price,
   PriceUnit,
   Badge,
-} from "../shared/Card";
-import { theme } from "../../styles/GlobalStyle";
-import { useAppContext } from "../../context/AppContext";
+} from '../shared/Card';
+import { theme } from '../../styles/GlobalStyle';
+import { useAppContext } from '../../context/AppContext';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -34,14 +34,14 @@ const PageContainer = styled.div`
 const HotelBanner = styled.section`
   position: relative;
   height: 400px;
-  background-image: url(${(props) => props.image});
+  background-image: url(${props => props.image});
   background-size: cover;
   background-position: center;
   display: flex;
   align-items: end;
 
   &::before {
-    content: "";
+    content: '';
     position: absolute;
     top: 0;
     left: 0;
@@ -102,16 +102,16 @@ const Tabs = styled.div`
 `;
 
 const Tab = styled.button.withConfig({
-  shouldForwardProp: (prop) => prop !== "active",
+  shouldForwardProp: prop => prop !== 'active',
 })`
   padding: ${theme.spacing.lg} ${theme.spacing.xl};
   border: none;
   background: none;
   font-weight: 500;
-  color: ${(props) =>
+  color: ${props =>
     props.active ? theme.colors.primary : theme.colors.gray600};
   border-bottom: 2px solid
-    ${(props) => (props.active ? theme.colors.primary : "transparent")};
+    ${props => (props.active ? theme.colors.primary : 'transparent')};
   cursor: pointer;
   white-space: nowrap;
   transition: all 0.2s ease;
@@ -223,7 +223,7 @@ const RoomFeatures = styled.div`
   margin-bottom: ${theme.spacing.md};
 `;
 
-const getAmenityIcon = (amenity) => {
+const getAmenityIcon = amenity => {
   const icons = {
     WiFi: <FaWifi />,
     Pool: <FaSwimmingPool />,
@@ -238,15 +238,15 @@ const getAmenityIcon = (amenity) => {
 const HotelPage = () => {
   const { id } = useParams();
   const { hotels } = useAppContext();
-  const [activeTab, setActiveTab] = useState("overview");
+  const [activeTab, setActiveTab] = useState('overview');
 
-  const hotel = hotels.find((h) => h.id === parseInt(id));
+  const hotel = hotels.find(h => h.id === parseInt(id));
 
   if (!hotel) {
     return <div>Hotel not found</div>;
   }
 
-  const renderStars = (rating) => {
+  const renderStars = rating => {
     const stars = [];
     const fullStars = Math.floor(rating);
 
@@ -259,7 +259,7 @@ const HotelPage = () => {
 
   const renderTabContent = () => {
     switch (activeTab) {
-      case "overview":
+      case 'overview':
         return (
           <OverviewGrid>
             <div>
@@ -268,7 +268,7 @@ const HotelPage = () => {
 
               <SectionTitle>Amenities</SectionTitle>
               <AmenitiesGrid>
-                {hotel.amenities.map((amenity) => (
+                {hotel.amenities.map(amenity => (
                   <AmenityItem key={amenity}>
                     {getAmenityIcon(amenity)}
                     {amenity}
@@ -304,12 +304,12 @@ const HotelPage = () => {
           </OverviewGrid>
         );
 
-      case "rooms":
+      case 'rooms':
         return (
           <div>
             <SectionTitle>Available Rooms</SectionTitle>
             <RoomsGrid>
-              {hotel.rooms.map((room) => (
+              {hotel.rooms.map(room => (
                 <Link key={room.id} to={`/room/${hotel.id}/${room.id}`}>
                   <RoomCard>
                     <CardImage src={room.images[0]} height="200px" />
@@ -330,7 +330,7 @@ const HotelPage = () => {
                       </RoomDetails>
 
                       <RoomFeatures>
-                        {room.amenities.slice(0, 4).map((amenity) => (
+                        {room.amenities.slice(0, 4).map(amenity => (
                           <Badge key={amenity} variant="primary">
                             {amenity}
                           </Badge>
@@ -340,7 +340,7 @@ const HotelPage = () => {
                         )}
                       </RoomFeatures>
 
-                      <Button variant="secondary" style={{ width: "100%" }}>
+                      <Button variant="secondary" style={{ width: '100%' }}>
                         View Room Details
                       </Button>
                     </CardContent>
@@ -351,7 +351,7 @@ const HotelPage = () => {
           </div>
         );
 
-      case "location":
+      case 'location':
         return (
           <div>
             <SectionTitle>Location</SectionTitle>
@@ -359,16 +359,16 @@ const HotelPage = () => {
               <CardContent>
                 <div
                   style={{
-                    height: "400px",
+                    height: '400px',
                     background: theme.colors.gray200,
                     borderRadius: theme.borderRadius.md,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
                     color: theme.colors.gray600,
                   }}
                 >
-                  <div style={{ textAlign: "center" }}>
+                  <div style={{ textAlign: 'center' }}>
                     <FaMapMarkerAlt
                       size={48}
                       style={{ marginBottom: theme.spacing.md }}
@@ -385,17 +385,17 @@ const HotelPage = () => {
           </div>
         );
 
-      case "reviews":
+      case 'reviews':
         return (
           <div>
             <SectionTitle>Reviews & Ratings</SectionTitle>
             <Card>
               <CardContent>
                 <div
-                  style={{ textAlign: "center", padding: theme.spacing.xxl }}
+                  style={{ textAlign: 'center', padding: theme.spacing.xxl }}
                 >
                   <div
-                    style={{ fontSize: "3rem", marginBottom: theme.spacing.md }}
+                    style={{ fontSize: '3rem', marginBottom: theme.spacing.md }}
                   >
                     ⭐
                   </div>
@@ -447,26 +447,26 @@ const HotelPage = () => {
       <TabsContainer>
         <Tabs>
           <Tab
-            active={activeTab === "overview"}
-            onClick={() => setActiveTab("overview")}
+            active={activeTab === 'overview'}
+            onClick={() => setActiveTab('overview')}
           >
             Overview
           </Tab>
           <Tab
-            active={activeTab === "rooms"}
-            onClick={() => setActiveTab("rooms")}
+            active={activeTab === 'rooms'}
+            onClick={() => setActiveTab('rooms')}
           >
             Rooms
           </Tab>
           <Tab
-            active={activeTab === "location"}
-            onClick={() => setActiveTab("location")}
+            active={activeTab === 'location'}
+            onClick={() => setActiveTab('location')}
           >
             Location
           </Tab>
           <Tab
-            active={activeTab === "reviews"}
-            onClick={() => setActiveTab("reviews")}
+            active={activeTab === 'reviews'}
+            onClick={() => setActiveTab('reviews')}
           >
             Reviews
           </Tab>

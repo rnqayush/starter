@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
 import {
   FaDollarSign,
   FaSearch,
@@ -15,8 +15,8 @@ import {
   FaUniversity,
   FaDownload,
   FaPrint,
-} from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
+} from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
 
 const Container = styled.div`
   background: ${theme.colors.white};
@@ -65,12 +65,15 @@ const HeaderActions = styled.div`
 `;
 
 const ActionButton = styled.button.withConfig({
-  shouldForwardProp: (prop) => prop !== "primary",
+  shouldForwardProp: prop => prop !== 'primary',
 })`
-  background: ${(props) => props.primary ? theme.colors.primary : theme.colors.white};
-  color: ${(props) => props.primary ? theme.colors.white : theme.colors.gray700};
+  background: ${props =>
+    props.primary ? theme.colors.primary : theme.colors.white};
+  color: ${props =>
+    props.primary ? theme.colors.white : theme.colors.gray700};
   padding: ${theme.spacing.md} ${theme.spacing.lg};
-  border: ${(props) => props.primary ? 'none' : `2px solid ${theme.colors.gray200}`};
+  border: ${props =>
+    props.primary ? 'none' : `2px solid ${theme.colors.gray200}`};
   border-radius: ${theme.borderRadius.md};
   font-weight: 600;
   cursor: pointer;
@@ -80,9 +83,11 @@ const ActionButton = styled.button.withConfig({
   gap: ${theme.spacing.sm};
 
   &:hover {
-    background: ${(props) => props.primary ? theme.colors.primaryDark : theme.colors.gray50};
+    background: ${props =>
+      props.primary ? theme.colors.primaryDark : theme.colors.gray50};
     transform: translateY(-1px);
-    border-color: ${(props) => props.primary ? theme.colors.primaryDark : theme.colors.primary};
+    border-color: ${props =>
+      props.primary ? theme.colors.primaryDark : theme.colors.primary};
   }
 `;
 
@@ -163,7 +168,7 @@ const StatCard = styled.div`
 const StatValue = styled.div`
   font-size: 1.8rem;
   font-weight: 700;
-  color: ${(props) => props.color || theme.colors.primary};
+  color: ${props => props.color || theme.colors.primary};
   margin-bottom: ${theme.spacing.xs};
 `;
 
@@ -257,21 +262,27 @@ const ApplicationDate = styled.div`
 `;
 
 const StatusBadge = styled.span.withConfig({
-  shouldForwardProp: (prop) => prop !== "status",
+  shouldForwardProp: prop => prop !== 'status',
 })`
   padding: ${theme.spacing.xs} ${theme.spacing.sm};
   border-radius: ${theme.borderRadius.sm};
   font-size: 0.8rem;
   font-weight: 600;
   color: ${theme.colors.white};
-  background: ${(props) => {
+  background: ${props => {
     switch (props.status) {
-      case "pending": return theme.colors.warning;
-      case "under_review": return theme.colors.info;
-      case "approved": return theme.colors.success;
-      case "rejected": return theme.colors.error;
-      case "conditional": return theme.colors.purple || "#8b5cf6";
-      default: return theme.colors.gray500;
+      case 'pending':
+        return theme.colors.warning;
+      case 'under_review':
+        return theme.colors.info;
+      case 'approved':
+        return theme.colors.success;
+      case 'rejected':
+        return theme.colors.error;
+      case 'conditional':
+        return theme.colors.purple || '#8b5cf6';
+      default:
+        return theme.colors.gray500;
     }
   }};
 `;
@@ -308,16 +319,23 @@ const ActionButtons = styled.div`
 `;
 
 const ActionButtonSmall = styled.button.withConfig({
-  shouldForwardProp: (prop) => prop !== "variant",
+  shouldForwardProp: prop => prop !== 'variant',
 })`
-  background: ${(props) => props.variant === 'approve' ? theme.colors.success : 
-                            props.variant === 'reject' ? theme.colors.error : 
-                            theme.colors.white};
-  color: ${(props) => props.variant === 'approve' || props.variant === 'reject' ? 
-                      theme.colors.white : theme.colors.gray700};
+  background: ${props =>
+    props.variant === 'approve'
+      ? theme.colors.success
+      : props.variant === 'reject'
+        ? theme.colors.error
+        : theme.colors.white};
+  color: ${props =>
+    props.variant === 'approve' || props.variant === 'reject'
+      ? theme.colors.white
+      : theme.colors.gray700};
   padding: ${theme.spacing.xs} ${theme.spacing.sm};
-  border: ${(props) => props.variant === 'approve' || props.variant === 'reject' ? 
-                       'none' : `1px solid ${theme.colors.gray300}`};
+  border: ${props =>
+    props.variant === 'approve' || props.variant === 'reject'
+      ? 'none'
+      : `1px solid ${theme.colors.gray300}`};
   border-radius: ${theme.borderRadius.sm};
   font-size: 0.8rem;
   font-weight: 500;
@@ -394,44 +412,44 @@ const EmptyState = styled.div`
 const FinancingTab = ({ dealer }) => {
   const [applications, setApplications] = useState([]);
   const [filteredApplications, setFilteredApplications] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('');
   const [lenders] = useState([
     {
       id: 1,
-      name: "First National Bank",
+      name: 'First National Bank',
       minRate: 3.49,
       maxRate: 7.99,
       maxTerm: 84,
       minCreditScore: 650,
-      status: "active",
+      status: 'active',
     },
     {
       id: 2,
-      name: "Capital Auto Finance",
+      name: 'Capital Auto Finance',
       minRate: 4.25,
       maxRate: 12.99,
       maxTerm: 72,
       minCreditScore: 580,
-      status: "active",
+      status: 'active',
     },
     {
       id: 3,
-      name: "Credit Union Motors",
+      name: 'Credit Union Motors',
       minRate: 2.99,
       maxRate: 6.49,
       maxTerm: 60,
       minCreditScore: 700,
-      status: "active",
+      status: 'active',
     },
     {
       id: 4,
-      name: "Quick Approval Loans",
+      name: 'Quick Approval Loans',
       minRate: 8.99,
       maxRate: 18.99,
       maxTerm: 60,
       minCreditScore: 500,
-      status: "active",
+      status: 'active',
     },
   ]);
 
@@ -439,13 +457,13 @@ const FinancingTab = ({ dealer }) => {
     // Mock financing applications data
     const mockApplications = [
       {
-        id: "FA-001",
-        applicationId: "24-FA-001",
+        id: 'FA-001',
+        applicationId: '24-FA-001',
         customerId: 1,
-        customerName: "John Smith",
-        customerEmail: "john.smith@email.com",
+        customerName: 'John Smith',
+        customerEmail: 'john.smith@email.com',
         vehicleId: 1,
-        vehicleName: "2024 BMW X5 M50i",
+        vehicleName: '2024 BMW X5 M50i',
         vehiclePrice: 75000,
         downPayment: 15000,
         loanAmount: 60000,
@@ -453,21 +471,21 @@ const FinancingTab = ({ dealer }) => {
         creditScore: 750,
         monthlyIncome: 8500,
         employmentYears: 5,
-        applicationDate: "2024-02-15T10:30:00Z",
-        status: "under_review",
-        lender: "First National Bank",
+        applicationDate: '2024-02-15T10:30:00Z',
+        status: 'under_review',
+        lender: 'First National Bank',
         interestRate: 4.25,
         monthlyPayment: 1120,
-        notes: "Excellent credit, stable employment",
+        notes: 'Excellent credit, stable employment',
       },
       {
-        id: "FA-002",
-        applicationId: "24-FA-002",
+        id: 'FA-002',
+        applicationId: '24-FA-002',
         customerId: 2,
-        customerName: "Sarah Johnson",
-        customerEmail: "sarah.j@email.com",
+        customerName: 'Sarah Johnson',
+        customerEmail: 'sarah.j@email.com',
         vehicleId: 2,
-        vehicleName: "2023 Tesla Model S Plaid",
+        vehicleName: '2023 Tesla Model S Plaid',
         vehiclePrice: 120000,
         downPayment: 25000,
         loanAmount: 95000,
@@ -475,21 +493,21 @@ const FinancingTab = ({ dealer }) => {
         creditScore: 680,
         monthlyIncome: 12000,
         employmentYears: 3,
-        applicationDate: "2024-02-14T14:20:00Z",
-        status: "approved",
-        lender: "Capital Auto Finance",
+        applicationDate: '2024-02-14T14:20:00Z',
+        status: 'approved',
+        lender: 'Capital Auto Finance',
         interestRate: 5.75,
         monthlyPayment: 1580,
-        notes: "Approved with standard terms",
+        notes: 'Approved with standard terms',
       },
       {
-        id: "FA-003",
-        applicationId: "24-FA-003",
+        id: 'FA-003',
+        applicationId: '24-FA-003',
         customerId: 3,
-        customerName: "Michael Brown",
-        customerEmail: "m.brown@email.com",
+        customerName: 'Michael Brown',
+        customerEmail: 'm.brown@email.com',
         vehicleId: 3,
-        vehicleName: "2024 Ford F-150 Lightning",
+        vehicleName: '2024 Ford F-150 Lightning',
         vehiclePrice: 65000,
         downPayment: 10000,
         loanAmount: 55000,
@@ -497,21 +515,21 @@ const FinancingTab = ({ dealer }) => {
         creditScore: 720,
         monthlyIncome: 9500,
         employmentYears: 8,
-        applicationDate: "2024-02-13T09:15:00Z",
-        status: "conditional",
-        lender: "Credit Union Motors",
+        applicationDate: '2024-02-13T09:15:00Z',
+        status: 'conditional',
+        lender: 'Credit Union Motors',
         interestRate: 3.99,
         monthlyPayment: 1015,
-        notes: "Conditional approval - needs updated pay stubs",
+        notes: 'Conditional approval - needs updated pay stubs',
       },
       {
-        id: "FA-004",
-        applicationId: "24-FA-004",
+        id: 'FA-004',
+        applicationId: '24-FA-004',
         customerId: 4,
-        customerName: "Emily Davis",
-        customerEmail: "emily.davis@email.com",
+        customerName: 'Emily Davis',
+        customerEmail: 'emily.davis@email.com',
         vehicleId: 4,
-        vehicleName: "2023 Honda Civic Type R",
+        vehicleName: '2023 Honda Civic Type R',
         vehiclePrice: 42000,
         downPayment: 5000,
         loanAmount: 37000,
@@ -519,21 +537,21 @@ const FinancingTab = ({ dealer }) => {
         creditScore: 620,
         monthlyIncome: 4800,
         employmentYears: 2,
-        applicationDate: "2024-02-12T16:45:00Z",
-        status: "pending",
+        applicationDate: '2024-02-12T16:45:00Z',
+        status: 'pending',
         lender: null,
         interestRate: null,
         monthlyPayment: null,
-        notes: "Application submitted, awaiting credit check",
+        notes: 'Application submitted, awaiting credit check',
       },
       {
-        id: "FA-005",
-        applicationId: "24-FA-005",
+        id: 'FA-005',
+        applicationId: '24-FA-005',
         customerId: 5,
-        customerName: "Robert Wilson",
-        customerEmail: "r.wilson@email.com",
+        customerName: 'Robert Wilson',
+        customerEmail: 'r.wilson@email.com',
         vehicleId: 5,
-        vehicleName: "2024 Porsche 911 Turbo S",
+        vehicleName: '2024 Porsche 911 Turbo S',
         vehiclePrice: 230000,
         downPayment: 80000,
         loanAmount: 150000,
@@ -541,12 +559,12 @@ const FinancingTab = ({ dealer }) => {
         creditScore: 580,
         monthlyIncome: 15000,
         employmentYears: 1,
-        applicationDate: "2024-02-11T11:00:00Z",
-        status: "rejected",
-        lender: "First National Bank",
+        applicationDate: '2024-02-11T11:00:00Z',
+        status: 'rejected',
+        lender: 'First National Bank',
         interestRate: null,
         monthlyPayment: null,
-        notes: "Insufficient credit history, debt-to-income ratio too high",
+        notes: 'Insufficient credit history, debt-to-income ratio too high',
       },
     ];
 
@@ -559,11 +577,13 @@ const FinancingTab = ({ dealer }) => {
 
     // Search filter
     if (searchTerm) {
-      filtered = filtered.filter(app =>
-        app.applicationId.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        app.customerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        app.vehicleName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (app.lender && app.lender.toLowerCase().includes(searchTerm.toLowerCase()))
+      filtered = filtered.filter(
+        app =>
+          app.applicationId.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          app.customerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          app.vehicleName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          (app.lender &&
+            app.lender.toLowerCase().includes(searchTerm.toLowerCase()))
       );
     }
 
@@ -575,42 +595,55 @@ const FinancingTab = ({ dealer }) => {
     setFilteredApplications(filtered);
   }, [applications, searchTerm, statusFilter]);
 
-  const formatCurrency = (amount) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
+  const formatCurrency = amount => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(amount);
   };
 
-  const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
+  const formatDate = dateString => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
     });
   };
 
-  const getStatusLabel = (status) => {
+  const getStatusLabel = status => {
     switch (status) {
-      case "pending": return "Pending";
-      case "under_review": return "Under Review";
-      case "approved": return "Approved";
-      case "rejected": return "Rejected";
-      case "conditional": return "Conditional";
-      default: return status;
+      case 'pending':
+        return 'Pending';
+      case 'under_review':
+        return 'Under Review';
+      case 'approved':
+        return 'Approved';
+      case 'rejected':
+        return 'Rejected';
+      case 'conditional':
+        return 'Conditional';
+      default:
+        return status;
     }
   };
 
   const stats = {
     total: applications.length,
-    pending: applications.filter(a => a.status === "pending").length,
-    approved: applications.filter(a => a.status === "approved").length,
-    rejected: applications.filter(a => a.status === "rejected").length,
-    totalLoanAmount: applications.filter(a => a.status === "approved").reduce((sum, a) => sum + a.loanAmount, 0),
-    avgCreditScore: applications.length > 0 ? 
-      Math.round(applications.reduce((sum, a) => sum + a.creditScore, 0) / applications.length) : 0,
+    pending: applications.filter(a => a.status === 'pending').length,
+    approved: applications.filter(a => a.status === 'approved').length,
+    rejected: applications.filter(a => a.status === 'rejected').length,
+    totalLoanAmount: applications
+      .filter(a => a.status === 'approved')
+      .reduce((sum, a) => sum + a.loanAmount, 0),
+    avgCreditScore:
+      applications.length > 0
+        ? Math.round(
+            applications.reduce((sum, a) => sum + a.creditScore, 0) /
+              applications.length
+          )
+        : 0,
   };
 
   return (
@@ -646,13 +679,13 @@ const FinancingTab = ({ dealer }) => {
               type="text"
               placeholder="Search applications by ID, customer, vehicle, or lender..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={e => setSearchTerm(e.target.value)}
             />
           </SearchContainer>
 
           <FilterSelect
             value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
+            onChange={e => setStatusFilter(e.target.value)}
           >
             <option value="">All Statuses</option>
             <option value="pending">Pending</option>
@@ -697,11 +730,15 @@ const FinancingTab = ({ dealer }) => {
           <StatLabel>Rejected</StatLabel>
         </StatCard>
         <StatCard>
-          <StatValue color={theme.colors.info}>{formatCurrency(stats.totalLoanAmount)}</StatValue>
+          <StatValue color={theme.colors.info}>
+            {formatCurrency(stats.totalLoanAmount)}
+          </StatValue>
           <StatLabel>Total Financed</StatLabel>
         </StatCard>
         <StatCard>
-          <StatValue color={theme.colors.success}>{stats.avgCreditScore}</StatValue>
+          <StatValue color={theme.colors.success}>
+            {stats.avgCreditScore}
+          </StatValue>
           <StatLabel>Avg Credit Score</StatLabel>
         </StatCard>
       </StatsGrid>
@@ -714,19 +751,23 @@ const FinancingTab = ({ dealer }) => {
               Financing Applications
             </SectionTitle>
           </ApplicationsHeader>
-          
+
           {filteredApplications.length > 0 ? (
-            filteredApplications.map((application) => (
+            filteredApplications.map(application => (
               <ApplicationItem key={application.id}>
                 <ApplicationHeader>
                   <ApplicationInfo>
                     <ApplicationId>#{application.applicationId}</ApplicationId>
                     <CustomerName>
-                      <FaUser style={{ marginRight: '6px', fontSize: '0.8rem' }} />
+                      <FaUser
+                        style={{ marginRight: '6px', fontSize: '0.8rem' }}
+                      />
                       {application.customerName}
                     </CustomerName>
                     <ApplicationDate>
-                      <FaCalendar style={{ marginRight: '4px', fontSize: '0.7rem' }} />
+                      <FaCalendar
+                        style={{ marginRight: '4px', fontSize: '0.7rem' }}
+                      />
                       Applied {formatDate(application.applicationDate)}
                     </ApplicationDate>
                   </ApplicationInfo>
@@ -741,11 +782,15 @@ const FinancingTab = ({ dealer }) => {
                     <DetailLabel>Vehicle</DetailLabel>
                   </DetailItem>
                   <DetailItem>
-                    <DetailValue>{formatCurrency(application.loanAmount)}</DetailValue>
+                    <DetailValue>
+                      {formatCurrency(application.loanAmount)}
+                    </DetailValue>
                     <DetailLabel>Loan Amount</DetailLabel>
                   </DetailItem>
                   <DetailItem>
-                    <DetailValue>{application.requestedTerm} months</DetailValue>
+                    <DetailValue>
+                      {application.requestedTerm} months
+                    </DetailValue>
                     <DetailLabel>Term</DetailLabel>
                   </DetailItem>
                   <DetailItem>
@@ -760,21 +805,36 @@ const FinancingTab = ({ dealer }) => {
                   )}
                   {application.monthlyPayment && (
                     <DetailItem>
-                      <DetailValue>{formatCurrency(application.monthlyPayment)}</DetailValue>
+                      <DetailValue>
+                        {formatCurrency(application.monthlyPayment)}
+                      </DetailValue>
                       <DetailLabel>Monthly Payment</DetailLabel>
                     </DetailItem>
                   )}
                 </ApplicationDetails>
 
                 {application.lender && (
-                  <div style={{ marginBottom: theme.spacing.md, fontSize: '0.9rem', color: theme.colors.gray600 }}>
+                  <div
+                    style={{
+                      marginBottom: theme.spacing.md,
+                      fontSize: '0.9rem',
+                      color: theme.colors.gray600,
+                    }}
+                  >
                     <FaUniversity style={{ marginRight: '6px' }} />
                     Lender: {application.lender}
                   </div>
                 )}
 
                 {application.notes && (
-                  <div style={{ marginBottom: theme.spacing.md, fontSize: '0.9rem', color: theme.colors.gray600, fontStyle: 'italic' }}>
+                  <div
+                    style={{
+                      marginBottom: theme.spacing.md,
+                      fontSize: '0.9rem',
+                      color: theme.colors.gray600,
+                      fontStyle: 'italic',
+                    }}
+                  >
                     Notes: {application.notes}
                   </div>
                 )}
@@ -788,7 +848,7 @@ const FinancingTab = ({ dealer }) => {
                     <FaEdit />
                     Edit
                   </ActionButtonSmall>
-                  {application.status === "pending" && (
+                  {application.status === 'pending' && (
                     <>
                       <ActionButtonSmall variant="approve">
                         <FaCheck />
@@ -800,7 +860,7 @@ const FinancingTab = ({ dealer }) => {
                       </ActionButtonSmall>
                     </>
                   )}
-                  {application.status === "approved" && (
+                  {application.status === 'approved' && (
                     <ActionButtonSmall>
                       <FaPrint />
                       Print Contract
@@ -813,7 +873,10 @@ const FinancingTab = ({ dealer }) => {
             <EmptyState>
               <FaFileContract className="icon" />
               <h3>No financing applications found</h3>
-              <p>Try adjusting your search criteria or create a new financing application.</p>
+              <p>
+                Try adjusting your search criteria or create a new financing
+                application.
+              </p>
             </EmptyState>
           )}
         </ApplicationsList>
@@ -823,16 +886,25 @@ const FinancingTab = ({ dealer }) => {
             <FaUniversity />
             Partner Lenders
           </SectionTitle>
-          
+
           <LendersList>
-            {lenders.map((lender) => (
+            {lenders.map(lender => (
               <LenderCard key={lender.id}>
                 <LenderName>{lender.name}</LenderName>
                 <LenderDetails>
-                  <div>Rate: {lender.minRate}% - {lender.maxRate}%</div>
+                  <div>
+                    Rate: {lender.minRate}% - {lender.maxRate}%
+                  </div>
                   <div>Max Term: {lender.maxTerm} mo</div>
                   <div>Min Credit: {lender.minCreditScore}</div>
-                  <div>Status: <span style={{ color: theme.colors.success, fontWeight: 600 }}>{lender.status}</span></div>
+                  <div>
+                    Status:{' '}
+                    <span
+                      style={{ color: theme.colors.success, fontWeight: 600 }}
+                    >
+                      {lender.status}
+                    </span>
+                  </div>
                 </LenderDetails>
               </LenderCard>
             ))}

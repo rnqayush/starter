@@ -1,7 +1,7 @@
-import React from "react";
-import styled from "styled-components";
-import { FaCog } from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
+import React from 'react';
+import styled from 'styled-components';
+import { FaCog } from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
 
 const Container = styled.div`
   background: ${theme.colors.white};
@@ -54,7 +54,11 @@ const DealerSettingsTab = () => {
       <ComingSoon>
         <FaCog className="icon" />
         <h3>Dealership Settings Coming Soon</h3>
-        <p>Configure your dealership profile, business hours, contact information, payment methods, and customize your storefront appearance.</p>
+        <p>
+          Configure your dealership profile, business hours, contact
+          information, payment methods, and customize your storefront
+          appearance.
+        </p>
       </ComingSoon>
     </Container>
   );

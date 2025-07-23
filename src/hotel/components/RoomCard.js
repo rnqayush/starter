@@ -1,22 +1,21 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import styled from "styled-components";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 import {
   FaBed,
   FaUsers,
   FaWifi,
   FaTv,
   FaCoffee,
-
   FaWind,
   FaExpand,
   FaHeart,
   FaShare,
   FaImages,
   FaCheckCircle,
-  FaStar
-} from "react-icons/fa";
-import { theme, media } from "../../styles/GlobalStyle";
+  FaStar,
+} from 'react-icons/fa';
+import { theme, media } from '../../styles/GlobalStyle';
 
 const Card = styled.div`
   background: ${theme.colors.white};
@@ -49,10 +48,10 @@ const Card = styled.div`
 `;
 
 const CardImage = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "image",
+  shouldForwardProp: prop => prop !== 'image',
 })`
   height: 240px;
-  background-image: url(${(props) => props.image});
+  background-image: url(${props => props.image});
   background-size: cover;
   background-position: center;
   position: relative;
@@ -60,18 +59,26 @@ const CardImage = styled.div.withConfig({
   cursor: pointer;
 
   &::before {
-    content: "";
+    content: '';
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.1) 100%);
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgba(0, 0, 0, 0.1) 100%
+    );
     transition: background 0.3s ease;
   }
 
   &:hover::before {
-    background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.3) 100%);
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgba(0, 0, 0, 0.3) 100%
+    );
   }
 
   ${media.mobile} {
@@ -87,7 +94,11 @@ const RoomType = styled.div`
   position: absolute;
   top: ${theme.spacing.md};
   left: ${theme.spacing.md};
-  background: linear-gradient(135deg, ${theme.colors.primary}, ${theme.colors.primaryDark});
+  background: linear-gradient(
+    135deg,
+    ${theme.colors.primary},
+    ${theme.colors.primaryDark}
+  );
   color: ${theme.colors.white};
   padding: ${theme.spacing.sm} ${theme.spacing.md};
   border-radius: ${theme.borderRadius.md};
@@ -397,7 +408,11 @@ const BookingActions = styled.div`
 `;
 
 const BookButton = styled(Link)`
-  background: linear-gradient(135deg, ${theme.colors.primary}, ${theme.colors.primaryDark});
+  background: linear-gradient(
+    135deg,
+    ${theme.colors.primary},
+    ${theme.colors.primaryDark}
+  );
   color: ${theme.colors.white};
   padding: ${theme.spacing.md} ${theme.spacing.xl};
   border-radius: ${theme.borderRadius.lg};
@@ -494,21 +509,21 @@ const FeatureTitle = styled.h4`
 const RoomCard = ({ room, hotelId, hotelSlug }) => {
   const [isLiked, setIsLiked] = useState(false);
 
-  const getAmenityIcon = (amenity) => {
+  const getAmenityIcon = amenity => {
     const iconMap = {
       WiFi: FaWifi,
       TV: FaTv,
-      "Mini Bar": FaCoffee,
-      "Room Service": FaCoffee,
-      "AC": FaWind,
-      "Ocean View": FaExpand,
-      "City View": FaExpand,
-      "Mountain View": FaExpand,
-      "Heritage Decor": FaStar,
-      "Balcony": FaExpand,
-      "Work Desk": FaTv,
-      "Butler Service": FaCoffee,
-      "Living Room": FaExpand,
+      'Mini Bar': FaCoffee,
+      'Room Service': FaCoffee,
+      AC: FaWind,
+      'Ocean View': FaExpand,
+      'City View': FaExpand,
+      'Mountain View': FaExpand,
+      'Heritage Decor': FaStar,
+      Balcony: FaExpand,
+      'Work Desk': FaTv,
+      'Butler Service': FaCoffee,
+      'Living Room': FaExpand,
     };
     const IconComponent = iconMap[amenity] || FaCheckCircle;
     return <IconComponent className="icon" />;
@@ -536,12 +551,15 @@ const RoomCard = ({ room, hotelId, hotelSlug }) => {
       <CardImage
         image={
           room.images?.[0] ||
-          "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?ixlib=rb-4.0.3"
+          'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?ixlib=rb-4.0.3'
         }
       >
         <RoomType>{room.type}</RoomType>
         <ImageActions>
-          <ActionButton onClick={handleLike} style={{ color: isLiked ? '#ef4444' : undefined }}>
+          <ActionButton
+            onClick={handleLike}
+            style={{ color: isLiked ? '#ef4444' : undefined }}
+          >
             <FaHeart />
           </ActionButton>
           <ActionButton onClick={handleShare}>
@@ -597,10 +615,8 @@ const RoomCard = ({ room, hotelId, hotelSlug }) => {
         </RoomFeatures>
 
         <BookingActions>
-          <BookButton to={`/${hotelSlug}/booking/${room.id}`}>
-            Book Now
-          </BookButton>
-          <ViewRoomButton to={`/${hotelSlug}/rooms/${room.id}`}>
+          <BookButton to={`booking/${room.id}`}>Book Now</BookButton>
+          <ViewRoomButton to={`${room.id}`}>
             <FaExpand />
             View Room
           </ViewRoomButton>

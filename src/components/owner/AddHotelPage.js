@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import { FaUpload, FaCheck } from "react-icons/fa";
-import Sidebar from "./Sidebar";
-import { Card, CardContent } from "../shared/Card";
-import { Button } from "../shared/Button";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import { FaUpload, FaCheck } from 'react-icons/fa';
+import Sidebar from './Sidebar';
+import { Card, CardContent } from '../shared/Card';
+import { Button } from '../shared/Button';
 import {
   Input,
   FormGroup,
@@ -14,10 +14,10 @@ import {
   InputGroup,
   CheckboxGroup,
   CheckboxItem,
-} from "../shared/Input";
-import { theme, media } from "../../styles/GlobalStyle";
-import { useAppContext } from "../../context/AppContext";
-import { amenitiesList } from "../../data/mockData";
+} from '../shared/Input';
+import { theme, media } from '../../styles/GlobalStyle';
+import { useAppContext } from '../../context/AppContext';
+import { amenitiesList } from '../../data/mockData';
 
 const PageContainer = styled.div`
   display: flex;
@@ -130,64 +130,64 @@ const AddHotelPage = () => {
   const { setHotels, setOwnerHotels } = useAppContext();
 
   const [formData, setFormData] = useState({
-    name: "",
-    address: "",
-    city: "",
-    pincode: "",
-    description: "",
-    starRating: "3",
-    checkInTime: "14:00",
-    checkOutTime: "11:00",
+    name: '',
+    address: '',
+    city: '',
+    pincode: '',
+    description: '',
+    starRating: '3',
+    checkInTime: '14:00',
+    checkOutTime: '11:00',
     amenities: [],
-    policies: ["ID proof required"],
+    policies: ['ID proof required'],
     images: [],
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleInputChange = (e) => {
+  const handleInputChange = e => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
+    setFormData(prev => ({
       ...prev,
       [name]: value,
     }));
   };
 
   const handleAmenityChange = (amenityId, checked) => {
-    setFormData((prev) => ({
+    setFormData(prev => ({
       ...prev,
       amenities: checked
         ? [...prev.amenities, amenityId]
-        : prev.amenities.filter((id) => id !== amenityId),
+        : prev.amenities.filter(id => id !== amenityId),
     }));
   };
 
-  const handleImageUpload = (e) => {
+  const handleImageUpload = e => {
     const files = Array.from(e.target.files);
     // In a real app, you would upload these to a server
     // For demo purposes, we'll use placeholder URLs
     const imageUrls = files.map(
       (_, index) =>
-        `https://images.unsplash.com/photo-${1566073771259 + index}?ixlib=rb-4.0.3`,
+        `https://images.unsplash.com/photo-${1566073771259 + index}?ixlib=rb-4.0.3`
     );
 
-    setFormData((prev) => ({
+    setFormData(prev => ({
       ...prev,
       images: [...prev.images, ...imageUrls],
     }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
     setIsSubmitting(true);
 
     try {
       // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise(resolve => setTimeout(resolve, 1000));
 
       const newHotel = {
         id: Date.now(),
-        ownerId: "owner123",
+        ownerId: 'owner123',
         name: formData.name,
         location: `${formData.city}`,
         address: formData.address,
@@ -198,12 +198,12 @@ const AddHotelPage = () => {
         starRating: parseInt(formData.starRating),
         image:
           formData.images[0] ||
-          "https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3",
+          'https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3',
         images:
           formData.images.length > 0
             ? formData.images
             : [
-                "https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3",
+                'https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3',
               ],
         amenities: formData.amenities,
         checkInTime: formData.checkInTime,
@@ -215,21 +215,20 @@ const AddHotelPage = () => {
 
       const newOwnerHotel = {
         id: newHotel.id,
-        ownerId: "owner123",
+        ownerId: 'owner123',
         name: formData.name,
         location: `${formData.city}`,
-        status: "active",
+        status: 'active',
         image: newHotel.image,
         totalRooms: 0,
         totalBookings: 0,
       };
 
-      setHotels((prev) => [...prev, newHotel]);
-      setOwnerHotels((prev) => [...prev, newOwnerHotel]);
+      setHotels(prev => [...prev, newHotel]);
+      setOwnerHotels(prev => [...prev, newOwnerHotel]);
 
-      navigate("/owner/my-hotels");
+      navigate('/owner/my-hotels');
     } catch (error) {
-
     } finally {
       setIsSubmitting(false);
     }
@@ -334,7 +333,7 @@ const AddHotelPage = () => {
                   <Label>Upload Images</Label>
                   <ImageUploadArea
                     onClick={() =>
-                      document.getElementById("imageUpload").click()
+                      document.getElementById('imageUpload').click()
                     }
                   >
                     <UploadIcon>
@@ -350,7 +349,7 @@ const AddHotelPage = () => {
                     type="file"
                     multiple
                     accept="image/*"
-                    style={{ display: "none" }}
+                    style={{ display: 'none' }}
                     onChange={handleImageUpload}
                   />
                   {formData.images.length > 0 && (
@@ -371,12 +370,12 @@ const AddHotelPage = () => {
                 <FormGroup>
                   <Label>Select Available Amenities</Label>
                   <CheckboxGroup>
-                    {amenitiesList.map((amenity) => (
+                    {amenitiesList.map(amenity => (
                       <CheckboxItem key={amenity.id}>
                         <input
                           type="checkbox"
                           checked={formData.amenities.includes(amenity.id)}
-                          onChange={(e) =>
+                          onChange={e =>
                             handleAmenityChange(amenity.id, e.target.checked)
                           }
                         />
@@ -418,12 +417,12 @@ const AddHotelPage = () => {
                 <Button
                   type="button"
                   variant="outline"
-                  onClick={() => navigate("/owner/my-hotels")}
+                  onClick={() => navigate('/owner/my-hotels')}
                 >
                   Cancel
                 </Button>
                 <Button type="submit" disabled={isSubmitting} size="large">
-                  {isSubmitting ? "Adding Hotel..." : "Add Hotel"}
+                  {isSubmitting ? 'Adding Hotel...' : 'Add Hotel'}
                 </Button>
               </FormActions>
             </HotelForm>

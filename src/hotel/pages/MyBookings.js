@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import styled from "styled-components";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 import {
   FaCalendarAlt,
   FaUsers,
@@ -10,11 +10,11 @@ import {
   FaTimesCircle,
   FaEye,
   FaPhone,
-} from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
-import HotelNavbar from "../components/HotelNavbar";
-import HotelFooter from "../components/HotelFooter";
-import { bookings } from "../data/hotels";
+} from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
+import HotelNavbar from '../components/HotelNavbar';
+import HotelFooter from '../components/HotelFooter';
+import { bookings } from '../data/hotels';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -56,16 +56,16 @@ const FilterTabs = styled.div`
 `;
 
 const FilterTab = styled.button.withConfig({
-  shouldForwardProp: (prop) => prop !== "active",
+  shouldForwardProp: prop => prop !== 'active',
 })`
   background: none;
   border: none;
   padding: ${theme.spacing.md} ${theme.spacing.lg};
   font-weight: 600;
-  color: ${(props) =>
+  color: ${props =>
     props.active ? theme.colors.primary : theme.colors.gray600};
   border-bottom: 3px solid
-    ${(props) => (props.active ? theme.colors.primary : "transparent")};
+    ${props => (props.active ? theme.colors.primary : 'transparent')};
   cursor: pointer;
   transition: all 0.2s ease;
 
@@ -80,17 +80,17 @@ const BookingsGrid = styled.div`
 `;
 
 const BookingCard = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "status",
+  shouldForwardProp: prop => prop !== 'status',
 })`
   background: ${theme.colors.white};
   border-radius: ${theme.borderRadius.lg};
   padding: ${theme.spacing.xl};
   box-shadow: ${theme.shadows.md};
   border-left: 4px solid
-    ${(props) =>
-      props.status === "confirmed"
+    ${props =>
+      props.status === 'confirmed'
         ? theme.colors.success
-        : props.status === "pending"
+        : props.status === 'pending'
           ? theme.colors.warning
           : theme.colors.error};
   transition: all 0.3s ease;
@@ -142,7 +142,7 @@ const RoomName = styled.p`
 `;
 
 const StatusBadge = styled.span.withConfig({
-  shouldForwardProp: (prop) => prop !== "status",
+  shouldForwardProp: prop => prop !== 'status',
 })`
   display: inline-flex;
   align-items: center;
@@ -152,10 +152,10 @@ const StatusBadge = styled.span.withConfig({
   font-size: 0.8rem;
   font-weight: 600;
   text-transform: uppercase;
-  background: ${(props) =>
-    props.status === "confirmed"
+  background: ${props =>
+    props.status === 'confirmed'
       ? theme.colors.success
-      : props.status === "pending"
+      : props.status === 'pending'
         ? theme.colors.warning
         : theme.colors.error};
   color: ${theme.colors.white};
@@ -205,15 +205,15 @@ const TotalPrice = styled.div`
 `;
 
 const ActionButton = styled.button.withConfig({
-  shouldForwardProp: (prop) => prop !== "variant",
+  shouldForwardProp: prop => prop !== 'variant',
 })`
-  background: ${(props) =>
-    props.variant === "primary" ? theme.colors.primary : theme.colors.white};
-  color: ${(props) =>
-    props.variant === "primary" ? theme.colors.white : theme.colors.gray700};
+  background: ${props =>
+    props.variant === 'primary' ? theme.colors.primary : theme.colors.white};
+  color: ${props =>
+    props.variant === 'primary' ? theme.colors.white : theme.colors.gray700};
   border: 2px solid
-    ${(props) =>
-      props.variant === "primary"
+    ${props =>
+      props.variant === 'primary'
         ? theme.colors.primary
         : theme.colors.gray200};
   padding: ${theme.spacing.sm} ${theme.spacing.md};
@@ -273,34 +273,34 @@ const BrowseButton = styled(Link)`
 `;
 
 const MyBookings = () => {
-  const [activeFilter, setActiveFilter] = useState("all");
+  const [activeFilter, setActiveFilter] = useState('all');
 
   // Mock user bookings - in real app, this would come from API
   const userBookings = bookings;
 
-  const getStatusIcon = (status) => {
+  const getStatusIcon = status => {
     switch (status) {
-      case "confirmed":
+      case 'confirmed':
         return <FaCheckCircle />;
-      case "pending":
+      case 'pending':
         return <FaExclamationTriangle />;
-      case "cancelled":
+      case 'cancelled':
         return <FaTimesCircle />;
       default:
         return <FaClock />;
     }
   };
 
-  const filteredBookings = userBookings.filter((booking) => {
-    if (activeFilter === "all") return true;
+  const filteredBookings = userBookings.filter(booking => {
+    if (activeFilter === 'all') return true;
     return booking.status === activeFilter;
   });
 
-  const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
+  const formatDate = dateString => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
     });
   };
 
@@ -311,15 +311,15 @@ const MyBookings = () => {
     return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   };
 
-  const handleContactHotel = (booking) => {
+  const handleContactHotel = booking => {
     alert(
-      `Contact information for ${booking.hotelName}:\nPhone: +91 1800-HOTELS\nEmail: info@${booking.hotelName.toLowerCase().replace(/\s+/g, "")}.com`,
+      `Contact information for ${booking.hotelName}:\nPhone: +91 1800-HOTELS\nEmail: info@${booking.hotelName.toLowerCase().replace(/\s+/g, '')}.com`
     );
   };
 
-  const handleViewDetails = (booking) => {
+  const handleViewDetails = booking => {
     alert(
-      `Booking Details:\nBooking ID: ${booking.id}\nGuest: ${booking.guestName}\nEmail: ${booking.guestEmail}\nPhone: ${booking.guestPhone}\nSpecial Requests: ${booking.specialRequests || "None"}`,
+      `Booking Details:\nBooking ID: ${booking.id}\nGuest: ${booking.guestName}\nEmail: ${booking.guestEmail}\nPhone: ${booking.guestPhone}\nSpecial Requests: ${booking.specialRequests || 'None'}`
     );
   };
 
@@ -336,26 +336,26 @@ const MyBookings = () => {
 
           <FilterTabs>
             <FilterTab
-              active={activeFilter === "all"}
-              onClick={() => setActiveFilter("all")}
+              active={activeFilter === 'all'}
+              onClick={() => setActiveFilter('all')}
             >
               All Bookings
             </FilterTab>
             <FilterTab
-              active={activeFilter === "confirmed"}
-              onClick={() => setActiveFilter("confirmed")}
+              active={activeFilter === 'confirmed'}
+              onClick={() => setActiveFilter('confirmed')}
             >
               Confirmed
             </FilterTab>
             <FilterTab
-              active={activeFilter === "pending"}
-              onClick={() => setActiveFilter("pending")}
+              active={activeFilter === 'pending'}
+              onClick={() => setActiveFilter('pending')}
             >
               Pending
             </FilterTab>
             <FilterTab
-              active={activeFilter === "cancelled"}
-              onClick={() => setActiveFilter("cancelled")}
+              active={activeFilter === 'cancelled'}
+              onClick={() => setActiveFilter('cancelled')}
             >
               Cancelled
             </FilterTab>
@@ -365,11 +365,11 @@ const MyBookings = () => {
             <FaCalendarAlt className="icon" />
             <h3>No bookings found</h3>
             <p>
-              {activeFilter === "all"
+              {activeFilter === 'all'
                 ? "You haven't made any hotel bookings yet. Start exploring amazing hotels!"
                 : `No ${activeFilter} bookings found. Try a different filter.`}
             </p>
-            {activeFilter === "all" && (
+            {activeFilter === 'all' && (
               <BrowseButton to="/hotels">Browse Hotels</BrowseButton>
             )}
           </EmptyState>
@@ -392,36 +392,35 @@ const MyBookings = () => {
 
         <FilterTabs>
           <FilterTab
-            active={activeFilter === "all"}
-            onClick={() => setActiveFilter("all")}
+            active={activeFilter === 'all'}
+            onClick={() => setActiveFilter('all')}
           >
             All Bookings ({userBookings.length})
           </FilterTab>
           <FilterTab
-            active={activeFilter === "confirmed"}
-            onClick={() => setActiveFilter("confirmed")}
+            active={activeFilter === 'confirmed'}
+            onClick={() => setActiveFilter('confirmed')}
           >
             Confirmed (
-            {userBookings.filter((b) => b.status === "confirmed").length})
+            {userBookings.filter(b => b.status === 'confirmed').length})
           </FilterTab>
           <FilterTab
-            active={activeFilter === "pending"}
-            onClick={() => setActiveFilter("pending")}
+            active={activeFilter === 'pending'}
+            onClick={() => setActiveFilter('pending')}
           >
-            Pending ({userBookings.filter((b) => b.status === "pending").length}
-            )
+            Pending ({userBookings.filter(b => b.status === 'pending').length})
           </FilterTab>
           <FilterTab
-            active={activeFilter === "cancelled"}
-            onClick={() => setActiveFilter("cancelled")}
+            active={activeFilter === 'cancelled'}
+            onClick={() => setActiveFilter('cancelled')}
           >
             Cancelled (
-            {userBookings.filter((b) => b.status === "cancelled").length})
+            {userBookings.filter(b => b.status === 'cancelled').length})
           </FilterTab>
         </FilterTabs>
 
         <BookingsGrid>
-          {filteredBookings.map((booking) => (
+          {filteredBookings.map(booking => (
             <BookingCard key={booking.id} status={booking.status}>
               <BookingHeader>
                 <BookingInfo>
@@ -475,7 +474,7 @@ const MyBookings = () => {
                   Total: ₹{booking.totalPrice.toLocaleString()}
                 </TotalPrice>
 
-                <div style={{ display: "flex", gap: theme.spacing.md }}>
+                <div style={{ display: 'flex', gap: theme.spacing.md }}>
                   <ActionButton onClick={() => handleViewDetails(booking)}>
                     <FaEye />
                     View Details

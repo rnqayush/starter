@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import React, { useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 import {
   FaMapMarkerAlt,
   FaSearch,
@@ -14,23 +14,23 @@ import {
   FaCalendarAlt,
   FaUsers,
   FaCamera,
-    FaBirthdayCake,
+  FaBirthdayCake,
   FaMusic,
   FaLeaf,
-    FaGem,
+  FaGem,
   FaCheck,
   FaBars,
   FaTimes,
-} from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
-import { weddingVendors } from "../data/vendors";
+} from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
+import { weddingVendors } from '../data/vendors';
 import {
   getCurrentLocation,
   getLocationFromZip,
   searchLocationByCity,
   updateVendorsWithDistance,
   getDefaultLocation,
-} from "../../utils/location";
+} from '../../utils/location';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -99,7 +99,7 @@ const MobileMenuButton = styled.button`
 `;
 
 const NavActions = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "isOpen",
+  shouldForwardProp: prop => prop !== 'isOpen',
 })`
   display: flex;
   align-items: center;
@@ -116,10 +116,10 @@ const NavActions = styled.div.withConfig({
     justify-content: center;
     gap: ${theme.spacing.xl};
     z-index: 1001;
-    transform: translateX(${(props) => (props.isOpen ? "0" : "100%")});
+    transform: translateX(${props => (props.isOpen ? '0' : '100%')});
     transition: transform 0.3s ease;
     padding: ${theme.spacing.xl};
-    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   }
 `;
 
@@ -177,7 +177,7 @@ const BackButton = styled.button`
 `;
 
 const MobileMenuOverlay = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "isOpen",
+  shouldForwardProp: prop => prop !== 'isOpen',
 })`
   display: none;
 
@@ -190,9 +190,11 @@ const MobileMenuOverlay = styled.div.withConfig({
     bottom: 0;
     background: rgba(0, 0, 0, 0.2);
     z-index: 1000;
-    opacity: ${(props) => (props.isOpen ? "1" : "0")};
-    visibility: ${(props) => (props.isOpen ? "visible" : "hidden")};
-    transition: opacity 0.3s ease, visibility 0.3s ease;
+    opacity: ${props => (props.isOpen ? '1' : '0')};
+    visibility: ${props => (props.isOpen ? 'visible' : 'hidden')};
+    transition:
+      opacity 0.3s ease,
+      visibility 0.3s ease;
   }
 `;
 
@@ -207,7 +209,11 @@ const HeroSection = styled.div`
   text-align: center;
   margin-bottom: ${theme.spacing.xxl};
   padding: ${theme.spacing.xxl} 0;
-  background: linear-gradient(135deg, ${theme.colors.primary}10 0%, ${theme.colors.secondary}10 100%);
+  background: linear-gradient(
+    135deg,
+    ${theme.colors.primary}10 0%,
+    ${theme.colors.secondary}10 100%
+  );
   border-radius: ${theme.borderRadius.xl};
   margin-bottom: ${theme.spacing.xl};
 `;
@@ -365,7 +371,7 @@ const CategoryGrid = styled.div`
 `;
 
 const CategoryCard = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "selected",
+  shouldForwardProp: prop => prop !== 'selected',
 })`
   background: ${theme.colors.white};
   padding: ${theme.spacing.xl};
@@ -374,7 +380,8 @@ const CategoryCard = styled.div.withConfig({
   text-align: center;
   cursor: pointer;
   transition: all 0.2s ease;
-  border: 2px solid ${(props) => props.selected ? theme.colors.primary : 'transparent'};
+  border: 2px solid
+    ${props => (props.selected ? theme.colors.primary : 'transparent')};
   position: relative;
 
   &:hover {
@@ -383,7 +390,9 @@ const CategoryCard = styled.div.withConfig({
     border-color: ${theme.colors.primary};
   }
 
-  ${(props) => props.selected && `
+  ${props =>
+    props.selected &&
+    `
     background: ${theme.colors.primary}10;
     transform: translateY(-2px);
   `}
@@ -408,16 +417,18 @@ const CategoryCount = styled.p`
 `;
 
 const CategoryCheckbox = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "checked",
+  shouldForwardProp: prop => prop !== 'checked',
 })`
   position: absolute;
   top: ${theme.spacing.md};
   right: ${theme.spacing.md};
   width: 24px;
   height: 24px;
-  border: 2px solid ${(props) => props.checked ? theme.colors.primary : theme.colors.gray300};
+  border: 2px solid
+    ${props => (props.checked ? theme.colors.primary : theme.colors.gray300)};
   border-radius: 4px;
-  background: ${(props) => props.checked ? theme.colors.primary : theme.colors.white};
+  background: ${props =>
+    props.checked ? theme.colors.primary : theme.colors.white};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -426,8 +437,8 @@ const CategoryCheckbox = styled.div.withConfig({
   svg {
     color: ${theme.colors.white};
     font-size: 0.8rem;
-    opacity: ${(props) => props.checked ? 1 : 0};
-        transition: opacity 0.2s ease;
+    opacity: ${props => (props.checked ? 1 : 0)};
+    transition: opacity 0.2s ease;
   }
 `;
 
@@ -470,14 +481,13 @@ const FilterGroup = styled.div`
 `;
 
 const FilterButton = styled.button.withConfig({
-  shouldForwardProp: (prop) => prop !== "active",
+  shouldForwardProp: prop => prop !== 'active',
 })`
-  background: ${(props) =>
+  background: ${props =>
     props.active ? theme.colors.primary : theme.colors.white};
-  color: ${(props) =>
-    props.active ? theme.colors.white : theme.colors.gray700};
+  color: ${props => (props.active ? theme.colors.white : theme.colors.gray700)};
   border: 2px solid
-    ${(props) => (props.active ? theme.colors.primary : theme.colors.gray200)};
+    ${props => (props.active ? theme.colors.primary : theme.colors.gray200)};
   padding: ${theme.spacing.sm} ${theme.spacing.md};
   border-radius: ${theme.borderRadius.md};
   font-weight: 500;
@@ -685,27 +695,27 @@ const WeddingHome = () => {
   const [vendors, setVendors] = useState([]);
   const [filteredVendors, setFilteredVendors] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
   const [currentLocation, setCurrentLocation] = useState(null);
-    const [activeFilter, setActiveFilter] = useState("all");
-  const [sortBy, setSortBy] = useState("distance");
+  const [activeFilter, setActiveFilter] = useState('all');
+  const [sortBy, setSortBy] = useState('distance');
   const [locationLoading, setLocationLoading] = useState(false);
-    const [selectedCategories, setSelectedCategories] = useState(["venue"]); // Default to venues checked
+  const [selectedCategories, setSelectedCategories] = useState(['venue']); // Default to venues checked
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const categories = [
-    { name: "Venues", icon: FaLeaf, count: 15, filter: "venue" },
-    { name: "Photography", icon: FaCamera, count: 25, filter: "photography" },
-        { name: "Catering", icon: FaBirthdayCake, count: 18, filter: "catering" },
-    { name: "Music & DJ", icon: FaMusic, count: 12, filter: "music" },
-    { name: "Floral", icon: FaLeaf, count: 20, filter: "floral" },
-    { name: "Jewelry", icon: FaGem, count: 8, filter: "jewelry" },
+    { name: 'Venues', icon: FaLeaf, count: 15, filter: 'venue' },
+    { name: 'Photography', icon: FaCamera, count: 25, filter: 'photography' },
+    { name: 'Catering', icon: FaBirthdayCake, count: 18, filter: 'catering' },
+    { name: 'Music & DJ', icon: FaMusic, count: 12, filter: 'music' },
+    { name: 'Floral', icon: FaLeaf, count: 20, filter: 'floral' },
+    { name: 'Jewelry', icon: FaGem, count: 8, filter: 'jewelry' },
   ];
 
-  const loadVendorsForLocation = useCallback((location) => {
+  const loadVendorsForLocation = useCallback(location => {
     const vendorsWithDistance = updateVendorsWithDistance(
       weddingVendors,
-      location,
+      location
     );
     setVendors(vendorsWithDistance);
     setFilteredVendors(vendorsWithDistance);
@@ -719,14 +729,14 @@ const WeddingHome = () => {
       setCurrentLocation(location);
       loadVendorsForLocation(location);
     } catch (error) {
-      console.error("Failed to get location:", error);
+      console.error('Failed to get location:', error);
       const defaultLocation = getDefaultLocation();
       setCurrentLocation(defaultLocation);
       loadVendorsForLocation(defaultLocation);
     }
   }, [loadVendorsForLocation]);
 
-  const handleLocationSearch = async (e) => {
+  const handleLocationSearch = async e => {
     e.preventDefault();
     if (!searchTerm.trim()) return;
 
@@ -742,9 +752,9 @@ const WeddingHome = () => {
 
       setCurrentLocation(newLocation);
       loadVendorsForLocation(newLocation);
-      setSearchTerm("");
+      setSearchTerm('');
     } catch (error) {
-      alert("Location not found. Please try a different city or ZIP code.");
+      alert('Location not found. Please try a different city or ZIP code.');
     } finally {
       setLocationLoading(false);
     }
@@ -758,28 +768,47 @@ const WeddingHome = () => {
       loadVendorsForLocation(location);
     } catch (error) {
       alert(
-        "Unable to get your current location. Please check your browser settings.",
+        'Unable to get your current location. Please check your browser settings.'
       );
     } finally {
       setLocationLoading(false);
     }
   };
 
-    const applyFilters = useCallback(() => {
+  const applyFilters = useCallback(() => {
     let filtered = [...vendors];
 
-        // Filter by selected categories (only if categories are selected)
+    // Filter by selected categories (only if categories are selected)
     if (selectedCategories.length > 0) {
-      filtered = filtered.filter((vendor) =>
+      filtered = filtered.filter(vendor =>
         vendor.specialties.some(specialty =>
           selectedCategories.some(category => {
             const categoryMap = {
-              "venue": ["venue", "wedding venue", "reception venue", "wedding planning"],
-              "photography": ["photography", "photographer", "wedding photography"],
-              "catering": ["catering", "food", "wedding catering", "reception catering"],
-              "music": ["music", "dj", "band", "entertainment"],
-              "floral": ["floral", "flowers", "floral arrangements", "bouquet"],
-              "jewelry": ["jewelry", "rings", "wedding rings", "engagement rings"]
+              venue: [
+                'venue',
+                'wedding venue',
+                'reception venue',
+                'wedding planning',
+              ],
+              photography: [
+                'photography',
+                'photographer',
+                'wedding photography',
+              ],
+              catering: [
+                'catering',
+                'food',
+                'wedding catering',
+                'reception catering',
+              ],
+              music: ['music', 'dj', 'band', 'entertainment'],
+              floral: ['floral', 'flowers', 'floral arrangements', 'bouquet'],
+              jewelry: [
+                'jewelry',
+                'rings',
+                'wedding rings',
+                'engagement rings',
+              ],
             };
 
             const categoryTerms = categoryMap[category] || [category];
@@ -792,19 +821,19 @@ const WeddingHome = () => {
     }
 
     // Filter by featured status
-    if (activeFilter === "featured") {
-      filtered = filtered.filter((vendor) => vendor.featured);
+    if (activeFilter === 'featured') {
+      filtered = filtered.filter(vendor => vendor.featured);
     }
 
     // Sort vendors
     switch (sortBy) {
-      case "distance":
+      case 'distance':
         filtered.sort((a, b) => a.distance - b.distance);
         break;
-      case "rating":
+      case 'rating':
         filtered.sort((a, b) => b.rating - a.rating);
         break;
-      case "name":
+      case 'name':
         filtered.sort((a, b) => a.name.localeCompare(b.name));
         break;
       default:
@@ -814,11 +843,11 @@ const WeddingHome = () => {
     setFilteredVendors(filtered);
   }, [vendors, activeFilter, sortBy, selectedCategories]);
 
-  const handleVendorClick = (vendor) => {
+  const handleVendorClick = vendor => {
     navigate(`/${vendor.id}`);
   };
 
-      const handleCategoryClick = (category) => {
+  const handleCategoryClick = category => {
     const categoryFilter = category.filter;
     setSelectedCategories(prev => {
       if (prev.includes(categoryFilter)) {
@@ -835,26 +864,26 @@ const WeddingHome = () => {
 
   // Close mobile menu on escape key
   useEffect(() => {
-    const handleEscapeKey = (event) => {
-      if (event.key === "Escape" && mobileMenuOpen) {
+    const handleEscapeKey = event => {
+      if (event.key === 'Escape' && mobileMenuOpen) {
         closeMobileMenu();
       }
     };
 
-    document.addEventListener("keydown", handleEscapeKey);
-    return () => document.removeEventListener("keydown", handleEscapeKey);
+    document.addEventListener('keydown', handleEscapeKey);
+    return () => document.removeEventListener('keydown', handleEscapeKey);
   }, [mobileMenuOpen]);
 
   // Prevent body scroll when mobile menu is open
   useEffect(() => {
     if (mobileMenuOpen) {
-      document.body.style.overflow = "hidden";
+      document.body.style.overflow = 'hidden';
     } else {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow = 'unset';
     }
 
     return () => {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow = 'unset';
     };
   }, [mobileMenuOpen]);
 
@@ -869,21 +898,29 @@ const WeddingHome = () => {
   if (loading) {
     return (
       <PageContainer>
-                <NavHeader>
-          <MobileMenuOverlay isOpen={mobileMenuOpen} onClick={closeMobileMenu} />
+        <NavHeader>
+          <MobileMenuOverlay
+            isOpen={mobileMenuOpen}
+            onClick={closeMobileMenu}
+          />
           <NavContent>
             <Logo>
               <FaRing /> Wedding Vendors
             </Logo>
             <NavActions isOpen={mobileMenuOpen}>
-              <BackButton onClick={() => { navigate("/"); closeMobileMenu(); }}>
+              <BackButton
+                onClick={() => {
+                  navigate('/');
+                  closeMobileMenu();
+                }}
+              >
                 <FaHome />
                 Back to Home
               </BackButton>
             </NavActions>
             <MobileMenuButton
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+              aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
             >
               {mobileMenuOpen ? <FaTimes /> : <FaBars />}
             </MobileMenuButton>
@@ -899,25 +936,30 @@ const WeddingHome = () => {
   }
 
   return (
-        <PageContainer>
+    <PageContainer>
       <NavHeader>
         <MobileMenuOverlay isOpen={mobileMenuOpen} onClick={closeMobileMenu} />
         <NavContent>
           <Logo>
             <FaRing /> Wedding Vendors
           </Logo>
-                    <NavActions isOpen={mobileMenuOpen}>
+          <NavActions isOpen={mobileMenuOpen}>
             <MobileCloseButton onClick={closeMobileMenu}>
               <FaTimes />
             </MobileCloseButton>
-            <BackButton onClick={() => { navigate("/"); closeMobileMenu(); }}>
+            <BackButton
+              onClick={() => {
+                navigate('/');
+                closeMobileMenu();
+              }}
+            >
               <FaHome />
               Back to Home
             </BackButton>
           </NavActions>
           <MobileMenuButton
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+            aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
           >
             {mobileMenuOpen ? <FaTimes /> : <FaBars />}
           </MobileMenuButton>
@@ -932,15 +974,16 @@ const WeddingHome = () => {
             <FaRing color={theme.colors.secondary || theme.colors.primary} />
           </HeroTitle>
           <HeroSubtitle>
-            Discover amazing wedding professionals near you to make your special day unforgettable.
-            From venues to photography, catering to music - we've got you covered.
+            Discover amazing wedding professionals near you to make your special
+            day unforgettable. From venues to photography, catering to music -
+            we've got you covered.
           </HeroSubtitle>
           {currentLocation && (
             <LocationDisplay>
               <FaMapMarkerAlt />
               <span>
                 {currentLocation.city}, {currentLocation.state}
-                {currentLocation.isDefault && " (Default Location)"}
+                {currentLocation.isDefault && ' (Default Location)'}
               </span>
             </LocationDisplay>
           )}
@@ -956,7 +999,7 @@ const WeddingHome = () => {
                 type="text"
                 placeholder="Enter city name or ZIP code to find vendors..."
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={e => setSearchTerm(e.target.value)}
               />
             </SearchInputContainer>
 
@@ -970,20 +1013,27 @@ const WeddingHome = () => {
             </LocationButton>
 
             <SearchButton type="submit" disabled={locationLoading}>
-              {locationLoading ? "Searching..." : "Search"}
+              {locationLoading ? 'Searching...' : 'Search'}
             </SearchButton>
           </SearchForm>
         </SearchSection>
 
-                <CategorySection>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: theme.spacing.lg }}>
+        <CategorySection>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginBottom: theme.spacing.lg,
+            }}
+          >
             <SectionTitle>Wedding Services</SectionTitle>
             <ActionButton onClick={() => setSelectedCategories([])}>
               Clear All
             </ActionButton>
           </div>
           <CategoryGrid>
-                        {categories.map((category, index) => {
+            {categories.map((category, index) => {
               const isSelected = selectedCategories.includes(category.filter);
               return (
                 <CategoryCard
@@ -998,7 +1048,9 @@ const WeddingHome = () => {
                     <category.icon />
                   </CategoryIcon>
                   <CategoryName>{category.name}</CategoryName>
-                  <CategoryCount>{category.count} vendors available</CategoryCount>
+                  <CategoryCount>
+                    {category.count} vendors available
+                  </CategoryCount>
                 </CategoryCard>
               );
             })}
@@ -1006,27 +1058,28 @@ const WeddingHome = () => {
         </CategorySection>
 
         <VendorsSection>
-                    <SectionTitle>
+          <SectionTitle>
             {selectedCategories.length > 0
-              ? `${selectedCategories.map(cat => {
-                  const category = categories.find(c => c.filter === cat);
-                  return category ? category.name : cat;
-                }).join(', ')} Vendors Near You`
-              : 'Wedding Vendors Near You'
-            }
+              ? `${selectedCategories
+                  .map(cat => {
+                    const category = categories.find(c => c.filter === cat);
+                    return category ? category.name : cat;
+                  })
+                  .join(', ')} Vendors Near You`
+              : 'Wedding Vendors Near You'}
           </SectionTitle>
-          
+
           <FiltersRow>
             <FilterGroup>
               <FilterButton
-                active={activeFilter === "all"}
-                onClick={() => setActiveFilter("all")}
+                active={activeFilter === 'all'}
+                onClick={() => setActiveFilter('all')}
               >
                 All Vendors
               </FilterButton>
               <FilterButton
-                active={activeFilter === "featured"}
-                onClick={() => setActiveFilter("featured")}
+                active={activeFilter === 'featured'}
+                onClick={() => setActiveFilter('featured')}
               >
                 Featured
               </FilterButton>
@@ -1035,7 +1088,7 @@ const WeddingHome = () => {
             <FilterGroup>
               <SortSelect
                 value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
+                onChange={e => setSortBy(e.target.value)}
               >
                 <option value="distance">Sort by Distance</option>
                 <option value="rating">Sort by Rating</option>
@@ -1046,8 +1099,11 @@ const WeddingHome = () => {
 
           {filteredVendors.length > 0 ? (
             <VendorsGrid>
-              {filteredVendors.map((vendor) => (
-                <VendorCard key={vendor.id} onClick={() => handleVendorClick(vendor)}>
+              {filteredVendors.map(vendor => (
+                <VendorCard
+                  key={vendor.id}
+                  onClick={() => handleVendorClick(vendor)}
+                >
                   <VendorImage src={vendor.image} alt={vendor.name} />
                   <VendorContent>
                     <VendorHeader>
@@ -1062,17 +1118,17 @@ const WeddingHome = () => {
                           {vendor.rating} ({vendor.reviewCount} reviews)
                         </VendorRating>
                       </VendorInfo>
-                      {vendor.featured && (
-                        <VendorBadge>Featured</VendorBadge>
-                      )}
+                      {vendor.featured && <VendorBadge>Featured</VendorBadge>}
                     </VendorHeader>
 
                     <VendorDescription>{vendor.description}</VendorDescription>
 
                     <SpecialtiesGrid>
-                      {vendor.specialties.slice(0, 4).map((specialty, index) => (
-                        <SpecialtyTag key={index}>{specialty}</SpecialtyTag>
-                      ))}
+                      {vendor.specialties
+                        .slice(0, 4)
+                        .map((specialty, index) => (
+                          <SpecialtyTag key={index}>{specialty}</SpecialtyTag>
+                        ))}
                     </SpecialtiesGrid>
 
                     <VendorFooter>
@@ -1096,7 +1152,8 @@ const WeddingHome = () => {
             <EmptyState>
               <h3>No vendors found</h3>
               <p>
-                Try searching for a different location or adjusting your filters.
+                Try searching for a different location or adjusting your
+                filters.
               </p>
             </EmptyState>
           )}

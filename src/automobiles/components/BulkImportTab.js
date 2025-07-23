@@ -1,5 +1,5 @@
-import React, { useState, useRef } from "react";
-import styled from "styled-components";
+import React, { useState, useRef } from 'react';
+import styled from 'styled-components';
 import {
   FaFileImport,
   FaDownload,
@@ -9,12 +9,12 @@ import {
   FaSpinner,
   FaExclamationTriangle,
   FaInfoCircle,
-    FaCloud,
+  FaCloud,
   FaFileCsv,
   FaTable,
   FaEye,
-} from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
+} from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
 
 const Container = styled.div`
   background: ${theme.colors.white};
@@ -98,10 +98,12 @@ const StepDescription = styled.p`
 `;
 
 const ActionButton = styled.button.withConfig({
-  shouldForwardProp: (prop) => prop !== "primary",
+  shouldForwardProp: prop => prop !== 'primary',
 })`
-  background: ${(props) => props.primary ? theme.colors.primary : theme.colors.white};
-  color: ${(props) => props.primary ? theme.colors.white : theme.colors.primary};
+  background: ${props =>
+    props.primary ? theme.colors.primary : theme.colors.white};
+  color: ${props =>
+    props.primary ? theme.colors.white : theme.colors.primary};
   padding: ${theme.spacing.md} ${theme.spacing.lg};
   border: 2px solid ${theme.colors.primary};
   border-radius: ${theme.borderRadius.md};
@@ -115,7 +117,8 @@ const ActionButton = styled.button.withConfig({
   width: 100%;
 
   &:hover {
-    background: ${(props) => props.primary ? theme.colors.primaryDark : theme.colors.primary};
+    background: ${props =>
+      props.primary ? theme.colors.primaryDark : theme.colors.primary};
     color: ${theme.colors.white};
     transform: translateY(-1px);
   }
@@ -135,13 +138,15 @@ const UploadSection = styled.div`
 `;
 
 const UploadArea = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "isDragOver",
+  shouldForwardProp: prop => prop !== 'isDragOver',
 })`
-  border: 2px dashed ${(props) => props.isDragOver ? theme.colors.primary : theme.colors.gray300};
+  border: 2px dashed
+    ${props => (props.isDragOver ? theme.colors.primary : theme.colors.gray300)};
   border-radius: ${theme.borderRadius.lg};
   padding: ${theme.spacing.xxl};
   text-align: center;
-  background: ${(props) => props.isDragOver ? `${theme.colors.primary}10` : theme.colors.white};
+  background: ${props =>
+    props.isDragOver ? `${theme.colors.primary}10` : theme.colors.white};
   transition: all 0.2s ease;
   cursor: pointer;
   position: relative;
@@ -303,7 +308,7 @@ const StatCard = styled.div`
 const StatValue = styled.div`
   font-size: 1.8rem;
   font-weight: 700;
-  color: ${(props) => props.color || theme.colors.primary};
+  color: ${props => props.color || theme.colors.primary};
   margin-bottom: ${theme.spacing.xs};
 `;
 
@@ -393,33 +398,33 @@ const BulkImportTab = ({ dealer }) => {
   const [results, setResults] = useState(null);
   const fileInputRef = useRef(null);
 
-  const handleFileSelect = (file) => {
-    if (file && file.type === "text/csv") {
+  const handleFileSelect = file => {
+    if (file && file.type === 'text/csv') {
       setSelectedFile(file);
       setResults(null);
     } else {
-      alert("Please select a valid CSV file.");
+      alert('Please select a valid CSV file.');
     }
   };
 
-  const handleDragOver = (e) => {
+  const handleDragOver = e => {
     e.preventDefault();
     setIsDragOver(true);
   };
 
-  const handleDragLeave = (e) => {
+  const handleDragLeave = e => {
     e.preventDefault();
     setIsDragOver(false);
   };
 
-  const handleDrop = (e) => {
+  const handleDrop = e => {
     e.preventDefault();
     setIsDragOver(false);
     const file = e.dataTransfer.files[0];
     handleFileSelect(file);
   };
 
-  const handleFileChange = (e) => {
+  const handleFileChange = e => {
     const file = e.target.files[0];
     handleFileSelect(file);
   };
@@ -428,7 +433,7 @@ const BulkImportTab = ({ dealer }) => {
     setSelectedFile(null);
     setResults(null);
     if (fileInputRef.current) {
-      fileInputRef.current.value = "";
+      fileInputRef.current.value = '';
     }
   };
 
@@ -436,7 +441,7 @@ const BulkImportTab = ({ dealer }) => {
     if (!selectedFile) return;
 
     setIsProcessing(true);
-    
+
     // Simulate file processing
     await new Promise(resolve => setTimeout(resolve, 3000));
 
@@ -448,7 +453,7 @@ const BulkImportTab = ({ dealer }) => {
       errors: [
         {
           row: 5,
-          message: "Missing required field: VIN",
+          message: 'Missing required field: VIN',
         },
         {
           row: 12,
@@ -456,19 +461,19 @@ const BulkImportTab = ({ dealer }) => {
         },
         {
           row: 23,
-          message: "Price must be a number",
+          message: 'Price must be a number',
         },
         {
           row: 34,
-          message: "Make field cannot be empty",
+          message: 'Make field cannot be empty',
         },
         {
           row: 67,
-          message: "Invalid mileage value: -500",
+          message: 'Invalid mileage value: -500',
         },
         {
           row: 89,
-          message: "Model field cannot be empty",
+          message: 'Model field cannot be empty',
         },
         {
           row: 101,
@@ -476,9 +481,9 @@ const BulkImportTab = ({ dealer }) => {
         },
         {
           row: 128,
-          message: "Missing required field: Price",
+          message: 'Missing required field: Price',
         },
-      ]
+      ],
     };
 
     setResults(mockResults);
@@ -491,16 +496,16 @@ const BulkImportTab = ({ dealer }) => {
 5NPE24AF4FH123456,2022,Hyundai,Elantra,SEL,Sedan,CVT,2.0L,Gasoline,FWD,Phantom Black,Gray,25000,Used,22000,3,"Reliable sedan with great fuel economy","Heated Seats, Backup Camera, Apple CarPlay"
 KMHL14JA8MA123456,2021,Hyundai,Elantra,Limited,Sedan,CVT,2.0L,Gasoline,FWD,White,Black,35000,Used,20500,2,"Fully loaded Elantra with premium features","Leather Seats, Sunroof, Premium Audio"`;
 
-    const blob = new Blob([csvContent], { type: "text/csv" });
+    const blob = new Blob([csvContent], { type: 'text/csv' });
     const url = window.URL.createObjectURL(blob);
-    const a = document.createElement("a");
+    const a = document.createElement('a');
     a.href = url;
-    a.download = "vehicle_import_template.csv";
+    a.download = 'vehicle_import_template.csv';
     a.click();
     window.URL.revokeObjectURL(url);
   };
 
-  const formatFileSize = (bytes) => {
+  const formatFileSize = bytes => {
     if (bytes === 0) return '0 Bytes';
     const k = 1024;
     const sizes = ['Bytes', 'KB', 'MB', 'GB'];
@@ -509,10 +514,24 @@ KMHL14JA8MA123456,2021,Hyundai,Elantra,Limited,Sedan,CVT,2.0L,Gasoline,FWD,White
   };
 
   const requiredFields = [
-    "VIN", "Year", "Make", "Model", "Trim", "Body Style", 
-    "Transmission", "Engine", "Fuel Type", "Drivetrain",
-    "Exterior Color", "Interior Color", "Mileage", "Condition", 
-    "Price", "Stock", "Description", "Features"
+    'VIN',
+    'Year',
+    'Make',
+    'Model',
+    'Trim',
+    'Body Style',
+    'Transmission',
+    'Engine',
+    'Fuel Type',
+    'Drivetrain',
+    'Exterior Color',
+    'Interior Color',
+    'Mileage',
+    'Condition',
+    'Price',
+    'Stock',
+    'Description',
+    'Features',
   ];
 
   return (
@@ -523,8 +542,9 @@ KMHL14JA8MA123456,2021,Hyundai,Elantra,Limited,Sedan,CVT,2.0L,Gasoline,FWD,White
           Bulk Vehicle Import
         </Title>
         <Description>
-          Import multiple vehicles at once using a CSV file. Download the template below, fill in your vehicle data, 
-          and upload it to quickly add vehicles to your inventory.
+          Import multiple vehicles at once using a CSV file. Download the
+          template below, fill in your vehicle data, and upload it to quickly
+          add vehicles to your inventory.
         </Description>
       </Header>
 
@@ -546,7 +566,8 @@ KMHL14JA8MA123456,2021,Hyundai,Elantra,Limited,Sedan,CVT,2.0L,Gasoline,FWD,White
             <StepNumber>1</StepNumber>
             <StepTitle>Download Template</StepTitle>
             <StepDescription>
-              Download the CSV template with all required fields and sample data to get started.
+              Download the CSV template with all required fields and sample data
+              to get started.
             </StepDescription>
             <ActionButton onClick={downloadTemplate}>
               <FaDownload />
@@ -558,7 +579,8 @@ KMHL14JA8MA123456,2021,Hyundai,Elantra,Limited,Sedan,CVT,2.0L,Gasoline,FWD,White
             <StepNumber>2</StepNumber>
             <StepTitle>Fill Vehicle Data</StepTitle>
             <StepDescription>
-              Open the template in Excel or any spreadsheet application and fill in your vehicle information.
+              Open the template in Excel or any spreadsheet application and fill
+              in your vehicle information.
             </StepDescription>
             <ActionButton>
               <FaTable />
@@ -570,11 +592,12 @@ KMHL14JA8MA123456,2021,Hyundai,Elantra,Limited,Sedan,CVT,2.0L,Gasoline,FWD,White
             <StepNumber>3</StepNumber>
             <StepTitle>Upload & Import</StepTitle>
             <StepDescription>
-              Upload your completed CSV file and we'll process it to add vehicles to your inventory.
+              Upload your completed CSV file and we'll process it to add
+              vehicles to your inventory.
             </StepDescription>
             <ActionButton primary disabled={!selectedFile || isProcessing}>
               <FaUpload />
-              {selectedFile ? "Ready to Upload" : "Select File First"}
+              {selectedFile ? 'Ready to Upload' : 'Select File First'}
             </ActionButton>
           </StepCard>
         </StepsContainer>
@@ -593,11 +616,13 @@ KMHL14JA8MA123456,2021,Hyundai,Elantra,Limited,Sedan,CVT,2.0L,Gasoline,FWD,White
               accept=".csv"
               onChange={handleFileChange}
             />
-                        <UploadIcon>
+            <UploadIcon>
               <FaCloud />
             </UploadIcon>
             <UploadText>
-              {isDragOver ? "Drop your CSV file here" : "Click to select or drag & drop your CSV file"}
+              {isDragOver
+                ? 'Drop your CSV file here'
+                : 'Click to select or drag & drop your CSV file'}
             </UploadText>
             <UploadSubtext>
               Maximum file size: 10MB • Supported format: CSV
@@ -653,16 +678,23 @@ KMHL14JA8MA123456,2021,Hyundai,Elantra,Limited,Sedan,CVT,2.0L,Gasoline,FWD,White
                 <StatLabel>Total Rows</StatLabel>
               </StatCard>
               <StatCard>
-                <StatValue color={theme.colors.success}>{results.successfulImports}</StatValue>
+                <StatValue color={theme.colors.success}>
+                  {results.successfulImports}
+                </StatValue>
                 <StatLabel>Successful</StatLabel>
               </StatCard>
               <StatCard>
-                <StatValue color={theme.colors.error}>{results.failedImports}</StatValue>
+                <StatValue color={theme.colors.error}>
+                  {results.failedImports}
+                </StatValue>
                 <StatLabel>Failed</StatLabel>
               </StatCard>
               <StatCard>
                 <StatValue color={theme.colors.primary}>
-                  {Math.round((results.successfulImports / results.totalRows) * 100)}%
+                  {Math.round(
+                    (results.successfulImports / results.totalRows) * 100
+                  )}
+                  %
                 </StatValue>
                 <StatLabel>Success Rate</StatLabel>
               </StatCard>
@@ -670,15 +702,17 @@ KMHL14JA8MA123456,2021,Hyundai,Elantra,Limited,Sedan,CVT,2.0L,Gasoline,FWD,White
 
             {results.errors.length > 0 && (
               <div>
-                <h4 style={{ 
-                  fontSize: '1rem', 
-                  fontWeight: 600, 
-                  color: theme.colors.gray900, 
-                  marginBottom: theme.spacing.md,
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: theme.spacing.sm
-                }}>
+                <h4
+                  style={{
+                    fontSize: '1rem',
+                    fontWeight: 600,
+                    color: theme.colors.gray900,
+                    marginBottom: theme.spacing.md,
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: theme.spacing.sm,
+                  }}
+                >
                   <FaExclamationTriangle />
                   Import Errors ({results.errors.length})
                 </h4>
@@ -698,7 +732,13 @@ KMHL14JA8MA123456,2021,Hyundai,Elantra,Limited,Sedan,CVT,2.0L,Gasoline,FWD,White
               </div>
             )}
 
-            <div style={{ marginTop: theme.spacing.xl, display: 'flex', gap: theme.spacing.md }}>
+            <div
+              style={{
+                marginTop: theme.spacing.xl,
+                display: 'flex',
+                gap: theme.spacing.md,
+              }}
+            >
               <ActionButton primary>
                 <FaEye />
                 View Imported Vehicles

@@ -1,12 +1,12 @@
-import React from "react";
-import styled from "styled-components";
-import { FaEdit, FaEye, FaArrowLeft } from "react-icons/fa";
-import { Link, useNavigate } from "react-router-dom";
-import Sidebar from "./Sidebar";
-import { Card } from "../shared/Card";
-import { Button } from "../shared/Button";
-import { theme } from "../../styles/GlobalStyle";
-import { useAppContext } from "../../context/AppContext";
+import React from 'react';
+import styled from 'styled-components';
+import { FaEdit, FaEye, FaArrowLeft } from 'react-icons/fa';
+import { Link, useNavigate } from 'react-router-dom';
+import Sidebar from './Sidebar';
+import { Card } from '../shared/Card';
+import { Button } from '../shared/Button';
+import { theme } from '../../styles/GlobalStyle';
+import { useAppContext } from '../../context/AppContext';
 
 const DashboardContainer = styled.div`
   display: flex;
@@ -31,7 +31,7 @@ const Header = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-bottom: ${theme.spacing.xxl};
-  
+
   @media (max-width: ${theme.breakpoints.mobile}) {
     flex-direction: column;
     gap: ${theme.spacing.lg};
@@ -89,7 +89,7 @@ const HotelsGrid = styled.div`
 const HotelCard = styled(Card)`
   cursor: pointer;
   transition: all 0.3s ease;
-  
+
   &:hover {
     transform: translateY(-4px);
     box-shadow: ${theme.shadows.xl};
@@ -97,11 +97,11 @@ const HotelCard = styled(Card)`
 `;
 
 const HotelImage = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "image",
+  shouldForwardProp: prop => prop !== 'image',
 })`
   width: 100%;
   height: 200px;
-  background-image: url(${(props) => props.image});
+  background-image: url(${props => props.image});
   background-size: cover;
   background-position: center;
   border-radius: ${theme.borderRadius.lg} ${theme.borderRadius.lg} 0 0;
@@ -109,13 +109,17 @@ const HotelImage = styled.div.withConfig({
   overflow: hidden;
 
   &::before {
-    content: "";
+    content: '';
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.3) 100%);
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgba(0, 0, 0, 0.3) 100%
+    );
   }
 `;
 
@@ -146,14 +150,14 @@ const HotelStats = styled.div`
 
 const Stat = styled.div`
   text-align: center;
-  
+
   .value {
     font-size: 1.2rem;
     font-weight: 600;
     color: ${theme.colors.gray900};
     display: block;
   }
-  
+
   .label {
     font-size: 0.8rem;
     color: ${theme.colors.gray600};
@@ -196,7 +200,9 @@ const ContentManagerSelector = () => {
           <Header>
             <div>
               <Title>Manage Hotel Content</Title>
-              <Subtitle>Select a hotel to manage its content and settings</Subtitle>
+              <Subtitle>
+                Select a hotel to manage its content and settings
+              </Subtitle>
             </div>
             <BackButton onClick={() => navigate(-1)}>
               <FaArrowLeft />
@@ -206,7 +212,10 @@ const ContentManagerSelector = () => {
 
           <EmptyState>
             <h3>No Hotels Found</h3>
-            <p>You don't have any hotels registered yet. Add your first hotel to start managing content.</p>
+            <p>
+              You don't have any hotels registered yet. Add your first hotel to
+              start managing content.
+            </p>
             <Button as={Link} to="/owner/add-hotel">
               Add Your First Hotel
             </Button>
@@ -224,7 +233,9 @@ const ContentManagerSelector = () => {
         <Header>
           <div>
             <Title>Manage Hotel Content</Title>
-            <Subtitle>Select a hotel to manage its content and settings</Subtitle>
+            <Subtitle>
+              Select a hotel to manage its content and settings
+            </Subtitle>
           </div>
           <BackButton onClick={() => navigate(-1)}>
             <FaArrowLeft />
@@ -233,13 +244,13 @@ const ContentManagerSelector = () => {
         </Header>
 
         <HotelsGrid>
-          {ownerHotels.map((hotel) => (
+          {ownerHotels.map(hotel => (
             <HotelCard key={hotel.id}>
               <HotelImage image={hotel.image} />
               <HotelInfo>
                 <HotelName>{hotel.name}</HotelName>
                 <HotelLocation>{hotel.location}</HotelLocation>
-                
+
                 <HotelStats>
                   <Stat>
                     <span className="value">{hotel.totalRooms}</span>
@@ -269,7 +280,12 @@ const ContentManagerSelector = () => {
                   <Button
                     variant="outline"
                     size="small"
-                    onClick={() => window.open(`/${hotel.name.toLowerCase().replace(/\s+/g, '-')}`, '_blank')}
+                    onClick={() =>
+                      window.open(
+                        `/${hotel.name.toLowerCase().replace(/\s+/g, '-')}`,
+                        '_blank'
+                      )
+                    }
                   >
                     <FaEye />
                   </Button>

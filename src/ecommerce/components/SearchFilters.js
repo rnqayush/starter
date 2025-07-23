@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import { 
-  FaSearch, 
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import {
+  FaSearch,
   FaTimes,
   FaChevronDown,
   FaChevronUp,
   FaSlidersH,
   FaStar,
-  FaTag
-} from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
+  FaTag,
+} from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
 
 const FilterContainer = styled.div`
   background: ${theme.colors.white};
@@ -31,7 +31,8 @@ const SearchWrapper = styled.div`
 
 const SearchInput = styled.input`
   width: 100%;
-  padding: ${theme.spacing.md} ${theme.spacing.md} ${theme.spacing.md} ${theme.spacing.xxl};
+  padding: ${theme.spacing.md} ${theme.spacing.md} ${theme.spacing.md}
+    ${theme.spacing.xxl};
   border: 2px solid ${theme.colors.gray200};
   border-radius: ${theme.borderRadius.md};
   font-size: 1rem;
@@ -63,15 +64,18 @@ const QuickFilters = styled.div`
 `;
 
 const QuickFilterButton = styled.button.withConfig({
-  shouldForwardProp: (prop) => prop !== "active"
+  shouldForwardProp: prop => prop !== 'active',
 })`
   display: flex;
   align-items: center;
   gap: ${theme.spacing.xs};
   padding: ${theme.spacing.sm} ${theme.spacing.md};
-  border: 2px solid ${(props) => props.active ? theme.colors.primary : theme.colors.gray200};
-  background: ${(props) => props.active ? theme.colors.primary + "10" : theme.colors.white};
-  color: ${(props) => props.active ? theme.colors.primary : theme.colors.gray700};
+  border: 2px solid
+    ${props => (props.active ? theme.colors.primary : theme.colors.gray200)};
+  background: ${props =>
+    props.active ? theme.colors.primary + '10' : theme.colors.white};
+  color: ${props =>
+    props.active ? theme.colors.primary : theme.colors.gray700};
   border-radius: ${theme.borderRadius.md};
   font-size: 0.9rem;
   font-weight: 500;
@@ -105,9 +109,9 @@ const AdvancedFiltersToggle = styled.button`
 `;
 
 const AdvancedFiltersContent = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "expanded"
+  shouldForwardProp: prop => prop !== 'expanded',
 })`
-  display: ${(props) => props.expanded ? "block" : "none"};
+  display: ${props => (props.expanded ? 'block' : 'none')};
   padding: ${theme.spacing.lg};
   border-top: 1px solid ${theme.colors.gray200};
   background: ${theme.colors.gray50};
@@ -186,12 +190,6 @@ const RangeValues = styled.div`
   color: ${theme.colors.gray600};
 `;
 
-
-
-
-
-
-
 const StarRating = styled.div`
   display: flex;
   gap: 2px;
@@ -199,11 +197,10 @@ const StarRating = styled.div`
 `;
 
 const Star = styled(FaStar).withConfig({
-  shouldForwardProp: (prop) => !["filled", "hovered"].includes(prop)
+  shouldForwardProp: prop => !['filled', 'hovered'].includes(prop),
 })`
-  color: ${(props) => 
-    props.filled || props.hovered ? "#fbbf24" : theme.colors.gray300
-  };
+  color: ${props =>
+    props.filled || props.hovered ? '#fbbf24' : theme.colors.gray300};
   font-size: 1rem;
   transition: color 0.2s ease;
 `;
@@ -258,29 +255,29 @@ const ClearAllButton = styled.button`
   }
 `;
 
-const SearchFilters = ({ 
-  onFiltersChange, 
-  categories = [], 
+const SearchFilters = ({
+  onFiltersChange,
+  categories = [],
   brands = [],
   locations = [],
-  maxPrice = 1000 
+  maxPrice = 1000,
 }) => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("");
-  const [selectedBrand, setSelectedBrand] = useState("");
-  const [selectedLocation, setSelectedLocation] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedBrand, setSelectedBrand] = useState('');
+  const [selectedLocation, setSelectedLocation] = useState('');
   const [priceRange, setPriceRange] = useState([0, maxPrice]);
   const [minRating, setMinRating] = useState(0);
-  const [availability, setAvailability] = useState("all");
-  const [sortBy, setSortBy] = useState("relevance");
+  const [availability, setAvailability] = useState('all');
+  const [sortBy, setSortBy] = useState('relevance');
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [hoveredStar, setHoveredStar] = useState(0);
 
   const quickFilters = [
-    { key: "featured", label: "Featured", icon: FaStar },
-    { key: "new", label: "New Arrivals", icon: FaTag },
-    { key: "sale", label: "On Sale", icon: FaTag },
-    { key: "high_rated", label: "Top Rated", icon: FaStar },
+    { key: 'featured', label: 'Featured', icon: FaStar },
+    { key: 'new', label: 'New Arrivals', icon: FaTag },
+    { key: 'sale', label: 'On Sale', icon: FaTag },
+    { key: 'high_rated', label: 'Top Rated', icon: FaStar },
   ];
 
   const [activeQuickFilters, setActiveQuickFilters] = useState(new Set());
@@ -295,9 +292,9 @@ const SearchFilters = ({
       minRating,
       availability,
       sortBy,
-      quickFilters: Array.from(activeQuickFilters)
+      quickFilters: Array.from(activeQuickFilters),
     };
-    
+
     onFiltersChange(filters);
   }, [
     searchTerm,
@@ -309,10 +306,10 @@ const SearchFilters = ({
     availability,
     sortBy,
     activeQuickFilters,
-    onFiltersChange
+    onFiltersChange,
   ]);
 
-  const handleQuickFilterToggle = (filterKey) => {
+  const handleQuickFilterToggle = filterKey => {
     const newFilters = new Set(activeQuickFilters);
     if (newFilters.has(filterKey)) {
       newFilters.delete(filterKey);
@@ -322,23 +319,30 @@ const SearchFilters = ({
     setActiveQuickFilters(newFilters);
   };
 
-  const handleStarClick = (rating) => {
+  const handleStarClick = rating => {
     setMinRating(rating === minRating ? 0 : rating);
   };
 
   const getActiveFilters = () => {
     const filters = [];
-    
-    if (searchTerm) filters.push({ key: "search", label: `"${searchTerm}"` });
-    if (selectedCategory) filters.push({ key: "category", label: selectedCategory });
-    if (selectedBrand) filters.push({ key: "brand", label: selectedBrand });
-    if (selectedLocation) filters.push({ key: "location", label: selectedLocation });
+
+    if (searchTerm) filters.push({ key: 'search', label: `"${searchTerm}"` });
+    if (selectedCategory)
+      filters.push({ key: 'category', label: selectedCategory });
+    if (selectedBrand) filters.push({ key: 'brand', label: selectedBrand });
+    if (selectedLocation)
+      filters.push({ key: 'location', label: selectedLocation });
     if (priceRange[0] > 0 || priceRange[1] < maxPrice) {
-      filters.push({ key: "price", label: `$${priceRange[0]} - $${priceRange[1]}` });
+      filters.push({
+        key: 'price',
+        label: `$${priceRange[0]} - $${priceRange[1]}`,
+      });
     }
-    if (minRating > 0) filters.push({ key: "rating", label: `${minRating}+ stars` });
-    if (availability !== "all") filters.push({ key: "availability", label: availability });
-    
+    if (minRating > 0)
+      filters.push({ key: 'rating', label: `${minRating}+ stars` });
+    if (availability !== 'all')
+      filters.push({ key: 'availability', label: availability });
+
     activeQuickFilters.forEach(filter => {
       const quickFilter = quickFilters.find(f => f.key === filter);
       if (quickFilter) filters.push({ key: filter, label: quickFilter.label });
@@ -347,28 +351,28 @@ const SearchFilters = ({
     return filters;
   };
 
-  const removeFilter = (filterKey) => {
+  const removeFilter = filterKey => {
     switch (filterKey) {
-      case "search":
-        setSearchTerm("");
+      case 'search':
+        setSearchTerm('');
         break;
-      case "category":
-        setSelectedCategory("");
+      case 'category':
+        setSelectedCategory('');
         break;
-      case "brand":
-        setSelectedBrand("");
+      case 'brand':
+        setSelectedBrand('');
         break;
-      case "location":
-        setSelectedLocation("");
+      case 'location':
+        setSelectedLocation('');
         break;
-      case "price":
+      case 'price':
         setPriceRange([0, maxPrice]);
         break;
-      case "rating":
+      case 'rating':
         setMinRating(0);
         break;
-      case "availability":
-        setAvailability("all");
+      case 'availability':
+        setAvailability('all');
         break;
       default:
         // Handle quick filters
@@ -379,14 +383,14 @@ const SearchFilters = ({
   };
 
   const clearAllFilters = () => {
-    setSearchTerm("");
-    setSelectedCategory("");
-    setSelectedBrand("");
-    setSelectedLocation("");
+    setSearchTerm('');
+    setSelectedCategory('');
+    setSelectedBrand('');
+    setSelectedLocation('');
     setPriceRange([0, maxPrice]);
     setMinRating(0);
-    setAvailability("all");
-    setSortBy("relevance");
+    setAvailability('all');
+    setSortBy('relevance');
     setActiveQuickFilters(new Set());
   };
 
@@ -403,12 +407,12 @@ const SearchFilters = ({
             type="text"
             placeholder="Search products, brands, or descriptions..."
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={e => setSearchTerm(e.target.value)}
           />
         </SearchWrapper>
 
         <QuickFilters>
-          {quickFilters.map((filter) => (
+          {quickFilters.map(filter => (
             <QuickFilterButton
               key={filter.key}
               active={activeQuickFilters.has(filter.key)}
@@ -430,9 +434,7 @@ const SearchFilters = ({
                 </RemoveFilterButton>
               </ActiveFilter>
             ))}
-            <ClearAllButton onClick={clearAllFilters}>
-              Clear All
-            </ClearAllButton>
+            <ClearAllButton onClick={clearAllFilters}>Clear All</ClearAllButton>
           </ActiveFilters>
         )}
       </SearchSection>
@@ -451,10 +453,10 @@ const SearchFilters = ({
             <FilterLabel>Category</FilterLabel>
             <FilterSelect
               value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
+              onChange={e => setSelectedCategory(e.target.value)}
             >
               <option value="">All Categories</option>
-              {categories.map((category) => (
+              {categories.map(category => (
                 <option key={category.slug} value={category.name}>
                   {category.name}
                 </option>
@@ -466,10 +468,10 @@ const SearchFilters = ({
             <FilterLabel>Brand</FilterLabel>
             <FilterSelect
               value={selectedBrand}
-              onChange={(e) => setSelectedBrand(e.target.value)}
+              onChange={e => setSelectedBrand(e.target.value)}
             >
               <option value="">All Brands</option>
-              {brands.map((brand) => (
+              {brands.map(brand => (
                 <option key={brand} value={brand}>
                   {brand}
                 </option>
@@ -481,10 +483,10 @@ const SearchFilters = ({
             <FilterLabel>Location</FilterLabel>
             <FilterSelect
               value={selectedLocation}
-              onChange={(e) => setSelectedLocation(e.target.value)}
+              onChange={e => setSelectedLocation(e.target.value)}
             >
               <option value="">All Locations</option>
-              {locations.map((location) => (
+              {locations.map(location => (
                 <option key={location} value={location}>
                   {location}
                 </option>
@@ -496,7 +498,7 @@ const SearchFilters = ({
             <FilterLabel>Sort By</FilterLabel>
             <FilterSelect
               value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
+              onChange={e => setSortBy(e.target.value)}
             >
               <option value="relevance">Relevance</option>
               <option value="price_low">Price: Low to High</option>
@@ -516,7 +518,9 @@ const SearchFilters = ({
               min="0"
               max={maxPrice}
               value={priceRange[1]}
-              onChange={(e) => setPriceRange([priceRange[0], parseInt(e.target.value)])}
+              onChange={e =>
+                setPriceRange([priceRange[0], parseInt(e.target.value)])
+              }
             />
             <RangeValues>
               <span>${priceRange[0]}</span>
@@ -527,7 +531,7 @@ const SearchFilters = ({
           <FilterGroup>
             <FilterLabel>Minimum Rating</FilterLabel>
             <StarRating>
-              {[1, 2, 3, 4, 5].map((star) => (
+              {[1, 2, 3, 4, 5].map(star => (
                 <Star
                   key={star}
                   filled={star <= minRating}
@@ -544,7 +548,7 @@ const SearchFilters = ({
             <FilterLabel>Availability</FilterLabel>
             <FilterSelect
               value={availability}
-              onChange={(e) => setAvailability(e.target.value)}
+              onChange={e => setAvailability(e.target.value)}
             >
               <option value="all">All Products</option>
               <option value="in_stock">In Stock</option>

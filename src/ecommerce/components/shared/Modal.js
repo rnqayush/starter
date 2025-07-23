@@ -1,7 +1,7 @@
-import React from "react";
-import styled from "styled-components";
-import { FaTimes } from "react-icons/fa";
-import { theme, media } from "../../../styles/GlobalStyle";
+import React from 'react';
+import styled from 'styled-components';
+import { FaTimes } from 'react-icons/fa';
+import { theme, media } from '../../../styles/GlobalStyle';
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -29,7 +29,7 @@ const ModalOverlay = styled.div`
 `;
 
 const ModalContent = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "size",
+  shouldForwardProp: prop => prop !== 'size',
 })`
   background: ${theme.colors.white};
   border-radius: ${theme.borderRadius.lg};
@@ -38,16 +38,16 @@ const ModalContent = styled.div.withConfig({
   overflow-y: auto;
   position: relative;
   width: 100%;
-  max-width: ${(props) => {
+  max-width: ${props => {
     switch (props.size) {
-      case "sm":
-        return "400px";
-      case "lg":
-        return "800px";
-      case "xl":
-        return "1200px";
+      case 'sm':
+        return '400px';
+      case 'lg':
+        return '800px';
+      case 'xl':
+        return '1200px';
       default:
-        return "600px";
+        return '600px';
     }
   }};
 
@@ -181,10 +181,10 @@ const ModalFooter = styled.div`
   }
 `;
 
-const Modal = ({ isOpen, onClose, title, children, footer, size = "md" }) => {
+const Modal = ({ isOpen, onClose, title, children, footer, size = 'md' }) => {
   if (!isOpen) return null;
 
-  const handleOverlayClick = (e) => {
+  const handleOverlayClick = e => {
     if (e.target === e.currentTarget) {
       onClose();
     }

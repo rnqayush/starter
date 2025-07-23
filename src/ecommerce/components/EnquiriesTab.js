@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
 import {
   FaEnvelope,
   FaPhone,
@@ -14,9 +14,9 @@ import {
   FaChevronDown,
   FaChevronUp,
   FaInbox,
-  FaBell
-} from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
+  FaBell,
+} from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
 
 const Container = styled.div`
   display: flex;
@@ -224,7 +224,7 @@ const ExpandButton = styled.button`
 `;
 
 const StatusBadge = styled.span.withConfig({
-  shouldForwardProp: (prop) => prop !== "status"
+  shouldForwardProp: prop => prop !== 'status',
 })`
   padding: ${theme.spacing.xs} ${theme.spacing.sm};
   border-radius: ${theme.borderRadius.sm};
@@ -234,25 +234,25 @@ const StatusBadge = styled.span.withConfig({
   display: inline-flex;
   align-items: center;
   gap: ${theme.spacing.xs};
-  
+
   ${props => {
     switch (props.status) {
-      case "pending":
+      case 'pending':
         return `
           background: ${theme.colors.warning}20;
           color: ${theme.colors.warning};
         `;
-      case "contacted":
+      case 'contacted':
         return `
           background: ${theme.colors.info}20;
           color: ${theme.colors.info};
         `;
-      case "in_progress":
+      case 'in_progress':
         return `
           background: ${theme.colors.primary}20;
           color: ${theme.colors.primary};
         `;
-      case "completed":
+      case 'completed':
         return `
           background: ${theme.colors.success}20;
           color: ${theme.colors.success};
@@ -267,9 +267,9 @@ const StatusBadge = styled.span.withConfig({
 `;
 
 const EnquiryBody = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "expanded"
+  shouldForwardProp: prop => prop !== 'expanded',
 })`
-  display: ${props => props.expanded ? "block" : "none"};
+  display: ${props => (props.expanded ? 'block' : 'none')};
   padding: ${theme.spacing.lg};
   border-top: 1px solid ${theme.colors.gray100};
 `;
@@ -447,15 +447,17 @@ const EmptyText = styled.p`
 const EnquiriesTab = () => {
   const [enquiries, setEnquiries] = useState([]);
   const [filteredEnquiries, setFilteredEnquiries] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState("all");
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('all');
   const [expandedCards, setExpandedCards] = useState(new Set());
   const [editingNotes, setEditingNotes] = useState(new Set());
   const [notes, setNotes] = useState({});
 
   useEffect(() => {
     // Load enquiries from localStorage (in real app, this would be from API)
-    const allEnquiries = JSON.parse(localStorage.getItem("userEnquiries") || "[]");
+    const allEnquiries = JSON.parse(
+      localStorage.getItem('userEnquiries') || '[]'
+    );
     setEnquiries(allEnquiries);
   }, []);
 
@@ -464,15 +466,18 @@ const EnquiriesTab = () => {
 
     // Filter by search term
     if (searchTerm) {
-      filtered = filtered.filter(enquiry =>
-        enquiry.productName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        enquiry.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        enquiry.email.toLowerCase().includes(searchTerm.toLowerCase())
+      filtered = filtered.filter(
+        enquiry =>
+          enquiry.productName
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase()) ||
+          enquiry.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          enquiry.email.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
     // Filter by status
-    if (statusFilter !== "all") {
+    if (statusFilter !== 'all') {
       filtered = filtered.filter(enquiry => enquiry.status === statusFilter);
     }
 
@@ -487,10 +492,10 @@ const EnquiriesTab = () => {
       enquiry.id === enquiryId ? { ...enquiry, status: newStatus } : enquiry
     );
     setEnquiries(updatedEnquiries);
-    localStorage.setItem("userEnquiries", JSON.stringify(updatedEnquiries));
+    localStorage.setItem('userEnquiries', JSON.stringify(updatedEnquiries));
   };
 
-  const toggleCardExpansion = (enquiryId) => {
+  const toggleCardExpansion = enquiryId => {
     const newExpanded = new Set(expandedCards);
     if (newExpanded.has(enquiryId)) {
       newExpanded.delete(enquiryId);
@@ -500,69 +505,71 @@ const EnquiriesTab = () => {
     setExpandedCards(newExpanded);
   };
 
-  const startEditingNote = (enquiryId) => {
+  const startEditingNote = enquiryId => {
     setEditingNotes(new Set([...editingNotes, enquiryId]));
   };
 
-  const saveNote = (enquiryId) => {
+  const saveNote = enquiryId => {
     setEditingNotes(new Set([...editingNotes].filter(id => id !== enquiryId)));
     // In real app, save to backend
   };
 
-  const cancelEditingNote = (enquiryId) => {
+  const cancelEditingNote = enquiryId => {
     setEditingNotes(new Set([...editingNotes].filter(id => id !== enquiryId)));
-    setNotes({ ...notes, [enquiryId]: "" });
+    setNotes({ ...notes, [enquiryId]: '' });
   };
 
   const handleNoteChange = (enquiryId, value) => {
     setNotes({ ...notes, [enquiryId]: value });
   };
 
-  const getStatusIcon = (status) => {
+  const getStatusIcon = status => {
     switch (status) {
-      case "pending":
+      case 'pending':
         return <FaClock />;
-      case "contacted":
+      case 'contacted':
         return <FaPhone />;
-      case "in_progress":
+      case 'in_progress':
         return <FaEye />;
-      case "completed":
+      case 'completed':
         return <FaCheck />;
       default:
         return <FaBell />;
     }
   };
 
-  const getStatusLabel = (status) => {
+  const getStatusLabel = status => {
     switch (status) {
-      case "pending":
-        return "Pending";
-      case "contacted":
-        return "Contacted";
-      case "in_progress":
-        return "In Progress";
-      case "completed":
-        return "Completed";
+      case 'pending':
+        return 'Pending';
+      case 'contacted':
+        return 'Contacted';
+      case 'in_progress':
+        return 'In Progress';
+      case 'completed':
+        return 'Completed';
       default:
-        return "Unknown";
+        return 'Unknown';
     }
   };
 
-  const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit"
+  const formatDate = dateString => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
     });
   };
 
   const getStats = () => {
     const total = enquiries.length;
-    const pending = enquiries.filter(e => e.status === "pending").length;
-    const inProgress = enquiries.filter(e => e.status === "in_progress" || e.status === "contacted").length;
-    const completed = enquiries.filter(e => e.status === "completed").length;
+    const pending = enquiries.filter(e => e.status === 'pending').length;
+    const inProgress = enquiries.filter(
+      e => e.status === 'in_progress' || e.status === 'contacted'
+    ).length;
+    const completed = enquiries.filter(e => e.status === 'completed').length;
 
     return { total, pending, inProgress, completed };
   };
@@ -599,11 +606,11 @@ const EnquiriesTab = () => {
           type="text"
           placeholder="Search by product, customer name, or email..."
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={e => setSearchTerm(e.target.value)}
         />
         <FilterSelect
           value={statusFilter}
-          onChange={(e) => setStatusFilter(e.target.value)}
+          onChange={e => setStatusFilter(e.target.value)}
         >
           <option value="all">All Status</option>
           <option value="pending">Pending</option>
@@ -615,7 +622,7 @@ const EnquiriesTab = () => {
 
       <EnquiriesList>
         {filteredEnquiries.length > 0 ? (
-          filteredEnquiries.map((enquiry) => (
+          filteredEnquiries.map(enquiry => (
             <EnquiryCard key={enquiry.id}>
               <EnquiryHeader onClick={() => toggleCardExpansion(enquiry.id)}>
                 <ProductInfo>
@@ -642,11 +649,11 @@ const EnquiriesTab = () => {
                   </StatusBadge>
                   <StatusSelect
                     value={enquiry.status}
-                    onChange={(e) => {
+                    onChange={e => {
                       e.stopPropagation();
                       handleStatusChange(enquiry.id, e.target.value);
                     }}
-                    onClick={(e) => e.stopPropagation()}
+                    onClick={e => e.stopPropagation()}
                   >
                     <option value="pending">Pending</option>
                     <option value="contacted">Contacted</option>
@@ -654,7 +661,11 @@ const EnquiriesTab = () => {
                     <option value="completed">Completed</option>
                   </StatusSelect>
                   <ExpandButton>
-                    {expandedCards.has(enquiry.id) ? <FaChevronUp /> : <FaChevronDown />}
+                    {expandedCards.has(enquiry.id) ? (
+                      <FaChevronUp />
+                    ) : (
+                      <FaChevronDown />
+                    )}
                   </ExpandButton>
                 </HeaderActions>
               </EnquiryHeader>
@@ -699,13 +710,17 @@ const EnquiriesTab = () => {
                             <FaSave />
                             Save
                           </PrimaryButton>
-                          <SecondaryButton onClick={() => cancelEditingNote(enquiry.id)}>
+                          <SecondaryButton
+                            onClick={() => cancelEditingNote(enquiry.id)}
+                          >
                             <FaTimes />
                             Cancel
                           </SecondaryButton>
                         </>
                       ) : (
-                        <SecondaryButton onClick={() => startEditingNote(enquiry.id)}>
+                        <SecondaryButton
+                          onClick={() => startEditingNote(enquiry.id)}
+                        >
                           <FaEdit />
                           Add Note
                         </SecondaryButton>
@@ -715,13 +730,15 @@ const EnquiriesTab = () => {
 
                   {editingNotes.has(enquiry.id) ? (
                     <NotesTextArea
-                      value={notes[enquiry.id] || ""}
-                      onChange={(e) => handleNoteChange(enquiry.id, e.target.value)}
+                      value={notes[enquiry.id] || ''}
+                      onChange={e =>
+                        handleNoteChange(enquiry.id, e.target.value)
+                      }
                       placeholder="Add internal notes about this enquiry..."
                     />
                   ) : (
                     <ExistingNote>
-                      {notes[enquiry.id] || "No notes added yet."}
+                      {notes[enquiry.id] || 'No notes added yet.'}
                     </ExistingNote>
                   )}
                 </NotesSection>
@@ -735,8 +752,8 @@ const EnquiriesTab = () => {
             </EmptyIcon>
             <EmptyTitle>No Enquiries Found</EmptyTitle>
             <EmptyText>
-              {searchTerm || statusFilter !== "all" 
-                ? "No enquiries match your current filters."
+              {searchTerm || statusFilter !== 'all'
+                ? 'No enquiries match your current filters.'
                 : "You haven't received any enquiries yet. Customers will be able to enquire about your products."}
             </EmptyText>
           </EmptyState>

@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import { 
-  FaTimes, 
-  FaUser, 
-  FaEnvelope, 
-  FaLock, 
-  FaPhone, 
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import {
+  FaTimes,
+  FaUser,
+  FaEnvelope,
+  FaLock,
+  FaPhone,
   FaStore,
   FaEye,
   FaEyeSlash,
   FaGoogle,
   FaFacebook,
-  FaGithub
-} from "react-icons/fa";
-import { useAuth } from "../../context/AuthContext";
+  FaGithub,
+} from 'react-icons/fa';
+import { useAuth } from '../../context/AuthContext';
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -92,15 +92,16 @@ const TabContainer = styled.div`
 `;
 
 const Tab = styled.button.withConfig({
-  shouldForwardProp: (prop) => prop !== "active",
+  shouldForwardProp: prop => prop !== 'active',
 })`
   flex: 1;
   padding: 0.75rem;
   background: none;
   border: none;
-  border-bottom: 2px solid ${props => props.active ? '#3b82f6' : 'transparent'};
-  color: ${props => props.active ? '#3b82f6' : '#6b7280'};
-  font-weight: ${props => props.active ? '600' : '500'};
+  border-bottom: 2px solid
+    ${props => (props.active ? '#3b82f6' : 'transparent')};
+  color: ${props => (props.active ? '#3b82f6' : '#6b7280')};
+  font-weight: ${props => (props.active ? '600' : '500')};
   cursor: pointer;
   transition: all 0.2s ease;
 
@@ -164,7 +165,9 @@ const Input = styled.input`
     color: #9ca3af;
   }
 
-  ${props => props.error && `
+  ${props =>
+    props.error &&
+    `
     border-color: #ef4444;
     &:focus {
       border-color: #ef4444;
@@ -239,7 +242,7 @@ const Divider = styled.div`
   display: flex;
   align-items: center;
   margin: 1.5rem 0;
-  
+
   &::before,
   &::after {
     content: '';
@@ -247,7 +250,7 @@ const Divider = styled.div`
     height: 1px;
     background: #e5e7eb;
   }
-  
+
   span {
     padding: 0 1rem;
     color: #6b7280;
@@ -305,12 +308,12 @@ const RoleSelector = styled.div`
 
 const RoleOption = styled.div`
   padding: 1rem;
-  border: 2px solid ${props => props.selected ? '#3b82f6' : '#e5e7eb'};
+  border: 2px solid ${props => (props.selected ? '#3b82f6' : '#e5e7eb')};
   border-radius: 12px;
   cursor: pointer;
   transition: all 0.2s ease;
   text-align: center;
-  background: ${props => props.selected ? '#eff6ff' : 'white'};
+  background: ${props => (props.selected ? '#eff6ff' : 'white')};
 
   &:hover {
     border-color: #3b82f6;
@@ -318,13 +321,13 @@ const RoleOption = styled.div`
 
   .icon {
     font-size: 1.5rem;
-    color: ${props => props.selected ? '#3b82f6' : '#6b7280'};
+    color: ${props => (props.selected ? '#3b82f6' : '#6b7280')};
     margin-bottom: 0.5rem;
   }
 
   .title {
     font-weight: 600;
-    color: ${props => props.selected ? '#3b82f6' : '#374151'};
+    color: ${props => (props.selected ? '#3b82f6' : '#374151')};
     margin-bottom: 0.25rem;
   }
 
@@ -334,24 +337,24 @@ const RoleOption = styled.div`
   }
 `;
 
-const AuthModal = ({ isOpen, onClose, onSuccess, defaultTab = "login" }) => {
+const AuthModal = ({ isOpen, onClose, onSuccess, defaultTab = 'login' }) => {
   const { login, register, loading } = useAuth();
   const [activeTab, setActiveTab] = useState(defaultTab);
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    password: "",
-    confirmPassword: "",
-    role: "customer",
-    businessName: "",
-    businessType: "General"
+    name: '',
+    email: '',
+    phone: '',
+    password: '',
+    confirmPassword: '',
+    role: 'customer',
+    businessName: '',
+    businessType: 'General',
   });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-    // Prevent body scroll when modal is open
+  // Prevent body scroll when modal is open
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -366,18 +369,18 @@ const AuthModal = ({ isOpen, onClose, onSuccess, defaultTab = "login" }) => {
 
   if (!isOpen) return null;
 
-  const handleInputChange = (e) => {
+  const handleInputChange = e => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
-    
+
     // Clear error when user starts typing
     if (errors[name]) {
       setErrors(prev => ({
         ...prev,
-        [name]: ""
+        [name]: '',
       }));
     }
   };
@@ -385,53 +388,53 @@ const AuthModal = ({ isOpen, onClose, onSuccess, defaultTab = "login" }) => {
   const validateForm = () => {
     const newErrors = {};
 
-    if (activeTab === "register") {
+    if (activeTab === 'register') {
       if (!formData.name.trim()) {
-        newErrors.name = "Name is required";
+        newErrors.name = 'Name is required';
       }
-      
+
       if (!formData.phone.trim()) {
-        newErrors.phone = "Phone number is required";
+        newErrors.phone = 'Phone number is required';
       }
-      
+
       if (formData.password !== formData.confirmPassword) {
         newErrors.confirmPassword = "Passwords don't match";
       }
-      
-      if (formData.role === "seller" && !formData.businessName.trim()) {
-        newErrors.businessName = "Business name is required for sellers";
+
+      if (formData.role === 'seller' && !formData.businessName.trim()) {
+        newErrors.businessName = 'Business name is required for sellers';
       }
     }
 
     if (!formData.email.trim()) {
-      newErrors.email = "Email is required";
+      newErrors.email = 'Email is required';
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "Please enter a valid email address";
+      newErrors.email = 'Please enter a valid email address';
     }
 
     if (!formData.password.trim()) {
-      newErrors.password = "Password is required";
+      newErrors.password = 'Password is required';
     } else if (formData.password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters";
+      newErrors.password = 'Password must be at least 6 characters';
     }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
-    
+
     if (!validateForm()) return;
 
     setIsSubmitting(true);
 
     try {
       let result;
-      if (activeTab === "login") {
+      if (activeTab === 'login') {
         result = await login({
           email: formData.email,
-          password: formData.password
+          password: formData.password,
         });
       } else {
         result = await register(formData);
@@ -440,14 +443,14 @@ const AuthModal = ({ isOpen, onClose, onSuccess, defaultTab = "login" }) => {
       if (result.success) {
         // Reset form
         setFormData({
-          name: "",
-          email: "",
-          phone: "",
-          password: "",
-          confirmPassword: "",
-          role: "customer",
-          businessName: "",
-          businessType: "General"
+          name: '',
+          email: '',
+          phone: '',
+          password: '',
+          confirmPassword: '',
+          role: 'customer',
+          businessName: '',
+          businessType: 'General',
         });
 
         if (onSuccess) {
@@ -459,19 +462,19 @@ const AuthModal = ({ isOpen, onClose, onSuccess, defaultTab = "login" }) => {
         setErrors({ submit: result.error });
       }
     } catch (error) {
-      setErrors({ submit: "Something went wrong. Please try again." });
+      setErrors({ submit: 'Something went wrong. Please try again.' });
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const handleSocialLogin = (provider) => {
+  const handleSocialLogin = provider => {
     // Simulate social login
     const email = `demo@${provider}.com`;
     login({
       email,
       name: `Demo ${provider.charAt(0).toUpperCase() + provider.slice(1)} User`,
-      role: "customer"
+      role: 'customer',
     }).then(result => {
       if (result.success) {
         onClose();
@@ -481,31 +484,31 @@ const AuthModal = ({ isOpen, onClose, onSuccess, defaultTab = "login" }) => {
 
   return (
     <ModalOverlay onClick={onClose}>
-      <ModalContainer onClick={(e) => e.stopPropagation()}>
+      <ModalContainer onClick={e => e.stopPropagation()}>
         <CloseButton onClick={onClose}>
           <FaTimes />
         </CloseButton>
 
         <ModalHeader>
           <ModalTitle>
-            {activeTab === "login" ? "Welcome Back!" : "Join Our Platform"}
+            {activeTab === 'login' ? 'Welcome Back!' : 'Join Our Platform'}
           </ModalTitle>
           <ModalSubtitle>
-            {activeTab === "login" 
-              ? "Sign in to continue your journey" 
-              : "Create an account to get started"}
+            {activeTab === 'login'
+              ? 'Sign in to continue your journey'
+              : 'Create an account to get started'}
           </ModalSubtitle>
 
           <TabContainer>
-            <Tab 
-              active={activeTab === "login"} 
-              onClick={() => setActiveTab("login")}
+            <Tab
+              active={activeTab === 'login'}
+              onClick={() => setActiveTab('login')}
             >
               Sign In
             </Tab>
-            <Tab 
-              active={activeTab === "register"} 
-              onClick={() => setActiveTab("register")}
+            <Tab
+              active={activeTab === 'register'}
+              onClick={() => setActiveTab('register')}
             >
               Sign Up
             </Tab>
@@ -514,24 +517,34 @@ const AuthModal = ({ isOpen, onClose, onSuccess, defaultTab = "login" }) => {
 
         <ModalBody>
           <Form onSubmit={handleSubmit}>
-            {activeTab === "register" && (
+            {activeTab === 'register' && (
               <>
                 <FormGroup>
                   <Label>I want to:</Label>
                   <RoleSelector>
-                    <RoleOption 
-                      selected={formData.role === "customer"}
-                      onClick={() => setFormData(prev => ({ ...prev, role: "customer" }))}
+                    <RoleOption
+                      selected={formData.role === 'customer'}
+                      onClick={() =>
+                        setFormData(prev => ({ ...prev, role: 'customer' }))
+                      }
                     >
-                      <div className="icon"><FaUser /></div>
+                      <div className="icon">
+                        <FaUser />
+                      </div>
                       <div className="title">Buy Products</div>
-                      <div className="desc">Browse and enquire about products</div>
+                      <div className="desc">
+                        Browse and enquire about products
+                      </div>
                     </RoleOption>
-                    <RoleOption 
-                      selected={formData.role === "seller"}
-                      onClick={() => setFormData(prev => ({ ...prev, role: "seller" }))}
+                    <RoleOption
+                      selected={formData.role === 'seller'}
+                      onClick={() =>
+                        setFormData(prev => ({ ...prev, role: 'seller' }))
+                      }
                     >
-                      <div className="icon"><FaStore /></div>
+                      <div className="icon">
+                        <FaStore />
+                      </div>
                       <div className="title">Sell Products</div>
                       <div className="desc">Create your own store</div>
                     </RoleOption>
@@ -541,7 +554,9 @@ const AuthModal = ({ isOpen, onClose, onSuccess, defaultTab = "login" }) => {
                 <FormGroup>
                   <Label>Full Name</Label>
                   <InputWrapper>
-                    <InputIcon><FaUser /></InputIcon>
+                    <InputIcon>
+                      <FaUser />
+                    </InputIcon>
                     <Input
                       type="text"
                       name="name"
@@ -554,12 +569,14 @@ const AuthModal = ({ isOpen, onClose, onSuccess, defaultTab = "login" }) => {
                   {errors.name && <ErrorMessage>{errors.name}</ErrorMessage>}
                 </FormGroup>
 
-                {formData.role === "seller" && (
+                {formData.role === 'seller' && (
                   <>
                     <FormGroup>
                       <Label>Business Name</Label>
                       <InputWrapper>
-                        <InputIcon><FaStore /></InputIcon>
+                        <InputIcon>
+                          <FaStore />
+                        </InputIcon>
                         <Input
                           type="text"
                           name="businessName"
@@ -569,13 +586,17 @@ const AuthModal = ({ isOpen, onClose, onSuccess, defaultTab = "login" }) => {
                           error={errors.businessName}
                         />
                       </InputWrapper>
-                      {errors.businessName && <ErrorMessage>{errors.businessName}</ErrorMessage>}
+                      {errors.businessName && (
+                        <ErrorMessage>{errors.businessName}</ErrorMessage>
+                      )}
                     </FormGroup>
 
                     <FormGroup>
                       <Label>Business Type</Label>
                       <InputWrapper>
-                        <InputIcon><FaStore /></InputIcon>
+                        <InputIcon>
+                          <FaStore />
+                        </InputIcon>
                         <Select
                           name="businessType"
                           value={formData.businessType}
@@ -598,7 +619,9 @@ const AuthModal = ({ isOpen, onClose, onSuccess, defaultTab = "login" }) => {
                 <FormGroup>
                   <Label>Phone Number</Label>
                   <InputWrapper>
-                    <InputIcon><FaPhone /></InputIcon>
+                    <InputIcon>
+                      <FaPhone />
+                    </InputIcon>
                     <Input
                       type="tel"
                       name="phone"
@@ -616,7 +639,9 @@ const AuthModal = ({ isOpen, onClose, onSuccess, defaultTab = "login" }) => {
             <FormGroup>
               <Label>Email Address</Label>
               <InputWrapper>
-                <InputIcon><FaEnvelope /></InputIcon>
+                <InputIcon>
+                  <FaEnvelope />
+                </InputIcon>
                 <Input
                   type="email"
                   name="email"
@@ -632,9 +657,11 @@ const AuthModal = ({ isOpen, onClose, onSuccess, defaultTab = "login" }) => {
             <FormGroup>
               <Label>Password</Label>
               <InputWrapper>
-                <InputIcon><FaLock /></InputIcon>
+                <InputIcon>
+                  <FaLock />
+                </InputIcon>
                 <Input
-                  type={showPassword ? "text" : "password"}
+                  type={showPassword ? 'text' : 'password'}
                   name="password"
                   value={formData.password}
                   onChange={handleInputChange}
@@ -648,16 +675,20 @@ const AuthModal = ({ isOpen, onClose, onSuccess, defaultTab = "login" }) => {
                   {showPassword ? <FaEyeSlash /> : <FaEye />}
                 </PasswordToggle>
               </InputWrapper>
-              {errors.password && <ErrorMessage>{errors.password}</ErrorMessage>}
+              {errors.password && (
+                <ErrorMessage>{errors.password}</ErrorMessage>
+              )}
             </FormGroup>
 
-            {activeTab === "register" && (
+            {activeTab === 'register' && (
               <FormGroup>
                 <Label>Confirm Password</Label>
                 <InputWrapper>
-                  <InputIcon><FaLock /></InputIcon>
+                  <InputIcon>
+                    <FaLock />
+                  </InputIcon>
                   <Input
-                    type={showPassword ? "text" : "password"}
+                    type={showPassword ? 'text' : 'password'}
                     name="confirmPassword"
                     value={formData.confirmPassword}
                     onChange={handleInputChange}
@@ -665,14 +696,20 @@ const AuthModal = ({ isOpen, onClose, onSuccess, defaultTab = "login" }) => {
                     error={errors.confirmPassword}
                   />
                 </InputWrapper>
-                {errors.confirmPassword && <ErrorMessage>{errors.confirmPassword}</ErrorMessage>}
+                {errors.confirmPassword && (
+                  <ErrorMessage>{errors.confirmPassword}</ErrorMessage>
+                )}
               </FormGroup>
             )}
 
             {errors.submit && <ErrorMessage>{errors.submit}</ErrorMessage>}
 
             <SubmitButton type="submit" disabled={isSubmitting || loading}>
-              {isSubmitting ? "Please wait..." : (activeTab === "login" ? "Sign In" : "Create Account")}
+              {isSubmitting
+                ? 'Please wait...'
+                : activeTab === 'login'
+                  ? 'Sign In'
+                  : 'Create Account'}
             </SubmitButton>
           </Form>
 
@@ -681,23 +718,23 @@ const AuthModal = ({ isOpen, onClose, onSuccess, defaultTab = "login" }) => {
           </Divider>
 
           <SocialButtons>
-            <SocialButton 
-              className="google" 
-              onClick={() => handleSocialLogin("google")}
+            <SocialButton
+              className="google"
+              onClick={() => handleSocialLogin('google')}
             >
               <FaGoogle />
               Google
             </SocialButton>
-            <SocialButton 
-              className="facebook" 
-              onClick={() => handleSocialLogin("facebook")}
+            <SocialButton
+              className="facebook"
+              onClick={() => handleSocialLogin('facebook')}
             >
               <FaFacebook />
               Facebook
             </SocialButton>
-            <SocialButton 
-              className="github" 
-              onClick={() => handleSocialLogin("github")}
+            <SocialButton
+              className="github"
+              onClick={() => handleSocialLogin('github')}
             >
               <FaGithub />
               GitHub

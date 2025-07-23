@@ -1,4 +1,4 @@
-import { createGlobalStyle } from "styled-components";
+import { createGlobalStyle } from 'styled-components';
 
 export const GlobalStyle = createGlobalStyle`
   * {
@@ -196,50 +196,50 @@ export const GlobalStyle = createGlobalStyle`
 
 export const theme = {
   colors: {
-    primary: "#1e40af",
-    primaryLight: "#3b82f6",
-    primaryDark: "#1d4ed8",
-    secondary: "#64748b",
-    accent: "#f59e0b",
-    success: "#10b981",
-    error: "#ef4444",
-    warning: "#f59e0b",
-    white: "#ffffff",
-    gray50: "#f8fafc",
-    gray100: "#f1f5f9",
-    gray200: "#e2e8f0",
-    gray300: "#cbd5e1",
-    gray400: "#94a3b8",
-    gray500: "#64748b",
-    gray600: "#475569",
-    gray700: "#334155",
-    gray800: "#1e293b",
-    gray900: "#0f172a",
+    primary: '#1e40af',
+    primaryLight: '#3b82f6',
+    primaryDark: '#1d4ed8',
+    secondary: '#64748b',
+    accent: '#f59e0b',
+    success: '#10b981',
+    error: '#ef4444',
+    warning: '#f59e0b',
+    white: '#ffffff',
+    gray50: '#f8fafc',
+    gray100: '#f1f5f9',
+    gray200: '#e2e8f0',
+    gray300: '#cbd5e1',
+    gray400: '#94a3b8',
+    gray500: '#64748b',
+    gray600: '#475569',
+    gray700: '#334155',
+    gray800: '#1e293b',
+    gray900: '#0f172a',
   },
   breakpoints: {
-    mobile: "768px",
-    tablet: "1024px",
-    desktop: "1200px",
+    mobile: '768px',
+    tablet: '1024px',
+    desktop: '1200px',
   },
-    spacing: {
-    xs: "0.25rem",
-    sm: "0.5rem",
-    md: "0.875rem",
-    lg: "1.25rem",
-    xl: "1.75rem",
-    xxl: "2.5rem",
+  spacing: {
+    xs: '0.25rem',
+    sm: '0.5rem',
+    md: '0.875rem',
+    lg: '1.25rem',
+    xl: '1.75rem',
+    xxl: '2.5rem',
   },
   borderRadius: {
-    sm: "0.25rem",
-    md: "0.5rem",
-    lg: "1rem",
-    xl: "1.5rem",
+    sm: '0.25rem',
+    md: '0.5rem',
+    lg: '1rem',
+    xl: '1.5rem',
   },
   shadows: {
-    sm: "0 1px 2px 0 rgb(0 0 0 / 0.05)",
-    md: "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
-    lg: "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
-    xl: "0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)",
+    sm: '0 1px 2px 0 rgb(0 0 0 / 0.05)',
+    md: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
+    lg: '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)',
+    xl: '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
   },
 };
 
@@ -259,15 +259,15 @@ export const media = {
 // Responsive grid utilities
 export const gridResponsive = {
   mobile: {
-    columns: "1fr",
+    columns: '1fr',
     gap: theme.spacing.md,
   },
   tablet: {
-    columns: "repeat(2, 1fr)",
+    columns: 'repeat(2, 1fr)',
     gap: theme.spacing.lg,
   },
   desktop: {
-    columns: "repeat(3, 1fr)",
+    columns: 'repeat(3, 1fr)',
     gap: theme.spacing.xl,
   },
 };

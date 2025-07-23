@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
 import {
   FaUsers,
   FaSearch,
@@ -14,8 +14,8 @@ import {
   FaDownload,
   FaChevronLeft,
   FaChevronRight,
-} from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
+} from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
 
 const Container = styled.div`
   background: ${theme.colors.white};
@@ -228,7 +228,11 @@ const CustomerAvatar = styled.div`
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background: linear-gradient(135deg, ${theme.colors.primary}, ${theme.colors.secondary});
+  background: linear-gradient(
+    135deg,
+    ${theme.colors.primary},
+    ${theme.colors.secondary}
+  );
   display: flex;
   align-items: center;
   justify-content: center;
@@ -400,8 +404,8 @@ const PaginationInfo = styled.span`
 const CustomersTab = ({ dealer }) => {
   const [customers, setCustomers] = useState([]);
   const [filteredCustomers, setFilteredCustomers] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [filterBy, setFilterBy] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterBy, setFilterBy] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const customersPerPage = 12;
 
@@ -410,93 +414,93 @@ const CustomersTab = ({ dealer }) => {
     const mockCustomers = [
       {
         id: 1,
-        name: "John Smith",
-        email: "john.smith@email.com",
-        phone: "(555) 123-4567",
-        location: "New York, NY",
-        joinDate: "2023-01-15",
+        name: 'John Smith',
+        email: 'john.smith@email.com',
+        phone: '(555) 123-4567',
+        location: 'New York, NY',
+        joinDate: '2023-01-15',
         totalPurchases: 2,
         totalSpent: 85000,
-        lastPurchase: "2024-01-10",
+        lastPurchase: '2024-01-10',
         rating: 4.8,
-        status: "VIP",
-        notes: "Prefers luxury vehicles, excellent payment history",
-        vehicles: ["2022 BMW X5", "2024 Tesla Model S"],
+        status: 'VIP',
+        notes: 'Prefers luxury vehicles, excellent payment history',
+        vehicles: ['2022 BMW X5', '2024 Tesla Model S'],
       },
       {
         id: 2,
-        name: "Sarah Johnson",
-        email: "sarah.j@email.com",
-        phone: "(555) 234-5678",
-        location: "Los Angeles, CA",
-        joinDate: "2023-03-22",
+        name: 'Sarah Johnson',
+        email: 'sarah.j@email.com',
+        phone: '(555) 234-5678',
+        location: 'Los Angeles, CA',
+        joinDate: '2023-03-22',
         totalPurchases: 1,
         totalSpent: 45000,
-        lastPurchase: "2023-11-20",
+        lastPurchase: '2023-11-20',
         rating: 4.5,
-        status: "Regular",
-        notes: "First-time buyer, interested in eco-friendly options",
-        vehicles: ["2023 Toyota Prius"],
+        status: 'Regular',
+        notes: 'First-time buyer, interested in eco-friendly options',
+        vehicles: ['2023 Toyota Prius'],
       },
       {
         id: 3,
-        name: "Michael Brown",
-        email: "m.brown@email.com",
-        phone: "(555) 345-6789",
-        location: "Chicago, IL",
-        joinDate: "2022-08-10",
+        name: 'Michael Brown',
+        email: 'm.brown@email.com',
+        phone: '(555) 345-6789',
+        location: 'Chicago, IL',
+        joinDate: '2022-08-10',
         totalPurchases: 3,
         totalSpent: 125000,
-        lastPurchase: "2024-02-05",
+        lastPurchase: '2024-02-05',
         rating: 4.9,
-        status: "VIP",
-        notes: "Fleet buyer for business, prefers trucks and SUVs",
-        vehicles: ["2022 Ford F-150", "2023 Chevy Tahoe", "2024 GMC Sierra"],
+        status: 'VIP',
+        notes: 'Fleet buyer for business, prefers trucks and SUVs',
+        vehicles: ['2022 Ford F-150', '2023 Chevy Tahoe', '2024 GMC Sierra'],
       },
       {
         id: 4,
-        name: "Emily Davis",
-        email: "emily.davis@email.com",
-        phone: "(555) 456-7890",
-        location: "Miami, FL",
-        joinDate: "2023-06-12",
+        name: 'Emily Davis',
+        email: 'emily.davis@email.com',
+        phone: '(555) 456-7890',
+        location: 'Miami, FL',
+        joinDate: '2023-06-12',
         totalPurchases: 1,
         totalSpent: 32000,
-        lastPurchase: "2023-06-12",
+        lastPurchase: '2023-06-12',
         rating: 4.2,
-        status: "New",
-        notes: "Young professional, budget-conscious",
-        vehicles: ["2021 Honda Civic"],
+        status: 'New',
+        notes: 'Young professional, budget-conscious',
+        vehicles: ['2021 Honda Civic'],
       },
       {
         id: 5,
-        name: "Robert Wilson",
-        email: "r.wilson@email.com",
-        phone: "(555) 567-8901",
-        location: "Dallas, TX",
-        joinDate: "2022-12-03",
+        name: 'Robert Wilson',
+        email: 'r.wilson@email.com',
+        phone: '(555) 567-8901',
+        location: 'Dallas, TX',
+        joinDate: '2022-12-03',
         totalPurchases: 2,
         totalSpent: 95000,
-        lastPurchase: "2023-12-15",
+        lastPurchase: '2023-12-15',
         rating: 4.7,
-        status: "VIP",
-        notes: "Enthusiast collector, prefers classic and sports cars",
-        vehicles: ["2023 Porsche 911", "2022 Mustang GT"],
+        status: 'VIP',
+        notes: 'Enthusiast collector, prefers classic and sports cars',
+        vehicles: ['2023 Porsche 911', '2022 Mustang GT'],
       },
       {
         id: 6,
-        name: "Lisa Anderson",
-        email: "lisa.anderson@email.com",
-        phone: "(555) 678-9012",
-        location: "Seattle, WA",
-        joinDate: "2023-09-18",
+        name: 'Lisa Anderson',
+        email: 'lisa.anderson@email.com',
+        phone: '(555) 678-9012',
+        location: 'Seattle, WA',
+        joinDate: '2023-09-18',
         totalPurchases: 1,
         totalSpent: 58000,
-        lastPurchase: "2023-09-18",
+        lastPurchase: '2023-09-18',
         rating: 4.6,
-        status: "Regular",
-        notes: "Family-oriented, safety is top priority",
-        vehicles: ["2023 Volvo XC90"],
+        status: 'Regular',
+        notes: 'Family-oriented, safety is top priority',
+        vehicles: ['2023 Volvo XC90'],
       },
     ];
 
@@ -509,10 +513,11 @@ const CustomersTab = ({ dealer }) => {
 
     // Search filter
     if (searchTerm) {
-      filtered = filtered.filter(customer =>
-        customer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        customer.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        customer.phone.includes(searchTerm)
+      filtered = filtered.filter(
+        customer =>
+          customer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          customer.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          customer.phone.includes(searchTerm)
       );
     }
 
@@ -525,46 +530,64 @@ const CustomersTab = ({ dealer }) => {
     setCurrentPage(1);
   }, [customers, searchTerm, filterBy]);
 
-  const formatCurrency = (amount) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
+  const formatCurrency = amount => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(amount);
   };
 
-  const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
+  const formatDate = dateString => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
     });
   };
 
-  const getInitials = (name) => {
-    return name.split(' ').map(n => n[0]).join('').toUpperCase();
+  const getInitials = name => {
+    return name
+      .split(' ')
+      .map(n => n[0])
+      .join('')
+      .toUpperCase();
   };
 
   const stats = {
     total: customers.length,
-    vip: customers.filter(c => c.status === "VIP").length,
-    regular: customers.filter(c => c.status === "Regular").length,
-    new: customers.filter(c => c.status === "New").length,
+    vip: customers.filter(c => c.status === 'VIP').length,
+    regular: customers.filter(c => c.status === 'Regular').length,
+    new: customers.filter(c => c.status === 'New').length,
     totalRevenue: customers.reduce((sum, c) => sum + c.totalSpent, 0),
-    avgSpending: customers.length > 0 ? customers.reduce((sum, c) => sum + c.totalSpent, 0) / customers.length : 0,
+    avgSpending:
+      customers.length > 0
+        ? customers.reduce((sum, c) => sum + c.totalSpent, 0) / customers.length
+        : 0,
   };
 
   // Pagination
   const indexOfLastCustomer = currentPage * customersPerPage;
   const indexOfFirstCustomer = indexOfLastCustomer - customersPerPage;
-  const currentCustomers = filteredCustomers.slice(indexOfFirstCustomer, indexOfLastCustomer);
+  const currentCustomers = filteredCustomers.slice(
+    indexOfFirstCustomer,
+    indexOfLastCustomer
+  );
   const totalPages = Math.ceil(filteredCustomers.length / customersPerPage);
 
   const handleExportCustomers = () => {
     // Mock export functionality
     const csvContent = [
-      ["Name", "Email", "Phone", "Total Purchases", "Total Spent", "Status", "Join Date"],
+      [
+        'Name',
+        'Email',
+        'Phone',
+        'Total Purchases',
+        'Total Spent',
+        'Status',
+        'Join Date',
+      ],
       ...customers.map(customer => [
         customer.name,
         customer.email,
@@ -573,14 +596,16 @@ const CustomersTab = ({ dealer }) => {
         customer.totalSpent,
         customer.status,
         customer.joinDate,
-      ])
-    ].map(row => row.join(",")).join("\n");
+      ]),
+    ]
+      .map(row => row.join(','))
+      .join('\n');
 
-    const blob = new Blob([csvContent], { type: "text/csv" });
+    const blob = new Blob([csvContent], { type: 'text/csv' });
     const url = window.URL.createObjectURL(blob);
-    const a = document.createElement("a");
+    const a = document.createElement('a');
     a.href = url;
-    a.download = "customers.csv";
+    a.download = 'customers.csv';
     a.click();
     window.URL.revokeObjectURL(url);
   };
@@ -614,13 +639,13 @@ const CustomersTab = ({ dealer }) => {
               type="text"
               placeholder="Search customers by name, email, or phone..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={e => setSearchTerm(e.target.value)}
             />
           </SearchContainer>
 
           <FilterSelect
             value={filterBy}
-            onChange={(e) => setFilterBy(e.target.value)}
+            onChange={e => setFilterBy(e.target.value)}
           >
             <option value="">All Customers</option>
             <option value="VIP">VIP Customers</option>
@@ -662,21 +687,23 @@ const CustomersTab = ({ dealer }) => {
 
       <CustomersGrid>
         {currentCustomers.length > 0 ? (
-          currentCustomers.map((customer) => (
+          currentCustomers.map(customer => (
             <CustomerCard key={customer.id}>
               <CustomerHeader>
                 <div style={{ display: 'flex', alignItems: 'flex-start' }}>
-                  <CustomerAvatar>
-                    {getInitials(customer.name)}
-                  </CustomerAvatar>
+                  <CustomerAvatar>{getInitials(customer.name)}</CustomerAvatar>
                   <CustomerInfo>
                     <CustomerName>{customer.name}</CustomerName>
                     <CustomerEmail>
-                      <FaEnvelope style={{ marginRight: '6px', fontSize: '0.8rem' }} />
+                      <FaEnvelope
+                        style={{ marginRight: '6px', fontSize: '0.8rem' }}
+                      />
                       {customer.email}
                     </CustomerEmail>
                     <CustomerPhone>
-                      <FaPhone style={{ marginRight: '6px', fontSize: '0.8rem' }} />
+                      <FaPhone
+                        style={{ marginRight: '6px', fontSize: '0.8rem' }}
+                      />
                       {customer.phone}
                     </CustomerPhone>
                   </CustomerInfo>
@@ -689,11 +716,15 @@ const CustomersTab = ({ dealer }) => {
 
               <CustomerStats>
                 <CustomerStatItem>
-                  <CustomerStatValue>{customer.totalPurchases}</CustomerStatValue>
+                  <CustomerStatValue>
+                    {customer.totalPurchases}
+                  </CustomerStatValue>
                   <CustomerStatLabel>Purchases</CustomerStatLabel>
                 </CustomerStatItem>
                 <CustomerStatItem>
-                  <CustomerStatValue>{formatCurrency(customer.totalSpent)}</CustomerStatValue>
+                  <CustomerStatValue>
+                    {formatCurrency(customer.totalSpent)}
+                  </CustomerStatValue>
                   <CustomerStatLabel>Total Spent</CustomerStatLabel>
                 </CustomerStatItem>
                 <CustomerStatItem>
@@ -737,7 +768,10 @@ const CustomersTab = ({ dealer }) => {
           <EmptyState>
             <FaUsers className="icon" />
             <h3>No customers found</h3>
-            <p>Try adjusting your search criteria or add new customers to your database.</p>
+            <p>
+              Try adjusting your search criteria or add new customers to your
+              database.
+            </p>
           </EmptyState>
         )}
       </CustomersGrid>
@@ -751,11 +785,12 @@ const CustomersTab = ({ dealer }) => {
             <FaChevronLeft />
             Previous
           </PaginationButton>
-          
+
           <PaginationInfo>
-            Page {currentPage} of {totalPages} ({filteredCustomers.length} customers)
+            Page {currentPage} of {totalPages} ({filteredCustomers.length}{' '}
+            customers)
           </PaginationInfo>
-          
+
           <PaginationButton
             onClick={() => setCurrentPage(currentPage + 1)}
             disabled={currentPage === totalPages}

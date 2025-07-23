@@ -1,14 +1,14 @@
-import React from "react";
-import { Link, useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 import {
   FaStar,
   FaMapMarkerAlt,
   FaClock,
   FaPhone,
   FaDirections,
-} from "react-icons/fa";
-import { theme, media } from "../../styles/GlobalStyle";
+} from 'react-icons/fa';
+import { theme, media } from '../../styles/GlobalStyle';
 
 const Card = styled(Link)`
   display: block;
@@ -44,11 +44,11 @@ const Card = styled(Link)`
 `;
 
 const CardImage = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "image",
+  shouldForwardProp: prop => prop !== 'image',
 })`
   position: relative;
   height: 200px;
-  background-image: url(${(props) => props.image});
+  background-image: url(${props => props.image});
   background-size: cover;
   background-position: center;
   overflow: hidden;
@@ -341,9 +341,13 @@ const ActionButton = styled.button`
 const StoreCard = ({ store, category }) => {
   const navigate = useNavigate();
 
-        const handleStoreClick = (e) => {
+  const handleStoreClick = e => {
     e.preventDefault();
-    if (category === "ecommerce" || category === "automobiles" || category === "weddings") {
+    if (
+      category === 'ecommerce' ||
+      category === 'automobiles' ||
+      category === 'weddings'
+    ) {
       // Navigate to /{store.id} for ecommerce stores, automobile dealers, and wedding vendors
       navigate(`/${store.id}`);
     } else {
@@ -352,8 +356,7 @@ const StoreCard = ({ store, category }) => {
     }
   };
 
-
-  const renderStars = (rating) => {
+  const renderStars = rating => {
     const stars = [];
     const fullStars = Math.floor(rating);
     for (let i = 0; i < fullStars; i++) {
@@ -364,34 +367,34 @@ const StoreCard = ({ store, category }) => {
 
   const getCurrentStatus = () => {
     const now = new Date();
-    const currentDay = now.toLocaleDateString("en-US", { weekday: "long" });
+    const currentDay = now.toLocaleDateString('en-US', { weekday: 'long' });
 
     const todayHours = store.hours[currentDay];
 
-    if (todayHours === "Closed" || todayHours === "By Appointment") {
-      return { status: "Closed", text: todayHours };
+    if (todayHours === 'Closed' || todayHours === 'By Appointment') {
+      return { status: 'Closed', text: todayHours };
     }
 
     // Simple open/closed logic (can be enhanced)
     return {
-      status: "Open",
-      text: `Open until ${todayHours?.split(" - ")[1] || "9:00 PM"}`,
+      status: 'Open',
+      text: `Open until ${todayHours?.split(' - ')[1] || '9:00 PM'}`,
     };
   };
 
-  const handleDirections = (e) => {
+  const handleDirections = e => {
     e.preventDefault();
     e.stopPropagation();
     const address = encodeURIComponent(
-      `${store.address}, ${store.city}, ${store.state} ${store.zipCode}`,
+      `${store.address}, ${store.city}, ${store.state} ${store.zipCode}`
     );
-    window.open(`https://maps.google.com/maps?q=${address}`, "_blank");
+    window.open(`https://maps.google.com/maps?q=${address}`, '_blank');
   };
 
-  const handleCall = (e) => {
+  const handleCall = e => {
     e.preventDefault();
     e.stopPropagation();
-    window.open(`tel:${store.phone}`, "_self");
+    window.open(`tel:${store.phone}`, '_self');
   };
 
   const currentStatus = getCurrentStatus();
@@ -419,7 +422,7 @@ const StoreCard = ({ store, category }) => {
         </StoreHeader>
 
         <StoreAddress>
-          <FaMapMarkerAlt style={{ marginTop: "2px", flexShrink: 0 }} />
+          <FaMapMarkerAlt style={{ marginTop: '2px', flexShrink: 0 }} />
           <span>
             {store.address}, {store.city}, {store.state}
           </span>
@@ -442,7 +445,7 @@ const StoreCard = ({ store, category }) => {
             <span
               style={{
                 color:
-                  currentStatus.status === "Open"
+                  currentStatus.status === 'Open'
                     ? theme.colors.success
                     : theme.colors.error,
               }}
@@ -453,9 +456,9 @@ const StoreCard = ({ store, category }) => {
 
           <div
             style={{
-              display: "flex",
+              display: 'flex',
               gap: theme.spacing.sm,
-              justifyContent: "center",
+              justifyContent: 'center',
             }}
           >
             <ActionButton onClick={handleCall} title="Call Store">
@@ -472,9 +475,9 @@ const StoreCard = ({ store, category }) => {
     </>
   );
 
-    if (category === "ecommerce" || category === "automobiles") {
+  if (category === 'ecommerce' || category === 'automobiles') {
     return (
-      <Card as="div" onClick={handleStoreClick} style={{ cursor: "pointer" }}>
+      <Card as="div" onClick={handleStoreClick} style={{ cursor: 'pointer' }}>
         {cardContent}
       </Card>
     );

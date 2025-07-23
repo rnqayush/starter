@@ -1,6 +1,6 @@
-import React, { useState, useMemo } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
-import styled from "styled-components";
+import React, { useState, useMemo } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import styled from 'styled-components';
 import {
   FaHotel,
   FaUser,
@@ -8,8 +8,8 @@ import {
   FaHome,
   FaBars,
   FaTimes,
-} from "react-icons/fa";
-import { theme, media } from "../../styles/GlobalStyle";
+} from 'react-icons/fa';
+import { theme, media } from '../../styles/GlobalStyle';
 
 const NavbarContainer = styled.nav`
   background: ${theme.colors.white};
@@ -58,7 +58,7 @@ const Logo = styled(Link)`
 `;
 
 const NavLinks = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "isOpen",
+  shouldForwardProp: prop => prop !== 'isOpen',
 })`
   display: flex;
   align-items: center;
@@ -73,9 +73,9 @@ const NavLinks = styled.div.withConfig({
     flex-direction: column;
     padding: ${theme.spacing.lg};
     box-shadow: ${theme.shadows.lg};
-    transform: translateY(${(props) => (props.isOpen ? "0" : "-100%")});
-    opacity: ${(props) => (props.isOpen ? "1" : "0")};
-    visibility: ${(props) => (props.isOpen ? "visible" : "hidden")};
+    transform: translateY(${props => (props.isOpen ? '0' : '-100%')});
+    opacity: ${props => (props.isOpen ? '1' : '0')};
+    visibility: ${props => (props.isOpen ? 'visible' : 'hidden')};
     transition: all 0.3s ease;
     z-index: 99;
     gap: ${theme.spacing.lg};
@@ -103,7 +103,7 @@ const NavLink = styled(Link)`
     color: ${theme.colors.primary};
 
     &::after {
-      content: "";
+      content: '';
       position: absolute;
       bottom: -8px;
       left: 0;
@@ -300,7 +300,9 @@ const HotelNavbar = ({ showBackToMain = true }) => {
   const hotelSlug = useMemo(() => {
     const pathSegments = location.pathname.split('/').filter(Boolean);
     // For hotel routes, the first segment is usually the hotel slug
-    return pathSegments.length > 0 && pathSegments[0] !== 'hotels' ? pathSegments[0] : '';
+    return pathSegments.length > 0 && pathSegments[0] !== 'hotels'
+      ? pathSegments[0]
+      : '';
   }, [location.pathname]);
 
   const closeMobileMenu = () => setMobileMenuOpen(false);
@@ -320,7 +322,7 @@ const HotelNavbar = ({ showBackToMain = true }) => {
           <NavLink to="/my-bookings" onClick={closeMobileMenu}>
             My Bookings
           </NavLink>
-          <NavLink to={hotelSlug ? `/${hotelSlug}/owner` : "/owner/dashboard"} onClick={closeMobileMenu}>
+          <NavLink to={'hoteladmin'} onClick={closeMobileMenu}>
             Hotel Owner
           </NavLink>
 
@@ -348,7 +350,7 @@ const HotelNavbar = ({ showBackToMain = true }) => {
 
           <ActionButton
             title="My Bookings"
-            onClick={() => navigate("/my-bookings")}
+            onClick={() => navigate('/my-bookings')}
           >
             <FaCalendarAlt />
           </ActionButton>

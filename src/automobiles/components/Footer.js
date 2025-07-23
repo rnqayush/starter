@@ -1,13 +1,21 @@
-import React from "react";
-import styled from "styled-components";
-import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaPhone, FaEnvelope, FaMapMarkerAlt } from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
+import React from 'react';
+import styled from 'styled-components';
+import {
+  FaFacebook,
+  FaTwitter,
+  FaInstagram,
+  FaLinkedin,
+  FaPhone,
+  FaEnvelope,
+  FaMapMarkerAlt,
+} from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
 
 const FooterContainer = styled.footer.withConfig({
-  shouldForwardProp: (prop) => !["backgroundColor", "textColor"].includes(prop),
+  shouldForwardProp: prop => !['backgroundColor', 'textColor'].includes(prop),
 })`
-  background: ${(props) => props.backgroundColor || theme.colors.gray900};
-  color: ${(props) => props.textColor || theme.colors.white};
+  background: ${props => props.backgroundColor || theme.colors.gray900};
+  color: ${props => props.textColor || theme.colors.white};
   padding: ${theme.spacing.xxl} 0 ${theme.spacing.lg} 0;
   margin-top: auto;
 `;
@@ -35,7 +43,8 @@ const FooterSection = styled.div`
     color: ${theme.colors.white};
   }
 
-  p, a {
+  p,
+  a {
     color: ${theme.colors.gray300};
     line-height: 1.6;
     margin-bottom: ${theme.spacing.sm};
@@ -80,18 +89,22 @@ const FooterBottom = styled.div`
   font-size: 0.9rem;
 `;
 
-const Footer = ({ dealerSlug = "", dealer = null, theme: customTheme = {} }) => {
+const Footer = ({
+  dealerSlug = '',
+  dealer = null,
+  theme: customTheme = {},
+}) => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <FooterContainer 
-      backgroundColor={customTheme.backgroundColor} 
+    <FooterContainer
+      backgroundColor={customTheme.backgroundColor}
       textColor={customTheme.textColor}
     >
       <FooterContent>
         <FooterSection>
-          <h3>{dealer?.name || "Auto Dealer"}</h3>
-          <p>{dealer?.description || "Your trusted automobile dealer."}</p>
+          <h3>{dealer?.name || 'Auto Dealer'}</h3>
+          <p>{dealer?.description || 'Your trusted automobile dealer.'}</p>
           <SocialLinks>
             <SocialLink href="#" aria-label="Facebook">
               <FaFacebook />
@@ -133,8 +146,12 @@ const Footer = ({ dealerSlug = "", dealer = null, theme: customTheme = {} }) => 
         <FooterSection>
           <h3>Quick Links</h3>
           <a href={`/${dealerSlug}/vehicles`}>Browse Vehicles</a>
-          <a href={`/${dealerSlug}/vehicles?category=luxury-cars`}>Luxury Cars</a>
-          <a href={`/${dealerSlug}/vehicles?category=electric-vehicles`}>Electric Vehicles</a>
+          <a href={`/${dealerSlug}/vehicles?category=luxury-cars`}>
+            Luxury Cars
+          </a>
+          <a href={`/${dealerSlug}/vehicles?category=electric-vehicles`}>
+            Electric Vehicles
+          </a>
           <a href={`/${dealerSlug}/financing`}>Financing</a>
           <a href={`/${dealerSlug}/trade-in`}>Trade-In</a>
         </FooterSection>
@@ -150,7 +167,10 @@ const Footer = ({ dealerSlug = "", dealer = null, theme: customTheme = {} }) => 
       </FooterContent>
 
       <FooterBottom>
-        <p>&copy; {currentYear} {dealer?.name || "Auto Dealer"}. All rights reserved.</p>
+        <p>
+          &copy; {currentYear} {dealer?.name || 'Auto Dealer'}. All rights
+          reserved.
+        </p>
       </FooterBottom>
     </FooterContainer>
   );

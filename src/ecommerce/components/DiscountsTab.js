@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import React, { useState } from 'react';
+import styled from 'styled-components';
 import {
   FaPlus,
   FaEdit,
@@ -11,11 +11,11 @@ import {
   FaDollarSign,
   FaCalendarAlt,
   FaUsers,
-} from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
-import Modal from "./shared/Modal";
-import FormField from "./shared/FormField";
-import Button from "./shared/Button";
+} from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
+import Modal from './shared/Modal';
+import FormField from './shared/FormField';
+import Button from './shared/Button';
 
 const DiscountsContainer = styled.div`
   background: ${theme.colors.white};
@@ -118,7 +118,7 @@ const DiscountActions = styled.div`
 `;
 
 const StatusToggle = styled.button.withConfig({
-  shouldForwardProp: (prop) => prop !== "isActive",
+  shouldForwardProp: prop => prop !== 'isActive',
 })`
   display: flex;
   align-items: center;
@@ -131,7 +131,7 @@ const StatusToggle = styled.button.withConfig({
   cursor: pointer;
   transition: all 0.2s ease;
 
-  background: ${(props) =>
+  background: ${props =>
     props.isActive ? theme.colors.success : theme.colors.gray400};
   color: ${theme.colors.white};
 
@@ -239,44 +239,44 @@ const DiscountsTab = () => {
   const [discounts, setDiscounts] = useState([
     {
       id: 1,
-      code: "WELCOME20",
-      description: "Welcome discount for new customers",
-      type: "percentage",
+      code: 'WELCOME20',
+      description: 'Welcome discount for new customers',
+      type: 'percentage',
       value: 20,
       minOrderAmount: 50,
       maxUsagePerCustomer: 1,
       totalUsage: 245,
       maxUsage: 1000,
-      startDate: "2024-01-01",
-      endDate: "2024-12-31",
+      startDate: '2024-01-01',
+      endDate: '2024-12-31',
       isActive: true,
     },
     {
       id: 2,
-      code: "SAVE10",
-      description: "Fixed discount for orders above $100",
-      type: "fixed",
+      code: 'SAVE10',
+      description: 'Fixed discount for orders above $100',
+      type: 'fixed',
       value: 10,
       minOrderAmount: 100,
       maxUsagePerCustomer: 3,
       totalUsage: 89,
       maxUsage: 500,
-      startDate: "2024-01-15",
-      endDate: "2024-03-15",
+      startDate: '2024-01-15',
+      endDate: '2024-03-15',
       isActive: true,
     },
     {
       id: 3,
-      code: "EXPIRED50",
-      description: "Old promotional discount",
-      type: "percentage",
+      code: 'EXPIRED50',
+      description: 'Old promotional discount',
+      type: 'percentage',
       value: 50,
       minOrderAmount: 0,
       maxUsagePerCustomer: 1,
       totalUsage: 156,
       maxUsage: 200,
-      startDate: "2023-12-01",
-      endDate: "2023-12-31",
+      startDate: '2023-12-01',
+      endDate: '2023-12-31',
       isActive: false,
     },
   ]);
@@ -284,34 +284,34 @@ const DiscountsTab = () => {
   const [showModal, setShowModal] = useState(false);
   const [editingDiscount, setEditingDiscount] = useState(null);
   const [formData, setFormData] = useState({
-    code: "",
-    description: "",
-    type: "percentage",
-    value: "",
-    minOrderAmount: "",
-    maxUsagePerCustomer: "",
-    maxUsage: "",
-    startDate: "",
-    endDate: "",
+    code: '',
+    description: '',
+    type: 'percentage',
+    value: '',
+    minOrderAmount: '',
+    maxUsagePerCustomer: '',
+    maxUsage: '',
+    startDate: '',
+    endDate: '',
   });
 
   const handleAddDiscount = () => {
     setEditingDiscount(null);
     setFormData({
-      code: "",
-      description: "",
-      type: "percentage",
-      value: "",
-      minOrderAmount: "",
-      maxUsagePerCustomer: "",
-      maxUsage: "",
-      startDate: "",
-      endDate: "",
+      code: '',
+      description: '',
+      type: 'percentage',
+      value: '',
+      minOrderAmount: '',
+      maxUsagePerCustomer: '',
+      maxUsage: '',
+      startDate: '',
+      endDate: '',
     });
     setShowModal(true);
   };
 
-  const handleEditDiscount = (discount) => {
+  const handleEditDiscount = discount => {
     setEditingDiscount(discount);
     setFormData({
       code: discount.code,
@@ -327,26 +327,26 @@ const DiscountsTab = () => {
     setShowModal(true);
   };
 
-  const handleDeleteDiscount = (discountId) => {
-    if (window.confirm("Are you sure you want to delete this discount?")) {
-      setDiscounts(discounts.filter((d) => d.id !== discountId));
+  const handleDeleteDiscount = discountId => {
+    if (window.confirm('Are you sure you want to delete this discount?')) {
+      setDiscounts(discounts.filter(d => d.id !== discountId));
     }
   };
 
-  const handleToggleStatus = (discountId) => {
+  const handleToggleStatus = discountId => {
     setDiscounts(
-      discounts.map((d) =>
-        d.id === discountId ? { ...d, isActive: !d.isActive } : d,
-      ),
+      discounts.map(d =>
+        d.id === discountId ? { ...d, isActive: !d.isActive } : d
+      )
     );
   };
 
-  const handleCopyCode = (code) => {
+  const handleCopyCode = code => {
     navigator.clipboard.writeText(code);
     alert(`Coupon code "${code}" copied to clipboard!`);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = e => {
     e.preventDefault();
 
     const discountData = {
@@ -359,9 +359,9 @@ const DiscountsTab = () => {
 
     if (editingDiscount) {
       setDiscounts(
-        discounts.map((d) =>
-          d.id === editingDiscount.id ? { ...d, ...discountData } : d,
-        ),
+        discounts.map(d =>
+          d.id === editingDiscount.id ? { ...d, ...discountData } : d
+        )
       );
     } else {
       const newDiscount = {
@@ -376,18 +376,18 @@ const DiscountsTab = () => {
     setShowModal(false);
   };
 
-  const formatCurrency = (value) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
+  const formatCurrency = value => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
     }).format(value);
   };
 
-  const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
+  const formatDate = dateString => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
     });
   };
 
@@ -397,7 +397,7 @@ const DiscountsTab = () => {
         Cancel
       </Button>
       <Button variant="primary" onClick={handleSubmit}>
-        {editingDiscount ? "Update Discount" : "Create Discount"}
+        {editingDiscount ? 'Update Discount' : 'Create Discount'}
       </Button>
     </>
   );
@@ -436,7 +436,7 @@ const DiscountsTab = () => {
               </Button>
             </EmptyState>
           ) : (
-            discounts.map((discount) => (
+            discounts.map(discount => (
               <DiscountCard key={discount.id}>
                 <DiscountHeader>
                   <DiscountInfo>
@@ -457,7 +457,7 @@ const DiscountsTab = () => {
                       onClick={() => handleToggleStatus(discount.id)}
                     >
                       {discount.isActive ? <FaToggleOn /> : <FaToggleOff />}
-                      {discount.isActive ? "Active" : "Inactive"}
+                      {discount.isActive ? 'Active' : 'Inactive'}
                     </StatusToggle>
 
                     <ActionButton onClick={() => handleEditDiscount(discount)}>
@@ -476,7 +476,7 @@ const DiscountsTab = () => {
                 <DiscountDetails>
                   <DetailItem>
                     <DetailIcon>
-                      {discount.type === "percentage" ? (
+                      {discount.type === 'percentage' ? (
                         <FaPercent />
                       ) : (
                         <FaDollarSign />
@@ -485,7 +485,7 @@ const DiscountsTab = () => {
                     <DetailContent>
                       <DetailLabel>Discount Value</DetailLabel>
                       <DetailValue>
-                        {discount.type === "percentage"
+                        {discount.type === 'percentage'
                           ? `${discount.value}%`
                           : formatCurrency(discount.value)}
                       </DetailValue>
@@ -523,7 +523,7 @@ const DiscountsTab = () => {
                     <DetailContent>
                       <DetailLabel>Valid Period</DetailLabel>
                       <DetailValue>
-                        {formatDate(discount.startDate)} -{" "}
+                        {formatDate(discount.startDate)} -{' '}
                         {formatDate(discount.endDate)}
                       </DetailValue>
                     </DetailContent>
@@ -538,7 +538,7 @@ const DiscountsTab = () => {
       <Modal
         isOpen={showModal}
         onClose={() => setShowModal(false)}
-        title={editingDiscount ? "Edit Discount" : "Create New Discount"}
+        title={editingDiscount ? 'Edit Discount' : 'Create New Discount'}
         footer={modalFooter}
         size="lg"
       >
@@ -548,8 +548,8 @@ const DiscountsTab = () => {
               label="Coupon Code"
               name="code"
               value={formData.code}
-              onChange={(e) =>
-                setFormData((prev) => ({
+              onChange={e =>
+                setFormData(prev => ({
                   ...prev,
                   code: e.target.value.toUpperCase(),
                 }))
@@ -563,12 +563,12 @@ const DiscountsTab = () => {
               type="select"
               name="type"
               value={formData.type}
-              onChange={(e) =>
-                setFormData((prev) => ({ ...prev, type: e.target.value }))
+              onChange={e =>
+                setFormData(prev => ({ ...prev, type: e.target.value }))
               }
               options={[
-                { value: "percentage", label: "Percentage" },
-                { value: "fixed", label: "Fixed Amount" },
+                { value: 'percentage', label: 'Percentage' },
+                { value: 'fixed', label: 'Fixed Amount' },
               ]}
               required
             />
@@ -579,8 +579,8 @@ const DiscountsTab = () => {
             type="textarea"
             name="description"
             value={formData.description}
-            onChange={(e) =>
-              setFormData((prev) => ({ ...prev, description: e.target.value }))
+            onChange={e =>
+              setFormData(prev => ({ ...prev, description: e.target.value }))
             }
             placeholder="Describe this discount offer"
             rows={2}
@@ -588,17 +588,17 @@ const DiscountsTab = () => {
 
           <FormRow>
             <FormField
-              label={`Discount Value (${formData.type === "percentage" ? "%" : "$"})`}
+              label={`Discount Value (${formData.type === 'percentage' ? '%' : '$'})`}
               type="number"
               name="value"
               value={formData.value}
-              onChange={(e) =>
-                setFormData((prev) => ({ ...prev, value: e.target.value }))
+              onChange={e =>
+                setFormData(prev => ({ ...prev, value: e.target.value }))
               }
-              placeholder={formData.type === "percentage" ? "20" : "10.00"}
+              placeholder={formData.type === 'percentage' ? '20' : '10.00'}
               min="0"
-              max={formData.type === "percentage" ? "100" : undefined}
-              step={formData.type === "percentage" ? "1" : "0.01"}
+              max={formData.type === 'percentage' ? '100' : undefined}
+              step={formData.type === 'percentage' ? '1' : '0.01'}
               required
             />
 
@@ -607,8 +607,8 @@ const DiscountsTab = () => {
               type="number"
               name="minOrderAmount"
               value={formData.minOrderAmount}
-              onChange={(e) =>
-                setFormData((prev) => ({
+              onChange={e =>
+                setFormData(prev => ({
                   ...prev,
                   minOrderAmount: e.target.value,
                 }))
@@ -625,8 +625,8 @@ const DiscountsTab = () => {
               type="number"
               name="maxUsagePerCustomer"
               value={formData.maxUsagePerCustomer}
-              onChange={(e) =>
-                setFormData((prev) => ({
+              onChange={e =>
+                setFormData(prev => ({
                   ...prev,
                   maxUsagePerCustomer: e.target.value,
                 }))
@@ -640,8 +640,8 @@ const DiscountsTab = () => {
               type="number"
               name="maxUsage"
               value={formData.maxUsage}
-              onChange={(e) =>
-                setFormData((prev) => ({ ...prev, maxUsage: e.target.value }))
+              onChange={e =>
+                setFormData(prev => ({ ...prev, maxUsage: e.target.value }))
               }
               placeholder="1000"
               min="1"
@@ -654,8 +654,8 @@ const DiscountsTab = () => {
               type="date"
               name="startDate"
               value={formData.startDate}
-              onChange={(e) =>
-                setFormData((prev) => ({ ...prev, startDate: e.target.value }))
+              onChange={e =>
+                setFormData(prev => ({ ...prev, startDate: e.target.value }))
               }
               required
             />
@@ -665,8 +665,8 @@ const DiscountsTab = () => {
               type="date"
               name="endDate"
               value={formData.endDate}
-              onChange={(e) =>
-                setFormData((prev) => ({ ...prev, endDate: e.target.value }))
+              onChange={e =>
+                setFormData(prev => ({ ...prev, endDate: e.target.value }))
               }
               required
             />

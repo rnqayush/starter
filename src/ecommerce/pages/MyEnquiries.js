@@ -1,20 +1,19 @@
-import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
-import styled from "styled-components";
-import { 
-  FaEnvelope, 
-  FaPhone, 
-  FaClock, 
-  FaCheck, 
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import styled from 'styled-components';
+import {
+  FaEnvelope,
+  FaPhone,
+  FaClock,
+  FaCheck,
   FaEye,
-  
   FaExclamationCircle,
-  FaInbox
-} from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import { getVendorByIdOrSlug } from "../data/vendors";
+  FaInbox,
+} from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
+import { getVendorByIdOrSlug } from '../data/vendors';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -195,7 +194,7 @@ const EnquiryDate = styled.p`
 `;
 
 const StatusBadge = styled.span.withConfig({
-  shouldForwardProp: (prop) => prop !== "status"
+  shouldForwardProp: prop => prop !== 'status',
 })`
   padding: ${theme.spacing.xs} ${theme.spacing.sm};
   border-radius: ${theme.borderRadius.sm};
@@ -206,25 +205,25 @@ const StatusBadge = styled.span.withConfig({
   align-items: center;
   gap: ${theme.spacing.xs};
   width: fit-content;
-  
+
   ${props => {
     switch (props.status) {
-      case "pending":
+      case 'pending':
         return `
           background: ${theme.colors.warning}20;
           color: ${theme.colors.warning};
         `;
-      case "contacted":
+      case 'contacted':
         return `
           background: ${theme.colors.info}20;
           color: ${theme.colors.info};
         `;
-      case "in_progress":
+      case 'in_progress':
         return `
           background: ${theme.colors.primary}20;
           color: ${theme.colors.primary};
         `;
-      case "completed":
+      case 'completed':
         return `
           background: ${theme.colors.success}20;
           color: ${theme.colors.success};
@@ -305,16 +304,16 @@ const MyEnquiries = () => {
   const location = useLocation();
   const [enquiries, setEnquiries] = useState([]);
   const [filteredEnquiries, setFilteredEnquiries] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState("all");
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('all');
   const [vendor, setVendor] = useState(null);
-  const [storeSlug, setStoreSlug] = useState("");
+  const [storeSlug, setStoreSlug] = useState('');
 
   // Detect store slug from URL
   useEffect(() => {
     const path = location.pathname;
-    if (path !== "/ecommerce/my-enquiries") {
-      const pathSegments = path.split("/").filter(Boolean);
+    if (path !== '/ecommerce/my-enquiries') {
+      const pathSegments = path.split('/').filter(Boolean);
       const slug = pathSegments[0];
       const foundVendor = getVendorByIdOrSlug(slug);
       if (foundVendor) {
@@ -326,7 +325,9 @@ const MyEnquiries = () => {
 
   useEffect(() => {
     // Load enquiries from localStorage (in real app, this would be from API)
-    const userEnquiries = JSON.parse(localStorage.getItem("userEnquiries") || "[]");
+    const userEnquiries = JSON.parse(
+      localStorage.getItem('userEnquiries') || '[]'
+    );
     setEnquiries(userEnquiries);
   }, []);
 
@@ -335,14 +336,17 @@ const MyEnquiries = () => {
 
     // Filter by search term
     if (searchTerm) {
-      filtered = filtered.filter(enquiry =>
-        enquiry.productName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        enquiry.name.toLowerCase().includes(searchTerm.toLowerCase())
+      filtered = filtered.filter(
+        enquiry =>
+          enquiry.productName
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase()) ||
+          enquiry.name.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
     // Filter by status
-    if (statusFilter !== "all") {
+    if (statusFilter !== 'all') {
       filtered = filtered.filter(enquiry => enquiry.status === statusFilter);
     }
 
@@ -352,51 +356,53 @@ const MyEnquiries = () => {
     setFilteredEnquiries(filtered);
   }, [enquiries, searchTerm, statusFilter]);
 
-  const getStatusIcon = (status) => {
+  const getStatusIcon = status => {
     switch (status) {
-      case "pending":
+      case 'pending':
         return <FaClock />;
-      case "contacted":
+      case 'contacted':
         return <FaPhone />;
-      case "in_progress":
+      case 'in_progress':
         return <FaEye />;
-      case "completed":
+      case 'completed':
         return <FaCheck />;
       default:
         return <FaExclamationCircle />;
     }
   };
 
-  const getStatusLabel = (status) => {
+  const getStatusLabel = status => {
     switch (status) {
-      case "pending":
-        return "Pending";
-      case "contacted":
-        return "Contacted";
-      case "in_progress":
-        return "In Progress";
-      case "completed":
-        return "Completed";
+      case 'pending':
+        return 'Pending';
+      case 'contacted':
+        return 'Contacted';
+      case 'in_progress':
+        return 'In Progress';
+      case 'completed':
+        return 'Completed';
       default:
-        return "Unknown";
+        return 'Unknown';
     }
   };
 
-  const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit"
+  const formatDate = dateString => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
     });
   };
 
   const getStats = () => {
     const total = enquiries.length;
-    const pending = enquiries.filter(e => e.status === "pending").length;
-    const inProgress = enquiries.filter(e => e.status === "in_progress" || e.status === "contacted").length;
-    const completed = enquiries.filter(e => e.status === "completed").length;
+    const pending = enquiries.filter(e => e.status === 'pending').length;
+    const inProgress = enquiries.filter(
+      e => e.status === 'in_progress' || e.status === 'contacted'
+    ).length;
+    const completed = enquiries.filter(e => e.status === 'completed').length;
 
     return { total, pending, inProgress, completed };
   };
@@ -406,8 +412,8 @@ const MyEnquiries = () => {
   return (
     <PageContainer>
       <Navbar
-        storeName={vendor?.name || ""}
-        storeLogo={vendor?.logo || ""}
+        storeName={vendor?.name || ''}
+        storeLogo={vendor?.logo || ''}
         storeSlug={storeSlug}
         theme={vendor?.theme || {}}
       />
@@ -415,9 +421,7 @@ const MyEnquiries = () => {
       <Container>
         <PageHeader>
           <PageTitle>My Enquiries</PageTitle>
-          <PageSubtitle>
-            Track and manage your product enquiries
-          </PageSubtitle>
+          <PageSubtitle>Track and manage your product enquiries</PageSubtitle>
         </PageHeader>
 
         <StatsSection>
@@ -444,11 +448,11 @@ const MyEnquiries = () => {
             type="text"
             placeholder="Search by product name or your name..."
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={e => setSearchTerm(e.target.value)}
           />
           <FilterSelect
             value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
+            onChange={e => setStatusFilter(e.target.value)}
           >
             <option value="all">All Status</option>
             <option value="pending">Pending</option>
@@ -460,7 +464,7 @@ const MyEnquiries = () => {
 
         <EnquiriesList>
           {filteredEnquiries.length > 0 ? (
-            filteredEnquiries.map((enquiry) => (
+            filteredEnquiries.map(enquiry => (
               <EnquiryCard key={enquiry.id}>
                 <EnquiryHeader>
                   <ProductInfo>
@@ -511,8 +515,8 @@ const MyEnquiries = () => {
               </EmptyIcon>
               <EmptyTitle>No Enquiries Found</EmptyTitle>
               <EmptyText>
-                {searchTerm || statusFilter !== "all" 
-                  ? "No enquiries match your current filters. Try adjusting your search or filter criteria."
+                {searchTerm || statusFilter !== 'all'
+                  ? 'No enquiries match your current filters. Try adjusting your search or filter criteria.'
                   : "You haven't made any product enquiries yet. Start exploring products and make your first enquiry!"}
               </EmptyText>
             </EmptyState>

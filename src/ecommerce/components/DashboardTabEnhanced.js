@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import React, { useState } from 'react';
+import styled from 'styled-components';
 import {
   FaDollarSign,
   FaShoppingCart,
@@ -11,8 +11,8 @@ import {
   FaToggleOn,
   FaToggleOff,
   FaEye,
-} from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
+} from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
 import {
   dashboardStats,
   salesTrendData,
@@ -20,7 +20,7 @@ import {
   storeStatus,
   lowStockAlerts,
   topPerformingProducts,
-} from "../data/sellerData";
+} from '../data/sellerData';
 
 const DashboardContainer = styled.div`
   display: grid;
@@ -61,7 +61,7 @@ const StatusSubtitle = styled.p`
 `;
 
 const ToggleButton = styled.button.withConfig({
-  shouldForwardProp: (prop) => prop !== "isActive",
+  shouldForwardProp: prop => prop !== 'isActive',
 })`
   display: flex;
   align-items: center;
@@ -74,7 +74,7 @@ const ToggleButton = styled.button.withConfig({
   cursor: pointer;
   transition: all 0.3s ease;
 
-  background: ${(props) =>
+  background: ${props =>
     props.isActive ? theme.colors.success : theme.colors.error};
   color: ${theme.colors.white};
 
@@ -121,7 +121,7 @@ const StatsIcon = styled.div`
   justify-content: center;
   font-size: 1.2rem;
   color: ${theme.colors.white};
-  background: ${(props) =>
+  background: ${props =>
     props.gradient ||
     `linear-gradient(135deg, ${theme.colors.primary}, ${theme.colors.secondary})`};
 `;
@@ -144,14 +144,14 @@ const StatsLabel = styled.p`
 `;
 
 const StatsChange = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "positive",
+  shouldForwardProp: prop => prop !== 'positive',
 })`
   display: flex;
   align-items: center;
   gap: ${theme.spacing.xs};
   font-size: 0.85rem;
   font-weight: 500;
-  color: ${(props) =>
+  color: ${props =>
     props.positive ? theme.colors.success : theme.colors.error};
 `;
 
@@ -332,18 +332,18 @@ const ProductGrowth = styled.span`
 const DashboardTabEnhanced = () => {
   const [isStoreLive, setIsStoreLive] = useState(storeStatus.isLive);
 
-  const formatCurrency = (value, currency = "USD") => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
+  const formatCurrency = (value, currency = 'USD') => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
       currency: currency,
     }).format(value);
   };
 
-  const formatNumber = (value) => {
-    return new Intl.NumberFormat("en-US").format(value);
+  const formatNumber = value => {
+    return new Intl.NumberFormat('en-US').format(value);
   };
 
-  const maxSales = Math.max(...salesTrendData.map((d) => d.sales));
+  const maxSales = Math.max(...salesTrendData.map(d => d.sales));
 
   const toggleStoreStatus = () => {
     setIsStoreLive(!isStoreLive);
@@ -357,13 +357,13 @@ const DashboardTabEnhanced = () => {
           <StatusInfo>
             <StatusTitle>Store Status</StatusTitle>
             <StatusSubtitle>
-              Your store is currently {isStoreLive ? "live" : "paused"}. Last
+              Your store is currently {isStoreLive ? 'live' : 'paused'}. Last
               updated: {storeStatus.lastToggled}
             </StatusSubtitle>
           </StatusInfo>
           <ToggleButton isActive={isStoreLive} onClick={toggleStoreStatus}>
             {isStoreLive ? <FaToggleOn /> : <FaToggleOff />}
-            {isStoreLive ? "Store Live" : "Store Paused"}
+            {isStoreLive ? 'Store Live' : 'Store Paused'}
           </ToggleButton>
         </StatusHeader>
       </StoreStatusCard>
@@ -387,7 +387,7 @@ const DashboardTabEnhanced = () => {
               ) : (
                 <FaArrowDown />
               )}
-              {Math.abs(dashboardStats.totalSales.change)}%{" "}
+              {Math.abs(dashboardStats.totalSales.change)}%{' '}
               {dashboardStats.totalSales.period}
             </StatsChange>
           </StatsContent>
@@ -410,7 +410,7 @@ const DashboardTabEnhanced = () => {
               ) : (
                 <FaArrowDown />
               )}
-              {Math.abs(dashboardStats.totalOrders.change)}%{" "}
+              {Math.abs(dashboardStats.totalOrders.change)}%{' '}
               {dashboardStats.totalOrders.period}
             </StatsChange>
           </StatsContent>
@@ -433,7 +433,7 @@ const DashboardTabEnhanced = () => {
               ) : (
                 <FaArrowDown />
               )}
-              {Math.abs(dashboardStats.totalCustomers.change)}%{" "}
+              {Math.abs(dashboardStats.totalCustomers.change)}%{' '}
               {dashboardStats.totalCustomers.period}
             </StatsChange>
           </StatsContent>
@@ -456,7 +456,7 @@ const DashboardTabEnhanced = () => {
               ) : (
                 <FaArrowDown />
               )}
-              {Math.abs(dashboardStats.storeViews.change)}%{" "}
+              {Math.abs(dashboardStats.storeViews.change)}%{' '}
               {dashboardStats.storeViews.period}
             </StatsChange>
           </StatsContent>
@@ -489,13 +489,13 @@ const DashboardTabEnhanced = () => {
             <ChartSubtitle>Products running low on inventory</ChartSubtitle>
           </ChartHeader>
           <AlertsList>
-            {lowStockAlerts.map((alert) => (
+            {lowStockAlerts.map(alert => (
               <AlertItem key={alert.id}>
                 <AlertImage src={alert.image} alt={alert.productName} />
                 <AlertContent>
                   <AlertTitle>{alert.productName}</AlertTitle>
                   <AlertMessage>
-                    Only {alert.currentStock} left in stock (Threshold:{" "}
+                    Only {alert.currentStock} left in stock (Threshold:{' '}
                     {alert.threshold})
                   </AlertMessage>
                 </AlertContent>
@@ -519,7 +519,7 @@ const DashboardTabEnhanced = () => {
                 <ProductInfo>
                   <ProductName>{product.name}</ProductName>
                   <ProductStats>
-                    {product.sales} sold • {formatCurrency(product.revenue)}{" "}
+                    {product.sales} sold • {formatCurrency(product.revenue)}{' '}
                     revenue
                     <ProductGrowth> (+{product.growth}%)</ProductGrowth>
                   </ProductStats>
@@ -535,21 +535,21 @@ const DashboardTabEnhanced = () => {
             <ChartSubtitle>Latest updates from your store</ChartSubtitle>
           </ChartHeader>
           <ProductsList>
-            {recentActivity.map((activity) => (
+            {recentActivity.map(activity => (
               <ProductItem key={activity.id}>
                 <StatsIcon
                   style={{
-                    width: "32px",
-                    height: "32px",
-                    fontSize: "0.9rem",
+                    width: '32px',
+                    height: '32px',
+                    fontSize: '0.9rem',
                     background: `${theme.colors.primary}20`,
                     color: theme.colors.primary,
                   }}
                 >
-                  {activity.type === "order" && <FaShoppingCart />}
-                  {activity.type === "product" && <FaExclamationTriangle />}
-                  {activity.type === "payment" && <FaDollarSign />}
-                  {activity.type === "review" && <FaTrophy />}
+                  {activity.type === 'order' && <FaShoppingCart />}
+                  {activity.type === 'product' && <FaExclamationTriangle />}
+                  {activity.type === 'payment' && <FaDollarSign />}
+                  {activity.type === 'review' && <FaTrophy />}
                 </StatsIcon>
                 <ProductInfo>
                   <ProductName>{activity.message}</ProductName>

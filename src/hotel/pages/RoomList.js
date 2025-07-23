@@ -1,20 +1,18 @@
-import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 import {
   FaArrowLeft,
-
   FaFilter,
-
   FaMapMarkerAlt,
   FaStar,
   FaSearch,
-} from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
-import HotelNavbar from "../components/HotelNavbar";
-import HotelFooter from "../components/HotelFooter";
-import RoomCard from "../components/RoomCard";
-import { getHotelByIdOrSlug } from "../data/hotels";
+} from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
+import HotelNavbar from '../components/HotelNavbar';
+import HotelFooter from '../components/HotelFooter';
+import RoomCard from '../components/RoomCard';
+import { getHotelByIdOrSlug } from '../data/hotels';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -138,11 +136,11 @@ const HotelRating = styled.div`
 `;
 
 const HotelImage = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "image",
+  shouldForwardProp: prop => prop !== 'image',
 })`
   width: 200px;
   height: 150px;
-  background-image: url(${(props) => props.image});
+  background-image: url(${props => props.image});
   background-size: cover;
   background-position: center;
   border-radius: ${theme.borderRadius.lg};
@@ -311,7 +309,11 @@ const FilterButton = styled.button`
 `;
 
 const SearchButton = styled.button`
-  background: linear-gradient(135deg, ${theme.colors.primary}, ${theme.colors.primaryDark});
+  background: linear-gradient(
+    135deg,
+    ${theme.colors.primary},
+    ${theme.colors.primaryDark}
+  );
   color: ${theme.colors.white};
   border: none;
   padding: ${theme.spacing.md} ${theme.spacing.xl};
@@ -334,7 +336,12 @@ const SearchButton = styled.button`
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
     transition: left 0.5s;
   }
 
@@ -479,55 +486,54 @@ const ClearFiltersButton = styled.button`
   }
 `;
 
-const RoomsBooking = () => {
-  const { hotelSlug, slug } = useParams();
-  const slugParam = hotelSlug || slug;
+const RoomList = () => {
+  const { slug } = useParams();
   const navigate = useNavigate();
   const [hotel, setHotel] = useState(null);
   const [loading, setLoading] = useState(true);
   const [searchParams, setSearchParams] = useState({
-    checkIn: "",
-    checkOut: "",
-    guests: "2",
+    checkIn: '',
+    checkOut: '',
+    guests: '2',
   });
-  const [sortBy, setSortBy] = useState("price-low");
-  const [filterBy, setFilterBy] = useState("all");
+  const [sortBy, setSortBy] = useState('price-low');
+  const [filterBy, setFilterBy] = useState('all');
 
   useEffect(() => {
-    const foundHotel = getHotelByIdOrSlug(slugParam);
+    const foundHotel = getHotelByIdOrSlug(slug);
     setHotel(foundHotel);
     setLoading(false);
-  }, [slugParam]);
+  }, [slug]);
 
-  const handleSearchChange = (e) => {
+  const handleSearchChange = e => {
     const { name, value } = e.target;
     setSearchParams(prev => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const getSortedRooms = () => {
     if (!hotel?.rooms) return [];
-    
+
     let rooms = [...hotel.rooms];
-    
+
     // Filter rooms
-    if (filterBy !== "all") {
-      rooms = rooms.filter(room => 
-        room.type.toLowerCase() === filterBy.toLowerCase()
+    if (filterBy !== 'all') {
+      rooms = rooms.filter(
+        room => room.type.toLowerCase() === filterBy.toLowerCase()
       );
     }
-    
+
     // Sort rooms
     switch (sortBy) {
-      case "price-low":
+      case 'price-low':
         return rooms.sort((a, b) => a.price - b.price);
-      case "price-high":
+      case 'price-high':
         return rooms.sort((a, b) => b.price - a.price);
-      case "guests":
+      case 'guests':
         return rooms.sort((a, b) => b.maxGuests - a.maxGuests);
-      case "name":
+      case 'name':
         return rooms.sort((a, b) => a.name.localeCompare(b.name));
       default:
         return rooms;
@@ -539,8 +545,8 @@ const RoomsBooking = () => {
   };
 
   const clearFilters = () => {
-    setFilterBy("all");
-    setSortBy("price-low");
+    setFilterBy('all');
+    setSortBy('price-low');
   };
 
   if (loading) {
@@ -548,7 +554,7 @@ const RoomsBooking = () => {
       <PageContainer>
         <HotelNavbar />
         <Container>
-          <div style={{ textAlign: "center", padding: "4rem 0" }}>
+          <div style={{ textAlign: 'center', padding: '4rem 0' }}>
             <h2>Loading...</h2>
           </div>
         </Container>
@@ -562,7 +568,7 @@ const RoomsBooking = () => {
       <PageContainer>
         <HotelNavbar />
         <Container>
-          <div style={{ textAlign: "center", padding: "4rem 0" }}>
+          <div style={{ textAlign: 'center', padding: '4rem 0' }}>
             <h2>Hotel not found</h2>
             <p>The hotel you're looking for doesn't exist.</p>
           </div>
@@ -573,7 +579,10 @@ const RoomsBooking = () => {
   }
 
   const sortedRooms = getSortedRooms();
-  const uniqueRoomTypes = [...new Set(hotel.rooms?.map(room => room.type) || [])];
+  const uniqueRoomTypes = [
+    ...new Set(hotel.rooms?.map(room => room.type) || []),
+  ];
+  console.log(hotel);
 
   return (
     <PageContainer>
@@ -612,10 +621,10 @@ const RoomsBooking = () => {
                 name="checkIn"
                 value={searchParams.checkIn}
                 onChange={handleSearchChange}
-                min={new Date().toISOString().split("T")[0]}
+                min={new Date().toISOString().split('T')[0]}
               />
             </FormGroup>
-            
+
             <FormGroup>
               <Label htmlFor="checkOut">Check-out Date</Label>
               <Input
@@ -624,10 +633,12 @@ const RoomsBooking = () => {
                 name="checkOut"
                 value={searchParams.checkOut}
                 onChange={handleSearchChange}
-                min={searchParams.checkIn || new Date().toISOString().split("T")[0]}
+                min={
+                  searchParams.checkIn || new Date().toISOString().split('T')[0]
+                }
               />
             </FormGroup>
-            
+
             <FormGroup>
               <Label htmlFor="guests">Guests</Label>
               <Select
@@ -636,22 +647,28 @@ const RoomsBooking = () => {
                 value={searchParams.guests}
                 onChange={handleSearchChange}
               >
-                {[1,2,3,4,5,6,7,8].map(num => (
+                {[1, 2, 3, 4, 5, 6, 7, 8].map(num => (
                   <option key={num} value={num}>
                     {num} Guest{num > 1 ? 's' : ''}
                   </option>
                 ))}
               </Select>
             </FormGroup>
-            
+
             <FilterButton
-              className={filterBy !== "all" ? "active" : ""}
-              onClick={() => setFilterBy(filterBy === "all" ? uniqueRoomTypes[0]?.toLowerCase() || "all" : "all")}
+              className={filterBy !== 'all' ? 'active' : ''}
+              onClick={() =>
+                setFilterBy(
+                  filterBy === 'all'
+                    ? uniqueRoomTypes[0]?.toLowerCase() || 'all'
+                    : 'all'
+                )
+              }
             >
               <FaFilter />
               Filter
             </FilterButton>
-            
+
             <SearchButton onClick={handleSearch}>
               <FaSearch />
               Search
@@ -661,22 +678,26 @@ const RoomsBooking = () => {
 
         <ResultsHeader>
           <ResultsCount>
-            <span className="count">{sortedRooms.length}</span> Room{sortedRooms.length !== 1 ? 's' : ''} Available
+            <span className="count">{sortedRooms.length}</span> Room
+            {sortedRooms.length !== 1 ? 's' : ''} Available
           </ResultsCount>
-          
+
           <SortControls>
             <SortLabel>Sort by:</SortLabel>
-            <Select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+            <Select value={sortBy} onChange={e => setSortBy(e.target.value)}>
               <option value="price-low">Price: Low to High</option>
               <option value="price-high">Price: High to Low</option>
               <option value="guests">Max Guests</option>
               <option value="name">Room Name</option>
             </Select>
-            
+
             {uniqueRoomTypes.length > 1 && (
               <>
                 <SortLabel>Filter:</SortLabel>
-                <Select value={filterBy} onChange={(e) => setFilterBy(e.target.value)}>
+                <Select
+                  value={filterBy}
+                  onChange={e => setFilterBy(e.target.value)}
+                >
                   <option value="all">All Room Types</option>
                   {uniqueRoomTypes.map(type => (
                     <option key={type} value={type.toLowerCase()}>
@@ -691,7 +712,7 @@ const RoomsBooking = () => {
 
         {sortedRooms.length > 0 ? (
           <RoomsGrid>
-            {sortedRooms.map((room) => (
+            {sortedRooms.map(room => (
               <RoomCard
                 key={room.id}
                 room={room}
@@ -704,7 +725,8 @@ const RoomsBooking = () => {
           <NoRoomsMessage>
             <h3>No rooms found</h3>
             <p>
-              No rooms match your current search criteria. Try adjusting your filters or dates.
+              No rooms match your current search criteria. Try adjusting your
+              filters or dates.
             </p>
             <ClearFiltersButton onClick={clearFilters}>
               Clear Filters
@@ -718,4 +740,4 @@ const RoomsBooking = () => {
   );
 };
 
-export default RoomsBooking;
+export default RoomList;

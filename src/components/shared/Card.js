@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { theme, media } from "../../styles/GlobalStyle";
+import styled from 'styled-components';
+import { theme, media } from '../../styles/GlobalStyle';
 
 export const Card = styled.div`
   background: ${theme.colors.white};
@@ -27,18 +27,18 @@ export const Card = styled.div`
 
 export const CardImage = styled.div`
   width: 100%;
-  height: ${(props) => props.height || "9rem"};
-  background-image: url(${(props) => props.src});
+  height: ${props => props.height || '9rem'};
+  background-image: url(${props => props.src});
   background-size: cover;
   background-position: center;
   position: relative;
 
   ${media.tabletUp} {
-    height: ${(props) => props.height || "9.5rem"};
+    height: ${props => props.height || '9.5rem'};
   }
 
   ${media.desktop} {
-    height: ${(props) => props.height || "10rem"};
+    height: ${props => props.height || '10rem'};
   }
 `;
 
@@ -135,24 +135,24 @@ export const Badge = styled.span`
     padding: ${theme.spacing.xs} ${theme.spacing.sm};
   }
 
-  ${(props) => {
+  ${props => {
     switch (props.variant) {
-      case "success":
+      case 'success':
         return `
           background: ${theme.colors.success}20;
           color: ${theme.colors.success};
         `;
-      case "warning":
+      case 'warning':
         return `
           background: ${theme.colors.warning}20;
           color: ${theme.colors.warning};
         `;
-      case "error":
+      case 'error':
         return `
           background: ${theme.colors.error}20;
           color: ${theme.colors.error};
         `;
-      case "primary":
+      case 'primary':
         return `
           background: ${theme.colors.primary}20;
           color: ${theme.colors.primary};

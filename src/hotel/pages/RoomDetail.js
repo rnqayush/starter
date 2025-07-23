@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
-import styled from "styled-components";
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate, Link } from 'react-router-dom';
+import styled from 'styled-components';
 import {
   FaArrowLeft,
   FaUsers,
@@ -12,11 +12,11 @@ import {
   FaHeart,
   FaCheckCircle,
   FaCoffee,
-} from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
-import HotelNavbar from "../components/HotelNavbar";
-import HotelFooter from "../components/HotelFooter";
-import { getHotelByIdOrSlug, getRoomById } from "../data/hotels";
+} from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
+import HotelNavbar from '../components/HotelNavbar';
+import HotelFooter from '../components/HotelFooter';
+import { getHotelByIdOrSlug, getRoomById } from '../data/hotels';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -142,7 +142,7 @@ const ThumbnailGrid = styled.div`
 `;
 
 const Thumbnail = styled.img.withConfig({
-  shouldForwardProp: (prop) => prop !== "active",
+  shouldForwardProp: prop => prop !== 'active',
 })`
   width: 100%;
   height: 80px;
@@ -150,7 +150,7 @@ const Thumbnail = styled.img.withConfig({
   border-radius: ${theme.borderRadius.md};
   cursor: pointer;
   border: 2px solid
-    ${(props) => (props.active ? theme.colors.primary : "transparent")};
+    ${props => (props.active ? theme.colors.primary : 'transparent')};
   transition: all 0.2s ease;
 
   &:hover {
@@ -472,37 +472,38 @@ const BookButton = styled.button`
 `;
 
 const RoomDetail = () => {
-  const { hotelSlug, roomId } = useParams();
+  const { slug, roomId } = useParams();
   const navigate = useNavigate();
   const [hotel, setHotel] = useState(null);
   const [room, setRoom] = useState(null);
   const [selectedImage, setSelectedImage] = useState(0);
   const [bookingData, setBookingData] = useState({
-    checkIn: "",
-    checkOut: "",
-    guests: "2",
+    checkIn: '',
+    checkOut: '',
+    guests: '2',
   });
 
   useEffect(() => {
-    const foundHotel = getHotelByIdOrSlug(hotelSlug);
+    const foundHotel = getHotelByIdOrSlug(slug);
+
     const foundRoom = foundHotel ? getRoomById(foundHotel.id, roomId) : null;
     setHotel(foundHotel);
     setRoom(foundRoom);
-  }, [hotelSlug, roomId]);
+  }, [slug, roomId]);
 
-  const getAmenityIcon = (amenity) => {
+  const getAmenityIcon = amenity => {
     const iconMap = {
       WiFi: FaWifi,
       TV: FaTv,
       AC: FaSnowflake,
-      "Mini Bar": FaCoffee,
-      "Room Service": FaCoffee,
+      'Mini Bar': FaCoffee,
+      'Room Service': FaCoffee,
     };
     const IconComponent = iconMap[amenity] || FaCheckCircle;
     return <IconComponent />;
   };
 
-  const handleInputChange = (e) => {
+  const handleInputChange = e => {
     setBookingData({
       ...bookingData,
       [e.target.name]: e.target.value,
@@ -524,9 +525,9 @@ const RoomDetail = () => {
     return room ? room.price * nights : 0;
   };
 
-  const handleBooking = (e) => {
+  const handleBooking = e => {
     e.preventDefault();
-    navigate(`/${hotelSlug}/booking/${roomId}`, {
+    navigate(`/${slug}/rooms/booking/${roomId}`, {
       state: { bookingData },
     });
   };
@@ -540,7 +541,7 @@ const RoomDetail = () => {
       });
     } else {
       navigator.clipboard.writeText(window.location.href);
-      alert("Room link copied to clipboard!");
+      alert('Room link copied to clipboard!');
     }
   };
 
@@ -549,7 +550,7 @@ const RoomDetail = () => {
       <PageContainer>
         <HotelNavbar />
         <Container>
-          <div style={{ textAlign: "center", padding: "4rem 0" }}>
+          <div style={{ textAlign: 'center', padding: '4rem 0' }}>
             <h2>Room not found</h2>
             <p>The room you're looking for doesn't exist.</p>
             <Link to="/hotels" style={{ color: theme.colors.primary }}>
@@ -567,7 +568,6 @@ const RoomDetail = () => {
   return (
     <PageContainer>
       <HotelNavbar />
-
       <Container>
         <BackButton onClick={() => navigate(-1)}>
           <FaArrowLeft />
@@ -608,9 +608,9 @@ const RoomDetail = () => {
                   </Detail>
                 </RoomDetails>
                 <Price>
-                  ₹{room.price.toLocaleString()}{" "}
+                  ₹{room.price.toLocaleString()}{' '}
                   <span
-                    style={{ fontSize: "1rem", color: theme.colors.gray600 }}
+                    style={{ fontSize: '1rem', color: theme.colors.gray600 }}
                   >
                     per night
                   </span>
@@ -651,7 +651,9 @@ const RoomDetail = () => {
                   </h4>
                   <PolicyItem>
                     <FaCheckCircle className="icon" />
-                    <span className="text">Couple Friendly - Unmarried couples welcome</span>
+                    <span className="text">
+                      Couple Friendly - Unmarried couples welcome
+                    </span>
                   </PolicyItem>
                   <PolicyItem>
                     <FaCheckCircle className="icon" />
@@ -659,7 +661,9 @@ const RoomDetail = () => {
                   </PolicyItem>
                   <PolicyItem>
                     <FaCheckCircle className="icon" />
-                    <span className="text">Pet friendly (additional charges apply)</span>
+                    <span className="text">
+                      Pet friendly (additional charges apply)
+                    </span>
                   </PolicyItem>
                   <PolicyItem>
                     <FaCheckCircle className="icon" />
@@ -674,7 +678,9 @@ const RoomDetail = () => {
                   </h4>
                   <PolicyItem>
                     <FaCheckCircle className="icon" />
-                    <span className="text">Complimentary breakfast included</span>
+                    <span className="text">
+                      Complimentary breakfast included
+                    </span>
                   </PolicyItem>
                   <PolicyItem>
                     <FaCheckCircle className="icon" />
@@ -705,7 +711,9 @@ const RoomDetail = () => {
                   </PolicyItem>
                   <PolicyItem>
                     <FaCheckCircle className="icon" />
-                    <span className="text">Early check-in subject to availability</span>
+                    <span className="text">
+                      Early check-in subject to availability
+                    </span>
                   </PolicyItem>
                   <PolicyItem>
                     <FaCheckCircle className="icon" />
@@ -720,15 +728,21 @@ const RoomDetail = () => {
                   </h4>
                   <PolicyItem>
                     <FaCheckCircle className="icon" />
-                    <span className="text">Free cancellation up to 24 hours before check-in</span>
+                    <span className="text">
+                      Free cancellation up to 24 hours before check-in
+                    </span>
                   </PolicyItem>
                   <PolicyItem>
                     <FaCheckCircle className="icon" />
-                    <span className="text">No-show charges: 100% of first night</span>
+                    <span className="text">
+                      No-show charges: 100% of first night
+                    </span>
                   </PolicyItem>
                   <PolicyItem>
                     <FaCheckCircle className="icon" />
-                    <span className="text">Flexible booking options available</span>
+                    <span className="text">
+                      Flexible booking options available
+                    </span>
                   </PolicyItem>
                   <PolicyItem>
                     <FaCheckCircle className="icon" />
@@ -743,8 +757,8 @@ const RoomDetail = () => {
             <h3
               style={{
                 marginBottom: theme.spacing.lg,
-                fontSize: "1.3rem",
-                fontWeight: "600",
+                fontSize: '1.3rem',
+                fontWeight: '600',
               }}
             >
               Book This Room
@@ -759,7 +773,7 @@ const RoomDetail = () => {
                   name="checkIn"
                   value={bookingData.checkIn}
                   onChange={handleInputChange}
-                  min={new Date().toISOString().split("T")[0]}
+                  min={new Date().toISOString().split('T')[0]}
                   required
                 />
               </FormGroup>
@@ -774,7 +788,7 @@ const RoomDetail = () => {
                   onChange={handleInputChange}
                   min={
                     bookingData.checkIn ||
-                    new Date().toISOString().split("T")[0]
+                    new Date().toISOString().split('T')[0]
                   }
                   required
                 />
@@ -790,7 +804,7 @@ const RoomDetail = () => {
                 >
                   {Array.from({ length: room.maxGuests }, (_, i) => (
                     <option key={i + 1} value={i + 1}>
-                      {i + 1} Guest{i > 0 ? "s" : ""}
+                      {i + 1} Guest{i > 0 ? 's' : ''}
                     </option>
                   ))}
                 </Select>
@@ -801,7 +815,7 @@ const RoomDetail = () => {
                   <SummaryRow>
                     <span>
                       ₹{room.price.toLocaleString()} × {calculateNights()} night
-                      {calculateNights() > 1 ? "s" : ""}
+                      {calculateNights() > 1 ? 's' : ''}
                     </span>
                     <span>₹{calculateTotal().toLocaleString()}</span>
                   </SummaryRow>
@@ -817,9 +831,9 @@ const RoomDetail = () => {
 
             <p
               style={{
-                fontSize: "0.8rem",
+                fontSize: '0.8rem',
                 color: theme.colors.gray500,
-                textAlign: "center",
+                textAlign: 'center',
                 marginTop: theme.spacing.md,
               }}
             >

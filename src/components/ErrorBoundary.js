@@ -1,6 +1,6 @@
-import React from "react";
-import styled from "styled-components";
-import { FaExclamationTriangle, FaHome, FaRedo } from "react-icons/fa";
+import React from 'react';
+import styled from 'styled-components';
+import { FaExclamationTriangle, FaHome, FaRedo } from 'react-icons/fa';
 
 const ErrorContainer = styled.div`
   min-height: 100vh;
@@ -43,14 +43,14 @@ const ErrorMessage = styled.p`
 const ErrorDetails = styled.details`
   text-align: left;
   margin: 2rem 0;
-  
+
   summary {
     cursor: pointer;
     color: #6b7280;
     font-weight: 600;
     margin-bottom: 1rem;
   }
-  
+
   pre {
     background: #f3f4f6;
     padding: 1rem;
@@ -102,10 +102,10 @@ const SecondaryButton = styled(Button)`
 class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { 
-      hasError: false, 
-      error: null, 
-      errorInfo: null 
+    this.state = {
+      hasError: false,
+      error: null,
+      errorInfo: null,
     };
   }
 
@@ -116,7 +116,7 @@ class ErrorBoundary extends React.Component {
   componentDidCatch(error, errorInfo) {
     this.setState({
       error,
-      errorInfo
+      errorInfo,
     });
 
     // Log error to console in development
@@ -147,11 +147,12 @@ class ErrorBoundary extends React.Component {
             <ErrorIcon>
               <FaExclamationTriangle />
             </ErrorIcon>
-            
+
             <ErrorTitle>Oops! Something went wrong</ErrorTitle>
-            
+
             <ErrorMessage>
-              We're sorry, but something unexpected happened. Our team has been notified and is working to fix this issue.
+              We're sorry, but something unexpected happened. Our team has been
+              notified and is working to fix this issue.
             </ErrorMessage>
 
             {process.env.NODE_ENV === 'development' && this.state.error && (
@@ -166,10 +167,10 @@ class ErrorBoundary extends React.Component {
 
             <ButtonGroup>
               <PrimaryButton onClick={this.handleRefresh}>
-                              <FaRedo />
+                <FaRedo />
                 Try Again
               </PrimaryButton>
-              
+
               <SecondaryButton onClick={this.handleGoHome}>
                 <FaHome />
                 Go Home

@@ -3,7 +3,7 @@
 /**
  * Sanitize HTML content to prevent XSS attacks
  */
-export const sanitizeHtml = (html) => {
+export const sanitizeHtml = html => {
   const div = document.createElement('div');
   div.textContent = html;
   return div.innerHTML;
@@ -12,21 +12,21 @@ export const sanitizeHtml = (html) => {
 /**
  * Escape special characters in strings
  */
-export const escapeHtml = (text) => {
+export const escapeHtml = text => {
   const map = {
     '&': '&amp;',
     '<': '&lt;',
     '>': '&gt;',
     '"': '&quot;',
-    "'": '&#039;'
+    "'": '&#039;',
   };
-  return text.replace(/[&<>"']/g, (m) => map[m]);
+  return text.replace(/[&<>"']/g, m => map[m]);
 };
 
 /**
  * Validate email format
  */
-export const isValidEmail = (email) => {
+export const isValidEmail = email => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
 };
@@ -34,7 +34,7 @@ export const isValidEmail = (email) => {
 /**
  * Validate phone number format
  */
-export const isValidPhone = (phone) => {
+export const isValidPhone = phone => {
   const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
   return phoneRegex.test(phone.replace(/[\s\-\(\)]/g, ''));
 };
@@ -42,7 +42,7 @@ export const isValidPhone = (phone) => {
 /**
  * Validate URL format
  */
-export const isValidUrl = (url) => {
+export const isValidUrl = url => {
   try {
     new URL(url);
     return true;
@@ -55,7 +55,8 @@ export const isValidUrl = (url) => {
  * Generate secure random string
  */
 export const generateSecureId = (length = 16) => {
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const chars =
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   let result = '';
   for (let i = 0; i < length; i++) {
     result += chars.charAt(Math.floor(Math.random() * chars.length));
@@ -76,21 +77,21 @@ class RateLimiter {
   isAllowed(identifier) {
     const now = Date.now();
     const windowStart = now - this.windowMs;
-    
+
     if (!this.requests.has(identifier)) {
       this.requests.set(identifier, []);
     }
-    
+
     const userRequests = this.requests.get(identifier);
-    
+
     // Remove old requests outside the window
     const recentRequests = userRequests.filter(time => time > windowStart);
     this.requests.set(identifier, recentRequests);
-    
+
     if (recentRequests.length >= this.maxRequests) {
       return false;
     }
-    
+
     recentRequests.push(now);
     return true;
   }
@@ -113,8 +114,8 @@ export const getCSPHeaders = () => {
       "frame-src 'self' https://www.google.com",
       "object-src 'none'",
       "base-uri 'self'",
-      "form-action 'self'"
-    ].join('; ')
+      "form-action 'self'",
+    ].join('; '),
   };
 };
 
@@ -143,28 +144,28 @@ export const validators = {
     return null;
   },
 
-  email: (value) => {
+  email: value => {
     if (value && !isValidEmail(value)) {
       return 'Please enter a valid email address';
     }
     return null;
   },
 
-  phone: (value) => {
+  phone: value => {
     if (value && !isValidPhone(value)) {
       return 'Please enter a valid phone number';
     }
     return null;
   },
 
-  url: (value) => {
+  url: value => {
     if (value && !isValidUrl(value)) {
       return 'Please enter a valid URL';
     }
     return null;
   },
 
-  price: (value) => {
+  price: value => {
     const price = parseFloat(value);
     if (isNaN(price) || price < 0) {
       return 'Please enter a valid price';
@@ -178,7 +179,7 @@ export const validators = {
       return `${fieldName} must be a positive number`;
     }
     return null;
-  }
+  },
 };
 
 /**
@@ -186,10 +187,10 @@ export const validators = {
  */
 export const validateForm = (data, schema) => {
   const errors = {};
-  
+
   for (const [field, rules] of Object.entries(schema)) {
     const value = data[field];
-    
+
     for (const rule of rules) {
       const error = rule(value, field);
       if (error) {
@@ -198,10 +199,10 @@ export const validateForm = (data, schema) => {
       }
     }
   }
-  
+
   return {
     isValid: Object.keys(errors).length === 0,
-    errors
+    errors,
   };
 };
 
@@ -211,62 +212,60 @@ export const validateForm = (data, schema) => {
 export const validationSchemas = {
   userRegistration: {
     name: [
-      (value) => validators.required(value, 'Name'),
-      (value) => validators.minLength(value, 2, 'Name'),
-      (value) => validators.maxLength(value, 50, 'Name')
+      value => validators.required(value, 'Name'),
+      value => validators.minLength(value, 2, 'Name'),
+      value => validators.maxLength(value, 50, 'Name'),
     ],
     email: [
-      (value) => validators.required(value, 'Email'),
-      (value) => validators.email(value)
+      value => validators.required(value, 'Email'),
+      value => validators.email(value),
     ],
     phone: [
-      (value) => validators.required(value, 'Phone'),
-      (value) => validators.phone(value)
+      value => validators.required(value, 'Phone'),
+      value => validators.phone(value),
     ],
     password: [
-      (value) => validators.required(value, 'Password'),
-      (value) => validators.minLength(value, 6, 'Password')
-    ]
+      value => validators.required(value, 'Password'),
+      value => validators.minLength(value, 6, 'Password'),
+    ],
   },
 
   productEnquiry: {
     name: [
-      (value) => validators.required(value, 'Name'),
-      (value) => validators.minLength(value, 2, 'Name')
+      value => validators.required(value, 'Name'),
+      value => validators.minLength(value, 2, 'Name'),
     ],
     email: [
-      (value) => validators.required(value, 'Email'),
-      (value) => validators.email(value)
+      value => validators.required(value, 'Email'),
+      value => validators.email(value),
     ],
     phone: [
-      (value) => validators.required(value, 'Phone'),
-      (value) => validators.phone(value)
+      value => validators.required(value, 'Phone'),
+      value => validators.phone(value),
     ],
-    message: [
-      (value) => validators.maxLength(value, 1000, 'Message')
-    ]
+    message: [value => validators.maxLength(value, 1000, 'Message')],
   },
 
   productCreation: {
     name: [
-      (value) => validators.required(value, 'Product name'),
-      (value) => validators.minLength(value, 3, 'Product name'),
-      (value) => validators.maxLength(value, 100, 'Product name')
+      value => validators.required(value, 'Product name'),
+      value => validators.minLength(value, 3, 'Product name'),
+      value => validators.maxLength(value, 100, 'Product name'),
     ],
     description: [
-      (value) => validators.required(value, 'Description'),
-      (value) => validators.minLength(value, 10, 'Description'),
-      (value) => validators.maxLength(value, 2000, 'Description')
+      value => validators.required(value, 'Description'),
+      value => validators.minLength(value, 10, 'Description'),
+      value => validators.maxLength(value, 2000, 'Description'),
     ],
     price: [
-      (value) => validators.required(value, 'Price'),
-      (value) => validators.price(value)
+      value => validators.required(value, 'Price'),
+      value => validators.price(value),
     ],
     stock: [
-      (value) => validators.required(value, 'Stock'),
-      (value) => validators.positiveInteger(value, 'Stock')
-    ]
-  }
+      value => validators.required(value, 'Stock'),
+      value => validators.positiveInteger(value, 'Stock'),
+    ],
+  },
 };
 
 /**
@@ -278,76 +277,76 @@ export const secureStorage = {
       const serialized = JSON.stringify({
         data: value,
         timestamp: Date.now(),
-        checksum: btoa(JSON.stringify(value)).slice(0, 10)
+        checksum: btoa(JSON.stringify(value)).slice(0, 10),
       });
       localStorage.setItem(key, serialized);
       return true;
     } catch (error) {
-
       return false;
     }
   },
 
-  get: (key) => {
+  get: key => {
     try {
       const serialized = localStorage.getItem(key);
       if (!serialized) return null;
-      
+
       const parsed = JSON.parse(serialized);
       const expectedChecksum = btoa(JSON.stringify(parsed.data)).slice(0, 10);
-      
-      if (parsed.checksum !== expectedChecksum) {
 
+      if (parsed.checksum !== expectedChecksum) {
         localStorage.removeItem(key);
         return null;
       }
-      
+
       return parsed.data;
     } catch (error) {
-
       localStorage.removeItem(key);
       return null;
     }
   },
 
-  remove: (key) => {
+  remove: key => {
     localStorage.removeItem(key);
   },
 
   clear: () => {
     localStorage.clear();
-  }
+  },
 };
 
 /**
  * Privacy utilities
  */
 export const privacy = {
-  maskEmail: (email) => {
+  maskEmail: email => {
     const [username, domain] = email.split('@');
-    const maskedUsername = username.slice(0, 2) + '*'.repeat(username.length - 2);
+    const maskedUsername =
+      username.slice(0, 2) + '*'.repeat(username.length - 2);
     return `${maskedUsername}@${domain}`;
   },
 
-  maskPhone: (phone) => {
+  maskPhone: phone => {
     const cleaned = phone.replace(/\D/g, '');
     if (cleaned.length >= 10) {
-      return cleaned.slice(0, 3) + '*'.repeat(cleaned.length - 6) + cleaned.slice(-3);
+      return (
+        cleaned.slice(0, 3) + '*'.repeat(cleaned.length - 6) + cleaned.slice(-3)
+      );
     }
     return phone;
   },
 
-  generateUserHash: (userData) => {
+  generateUserHash: userData => {
     // Simple hash for user identification without exposing PII
     const str = `${userData.email}${userData.id}${Date.now()}`;
     let hash = 0;
     for (let i = 0; i < str.length; i++) {
       const char = str.charCodeAt(i);
-      hash = ((hash << 5) - hash) + char;
+      hash = (hash << 5) - hash + char;
       hash = hash & hash; // Convert to 32-bit integer
     }
     return Math.abs(hash).toString(36);
-  }
+  },
 };
 
 /**
@@ -357,9 +356,8 @@ export const analytics = {
   trackEvent: (eventName, properties = {}) => {
     // In production, integrate with privacy-focused analytics
     if (process.env.NODE_ENV === 'development') {
-  
     }
-    
+
     // Example: Send to analytics service with user consent
     const hasConsent = secureStorage.get('analytics_consent');
     if (hasConsent) {
@@ -367,7 +365,7 @@ export const analytics = {
     }
   },
 
-  trackPageView: (page) => {
+  trackPageView: page => {
     analytics.trackEvent('page_view', { page });
   },
 
@@ -376,16 +374,16 @@ export const analytics = {
       product_id: productId,
       enquiry_type: 'product_interest',
       // Don't track PII
-      timestamp: Date.now()
+      timestamp: Date.now(),
     });
   },
 
-  trackProductView: (productId) => {
+  trackProductView: productId => {
     analytics.trackEvent('product_viewed', {
       product_id: productId,
-      timestamp: Date.now()
+      timestamp: Date.now(),
     });
-  }
+  },
 };
 
 export default {
@@ -402,5 +400,5 @@ export default {
   validationSchemas,
   secureStorage,
   privacy,
-  analytics
+  analytics,
 };

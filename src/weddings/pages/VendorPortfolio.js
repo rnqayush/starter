@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 import {
   FaArrowLeft,
   FaMapMarkerAlt,
@@ -11,10 +11,10 @@ import {
   FaChevronRight,
   FaCheckCircle,
   FaStar,
-  FaHeart
-} from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
-import { getVendorById } from "../data/vendors";
+  FaHeart,
+} from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
+import { getVendorById } from '../data/vendors';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -450,16 +450,20 @@ const LoadingState = styled.div`
 const VendorPortfolio = () => {
   const { vendorSlug } = useParams();
   const navigate = useNavigate();
-  
+
   // Get vendor ID from URL path if not available in params
   const currentPath = window.location.pathname;
   const pathSegments = currentPath.split('/').filter(Boolean);
   const vendorId = vendorSlug || pathSegments[0];
-  
+
   const [vendor, setVendor] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedPortfolio, setSelectedPortfolio] = useState(null);
-  const [imageViewer, setImageViewer] = useState({ open: false, images: [], currentIndex: 0 });
+  const [imageViewer, setImageViewer] = useState({
+    open: false,
+    images: [],
+    currentIndex: 0,
+  });
 
   useEffect(() => {
     const vendorData = getVendorById(vendorId);
@@ -467,7 +471,7 @@ const VendorPortfolio = () => {
     setLoading(false);
   }, [vendorId]);
 
-  const openPortfolioModal = (portfolio) => {
+  const openPortfolioModal = portfolio => {
     setSelectedPortfolio(portfolio);
   };
 
@@ -486,18 +490,21 @@ const VendorPortfolio = () => {
   const nextImage = () => {
     setImageViewer(prev => ({
       ...prev,
-      currentIndex: (prev.currentIndex + 1) % prev.images.length
+      currentIndex: (prev.currentIndex + 1) % prev.images.length,
     }));
   };
 
   const prevImage = () => {
     setImageViewer(prev => ({
       ...prev,
-      currentIndex: prev.currentIndex === 0 ? prev.images.length - 1 : prev.currentIndex - 1
+      currentIndex:
+        prev.currentIndex === 0
+          ? prev.images.length - 1
+          : prev.currentIndex - 1,
     }));
   };
 
-  const handleKeyPress = (e) => {
+  const handleKeyPress = e => {
     if (e.key === 'Escape') {
       if (imageViewer.open) {
         closeImageViewer();
@@ -556,16 +563,23 @@ const VendorPortfolio = () => {
         <PageHeader>
           <PageTitle>Our Work & Locations</PageTitle>
           <PageSubtitle>
-            Explore our portfolio of beautiful weddings across different venues and locations. 
-            Each celebration tells a unique story and showcases our commitment to creating magical moments.
+            Explore our portfolio of beautiful weddings across different venues
+            and locations. Each celebration tells a unique story and showcases
+            our commitment to creating magical moments.
           </PageSubtitle>
         </PageHeader>
 
         {vendor.locationPortfolio && vendor.locationPortfolio.length > 0 ? (
           <PortfolioGrid>
-            {vendor.locationPortfolio.map((portfolio) => (
-              <PortfolioCard key={portfolio.id} onClick={() => openPortfolioModal(portfolio)}>
-                <PortfolioImage src={portfolio.coverImage} alt={portfolio.location} />
+            {vendor.locationPortfolio.map(portfolio => (
+              <PortfolioCard
+                key={portfolio.id}
+                onClick={() => openPortfolioModal(portfolio)}
+              >
+                <PortfolioImage
+                  src={portfolio.coverImage}
+                  alt={portfolio.location}
+                />
                 <PortfolioContent>
                   <LocationHeader>
                     <LocationInfo>
@@ -586,18 +600,22 @@ const VendorPortfolio = () => {
                       {portfolio.coupleNames}
                     </CoupleInfo>
                   </LocationHeader>
-                  
-                  <PortfolioDescription>{portfolio.description}</PortfolioDescription>
-                  
+
+                  <PortfolioDescription>
+                    {portfolio.description}
+                  </PortfolioDescription>
+
                   <ServicesList>
                     {portfolio.services.slice(0, 3).map((service, index) => (
                       <ServiceTag key={index}>{service}</ServiceTag>
                     ))}
                     {portfolio.services.length > 3 && (
-                      <ServiceTag>+{portfolio.services.length - 3} more</ServiceTag>
+                      <ServiceTag>
+                        +{portfolio.services.length - 3} more
+                      </ServiceTag>
                     )}
                   </ServicesList>
-                  
+
                   <ViewGalleryButton>
                     View Full Gallery ({portfolio.gallery.length} photos)
                   </ViewGalleryButton>
@@ -608,7 +626,9 @@ const VendorPortfolio = () => {
         ) : (
           <div style={{ textAlign: 'center', padding: '4rem 0' }}>
             <h3>Portfolio Coming Soon</h3>
-            <p>We're updating our portfolio with recent work. Check back soon!</p>
+            <p>
+              We're updating our portfolio with recent work. Check back soon!
+            </p>
           </div>
         )}
       </Container>
@@ -616,7 +636,7 @@ const VendorPortfolio = () => {
       {/* Portfolio Detail Modal */}
       {selectedPortfolio && (
         <ModalOverlay onClick={closePortfolioModal}>
-          <ModalContent onClick={(e) => e.stopPropagation()}>
+          <ModalContent onClick={e => e.stopPropagation()}>
             <ModalHeader>
               <ModalTitle>{selectedPortfolio.location}</ModalTitle>
               <CloseButton onClick={closePortfolioModal}>
@@ -624,18 +644,30 @@ const VendorPortfolio = () => {
               </CloseButton>
             </ModalHeader>
             <ModalBody>
-                            <div style={{
-                display: 'grid',
-                gridTemplateColumns: window.innerWidth <= 768 ? '1fr' : '1fr 1fr',
-                gap: theme.spacing.xl,
-                marginBottom: theme.spacing.xl
-              }}>
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns:
+                    window.innerWidth <= 768 ? '1fr' : '1fr 1fr',
+                  gap: theme.spacing.xl,
+                  marginBottom: theme.spacing.xl,
+                }}
+              >
                 <div>
-                  <h4 style={{ margin: `0 0 ${theme.spacing.md} 0`, color: theme.colors.gray900 }}>Wedding Details</h4>
+                  <h4
+                    style={{
+                      margin: `0 0 ${theme.spacing.md} 0`,
+                      color: theme.colors.gray900,
+                    }}
+                  >
+                    Wedding Details
+                  </h4>
                   <LocationDetails style={{ gap: theme.spacing.sm }}>
                     <LocationDetail>
                       <FaMapMarkerAlt />
-                      <strong>{selectedPortfolio.city}, {selectedPortfolio.state}</strong>
+                      <strong>
+                        {selectedPortfolio.city}, {selectedPortfolio.state}
+                      </strong>
                     </LocationDetail>
                     <LocationDetail>
                       <FaCalendarAlt />
@@ -648,7 +680,14 @@ const VendorPortfolio = () => {
                   </LocationDetails>
                 </div>
                 <div>
-                  <h4 style={{ margin: `0 0 ${theme.spacing.md} 0`, color: theme.colors.gray900 }}>Services Provided</h4>
+                  <h4
+                    style={{
+                      margin: `0 0 ${theme.spacing.md} 0`,
+                      color: theme.colors.gray900,
+                    }}
+                  >
+                    Services Provided
+                  </h4>
                   <ServicesList>
                     {selectedPortfolio.services.map((service, index) => (
                       <ServiceTag key={index}>{service}</ServiceTag>
@@ -657,7 +696,14 @@ const VendorPortfolio = () => {
                 </div>
               </div>
 
-              <p style={{ fontSize: '1.1rem', lineHeight: 1.6, color: theme.colors.gray700, marginBottom: theme.spacing.xl }}>
+              <p
+                style={{
+                  fontSize: '1.1rem',
+                  lineHeight: 1.6,
+                  color: theme.colors.gray700,
+                  marginBottom: theme.spacing.xl,
+                }}
+              >
                 {selectedPortfolio.description}
               </p>
 
@@ -669,7 +715,12 @@ const VendorPortfolio = () => {
                 <HighlightsList>
                   {selectedPortfolio.highlights.map((highlight, index) => (
                     <HighlightItem key={index}>
-                      <FaStar style={{ color: theme.colors.warning, fontSize: '0.9rem' }} />
+                      <FaStar
+                        style={{
+                          color: theme.colors.warning,
+                          fontSize: '0.9rem',
+                        }}
+                      />
                       <HighlightText>{highlight}</HighlightText>
                     </HighlightItem>
                   ))}
@@ -684,7 +735,9 @@ const VendorPortfolio = () => {
                       key={index}
                       src={image}
                       alt={`${selectedPortfolio.location} ${index + 1}`}
-                      onClick={() => openImageViewer(selectedPortfolio.gallery, index)}
+                      onClick={() =>
+                        openImageViewer(selectedPortfolio.gallery, index)
+                      }
                     />
                   ))}
                 </GalleryGrid>
@@ -697,12 +750,12 @@ const VendorPortfolio = () => {
       {/* Image Viewer */}
       {imageViewer.open && (
         <ImageViewerOverlay onClick={closeImageViewer}>
-          <ImageViewerContent onClick={(e) => e.stopPropagation()}>
-            <ViewerImage 
-              src={imageViewer.images[imageViewer.currentIndex]} 
-              alt={`Gallery ${imageViewer.currentIndex + 1}`} 
+          <ImageViewerContent onClick={e => e.stopPropagation()}>
+            <ViewerImage
+              src={imageViewer.images[imageViewer.currentIndex]}
+              alt={`Gallery ${imageViewer.currentIndex + 1}`}
             />
-            
+
             {imageViewer.images.length > 1 && (
               <>
                 <ImageNavButton className="prev" onClick={prevImage}>
@@ -713,19 +766,19 @@ const VendorPortfolio = () => {
                 </ImageNavButton>
               </>
             )}
-            
+
             <ImageCounter>
               {imageViewer.currentIndex + 1} / {imageViewer.images.length}
             </ImageCounter>
-            
-            <CloseButton 
+
+            <CloseButton
               onClick={closeImageViewer}
-              style={{ 
-                position: 'absolute', 
-                top: 20, 
-                right: 20, 
-                background: 'rgba(0,0,0,0.7)', 
-                color: 'white' 
+              style={{
+                position: 'absolute',
+                top: 20,
+                right: 20,
+                background: 'rgba(0,0,0,0.7)',
+                color: 'white',
               }}
             >
               <FaTimes />

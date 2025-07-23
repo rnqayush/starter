@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 import {
   FaEdit,
   FaImage,
@@ -14,12 +14,12 @@ import {
   FaStar,
   FaPhone,
   FaArrowLeft,
-} from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
-import Sidebar from "./Sidebar";
-import { Card, CardContent } from "../shared/Card";
-import { Button } from "../shared/Button";
-import { getHotelByIdOrSlug } from "../../hotel/data/hotels";
+} from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
+import Sidebar from './Sidebar';
+import { Card, CardContent } from '../shared/Card';
+import { Button } from '../shared/Button';
+import { getHotelByIdOrSlug } from '../../hotel/data/hotels';
 
 const DashboardContainer = styled.div`
   display: flex;
@@ -44,7 +44,7 @@ const Header = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-bottom: ${theme.spacing.xxl};
-  
+
   @media (max-width: ${theme.breakpoints.mobile}) {
     flex-direction: column;
     gap: ${theme.spacing.lg};
@@ -66,7 +66,7 @@ const Title = styled.h1`
 const HeaderActions = styled.div`
   display: flex;
   gap: ${theme.spacing.md};
-  
+
   @media (max-width: ${theme.breakpoints.mobile}) {
     justify-content: stretch;
   }
@@ -200,13 +200,13 @@ const ImageItem = styled.div`
   position: relative;
   border-radius: ${theme.borderRadius.md};
   overflow: hidden;
-  
+
   img {
     width: 100%;
     height: 120px;
     object-fit: cover;
   }
-  
+
   .remove-btn {
     position: absolute;
     top: ${theme.spacing.xs};
@@ -222,16 +222,12 @@ const ImageItem = styled.div`
     cursor: pointer;
     color: ${theme.colors.error};
     font-size: 0.8rem;
-    
+
     &:hover {
       background: ${theme.colors.white};
     }
   }
 `;
-
-
-
-
 
 const SectionHeader = styled.div`
   display: flex;
@@ -239,10 +235,6 @@ const SectionHeader = styled.div`
   align-items: center;
   margin-bottom: ${theme.spacing.md};
 `;
-
-
-
-
 
 const ActionButton = styled.button`
   background: ${theme.colors.white};
@@ -296,14 +288,14 @@ const HotelContentManager = () => {
   const [loading, setLoading] = useState(true);
 
   const [formData, setFormData] = useState({
-    name: "",
-    description: "",
-    aboutUs: "",
-    address: "",
-    phone: "",
-    email: "",
-    checkInTime: "",
-    checkOutTime: "",
+    name: '',
+    description: '',
+    aboutUs: '',
+    address: '',
+    phone: '',
+    email: '',
+    checkInTime: '',
+    checkOutTime: '',
   });
 
   const [features, setFeatures] = useState([]);
@@ -316,20 +308,20 @@ const HotelContentManager = () => {
       if (foundHotel) {
         setHotel(foundHotel);
         setFormData({
-          name: foundHotel.name || "",
-          description: foundHotel.description || "",
+          name: foundHotel.name || '',
+          description: foundHotel.description || '',
           aboutUs: `${foundHotel.name} stands as a beacon of luxury and elegance in the heart of ${foundHotel.city}. With our rich heritage of hospitality excellence spanning decades, we have been creating unforgettable experiences for discerning travelers from around the world.`,
-          address: foundHotel.address || "",
-          phone: "+91 22 6601 1825",
+          address: foundHotel.address || '',
+          phone: '+91 22 6601 1825',
           email: `reservations@${foundHotel.slug}.com`,
-          checkInTime: foundHotel.checkInTime || "",
-          checkOutTime: foundHotel.checkOutTime || "",
+          checkInTime: foundHotel.checkInTime || '',
+          checkOutTime: foundHotel.checkOutTime || '',
         });
         setFeatures([
-          "24/7 Concierge Service",
-          "Luxury Amenities",
-          "Business Center",
-          "Airport Transfer"
+          '24/7 Concierge Service',
+          'Luxury Amenities',
+          'Business Center',
+          'Airport Transfer',
         ]);
         setAmenities(foundHotel.amenities || []);
         setGallery(foundHotel.images || []);
@@ -338,52 +330,52 @@ const HotelContentManager = () => {
     setLoading(false);
   }, [hotelSlug]);
 
-  const handleInputChange = (e) => {
+  const handleInputChange = e => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSaveBasicInfo = (e) => {
+  const handleSaveBasicInfo = e => {
     e.preventDefault();
     // Here you would save to your backend
-    alert("Basic information saved!");
+    alert('Basic information saved!');
   };
 
   const addFeature = () => {
-    const feature = prompt("Enter new feature:");
+    const feature = prompt('Enter new feature:');
     if (feature) {
       setFeatures(prev => [...prev, feature]);
     }
   };
 
-  const removeFeature = (index) => {
+  const removeFeature = index => {
     setFeatures(prev => prev.filter((_, i) => i !== index));
   };
 
   const addAmenity = () => {
-    const amenity = prompt("Enter new amenity:");
+    const amenity = prompt('Enter new amenity:');
     if (amenity) {
       setAmenities(prev => [...prev, amenity]);
     }
   };
 
-  const removeAmenity = (index) => {
+  const removeAmenity = index => {
     setAmenities(prev => prev.filter((_, i) => i !== index));
   };
 
-  const handleImageUpload = (e) => {
+  const handleImageUpload = e => {
     const files = Array.from(e.target.files);
     // In a real app, you'd upload to your image service
     files.forEach(file => {
       const reader = new FileReader();
-      reader.onload = (e) => {
+      reader.onload = e => {
         setGallery(prev => [...prev, e.target.result]);
       };
       reader.readAsDataURL(file);
     });
   };
 
-  const removeImage = (index) => {
+  const removeImage = index => {
     setGallery(prev => prev.filter((_, i) => i !== index));
   };
 
@@ -392,7 +384,7 @@ const HotelContentManager = () => {
       <DashboardContainer>
         <Sidebar />
         <MainContent>
-          <div style={{ textAlign: "center", padding: "4rem 0" }}>
+          <div style={{ textAlign: 'center', padding: '4rem 0' }}>
             <h2>Loading...</h2>
           </div>
         </MainContent>
@@ -405,7 +397,7 @@ const HotelContentManager = () => {
       <DashboardContainer>
         <Sidebar />
         <MainContent>
-          <div style={{ textAlign: "center", padding: "4rem 0" }}>
+          <div style={{ textAlign: 'center', padding: '4rem 0' }}>
             <h2>Hotel not found</h2>
             <p>Please select a valid hotel to manage.</p>
           </div>
@@ -455,7 +447,7 @@ const HotelContentManager = () => {
                     onChange={handleInputChange}
                   />
                 </FormGroup>
-                
+
                 <FormGroup>
                   <Label htmlFor="description">Short Description</Label>
                   <TextArea
@@ -466,7 +458,7 @@ const HotelContentManager = () => {
                     rows={3}
                   />
                 </FormGroup>
-                
+
                 <FormGroup>
                   <Label htmlFor="aboutUs">About Us (Full Description)</Label>
                   <TextArea
@@ -504,7 +496,7 @@ const HotelContentManager = () => {
                     onChange={handleInputChange}
                   />
                 </FormGroup>
-                
+
                 <FormGroup>
                   <Label htmlFor="phone">Phone Number</Label>
                   <Input
@@ -515,7 +507,7 @@ const HotelContentManager = () => {
                     onChange={handleInputChange}
                   />
                 </FormGroup>
-                
+
                 <FormGroup>
                   <Label htmlFor="email">Email Address</Label>
                   <Input
@@ -573,12 +565,15 @@ const HotelContentManager = () => {
                 Add Feature
               </Button>
             </SectionHeader>
-            
+
             <FeaturesList>
               {features.map((feature, index) => (
                 <FeatureItem key={index}>
                   <span>{feature}</span>
-                  <ActionButton className="danger" onClick={() => removeFeature(index)}>
+                  <ActionButton
+                    className="danger"
+                    onClick={() => removeFeature(index)}
+                  >
                     <FaTrash />
                   </ActionButton>
                 </FeatureItem>
@@ -600,12 +595,15 @@ const HotelContentManager = () => {
                 Add Amenity
               </Button>
             </SectionHeader>
-            
+
             <FeaturesList>
               {amenities.map((amenity, index) => (
                 <FeatureItem key={index}>
                   <span>{amenity}</span>
-                  <ActionButton className="danger" onClick={() => removeAmenity(index)}>
+                  <ActionButton
+                    className="danger"
+                    onClick={() => removeAmenity(index)}
+                  >
                     <FaTrash />
                   </ActionButton>
                 </FeatureItem>
@@ -621,7 +619,7 @@ const HotelContentManager = () => {
               <FaImages />
               Hotel Gallery
             </CardTitle>
-            
+
             <input
               type="file"
               multiple
@@ -630,14 +628,12 @@ const HotelContentManager = () => {
               style={{ display: 'none' }}
               id="gallery-upload"
             />
-            
+
             <ImageUploadArea
               onClick={() => document.getElementById('gallery-upload').click()}
             >
               <FaImage className="upload-icon" />
-              <div className="upload-text">
-                Click to upload hotel images
-              </div>
+              <div className="upload-text">Click to upload hotel images</div>
             </ImageUploadArea>
 
             {gallery.length > 0 && (

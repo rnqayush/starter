@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import { FaUser, FaLock, FaSave, FaSignOutAlt } from "react-icons/fa";
-import Sidebar from "./Sidebar";
-import { Card, CardContent } from "../shared/Card";
-import { Button } from "../shared/Button";
-import { Input, FormGroup, Label, InputGroup } from "../shared/Input";
-import { theme } from "../../styles/GlobalStyle";
-import { useAppContext } from "../../context/AppContext";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import { FaUser, FaLock, FaSave, FaSignOutAlt } from 'react-icons/fa';
+import Sidebar from './Sidebar';
+import { Card, CardContent } from '../shared/Card';
+import { Button } from '../shared/Button';
+import { Input, FormGroup, Label, InputGroup } from '../shared/Input';
+import { theme } from '../../styles/GlobalStyle';
+import { useAppContext } from '../../context/AppContext';
 
 const PageContainer = styled.div`
   display: flex;
@@ -84,63 +84,63 @@ const ProfileSettingsPage = () => {
   const { user, setUser, setUserType } = useAppContext();
 
   const [profileData, setProfileData] = useState({
-    name: user?.name || "Hotel Owner",
-    email: user?.email || "owner@example.com",
-    phone: "+91 9876543210",
-    licenseNumber: "HL123456789",
+    name: user?.name || 'Hotel Owner',
+    email: user?.email || 'owner@example.com',
+    phone: '+91 9876543210',
+    licenseNumber: 'HL123456789',
   });
 
   const [passwordData, setPasswordData] = useState({
-    currentPassword: "",
-    newPassword: "",
-    confirmPassword: "",
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: '',
   });
 
   const [isUpdating, setIsUpdating] = useState(false);
 
-  const handleProfileChange = (e) => {
+  const handleProfileChange = e => {
     setProfileData({
       ...profileData,
       [e.target.name]: e.target.value,
     });
   };
 
-  const handlePasswordChange = (e) => {
+  const handlePasswordChange = e => {
     setPasswordData({
       ...passwordData,
       [e.target.name]: e.target.value,
     });
   };
 
-  const handleProfileSubmit = async (e) => {
+  const handleProfileSubmit = async e => {
     e.preventDefault();
     setIsUpdating(true);
 
     try {
       // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise(resolve => setTimeout(resolve, 1000));
 
       // Update user context
-      setUser((prev) => ({
+      setUser(prev => ({
         ...prev,
         name: profileData.name,
         email: profileData.email,
       }));
 
-      alert("Profile updated successfully!");
+      alert('Profile updated successfully!');
     } catch (error) {
-      console.error("Error updating profile:", error);
-      alert("Error updating profile. Please try again.");
+      console.error('Error updating profile:', error);
+      alert('Error updating profile. Please try again.');
     } finally {
       setIsUpdating(false);
     }
   };
 
-  const handlePasswordSubmit = async (e) => {
+  const handlePasswordSubmit = async e => {
     e.preventDefault();
 
     if (passwordData.newPassword !== passwordData.confirmPassword) {
-      alert("New passwords do not match!");
+      alert('New passwords do not match!');
       return;
     }
 
@@ -148,27 +148,27 @@ const ProfileSettingsPage = () => {
 
     try {
       // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise(resolve => setTimeout(resolve, 1000));
 
-      alert("Password updated successfully!");
+      alert('Password updated successfully!');
       setPasswordData({
-        currentPassword: "",
-        newPassword: "",
-        confirmPassword: "",
+        currentPassword: '',
+        newPassword: '',
+        confirmPassword: '',
       });
     } catch (error) {
-      console.error("Error updating password:", error);
-      alert("Error updating password. Please try again.");
+      console.error('Error updating password:', error);
+      alert('Error updating password. Please try again.');
     } finally {
       setIsUpdating(false);
     }
   };
 
   const handleLogout = () => {
-    if (window.confirm("Are you sure you want to logout?")) {
+    if (window.confirm('Are you sure you want to logout?')) {
       setUser(null);
-      setUserType("customer");
-      navigate("/");
+      setUserType('customer');
+      navigate('/');
     }
   };
 
@@ -236,7 +236,7 @@ const ProfileSettingsPage = () => {
                 <FormActions>
                   <Button type="submit" disabled={isUpdating} size="large">
                     <FaSave />
-                    {isUpdating ? "Updating..." : "Save Changes"}
+                    {isUpdating ? 'Updating...' : 'Save Changes'}
                   </Button>
                 </FormActions>
               </ProfileForm>
@@ -288,7 +288,7 @@ const ProfileSettingsPage = () => {
                 <FormActions>
                   <Button type="submit" disabled={isUpdating} size="large">
                     <FaLock />
-                    {isUpdating ? "Updating..." : "Update Password"}
+                    {isUpdating ? 'Updating...' : 'Update Password'}
                   </Button>
                 </FormActions>
               </ProfileForm>

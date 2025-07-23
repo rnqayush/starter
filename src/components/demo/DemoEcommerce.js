@@ -1,38 +1,44 @@
-import React from "react";
-import DemoWebsite from "./DemoWebsite";
+import React from 'react';
+import DemoWebsite from './DemoWebsite';
 
 const DemoEcommerce = () => {
   const features = [
     {
-      icon: "🛍️",
-      title: "Product Catalog",
-      description: "Beautiful product displays with high-quality images, detailed descriptions, and customer reviews."
+      icon: '🛍️',
+      title: 'Product Catalog',
+      description:
+        'Beautiful product displays with high-quality images, detailed descriptions, and customer reviews.',
     },
     {
-      icon: "💳",
-      title: "Secure Checkout",
-      description: "SSL-encrypted payment processing with multiple payment options including cards, wallets, and COD."
+      icon: '💳',
+      title: 'Secure Checkout',
+      description:
+        'SSL-encrypted payment processing with multiple payment options including cards, wallets, and COD.',
     },
     {
-      icon: "📊",
-      title: "Analytics Dashboard",
-      description: "Track sales, customer behavior, and inventory with detailed analytics and reporting tools."
+      icon: '📊',
+      title: 'Analytics Dashboard',
+      description:
+        'Track sales, customer behavior, and inventory with detailed analytics and reporting tools.',
     },
     {
-      icon: "📱",
-      title: "Mobile Optimized",
-      description: "Responsive design ensures your store looks perfect on all devices and screen sizes."
+      icon: '📱',
+      title: 'Mobile Optimized',
+      description:
+        'Responsive design ensures your store looks perfect on all devices and screen sizes.',
     },
     {
-      icon: "🚚",
-      title: "Shipping Integration",
-      description: "Automated shipping calculations and tracking integration with major logistics partners."
+      icon: '🚚',
+      title: 'Shipping Integration',
+      description:
+        'Automated shipping calculations and tracking integration with major logistics partners.',
     },
     {
-      icon: "⭐",
-      title: "Customer Reviews",
-      description: "Build trust with authentic customer reviews and ratings system to boost conversions."
-    }
+      icon: '⭐',
+      title: 'Customer Reviews',
+      description:
+        'Build trust with authentic customer reviews and ratings system to boost conversions.',
+    },
   ];
 
   return (

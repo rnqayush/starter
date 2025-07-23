@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 import {
   FaRing,
   FaHotel,
@@ -12,9 +12,9 @@ import {
   FaCheck,
   FaUpload,
   FaRocket,
-} from "react-icons/fa";
-import { theme, media } from "../styles/GlobalStyle";
-import { Button } from "./shared/Button";
+} from 'react-icons/fa';
+import { theme, media } from '../styles/GlobalStyle';
+import { Button } from './shared/Button';
 
 const Container = styled.div`
   min-height: 100vh;
@@ -24,7 +24,7 @@ const Container = styled.div`
   overflow: hidden;
 
   &::before {
-    content: "";
+    content: '';
     position: absolute;
     top: 0;
     left: 0;
@@ -70,19 +70,28 @@ const ProgressFill = styled.div`
   position: relative;
 
   &::after {
-    content: "";
+    content: '';
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.3),
+      transparent
+    );
     animation: shimmer 2s infinite;
   }
 
   @keyframes shimmer {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(100%); }
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
   }
 `;
 
@@ -119,15 +128,18 @@ const StepDot = styled.div`
   justify-content: center;
   font-weight: 600;
   color: white;
-  background: ${props => 
-    props.active ? 'linear-gradient(135deg, #10b981, #059669)' :
-    props.completed ? 'linear-gradient(135deg, #10b981, #059669)' :
-    '#d1d5db'
-  };
+  background: ${props =>
+    props.active
+      ? 'linear-gradient(135deg, #10b981, #059669)'
+      : props.completed
+        ? 'linear-gradient(135deg, #10b981, #059669)'
+        : '#d1d5db'};
   transition: all 0.3s ease;
   position: relative;
 
-  ${props => props.completed && `
+  ${props =>
+    props.completed &&
+    `
     &::after {
       content: "✓";
       position: absolute;
@@ -145,7 +157,8 @@ const StepDot = styled.div`
 const StepConnector = styled.div`
   width: 60px;
   height: 2px;
-  background: ${props => props.completed ? 'linear-gradient(90deg, #10b981, #059669)' : '#d1d5db'};
+  background: ${props =>
+    props.completed ? 'linear-gradient(90deg, #10b981, #059669)' : '#d1d5db'};
   transition: all 0.3s ease;
 
   ${media.mobile} {
@@ -199,7 +212,7 @@ const WebsiteTypeGrid = styled.div`
 
 const WebsiteTypeCard = styled.div`
   background: white;
-  border: 3px solid ${props => props.selected ? '#10b981' : '#e5e7eb'};
+  border: 3px solid ${props => (props.selected ? '#10b981' : '#e5e7eb')};
   border-radius: 16px;
   padding: ${theme.spacing.lg};
   text-align: center;
@@ -214,7 +227,9 @@ const WebsiteTypeCard = styled.div`
     border-color: #10b981;
   }
 
-  ${props => props.selected && `
+  ${props =>
+    props.selected &&
+    `
     background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
     
     &::after {
@@ -242,7 +257,7 @@ const WebsiteTypeCard = styled.div`
 
 const TypeIcon = styled.div`
   font-size: 2.5rem;
-  color: ${props => props.selected ? '#10b981' : '#6b7280'};
+  color: ${props => (props.selected ? '#10b981' : '#6b7280')};
   margin-bottom: ${theme.spacing.md};
   transition: color 0.3s ease;
 
@@ -255,7 +270,7 @@ const TypeIcon = styled.div`
 const TypeTitle = styled.h3`
   font-size: 1rem;
   font-weight: 600;
-  color: ${props => props.selected ? '#10b981' : '#374151'};
+  color: ${props => (props.selected ? '#10b981' : '#374151')};
   margin: 0;
   transition: color 0.3s ease;
 
@@ -360,7 +375,7 @@ const ColorOption = styled.div`
   border-radius: 12px;
   cursor: pointer;
   transition: all 0.3s ease;
-  border: 3px solid ${props => props.selected ? '#10b981' : 'transparent'};
+  border: 3px solid ${props => (props.selected ? '#10b981' : 'transparent')};
   background: ${props => props.color};
   position: relative;
 
@@ -368,7 +383,9 @@ const ColorOption = styled.div`
     transform: scale(1.1);
   }
 
-  ${props => props.selected && `
+  ${props =>
+    props.selected &&
+    `
     &::after {
       content: "✓";
       position: absolute;
@@ -404,7 +421,9 @@ const ActionButton = styled(Button)`
   gap: ${theme.spacing.sm};
   transition: all 0.3s ease;
 
-  ${props => props.variant === 'back' && `
+  ${props =>
+    props.variant === 'back' &&
+    `
     background: white;
     color: #6b7280;
     border: 2px solid #e5e7eb;
@@ -415,7 +434,9 @@ const ActionButton = styled(Button)`
     }
   `}
 
-  ${props => props.variant === 'next' && `
+  ${props =>
+    props.variant === 'next' &&
+    `
     background: linear-gradient(135deg, #10b981, #059669);
     color: white;
     border: none;
@@ -433,7 +454,9 @@ const ActionButton = styled(Button)`
     }
   `}
 
-  ${props => props.variant === 'publish' && `
+  ${props =>
+    props.variant === 'publish' &&
+    `
     background: linear-gradient(135deg, #7c3aed, #5b21b6);
     color: white;
     border: none;
@@ -478,24 +501,54 @@ const StartBuilding = () => {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
-    websiteType: "",
-    websiteName: "",
+    websiteType: '',
+    websiteName: '',
     logo: null,
     fullPageImage: null,
-    tagline: "",
-    themeColor: "#10b981"
+    tagline: '',
+    themeColor: '#10b981',
   });
 
   const websiteTypes = [
-    { id: "weddings", icon: FaRing, title: "Weddings", description: "Wedding planners & venues" },
-    { id: "hotels", icon: FaHotel, title: "Hotels", description: "Hotels & accommodations" },
-    { id: "ecommerce", icon: FaShoppingCart, title: "Ecommerce", description: "Online stores" },
-    { id: "automobiles", icon: FaCar, title: "Automobiles", description: "Car dealers & rentals" },
-    { id: "professional", icon: FaBriefcase, title: "Professional", description: "Business websites" }
+    {
+      id: 'weddings',
+      icon: FaRing,
+      title: 'Weddings',
+      description: 'Wedding planners & venues',
+    },
+    {
+      id: 'hotels',
+      icon: FaHotel,
+      title: 'Hotels',
+      description: 'Hotels & accommodations',
+    },
+    {
+      id: 'ecommerce',
+      icon: FaShoppingCart,
+      title: 'Ecommerce',
+      description: 'Online stores',
+    },
+    {
+      id: 'automobiles',
+      icon: FaCar,
+      title: 'Automobiles',
+      description: 'Car dealers & rentals',
+    },
+    {
+      id: 'professional',
+      icon: FaBriefcase,
+      title: 'Professional',
+      description: 'Business websites',
+    },
   ];
 
   const colorOptions = [
-    "#10b981", "#3b82f6", "#8b5cf6", "#f59e0b", "#ef4444", "#06b6d4"
+    '#10b981',
+    '#3b82f6',
+    '#8b5cf6',
+    '#f59e0b',
+    '#ef4444',
+    '#06b6d4',
   ];
 
   const totalSteps = 3;
@@ -504,9 +557,12 @@ const StartBuilding = () => {
   const validateStep = () => {
     switch (currentStep) {
       case 1:
-        return formData.websiteType !== "";
+        return formData.websiteType !== '';
       case 2:
-        return formData.websiteName !== "" && /^[a-z0-9-]+$/.test(formData.websiteName);
+        return (
+          formData.websiteName !== '' &&
+          /^[a-z0-9-]+$/.test(formData.websiteName)
+        );
       case 3:
         return true; // Confirmation step
       default:
@@ -534,7 +590,7 @@ const StartBuilding = () => {
     navigate(`/${slug}`);
   };
 
-  const handleWebsiteNameChange = (e) => {
+  const handleWebsiteNameChange = e => {
     const value = e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, '');
     setFormData({ ...formData, websiteName: value });
   };
@@ -545,15 +601,19 @@ const StartBuilding = () => {
         return (
           <div>
             <Title>What kind of website do you want to build?</Title>
-            <Subtitle>Choose the type that best describes your business</Subtitle>
+            <Subtitle>
+              Choose the type that best describes your business
+            </Subtitle>
             <WebsiteTypeGrid>
-              {websiteTypes.map((type) => {
+              {websiteTypes.map(type => {
                 const IconComponent = type.icon;
                 return (
                   <WebsiteTypeCard
                     key={type.id}
                     selected={formData.websiteType === type.id}
-                    onClick={() => setFormData({ ...formData, websiteType: type.id })}
+                    onClick={() =>
+                      setFormData({ ...formData, websiteType: type.id })
+                    }
                   >
                     <TypeIcon selected={formData.websiteType === type.id}>
                       <IconComponent />
@@ -572,7 +632,9 @@ const StartBuilding = () => {
         return (
           <FormSection>
             <Title>Set up your website details</Title>
-            <Subtitle>Choose your website name and upload your branding assets</Subtitle>
+            <Subtitle>
+              Choose your website name and upload your branding assets
+            </Subtitle>
 
             <FormGroup>
               <Label>Website Name (URL slug)</Label>
@@ -585,7 +647,9 @@ const StartBuilding = () => {
               {formData.websiteName && (
                 <PreviewBox>
                   <PreviewText>
-                    Your website will be: <span className="domain">storebuilder.com/</span><span className="slug">{formData.websiteName}</span>
+                    Your website will be:{' '}
+                    <span className="domain">storebuilder.com/</span>
+                    <span className="slug">{formData.websiteName}</span>
                   </PreviewText>
                 </PreviewBox>
               )}
@@ -593,32 +657,47 @@ const StartBuilding = () => {
 
             <FormGroup>
               <Label>Logo Upload (Optional)</Label>
-              <FileUpload onClick={() => document.getElementById('logo-upload').click()}>
+              <FileUpload
+                onClick={() => document.getElementById('logo-upload').click()}
+              >
                 <input
                   id="logo-upload"
                   type="file"
                   accept="image/*"
-                  onChange={(e) => setFormData({ ...formData, logo: e.target.files[0] })}
+                  onChange={e =>
+                    setFormData({ ...formData, logo: e.target.files[0] })
+                  }
                 />
                 <FaUpload size={32} color="#6b7280" />
-                <p style={{ margin: "8px 0 0", color: "#6b7280" }}>
-                  {formData.logo ? formData.logo.name : "Click to upload your logo"}
+                <p style={{ margin: '8px 0 0', color: '#6b7280' }}>
+                  {formData.logo
+                    ? formData.logo.name
+                    : 'Click to upload your logo'}
                 </p>
               </FileUpload>
             </FormGroup>
 
             <FormGroup>
               <Label>Full Page Image (Optional)</Label>
-              <FileUpload onClick={() => document.getElementById('hero-upload').click()}>
+              <FileUpload
+                onClick={() => document.getElementById('hero-upload').click()}
+              >
                 <input
                   id="hero-upload"
                   type="file"
                   accept="image/*"
-                  onChange={(e) => setFormData({ ...formData, fullPageImage: e.target.files[0] })}
+                  onChange={e =>
+                    setFormData({
+                      ...formData,
+                      fullPageImage: e.target.files[0],
+                    })
+                  }
                 />
                 <FaUpload size={32} color="#6b7280" />
-                <p style={{ margin: "8px 0 0", color: "#6b7280" }}>
-                  {formData.fullPageImage ? formData.fullPageImage.name : "Click to upload a hero/banner image"}
+                <p style={{ margin: '8px 0 0', color: '#6b7280' }}>
+                  {formData.fullPageImage
+                    ? formData.fullPageImage.name
+                    : 'Click to upload a hero/banner image'}
                 </p>
               </FileUpload>
             </FormGroup>
@@ -629,19 +708,23 @@ const StartBuilding = () => {
                 type="text"
                 placeholder="Your business tagline"
                 value={formData.tagline}
-                onChange={(e) => setFormData({ ...formData, tagline: e.target.value })}
+                onChange={e =>
+                  setFormData({ ...formData, tagline: e.target.value })
+                }
               />
             </FormGroup>
 
             <FormGroup>
               <Label>Theme Color</Label>
               <ColorPicker>
-                {colorOptions.map((color) => (
+                {colorOptions.map(color => (
                   <ColorOption
                     key={color}
                     color={color}
                     selected={formData.themeColor === color}
-                    onClick={() => setFormData({ ...formData, themeColor: color })}
+                    onClick={() =>
+                      setFormData({ ...formData, themeColor: color })
+                    }
                   />
                 ))}
               </ColorPicker>
@@ -653,16 +736,22 @@ const StartBuilding = () => {
         return (
           <FormSection>
             <Title>Ready to publish!</Title>
-            <Subtitle>Review your website configuration and publish your site</Subtitle>
+            <Subtitle>
+              Review your website configuration and publish your site
+            </Subtitle>
 
             <Summary>
               <SummaryItem>
                 <SummaryLabel>Website Type:</SummaryLabel>
-                <SummaryValue>{websiteTypes.find(t => t.id === formData.websiteType)?.title}</SummaryValue>
+                <SummaryValue>
+                  {websiteTypes.find(t => t.id === formData.websiteType)?.title}
+                </SummaryValue>
               </SummaryItem>
               <SummaryItem>
                 <SummaryLabel>Website URL:</SummaryLabel>
-                <SummaryValue>storebuilder.com/{formData.websiteName}</SummaryValue>
+                <SummaryValue>
+                  storebuilder.com/{formData.websiteName}
+                </SummaryValue>
               </SummaryItem>
               {formData.logo && (
                 <SummaryItem>
@@ -685,8 +774,21 @@ const StartBuilding = () => {
               <SummaryItem>
                 <SummaryLabel>Theme Color:</SummaryLabel>
                 <SummaryValue>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <div style={{ width: '20px', height: '20px', background: formData.themeColor, borderRadius: '4px' }}></div>
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: '20px',
+                        height: '20px',
+                        background: formData.themeColor,
+                        borderRadius: '4px',
+                      }}
+                    ></div>
                     {formData.themeColor}
                   </div>
                 </SummaryValue>
@@ -699,8 +801,6 @@ const StartBuilding = () => {
         return null;
     }
   };
-
-
 
   return (
     <Container>
@@ -727,9 +827,7 @@ const StartBuilding = () => {
           </StepIndicator>
         </Header>
 
-        <Content>
-          {renderStepContent()}
-        </Content>
+        <Content>{renderStepContent()}</Content>
 
         <Actions>
           <ActionButton

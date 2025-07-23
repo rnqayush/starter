@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import React, { useState } from 'react';
+import styled from 'styled-components';
 import {
   FaSearch,
   FaMapMarkerAlt,
   FaCalendarAlt,
   FaUsers,
-} from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
+} from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
 
 const SearchContainer = styled.div`
   background: ${theme.colors.white};
@@ -122,21 +122,21 @@ const SearchButton = styled.button`
 
 const HotelSearchForm = ({ onSearch, initialValues = {} }) => {
   const [searchData, setSearchData] = useState({
-    destination: initialValues.destination || "",
-    checkIn: initialValues.checkIn || "",
-    checkOut: initialValues.checkOut || "",
-    guests: initialValues.guests || "2",
+    destination: initialValues.destination || '',
+    checkIn: initialValues.checkIn || '',
+    checkOut: initialValues.checkOut || '',
+    guests: initialValues.guests || '2',
   });
 
-  const handleInputChange = (e) => {
+  const handleInputChange = e => {
     const { name, value } = e.target;
-    setSearchData((prev) => ({
+    setSearchData(prev => ({
       ...prev,
       [name]: value,
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = e => {
     e.preventDefault();
     if (onSearch) {
       onSearch(searchData);
@@ -144,7 +144,7 @@ const HotelSearchForm = ({ onSearch, initialValues = {} }) => {
   };
 
   // Get today's date for min attribute
-  const today = new Date().toISOString().split("T")[0];
+  const today = new Date().toISOString().split('T')[0];
 
   return (
     <SearchContainer>

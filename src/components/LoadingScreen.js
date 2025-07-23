@@ -1,5 +1,5 @@
-import React from "react";
-import styled, { keyframes } from "styled-components";
+import React from 'react';
+import styled, { keyframes } from 'styled-components';
 
 const spin = keyframes`
   0% { transform: rotate(0deg); }
@@ -81,10 +81,10 @@ const ProgressFill = styled.div`
   width: ${props => props.progress}%;
 `;
 
-const LoadingScreen = ({ 
-  text = "Loading...", 
+const LoadingScreen = ({
+  text = 'Loading...',
   progress = null,
-  showLogo = true 
+  showLogo = true,
 }) => {
   return (
     <LoadingContainer>
@@ -94,13 +94,13 @@ const LoadingScreen = ({
           <LogoSubtext>Your Ultimate Shopping Destination</LogoSubtext>
         </LogoContainer>
       )}
-      
+
       <SpinnerContainer>
         <Spinner />
       </SpinnerContainer>
-      
+
       <LoadingText>{text}</LoadingText>
-      
+
       {progress !== null && (
         <ProgressBar>
           <ProgressFill progress={progress} />

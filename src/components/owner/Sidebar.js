@@ -1,6 +1,6 @@
-import React, { useState, useMemo } from "react";
-import { Link, useLocation } from "react-router-dom";
-import styled from "styled-components";
+import React, { useState, useMemo } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import styled from 'styled-components';
 import {
   FaHome,
   FaPlus,
@@ -11,11 +11,11 @@ import {
   FaSignOutAlt,
   FaBars,
   FaTimes,
-} from "react-icons/fa";
-import { theme, media } from "../../styles/GlobalStyle";
+} from 'react-icons/fa';
+import { theme, media } from '../../styles/GlobalStyle';
 
 const SidebarContainer = styled.aside.withConfig({
-  shouldForwardProp: (prop) => prop !== "isOpen",
+  shouldForwardProp: prop => prop !== 'isOpen',
 })`
   position: fixed;
   top: 0;
@@ -31,7 +31,7 @@ const SidebarContainer = styled.aside.withConfig({
 
   ${media.tabletDown} {
     width: 16rem;
-    transform: translateX(${(props) => (props.isOpen ? "0" : "-100%")});
+    transform: translateX(${props => (props.isOpen ? '0' : '-100%')});
   }
 
   ${media.mobile} {
@@ -123,13 +123,13 @@ const SectionTitle = styled.h3`
 `;
 
 const NavItem = styled(Link).withConfig({
-  shouldForwardProp: (prop) => prop !== "active",
+  shouldForwardProp: prop => prop !== 'active',
 })`
   display: flex;
   align-items: center;
   gap: ${theme.spacing.md};
   padding: ${theme.spacing.md} ${theme.spacing.xl};
-  color: ${(props) =>
+  color: ${props =>
     props.active ? theme.colors.primary : theme.colors.gray700};
   text-decoration: none;
   font-weight: 500;
@@ -142,7 +142,7 @@ const NavItem = styled(Link).withConfig({
     background: ${theme.colors.gray50};
   }
 
-  ${(props) =>
+  ${props =>
     props.active &&
     `
     background: ${theme.colors.primary}10;
@@ -224,7 +224,7 @@ const MobileToggle = styled.button`
 `;
 
 const Overlay = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "isOpen",
+  shouldForwardProp: prop => prop !== 'isOpen',
 })`
   position: fixed;
   top: 0;
@@ -234,8 +234,8 @@ const Overlay = styled.div.withConfig({
   background: rgba(0, 0, 0, 0.5);
   z-index: 15;
   display: none;
-  opacity: ${(props) => (props.isOpen ? "1" : "0")};
-  visibility: ${(props) => (props.isOpen ? "visible" : "hidden")};
+  opacity: ${props => (props.isOpen ? '1' : '0')};
+  visibility: ${props => (props.isOpen ? 'visible' : 'hidden')};
   transition: all 0.3s ease;
 
   ${media.tabletDown} {
@@ -253,43 +253,50 @@ const Sidebar = () => {
     return pathSegments.length > 0 ? pathSegments[0] : '';
   }, [location.pathname]);
 
-  const isActive = (path) => location.pathname === path;
+  const isActive = path => location.pathname === path;
 
-  const navigationItems = useMemo(() => [
-    {
-      section: "Dashboard",
-      items: [
-        { path: `/${hotelSlug}/owner`, icon: FaHome, label: "Dashboard Home" },
-      ],
-    },
-    {
-      section: "Hotel Management",
-      items: [
-        { path: "/owner/add-hotel", icon: FaPlus, label: "Add Hotel" },
-        { path: "/owner/my-hotels", icon: FaHotel, label: "My Hotels" },
-      ],
-    },
-    {
-      section: "Room Management",
-      items: [{ path: "/owner/add-room/1", icon: FaBed, label: "Add Rooms" }],
-    },
-    {
-      section: "Bookings",
-      items: [
-        {
-          path: "/owner/bookings",
-          icon: FaCalendarCheck,
-          label: "Bookings Received",
-        },
-      ],
-    },
-    {
-      section: "Account",
-      items: [
-        { path: "/owner/profile", icon: FaUser, label: "Profile Settings" },
-      ],
-    },
-  ], [hotelSlug]);
+  const navigationItems = useMemo(
+    () => [
+      {
+        section: 'Dashboard',
+        items: [
+          {
+            path: `/${hotelSlug}/owner`,
+            icon: FaHome,
+            label: 'Dashboard Home',
+          },
+        ],
+      },
+      {
+        section: 'Hotel Management',
+        items: [
+          { path: '/owner/add-hotel', icon: FaPlus, label: 'Add Hotel' },
+          { path: '/owner/my-hotels', icon: FaHotel, label: 'My Hotels' },
+        ],
+      },
+      {
+        section: 'Room Management',
+        items: [{ path: '/owner/add-room/1', icon: FaBed, label: 'Add Rooms' }],
+      },
+      {
+        section: 'Bookings',
+        items: [
+          {
+            path: '/owner/bookings',
+            icon: FaCalendarCheck,
+            label: 'Bookings Received',
+          },
+        ],
+      },
+      {
+        section: 'Account',
+        items: [
+          { path: '/owner/profile', icon: FaUser, label: 'Profile Settings' },
+        ],
+      },
+    ],
+    [hotelSlug]
+  );
 
   const toggleSidebar = () => setIsOpen(!isOpen);
   const closeSidebar = () => setIsOpen(false);
@@ -311,10 +318,10 @@ const Sidebar = () => {
         </SidebarHeader>
 
         <SidebarNav>
-          {navigationItems.map((section) => (
+          {navigationItems.map(section => (
             <NavSection key={section.section}>
               <SectionTitle>{section.section}</SectionTitle>
-              {section.items.map((item) => (
+              {section.items.map(item => (
                 <NavItem
                   key={item.path}
                   to={item.path}

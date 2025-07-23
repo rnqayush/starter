@@ -1,10 +1,14 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import styled from "styled-components";
-import { FaStar, FaHeart, FaEnvelope } from "react-icons/fa";
-import { theme, media } from "../../styles/GlobalStyle";
-import EnquiryModal from "./EnquiryModal";
-import { getAvailabilityStatus, getAvailabilityLabel, getAvailabilityColor } from "../data/products";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+import { FaStar, FaHeart, FaEnvelope } from 'react-icons/fa';
+import { theme, media } from '../../styles/GlobalStyle';
+import EnquiryModal from './EnquiryModal';
+import {
+  getAvailabilityStatus,
+  getAvailabilityLabel,
+  getAvailabilityColor,
+} from '../data/products';
 
 const Card = styled.div`
   background: ${theme.colors.white};
@@ -66,13 +70,13 @@ const ProductImage = styled.img`
 `;
 
 const Badge = styled.div.withConfig({
-  shouldForwardProp: (prop) => prop !== "type",
+  shouldForwardProp: prop => prop !== 'type',
 })`
   position: absolute;
   top: ${theme.spacing.md};
   left: ${theme.spacing.md};
-  background: ${(props) =>
-    props.type === "sale" ? theme.colors.error : theme.colors.success};
+  background: ${props =>
+    props.type === 'sale' ? theme.colors.error : theme.colors.success};
   color: ${theme.colors.white};
   padding: ${theme.spacing.xs} ${theme.spacing.sm};
   border-radius: ${theme.borderRadius.sm};
@@ -210,9 +214,9 @@ const StarRating = styled.div`
 `;
 
 const Star = styled(FaStar).withConfig({
-  shouldForwardProp: (prop) => prop !== "filled",
+  shouldForwardProp: prop => prop !== 'filled',
 })`
-  color: ${(props) => (props.filled ? "#fbbf24" : theme.colors.gray300)};
+  color: ${props => (props.filled ? '#fbbf24' : theme.colors.gray300)};
   font-size: 0.8rem;
 `;
 
@@ -287,7 +291,11 @@ const ActionButtons = styled.div`
 
 const EnquireButton = styled.button`
   flex: 1;
-  background: linear-gradient(135deg, ${theme.colors.primary} 0%, ${theme.colors.primaryDark} 100%);
+  background: linear-gradient(
+    135deg,
+    ${theme.colors.primary} 0%,
+    ${theme.colors.primaryDark} 100%
+  );
   color: ${theme.colors.white};
   padding: ${theme.spacing.md} ${theme.spacing.lg};
   border-radius: ${theme.borderRadius.lg};
@@ -304,7 +312,11 @@ const EnquireButton = styled.button`
   font-size: 0.9rem;
 
   &:hover {
-    background: linear-gradient(135deg, ${theme.colors.primaryDark} 0%, ${theme.colors.primary} 100%);
+    background: linear-gradient(
+      135deg,
+      ${theme.colors.primaryDark} 0%,
+      ${theme.colors.primary} 100%
+    );
     transform: translateY(-3px);
     box-shadow: ${theme.shadows.lg};
   }
@@ -328,9 +340,9 @@ const EnquireButton = styled.button`
 `;
 
 const StockIndicator = styled.div.withConfig({
-  shouldForwardProp: (prop) => !["availability", "color"].includes(prop),
+  shouldForwardProp: prop => !['availability', 'color'].includes(prop),
 })`
-  color: ${(props) => props.color || theme.colors.gray600};
+  color: ${props => props.color || theme.colors.gray600};
   font-size: 0.8rem;
   font-weight: 600;
   margin-bottom: ${theme.spacing.sm};
@@ -345,11 +357,11 @@ const ProductCard = ({
   product,
   onToggleWishlist,
   isInWishlist = false,
-  storeSlug = "",
+  storeSlug = '',
 }) => {
   const [isEnquiryModalOpen, setIsEnquiryModalOpen] = useState(false);
 
-  const renderStars = (rating) => {
+  const renderStars = rating => {
     const stars = [];
     for (let i = 1; i <= 5; i++) {
       stars.push(<Star key={i} filled={i <= Math.floor(rating)} />);
@@ -361,26 +373,26 @@ const ProductCard = ({
     return Math.round(((original - current) / original) * 100);
   };
 
-  const handleEnquireClick = (e) => {
+  const handleEnquireClick = e => {
     e.preventDefault();
     e.stopPropagation();
     setIsEnquiryModalOpen(true);
   };
 
-  const handleWishlistToggle = (e) => {
+  const handleWishlistToggle = e => {
     e.preventDefault();
     e.stopPropagation();
     onToggleWishlist?.(product);
   };
 
-    const getBaseUrl = () => (storeSlug ? `/${storeSlug}` : "/ecommerce");
+  const getBaseUrl = () => (storeSlug ? `/${storeSlug}` : '/ecommerce');
 
   const availabilityStatus = getAvailabilityStatus(product);
   const availabilityLabel = getAvailabilityLabel(availabilityStatus);
   const availabilityColor = getAvailabilityColor(availabilityStatus);
 
   return (
-    <Link to={`${getBaseUrl()}/product/${product.id}`}>
+    <Link to={`/${storeSlug}/productdetail/${product.id}`}>
       <Card>
         <ImageContainer>
           <ProductImage src={product.image} alt={product.name} />
@@ -395,18 +407,18 @@ const ProductCard = ({
 
           <WishlistButton
             onClick={handleWishlistToggle}
-            title={isInWishlist ? "Remove from wishlist" : "Add to wishlist"}
+            title={isInWishlist ? 'Remove from wishlist' : 'Add to wishlist'}
           >
             <FaHeart
               style={{
-                color: isInWishlist ? theme.colors.error : "currentColor",
+                color: isInWishlist ? theme.colors.error : 'currentColor',
               }}
             />
           </WishlistButton>
         </ImageContainer>
 
         <CardContent>
-          <Category>{product.category.replace("-", " ")}</Category>
+          <Category>{product.category.replace('-', ' ')}</Category>
           <ProductName>{product.name}</ProductName>
           <Description>{product.description}</Description>
 
@@ -427,11 +439,11 @@ const ProductCard = ({
             )}
           </PriceContainer>
 
-                    <StockIndicator
+          <StockIndicator
             availability={availabilityStatus}
             color={availabilityColor}
           >
-            {availabilityStatus === "in_stock" && product.stock > 0
+            {availabilityStatus === 'in_stock' && product.stock > 0
               ? `${product.stock} in stock`
               : availabilityLabel}
           </StockIndicator>
@@ -439,10 +451,12 @@ const ProductCard = ({
           <ActionButtons>
             <EnquireButton
               onClick={handleEnquireClick}
-              disabled={availabilityStatus === "out_of_stock"}
+              disabled={availabilityStatus === 'out_of_stock'}
             >
               <FaEnvelope />
-              {availabilityStatus === "out_of_stock" ? "Not Available" : "Enquire Now"}
+              {availabilityStatus === 'out_of_stock'
+                ? 'Not Available'
+                : 'Enquire Now'}
             </EnquireButton>
           </ActionButtons>
         </CardContent>

@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import { FaUpload, FaTimes, FaSave, FaArrowLeft } from "react-icons/fa";
-import { theme } from "../../styles/GlobalStyle";
-import { productCategories } from "../data/sellerData";
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import { FaUpload, FaTimes, FaSave, FaArrowLeft } from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
+import { productCategories } from '../data/sellerData';
 
 const FormContainer = styled.div`
   max-width: 800px;
@@ -290,65 +290,65 @@ const PriceInput = styled(Input)`
 
 const AddProductTab = () => {
   const [formData, setFormData] = useState({
-    name: "",
-    price: "",
-    stock: "",
-    category: "",
-    description: "",
+    name: '',
+    price: '',
+    stock: '',
+    category: '',
+    description: '',
     images: [],
   });
 
   const [dragOver, setDragOver] = useState(false);
 
-  const handleInputChange = (e) => {
+  const handleInputChange = e => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
+    setFormData(prev => ({
       ...prev,
       [name]: value,
     }));
   };
 
-  const handleImageUpload = (files) => {
-    const newImages = Array.from(files).map((file) => ({
+  const handleImageUpload = files => {
+    const newImages = Array.from(files).map(file => ({
       id: Date.now() + Math.random(),
       file,
       url: URL.createObjectURL(file),
     }));
 
-    setFormData((prev) => ({
+    setFormData(prev => ({
       ...prev,
       images: [...prev.images, ...newImages],
     }));
   };
 
-  const handleImageRemove = (imageId) => {
-    setFormData((prev) => ({
+  const handleImageRemove = imageId => {
+    setFormData(prev => ({
       ...prev,
-      images: prev.images.filter((img) => img.id !== imageId),
+      images: prev.images.filter(img => img.id !== imageId),
     }));
   };
 
-  const handleDragOver = (e) => {
+  const handleDragOver = e => {
     e.preventDefault();
     setDragOver(true);
   };
 
-  const handleDragLeave = (e) => {
+  const handleDragLeave = e => {
     e.preventDefault();
     setDragOver(false);
   };
 
-  const handleDrop = (e) => {
+  const handleDrop = e => {
     e.preventDefault();
     setDragOver(false);
     const files = e.dataTransfer.files;
     handleImageUpload(files);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = e => {
     e.preventDefault();
     // Here you would normally send the data to your backend
-    alert("Product added successfully!");
+    alert('Product added successfully!');
   };
 
   const isFormValid =
@@ -393,7 +393,7 @@ const AddProductTab = () => {
                 required
               >
                 <option value="">Select a category</option>
-                {productCategories.map((category) => (
+                {productCategories.map(category => (
                   <option key={category} value={category}>
                     {category}
                   </option>
@@ -450,11 +450,11 @@ const AddProductTab = () => {
             <FormGroup className="full-width">
               <Label>Product Images</Label>
               <ImageUploadArea
-                className={dragOver ? "dragover" : ""}
+                className={dragOver ? 'dragover' : ''}
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
                 onDrop={handleDrop}
-                onClick={() => document.getElementById("imageInput").click()}
+                onClick={() => document.getElementById('imageInput').click()}
               >
                 <UploadIcon>
                   <FaUpload />
@@ -468,12 +468,12 @@ const AddProductTab = () => {
                 type="file"
                 multiple
                 accept="image/*"
-                onChange={(e) => handleImageUpload(e.target.files)}
+                onChange={e => handleImageUpload(e.target.files)}
               />
 
               {formData.images.length > 0 && (
                 <ImagePreviewGrid>
-                  {formData.images.map((image) => (
+                  {formData.images.map(image => (
                     <ImagePreview key={image.id}>
                       <PreviewImage src={image.url} alt="Product preview" />
                       <RemoveImageButton
