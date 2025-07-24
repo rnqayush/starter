@@ -105,6 +105,49 @@ export const authApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['Admin'],
     }),
+
+    // Password Reset
+    forgotPassword: builder.mutation({
+      query: (email) => ({
+        url: API_ENDPOINTS.AUTH.FORGOT_PASSWORD,
+        method: 'POST',
+        body: { email },
+      }),
+    }),
+
+    resetPassword: builder.mutation({
+      query: ({ token, password }) => ({
+        url: API_ENDPOINTS.AUTH.RESET_PASSWORD,
+        method: 'POST',
+        body: { token, password },
+      }),
+    }),
+
+    // Refresh Token
+    refreshToken: builder.mutation({
+      query: () => ({
+        url: API_ENDPOINTS.AUTH.REFRESH,
+        method: 'POST',
+      }),
+      invalidatesTags: ['User'],
+    }),
+
+    // Email Verification
+    verifyEmail: builder.mutation({
+      query: (token) => ({
+        url: API_ENDPOINTS.AUTH.VERIFY_EMAIL,
+        method: 'POST',
+        body: { token },
+      }),
+      invalidatesTags: ['User'],
+    }),
+
+    resendVerification: builder.mutation({
+      query: () => ({
+        url: API_ENDPOINTS.AUTH.RESEND_VERIFICATION,
+        method: 'POST',
+      }),
+    }),
   }),
 });
 
@@ -127,4 +170,15 @@ export const {
   
   // Admin auth
   useAdminLoginMutation,
+
+  // Password reset
+  useForgotPasswordMutation,
+  useResetPasswordMutation,
+
+  // Token management
+  useRefreshTokenMutation,
+
+  // Email verification
+  useVerifyEmailMutation,
+  useResendVerificationMutation,
 } = authApi;

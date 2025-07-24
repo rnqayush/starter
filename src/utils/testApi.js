@@ -1,16 +1,17 @@
-import { apiRequest } from '../services/apiClient';
-import { API_ENDPOINTS } from '../constants/api';
+import { store } from '../store';
+import { apiSlice } from '../store/api/apiSlice';
+import { authApi } from '../store/api/authApi';
 
-// Test function to verify API connection
+// Test function to verify API connection using RTK Query
 export const testApiConnection = async () => {
   try {
     console.log('Testing API connection...');
-    const response = await apiRequest.get(API_ENDPOINTS.TEST.PING);
-    console.log('API Response:', response.data);
+    const result = await store.dispatch(apiSlice.endpoints.ping.initiate()).unwrap();
+    console.log('API Response:', result);
     return {
       success: true,
       message: 'API connection successful',
-      data: response.data
+      data: result
     };
   } catch (error) {
     console.error('API Connection Error:', error);
@@ -22,7 +23,7 @@ export const testApiConnection = async () => {
   }
 };
 
-// Test authentication endpoints
+// Test authentication endpoints using RTK Query
 export const testAuthEndpoints = async () => {
   try {
     console.log('Testing authentication endpoints...');
@@ -36,14 +37,14 @@ export const testAuthEndpoints = async () => {
     };
     
     console.log('Testing user registration...');
-    // Note: This is just for testing - in real app, we'd use the auth service
-    const response = await apiRequest.post(API_ENDPOINTS.AUTH.REGISTER, testUser);
-    console.log('Registration Response:', response.data);
+    // Note: This is just for testing - in real app, we'd use the auth hooks
+    const result = await store.dispatch(authApi.endpoints.register.initiate(testUser)).unwrap();
+    console.log('Registration Response:', result);
     
     return {
       success: true,
       message: 'Authentication endpoints working',
-      data: response.data
+      data: result
     };
   } catch (error) {
     console.error('Auth Test Error:', error);
@@ -54,4 +55,3 @@ export const testAuthEndpoints = async () => {
     };
   }
 };
-
