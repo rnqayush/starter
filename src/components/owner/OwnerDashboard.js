@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import {
   FaHotel,
@@ -10,6 +10,11 @@ import {
 } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import Sidebar from './Sidebar';
+import AddHotelPage from './AddHotelPage';
+import MyHotelsPage from './MyHotelsPage';
+import AddRoomPage from './AddRoomPage';
+import BookingsReceivedPage from './BookingsReceivedPage';
+import ProfileSettingsPage from './ProfileSettingsPage';
 import { Card, CardContent, Badge } from '../shared/Card';
 import { Button } from '../shared/Button';
 import { theme, media } from '../../styles/GlobalStyle';
@@ -405,8 +410,13 @@ const MobileBookingDetails = styled.div`
   }
 `;
 
+const PageContent = styled.div`
+  width: 100%;
+`;
+
 const OwnerDashboard = () => {
   const { ownerHotels, bookings } = useAppContext();
+  const [activeSection, setActiveSection] = useState('dashboard');
 
   const ownerBookings = bookings.filter(booking =>
     ownerHotels.some(hotel => hotel.id === booking.hotelId)
@@ -426,26 +436,26 @@ const OwnerDashboard = () => {
       title: 'Add New Hotel',
       description: 'Register a new hotel property with rooms and amenities',
       icon: FaHotel,
-      link: '/owner/add-hotel',
+      action: () => setActiveSection('add-hotel'),
     },
     {
       title: 'Manage Hotel Content',
       description:
         'Edit hotel information, gallery, amenities and website content',
       icon: FaEdit,
-      link: '/owner/content-manager',
+      action: () => setActiveSection('my-hotels'),
     },
     {
       title: 'Add Rooms',
       description: 'Add new rooms to your existing hotel properties',
       icon: FaBed,
-      link: '/owner/my-hotels',
+      action: () => setActiveSection('my-hotels'),
     },
     {
       title: 'Manage Bookings',
       description: 'Review and manage all incoming booking requests',
       icon: FaCalendarCheck,
-      link: '/owner/bookings',
+      action: () => setActiveSection('bookings'),
     },
   ];
 
@@ -471,175 +481,209 @@ const OwnerDashboard = () => {
     }
   };
 
-  return (
-    <DashboardContainer>
-      <Sidebar />
+  const renderContent = () => {
+    switch (activeSection) {
+      case 'add-hotel':
+        return (
+          <PageContent>
+            <AddHotelPage />
+          </PageContent>
+        );
+      case 'my-hotels':
+        return (
+          <PageContent>
+            <MyHotelsPage />
+          </PageContent>
+        );
+      case 'add-room':
+        return (
+          <PageContent>
+            <AddRoomPage />
+          </PageContent>
+        );
+      case 'bookings':
+        return (
+          <PageContent>
+            <BookingsReceivedPage />
+          </PageContent>
+        );
+      case 'profile':
+        return (
+          <PageContent>
+            <ProfileSettingsPage />
+          </PageContent>
+        );
+      default:
+        return (
+          <>
+            <DashboardHeader>
+              <WelcomeTitle>Welcome Back!</WelcomeTitle>
+              <WelcomeSubtitle>
+                Here's what's happening with your hotels today
+              </WelcomeSubtitle>
+            </DashboardHeader>
 
-      <MainContent>
-        <DashboardHeader>
-          <WelcomeTitle>Welcome Back!</WelcomeTitle>
-          <WelcomeSubtitle>
-            Here's what's happening with your hotels today
-          </WelcomeSubtitle>
-        </DashboardHeader>
-
-        <StatsGrid>
-          <StatCard>
-            <CardContent>
-              <StatIcon
-                iconBg={`${theme.colors.primary}20`}
-                iconColor={theme.colors.primary}
-              >
-                <FaHotel />
-              </StatIcon>
-              <StatValue>{stats.totalHotels}</StatValue>
-              <StatLabel>Total Hotels</StatLabel>
-            </CardContent>
-          </StatCard>
-
-          <StatCard>
-            <CardContent>
-              <StatIcon
-                iconBg={`${theme.colors.success}20`}
-                iconColor={theme.colors.success}
-              >
-                <FaBed />
-              </StatIcon>
-              <StatValue>{stats.totalRooms}</StatValue>
-              <StatLabel>Total Rooms</StatLabel>
-            </CardContent>
-          </StatCard>
-
-          <StatCard>
-            <CardContent>
-              <StatIcon
-                iconBg={`${theme.colors.accent}20`}
-                iconColor={theme.colors.accent}
-              >
-                <FaCalendarCheck />
-              </StatIcon>
-              <StatValue>{stats.totalBookings}</StatValue>
-              <StatLabel>Total Bookings</StatLabel>
-            </CardContent>
-          </StatCard>
-
-          <StatCard>
-            <CardContent>
-              <StatIcon
-                iconBg={`${theme.colors.warning}20`}
-                iconColor={theme.colors.warning}
-              >
-                <FaEye />
-              </StatIcon>
-              <StatValue>{stats.pendingBookings}</StatValue>
-              <StatLabel>Pending Bookings</StatLabel>
-            </CardContent>
-          </StatCard>
-        </StatsGrid>
-
-        <SectionTitle>Quick Actions</SectionTitle>
-        <QuickActionsGrid>
-          {quickActions.map(action => (
-            <Link
-              key={action.title}
-              to={action.link}
-              style={{ textDecoration: 'none' }}
-            >
-              <ActionCard>
+            <StatsGrid>
+              <StatCard>
                 <CardContent>
-                  <ActionIcon>
-                    <action.icon />
-                  </ActionIcon>
-                  <ActionTitle>{action.title}</ActionTitle>
-                  <ActionDescription>{action.description}</ActionDescription>
-                  <Button variant="secondary">
-                    <FaPlus />
-                    Get Started
-                  </Button>
+                  <StatIcon
+                    iconBg={`${theme.colors.primary}20`}
+                    iconColor={theme.colors.primary}
+                  >
+                    <FaHotel />
+                  </StatIcon>
+                  <StatValue>{stats.totalHotels}</StatValue>
+                  <StatLabel>Total Hotels</StatLabel>
                 </CardContent>
-              </ActionCard>
-            </Link>
-          ))}
-        </QuickActionsGrid>
+              </StatCard>
 
-        <RecentBookingsSection>
-          <SectionTitle>Recent Bookings</SectionTitle>
-          <BookingsTable>
-            <TableHeader>
-              <div>Guest & Hotel</div>
-              <div>Check-in</div>
-              <div>Check-out</div>
-              <div>Status</div>
-              <div>Actions</div>
-            </TableHeader>
+              <StatCard>
+                <CardContent>
+                  <StatIcon
+                    iconBg={`${theme.colors.success}20`}
+                    iconColor={theme.colors.success}
+                  >
+                    <FaBed />
+                  </StatIcon>
+                  <StatValue>{stats.totalRooms}</StatValue>
+                  <StatLabel>Total Rooms</StatLabel>
+                </CardContent>
+              </StatCard>
 
-            {recentBookings.length > 0 ? (
-              recentBookings.map(booking => (
-                <TableRow key={booking.id}>
-                  <BookingInfo>
-                    <GuestName>{booking.guestName}</GuestName>
-                    <HotelRoom>
-                      {booking.hotelName} - {booking.roomName}
-                    </HotelRoom>
-                  </BookingInfo>
-                  <div className="desktop-only">
-                    {formatDate(booking.checkIn)}
-                  </div>
-                  <div className="desktop-only">
-                    {formatDate(booking.checkOut)}
-                  </div>
-                  <div className="desktop-only">
-                    <Badge variant={getStatusVariant(booking.status)}>
-                      {booking.status.charAt(0).toUpperCase() +
-                        booking.status.slice(1)}
-                    </Badge>
-                  </div>
-                  <div className="desktop-only">
-                    <Button variant="outline" size="small">
-                      <FaEye />
-                      View
+              <StatCard>
+                <CardContent>
+                  <StatIcon
+                    iconBg={`${theme.colors.accent}20`}
+                    iconColor={theme.colors.accent}
+                  >
+                    <FaCalendarCheck />
+                  </StatIcon>
+                  <StatValue>{stats.totalBookings}</StatValue>
+                  <StatLabel>Total Bookings</StatLabel>
+                </CardContent>
+              </StatCard>
+
+              <StatCard>
+                <CardContent>
+                  <StatIcon
+                    iconBg={`${theme.colors.warning}20`}
+                    iconColor={theme.colors.warning}
+                  >
+                    <FaEye />
+                  </StatIcon>
+                  <StatValue>{stats.pendingBookings}</StatValue>
+                  <StatLabel>Pending Bookings</StatLabel>
+                </CardContent>
+              </StatCard>
+            </StatsGrid>
+
+            <SectionTitle>Quick Actions</SectionTitle>
+            <QuickActionsGrid>
+              {quickActions.map(action => (
+                <ActionCard key={action.title} onClick={action.action}>
+                  <CardContent>
+                    <ActionIcon>
+                      <action.icon />
+                    </ActionIcon>
+                    <ActionTitle>{action.title}</ActionTitle>
+                    <ActionDescription>{action.description}</ActionDescription>
+                    <Button variant="secondary">
+                      <FaPlus />
+                      Get Started
                     </Button>
-                  </div>
+                  </CardContent>
+                </ActionCard>
+              ))}
+            </QuickActionsGrid>
 
-                  <MobileBookingDetails>
-                    <div className="detail">
-                      <div className="label">Check-in</div>
-                      <div className="value">{formatDate(booking.checkIn)}</div>
-                    </div>
-                    <div className="detail">
-                      <div className="label">Check-out</div>
-                      <div className="value">
+            <RecentBookingsSection>
+              <SectionTitle>Recent Bookings</SectionTitle>
+              <BookingsTable>
+                <TableHeader>
+                  <div>Guest & Hotel</div>
+                  <div>Check-in</div>
+                  <div>Check-out</div>
+                  <div>Status</div>
+                  <div>Actions</div>
+                </TableHeader>
+
+                {recentBookings.length > 0 ? (
+                  recentBookings.map(booking => (
+                    <TableRow key={booking.id}>
+                      <BookingInfo>
+                        <GuestName>{booking.guestName}</GuestName>
+                        <HotelRoom>
+                          {booking.hotelName} - {booking.roomName}
+                        </HotelRoom>
+                      </BookingInfo>
+                      <div className="desktop-only">
+                        {formatDate(booking.checkIn)}
+                      </div>
+                      <div className="desktop-only">
                         {formatDate(booking.checkOut)}
                       </div>
-                    </div>
-                    <div className="detail">
-                      <div className="label">Status</div>
-                      <div className="value">
+                      <div className="desktop-only">
                         <Badge variant={getStatusVariant(booking.status)}>
                           {booking.status.charAt(0).toUpperCase() +
                             booking.status.slice(1)}
                         </Badge>
                       </div>
+                      <div className="desktop-only">
+                        <Button variant="outline" size="small">
+                          <FaEye />
+                          View
+                        </Button>
+                      </div>
+
+                      <MobileBookingDetails>
+                        <div className="detail">
+                          <div className="label">Check-in</div>
+                          <div className="value">{formatDate(booking.checkIn)}</div>
+                        </div>
+                        <div className="detail">
+                          <div className="label">Check-out</div>
+                          <div className="value">
+                            {formatDate(booking.checkOut)}
+                          </div>
+                        </div>
+                        <div className="detail">
+                          <div className="label">Status</div>
+                          <div className="value">
+                            <Badge variant={getStatusVariant(booking.status)}>
+                              {booking.status.charAt(0).toUpperCase() +
+                                booking.status.slice(1)}
+                            </Badge>
+                          </div>
+                        </div>
+                      </MobileBookingDetails>
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <div
+                      style={{
+                        gridColumn: '1 / -1',
+                        textAlign: 'center',
+                        color: theme.colors.gray600,
+                        padding: theme.spacing.xxl,
+                      }}
+                    >
+                      No bookings yet. Start by adding your first hotel!
                     </div>
-                  </MobileBookingDetails>
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <div
-                  style={{
-                    gridColumn: '1 / -1',
-                    textAlign: 'center',
-                    color: theme.colors.gray600,
-                    padding: theme.spacing.xxl,
-                  }}
-                >
-                  No bookings yet. Start by adding your first hotel!
-                </div>
-              </TableRow>
-            )}
-          </BookingsTable>
-        </RecentBookingsSection>
+                  </TableRow>
+                )}
+              </BookingsTable>
+            </RecentBookingsSection>
+          </>
+        );
+    }
+  };
+
+  return (
+    <DashboardContainer>
+      <Sidebar activeSection={activeSection} setActiveSection={setActiveSection} />
+      <MainContent>
+        {renderContent()}
       </MainContent>
     </DashboardContainer>
   );
