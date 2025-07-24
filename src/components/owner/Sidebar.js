@@ -122,7 +122,42 @@ const SectionTitle = styled.h3`
   }
 `;
 
-const NavItem = styled(Link).withConfig({
+const NavItem = styled.div.withConfig({
+  shouldForwardProp: prop => prop !== 'active',
+})`
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.md};
+  padding: ${theme.spacing.md} ${theme.spacing.xl};
+  color: ${props =>
+    props.active ? theme.colors.primary : theme.colors.gray700};
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  position: relative;
+  font-size: 0.875rem;
+  cursor: pointer;
+
+  &:hover {
+    color: ${theme.colors.primary};
+    background: ${theme.colors.gray50};
+  }
+
+  ${props =>
+    props.active &&
+    `
+    background: ${theme.colors.primary}10;
+    border-right: 3px solid ${theme.colors.primary};
+  `}
+
+  ${media.mobile} {
+    padding: ${theme.spacing.sm} ${theme.spacing.lg};
+    gap: ${theme.spacing.sm};
+    font-size: 0.8125rem;
+  }
+`;
+
+const NavLink = styled(Link).withConfig({
   shouldForwardProp: prop => prop !== 'active',
 })`
   display: flex;
@@ -243,7 +278,7 @@ const Overlay = styled.div.withConfig({
   }
 `;
 
-const Sidebar = () => {
+const Sidebar = ({ activeSection, setActiveSection }) => {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -253,7 +288,7 @@ const Sidebar = () => {
     return pathSegments.length > 0 ? pathSegments[0] : '';
   }, [location.pathname]);
 
-  const isActive = path => location.pathname === path;
+  const isActive = sectionKey => activeSection === sectionKey;
 
   const navigationItems = useMemo(
     () => [
@@ -261,45 +296,74 @@ const Sidebar = () => {
         section: 'Dashboard',
         items: [
           {
-            path: `/${hotelSlug}/owner`,
+            key: 'dashboard',
             icon: FaHome,
             label: 'Dashboard Home',
+            action: () => setActiveSection('dashboard'),
           },
         ],
       },
       {
         section: 'Hotel Management',
         items: [
-          { path: '/owner/add-hotel', icon: FaPlus, label: 'Add Hotel' },
-          { path: '/owner/my-hotels', icon: FaHotel, label: 'My Hotels' },
+          { 
+            key: 'add-hotel', 
+            icon: FaPlus, 
+            label: 'Add Hotel',
+            action: () => setActiveSection('add-hotel'),
+          },
+          { 
+            key: 'my-hotels', 
+            icon: FaHotel, 
+            label: 'My Hotels',
+            action: () => setActiveSection('my-hotels'),
+          },
         ],
       },
       {
         section: 'Room Management',
-        items: [{ path: '/owner/add-room/1', icon: FaBed, label: 'Add Rooms' }],
+        items: [
+          { 
+            key: 'add-room', 
+            icon: FaBed, 
+            label: 'Add Rooms',
+            action: () => setActiveSection('add-room'),
+          }
+        ],
       },
       {
         section: 'Bookings',
         items: [
           {
-            path: '/owner/bookings',
+            key: 'bookings',
             icon: FaCalendarCheck,
             label: 'Bookings Received',
+            action: () => setActiveSection('bookings'),
           },
         ],
       },
       {
         section: 'Account',
         items: [
-          { path: '/owner/profile', icon: FaUser, label: 'Profile Settings' },
+          { 
+            key: 'profile', 
+            icon: FaUser, 
+            label: 'Profile Settings',
+            action: () => setActiveSection('profile'),
+          },
         ],
       },
     ],
-    [hotelSlug]
+    [setActiveSection]
   );
 
   const toggleSidebar = () => setIsOpen(!isOpen);
   const closeSidebar = () => setIsOpen(false);
+
+  const handleNavClick = (action) => {
+    action();
+    closeSidebar();
+  };
 
   return (
     <>
@@ -323,10 +387,9 @@ const Sidebar = () => {
               <SectionTitle>{section.section}</SectionTitle>
               {section.items.map(item => (
                 <NavItem
-                  key={item.path}
-                  to={item.path}
-                  active={isActive(item.path)}
-                  onClick={closeSidebar}
+                  key={item.key}
+                  active={isActive(item.key)}
+                  onClick={() => handleNavClick(item.action)}
                 >
                   <NavIcon>
                     <item.icon />
@@ -338,12 +401,12 @@ const Sidebar = () => {
           ))}
 
           <NavSection>
-            <NavItem to={`/${hotelSlug}`} onClick={closeSidebar}>
+            <NavLink to={`/${hotelSlug}`} onClick={closeSidebar}>
               <NavIcon>
                 <FaSignOutAlt />
               </NavIcon>
               Back to Customer View
-            </NavItem>
+            </NavLink>
           </NavSection>
         </SidebarNav>
       </SidebarContainer>
