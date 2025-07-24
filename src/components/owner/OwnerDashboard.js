@@ -10,6 +10,10 @@ import {
 } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import Sidebar from './Sidebar';
+import { Card, CardContent, Badge } from '../shared/Card';
+import { Button } from '../shared/Button';
+import { theme, media } from '../../styles/GlobalStyle';
+import { useAppContext } from '../../context/AppContext';
 // Placeholder components for deleted legacy components
 const PlaceholderContent = ({ title, description }) => (
   <div style={{ padding: '2rem', textAlign: 'center' }}>
@@ -20,10 +24,7 @@ const PlaceholderContent = ({ title, description }) => (
     </p>
   </div>
 );
-import { Card, CardContent, Badge } from '../shared/Card';
-import { Button } from '../shared/Button';
-import { theme, media } from '../../styles/GlobalStyle';
-import { useAppContext } from '../../context/AppContext';
+
 
 const DashboardContainer = styled.div`
   display: flex;
