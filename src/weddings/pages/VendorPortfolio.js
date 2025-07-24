@@ -520,7 +520,7 @@ const VendorPortfolio = () => {
   useEffect(() => {
     document.addEventListener('keydown', handleKeyPress);
     return () => document.removeEventListener('keydown', handleKeyPress);
-  }, [imageViewer.open, selectedPortfolio]);
+  }, [handleKeyPress, imageViewer.open, selectedPortfolio]);
 
   if (loading) {
     return (

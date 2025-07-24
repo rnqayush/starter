@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams, useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import HotelModule from '../hotel';
 import EcommerceModule from '../ecommerce';
 import AutomobileModule from '../automobiles';
@@ -10,13 +10,9 @@ import { getVendorBySlug } from '../ecommerce/data/vendors';
 import { getVendorBySlug as getAutomobileVendorBySlug } from '../automobiles/data/vendors';
 import { getVendorById } from '../weddings/data/vendors';
 import { getBusinessTemplate } from '../business/data/businessTemplates';
-import HotelDetail from '../hotel/pages/HotelDetail';
-import EcommerceMain from '../ecommerce/pages/EcommerceMain';
 
 const SmartRouter = () => {
   const { slug } = useParams();
-  const location = useLocation();
-  const path = location.pathname;
 
   // Helper function to determine module type based on slug
   const getModuleType = slug => {
