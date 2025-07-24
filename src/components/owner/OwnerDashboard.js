@@ -638,7 +638,9 @@ const OwnerDashboard = () => {
                       <MobileBookingDetails>
                         <div className="detail">
                           <div className="label">Check-in</div>
-                          <div className="value">{formatDate(booking.checkIn)}</div>
+                          <div className="value">
+                            {formatDate(booking.checkIn)}
+                          </div>
                         </div>
                         <div className="detail">
                           <div className="label">Check-out</div>
@@ -681,10 +683,11 @@ const OwnerDashboard = () => {
 
   return (
     <DashboardContainer>
-      <Sidebar activeSection={activeSection} setActiveSection={setActiveSection} />
-      <MainContent>
-        {renderContent()}
-      </MainContent>
+      <Sidebar
+        activeSection={activeSection}
+        setActiveSection={setActiveSection}
+      />
+      <MainContent>{renderContent()}</MainContent>
     </DashboardContainer>
   );
 };

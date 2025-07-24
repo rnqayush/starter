@@ -320,9 +320,7 @@ const AddHotelPageContent = () => {
               <FormGroup>
                 <Label>Upload Images</Label>
                 <ImageUploadArea
-                  onClick={() =>
-                    document.getElementById('imageUpload').click()
-                  }
+                  onClick={() => document.getElementById('imageUpload').click()}
                 >
                   <UploadIcon>
                     <FaUpload />

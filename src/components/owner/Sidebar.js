@@ -306,15 +306,15 @@ const Sidebar = ({ activeSection, setActiveSection }) => {
       {
         section: 'Hotel Management',
         items: [
-          { 
-            key: 'add-hotel', 
-            icon: FaPlus, 
+          {
+            key: 'add-hotel',
+            icon: FaPlus,
             label: 'Add Hotel',
             action: () => setActiveSection('add-hotel'),
           },
-          { 
-            key: 'my-hotels', 
-            icon: FaHotel, 
+          {
+            key: 'my-hotels',
+            icon: FaHotel,
             label: 'My Hotels',
             action: () => setActiveSection('my-hotels'),
           },
@@ -323,12 +323,12 @@ const Sidebar = ({ activeSection, setActiveSection }) => {
       {
         section: 'Room Management',
         items: [
-          { 
-            key: 'add-room', 
-            icon: FaBed, 
+          {
+            key: 'add-room',
+            icon: FaBed,
             label: 'Add Rooms',
             action: () => setActiveSection('add-room'),
-          }
+          },
         ],
       },
       {
@@ -345,9 +345,9 @@ const Sidebar = ({ activeSection, setActiveSection }) => {
       {
         section: 'Account',
         items: [
-          { 
-            key: 'profile', 
-            icon: FaUser, 
+          {
+            key: 'profile',
+            icon: FaUser,
             label: 'Profile Settings',
             action: () => setActiveSection('profile'),
           },
@@ -360,7 +360,7 @@ const Sidebar = ({ activeSection, setActiveSection }) => {
   const toggleSidebar = () => setIsOpen(!isOpen);
   const closeSidebar = () => setIsOpen(false);
 
-  const handleNavClick = (action) => {
+  const handleNavClick = action => {
     action();
     closeSidebar();
   };

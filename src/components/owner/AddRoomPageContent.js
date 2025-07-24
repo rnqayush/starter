@@ -80,7 +80,9 @@ const FormActions = styled.div`
 const AddRoomPageContent = ({ setActiveSection }) => {
   const { hotels, setHotels, setOwnerHotels, ownerHotels } = useAppContext();
 
-  const [selectedHotelId, setSelectedHotelId] = useState(ownerHotels[0]?.id || '');
+  const [selectedHotelId, setSelectedHotelId] = useState(
+    ownerHotels[0]?.id || ''
+  );
   const [formData, setFormData] = useState({
     name: '',
     type: 'Standard',
@@ -115,7 +117,7 @@ const AddRoomPageContent = ({ setActiveSection }) => {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    
+
     if (!selectedHotelId) {
       alert('Please select a hotel first');
       return;
@@ -200,7 +202,7 @@ const AddRoomPageContent = ({ setActiveSection }) => {
                 <Label>Select Hotel *</Label>
                 <Select
                   value={selectedHotelId}
-                  onChange={(e) => setSelectedHotelId(e.target.value)}
+                  onChange={e => setSelectedHotelId(e.target.value)}
                   required
                 >
                   <option value="">Choose a hotel</option>
@@ -329,7 +331,11 @@ const AddRoomPageContent = ({ setActiveSection }) => {
               >
                 Cancel
               </Button>
-              <Button type="submit" disabled={isSubmitting || !selectedHotelId} size="large">
+              <Button
+                type="submit"
+                disabled={isSubmitting || !selectedHotelId}
+                size="large"
+              >
                 {isSubmitting ? 'Adding Room...' : 'Add Room'}
               </Button>
             </FormActions>

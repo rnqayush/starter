@@ -153,8 +153,8 @@ const BookingsReceivedPageContent = () => {
               No Bookings Yet
             </h3>
             <p style={{ fontSize: '1.125rem', lineHeight: 1.6 }}>
-              You haven't received any booking requests yet. Once customers
-              book your rooms, they'll appear here.
+              You haven't received any booking requests yet. Once customers book
+              your rooms, they'll appear here.
             </p>
           </EmptyState>
         </Card>
@@ -204,18 +204,14 @@ const BookingsReceivedPageContent = () => {
                   <Button
                     variant="success"
                     size="small"
-                    onClick={() =>
-                      handleBookingAction(booking.id, 'confirmed')
-                    }
+                    onClick={() => handleBookingAction(booking.id, 'confirmed')}
                   >
                     <FaCheck />
                   </Button>
                   <Button
                     variant="danger"
                     size="small"
-                    onClick={() =>
-                      handleBookingAction(booking.id, 'rejected')
-                    }
+                    onClick={() => handleBookingAction(booking.id, 'rejected')}
                   >
                     <FaTimes />
                   </Button>
