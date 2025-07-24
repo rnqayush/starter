@@ -11,6 +11,10 @@ import {
 import { Link } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import AddHotelPageContent from './AddHotelPageContent';
+import MyHotelsPageContent from './MyHotelsPageContent';
+import AddRoomPageContent from './AddRoomPageContent';
+import BookingsReceivedPageContent from './BookingsReceivedPageContent';
+import ProfileSettingsPageContent from './ProfileSettingsPageContent';
 import { Card, CardContent, Badge } from '../shared/Card';
 import { Button } from '../shared/Button';
 import { theme, media } from '../../styles/GlobalStyle';
