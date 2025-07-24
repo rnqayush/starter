@@ -10,11 +10,16 @@ import {
 } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import Sidebar from './Sidebar';
-import AddHotelPageContent from './AddHotelPageContent';
-import MyHotelsPageContent from './MyHotelsPageContent';
-import AddRoomPageContent from './AddRoomPageContent';
-import BookingsReceivedPageContent from './BookingsReceivedPageContent';
-import ProfileSettingsPageContent from './ProfileSettingsPageContent';
+// Placeholder components for deleted legacy components
+const PlaceholderContent = ({ title, description }) => (
+  <div style={{ padding: '2rem', textAlign: 'center' }}>
+    <h2>{title}</h2>
+    <p style={{ color: '#666', marginTop: '1rem' }}>{description}</p>
+    <p style={{ color: '#999', fontSize: '0.9rem', marginTop: '2rem' }}>
+      This feature will be implemented with backend integration.
+    </p>
+  </div>
+);
 import { Card, CardContent, Badge } from '../shared/Card';
 import { Button } from '../shared/Button';
 import { theme, media } from '../../styles/GlobalStyle';
@@ -486,31 +491,46 @@ const OwnerDashboard = () => {
       case 'add-hotel':
         return (
           <PageContent>
-            <AddHotelPageContent />
+            <PlaceholderContent 
+              title="Add Hotel" 
+              description="Add new hotels to your portfolio" 
+            />
           </PageContent>
         );
       case 'my-hotels':
         return (
           <PageContent>
-            <MyHotelsPageContent setActiveSection={setActiveSection} />
+            <PlaceholderContent 
+              title="My Hotels" 
+              description="Manage your existing hotels" 
+            />
           </PageContent>
         );
       case 'add-room':
         return (
           <PageContent>
-            <AddRoomPageContent setActiveSection={setActiveSection} />
+            <PlaceholderContent 
+              title="Add Room" 
+              description="Add rooms to your hotels" 
+            />
           </PageContent>
         );
       case 'bookings':
         return (
           <PageContent>
-            <BookingsReceivedPageContent />
+            <PlaceholderContent 
+              title="Bookings Received" 
+              description="View and manage your bookings" 
+            />
           </PageContent>
         );
       case 'profile':
         return (
           <PageContent>
-            <ProfileSettingsPageContent />
+            <PlaceholderContent 
+              title="Profile Settings" 
+              description="Update your profile information" 
+            />
           </PageContent>
         );
       default:
