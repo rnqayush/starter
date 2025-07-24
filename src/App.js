@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
@@ -20,9 +20,6 @@ import StartBuilding from './components/StartBuilding';
 // Shared Components
 import ScrollToTop from './components/shared/ScrollToTop';
 import SmartRouter from './components/SmartRouter';
-
-// Hotel Module
-import HotelModule from './hotel';
 
 // Owner Components (Active)
 import OwnerDashboard from './components/owner/OwnerDashboard';
