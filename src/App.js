@@ -67,11 +67,11 @@ function App() {
       <Provider store={store}>
         <AuthProvider>
           <NotificationProvider>
-                <Router>
-                <AppContainer>
-                  <GlobalStyle />
-                  <ScrollToTop />
-                  <Routes>
+            <Router>
+              <AppContainer>
+                <GlobalStyle />
+                <ScrollToTop />
+                <Routes>
                   {/* Main Platform Routes (Highest Priority) */}
                   <Route path="/" element={<PlatformHomePage />} />
                   <Route path="/pricing" element={<PricingPage />} />
@@ -151,7 +151,7 @@ function App() {
                     />
                   </Route>
                 </Routes>
-                
+
                 {/* Toast Container for notifications */}
                 <ToastContainer
                   position="top-right"
@@ -166,7 +166,7 @@ function App() {
                   theme="light"
                 />
               </AppContainer>
-              </Router>
+            </Router>
           </NotificationProvider>
         </AuthProvider>
       </Provider>
