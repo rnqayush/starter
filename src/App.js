@@ -20,14 +20,8 @@ import SmartRouter from './components/SmartRouter';
 // Hotel Module
 import HotelModule from './hotel';
 
-// Owner Components (Legacy routes - should be migrated to slug-based)
-import AddHotelPage from './components/owner/AddHotelPage';
-import MyHotelsPage from './components/owner/MyHotelsPage';
-import AddRoomPage from './components/owner/AddRoomPage';
-import BookingsReceivedPage from './components/owner/BookingsReceivedPage';
-import ProfileSettingsPage from './components/owner/ProfileSettingsPage';
-import ContentManagerSelector from './components/owner/ContentManagerSelector';
-import HotelContentManager from './components/owner/HotelContentManager';
+// Owner Components (Active)
+import OwnerDashboard from './components/owner/OwnerDashboard';
 
 // Mock data
 import {
@@ -44,7 +38,6 @@ import AutomobileCategoryLanding from './components/category/AutomobileCategoryL
 import BusinessCategoryLanding from './components/category/BusinessCategoryLanding';
 
 // Store Listing Pages
-import OwnerDashboard from './components/owner/OwnerDashboard';
 import RoomDetail from './hotel/pages/RoomDetail';
 import Booking from './hotel/pages/Booking';
 import BookingConfirmation from './hotel/pages/BookingConfirmation';
