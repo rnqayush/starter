@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { GlobalStyle } from './styles/GlobalStyle';
 import { store } from './store';
 import ErrorBoundary from './components/ErrorBoundary';
+import { AuthProvider } from './context/AuthContext';
 
 // Import toast styles
 import 'react-toastify/dist/ReactToastify.css';
@@ -64,12 +65,13 @@ function App() {
   return (
     <ErrorBoundary>
       <Provider store={store}>
-        <NotificationProvider>
-              <Router>
-                <AppContainer>
-                  <GlobalStyle />
-                  <ScrollToTop />
-                  <Routes>
+        <AuthProvider>
+          <NotificationProvider>
+            <Router>
+              <AppContainer>
+                <GlobalStyle />
+                <ScrollToTop />
+                <Routes>
                   {/* Main Platform Routes (Highest Priority) */}
                   <Route path="/" element={<PlatformHomePage />} />
                   <Route path="/pricing" element={<PricingPage />} />
@@ -149,7 +151,7 @@ function App() {
                     />
                   </Route>
                 </Routes>
-                
+
                 {/* Toast Container for notifications */}
                 <ToastContainer
                   position="top-right"
@@ -165,7 +167,8 @@ function App() {
                 />
               </AppContainer>
             </Router>
-        </NotificationProvider>
+          </NotificationProvider>
+        </AuthProvider>
       </Provider>
     </ErrorBoundary>
   );
