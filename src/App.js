@@ -1,10 +1,16 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { ToastContainer } from 'react-toastify';
 import styled from 'styled-components';
 import { GlobalStyle } from './styles/GlobalStyle';
 import { AppContext } from './context/AppContext';
 import { AuthProvider } from './context/AuthContext';
 import ErrorBoundary from './components/ErrorBoundary';
+
+// Import toast styles
+import 'react-toastify/dist/ReactToastify.css';
 
 // User Components
 import PlatformHomePage from './components/user/PlatformHomePage';
@@ -59,6 +65,17 @@ const AppContainer = styled.div`
   background-color: #f8fafc;
 `;
 
+// Create a client for React Query
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      refetchOnWindowFocus: false,
+      staleTime: 5 * 60 * 1000, // 5 minutes
+    },
+  },
+});
+
 function App() {
   const [user, setUser] = useState(null);
   const [userType, setUserType] = useState('customer'); // 'customer' or 'owner'
@@ -81,14 +98,15 @@ function App() {
 
   return (
     <ErrorBoundary>
-      <AuthProvider>
-        <NotificationProvider>
-          <AppContext.Provider value={contextValue}>
-            <Router>
-              <AppContainer>
-                <GlobalStyle />
-                <ScrollToTop />
-                <Routes>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <NotificationProvider>
+            <AppContext.Provider value={contextValue}>
+              <Router>
+                <AppContainer>
+                  <GlobalStyle />
+                  <ScrollToTop />
+                  <Routes>
                   {/* Main Platform Routes (Highest Priority) */}
                   <Route path="/" element={<PlatformHomePage />} />
                   <Route path="/pricing" element={<PricingPage />} />
@@ -168,11 +186,29 @@ function App() {
                     />
                   </Route>
                 </Routes>
+                
+                {/* Toast Container for notifications */}
+                <ToastContainer
+                  position="top-right"
+                  autoClose={5000}
+                  hideProgressBar={false}
+                  newestOnTop={false}
+                  closeOnClick
+                  rtl={false}
+                  pauseOnFocusLoss
+                  draggable
+                  pauseOnHover
+                  theme="light"
+                />
               </AppContainer>
             </Router>
           </AppContext.Provider>
         </NotificationProvider>
+        
+        {/* React Query Devtools (only in development) */}
+        {process.env.NODE_ENV === 'development' && <ReactQueryDevtools initialIsOpen={false} />}
       </AuthProvider>
+      </QueryClientProvider>
     </ErrorBoundary>
   );
 }

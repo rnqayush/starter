@@ -1,4 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
+import authService from '../services/authService';
+import { USER_ROLES } from '../constants/api';
 
 // Create Auth Context
 const AuthContext = createContext();
@@ -18,22 +21,30 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  // Initialize auth state from localStorage
+  // Initialize auth state
   useEffect(() => {
-    const initializeAuth = () => {
+    const initializeAuth = async () => {
       try {
-        const savedUser = localStorage.getItem('user');
-        const savedAuth = localStorage.getItem('isAuthenticated');
-
-        if (savedUser && savedAuth === 'true') {
-          const parsedUser = JSON.parse(savedUser);
-          setUser(parsedUser);
-          setIsAuthenticated(true);
+        // Check if user is authenticated
+        if (authService.isAuthenticated()) {
+          // Verify token is still valid by fetching current user
+          const result = await authService.refreshAuth();
+          
+          if (result.success) {
+            setUser(result.data);
+            setIsAuthenticated(true);
+          } else {
+            // Token expired or invalid
+            authService.clearUserSession();
+            setUser(null);
+            setIsAuthenticated(false);
+          }
         }
       } catch (error) {
-        // Clear corrupted data
-        localStorage.removeItem('user');
-        localStorage.removeItem('isAuthenticated');
+        console.error('Auth initialization error:', error);
+        authService.clearUserSession();
+        setUser(null);
+        setIsAuthenticated(false);
       } finally {
         setLoading(false);
       }
@@ -43,240 +54,223 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   // Login function
-  const login = async credentials => {
+  const login = async (credentials) => {
     setLoading(true);
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
-      // For demo purposes, create user based on email
-      const userData = {
-        id: Date.now(),
-        email: credentials.email,
-        name: credentials.name || getNameFromEmail(credentials.email),
-        phone: credentials.phone || '',
-        role: credentials.role || 'customer', // customer, seller, admin
-        avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(credentials.name || getNameFromEmail(credentials.email))}&background=1e40af&color=fff`,
-        preferences: {
-          notifications: {
-            email: true,
-            sms: false,
-            push: true,
-          },
-          language: 'en',
-          currency: 'USD',
-        },
-        profile: {
-          bio: '',
-          location: '',
-          website: '',
-          socialLinks: {},
-        },
-        createdAt: new Date().toISOString(),
-        lastLogin: new Date().toISOString(),
-      };
-
-      // If seller, add seller-specific data
-      if (credentials.role === 'seller') {
-        userData.seller = {
-          businessName: credentials.businessName || `${userData.name}'s Store`,
-          businessType: credentials.businessType || 'General',
-          verified: false,
-          rating: 0,
-          totalSales: 0,
-          totalProducts: 0,
-          joinedDate: new Date().toISOString(),
-          settings: {
-            autoRespond: true,
-            showLocation: true,
-            allowReviews: true,
-          },
-        };
+      const result = await authService.login(credentials);
+      
+      if (result.success) {
+        setUser(result.data.user);
+        setIsAuthenticated(true);
+        toast.success('Login successful!');
+        return result;
+      } else {
+        toast.error(result.message || 'Login failed');
+        return result;
       }
-
-      setUser(userData);
-      setIsAuthenticated(true);
-
-      // Persist to localStorage
-      localStorage.setItem('user', JSON.stringify(userData));
-      localStorage.setItem('isAuthenticated', 'true');
-
-      return { success: true, user: userData };
     } catch (error) {
-      return { success: false, error: error.message };
+      const errorMessage = error.message || 'Login failed';
+      toast.error(errorMessage);
+      return { success: false, message: errorMessage };
     } finally {
       setLoading(false);
     }
   };
 
   // Register function
-  const register = async userData => {
+  const register = async (userData) => {
     setLoading(true);
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-
-      const newUser = {
-        id: Date.now(),
-        ...userData,
-        avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(userData.name)}&background=1e40af&color=fff`,
-        preferences: {
-          notifications: {
-            email: true,
-            sms: false,
-            push: true,
-          },
-          language: 'en',
-          currency: 'USD',
-        },
-        profile: {
-          bio: '',
-          location: '',
-          website: '',
-          socialLinks: {},
-        },
-        createdAt: new Date().toISOString(),
-        lastLogin: new Date().toISOString(),
-      };
-
-      // If seller registration, add seller data
-      if (userData.role === 'seller') {
-        newUser.seller = {
-          businessName: userData.businessName || `${userData.name}'s Store`,
-          businessType: userData.businessType || 'General',
-          verified: false,
-          rating: 0,
-          totalSales: 0,
-          totalProducts: 0,
-          joinedDate: new Date().toISOString(),
-          settings: {
-            autoRespond: true,
-            showLocation: true,
-            allowReviews: true,
-          },
-        };
+      const result = await authService.register(userData);
+      
+      if (result.success) {
+        setUser(result.data.user);
+        setIsAuthenticated(true);
+        toast.success('Registration successful!');
+        return result;
+      } else {
+        toast.error(result.message || 'Registration failed');
+        return result;
       }
-
-      setUser(newUser);
-      setIsAuthenticated(true);
-
-      // Persist to localStorage
-      localStorage.setItem('user', JSON.stringify(newUser));
-      localStorage.setItem('isAuthenticated', 'true');
-
-      return { success: true, user: newUser };
     } catch (error) {
-      return { success: false, error: error.message };
+      const errorMessage = error.message || 'Registration failed';
+      toast.error(errorMessage);
+      return { success: false, message: errorMessage };
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Vendor registration function
+  const registerVendor = async (vendorData) => {
+    setLoading(true);
+    try {
+      const result = await authService.registerVendor(vendorData);
+      
+      if (result.success) {
+        setUser(result.data.user);
+        setIsAuthenticated(true);
+        toast.success('Vendor registration successful! Awaiting approval.');
+        return result;
+      } else {
+        toast.error(result.message || 'Vendor registration failed');
+        return result;
+      }
+    } catch (error) {
+      const errorMessage = error.message || 'Vendor registration failed';
+      toast.error(errorMessage);
+      return { success: false, message: errorMessage };
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Vendor login function
+  const loginVendor = async (credentials) => {
+    setLoading(true);
+    try {
+      const result = await authService.loginVendor(credentials);
+      
+      if (result.success) {
+        setUser(result.data.user);
+        setIsAuthenticated(true);
+        toast.success('Vendor login successful!');
+        return result;
+      } else {
+        toast.error(result.message || 'Vendor login failed');
+        return result;
+      }
+    } catch (error) {
+      const errorMessage = error.message || 'Vendor login failed';
+      toast.error(errorMessage);
+      return { success: false, message: errorMessage };
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Admin login function
+  const loginAdmin = async (credentials) => {
+    setLoading(true);
+    try {
+      const result = await authService.loginAdmin(credentials);
+      
+      if (result.success) {
+        setUser(result.data.user);
+        setIsAuthenticated(true);
+        toast.success('Admin login successful!');
+        return result;
+      } else {
+        toast.error(result.message || 'Admin login failed');
+        return result;
+      }
+    } catch (error) {
+      const errorMessage = error.message || 'Admin login failed';
+      toast.error(errorMessage);
+      return { success: false, message: errorMessage };
     } finally {
       setLoading(false);
     }
   };
 
   // Logout function
-  const logout = () => {
-    setUser(null);
-    setIsAuthenticated(false);
-    localStorage.removeItem('user');
-    localStorage.removeItem('isAuthenticated');
-
-    // Clear other user-specific data
-    localStorage.removeItem('userEnquiries');
-    localStorage.removeItem('shopSettings');
-    localStorage.removeItem('recentlyViewed');
-    localStorage.removeItem('pageViews');
+  const logout = async () => {
+    try {
+      await authService.logout();
+      setUser(null);
+      setIsAuthenticated(false);
+      toast.success('Logged out successfully');
+    } catch (error) {
+      console.error('Logout error:', error);
+      // Still clear local state even if API call fails
+      setUser(null);
+      setIsAuthenticated(false);
+      authService.clearUserSession();
+    }
   };
 
   // Update user profile
-  const updateProfile = async updates => {
-    if (!user) return { success: false, error: 'No user logged in' };
+  const updateProfile = async (updates) => {
+    if (!user) return { success: false, message: 'No user logged in' };
 
+    setLoading(true);
     try {
-      const updatedUser = {
-        ...user,
-        ...updates,
-        lastModified: new Date().toISOString(),
-      };
-
-      setUser(updatedUser);
-      localStorage.setItem('user', JSON.stringify(updatedUser));
-
-      return { success: true, user: updatedUser };
+      const result = await authService.updateProfile(updates);
+      
+      if (result.success) {
+        setUser(result.data);
+        toast.success('Profile updated successfully!');
+        return result;
+      } else {
+        toast.error(result.message || 'Profile update failed');
+        return result;
+      }
     } catch (error) {
-      return { success: false, error: error.message };
+      const errorMessage = error.message || 'Profile update failed';
+      toast.error(errorMessage);
+      return { success: false, message: errorMessage };
+    } finally {
+      setLoading(false);
     }
-  };
-
-  // Switch user role (for demo purposes)
-  const switchRole = newRole => {
-    if (!user) return;
-
-    const updatedUser = { ...user, role: newRole };
-
-    // Add seller data if switching to seller
-    if (newRole === 'seller' && !user.seller) {
-      updatedUser.seller = {
-        businessName: `${user.name}'s Store`,
-        businessType: 'General',
-        verified: false,
-        rating: 0,
-        totalSales: 0,
-        totalProducts: 0,
-        joinedDate: new Date().toISOString(),
-        settings: {
-          autoRespond: true,
-          showLocation: true,
-          allowReviews: true,
-        },
-      };
-    }
-
-    setUser(updatedUser);
-    localStorage.setItem('user', JSON.stringify(updatedUser));
   };
 
   // Check if user has specific role
-  const hasRole = role => {
-    return user?.role === role;
+  const hasRole = (role) => {
+    return authService.hasRole(role);
   };
 
-  // Check if user can access seller features
-  const canAccessSeller = () => {
-    return user?.role === 'seller' || user?.role === 'admin';
+  // Check if user is customer
+  const isCustomer = () => {
+    return authService.isCustomer();
+  };
+
+  // Check if user is vendor
+  const isVendor = () => {
+    return authService.isVendor();
+  };
+
+  // Check if user is admin
+  const isAdmin = () => {
+    return authService.isAdmin();
+  };
+
+  // Check if user can access vendor features
+  const canAccessVendor = () => {
+    return authService.canAccessVendor();
+  };
+
+  // Check if user can access admin features
+  const canAccessAdmin = () => {
+    return authService.canAccessAdmin();
   };
 
   // Get user display name
   const getDisplayName = () => {
-    if (!user) return 'Guest';
-    return user.name || getNameFromEmail(user.email);
+    return authService.getUserDisplayName();
   };
 
-  // Helper function to extract name from email
-  const getNameFromEmail = email => {
-    if (!email) return 'User';
-    const name = email.split('@')[0];
-    return name.charAt(0).toUpperCase() + name.slice(1);
-  };
-
-  // Generate temporary guest user for demo
-  const generateGuestUser = () => {
-    const guestId = `guest_${Date.now()}`;
-    return {
-      id: guestId,
-      name: 'Guest User',
-      email: `${guestId}@demo.com`,
-      role: 'customer',
-      isGuest: true,
-      avatar: `https://ui-avatars.com/api/?name=Guest&background=6b7280&color=fff`,
-      preferences: {
-        notifications: {
-          email: false,
-          sms: false,
-          push: false,
-        },
-        language: 'en',
-        currency: 'USD',
-      },
-    };
+  // Refresh authentication state
+  const refreshAuth = async () => {
+    setLoading(true);
+    try {
+      const result = await authService.refreshAuth();
+      
+      if (result.success) {
+        setUser(result.data);
+        setIsAuthenticated(true);
+        return result;
+      } else {
+        setUser(null);
+        setIsAuthenticated(false);
+        return result;
+      }
+    } catch (error) {
+      setUser(null);
+      setIsAuthenticated(false);
+      return { success: false, message: error.message };
+    } finally {
+      setLoading(false);
+    }
   };
 
   const contextValue = {
@@ -288,15 +282,21 @@ export const AuthProvider = ({ children }) => {
     // Actions
     login,
     register,
+    registerVendor,
+    loginVendor,
+    loginAdmin,
     logout,
     updateProfile,
-    switchRole,
+    refreshAuth,
 
     // Utilities
     hasRole,
-    canAccessSeller,
+    isCustomer,
+    isVendor,
+    isAdmin,
+    canAccessVendor,
+    canAccessAdmin,
     getDisplayName,
-    generateGuestUser,
   };
 
   if (loading) {
