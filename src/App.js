@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { Provider } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import styled from 'styled-components';
 import { GlobalStyle } from './styles/GlobalStyle';
-import { AppContext } from './context/AppContext';
-import { AuthProvider } from './context/AuthContext';
+import { store } from './store';
 import ErrorBoundary from './components/ErrorBoundary';
 
 // Import toast styles
@@ -29,12 +27,12 @@ import HotelModule from './hotel';
 // Owner Components (Active)
 import OwnerDashboard from './components/owner/OwnerDashboard';
 
-// Mock data
-import {
-  hotels as hotelModuleData,
-  bookings as hotelBookings,
-  ownerHotels as hotelOwnerData,
-} from './hotel/data/hotels';
+// Mock data - will be replaced with RTK Query
+// import {
+//   hotels as hotelModuleData,
+//   bookings as hotelBookings,
+//   ownerHotels as hotelOwnerData,
+// } from './hotel/data/hotels';
 
 // Category Landing Pages
 import HotelCategoryLanding from './components/category/HotelCategoryLanding';
@@ -65,43 +63,11 @@ const AppContainer = styled.div`
   background-color: #f8fafc;
 `;
 
-// Create a client for React Query
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      retry: 1,
-      refetchOnWindowFocus: false,
-      staleTime: 5 * 60 * 1000, // 5 minutes
-    },
-  },
-});
-
 function App() {
-  const [user, setUser] = useState(null);
-  const [userType, setUserType] = useState('customer'); // 'customer' or 'owner'
-  const [hotels, setHotels] = useState(hotelModuleData);
-  const [bookings, setBookings] = useState(hotelBookings);
-  const [ownerHotels, setOwnerHotels] = useState(hotelOwnerData);
-
-  const contextValue = {
-    user,
-    setUser,
-    userType,
-    setUserType,
-    hotels,
-    setHotels,
-    bookings,
-    setBookings,
-    ownerHotels,
-    setOwnerHotels,
-  };
-
   return (
     <ErrorBoundary>
-      <QueryClientProvider client={queryClient}>
-        <AuthProvider>
-          <NotificationProvider>
-            <AppContext.Provider value={contextValue}>
+      <Provider store={store}>
+        <NotificationProvider>
               <Router>
                 <AppContainer>
                   <GlobalStyle />
@@ -202,13 +168,8 @@ function App() {
                 />
               </AppContainer>
             </Router>
-          </AppContext.Provider>
         </NotificationProvider>
-        
-        {/* React Query Devtools (only in development) */}
-        {process.env.NODE_ENV === 'development' && <ReactQueryDevtools initialIsOpen={false} />}
-      </AuthProvider>
-      </QueryClientProvider>
+      </Provider>
     </ErrorBoundary>
   );
 }
