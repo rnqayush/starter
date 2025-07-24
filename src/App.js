@@ -65,8 +65,9 @@ function App() {
   return (
     <ErrorBoundary>
       <Provider store={store}>
-        <NotificationProvider>
-              <Router>
+        <AuthProvider>
+          <NotificationProvider>
+                <Router>
                 <AppContainer>
                   <GlobalStyle />
                   <ScrollToTop />
@@ -165,8 +166,9 @@ function App() {
                   theme="light"
                 />
               </AppContainer>
-            </Router>
-        </NotificationProvider>
+              </Router>
+          </NotificationProvider>
+        </AuthProvider>
       </Provider>
     </ErrorBoundary>
   );
