@@ -175,6 +175,114 @@ export const weddingApi = apiSlice.injectEndpoints({
         { type: 'Wedding', id: serviceId }
       ],
     }),
+
+    // Testimonials management
+    addTestimonial: builder.mutation({
+      query: ({ id, testimonialData }) => ({
+        url: `/wedding/${id}/testimonials`,
+        method: 'POST',
+        body: testimonialData,
+      }),
+      invalidatesTags: (result, error, { id }) => [
+        { type: 'Wedding', id },
+        'Wedding',
+      ],
+    }),
+
+    updateTestimonial: builder.mutation({
+      query: ({ id, testimonialId, testimonialData }) => ({
+        url: `/wedding/${id}/testimonials/${testimonialId}`,
+        method: 'PUT',
+        body: testimonialData,
+      }),
+      invalidatesTags: (result, error, { id }) => [
+        { type: 'Wedding', id },
+        'Wedding',
+      ],
+    }),
+
+    deleteTestimonial: builder.mutation({
+      query: ({ id, testimonialId }) => ({
+        url: `/wedding/${id}/testimonials/${testimonialId}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: (result, error, { id }) => [
+        { type: 'Wedding', id },
+        'Wedding',
+      ],
+    }),
+
+    // FAQ management
+    addFAQ: builder.mutation({
+      query: ({ id, faqData }) => ({
+        url: `/wedding/${id}/faqs`,
+        method: 'POST',
+        body: faqData,
+      }),
+      invalidatesTags: (result, error, { id }) => [
+        { type: 'Wedding', id },
+        'Wedding',
+      ],
+    }),
+
+    updateFAQ: builder.mutation({
+      query: ({ id, faqId, faqData }) => ({
+        url: `/wedding/${id}/faqs/${faqId}`,
+        method: 'PUT',
+        body: faqData,
+      }),
+      invalidatesTags: (result, error, { id }) => [
+        { type: 'Wedding', id },
+        'Wedding',
+      ],
+    }),
+
+    deleteFAQ: builder.mutation({
+      query: ({ id, faqId }) => ({
+        url: `/wedding/${id}/faqs/${faqId}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: (result, error, { id }) => [
+        { type: 'Wedding', id },
+        'Wedding',
+      ],
+    }),
+
+    // Offers management
+    addOffer: builder.mutation({
+      query: ({ id, offerData }) => ({
+        url: `/wedding/${id}/offers`,
+        method: 'POST',
+        body: offerData,
+      }),
+      invalidatesTags: (result, error, { id }) => [
+        { type: 'Wedding', id },
+        'Wedding',
+      ],
+    }),
+
+    updateOffer: builder.mutation({
+      query: ({ id, offerId, offerData }) => ({
+        url: `/wedding/${id}/offers/${offerId}`,
+        method: 'PUT',
+        body: offerData,
+      }),
+      invalidatesTags: (result, error, { id }) => [
+        { type: 'Wedding', id },
+        'Wedding',
+      ],
+    }),
+
+    deleteOffer: builder.mutation({
+      query: ({ id, offerId }) => ({
+        url: `/wedding/${id}/offers/${offerId}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: (result, error, { id }) => [
+        { type: 'Wedding', id },
+        'Wedding',
+      ],
+    }),
   }),
 });
 
@@ -191,4 +299,13 @@ export const {
   useGetWeddingPhotographersQuery,
   useGetWeddingCaterersQuery,
   useCheckServiceAvailabilityQuery,
+  useAddTestimonialMutation,
+  useUpdateTestimonialMutation,
+  useDeleteTestimonialMutation,
+  useAddFAQMutation,
+  useUpdateFAQMutation,
+  useDeleteFAQMutation,
+  useAddOfferMutation,
+  useUpdateOfferMutation,
+  useDeleteOfferMutation,
 } = weddingApi;

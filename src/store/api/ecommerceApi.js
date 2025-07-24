@@ -130,6 +130,243 @@ export const ecommerceApi = apiSlice.injectEndpoints({
       },
       providesTags: ['Ecommerce'],
     }),
+
+    // Inventory Management
+    updateProductStock: builder.mutation({
+      query: ({ id, stock }) => ({
+        url: `/ecommerce/${id}/stock`,
+        method: 'PUT',
+        body: { stock },
+      }),
+      invalidatesTags: (result, error, { id }) => [
+        { type: 'Ecommerce', id },
+        { type: 'Ecommerce', id: 'LIST' },
+      ],
+    }),
+
+    bulkUpdateStock: builder.mutation({
+      query: (stockUpdates) => ({
+        url: '/ecommerce/bulk-stock-update',
+        method: 'PUT',
+        body: { updates: stockUpdates },
+      }),
+      invalidatesTags: ['Ecommerce'],
+    }),
+
+    // Product Variants Management
+    addProductVariant: builder.mutation({
+      query: ({ id, variantData }) => ({
+        url: `/ecommerce/${id}/variants`,
+        method: 'POST',
+        body: variantData,
+      }),
+      invalidatesTags: (result, error, { id }) => [
+        { type: 'Ecommerce', id },
+        { type: 'Ecommerce', id: 'LIST' },
+      ],
+    }),
+
+    updateProductVariant: builder.mutation({
+      query: ({ id, variantId, variantData }) => ({
+        url: `/ecommerce/${id}/variants/${variantId}`,
+        method: 'PUT',
+        body: variantData,
+      }),
+      invalidatesTags: (result, error, { id }) => [
+        { type: 'Ecommerce', id },
+        { type: 'Ecommerce', id: 'LIST' },
+      ],
+    }),
+
+    deleteProductVariant: builder.mutation({
+      query: ({ id, variantId }) => ({
+        url: `/ecommerce/${id}/variants/${variantId}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: (result, error, { id }) => [
+        { type: 'Ecommerce', id },
+        { type: 'Ecommerce', id: 'LIST' },
+      ],
+    }),
+
+    // Reviews and Ratings
+    addProductReview: builder.mutation({
+      query: ({ id, reviewData }) => ({
+        url: `/ecommerce/${id}/reviews`,
+        method: 'POST',
+        body: reviewData,
+      }),
+      invalidatesTags: (result, error, { id }) => [
+        { type: 'Ecommerce', id },
+        { type: 'Ecommerce', id: 'LIST' },
+      ],
+    }),
+
+    getProductReviews: builder.query({
+      query: ({ id, page = 1, limit = 10 }) => 
+        `/ecommerce/${id}/reviews?page=${page}&limit=${limit}`,
+      providesTags: (result, error, { id }) => [
+        { type: 'Ecommerce', id: `${id}-reviews` },
+      ],
+    }),
+
+    // Wishlist Management
+    addToWishlist: builder.mutation({
+      query: (productId) => ({
+        url: '/ecommerce/wishlist',
+        method: 'POST',
+        body: { productId },
+      }),
+      invalidatesTags: ['Ecommerce'],
+    }),
+
+    removeFromWishlist: builder.mutation({
+      query: (productId) => ({
+        url: `/ecommerce/wishlist/${productId}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Ecommerce'],
+    }),
+
+    getWishlist: builder.query({
+      query: () => '/ecommerce/wishlist',
+      providesTags: ['Ecommerce'],
+    }),
+
+    // Cart Management
+    addToCart: builder.mutation({
+      query: ({ productId, quantity, variantId }) => ({
+        url: '/ecommerce/cart',
+        method: 'POST',
+        body: { productId, quantity, variantId },
+      }),
+      invalidatesTags: ['Ecommerce'],
+    }),
+
+    updateCartItem: builder.mutation({
+      query: ({ itemId, quantity }) => ({
+        url: `/ecommerce/cart/${itemId}`,
+        method: 'PUT',
+        body: { quantity },
+      }),
+      invalidatesTags: ['Ecommerce'],
+    }),
+
+    removeFromCart: builder.mutation({
+      query: (itemId) => ({
+        url: `/ecommerce/cart/${itemId}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Ecommerce'],
+    }),
+
+    getCart: builder.query({
+      query: () => '/ecommerce/cart',
+      providesTags: ['Ecommerce'],
+    }),
+
+    clearCart: builder.mutation({
+      query: () => ({
+        url: '/ecommerce/cart/clear',
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Ecommerce'],
+    }),
+
+    // Orders Management
+    createOrder: builder.mutation({
+      query: (orderData) => ({
+        url: '/ecommerce/orders',
+        method: 'POST',
+        body: orderData,
+      }),
+      invalidatesTags: ['Ecommerce'],
+    }),
+
+    getOrders: builder.query({
+      query: (params = {}) => {
+        const searchParams = new URLSearchParams();
+        if (params.page) searchParams.append('page', params.page);
+        if (params.limit) searchParams.append('limit', params.limit);
+        if (params.status) searchParams.append('status', params.status);
+        
+        const queryString = searchParams.toString();
+        return `/ecommerce/orders${queryString ? `?${queryString}` : ''}`;
+      },
+      providesTags: ['Ecommerce'],
+    }),
+
+    getOrderById: builder.query({
+      query: (orderId) => `/ecommerce/orders/${orderId}`,
+      providesTags: (result, error, orderId) => [
+        { type: 'Ecommerce', id: orderId },
+      ],
+    }),
+
+    updateOrderStatus: builder.mutation({
+      query: ({ orderId, status }) => ({
+        url: `/ecommerce/orders/${orderId}/status`,
+        method: 'PUT',
+        body: { status },
+      }),
+      invalidatesTags: (result, error, { orderId }) => [
+        { type: 'Ecommerce', id: orderId },
+        'Ecommerce',
+      ],
+    }),
+
+    // Coupons Management
+    createCoupon: builder.mutation({
+      query: (couponData) => ({
+        url: '/ecommerce/coupons',
+        method: 'POST',
+        body: couponData,
+      }),
+      invalidatesTags: ['Ecommerce'],
+    }),
+
+    getCoupons: builder.query({
+      query: (params = {}) => {
+        const searchParams = new URLSearchParams();
+        if (params.page) searchParams.append('page', params.page);
+        if (params.limit) searchParams.append('limit', params.limit);
+        if (params.active) searchParams.append('active', params.active);
+        
+        const queryString = searchParams.toString();
+        return `/ecommerce/coupons${queryString ? `?${queryString}` : ''}`;
+      },
+      providesTags: ['Ecommerce'],
+    }),
+
+    validateCoupon: builder.mutation({
+      query: ({ code, cartTotal }) => ({
+        url: '/ecommerce/coupons/validate',
+        method: 'POST',
+        body: { code, cartTotal },
+      }),
+    }),
+
+    // Analytics and Reports
+    getProductAnalytics: builder.query({
+      query: ({ productId, period = '30d' }) => 
+        `/ecommerce/analytics/product/${productId}?period=${period}`,
+      providesTags: (result, error, { productId }) => [
+        { type: 'Ecommerce', id: `${productId}-analytics` },
+      ],
+    }),
+
+    getSalesReport: builder.query({
+      query: (params = {}) => {
+        const searchParams = new URLSearchParams();
+        if (params.startDate) searchParams.append('startDate', params.startDate);
+        if (params.endDate) searchParams.append('endDate', params.endDate);
+        if (params.groupBy) searchParams.append('groupBy', params.groupBy);
+        
+        const queryString = searchParams.toString();
+        return `/ecommerce/analytics/sales${queryString ? `?${queryString}` : ''}`;
+      },
+      providesTags: ['Ecommerce'],
+    }),
   }),
 });
 
@@ -143,4 +380,28 @@ export const {
   useGetProductCategoriesQuery,
   useGetFeaturedProductsQuery,
   useGetSaleProductsQuery,
+  useUpdateProductStockMutation,
+  useBulkUpdateStockMutation,
+  useAddProductVariantMutation,
+  useUpdateProductVariantMutation,
+  useDeleteProductVariantMutation,
+  useAddProductReviewMutation,
+  useGetProductReviewsQuery,
+  useAddToWishlistMutation,
+  useRemoveFromWishlistMutation,
+  useGetWishlistQuery,
+  useAddToCartMutation,
+  useUpdateCartItemMutation,
+  useRemoveFromCartMutation,
+  useGetCartQuery,
+  useClearCartMutation,
+  useCreateOrderMutation,
+  useGetOrdersQuery,
+  useGetOrderByIdQuery,
+  useUpdateOrderStatusMutation,
+  useCreateCouponMutation,
+  useGetCouponsQuery,
+  useValidateCouponMutation,
+  useGetProductAnalyticsQuery,
+  useGetSalesReportQuery,
 } = ecommerceApi;

@@ -52,6 +52,8 @@ export const apiSlice = createApi({
     'Ecommerce', 
     'Automobile', 
     'Wedding',
+    'Business',
+    'Freelance',
     'Homepage',
     'Stats'
   ],
