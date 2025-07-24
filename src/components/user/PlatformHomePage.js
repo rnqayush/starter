@@ -27,8 +27,13 @@ import {
 import Header from '../shared/Header';
 import { Button } from '../shared/Button';
 import { theme, media } from '../../styles/GlobalStyle';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../../hooks/useAuth';
 import AuthModal from '../auth/AuthModal';
+import { 
+  useGetHomepageContentQuery,
+  useGetCategoryStatsQuery,
+  useGetFeaturedContentQuery 
+} from '../../store/api/homepageApi';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -808,6 +813,25 @@ const PlatformHomePage = () => {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
   const [showAuthModal, setShowAuthModal] = useState(false);
+
+  // Fetch real data using RTK Query
+  const { 
+    data: homepageContent, 
+    isLoading: isLoadingContent, 
+    error: contentError 
+  } = useGetHomepageContentQuery();
+  
+  const { 
+    data: categoryStats, 
+    isLoading: isLoadingStats, 
+    error: statsError 
+  } = useGetCategoryStatsQuery();
+  
+  const { 
+    data: featuredContent, 
+    isLoading: isLoadingFeatured, 
+    error: featuredError 
+  } = useGetFeaturedContentQuery();
 
   const storeCategories = [
     {
