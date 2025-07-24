@@ -486,31 +486,31 @@ const OwnerDashboard = () => {
       case 'add-hotel':
         return (
           <PageContent>
-            <AddHotelPage />
+            <AddHotelPageContent />
           </PageContent>
         );
       case 'my-hotels':
         return (
           <PageContent>
-            <MyHotelsPage />
+            <MyHotelsPageContent setActiveSection={setActiveSection} />
           </PageContent>
         );
       case 'add-room':
         return (
           <PageContent>
-            <AddRoomPage />
+            <AddRoomPageContent setActiveSection={setActiveSection} />
           </PageContent>
         );
       case 'bookings':
         return (
           <PageContent>
-            <BookingsReceivedPage />
+            <BookingsReceivedPageContent />
           </PageContent>
         );
       case 'profile':
         return (
           <PageContent>
-            <ProfileSettingsPage />
+            <ProfileSettingsPageContent />
           </PageContent>
         );
       default:
