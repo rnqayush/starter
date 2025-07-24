@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import {
@@ -475,26 +475,26 @@ const VendorPortfolio = () => {
     setSelectedPortfolio(portfolio);
   };
 
-  const closePortfolioModal = () => {
+  const closePortfolioModal = useCallback(() => {
     setSelectedPortfolio(null);
-  };
+  }, []);
 
-  const openImageViewer = (images, startIndex = 0) => {
+  const openImageViewer = useCallback((images, startIndex = 0) => {
     setImageViewer({ open: true, images, currentIndex: startIndex });
-  };
+  }, []);
 
-  const closeImageViewer = () => {
+  const closeImageViewer = useCallback(() => {
     setImageViewer({ open: false, images: [], currentIndex: 0 });
-  };
+  }, []);
 
-  const nextImage = () => {
+  const nextImage = useCallback(() => {
     setImageViewer(prev => ({
       ...prev,
       currentIndex: (prev.currentIndex + 1) % prev.images.length,
     }));
-  };
+  }, []);
 
-  const prevImage = () => {
+  const prevImage = useCallback(() => {
     setImageViewer(prev => ({
       ...prev,
       currentIndex:
@@ -502,9 +502,9 @@ const VendorPortfolio = () => {
           ? prev.images.length - 1
           : prev.currentIndex - 1,
     }));
-  };
+  }, []);
 
-  const handleKeyPress = e => {
+  const handleKeyPress = useCallback(e => {
     if (e.key === 'Escape') {
       if (imageViewer.open) {
         closeImageViewer();
@@ -515,7 +515,7 @@ const VendorPortfolio = () => {
       if (e.key === 'ArrowLeft') prevImage();
       if (e.key === 'ArrowRight') nextImage();
     }
-  };
+  }, [imageViewer.open, selectedPortfolio, closeImageViewer, closePortfolioModal, prevImage, nextImage]);
 
   useEffect(() => {
     document.addEventListener('keydown', handleKeyPress);

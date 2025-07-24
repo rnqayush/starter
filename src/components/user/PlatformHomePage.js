@@ -29,11 +29,12 @@ import { Button } from '../shared/Button';
 import { theme, media } from '../../styles/GlobalStyle';
 import { useAuth } from '../../hooks/useAuth';
 import AuthModal from '../auth/AuthModal';
-import { 
-  useGetHomepageContentQuery,
-  useGetCategoryStatsQuery,
-  useGetFeaturedContentQuery 
-} from '../../store/api/homepageApi';
+// RTK Query imports will be used when implementing real data fetching
+// import { 
+//   useGetHomepageContentQuery,
+//   useGetCategoryStatsQuery,
+//   useGetFeaturedContentQuery 
+// } from '../../store/api/homepageApi';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -814,23 +815,10 @@ const PlatformHomePage = () => {
   const { isAuthenticated } = useAuth();
   const [showAuthModal, setShowAuthModal] = useState(false);
 
-  // Fetch real data using RTK Query
-  const { 
-    isLoading: isLoadingContent, 
-    error: contentError 
-  } = useGetHomepageContentQuery();
-  
-  const { 
-    data: categoryStats, 
-    isLoading: isLoadingStats, 
-    error: statsError 
-  } = useGetCategoryStatsQuery();
-  
-  const { 
-    data: featuredContent, 
-    isLoading: isLoadingFeatured, 
-    error: featuredError 
-  } = useGetFeaturedContentQuery();
+  // RTK Query hooks will be used when implementing real data fetching
+  // const { data: homepageContent, isLoading: isLoadingContent, error: contentError } = useGetHomepageContentQuery();
+  // const { data: categoryStats, isLoading: isLoadingStats, error: statsError } = useGetCategoryStatsQuery();
+  // const { data: featuredContent, isLoading: isLoadingFeatured, error: featuredError } = useGetFeaturedContentQuery();
 
   const storeCategories = [
     {
