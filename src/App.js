@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { GlobalStyle } from './styles/GlobalStyle';
 import { store } from './store';
 import ErrorBoundary from './components/ErrorBoundary';
+import { AuthProvider } from './context/AuthContext';
 
 // Import toast styles
 import 'react-toastify/dist/ReactToastify.css';
