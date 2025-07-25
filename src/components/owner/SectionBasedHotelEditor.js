@@ -1200,6 +1200,23 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
           </Modal>
         </Overlay>
       )}
+
+      {/* Save & Go Live Bar - appears when there are unsaved changes */}
+      {hasUnsavedChanges && (
+        <SaveGoLiveBar>
+          <ChangesIndicator>
+            <FaEdit />
+            {Object.keys(hasUnsavedChanges ? changes : {}).length} unsaved changes
+          </ChangesIndicator>
+          <SaveGoLiveButton
+            onClick={handleSaveAndGoLive}
+            disabled={!hasUnsavedChanges}
+          >
+            <FaSave />
+            Save & Go Live
+          </SaveGoLiveButton>
+        </SaveGoLiveBar>
+      )}
     </EditorContainer>
   );
 };
