@@ -1045,6 +1045,36 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
       </SectionReorderContainer>
 
       <SectionsGrid>
+        {/* Always show Hero section first */}
+        <SectionCard
+          key="hero"
+          isVisible={allSections.hero.isVisible}
+          onClick={(e) => {
+            if (e.target.closest('.toggle-switch')) return;
+            openModal('hero');
+          }}
+        >
+          <SectionHeader>
+            <SectionInfo>
+              <SectionIcon>
+                <allSections.hero.icon />
+              </SectionIcon>
+              <SectionTitle>{allSections.hero.title}</SectionTitle>
+              <SectionDescription>{allSections.hero.description}</SectionDescription>
+            </SectionInfo>
+            <ToggleSwitch
+              className="toggle-switch"
+              active={allSections.hero.isVisible}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleSectionToggle('hero');
+              }}
+            />
+          </SectionHeader>
+          <SectionPreview>{allSections.hero.preview}</SectionPreview>
+        </SectionCard>
+
+        {/* Show other sections in custom order */}
         {sections.map(section => (
           <SectionCard
             key={section.id}
