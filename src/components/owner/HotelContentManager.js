@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import {
   FaEdit,
@@ -7,107 +7,91 @@ import {
   FaPlus,
   FaTrash,
   FaSave,
-  FaTimes,
-  FaEye,
-  FaImages,
-  FaSwimmingPool,
+  FaUndo,
+  FaInfo,
+  FaBed,
+  FaMapMarkerAlt,
   FaStar,
-  FaPhone,
-  FaArrowLeft,
+  FaClock,
+  FaConciergeBell,
 } from 'react-icons/fa';
-import { theme } from '../../styles/GlobalStyle';
-import Sidebar from './Sidebar';
-import { Card, CardContent } from '../shared/Card';
+import {
+  setEditingHotel,
+  updateHotelField,
+  updateHotelImage,
+  addHotelImage,
+  removeHotelImage,
+  updateAmenities,
+  updatePolicies,
+  addRoom,
+  updateRoom,
+  removeRoom,
+  saveChanges,
+  discardChanges,
+} from '../../store/slices/hotelManagementSlice';
+import { Card, CardContent, CardActions } from '../shared/Card';
 import { Button } from '../shared/Button';
-import { getHotelByIdOrSlug } from '../../DummyData';
+import { Input } from '../shared/Input';
+import { theme } from '../../styles/GlobalStyle';
+import { useAppContext } from '../../context/AppContext';
+import { amenitiesList } from '../../DummyData/hotels';
 
-const DashboardContainer = styled.div`
+const ContentManagerContainer = styled.div`
   display: flex;
-  min-height: 100vh;
-  background: ${theme.colors.gray50};
+  flex-direction: column;
+  gap: ${theme.spacing.xl};
 `;
 
-const MainContent = styled.main`
-  flex: 1;
-  margin-left: 17.5rem;
-  padding: ${theme.spacing.xxl};
-
-  @media (max-width: ${theme.breakpoints.tablet}) {
-    margin-left: 0;
-    padding: ${theme.spacing.xl} ${theme.spacing.md};
-    padding-top: 5rem;
-  }
-`;
-
-const Header = styled.div`
+const HeaderSection = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: between;
   align-items: center;
-  margin-bottom: ${theme.spacing.xxl};
-
-  @media (max-width: ${theme.breakpoints.mobile}) {
-    flex-direction: column;
-    gap: ${theme.spacing.lg};
-    align-items: stretch;
-  }
+  margin-bottom: ${theme.spacing.xl};
 `;
 
 const Title = styled.h1`
   font-size: 2.5rem;
   font-weight: 700;
   color: ${theme.colors.gray900};
-  margin: 0;
-
-  @media (max-width: ${theme.breakpoints.mobile}) {
-    font-size: 2rem;
-  }
+  margin-bottom: ${theme.spacing.sm};
 `;
 
-const HeaderActions = styled.div`
-  display: flex;
-  gap: ${theme.spacing.md};
-
-  @media (max-width: ${theme.breakpoints.mobile}) {
-    justify-content: stretch;
-  }
+const Subtitle = styled.p`
+  color: ${theme.colors.gray600};
+  font-size: 1.1rem;
 `;
 
-const BackButton = styled.button`
-  background: ${theme.colors.white};
-  border: 2px solid ${theme.colors.gray200};
-  color: ${theme.colors.gray700};
-  padding: ${theme.spacing.md} ${theme.spacing.lg};
-  border-radius: ${theme.borderRadius.md};
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  gap: ${theme.spacing.sm};
-
-  &:hover {
-    border-color: ${theme.colors.primary};
-    color: ${theme.colors.primary};
-  }
-`;
-
-const ContentGrid = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: ${theme.spacing.xl};
+const HotelSelector = styled.div`
   margin-bottom: ${theme.spacing.xl};
+`;
 
-  @media (max-width: ${theme.breakpoints.tablet}) {
-    grid-template-columns: 1fr;
-    gap: ${theme.spacing.lg};
+const HotelGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: ${theme.spacing.lg};
+  margin-bottom: ${theme.spacing.xl};
+`;
+
+const HotelSelectCard = styled(Card)`
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid ${props => props.selected ? theme.colors.primary : 'transparent'};
+  
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: ${theme.shadows.xl};
+    border-color: ${theme.colors.primary};
   }
 `;
 
-const ContentCard = styled(Card)`
-  height: fit-content;
+const EditingPanel = styled.div`
+  background: ${theme.colors.white};
+  border-radius: ${theme.borderRadius.lg};
+  padding: ${theme.spacing.xl};
+  box-shadow: ${theme.shadows.lg};
 `;
 
-const CardTitle = styled.h2`
+const SectionTitle = styled.h3`
   font-size: 1.5rem;
   font-weight: 600;
   color: ${theme.colors.gray900};
@@ -117,544 +101,488 @@ const CardTitle = styled.h2`
   gap: ${theme.spacing.sm};
 `;
 
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
+const FormGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: ${theme.spacing.lg};
+  margin-bottom: ${theme.spacing.xl};
 `;
 
-const FormGroup = styled.div`
+const FormField = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${theme.spacing.sm};
 `;
 
 const Label = styled.label`
-  font-weight: 600;
-  color: ${theme.colors.gray900};
-  font-size: 0.9rem;
-`;
-
-const Input = styled.input`
-  padding: ${theme.spacing.md};
-  border: 2px solid ${theme.colors.gray200};
-  border-radius: ${theme.borderRadius.md};
-  font-size: 1rem;
-  transition: border-color 0.2s ease;
-
-  &:focus {
-    outline: none;
-    border-color: ${theme.colors.primary};
-  }
+  font-weight: 500;
+  color: ${theme.colors.gray700};
 `;
 
 const TextArea = styled.textarea`
   padding: ${theme.spacing.md};
-  border: 2px solid ${theme.colors.gray200};
+  border: 1px solid ${theme.colors.gray300};
   border-radius: ${theme.borderRadius.md};
   font-size: 1rem;
+  line-height: 1.5;
   resize: vertical;
-  min-height: 120px;
-  transition: border-color 0.2s ease;
-
+  min-height: 100px;
+  
   &:focus {
     outline: none;
     border-color: ${theme.colors.primary};
+    box-shadow: 0 0 0 3px ${theme.colors.primary}20;
   }
 `;
 
-const ImageUploadArea = styled.div`
+const ImageSection = styled.div`
+  margin-bottom: ${theme.spacing.xl};
+`;
+
+const ImageGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: ${theme.spacing.lg};
+`;
+
+const ImageCard = styled.div`
+  position: relative;
   border: 2px dashed ${theme.colors.gray300};
   border-radius: ${theme.borderRadius.lg};
-  padding: ${theme.spacing.xl};
-  text-align: center;
-  background: ${theme.colors.gray50};
-  cursor: pointer;
-  transition: all 0.2s ease;
-
-  &:hover {
-    border-color: ${theme.colors.primary};
-    background: ${theme.colors.primary}10;
-  }
-
-  .upload-icon {
-    font-size: 3rem;
-    color: ${theme.colors.gray400};
-    margin-bottom: ${theme.spacing.md};
-  }
-
-  .upload-text {
-    color: ${theme.colors.gray600};
-    font-weight: 500;
-  }
-`;
-
-const ImagePreview = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: ${theme.spacing.md};
-  margin-top: ${theme.spacing.md};
-`;
-
-const ImageItem = styled.div`
-  position: relative;
-  border-radius: ${theme.borderRadius.md};
+  aspect-ratio: 16/9;
   overflow: hidden;
-
-  img {
-    width: 100%;
-    height: 120px;
-    object-fit: cover;
-  }
-
-  .remove-btn {
-    position: absolute;
-    top: ${theme.spacing.xs};
-    right: ${theme.spacing.xs};
-    background: rgba(255, 255, 255, 0.9);
+  background: ${theme.colors.gray50};
+  
+  &.has-image {
     border: none;
-    border-radius: 50%;
-    width: 24px;
-    height: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    color: ${theme.colors.error};
-    font-size: 0.8rem;
-
-    &:hover {
-      background: ${theme.colors.white};
-    }
   }
 `;
 
-const SectionHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: ${theme.spacing.md};
+const ImageDisplay = styled.div`
+  width: 100%;
+  height: 100%;
+  background-image: url(${props => props.src});
+  background-size: cover;
+  background-position: center;
+  position: relative;
 `;
 
-const ActionButton = styled.button`
-  background: ${theme.colors.white};
-  border: 1px solid ${theme.colors.gray300};
-  color: ${theme.colors.gray600};
-  padding: ${theme.spacing.xs} ${theme.spacing.sm};
-  border-radius: ${theme.borderRadius.sm};
-  font-size: 0.8rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
+const ImageActions = styled.div`
+  position: absolute;
+  top: ${theme.spacing.sm};
+  right: ${theme.spacing.sm};
   display: flex;
-  align-items: center;
   gap: ${theme.spacing.xs};
-
-  &:hover {
-    border-color: ${theme.colors.primary};
-    color: ${theme.colors.primary};
-  }
-
-  &.danger:hover {
-    border-color: ${theme.colors.error};
-    color: ${theme.colors.error};
-  }
 `;
 
-const FeaturesList = styled.div`
+const ImagePlaceholder = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: ${theme.colors.gray500};
+  font-size: 0.9rem;
+  text-align: center;
+  padding: ${theme.spacing.md};
+`;
+
+const ImageInput = styled.input`
+  display: none;
+`;
+
+const AmenitiesSection = styled.div`
+  margin-bottom: ${theme.spacing.xl};
+`;
+
+const AmenitiesGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: ${theme.spacing.md};
-  margin-top: ${theme.spacing.md};
 `;
 
-const FeatureItem = styled.div`
-  background: ${theme.colors.gray50};
-  padding: ${theme.spacing.md};
-  border-radius: ${theme.borderRadius.md};
+const AmenityItem = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
-`;
-
-const SaveButton = styled(Button)`
-  align-self: flex-start;
-  margin-top: ${theme.spacing.lg};
-`;
-
-const HotelContentManager = () => {
-  const { hotelSlug } = useParams();
-  const navigate = useNavigate();
-  const [hotel, setHotel] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  const [formData, setFormData] = useState({
-    name: '',
-    description: '',
-    aboutUs: '',
-    address: '',
-    phone: '',
-    email: '',
-    checkInTime: '',
-    checkOutTime: '',
-  });
-
-  const [features, setFeatures] = useState([]);
-  const [amenities, setAmenities] = useState([]);
-  const [gallery, setGallery] = useState([]);
-
-  useEffect(() => {
-    if (hotelSlug) {
-      const foundHotel = getHotelByIdOrSlug(hotelSlug);
-      if (foundHotel) {
-        setHotel(foundHotel);
-        setFormData({
-          name: foundHotel.name || '',
-          description: foundHotel.description || '',
-          aboutUs: `${foundHotel.name} stands as a beacon of luxury and elegance in the heart of ${foundHotel.city}. With our rich heritage of hospitality excellence spanning decades, we have been creating unforgettable experiences for discerning travelers from around the world.`,
-          address: foundHotel.address || '',
-          phone: '+91 22 6601 1825',
-          email: `reservations@${foundHotel.slug}.com`,
-          checkInTime: foundHotel.checkInTime || '',
-          checkOutTime: foundHotel.checkOutTime || '',
-        });
-        setFeatures([
-          '24/7 Concierge Service',
-          'Luxury Amenities',
-          'Business Center',
-          'Airport Transfer',
-        ]);
-        setAmenities(foundHotel.amenities || []);
-        setGallery(foundHotel.images || []);
-      }
-    }
-    setLoading(false);
-  }, [hotelSlug]);
-
-  const handleInputChange = e => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
-
-  const handleSaveBasicInfo = e => {
-    e.preventDefault();
-    // Here you would save to your backend
-    alert('Basic information saved!');
-  };
-
-  const addFeature = () => {
-    const feature = prompt('Enter new feature:');
-    if (feature) {
-      setFeatures(prev => [...prev, feature]);
-    }
-  };
-
-  const removeFeature = index => {
-    setFeatures(prev => prev.filter((_, i) => i !== index));
-  };
-
-  const addAmenity = () => {
-    const amenity = prompt('Enter new amenity:');
-    if (amenity) {
-      setAmenities(prev => [...prev, amenity]);
-    }
-  };
-
-  const removeAmenity = index => {
-    setAmenities(prev => prev.filter((_, i) => i !== index));
-  };
-
-  const handleImageUpload = e => {
-    const files = Array.from(e.target.files);
-    // In a real app, you'd upload to your image service
-    files.forEach(file => {
-      const reader = new FileReader();
-      reader.onload = e => {
-        setGallery(prev => [...prev, e.target.result]);
-      };
-      reader.readAsDataURL(file);
-    });
-  };
-
-  const removeImage = index => {
-    setGallery(prev => prev.filter((_, i) => i !== index));
-  };
-
-  if (loading) {
-    return (
-      <DashboardContainer>
-        <Sidebar />
-        <MainContent>
-          <div style={{ textAlign: 'center', padding: '4rem 0' }}>
-            <h2>Loading...</h2>
-          </div>
-        </MainContent>
-      </DashboardContainer>
-    );
+  gap: ${theme.spacing.sm};
+  padding: ${theme.spacing.sm};
+  border: 1px solid ${theme.colors.gray300};
+  border-radius: ${theme.borderRadius.md};
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: ${props => props.selected ? theme.colors.primary : theme.colors.white};
+  color: ${props => props.selected ? theme.colors.white : theme.colors.gray700};
+  
+  &:hover {
+    border-color: ${theme.colors.primary};
   }
+`;
 
-  if (!hotel) {
+const RoomsSection = styled.div`
+  margin-bottom: ${theme.spacing.xl};
+`;
+
+const RoomGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: ${theme.spacing.lg};
+`;
+
+const RoomCard = styled(Card)`
+  border: 1px solid ${theme.colors.gray200};
+`;
+
+const ActionButtons = styled.div`
+  display: flex;
+  gap: ${theme.spacing.md};
+  justify-content: flex-end;
+  padding-top: ${theme.spacing.lg};
+  border-top: 1px solid ${theme.colors.gray200};
+`;
+
+const HotelContentManager = ({ setActiveSection }) => {
+  const dispatch = useDispatch();
+  const { ownerHotels } = useAppContext();
+  const {
+    editingHotel,
+    hasUnsavedChanges,
+    changes,
+    activeHotelId
+  } = useSelector(state => state.hotelManagement);
+
+  const [newImageUrl, setNewImageUrl] = useState('');
+  const [showImageInput, setShowImageInput] = useState(false);
+
+  const handleSelectHotel = (hotelId) => {
+    if (hasUnsavedChanges) {
+      if (window.confirm('You have unsaved changes. Discard them?')) {
+        dispatch(discardChanges());
+        dispatch(setEditingHotel(hotelId));
+      }
+    } else {
+      dispatch(setEditingHotel(hotelId));
+    }
+  };
+
+  const handleFieldChange = (field, value) => {
+    dispatch(updateHotelField({ field, value }));
+  };
+
+  const handleAddImage = () => {
+    if (newImageUrl.trim()) {
+      dispatch(addHotelImage(newImageUrl.trim()));
+      setNewImageUrl('');
+      setShowImageInput(false);
+    }
+  };
+
+  const handleUpdateImage = (index, url) => {
+    dispatch(updateHotelImage({ index, url }));
+  };
+
+  const handleRemoveImage = (index) => {
+    dispatch(removeHotelImage(index));
+  };
+
+  const toggleAmenity = (amenityId) => {
+    if (!editingHotel) return;
+    
+    const currentAmenities = editingHotel.amenities || [];
+    const newAmenities = currentAmenities.includes(amenityId)
+      ? currentAmenities.filter(id => id !== amenityId)
+      : [...currentAmenities, amenityId];
+    
+    dispatch(updateAmenities(newAmenities));
+  };
+
+  const handleSave = () => {
+    dispatch(saveChanges());
+    alert('Changes saved successfully!');
+  };
+
+  const handleDiscard = () => {
+    if (window.confirm('Are you sure you want to discard all changes?')) {
+      dispatch(discardChanges());
+    }
+  };
+
+  if (!editingHotel) {
     return (
-      <DashboardContainer>
-        <Sidebar />
-        <MainContent>
-          <div style={{ textAlign: 'center', padding: '4rem 0' }}>
-            <h2>Hotel not found</h2>
-            <p>Please select a valid hotel to manage.</p>
+      <ContentManagerContainer>
+        <HeaderSection>
+          <div>
+            <Title>Hotel Content Manager</Title>
+            <Subtitle>Select a hotel to manage its content and details</Subtitle>
           </div>
-        </MainContent>
-      </DashboardContainer>
+        </HeaderSection>
+
+        <HotelSelector>
+          <SectionTitle>
+            <FaEdit />
+            Select Hotel to Edit
+          </SectionTitle>
+          <HotelGrid>
+            {ownerHotels.map(hotel => (
+              <HotelSelectCard
+                key={hotel.id}
+                onClick={() => handleSelectHotel(hotel.id)}
+                selected={activeHotelId === hotel.id}
+              >
+                <img 
+                  src={hotel.image} 
+                  alt={hotel.name}
+                  style={{ 
+                    width: '100%', 
+                    height: '200px', 
+                    objectFit: 'cover',
+                    borderRadius: `${theme.borderRadius.lg} ${theme.borderRadius.lg} 0 0`
+                  }} 
+                />
+                <CardContent>
+                  <h3 style={{ marginBottom: theme.spacing.sm }}>{hotel.name}</h3>
+                  <p style={{ color: theme.colors.gray600, marginBottom: theme.spacing.md }}>
+                    {hotel.location}
+                  </p>
+                  <div style={{ display: 'flex', gap: theme.spacing.md, fontSize: '0.9rem', color: theme.colors.gray500 }}>
+                    <span><FaBed /> {hotel.totalRooms} rooms</span>
+                    <span><FaMapMarkerAlt /> {hotel.status}</span>
+                  </div>
+                </CardContent>
+              </HotelSelectCard>
+            ))}
+          </HotelGrid>
+        </HotelSelector>
+      </ContentManagerContainer>
     );
   }
 
   return (
-    <DashboardContainer>
-      <Sidebar />
+    <ContentManagerContainer>
+      <HeaderSection>
+        <div>
+          <Title>Editing: {editingHotel.name}</Title>
+          <Subtitle>Make changes to hotel content and click save to apply</Subtitle>
+          {hasUnsavedChanges && (
+            <div style={{ color: theme.colors.warning, fontWeight: 600, marginTop: theme.spacing.sm }}>
+              ⚠️ You have unsaved changes
+            </div>
+          )}
+        </div>
+      </HeaderSection>
 
-      <MainContent>
-        <Header>
-          <Title>Manage {hotel.name}</Title>
-          <HeaderActions>
-            <BackButton onClick={() => navigate(-1)}>
-              <FaArrowLeft />
-              Back to Dashboard
-            </BackButton>
-            <Button
-              variant="outline"
-              onClick={() => window.open(`/${hotel.slug}`, '_blank')}
-            >
-              <FaEye />
-              View Live Site
-            </Button>
-          </HeaderActions>
-        </Header>
-
-        <ContentGrid>
-          {/* Basic Information */}
-          <ContentCard>
-            <CardContent>
-              <CardTitle>
-                <FaEdit />
-                Basic Information
-              </CardTitle>
-              <Form onSubmit={handleSaveBasicInfo}>
-                <FormGroup>
-                  <Label htmlFor="name">Hotel Name</Label>
-                  <Input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleInputChange}
-                  />
-                </FormGroup>
-
-                <FormGroup>
-                  <Label htmlFor="description">Short Description</Label>
-                  <TextArea
-                    id="description"
-                    name="description"
-                    value={formData.description}
-                    onChange={handleInputChange}
-                    rows={3}
-                  />
-                </FormGroup>
-
-                <FormGroup>
-                  <Label htmlFor="aboutUs">About Us (Full Description)</Label>
-                  <TextArea
-                    id="aboutUs"
-                    name="aboutUs"
-                    value={formData.aboutUs}
-                    onChange={handleInputChange}
-                    rows={5}
-                  />
-                </FormGroup>
-
-                <SaveButton type="submit">
-                  <FaSave />
-                  Save Basic Info
-                </SaveButton>
-              </Form>
-            </CardContent>
-          </ContentCard>
-
-          {/* Contact Information */}
-          <ContentCard>
-            <CardContent>
-              <CardTitle>
-                <FaPhone />
-                Contact Information
-              </CardTitle>
-              <Form>
-                <FormGroup>
-                  <Label htmlFor="address">Address</Label>
-                  <Input
-                    type="text"
-                    id="address"
-                    name="address"
-                    value={formData.address}
-                    onChange={handleInputChange}
-                  />
-                </FormGroup>
-
-                <FormGroup>
-                  <Label htmlFor="phone">Phone Number</Label>
-                  <Input
-                    type="tel"
-                    id="phone"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleInputChange}
-                  />
-                </FormGroup>
-
-                <FormGroup>
-                  <Label htmlFor="email">Email Address</Label>
-                  <Input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                  />
-                </FormGroup>
-
-                <FormGroup>
-                  <Label htmlFor="checkInTime">Check-in Time</Label>
-                  <Input
-                    type="text"
-                    id="checkInTime"
-                    name="checkInTime"
-                    value={formData.checkInTime}
-                    onChange={handleInputChange}
-                    placeholder="e.g., 3:00 PM"
-                  />
-                </FormGroup>
-
-                <FormGroup>
-                  <Label htmlFor="checkOutTime">Check-out Time</Label>
-                  <Input
-                    type="text"
-                    id="checkOutTime"
-                    name="checkOutTime"
-                    value={formData.checkOutTime}
-                    onChange={handleInputChange}
-                    placeholder="e.g., 11:00 AM"
-                  />
-                </FormGroup>
-
-                <SaveButton>
-                  <FaSave />
-                  Save Contact Info
-                </SaveButton>
-              </Form>
-            </CardContent>
-          </ContentCard>
-        </ContentGrid>
-
-        {/* Features Management */}
-        <ContentCard style={{ marginBottom: theme.spacing.xl }}>
-          <CardContent>
-            <SectionHeader>
-              <CardTitle>
-                <FaStar />
-                Why Choose Us Features
-              </CardTitle>
-              <Button variant="outline" onClick={addFeature}>
-                <FaPlus />
-                Add Feature
-              </Button>
-            </SectionHeader>
-
-            <FeaturesList>
-              {features.map((feature, index) => (
-                <FeatureItem key={index}>
-                  <span>{feature}</span>
-                  <ActionButton
-                    className="danger"
-                    onClick={() => removeFeature(index)}
-                  >
-                    <FaTrash />
-                  </ActionButton>
-                </FeatureItem>
-              ))}
-            </FeaturesList>
-          </CardContent>
-        </ContentCard>
-
-        {/* Amenities Management */}
-        <ContentCard style={{ marginBottom: theme.spacing.xl }}>
-          <CardContent>
-            <SectionHeader>
-              <CardTitle>
-                <FaSwimmingPool />
-                Hotel Amenities
-              </CardTitle>
-              <Button variant="outline" onClick={addAmenity}>
-                <FaPlus />
-                Add Amenity
-              </Button>
-            </SectionHeader>
-
-            <FeaturesList>
-              {amenities.map((amenity, index) => (
-                <FeatureItem key={index}>
-                  <span>{amenity}</span>
-                  <ActionButton
-                    className="danger"
-                    onClick={() => removeAmenity(index)}
-                  >
-                    <FaTrash />
-                  </ActionButton>
-                </FeatureItem>
-              ))}
-            </FeaturesList>
-          </CardContent>
-        </ContentCard>
-
-        {/* Gallery Management */}
-        <ContentCard>
-          <CardContent>
-            <CardTitle>
-              <FaImages />
-              Hotel Gallery
-            </CardTitle>
-
-            <input
-              type="file"
-              multiple
-              accept="image/*"
-              onChange={handleImageUpload}
-              style={{ display: 'none' }}
-              id="gallery-upload"
+      <EditingPanel>
+        <SectionTitle>
+          <FaInfo />
+          Basic Information
+        </SectionTitle>
+        <FormGrid>
+          <FormField>
+            <Label>Hotel Name</Label>
+            <Input
+              value={editingHotel.name || ''}
+              onChange={(e) => handleFieldChange('name', e.target.value)}
+              placeholder="Enter hotel name"
             />
+          </FormField>
+          <FormField>
+            <Label>Location</Label>
+            <Input
+              value={editingHotel.location || ''}
+              onChange={(e) => handleFieldChange('location', e.target.value)}
+              placeholder="Enter location"
+            />
+          </FormField>
+          <FormField>
+            <Label>Address</Label>
+            <Input
+              value={editingHotel.address || ''}
+              onChange={(e) => handleFieldChange('address', e.target.value)}
+              placeholder="Enter full address"
+            />
+          </FormField>
+          <FormField>
+            <Label>City</Label>
+            <Input
+              value={editingHotel.city || ''}
+              onChange={(e) => handleFieldChange('city', e.target.value)}
+              placeholder="Enter city"
+            />
+          </FormField>
+          <FormField>
+            <Label>Pin Code</Label>
+            <Input
+              value={editingHotel.pincode || ''}
+              onChange={(e) => handleFieldChange('pincode', e.target.value)}
+              placeholder="Enter pin code"
+            />
+          </FormField>
+          <FormField>
+            <Label>Starting Price (₹)</Label>
+            <Input
+              type="number"
+              value={editingHotel.startingPrice || ''}
+              onChange={(e) => handleFieldChange('startingPrice', parseInt(e.target.value))}
+              placeholder="Enter starting price"
+            />
+          </FormField>
+        </FormGrid>
 
-            <ImageUploadArea
-              onClick={() => document.getElementById('gallery-upload').click()}
-            >
-              <FaImage className="upload-icon" />
-              <div className="upload-text">Click to upload hotel images</div>
-            </ImageUploadArea>
+        <FormField>
+          <Label>Description</Label>
+          <TextArea
+            value={editingHotel.description || ''}
+            onChange={(e) => handleFieldChange('description', e.target.value)}
+            placeholder="Enter hotel description"
+          />
+        </FormField>
+      </EditingPanel>
 
-            {gallery.length > 0 && (
-              <ImagePreview>
-                {gallery.map((image, index) => (
-                  <ImageItem key={index}>
-                    <img src={image} alt={`Gallery ${index + 1}`} />
-                    <button
-                      className="remove-btn"
-                      onClick={() => removeImage(index)}
+      <EditingPanel>
+        <ImageSection>
+          <SectionTitle>
+            <FaImage />
+            Hotel Images
+          </SectionTitle>
+          <ImageGrid>
+            <ImageCard className={editingHotel.image ? 'has-image' : ''}>
+              {editingHotel.image ? (
+                <ImageDisplay src={editingHotel.image}>
+                  <ImageActions>
+                    <Button
+                      size="small"
+                      variant="secondary"
+                      onClick={() => {
+                        const newUrl = prompt('Enter new image URL:', editingHotel.image);
+                        if (newUrl) handleUpdateImage('main', newUrl);
+                      }}
                     >
-                      <FaTimes />
-                    </button>
-                  </ImageItem>
-                ))}
-              </ImagePreview>
-            )}
-          </CardContent>
-        </ContentCard>
-      </MainContent>
-    </DashboardContainer>
+                      <FaEdit />
+                    </Button>
+                  </ImageActions>
+                </ImageDisplay>
+              ) : (
+                <ImagePlaceholder>
+                  <FaImage style={{ fontSize: '2rem', marginBottom: theme.spacing.sm }} />
+                  <div>Main Hotel Image</div>
+                  <Button
+                    size="small"
+                    style={{ marginTop: theme.spacing.sm }}
+                    onClick={() => {
+                      const url = prompt('Enter image URL:');
+                      if (url) handleFieldChange('image', url);
+                    }}
+                  >
+                    <FaPlus /> Add Image
+                  </Button>
+                </ImagePlaceholder>
+              )}
+            </ImageCard>
+
+            {editingHotel.images?.map((image, index) => (
+              <ImageCard key={index} className="has-image">
+                <ImageDisplay src={image}>
+                  <ImageActions>
+                    <Button
+                      size="small"
+                      variant="secondary"
+                      onClick={() => {
+                        const newUrl = prompt('Enter new image URL:', image);
+                        if (newUrl) handleUpdateImage(index, newUrl);
+                      }}
+                    >
+                      <FaEdit />
+                    </Button>
+                    <Button
+                      size="small"
+                      variant="danger"
+                      onClick={() => handleRemoveImage(index)}
+                    >
+                      <FaTrash />
+                    </Button>
+                  </ImageActions>
+                </ImageDisplay>
+              </ImageCard>
+            ))}
+
+            <ImageCard>
+              <ImagePlaceholder>
+                <FaPlus style={{ fontSize: '2rem', marginBottom: theme.spacing.sm }} />
+                <div>Add New Image</div>
+                <Button
+                  size="small"
+                  style={{ marginTop: theme.spacing.sm }}
+                  onClick={() => {
+                    const url = prompt('Enter image URL:');
+                    if (url) handleAddImage();
+                    setNewImageUrl(url || '');
+                  }}
+                >
+                  <FaPlus /> Add Image
+                </Button>
+              </ImagePlaceholder>
+            </ImageCard>
+          </ImageGrid>
+        </ImageSection>
+      </EditingPanel>
+
+      <EditingPanel>
+        <AmenitiesSection>
+          <SectionTitle>
+            <FaConciergeBell />
+            Hotel Amenities
+          </SectionTitle>
+          <AmenitiesGrid>
+            {amenitiesList.map(amenity => (
+              <AmenityItem
+                key={amenity.id}
+                selected={editingHotel.amenities?.includes(amenity.id)}
+                onClick={() => toggleAmenity(amenity.id)}
+              >
+                <span>{amenity.icon}</span>
+                <span>{amenity.name}</span>
+              </AmenityItem>
+            ))}
+          </AmenitiesGrid>
+        </AmenitiesSection>
+      </EditingPanel>
+
+      <EditingPanel>
+        <SectionTitle>
+          <FaClock />
+          Check-in / Check-out Times
+        </SectionTitle>
+        <FormGrid>
+          <FormField>
+            <Label>Check-in Time</Label>
+            <Input
+              value={editingHotel.checkInTime || ''}
+              onChange={(e) => handleFieldChange('checkInTime', e.target.value)}
+              placeholder="e.g., 3:00 PM"
+            />
+          </FormField>
+          <FormField>
+            <Label>Check-out Time</Label>
+            <Input
+              value={editingHotel.checkOutTime || ''}
+              onChange={(e) => handleFieldChange('checkOutTime', e.target.value)}
+              placeholder="e.g., 11:00 AM"
+            />
+          </FormField>
+        </FormGrid>
+      </EditingPanel>
+
+      <ActionButtons>
+        <Button variant="outline" onClick={() => dispatch(setEditingHotel(null))}>
+          Back to Selection
+        </Button>
+        <Button variant="secondary" onClick={handleDiscard} disabled={!hasUnsavedChanges}>
+          <FaUndo /> Discard Changes
+        </Button>
+        <Button onClick={handleSave} disabled={!hasUnsavedChanges}>
+          <FaSave /> Save Changes
+        </Button>
+      </ActionButtons>
+    </ContentManagerContainer>
   );
 };
 
