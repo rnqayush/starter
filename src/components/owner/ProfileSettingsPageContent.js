@@ -394,14 +394,82 @@ const ProfileSettingsPageContent = () => {
                 Ready to sign out? Click the button below to logout from your
                 account.
               </LogoutText>
-              <Button variant="danger" onClick={handleLogout} size="large">
-                <FaSignOutAlt />
-                Logout
-              </Button>
+              <div style={{ display: 'flex', gap: theme.spacing.md, justifyContent: 'center' }}>
+                <Button variant="danger" onClick={handleLogout} size="large">
+                  <FaSignOutAlt />
+                  Logout
+                </Button>
+                <Button variant="error" onClick={handleDeleteAccount} size="large">
+                  <FaTrashAlt />
+                  Delete Account
+                </Button>
+              </div>
             </LogoutSection>
+
+            <DangerZone>
+              <DangerTitle>
+                <FaExclamationTriangle />
+                Danger Zone
+              </DangerTitle>
+              <DangerText>
+                <strong>Warning:</strong> Deleting your account is permanent and cannot be undone.
+                All your hotel data, rooms, bookings, and personal information will be permanently removed.
+                This action cannot be reversed.
+              </DangerText>
+              <DangerText>
+                If you're sure you want to delete your account, please click the Delete Account button above.
+              </DangerText>
+            </DangerZone>
           </CardContent>
         </Card>
       </SettingsGrid>
+
+      {/* Delete Account Confirmation Modal */}
+      {showDeleteModal && (
+        <DeleteModal onClick={cancelDeleteAccount}>
+          <ModalContent onClick={(e) => e.stopPropagation()}>
+            <ModalIcon>
+              <FaExclamationTriangle />
+            </ModalIcon>
+            <ModalTitle>Delete Account</ModalTitle>
+            <ModalText>
+              <strong>This action cannot be undone!</strong>
+              <br /><br />
+              Deleting your account will permanently remove:
+              <br />
+              • All your hotel data and information
+              <br />
+              • All room listings and details
+              <br />
+              • All booking history
+              <br />
+              • Your personal profile and settings
+              <br /><br />
+              To confirm deletion, please type <strong>"DELETE ACCOUNT"</strong> below:
+            </ModalText>
+            <ConfirmationInput
+              type="text"
+              value={deleteConfirmation}
+              onChange={(e) => setDeleteConfirmation(e.target.value)}
+              placeholder="Type DELETE ACCOUNT to confirm"
+            />
+            <ModalActions>
+              <Button variant="outline" onClick={cancelDeleteAccount} size="large">
+                Cancel
+              </Button>
+              <Button
+                variant="error"
+                onClick={confirmDeleteAccount}
+                size="large"
+                disabled={deleteConfirmation.toLowerCase() !== 'delete account'}
+              >
+                <FaTrashAlt />
+                Delete Account
+              </Button>
+            </ModalActions>
+          </ModalContent>
+        </DeleteModal>
+      )}
     </>
   );
 };
