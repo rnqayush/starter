@@ -873,7 +873,7 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
   };
 
   const handleSaveAndGoLive = () => {
-    if (!editingHotel || !hasUnsavedChanges) return;
+    if (!editingHotel) return;
 
     // Save section order along with other changes
     dispatch(updateHotelField({ field: 'sectionOrder', value: sectionOrder }));
