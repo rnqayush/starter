@@ -989,8 +989,21 @@ const HotelDetail = () => {
         </HeroContent>
       </HeroBanner>
 
-      {/* Render sections in custom order */}
-      {(hotel.sectionOrder || ['about', 'features', 'gallery', 'amenities', 'contact']).map((sectionId, index) => {
+      {/* Render sections in custom order - only if visible */}
+      {(hotel.sectionOrder || ['about', 'features', 'gallery', 'amenities', 'contact'])
+        .filter(sectionId => {
+          // Check if section is visible (from Redux state or default to true)
+          const sectionVisibility = hotel.sectionVisibility || {
+            hero: true,
+            about: true,
+            features: true,
+            gallery: true,
+            amenities: true,
+            contact: true,
+          };
+          return sectionVisibility[sectionId] !== false;
+        })
+        .map((sectionId, index) => {
         const isAlt = index % 2 === 1; // Alternate background colors
 
         switch (sectionId) {
