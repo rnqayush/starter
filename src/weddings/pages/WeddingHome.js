@@ -21,9 +21,10 @@ import {
   FaCheck,
   FaBars,
   FaTimes,
+  FaSpinner,
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
-import { weddingVendors } from '../data/vendors';
+import { useGetWeddingServicesQuery } from '../../store/api/weddingApi';
 import {
   getCurrentLocation,
   getLocationFromZip,
@@ -690,11 +691,53 @@ const EmptyState = styled.div`
   }
 `;
 
+const LoadingSpinner = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: ${theme.spacing.xl};
+  color: ${theme.colors.primary};
+  
+  svg {
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+`;
+
+const ErrorState = styled.div`
+  text-align: center;
+  padding: ${theme.spacing.xl};
+  color: ${theme.colors.error};
+  background: ${theme.colors.errorLight};
+  border-radius: ${theme.borderRadius.md};
+  margin: ${theme.spacing.md};
+  
+  h3 {
+    margin-bottom: ${theme.spacing.sm};
+  }
+  
+  button {
+    background: ${theme.colors.error};
+    color: white;
+    border: none;
+    padding: ${theme.spacing.sm} ${theme.spacing.md};
+    border-radius: ${theme.borderRadius.sm};
+    cursor: pointer;
+    margin-top: ${theme.spacing.sm};
+    
+    &:hover {
+      background: ${theme.colors.errorDark};
+    }
+  }
+`;
+
 const WeddingHome = () => {
   const navigate = useNavigate();
-  const [vendors, setVendors] = useState([]);
   const [filteredVendors, setFilteredVendors] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentLocation, setCurrentLocation] = useState(null);
   const [activeFilter, setActiveFilter] = useState('all');
@@ -702,6 +745,21 @@ const WeddingHome = () => {
   const [locationLoading, setLocationLoading] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState(['venue']); // Default to venues checked
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  
+  // RTK Query hook for fetching wedding services
+  const {
+    data: weddingServicesData,
+    error,
+    isLoading,
+    refetch
+  } = useGetWeddingServicesQuery({
+    page: 1,
+    limit: 50,
+    sortBy: 'rating',
+    sortOrder: 'desc'
+  });
+  
+  const vendors = weddingServicesData?.data?.services || [];
 
   const categories = [
     { name: 'Venues', icon: FaLeaf, count: 15, filter: 'venue' },
@@ -713,17 +771,16 @@ const WeddingHome = () => {
   ];
 
   const loadVendorsForLocation = useCallback(location => {
-    const vendorsWithDistance = updateVendorsWithDistance(
-      weddingVendors,
-      location
-    );
-    setVendors(vendorsWithDistance);
-    setFilteredVendors(vendorsWithDistance);
-    setLoading(false);
-  }, []);
+    if (vendors.length > 0) {
+      const vendorsWithDistance = updateVendorsWithDistance(
+        vendors,
+        location
+      );
+      setFilteredVendors(vendorsWithDistance);
+    }
+  }, [vendors]);
 
   const initializeLocation = useCallback(async () => {
-    setLoading(true);
     try {
       const location = await getCurrentLocation();
       setCurrentLocation(location);
@@ -895,7 +952,14 @@ const WeddingHome = () => {
     applyFilters();
   }, [applyFilters]);
 
-  if (loading) {
+  // Initialize location when vendors data is loaded
+  useEffect(() => {
+    if (vendors.length > 0 && !currentLocation) {
+      initializeLocation();
+    }
+  }, [vendors, currentLocation, initializeLocation]);
+
+  if (isLoading) {
     return (
       <PageContainer>
         <NavHeader>
@@ -926,11 +990,50 @@ const WeddingHome = () => {
             </MobileMenuButton>
           </NavContent>
         </NavHeader>
-        <LoadingState>
-          <div className="spinner">💍</div>
-          <h3>Finding wedding vendors near you...</h3>
-          <p>Please wait while we locate nearby wedding services.</p>
-        </LoadingState>
+        <LoadingSpinner>
+          <FaSpinner size={24} />
+          <span style={{ marginLeft: '10px' }}>Loading wedding services...</span>
+        </LoadingSpinner>
+      </PageContainer>
+    );
+  }
+
+  if (error) {
+    return (
+      <PageContainer>
+        <NavHeader>
+          <MobileMenuOverlay
+            isOpen={mobileMenuOpen}
+            onClick={closeMobileMenu}
+          />
+          <NavContent>
+            <Logo>
+              <FaRing /> Wedding Vendors
+            </Logo>
+            <NavActions isOpen={mobileMenuOpen}>
+              <BackButton
+                onClick={() => {
+                  navigate('/');
+                  closeMobileMenu();
+                }}
+              >
+                <FaHome />
+                Back to Home
+              </BackButton>
+            </NavActions>
+            <MobileMenuButton
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
+            >
+              {mobileMenuOpen ? <FaTimes /> : <FaBars />}
+            </MobileMenuButton>
+          </NavContent>
+        </NavHeader>
+        <ErrorState>
+          <h3>Failed to load wedding services</h3>
+          <p>We're having trouble connecting to our servers. Please try again.</p>
+          <button onClick={() => refetch()}>Retry</button>
+        </ErrorState>
       </PageContainer>
     );
   }
