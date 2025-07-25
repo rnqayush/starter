@@ -504,6 +504,7 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
   const {
     editingHotel,
     hasUnsavedChanges,
+    changes,
     sectionVisibility,
   } = useSelector(state => state.hotelManagement);
 
