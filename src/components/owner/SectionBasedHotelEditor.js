@@ -592,6 +592,61 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
     updateTempData('amenities', newAmenities);
   };
 
+  const addFeatureItem = () => {
+    const newFeature = {
+      title: '',
+      description: ''
+    };
+    const newFeatures = [...(tempData.features || []), newFeature];
+    updateTempData('features', newFeatures);
+  };
+
+  const removeFeatureItem = (index) => {
+    const newFeatures = tempData.features.filter((_, i) => i !== index);
+    updateTempData('features', newFeatures);
+  };
+
+  const updateFeatureItem = (index, field, value) => {
+    const newFeatures = [...tempData.features];
+    newFeatures[index][field] = value;
+    updateTempData('features', newFeatures);
+  };
+
+  const addAmenityItem = (categoryIndex) => {
+    const input = newAmenityInputs[categoryIndex];
+    if (input && input.trim()) {
+      const newCategories = [...tempData.amenityCategories];
+      newCategories[categoryIndex].items.push(input.trim());
+      updateTempData('amenityCategories', newCategories);
+      setNewAmenityInputs(prev => ({ ...prev, [categoryIndex]: '' }));
+    }
+  };
+
+  const removeAmenityItem = (categoryIndex, itemIndex) => {
+    const newCategories = [...tempData.amenityCategories];
+    newCategories[categoryIndex].items.splice(itemIndex, 1);
+    updateTempData('amenityCategories', newCategories);
+  };
+
+  const updateCategoryTitle = (categoryIndex, title) => {
+    const newCategories = [...tempData.amenityCategories];
+    newCategories[categoryIndex].title = title;
+    updateTempData('amenityCategories', newCategories);
+  };
+
+  const addAmenityCategory = () => {
+    const newCategory = {
+      title: '',
+      items: []
+    };
+    const newCategories = [...tempData.amenityCategories, newCategory];
+    updateTempData('amenityCategories', newCategories);
+  };
+
+  const handleSectionToggle = (sectionId) => {
+    dispatch(toggleSectionVisibility({ section: sectionId }));
+  };
+
   if (!editingHotel) {
     return (
       <EditorContainer>
