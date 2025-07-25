@@ -388,7 +388,52 @@ const ProfileSettingsPageContent = () => {
         </Card>
       </SettingsGrid>
 
-
+      {/* Delete Account Confirmation Modal */}
+      {showDeleteModal && (
+        <DeleteModal onClick={cancelDeleteAccount}>
+          <ModalContent onClick={(e) => e.stopPropagation()}>
+            <ModalIcon>
+              <FaExclamationTriangle />
+            </ModalIcon>
+            <ModalTitle>Delete Account</ModalTitle>
+            <ModalText>
+              <strong>This action cannot be undone!</strong>
+              <br /><br />
+              Deleting your account will permanently remove:
+              <br />
+              • All your hotel data and information
+              <br />
+              • All room listings and details
+              <br />
+              • All booking history
+              <br />
+              • Your personal profile and settings
+              <br /><br />
+              To confirm deletion, please type <strong>"DELETE ACCOUNT"</strong> below:
+            </ModalText>
+            <ConfirmationInput
+              type="text"
+              value={deleteConfirmation}
+              onChange={(e) => setDeleteConfirmation(e.target.value)}
+              placeholder="Type DELETE ACCOUNT to confirm"
+            />
+            <ModalActions>
+              <Button variant="outline" onClick={cancelDeleteAccount} size="large">
+                Cancel
+              </Button>
+              <Button
+                variant="error"
+                onClick={confirmDeleteAccount}
+                size="large"
+                disabled={deleteConfirmation.toLowerCase() !== 'delete account'}
+              >
+                <FaTrashAlt />
+                Delete Account
+              </Button>
+            </ModalActions>
+          </ModalContent>
+        </DeleteModal>
+      )}
     </>
   );
 };
