@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { FaUser, FaLock, FaSave, FaSignOutAlt } from 'react-icons/fa';
+import { FaUser, FaLock, FaSave, FaSignOutAlt, FaTrashAlt, FaExclamationTriangle } from 'react-icons/fa';
 import { Card, CardContent } from '../shared/Card';
 import { Button } from '../shared/Button';
 import { Input, FormGroup, Label, InputGroup } from '../shared/Input';
