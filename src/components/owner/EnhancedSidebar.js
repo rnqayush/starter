@@ -380,12 +380,6 @@ const EnhancedSidebar = ({ activeSection, setActiveSection }) => {
         section: 'Hotel Management',
         items: [
           {
-            key: 'add-hotel',
-            icon: FaPlus,
-            label: 'Add Hotel',
-            action: () => setActiveSection('add-hotel'),
-          },
-          {
             key: 'my-hotels',
             icon: FaHotel,
             label: 'Manage Hotel Content',
