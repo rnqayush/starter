@@ -13,7 +13,8 @@ import {
   FaGift,
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
-import { addRoom } from '../../store/slices/hotelManagementSlice';
+import { addRoom, setEditingHotel } from '../../store/slices/hotelManagementSlice';
+import { getHotelByIdOrSlug } from '../../DummyData/hotels';
 import { Button } from '../shared/Button';
 import { Input } from '../shared/Input';
 
@@ -325,7 +326,7 @@ const AddRoomManager = () => {
             />
           </FormField>
           <FormField>
-            <Label>Price per Night (₹) *</Label>
+            <Label>Price per Night (���) *</Label>
             <Input
               type="number"
               value={roomData.price}
