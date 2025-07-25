@@ -373,10 +373,14 @@ const ProfileSettingsPageContent = () => {
                 Ready to sign out? Click the button below to logout from your
                 account.
               </LogoutText>
-              <div style={{ display: 'flex', justifyContent: 'center' }}>
+              <div style={{ display: 'flex', gap: theme.spacing.md, justifyContent: 'center' }}>
                 <Button variant="danger" onClick={handleLogout} size="large">
                   <FaSignOutAlt />
                   Logout
+                </Button>
+                <Button variant="error" onClick={handleDeleteAccount} size="large">
+                  <FaTrashAlt />
+                  Delete Account
                 </Button>
               </div>
             </LogoutSection>
