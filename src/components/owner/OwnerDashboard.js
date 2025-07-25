@@ -439,9 +439,9 @@ const OwnerDashboard = () => {
       action: () => setActiveSection('add-hotel'),
     },
     {
-      title: 'Manage Hotel Content',
+      title: 'Edit Hotel Details',
       description:
-        'Edit hotel information, gallery, amenities and website content',
+        'Edit your hotel page content exactly as it appears to customers',
       icon: FaEdit,
       action: () => setActiveSection('my-hotels'),
     },
