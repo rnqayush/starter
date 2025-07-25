@@ -18,7 +18,7 @@ import {
   FaUpload,
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
-import { getBusinessTemplate } from '../data/businessTemplates';
+import { getBusinessTemplate } from '../../DummyData';
 
 const DashboardContainer = styled.div`
   min-height: 100vh;

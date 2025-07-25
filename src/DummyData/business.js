@@ -133,6 +133,7 @@ export const businessTemplates = [
   },
 ];
 
+// Utility functions for business
 export const getBusinessTemplate = slug => {
   return businessTemplates.find(template => template.slug === slug);
 };

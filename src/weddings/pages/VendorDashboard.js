@@ -31,7 +31,7 @@ import {
   FaBars,
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
-import { getVendorById } from '../data/vendors';
+import { getWeddingVendorById as getVendorById } from '../../DummyData';
 import { useAuth } from '../../context/AuthContext';
 
 const DashboardContainer = styled.div`

@@ -32,9 +32,9 @@ import HotelContentManager from './components/owner/HotelContentManager';
 // Mock data
 import {
   hotels as hotelModuleData,
-  bookings as hotelBookings,
+  hotelBookings,
   ownerHotels as hotelOwnerData,
-} from './hotel/data/hotels';
+} from './DummyData';
 
 // Modules
 import EcommerceModule from './ecommerce';

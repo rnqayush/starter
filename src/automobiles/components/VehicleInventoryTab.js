@@ -12,11 +12,11 @@ import {
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
 import {
-  vehicles,
-  getAvailabilityStatus,
-  getAvailabilityLabel,
-  getAvailabilityColor,
-} from '../data/vehicles';
+  automobileVehicles as vehicles,
+  getVehicleAvailabilityStatus as getAvailabilityStatus,
+  getVehicleAvailabilityLabel as getAvailabilityLabel,
+  getVehicleAvailabilityColor as getAvailabilityColor,
+} from '../../DummyData';
 
 const InventoryContainer = styled.div`
   background: ${theme.colors.white};

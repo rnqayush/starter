@@ -19,7 +19,7 @@ import { theme } from '../../styles/GlobalStyle';
 import Sidebar from './Sidebar';
 import { Card, CardContent } from '../shared/Card';
 import { Button } from '../shared/Button';
-import { getHotelByIdOrSlug } from '../../hotel/data/hotels';
+import { getHotelByIdOrSlug } from '../../DummyData';
 
 const DashboardContainer = styled.div`
   display: flex;

@@ -16,7 +16,7 @@ import ServiceAppointmentsTab from '../components/ServiceAppointmentsTab';
 import PromotionsTab from '../components/PromotionsTab';
 import DealerSettingsTab from '../components/DealerSettingsTab';
 import AnalyticsTab from '../components/AnalyticsTab';
-import { getVendorByIdOrSlug } from '../data/vendors';
+import { getAutomobileVendorByIdOrSlug as getVendorByIdOrSlug } from '../../DummyData';
 
 const DashboardContainer = styled.div`
   display: flex;

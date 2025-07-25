@@ -6,7 +6,7 @@ export const weddingVendors = [
     logo: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=200&q=80',
     image:
       'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=800&q=80',
-    heroVideo: 'https://player.vimeo.com/video/123456789', // Optional video
+    heroVideo: 'https://player.vimeo.com/video/123456789',
     tagline: 'Creating magical moments that last a lifetime',
     rating: 4.9,
     reviewCount: 342,
@@ -440,6 +440,7 @@ export const weddingVendors = [
   },
 ];
 
+// Utility functions for weddings
 export const getVendorsByLocation = (city, state) => {
   return weddingVendors.filter(
     vendor =>

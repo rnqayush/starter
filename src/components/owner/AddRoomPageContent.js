@@ -15,7 +15,7 @@ import {
 } from '../shared/Input';
 import { theme } from '../../styles/GlobalStyle';
 import { useAppContext } from '../../context/AppContext';
-import { amenitiesList } from '../../data/mockData';
+import { amenitiesList } from '../../DummyData';
 
 const BackButton = styled.button`
   display: inline-flex;

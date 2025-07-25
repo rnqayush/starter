@@ -16,7 +16,7 @@ import {
 } from '../shared/Input';
 import { theme, media } from '../../styles/GlobalStyle';
 import { useAppContext } from '../../context/AppContext';
-import { amenitiesList } from '../../data/mockData';
+import { amenitiesList } from '../../DummyData';
 
 const PageHeader = styled.div`
   margin-bottom: ${theme.spacing.xxl};

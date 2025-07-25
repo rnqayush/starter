@@ -23,11 +23,11 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import EnquiryModal from '../components/EnquiryModal';
 import {
   getProductById,
-  products,
-  getAvailabilityStatus,
-  getAvailabilityLabel,
-} from '../data/products';
-import { getVendorByIdOrSlug } from '../data/vendors';
+  ecommerceProducts as products,
+  getProductAvailabilityStatus as getAvailabilityStatus,
+  getProductAvailabilityLabel as getAvailabilityLabel,
+  getEcommerceVendorByIdOrSlug as getVendorByIdOrSlug,
+} from '../../DummyData';
 
 const PageContainer = styled.div`
   min-height: 100vh;

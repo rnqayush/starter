@@ -241,7 +241,7 @@ export const hotels = [
   },
 ];
 
-export const bookings = [
+export const hotelBookings = [
   {
     id: 1,
     userId: 'user123',
@@ -323,7 +323,7 @@ export const amenitiesList = [
   { id: 'heater', name: 'Heater', icon: '🔥' },
 ];
 
-// Helper functions
+// Utility functions for hotels
 export const getHotelById = id => {
   return hotels.find(hotel => hotel.id === parseInt(id));
 };
@@ -333,11 +333,8 @@ export const getHotelBySlug = slug => {
 };
 
 export const getHotelByIdOrSlug = identifier => {
-  // First try to find by slug
   const hotelBySlug = getHotelBySlug(identifier);
   if (hotelBySlug) return hotelBySlug;
-
-  // If not found by slug, try by ID
   return getHotelById(identifier);
 };
 

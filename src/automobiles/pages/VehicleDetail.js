@@ -24,11 +24,11 @@ import BackToTop from '../../ecommerce/components/BackToTop';
 import {
   getVehicleById,
   getFeaturedVehicles,
-  getAvailabilityStatus,
-  getAvailabilityLabel,
-  getAvailabilityColor,
-} from '../data/vehicles';
-import { getVendorByIdOrSlug } from '../data/vendors';
+  getVehicleAvailabilityStatus as getAvailabilityStatus,
+  getVehicleAvailabilityLabel as getAvailabilityLabel,
+  getVehicleAvailabilityColor as getAvailabilityColor,
+  getAutomobileVendorByIdOrSlug as getVendorByIdOrSlug,
+} from '../../DummyData';
 
 const PageContainer = styled.div`
   min-height: 100vh;
