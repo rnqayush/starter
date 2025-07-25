@@ -185,10 +185,7 @@ function App() {
                   path="/owner/content-manager"
                   element={<ContentManagerSelector />}
                 />
-                <Route
-                  path="/owner/content-manager/:hotelId"
-                  element={<HotelContentManager />}
-                />
+
                 <Route path="/owner/dashboard" element={<HotelModule />} />
 
                 {/* Unified Slug-based Routes - All demo websites */}
