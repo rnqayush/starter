@@ -690,42 +690,48 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
       title: 'Hero Section',
       description: 'Update background image and hotel title',
       icon: FaImage,
-      preview: `${editingHotel.name} - ${editingHotel.city}`
+      preview: `${editingHotel.name} - ${editingHotel.city}`,
+      isVisible: sectionVisibility.hero
     },
     {
       id: 'about',
       title: 'About Section',
       description: 'Edit hotel description and story',
       icon: FaInfo,
-      preview: editingHotel.description?.substring(0, 100) + '...'
+      preview: editingHotel.description?.substring(0, 100) + '...' || 'No description set',
+      isVisible: sectionVisibility.about
     },
     {
       id: 'features',
       title: 'Why Choose Us',
       description: 'Manage hotel features and benefits',
       icon: FaStar,
-      preview: '24/7 Concierge, Luxury Amenities, Business Center...'
+      preview: `${editingHotel.features?.length || 4} features configured`,
+      isVisible: sectionVisibility.features
     },
     {
       id: 'gallery',
       title: 'Hotel Gallery',
       description: 'Manage hotel images and gallery',
       icon: FaCamera,
-      preview: `${editingHotel.images?.length || 0} images in gallery`
+      preview: `${editingHotel.images?.length || 0} images in gallery`,
+      isVisible: sectionVisibility.gallery
     },
     {
       id: 'amenities',
       title: 'World-Class Amenities',
       description: 'Update hotel amenities and services',
       icon: FaConciergeBell,
-      preview: `${editingHotel.amenities?.length || 0} amenities selected`
+      preview: `${editingHotel.amenityCategories?.length || 4} categories`,
+      isVisible: sectionVisibility.amenities
     },
     {
       id: 'contact',
       title: 'Location & Contact',
       description: 'Update contact information and address',
       icon: FaMapMarkerAlt,
-      preview: editingHotel.address || 'Contact information'
+      preview: editingHotel.address || 'Contact information',
+      isVisible: sectionVisibility.contact
     }
   ];
 
