@@ -744,12 +744,31 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
 
       <SectionsGrid>
         {sections.map(section => (
-          <SectionCard key={section.id} onClick={() => openModal(section.id)}>
-            <SectionIcon>
-              <section.icon />
-            </SectionIcon>
-            <SectionTitle>{section.title}</SectionTitle>
-            <SectionDescription>{section.description}</SectionDescription>
+          <SectionCard
+            key={section.id}
+            isVisible={section.isVisible}
+            onClick={(e) => {
+              if (e.target.closest('.toggle-switch')) return;
+              openModal(section.id);
+            }}
+          >
+            <SectionHeader>
+              <SectionInfo>
+                <SectionIcon>
+                  <section.icon />
+                </SectionIcon>
+                <SectionTitle>{section.title}</SectionTitle>
+                <SectionDescription>{section.description}</SectionDescription>
+              </SectionInfo>
+              <ToggleSwitch
+                className="toggle-switch"
+                active={section.isVisible}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleSectionToggle(section.id);
+                }}
+              />
+            </SectionHeader>
             <SectionPreview>{section.preview}</SectionPreview>
           </SectionCard>
         ))}
