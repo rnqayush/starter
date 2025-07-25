@@ -544,6 +544,50 @@ const AddButton = styled.button`
   }
 `;
 
+const AddSectionCard = styled(SectionCard)`
+  border: 2px dashed ${theme.colors.primary};
+  background: ${theme.colors.primary}05;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  text-align: center;
+
+  &:hover {
+    border-color: ${theme.colors.primaryDark};
+    background: ${theme.colors.primary}10;
+    transform: translateY(-2px);
+  }
+`;
+
+const AddSectionIcon = styled.div`
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: ${theme.colors.primary}20;
+  color: ${theme.colors.primary};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  margin-bottom: ${theme.spacing.lg};
+`;
+
+const AddSectionText = styled.div`
+  h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: ${theme.colors.primary};
+    margin-bottom: ${theme.spacing.sm};
+  }
+
+  p {
+    color: ${theme.colors.gray600};
+    font-size: 0.9rem;
+  }
+`;
+
 const AmenityCategoryItem = styled.div`
   margin-bottom: ${theme.spacing.xl};
   padding: ${theme.spacing.lg};
