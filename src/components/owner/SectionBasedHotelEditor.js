@@ -1011,6 +1011,39 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
         <Subtitle>Click on any section below to edit its content</Subtitle>
       </Header>
 
+      <SectionReorderContainer>
+        <h3 style={{ marginBottom: theme.spacing.lg, color: theme.colors.gray900 }}>
+          Section Order Management
+        </h3>
+        <p style={{ color: theme.colors.gray600, marginBottom: theme.spacing.lg }}>
+          Drag sections up or down to change their order on the hotel detail page.
+        </p>
+        {sectionOrder.map((sectionId, index) => {
+          const section = allSections[sectionId];
+          return (
+            <SectionOrderItem key={sectionId}>
+              <div>
+                <strong>{section?.title}</strong> - {section?.description}
+              </div>
+              <SectionOrderButtons>
+                <OrderButton
+                  onClick={() => moveSectionUp(index)}
+                  disabled={index === 0}
+                >
+                  ↑
+                </OrderButton>
+                <OrderButton
+                  onClick={() => moveSectionDown(index)}
+                  disabled={index === sectionOrder.length - 1}
+                >
+                  ↓
+                </OrderButton>
+              </SectionOrderButtons>
+            </SectionOrderItem>
+          );
+        })}
+      </SectionReorderContainer>
+
       <SectionsGrid>
         {sections.map(section => (
           <SectionCard
