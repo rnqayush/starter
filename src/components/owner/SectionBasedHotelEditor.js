@@ -371,6 +371,80 @@ const FeatureItem = styled.div`
   padding: ${theme.spacing.md};
   border: 1px solid ${theme.colors.gray200};
   border-radius: ${theme.borderRadius.md};
+  align-items: flex-start;
+`;
+
+const RemoveButton = styled.button`
+  background: ${theme.colors.error};
+  color: white;
+  border: none;
+  border-radius: ${theme.borderRadius.sm};
+  padding: ${theme.spacing.xs};
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: ${theme.colors.errorDark};
+  }
+`;
+
+const AddButton = styled.button`
+  background: ${theme.colors.primary};
+  color: white;
+  border: none;
+  border-radius: ${theme.borderRadius.md};
+  padding: ${theme.spacing.sm} ${theme.spacing.md};
+  cursor: pointer;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.xs};
+  margin-top: ${theme.spacing.md};
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: ${theme.colors.primaryDark};
+  }
+`;
+
+const AmenityCategoryItem = styled.div`
+  margin-bottom: ${theme.spacing.xl};
+  padding: ${theme.spacing.lg};
+  border: 1px solid ${theme.colors.gray200};
+  border-radius: ${theme.borderRadius.md};
+  background: ${theme.colors.gray50};
+`;
+
+const AmenityCategoryHeader = styled.div`
+  display: flex;
+  gap: ${theme.spacing.md};
+  align-items: center;
+  margin-bottom: ${theme.spacing.md};
+`;
+
+const AmenityItemsContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: ${theme.spacing.sm};
+  margin-bottom: ${theme.spacing.md};
+`;
+
+const AmenityTag = styled.div`
+  background: ${theme.colors.primary};
+  color: white;
+  padding: ${theme.spacing.xs} ${theme.spacing.sm};
+  border-radius: ${theme.borderRadius.sm};
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.xs};
+`;
+
+const AddAmenityForm = styled.div`
+  display: flex;
+  gap: ${theme.spacing.sm};
+  align-items: center;
 `;
 
 const SectionBasedHotelEditor = ({ setActiveSection }) => {
