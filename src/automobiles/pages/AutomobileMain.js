@@ -9,11 +9,11 @@ import VehicleCard from '../components/VehicleCard';
 import CategoryCard from '../components/CategoryCard';
 import BackToTop from '../../ecommerce/components/BackToTop';
 import {
-  categories,
+  automobileCategories as categories,
   getFeaturedVehicles,
   getOnSaleVehicles,
-} from '../data/vehicles';
-import { getVendorByIdOrSlug } from '../data/vendors';
+  getAutomobileVendorByIdOrSlug as getVendorByIdOrSlug,
+} from '../../DummyData';
 
 // Dynamic theme styles that override global styles
 const DynamicGlobalStyle = createGlobalStyle`
