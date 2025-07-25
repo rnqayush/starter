@@ -393,8 +393,14 @@ const EnhancedSidebar = ({ activeSection, setActiveSection }) => {
           {
             key: 'add-room',
             icon: FaBed,
-            label: 'Add Rooms',
+            label: 'Add Room',
             action: () => setActiveSection('add-room'),
+          },
+          {
+            key: 'all-rooms',
+            icon: FaHotel,
+            label: 'All Rooms',
+            action: () => setActiveSection('all-rooms'),
           },
         ],
       },
