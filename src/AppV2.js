@@ -27,7 +27,6 @@ import AddRoomPage from './components/owner/AddRoomPage';
 import BookingsReceivedPage from './components/owner/BookingsReceivedPage';
 import ProfileSettingsPage from './components/owner/ProfileSettingsPage';
 import ContentManagerSelector from './components/owner/ContentManagerSelector';
-import HotelContentManager from './components/owner/HotelContentManager';
 
 // Mock data
 import {
