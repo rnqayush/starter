@@ -20,9 +20,10 @@ import {
   FaRing,
   FaGem,
   FaLeaf,
+  FaSpinner,
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
-import { getVendorById } from '../data/vendors';
+import { useGetWeddingServiceByIdQuery } from '../../store/api/weddingApi';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -505,18 +506,64 @@ const NotFound = styled.div`
   }
 `;
 
+const LoadingSpinner = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: ${theme.spacing.xl};
+  color: ${theme.colors.primary};
+  
+  svg {
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+`;
+
+const ErrorState = styled.div`
+  text-align: center;
+  padding: ${theme.spacing.xl};
+  color: ${theme.colors.error};
+  background: ${theme.colors.errorLight};
+  border-radius: ${theme.borderRadius.md};
+  margin: ${theme.spacing.md};
+  
+  h3 {
+    margin-bottom: ${theme.spacing.sm};
+  }
+  
+  button {
+    background: ${theme.colors.error};
+    color: white;
+    border: none;
+    padding: ${theme.spacing.sm} ${theme.spacing.md};
+    border-radius: ${theme.borderRadius.sm};
+    cursor: pointer;
+    margin-top: ${theme.spacing.sm};
+    
+    &:hover {
+      background: ${theme.colors.errorDark};
+    }
+  }
+`;
+
 const VendorDetail = () => {
   const { vendorSlug } = useParams();
   const navigate = useNavigate();
-  const [vendor, setVendor] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [isLiked, setIsLiked] = useState(false);
 
-  useEffect(() => {
-    const vendorData = getVendorById(vendorSlug);
-    setVendor(vendorData);
-    setLoading(false);
-  }, [vendorSlug]);
+  // RTK Query hook for fetching wedding service details
+  const {
+    data: vendorData,
+    error,
+    isLoading,
+    refetch
+  } = useGetWeddingServiceByIdQuery(vendorSlug);
+
+  const vendor = vendorData?.data;
 
   const handleBooking = () => {
     navigate(`/${vendorSlug}/booking`);
@@ -582,10 +629,33 @@ const VendorDetail = () => {
     },
   ];
 
-  if (loading) {
+  if (isLoading) {
     return (
       <PageContainer>
-        <LoadingState>Loading vendor details...</LoadingState>
+        <LoadingSpinner>
+          <FaSpinner size={24} />
+          <span style={{ marginLeft: '10px' }}>Loading vendor details...</span>
+        </LoadingSpinner>
+      </PageContainer>
+    );
+  }
+
+  if (error) {
+    return (
+      <PageContainer>
+        <NavHeader>
+          <NavContent>
+            <BackButton onClick={() => navigate('/weddings')}>
+              <FaArrowLeft />
+              Back to Vendors
+            </BackButton>
+          </NavContent>
+        </NavHeader>
+        <ErrorState>
+          <h3>Failed to load vendor details</h3>
+          <p>We're having trouble loading this vendor's information. Please try again.</p>
+          <button onClick={() => refetch()}>Retry</button>
+        </ErrorState>
       </PageContainer>
     );
   }
