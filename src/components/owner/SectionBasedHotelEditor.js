@@ -588,6 +588,69 @@ const AddSectionText = styled.div`
   }
 `;
 
+const SectionTypeGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: ${theme.spacing.md};
+  margin: ${theme.spacing.lg} 0;
+`;
+
+const SectionTypeCard = styled.div.withConfig({
+  shouldForwardProp: prop => prop !== 'selected',
+})`
+  padding: ${theme.spacing.lg};
+  border: 2px solid ${props => props.selected ? theme.colors.primary : theme.colors.gray300};
+  border-radius: ${theme.borderRadius.md};
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: ${props => props.selected ? theme.colors.primary + '10' : theme.colors.white};
+
+  &:hover {
+    border-color: ${theme.colors.primary};
+  }
+`;
+
+const SectionTypeIcon = styled.div.withConfig({
+  shouldForwardProp: prop => prop !== 'selected',
+})`
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: ${props => props.selected ? theme.colors.primary : theme.colors.gray400};
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  margin: 0 auto ${theme.spacing.sm};
+`;
+
+const ContentForm = styled.div`
+  margin-top: ${theme.spacing.lg};
+`;
+
+const ContentItem = styled.div`
+  display: flex;
+  gap: ${theme.spacing.md};
+  margin-bottom: ${theme.spacing.md};
+  padding: ${theme.spacing.md};
+  border: 1px solid ${theme.colors.gray200};
+  border-radius: ${theme.borderRadius.md};
+  align-items: flex-start;
+`;
+
+const CardContentForm = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: ${theme.spacing.md};
+  margin-bottom: ${theme.spacing.md};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    grid-template-columns: 1fr;
+  }
+`;
+
 const AmenityCategoryItem = styled.div`
   margin-bottom: ${theme.spacing.xl};
   padding: ${theme.spacing.lg};
