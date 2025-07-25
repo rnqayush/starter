@@ -954,28 +954,26 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
                         <div style={{ flex: 1 }}>
                           <Input
                             value={feature.title}
-                            onChange={(e) => {
-                              const newFeatures = [...tempData.features];
-                              newFeatures[index].title = e.target.value;
-                              updateTempData('features', newFeatures);
-                            }}
+                            onChange={(e) => updateFeatureItem(index, 'title', e.target.value)}
                             placeholder="Feature title"
                             style={{ marginBottom: theme.spacing.sm }}
                           />
                           <TextArea
                             value={feature.description}
-                            onChange={(e) => {
-                              const newFeatures = [...tempData.features];
-                              newFeatures[index].description = e.target.value;
-                              updateTempData('features', newFeatures);
-                            }}
+                            onChange={(e) => updateFeatureItem(index, 'description', e.target.value)}
                             placeholder="Feature description"
                             rows={3}
                           />
                         </div>
+                        <RemoveButton onClick={() => removeFeatureItem(index)}>
+                          <FaTrash />
+                        </RemoveButton>
                       </FeatureItem>
                     ))}
                   </FeaturesList>
+                  <AddButton onClick={addFeatureItem}>
+                    <FaPlus /> Add More Feature
+                  </AddButton>
                 </FormField>
               )}
             </ModalContent>
