@@ -12,10 +12,10 @@ import {
 import { theme, media } from '../../styles/GlobalStyle';
 import EnquiryModal from './EnquiryModal';
 import {
-  getAvailabilityStatus,
-  getAvailabilityLabel,
-  getAvailabilityColor,
-} from '../data/vehicles';
+  getVehicleAvailabilityStatus as getAvailabilityStatus,
+  getVehicleAvailabilityLabel as getAvailabilityLabel,
+  getVehicleAvailabilityColor as getAvailabilityColor,
+} from '../../DummyData';
 
 const Card = styled.div`
   background: ${theme.colors.white};
