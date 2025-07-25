@@ -826,6 +826,16 @@ const HotelDetail = () => {
     setLoading(false);
   }, [slugParam, hotelsFromStore]);
 
+  // Re-render when Redux store updates (for live preview)
+  useEffect(() => {
+    if (hotelsFromStore && hotel) {
+      const updatedHotel = hotelsFromStore.find(h => h.id === hotel.id);
+      if (updatedHotel && JSON.stringify(updatedHotel) !== JSON.stringify(hotel)) {
+        setHotel(updatedHotel);
+      }
+    }
+  }, [hotelsFromStore, hotel]);
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
