@@ -857,7 +857,7 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
       title: 'Hotel Gallery',
       description: 'Manage hotel images and gallery',
       icon: FaCamera,
-      preview: `${editingHotel.images?.length || 0} images in gallery`,
+      preview: `${editingHotel.gallery?.length || 5} gallery items`,
       isVisible: sectionVisibility.gallery
     },
     {
@@ -873,7 +873,7 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
       title: 'Location & Contact',
       description: 'Update contact information and address',
       icon: FaMapMarkerAlt,
-      preview: editingHotel.address || 'Contact information',
+      preview: `${editingHotel.contactFields?.length || 4} contact fields`,
       isVisible: sectionVisibility.contact
     }
   ];
