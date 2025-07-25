@@ -1031,7 +1031,7 @@ const HotelDetail = () => {
             {features.map((feature, index) => (
               <FeatureCard key={index}>
                 <FeatureIcon>
-                  <feature.icon />
+                  {feature.icon ? <feature.icon /> : <FaConciergeBell />}
                 </FeatureIcon>
                 <FeatureTitle>{feature.title}</FeatureTitle>
                 <FeatureDescription>{feature.description}</FeatureDescription>
