@@ -638,8 +638,15 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
   };
 
   const removeAmenityItem = (categoryIndex, itemIndex) => {
-    const newCategories = [...tempData.amenityCategories];
-    newCategories[categoryIndex].items.splice(itemIndex, 1);
+    const newCategories = tempData.amenityCategories.map((category, index) => {
+      if (index === categoryIndex) {
+        return {
+          ...category,
+          items: category.items.filter((_, i) => i !== itemIndex)
+        };
+      }
+      return category;
+    });
     updateTempData('amenityCategories', newCategories);
   };
 
