@@ -15,7 +15,8 @@ import {
   FaPrint,
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
-import { getVendorById } from '../data/vendors';
+import { useGetWeddingServiceByIdQuery } from '../../store/api/weddingApi';
+import { FaSpinner } from 'react-icons/fa';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -323,18 +324,36 @@ const Button = styled.button.withConfig({
 const BookingConfirmation = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const [vendor, setVendor] = useState(null);
   const [bookingDetails, setBookingDetails] = useState(null);
 
+
+  // RTK Query hook for fetching wedding service details
+  const vendorId = searchParams.get("vendor");
+  const {
+    data: vendorData,
+    error,
+    isLoading,
+    refetch
+  } = useGetWeddingServiceByIdQuery(vendorId, {
+    skip: !vendorId // Skip query if no vendorId
+  });
+
+  const vendor = vendorData?.data;
   useEffect(() => {
-    const vendorId = searchParams.get('vendor');
-    const bookingId = searchParams.get('booking');
+    const vendorId = searchParams.get("vendor");
+    const bookingId = searchParams.get("booking");
 
-    if (vendorId) {
-      const vendorData = getVendorById(vendorId);
-      setVendor(vendorData);
-    }
-
+    // Mock booking details - in real app this would come from API
+    setBookingDetails({
+      bookingNumber: bookingId || "WED-" + Date.now().toString().slice(-6),
+      contactName: searchParams.get("name") || "John & Sarah Doe",
+      email: searchParams.get("email") || "john.sarah@example.com",
+      phone: searchParams.get("phone") || "+1 (555) 123-4567",
+      eventDate: searchParams.get("date") || "2024-06-15",
+      eventTime: searchParams.get("time") || "3:00 PM",
+      guestCount: searchParams.get("guests") || "150",
+      eventType: searchParams.get("type") || "Wedding",
+      services: searchParams.get("services")?.split(",") || [
     // Mock booking details - in real app this would come from API
     setBookingDetails({
       bookingNumber: bookingId || 'WED-' + Date.now().toString().slice(-6),
@@ -372,6 +391,68 @@ const BookingConfirmation = () => {
     }
   };
 
+  if (isLoading) {
+    return (
+      <PageContainer>
+        <NavHeader>
+          <NavContent>
+            <Logo>
+              <FaRing /> Wedding Bookings
+            </Logo>
+            <ActionButton primary onClick={() => navigate("/weddings")}>
+              <FaHome />
+              Back to Vendors
+            </ActionButton>
+          </NavContent>
+        </NavHeader>
+        <Container>
+          <div style={{ textAlign: "center", padding: "4rem" }}>
+            <FaSpinner size={24} style={{ animation: "spin 1s linear infinite", marginRight: "10px" }} />
+            Loading confirmation...
+          </div>
+        </Container>
+      </PageContainer>
+    );
+  }
+
+  if (error) {
+    return (
+      <PageContainer>
+        <NavHeader>
+          <NavContent>
+            <Logo>
+              <FaRing /> Wedding Bookings
+            </Logo>
+            <ActionButton primary onClick={() => navigate("/weddings")}>
+              <FaHome />
+              Back to Vendors
+            </ActionButton>
+          </NavContent>
+        </NavHeader>
+        <Container>
+          <div style={{ textAlign: "center", padding: "4rem", color: theme.colors.error }}>
+            <h3>Failed to load vendor information</h3>
+            <p>We're having trouble loading the vendor details. Please try again.</p>
+            <button
+              onClick={() => refetch()}
+              style={{
+                background: theme.colors.primary,
+                color: "white",
+                border: "none",
+                padding: "10px 20px",
+                borderRadius: "5px",
+                cursor: "pointer",
+                marginTop: "10px",
+              }}
+            >
+              Retry
+            </button>
+          </div>
+        </Container>
+      </PageContainer>
+    );
+  }
+
   if (!vendor || !bookingDetails) {
     return (
       <PageContainer>
@@ -380,14 +461,14 @@ const BookingConfirmation = () => {
             <Logo>
               <FaRing /> Wedding Bookings
             </Logo>
-            <ActionButton primary onClick={() => navigate('/weddings')}>
+            <ActionButton primary onClick={() => navigate("/weddings")}>
               <FaHome />
               Back to Vendors
             </ActionButton>
           </NavContent>
         </NavHeader>
         <Container>
-          <div style={{ textAlign: 'center', padding: '4rem' }}>
+          <div style={{ textAlign: "center", padding: "4rem" }}>
             <h2>Loading confirmation...</h2>
           </div>
         </Container>
