@@ -1080,17 +1080,36 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
                       onChange={(e) => updateTempData('image', e.target.value)}
                       placeholder="Enter image URL"
                     />
+                    <ImageUploadContainer>
+                      <span>OR</span>
+                      <ImageUploadButton>
+                        <FaPlus />
+                        Upload Image
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => {
+                            const file = e.target.files[0];
+                            if (file) {
+                              handleImageUpload(file, (dataUrl) => {
+                                updateTempData('image', dataUrl);
+                              });
+                            }
+                          }}
+                        />
+                      </ImageUploadButton>
+                    </ImageUploadContainer>
                     {tempData.image && (
                       <div style={{ marginTop: theme.spacing.md }}>
-                        <img 
-                          src={tempData.image} 
-                          alt="Preview" 
-                          style={{ 
-                            width: '100%', 
-                            height: '200px', 
+                        <img
+                          src={tempData.image}
+                          alt="Preview"
+                          style={{
+                            width: '100%',
+                            height: '200px',
                             objectFit: 'cover',
                             borderRadius: theme.borderRadius.md
-                          }} 
+                          }}
                         />
                       </div>
                     )}
