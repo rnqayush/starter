@@ -680,8 +680,12 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
   };
 
   const updateFeatureItem = (index, field, value) => {
-    const newFeatures = [...tempData.features];
-    newFeatures[index][field] = value;
+    const newFeatures = tempData.features.map((feature, i) => {
+      if (i === index) {
+        return { ...feature, [field]: value };
+      }
+      return feature;
+    });
     updateTempData('features', newFeatures);
   };
 
