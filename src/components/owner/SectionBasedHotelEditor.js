@@ -197,6 +197,84 @@ const ChangesIndicator = styled.div`
   gap: ${theme.spacing.xs};
 `;
 
+const SectionOrderControls = styled.div`
+  display: flex;
+  gap: ${theme.spacing.sm};
+  margin-bottom: ${theme.spacing.xl};
+`;
+
+const OrderButton = styled.button`
+  background: ${theme.colors.primary};
+  color: white;
+  border: none;
+  padding: ${theme.spacing.sm} ${theme.spacing.md};
+  border-radius: ${theme.borderRadius.md};
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: ${theme.colors.primaryDark};
+  }
+
+  &:disabled {
+    background: ${theme.colors.gray300};
+    cursor: not-allowed;
+  }
+`;
+
+const ImageUploadContainer = styled.div`
+  display: flex;
+  gap: ${theme.spacing.md};
+  align-items: center;
+  margin-top: ${theme.spacing.sm};
+`;
+
+const ImageUploadButton = styled.label`
+  background: ${theme.colors.secondary};
+  color: white;
+  padding: ${theme.spacing.sm} ${theme.spacing.md};
+  border-radius: ${theme.borderRadius.md};
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.xs};
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: ${theme.colors.secondaryDark};
+  }
+
+  input {
+    display: none;
+  }
+`;
+
+const SectionReorderContainer = styled.div`
+  background: ${theme.colors.white};
+  padding: ${theme.spacing.lg};
+  border-radius: ${theme.borderRadius.lg};
+  box-shadow: ${theme.shadows.md};
+  margin-bottom: ${theme.spacing.xl};
+`;
+
+const SectionOrderItem = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: ${theme.spacing.md};
+  border: 1px solid ${theme.colors.gray200};
+  border-radius: ${theme.borderRadius.md};
+  margin-bottom: ${theme.spacing.sm};
+  background: ${theme.colors.gray50};
+`;
+
+const SectionOrderButtons = styled.div`
+  display: flex;
+  gap: ${theme.spacing.xs};
+`;
+
 const SectionIcon = styled.div`
   width: 60px;
   height: 60px;
