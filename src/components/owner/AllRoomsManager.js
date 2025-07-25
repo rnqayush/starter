@@ -15,7 +15,8 @@ import {
   FaEye,
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
-import { updateRoom, removeRoom } from '../../store/slices/hotelManagementSlice';
+import { updateRoom, removeRoom, setEditingHotel } from '../../store/slices/hotelManagementSlice';
+import { getHotelByIdOrSlug } from '../../DummyData/hotels';
 import { Button } from '../shared/Button';
 import { Input } from '../shared/Input';
 import { Card, CardContent } from '../shared/Card';
