@@ -5,10 +5,10 @@ import { FaStar, FaHeart, FaEnvelope } from 'react-icons/fa';
 import { theme, media } from '../../styles/GlobalStyle';
 import EnquiryModal from './EnquiryModal';
 import {
-  getAvailabilityStatus,
-  getAvailabilityLabel,
-  getAvailabilityColor,
-} from '../data/products';
+  getProductAvailabilityStatus as getAvailabilityStatus,
+  getProductAvailabilityLabel as getAvailabilityLabel,
+  getProductAvailabilityColor as getAvailabilityColor,
+} from '../../DummyData';
 
 const Card = styled.div`
   background: ${theme.colors.white};
