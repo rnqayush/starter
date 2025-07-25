@@ -782,6 +782,14 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
     updateTempData('contactFields', newContactFields);
   };
 
+  const handleSaveAndGoLive = () => {
+    if (!editingHotel || !hasUnsavedChanges) return;
+
+    // Save all changes to global state (this will update the live hotel page)
+    dispatch(saveChanges());
+    alert('All changes published to live hotel page successfully!');
+  };
+
   if (!editingHotel) {
     return (
       <EditorContainer>
