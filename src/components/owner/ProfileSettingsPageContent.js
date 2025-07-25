@@ -164,6 +164,8 @@ const ProfileSettingsPageContent = () => {
   });
 
   const [isUpdating, setIsUpdating] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleteConfirmation, setDeleteConfirmation] = useState('');
 
   const handleProfileChange = e => {
     setProfileData({
@@ -229,6 +231,27 @@ const ProfileSettingsPageContent = () => {
     } finally {
       setIsUpdating(false);
     }
+  };
+
+  const handleDeleteAccount = () => {
+    setShowDeleteModal(true);
+  };
+
+  const confirmDeleteAccount = () => {
+    if (deleteConfirmation.toLowerCase() === 'delete account') {
+      // Simulate account deletion
+      alert('Account deleted successfully. You will be redirected to the homepage.');
+      setUser(null);
+      setUserType(null);
+      navigate('/');
+    } else {
+      alert('Please type "DELETE ACCOUNT" exactly to confirm deletion.');
+    }
+  };
+
+  const cancelDeleteAccount = () => {
+    setShowDeleteModal(false);
+    setDeleteConfirmation('');
   };
 
   const handleLogout = () => {
