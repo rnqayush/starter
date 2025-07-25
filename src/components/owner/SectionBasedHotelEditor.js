@@ -554,23 +554,26 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
   const saveSection = () => {
     if (!editingHotel) return;
 
-    // Update the hotel data based on the active modal
+    // Only update the local editing hotel state, NOT the global live data
     Object.keys(tempData).forEach(key => {
       if (tempData[key] !== undefined) {
         if (key === 'features') {
           dispatch(updateFeatures(tempData[key]));
         } else if (key === 'amenityCategories') {
           dispatch(updateAmenityCategories(tempData[key]));
+        } else if (key === 'gallery') {
+          dispatch(updateHotelField({ field: 'gallery', value: tempData[key] }));
+        } else if (key === 'contactFields') {
+          dispatch(updateHotelField({ field: 'contactFields', value: tempData[key] }));
         } else {
           dispatch(updateHotelField({ field: key, value: tempData[key] }));
         }
       }
     });
 
-    // Save changes to store - this will update the live hotel data
-    dispatch(saveChanges());
+    // DON'T save to global state here - only save to editing state
     closeModal();
-    alert('Section updated successfully! Changes are now live.');
+    alert('Section updated! Click "Save & Go Live" to publish changes to the live hotel page.');
   };
 
   const updateTempData = (field, value) => {
