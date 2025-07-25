@@ -1140,6 +1140,25 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
                               onChange={(e) => updateGalleryItem(index, 'image', e.target.value)}
                               placeholder="Enter image URL"
                             />
+                            <ImageUploadContainer>
+                              <span>OR</span>
+                              <ImageUploadButton>
+                                <FaPlus />
+                                Upload Image
+                                <input
+                                  type="file"
+                                  accept="image/*"
+                                  onChange={(e) => {
+                                    const file = e.target.files[0];
+                                    if (file) {
+                                      handleImageUpload(file, (dataUrl) => {
+                                        updateGalleryItem(index, 'image', dataUrl);
+                                      });
+                                    }
+                                  }}
+                                />
+                              </ImageUploadButton>
+                            </ImageUploadContainer>
                           </FormField>
                         </div>
                         {item.image && (
