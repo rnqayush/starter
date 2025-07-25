@@ -289,6 +289,14 @@ export const {
   saveChanges,
   discardChanges,
   clearEditingHotel,
+  toggleSectionVisibility,
+  updateFeatures,
+  addFeature,
+  removeFeature,
+  updateAmenityCategories,
+  addAmenityCategory,
+  addAmenityToCategory,
+  removeAmenityFromCategory,
 } = hotelManagementSlice.actions;
 
 export default hotelManagementSlice.reducer;
