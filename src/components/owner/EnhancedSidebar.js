@@ -445,7 +445,10 @@ const EnhancedSidebar = ({ activeSection, setActiveSection }) => {
   };
 
   const handleSaveAndExit = () => {
-    dispatch(saveChanges());
+    if (hasUnsavedChanges) {
+      dispatch(saveChanges());
+      alert('Changes saved successfully!');
+    }
     if (editingHotel && hotelSlug) {
       // Navigate to the hotel detail page with updated data
       navigate(`/${editingHotel.slug || hotelSlug}`);
@@ -473,7 +476,12 @@ const EnhancedSidebar = ({ activeSection, setActiveSection }) => {
   const renderChangesList = () => {
     return Object.entries(changes).map(([field, change]) => (
       <ChangeItem key={field}>
-        <span className="field">{field}:</span> Updated
+        <span className="field">{field}:</span>
+        <div style={{ fontSize: '0.7rem', color: theme.colors.gray500, marginTop: '2px' }}>
+          {typeof change.new === 'string' && change.new.length > 30
+            ? `${change.new.substring(0, 30)}...`
+            : String(change.new)}
+        </div>
       </ChangeItem>
     ));
   };
