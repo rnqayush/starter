@@ -509,25 +509,31 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
     sectionVisibility,
   } = useSelector(state => state.hotelManagement);
 
+  const { slug } = useParams(); // Get slug from URL
   const [selectedHotelId, setSelectedHotelId] = useState(null);
   const [activeModal, setActiveModal] = useState(null);
   const [tempData, setTempData] = useState({});
   const [newAmenityInputs, setNewAmenityInputs] = useState({});
+  const [sectionOrder, setSectionOrder] = useState(['hero', 'about', 'features', 'gallery', 'amenities', 'contact']);
 
-  // Auto-select first hotel if none selected
+  // Auto-select hotel based on URL slug
   useEffect(() => {
-    if (!editingHotel && ownerHotels.length > 0) {
-      if (!selectedHotelId) {
-        setSelectedHotelId(ownerHotels[0].id);
+    if (slug && !editingHotel) {
+      // Find hotel by slug from URL
+      const hotelData = getHotelByIdOrSlug(slug);
+      if (hotelData) {
+        dispatch(setEditingHotel(hotelData.id));
+        setSelectedHotelId(hotelData.id);
       }
-      if (selectedHotelId) {
-        const hotelData = getHotelByIdOrSlug(selectedHotelId);
-        if (hotelData) {
-          dispatch(setEditingHotel(selectedHotelId));
-        }
+    } else if (!editingHotel && ownerHotels.length > 0 && !slug) {
+      // Fallback to first hotel if no slug
+      setSelectedHotelId(ownerHotels[0].id);
+      const hotelData = getHotelByIdOrSlug(ownerHotels[0].id);
+      if (hotelData) {
+        dispatch(setEditingHotel(ownerHotels[0].id));
       }
     }
-  }, [selectedHotelId, editingHotel, ownerHotels, dispatch]);
+  }, [slug, editingHotel, ownerHotels, dispatch]);
 
   const openModal = (sectionType) => {
     setActiveModal(sectionType);
