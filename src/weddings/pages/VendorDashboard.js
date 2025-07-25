@@ -29,9 +29,10 @@ import {
   FaChevronRight,
   FaCheck,
   FaBars,
+  FaSpinner,
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
-import { getVendorById } from '../data/vendors';
+import { useGetWeddingServiceByIdQuery, useUpdateWeddingServiceMutation } from '../../store/api/weddingApi';
 import { useAuth } from '../../context/AuthContext';
 
 const DashboardContainer = styled.div`
@@ -732,8 +733,17 @@ const VendorDashboard = () => {
   const pathSegments = currentPath.split('/').filter(Boolean);
   const vendorId = vendorSlug || pathSegments[0];
 
-  const [vendor, setVendor] = useState(null);
-  const [loading, setLoading] = useState(true);
+
+  // RTK Query hook for fetching wedding service details
+  const {
+    data: vendorData,
+    error,
+    isLoading,
+    refetch
+  } = useGetWeddingServiceByIdQuery(vendorId);
+
+  const [updateWeddingService] = useUpdateWeddingServiceMutation();
+  const vendor = vendorData?.data;
   const [activeSection, setActiveSection] = useState('overview');
   const [hasChanges, setHasChanges] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -778,53 +788,50 @@ const VendorDashboard = () => {
   const [faq, setFaq] = useState([]);
 
   useEffect(() => {
-    const vendorData = getVendorById(vendorId);
-    if (vendorData) {
-      setVendor(vendorData);
+    if (vendor) {
       setBasicInfo({
-        name: vendorData.name,
-        tagline: vendorData.tagline || '',
-        description: vendorData.description,
-        phone: vendorData.phone,
-        email: vendorData.email,
-        website: vendorData.website,
-        address: vendorData.address,
+        name: vendor.name,
+        tagline: vendor.tagline || "",
+        description: vendor.description,
+        phone: vendor.phone,
+        email: vendor.email,
+        website: vendor.website,
+        address: vendor.address,
       });
       setMediaFiles({
-        logo: vendorData.logo,
-        banner: vendorData.image,
-        gallery: vendorData.portfolioImages || [],
+        logo: vendor.logo,
+        banner: vendor.image,
+        gallery: vendor.portfolioImages || [],
       });
       setServices(
-        (vendorData.services || []).map((service, index) => ({
+        (vendor.services || []).map((service, index) => ({
           ...service,
           id: service.id || `service-${index}-${Date.now()}`,
-          image: service.image || '',
-          icon: service.icon || '⭐',
+          image: service.image || "",
+          icon: service.icon || "⭐",
         }))
       );
       setPortfolio(
-        (vendorData.locationPortfolio || []).map((item, index) => ({
+        (vendor.locationPortfolio || []).map((item, index) => ({
           ...item,
           id: item.id || `portfolio-${index}-${Date.now()}`,
           gallery: (item.gallery || []).map((img, imgIndex) =>
-            typeof img === 'string'
+            typeof img === "string"
               ? {
                   id: `img-${imgIndex}-${Date.now()}`,
                   src: img,
-                  title: '',
-                  description: '',
+                  title: "",
+                  description: "",
                 }
               : { ...img, id: img.id || `img-${imgIndex}-${Date.now()}` }
           ),
         }))
       );
-      setPackages(vendorData.packages || []);
-      setTestimonials(vendorData.testimonials || []);
-      setFaq(vendorData.faq || []);
+      setPackages(vendor.packages || []);
+      setTestimonials(vendor.testimonials || []);
+      setFaq(vendor.faq || []);
     }
-    setLoading(false);
-  }, [vendorId]);
+  }, [vendor]);
 
   const navigationItems = [
     { id: 'overview', label: 'Overview', icon: FaUser, section: 'General' },
@@ -2036,19 +2043,55 @@ const VendorDashboard = () => {
     }
   };
 
-  if (loading) {
+  if (isLoading) {
     return (
       <DashboardContainer>
         <div
           style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            minHeight: '100vh',
-            width: '100%',
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            minHeight: "100vh",
+            width: "100%",
           }}
         >
+          <FaSpinner size={24} style={{ animation: "spin 1s linear infinite", marginRight: "10px" }} />
           Loading dashboard...
+        </div>
+      </DashboardContainer>
+    );
+  }
+
+  if (error) {
+    return (
+      <DashboardContainer>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            minHeight: "100vh",
+            width: "100%",
+            textAlign: "center",
+          }}
+        >
+          <h3>Failed to load dashboard</h3>
+          <p>We're having trouble loading your dashboard. Please try again.</p>
+          <button
+            onClick={() => refetch()}
+            style={{
+              background: theme.colors.primary,
+              color: "white",
+              border: "none",
+              padding: "10px 20px",
+              borderRadius: "5px",
+              cursor: "pointer",
+              marginTop: "10px",
+            }}
+          >
+            Retry
+          </button>
         </div>
       </DashboardContainer>
     );
