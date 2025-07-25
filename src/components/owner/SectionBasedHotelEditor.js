@@ -23,6 +23,14 @@ import {
   removeHotelImage,
   updateAmenities,
   saveChanges,
+  toggleSectionVisibility,
+  updateFeatures,
+  addFeature,
+  removeFeature,
+  updateAmenityCategories,
+  addAmenityCategory,
+  addAmenityToCategory,
+  removeAmenityFromCategory,
 } from '../../store/slices/hotelManagementSlice';
 import { useAppContext } from '../../context/AppContext';
 import { getHotelByIdOrSlug, amenitiesList } from '../../DummyData/hotels';
