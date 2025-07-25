@@ -213,6 +213,26 @@ const ProfileSettingsPageContent = () => {
 
 
 
+  const handleDeleteAccount = () => {
+    setShowDeleteModal(true);
+  };
+
+  const confirmDeleteAccount = () => {
+    if (deleteConfirmation.toLowerCase() === 'delete account') {
+      alert('Account deleted successfully. You will be redirected to the homepage.');
+      setUser(null);
+      setUserType(null);
+      navigate('/');
+    } else {
+      alert('Please type "DELETE ACCOUNT" exactly to confirm deletion.');
+    }
+  };
+
+  const cancelDeleteAccount = () => {
+    setShowDeleteModal(false);
+    setDeleteConfirmation('');
+  };
+
   const handleLogout = () => {
     if (window.confirm('Are you sure you want to logout?')) {
       setUser(null);
