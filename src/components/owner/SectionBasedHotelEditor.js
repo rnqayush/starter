@@ -594,7 +594,7 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
   const [newAmenityInputs, setNewAmenityInputs] = useState({});
   const [sectionOrder, setSectionOrder] = useState(['about', 'features', 'gallery', 'amenities', 'contact']);
 
-  // Auto-select hotel based on URL slug
+  // Auto-select hotel based on URL slug and initialize section order
   useEffect(() => {
     if (slug && !editingHotel) {
       // Find hotel by slug from URL
@@ -602,6 +602,10 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
       if (hotelData) {
         dispatch(setEditingHotel(hotelData.id));
         setSelectedHotelId(hotelData.id);
+        // Initialize section order from hotel data
+        if (hotelData.sectionOrder) {
+          setSectionOrder(hotelData.sectionOrder);
+        }
       }
     } else if (!editingHotel && ownerHotels.length > 0 && !slug) {
       // Fallback to first hotel if no slug
@@ -609,9 +613,20 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
       const hotelData = getHotelByIdOrSlug(ownerHotels[0].id);
       if (hotelData) {
         dispatch(setEditingHotel(ownerHotels[0].id));
+        // Initialize section order from hotel data
+        if (hotelData.sectionOrder) {
+          setSectionOrder(hotelData.sectionOrder);
+        }
       }
     }
   }, [slug, editingHotel, ownerHotels, dispatch]);
+
+  // Update section order when editingHotel changes
+  useEffect(() => {
+    if (editingHotel && editingHotel.sectionOrder) {
+      setSectionOrder(editingHotel.sectionOrder);
+    }
+  }, [editingHotel]);
 
   const openModal = (sectionType) => {
     setActiveModal(sectionType);
