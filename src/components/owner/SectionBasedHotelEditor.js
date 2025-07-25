@@ -875,9 +875,42 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
   const handleSaveAndGoLive = () => {
     if (!editingHotel || !hasUnsavedChanges) return;
 
+    // Save section order along with other changes
+    dispatch(updateHotelField({ field: 'sectionOrder', value: sectionOrder }));
+
     // Save all changes to global state (this will update the live hotel page)
     dispatch(saveChanges());
     alert('All changes published to live hotel page successfully!');
+  };
+
+  // Section reordering functions
+  const moveSectionUp = (index) => {
+    if (index > 0) {
+      const newOrder = [...sectionOrder];
+      [newOrder[index], newOrder[index - 1]] = [newOrder[index - 1], newOrder[index]];
+      setSectionOrder(newOrder);
+    }
+  };
+
+  const moveSectionDown = (index) => {
+    if (index < sectionOrder.length - 1) {
+      const newOrder = [...sectionOrder];
+      [newOrder[index], newOrder[index + 1]] = [newOrder[index + 1], newOrder[index]];
+      setSectionOrder(newOrder);
+    }
+  };
+
+  // Image upload function
+  const handleImageUpload = (file, callback) => {
+    if (file && file.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        callback(e.target.result);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      alert('Please select a valid image file.');
+    }
   };
 
   if (!editingHotel) {
