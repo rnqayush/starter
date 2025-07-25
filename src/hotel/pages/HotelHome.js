@@ -5,7 +5,10 @@ import HotelNavbar from '../components/HotelNavbar';
 import HotelFooter from '../components/HotelFooter';
 import HotelCard from '../components/HotelCard';
 import SearchForm from '../components/SearchForm';
-import { hotels } from '../data/hotels';
+import { useGetHotelsQuery } from '../../store/api/hotelApi';
+import { useSearchApiData } from '../../hooks/useApiData';
+import LoadingSpinner from '../../components/shared/LoadingSpinner';
+import ErrorMessage from '../../components/shared/ErrorMessage';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -170,31 +173,39 @@ const ClearButton = styled.button`
 `;
 
 const HotelHome = () => {
-  const [filteredHotels, setFilteredHotels] = useState(hotels);
+  const [searchParams, setSearchParams] = useState({});
   const [searchCriteria, setSearchCriteria] = useState(null);
+
+  // Use API data with search functionality
+  const {
+    data: hotels = [],
+    isLoading,
+    error,
+    refetch
+  } = useGetHotelsQuery(searchParams);
 
   const handleSearch = searchData => {
     const { destination } = searchData;
 
     if (!destination.trim()) {
-      setFilteredHotels(hotels);
+      setSearchParams({});
       setSearchCriteria(null);
       return;
     }
 
-    const filtered = hotels.filter(
-      hotel =>
-        hotel.name.toLowerCase().includes(destination.toLowerCase()) ||
-        hotel.location.toLowerCase().includes(destination.toLowerCase()) ||
-        hotel.city.toLowerCase().includes(destination.toLowerCase())
-    );
-
-    setFilteredHotels(filtered);
+    // Update search parameters for API call
+    setSearchParams({
+      search: destination,
+      // Add other search criteria as needed
+      // checkIn: searchData.checkIn,
+      // checkOut: searchData.checkOut,
+      // guests: searchData.guests,
+    });
     setSearchCriteria(searchData);
   };
 
   const clearSearch = () => {
-    setFilteredHotels(hotels);
+    setSearchParams({});
     setSearchCriteria(null);
   };
 
@@ -221,20 +232,33 @@ const HotelHome = () => {
             {searchCriteria ? 'Search Results' : 'Popular Hotels'}
           </SectionTitle>
 
-          {filteredHotels.length > 0 ? (
+          {isLoading ? (
+            <LoadingSpinner text="Loading hotels..." size="large" />
+          ) : error ? (
+            <ErrorMessage
+              title="Failed to load hotels"
+              message="We couldn't load the hotels. Please try again."
+              error={error}
+              onRetry={refetch}
+            />
+          ) : hotels.length > 0 ? (
             <HotelsGrid>
-              {filteredHotels.map(hotel => (
-                <HotelCard key={hotel.id} hotel={hotel} />
+              {hotels.map(hotel => (
+                <HotelCard key={hotel.id || hotel._id} hotel={hotel} />
               ))}
             </HotelsGrid>
           ) : (
             <EmptyState>
               <h3>No hotels found</h3>
               <p>
-                We couldn't find any hotels matching your search criteria. Try
-                adjusting your search terms.
+                {searchCriteria 
+                  ? "We couldn't find any hotels matching your search criteria. Try adjusting your search terms."
+                  : "No hotels are currently available. Please check back later."
+                }
               </p>
-              <ClearButton onClick={clearSearch}>View All Hotels</ClearButton>
+              {searchCriteria && (
+                <ClearButton onClick={clearSearch}>View All Hotels</ClearButton>
+              )}
             </EmptyState>
           )}
         </Container>

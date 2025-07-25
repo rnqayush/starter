@@ -7,8 +7,10 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ProductCard from '../components/ProductCard';
 import LoadingSpinner from '../components/LoadingSpinner';
-import { products, categories, getProductsByCategory } from '../data/products';
-import { getVendorByIdOrSlug } from '../data/vendors';
+import { useGetProductsQuery } from '../../store/api/ecommerceApi';
+import { usePaginatedApiData } from '../../hooks/useApiData';
+import ErrorMessage from '../../components/shared/ErrorMessage';
+import { categories } from '../data/products';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -207,27 +209,8 @@ const ClearFiltersButton = styled.button`
 const ProductList = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const location = useLocation();
-  const [filteredProducts, setFilteredProducts] = useState([]);
   const [sortBy, setSortBy] = useState('name');
   const [view, setView] = useState('grid');
-  const [loading, setLoading] = useState(true);
-  const [storeSlug, setStoreSlug] = useState('');
-  const [vendor, setVendor] = useState(null);
-
-  // Detect store slug from URL
-  useEffect(() => {
-    const path = location.pathname;
-    if (path !== '/ecommerce/products') {
-      // Extract store slug from URL like "/techmart-downtown/products"
-      const pathSegments = path.split('/').filter(Boolean);
-      const slug = pathSegments[0];
-      const foundVendor = getVendorByIdOrSlug(slug);
-      if (foundVendor) {
-        setStoreSlug(foundVendor.slug);
-        setVendor(foundVendor);
-      }
-    }
-  }, [location.pathname]);
 
   // Get URL parameters
   const category = searchParams.get('category');
@@ -235,55 +218,34 @@ const ProductList = () => {
   const featured = searchParams.get('featured');
   const sale = searchParams.get('sale');
 
+  // Build API query parameters
+  const apiParams = {
+    ...(category && { category }),
+    ...(searchQuery && { search: searchQuery }),
+    ...(featured === 'true' && { featured: true }),
+    ...(sale === 'true' && { onSale: true }),
+    sortBy: sortBy === 'name' ? 'name' : sortBy,
+    sortOrder: sortBy === 'price-high' ? 'desc' : 'asc',
+  };
+
+  // Use paginated API data
+  const {
+    items: products,
+    pagination,
+    isLoading,
+    error,
+    refetch,
+    updateFilters,
+    goToPage
+  } = usePaginatedApiData(useGetProductsQuery, apiParams);
+
+  // Update filters when sort changes
   useEffect(() => {
-    setLoading(true);
-    let result = [...products];
-
-    // Filter by category
-    if (category) {
-      result = getProductsByCategory(category);
-    }
-
-    // Filter by search query
-    if (searchQuery) {
-      const query = searchQuery.toLowerCase();
-      result = result.filter(
-        product =>
-          product.name.toLowerCase().includes(query) ||
-          product.description.toLowerCase().includes(query) ||
-          product.category.toLowerCase().includes(query)
-      );
-    }
-
-    // Filter by featured
-    if (featured === 'true') {
-      result = result.filter(product => product.featured);
-    }
-
-    // Filter by sale
-    if (sale === 'true') {
-      result = result.filter(product => product.onSale);
-    }
-
-    // Sort products
-    result.sort((a, b) => {
-      switch (sortBy) {
-        case 'price-low':
-          return a.price - b.price;
-        case 'price-high':
-          return b.price - a.price;
-        case 'rating':
-          return b.rating - a.rating;
-        case 'newest':
-          return b.id - a.id;
-        default:
-          return a.name.localeCompare(b.name);
-      }
+    updateFilters({
+      sortBy: sortBy === 'name' ? 'name' : sortBy,
+      sortOrder: sortBy === 'price-high' ? 'desc' : 'asc',
     });
-
-    setFilteredProducts(result);
-    setLoading(false);
-  }, [category, searchQuery, featured, sale, sortBy]);
+  }, [sortBy, updateFilters]);
 
   const getPageTitle = () => {
     if (searchQuery) return `Search Results for "${searchQuery}"`;
@@ -334,36 +296,46 @@ const ProductList = () => {
 
   const activeFilters = getActiveFilters();
 
-  if (loading) {
+  if (isLoading) {
     return (
       <PageContainer>
-        <Navbar
-          storeName={vendor?.name || ''}
-          storeLogo={vendor?.logo || ''}
-          storeSlug={storeSlug}
-          theme={vendor?.theme || {}}
-        />
-        <LoadingSpinner fullPage text="Loading products..." />
-        <Footer storeSlug={storeSlug} theme={vendor?.theme || {}} />
+        <Navbar />
+        <Container>
+          <LoadingSpinner text="Loading products..." size="large" />
+        </Container>
+        <Footer />
+      </PageContainer>
+    );
+  }
+
+  if (error) {
+    return (
+      <PageContainer>
+        <Navbar />
+        <Container>
+          <ErrorMessage
+            title="Failed to load products"
+            message="We couldn't load the products. Please try again."
+            error={error}
+            onRetry={refetch}
+          />
+        </Container>
+        <Footer />
       </PageContainer>
     );
   }
 
   return (
     <PageContainer>
-      <Navbar
-        storeName={vendor?.name || ''}
-        storeLogo={vendor?.logo || ''}
-        storeSlug={storeSlug}
-        theme={vendor?.theme || {}}
-      />
+      <Navbar />
 
       <Container>
         <PageHeader>
           <PageTitle>{getPageTitle()}</PageTitle>
           <ResultsInfo>
-            Showing {filteredProducts.length} product
-            {filteredProducts.length !== 1 ? 's' : ''}
+            Showing {products.length} product
+            {products.length !== 1 ? 's' : ''}
+            {pagination.total && ` of ${pagination.total}`}
           </ResultsInfo>
         </PageHeader>
 
@@ -430,13 +402,12 @@ const ProductList = () => {
           </ActiveFilters>
         )}
 
-        {filteredProducts.length > 0 ? (
+        {products.length > 0 ? (
           <ProductsGrid view={view}>
-            {filteredProducts.map(product => (
+            {products.map(product => (
               <ProductCard
-                key={product.id}
+                key={product.id || product._id}
                 product={product}
-                storeSlug={storeSlug}
               />
             ))}
           </ProductsGrid>
@@ -451,7 +422,7 @@ const ProductList = () => {
         )}
       </Container>
 
-      <Footer storeSlug={storeSlug} theme={vendor?.theme || {}} />
+      <Footer />
     </PageContainer>
   );
 };

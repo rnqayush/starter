@@ -12,7 +12,9 @@ import { theme } from '../../styles/GlobalStyle';
 import HotelNavbar from '../components/HotelNavbar';
 import HotelFooter from '../components/HotelFooter';
 import RoomCard from '../components/RoomCard';
-import { getHotelByIdOrSlug } from '../data/hotels';
+import { useGetHotelByIdQuery } from '../../store/api/hotelApi';
+import LoadingSpinner from '../../components/shared/LoadingSpinner';
+import ErrorMessage from '../../components/shared/ErrorMessage';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -489,8 +491,6 @@ const ClearFiltersButton = styled.button`
 const RoomList = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
-  const [hotel, setHotel] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [searchParams, setSearchParams] = useState({
     checkIn: '',
     checkOut: '',
@@ -499,11 +499,15 @@ const RoomList = () => {
   const [sortBy, setSortBy] = useState('price-low');
   const [filterBy, setFilterBy] = useState('all');
 
-  useEffect(() => {
-    const foundHotel = getHotelByIdOrSlug(slug);
-    setHotel(foundHotel);
-    setLoading(false);
-  }, [slug]);
+  // Use API to fetch hotel data
+  const {
+    data: hotel,
+    isLoading,
+    error,
+    refetch
+  } = useGetHotelByIdQuery(slug, {
+    skip: !slug
+  });
 
   const handleSearchChange = e => {
     const { name, value } = e.target;
@@ -549,14 +553,29 @@ const RoomList = () => {
     setSortBy('price-low');
   };
 
-  if (loading) {
+  if (isLoading) {
     return (
       <PageContainer>
         <HotelNavbar />
         <Container>
-          <div style={{ textAlign: 'center', padding: '4rem 0' }}>
-            <h2>Loading...</h2>
-          </div>
+          <LoadingSpinner text="Loading hotel details..." size="large" />
+        </Container>
+        <HotelFooter />
+      </PageContainer>
+    );
+  }
+
+  if (error) {
+    return (
+      <PageContainer>
+        <HotelNavbar />
+        <Container>
+          <ErrorMessage
+            title="Failed to load hotel"
+            message="We couldn't load the hotel details. Please try again."
+            error={error}
+            onRetry={refetch}
+          />
         </Container>
         <HotelFooter />
       </PageContainer>
@@ -568,10 +587,11 @@ const RoomList = () => {
       <PageContainer>
         <HotelNavbar />
         <Container>
-          <div style={{ textAlign: 'center', padding: '4rem 0' }}>
-            <h2>Hotel not found</h2>
-            <p>The hotel you're looking for doesn't exist.</p>
-          </div>
+          <ErrorMessage
+            title="Hotel not found"
+            message="The hotel you're looking for doesn't exist."
+            showRetry={false}
+          />
         </Container>
         <HotelFooter />
       </PageContainer>
