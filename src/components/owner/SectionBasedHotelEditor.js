@@ -691,6 +691,48 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
     dispatch(toggleSectionVisibility({ section: sectionId }));
   };
 
+  // Gallery management functions
+  const addGalleryItem = () => {
+    const newGallery = [...(tempData.gallery || []), { title: '', image: '' }];
+    updateTempData('gallery', newGallery);
+  };
+
+  const removeGalleryItem = (index) => {
+    const newGallery = tempData.gallery.filter((_, i) => i !== index);
+    updateTempData('gallery', newGallery);
+  };
+
+  const updateGalleryItem = (index, field, value) => {
+    const newGallery = tempData.gallery.map((item, i) => {
+      if (i === index) {
+        return { ...item, [field]: value };
+      }
+      return item;
+    });
+    updateTempData('gallery', newGallery);
+  };
+
+  // Contact fields management
+  const addContactField = () => {
+    const newContactFields = [...(tempData.contactFields || []), { label: '', value: '' }];
+    updateTempData('contactFields', newContactFields);
+  };
+
+  const removeContactField = (index) => {
+    const newContactFields = tempData.contactFields.filter((_, i) => i !== index);
+    updateTempData('contactFields', newContactFields);
+  };
+
+  const updateContactField = (index, field, value) => {
+    const newContactFields = tempData.contactFields.map((item, i) => {
+      if (i === index) {
+        return { ...item, [field]: value };
+      }
+      return item;
+    });
+    updateTempData('contactFields', newContactFields);
+  };
+
   if (!editingHotel) {
     return (
       <EditorContainer>
