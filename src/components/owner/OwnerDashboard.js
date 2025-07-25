@@ -13,6 +13,8 @@ import EnhancedSidebar from './EnhancedSidebar';
 import AddHotelPageContent from './AddHotelPageContent';
 import SectionBasedHotelEditor from './SectionBasedHotelEditor';
 import AddRoomPageContent from './AddRoomPageContent';
+import AddRoomManager from './AddRoomManager';
+import AllRoomsManager from './AllRoomsManager';
 import BookingsReceivedPageContent from './BookingsReceivedPageContent';
 import ProfileSettingsPageContent from './ProfileSettingsPageContent';
 import { Card, CardContent, Badge } from '../shared/Card';
@@ -495,9 +497,11 @@ const OwnerDashboard = () => {
         );
       case 'add-room':
         return (
-          <PageContent>
-            <AddRoomPageContent setActiveSection={setActiveSection} />
-          </PageContent>
+          <AddRoomManager setActiveSection={setActiveSection} />
+        );
+      case 'all-rooms':
+        return (
+          <AllRoomsManager setActiveSection={setActiveSection} />
         );
       case 'bookings':
         return (
