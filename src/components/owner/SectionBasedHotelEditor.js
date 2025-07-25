@@ -932,36 +932,59 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
 
               {activeModal === 'gallery' && (
                 <FormField>
-                  <Label>Hotel Gallery Images</Label>
-                  <ImageGrid>
-                    {tempData.images?.map((image, index) => (
-                      <ImageItem key={index} className="has-image">
-                        <ImageDisplay src={image}>
-                          <ImageActions>
-                            <ImageButton onClick={() => handleImageEdit(index)}>
-                              <FaEdit />
-                            </ImageButton>
-                            <ImageButton onClick={() => removeImage(index)}>
-                              <FaTrash />
-                            </ImageButton>
-                          </ImageActions>
-                        </ImageDisplay>
-                      </ImageItem>
-                    ))}
-                    <ImageItem>
-                      <ImagePlaceholder>
-                        <FaPlus style={{ fontSize: '2rem', marginBottom: theme.spacing.sm }} />
-                        <div>Add New Image</div>
-                        <Button
-                          size="small"
-                          style={{ marginTop: theme.spacing.sm }}
-                          onClick={addImage}
-                        >
-                          Add Image
-                        </Button>
-                      </ImagePlaceholder>
-                    </ImageItem>
-                  </ImageGrid>
+                  <Label>Hotel Gallery</Label>
+                  <p style={{ color: theme.colors.gray600, marginBottom: theme.spacing.md }}>
+                    Manage gallery images with titles for better organization.
+                  </p>
+                  {tempData.gallery?.map((item, index) => (
+                    <div key={index} style={{
+                      marginBottom: theme.spacing.lg,
+                      padding: theme.spacing.md,
+                      border: `1px solid ${theme.colors.gray200}`,
+                      borderRadius: theme.borderRadius.md
+                    }}>
+                      <div style={{ display: 'flex', gap: theme.spacing.md, alignItems: 'flex-start' }}>
+                        <div style={{ flex: 1 }}>
+                          <FormField>
+                            <Label>Image Title</Label>
+                            <Input
+                              value={item.title}
+                              onChange={(e) => updateGalleryItem(index, 'title', e.target.value)}
+                              placeholder="e.g., Hotel Exterior, Luxury Rooms"
+                            />
+                          </FormField>
+                          <FormField>
+                            <Label>Image URL</Label>
+                            <Input
+                              value={item.image}
+                              onChange={(e) => updateGalleryItem(index, 'image', e.target.value)}
+                              placeholder="Enter image URL"
+                            />
+                          </FormField>
+                        </div>
+                        {item.image && (
+                          <div style={{ width: '120px', height: '80px' }}>
+                            <img
+                              src={item.image}
+                              alt={item.title}
+                              style={{
+                                width: '100%',
+                                height: '100%',
+                                objectFit: 'cover',
+                                borderRadius: theme.borderRadius.md
+                              }}
+                            />
+                          </div>
+                        )}
+                        <RemoveButton onClick={() => removeGalleryItem(index)}>
+                          <FaTrash />
+                        </RemoveButton>
+                      </div>
+                    </div>
+                  ))}
+                  <AddButton onClick={addGalleryItem}>
+                    <FaPlus /> Add Gallery Item
+                  </AddButton>
                 </FormField>
               )}
 
