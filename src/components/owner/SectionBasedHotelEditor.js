@@ -118,7 +118,9 @@ const SectionHeader = styled.div`
   margin-bottom: ${theme.spacing.md};
 `;
 
-const ToggleSwitch = styled.div`
+const ToggleSwitch = styled.div.withConfig({
+  shouldForwardProp: prop => prop !== 'active',
+})`
   position: relative;
   width: 44px;
   height: 24px;
