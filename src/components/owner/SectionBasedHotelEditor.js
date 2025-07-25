@@ -480,14 +480,20 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
 
   const openModal = (sectionType) => {
     setActiveModal(sectionType);
-    // Initialize temp data with current hotel data
+    // Initialize temp data with current hotel data - exactly as it appears on hotel detail page
     if (editingHotel) {
       setTempData({
         name: editingHotel.name || '',
         heroSubtitle: editingHotel.heroSubtitle || `Experience luxury hospitality in the heart of ${editingHotel.city || 'your city'}`,
         description: editingHotel.description || '',
         image: editingHotel.image || '',
-        images: editingHotel.images || [],
+        gallery: editingHotel.gallery || [
+          { title: 'Hotel Exterior', image: editingHotel.images?.[0] || '' },
+          { title: 'Luxury Rooms', image: editingHotel.images?.[1] || '' },
+          { title: 'Dining Experience', image: editingHotel.images?.[2] || '' },
+          { title: 'Swimming Pool', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3' },
+          { title: 'Spa & Wellness', image: 'https://images.unsplash.com/photo-1578645510447-e20b4311e3ce?ixlib=rb-4.0.3' },
+        ],
         amenities: editingHotel.amenities || [],
         address: editingHotel.address || '',
         phone: editingHotel.phone || '+91 22 6601 1825',
@@ -529,6 +535,12 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
             title: 'Services',
             items: ['24/7 Concierge', 'Valet Parking', 'Airport Transfer']
           },
+        ],
+        contactFields: editingHotel.contactFields || [
+          { label: 'Address', value: editingHotel.address || '' },
+          { label: 'Phone', value: editingHotel.phone || '+91 22 6601 1825' },
+          { label: 'Email', value: editingHotel.email || `reservations@${editingHotel.slug || 'hotel'}.com` },
+          { label: 'Check-in / Check-out', value: `${editingHotel.checkInTime || '3:00 PM'} / ${editingHotel.checkOutTime || '11:00 AM'}` },
         ]
       });
     }
