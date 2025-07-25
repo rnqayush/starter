@@ -453,11 +453,13 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
   const {
     editingHotel,
     hasUnsavedChanges,
+    sectionVisibility,
   } = useSelector(state => state.hotelManagement);
 
   const [selectedHotelId, setSelectedHotelId] = useState(null);
   const [activeModal, setActiveModal] = useState(null);
   const [tempData, setTempData] = useState({});
+  const [newAmenityInputs, setNewAmenityInputs] = useState({});
 
   // Auto-select first hotel if none selected
   useEffect(() => {
