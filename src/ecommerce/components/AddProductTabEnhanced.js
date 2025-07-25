@@ -13,7 +13,8 @@ import {
 import { theme } from '../../styles/GlobalStyle';
 import FormField from './shared/FormField';
 import Button from './shared/Button';
-import { productCategories } from '../data/sellerData';
+import { sellerDashboardData } from '../../DummyData';
+const { productCategories } = sellerDashboardData;
 
 const FormContainer = styled.div`
   max-width: 1000px;
