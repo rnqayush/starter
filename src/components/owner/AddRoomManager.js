@@ -180,7 +180,18 @@ const ActionButtons = styled.div`
 
 const AddRoomManager = () => {
   const dispatch = useDispatch();
+  const { slug } = useParams();
   const { editingHotel } = useSelector(state => state.hotelManagement);
+
+  // Auto-select hotel based on URL slug
+  useEffect(() => {
+    if (slug && !editingHotel) {
+      const hotelData = getHotelByIdOrSlug(slug);
+      if (hotelData) {
+        dispatch(setEditingHotel(hotelData.id));
+      }
+    }
+  }, [slug, editingHotel, dispatch]);
   
   const [roomData, setRoomData] = useState({
     name: '',
@@ -326,7 +337,7 @@ const AddRoomManager = () => {
             />
           </FormField>
           <FormField>
-            <Label>Price per Night (���) *</Label>
+            <Label>Price per Night (₹) *</Label>
             <Input
               type="number"
               value={roomData.price}
