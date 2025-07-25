@@ -950,8 +950,8 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
     );
   }
 
-  const sections = [
-    {
+  const allSections = {
+    hero: {
       id: 'hero',
       title: 'Hero Section',
       description: 'Update background image and hotel title',
@@ -959,7 +959,7 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
       preview: `${editingHotel.name} - ${editingHotel.city}`,
       isVisible: sectionVisibility.hero
     },
-    {
+    about: {
       id: 'about',
       title: 'About Section',
       description: 'Edit hotel description and story',
@@ -967,7 +967,7 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
       preview: editingHotel.description?.substring(0, 100) + '...' || 'No description set',
       isVisible: sectionVisibility.about
     },
-    {
+    features: {
       id: 'features',
       title: 'Why Choose Us',
       description: 'Manage hotel features and benefits',
@@ -975,7 +975,7 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
       preview: `${editingHotel.features?.length || 4} features configured`,
       isVisible: sectionVisibility.features
     },
-    {
+    gallery: {
       id: 'gallery',
       title: 'Hotel Gallery',
       description: 'Manage hotel images and gallery',
@@ -983,7 +983,7 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
       preview: `${editingHotel.gallery?.length || 5} gallery items`,
       isVisible: sectionVisibility.gallery
     },
-    {
+    amenities: {
       id: 'amenities',
       title: 'World-Class Amenities',
       description: 'Update hotel amenities and services',
@@ -991,7 +991,7 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
       preview: `${editingHotel.amenityCategories?.length || 4} categories`,
       isVisible: sectionVisibility.amenities
     },
-    {
+    contact: {
       id: 'contact',
       title: 'Location & Contact',
       description: 'Update contact information and address',
@@ -999,7 +999,10 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
       preview: `${editingHotel.contactFields?.length || 4} contact fields`,
       isVisible: sectionVisibility.contact
     }
-  ];
+  };
+
+  // Create ordered sections array based on sectionOrder
+  const sections = sectionOrder.map(sectionId => allSections[sectionId]).filter(Boolean);
 
   return (
     <EditorContainer>
