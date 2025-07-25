@@ -236,7 +236,18 @@ const EmptyState = styled.div`
 
 const AllRoomsManager = () => {
   const dispatch = useDispatch();
+  const { slug } = useParams();
   const { editingHotel } = useSelector(state => state.hotelManagement);
+
+  // Auto-select hotel based on URL slug
+  useEffect(() => {
+    if (slug && !editingHotel) {
+      const hotelData = getHotelByIdOrSlug(slug);
+      if (hotelData) {
+        dispatch(setEditingHotel(hotelData.id));
+      }
+    }
+  }, [slug, editingHotel, dispatch]);
   
   const [editingRoom, setEditingRoom] = useState(null);
   const [editData, setEditData] = useState({});
