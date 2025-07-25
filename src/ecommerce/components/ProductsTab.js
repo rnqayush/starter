@@ -9,7 +9,8 @@ import {
   FaEye,
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
-import { sellerProducts } from '../data/sellerData';
+import { sellerDashboardData } from '../../DummyData';
+const { sellerProducts } = sellerDashboardData;
 
 const ProductsContainer = styled.div`
   background: ${theme.colors.white};
