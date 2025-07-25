@@ -226,7 +226,9 @@ const NavLink = styled(Link).withConfig({
   }
 `;
 
-const DropdownContainer = styled.div`
+const DropdownContainer = styled.div.withConfig({
+  shouldForwardProp: prop => prop !== 'isMobile',
+})`
   position: relative;
   display: inline-block;
   width: ${props => (props.isMobile ? '100%' : 'auto')};
