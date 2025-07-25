@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import {
   FaMapMarkerAlt,
@@ -805,11 +806,25 @@ const HotelDetail = () => {
   const [hotel, setHotel] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // Get hotels from Redux store (includes any admin updates)
+  const hotelsFromStore = useSelector(state => state.hotelManagement?.hotels);
+
   useEffect(() => {
-    const foundHotel = getHotelByIdOrSlug(slugParam);
+    let foundHotel;
+
+    // Try to get hotel from Redux store first (for updated data)
+    if (hotelsFromStore && hotelsFromStore.length > 0) {
+      foundHotel = hotelsFromStore.find(h => h.slug === slugParam || h.id === parseInt(slugParam));
+    }
+
+    // Fallback to original data if not found in store
+    if (!foundHotel) {
+      foundHotel = getHotelByIdOrSlug(slugParam);
+    }
+
     setHotel(foundHotel);
     setLoading(false);
-  }, [slugParam]);
+  }, [slugParam, hotelsFromStore]);
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
