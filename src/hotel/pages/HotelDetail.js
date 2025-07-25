@@ -865,7 +865,8 @@ const HotelDetail = () => {
     );
   }
 
-  const features = [
+  // Use dynamic features from hotel data or fallback to defaults
+  const features = hotel.features || [
     {
       icon: FaConciergeBell,
       title: '24/7 Concierge',
@@ -891,7 +892,8 @@ const HotelDetail = () => {
     },
   ];
 
-  const amenityCategories = [
+  // Use dynamic amenity categories from hotel data or fallback to defaults
+  const amenityCategories = hotel.amenityCategories || [
     {
       title: 'Recreation',
       icon: FaSwimmingPool,
@@ -937,6 +939,17 @@ const HotelDetail = () => {
       ],
     },
   ];
+
+  // Get the appropriate icon for categories (fallback icons)
+  const getCategoryIcon = (title) => {
+    const iconMap = {
+      'Recreation': FaSwimmingPool,
+      'Dining': FaUtensils,
+      'Business': FaBusinessTime,
+      'Services': FaConciergeBell,
+    };
+    return iconMap[title] || FaConciergeBell;
+  };
 
   return (
     <PageContainer>
