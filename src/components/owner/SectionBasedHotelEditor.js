@@ -14,6 +14,12 @@ import {
   FaEdit,
   FaPlus,
   FaTrash,
+  FaList,
+  FaTextHeight,
+  FaGrip,
+  FaQuoteLeft,
+  FaVideo,
+  FaTable,
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
 import {
