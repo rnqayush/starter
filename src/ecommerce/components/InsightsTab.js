@@ -7,11 +7,12 @@ import {
   FaDownload,
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
-import {
+import { sellerDashboardData } from '../../DummyData';
+const {
   categoryRevenueData,
   bestSellingProducts,
   salesTrendData,
-} from '../data/sellerData';
+} = sellerDashboardData;
 
 const InsightsContainer = styled.div`
   display: grid;
