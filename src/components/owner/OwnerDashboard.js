@@ -11,7 +11,7 @@ import {
 import { Link } from 'react-router-dom';
 import EnhancedSidebar from './EnhancedSidebar';
 import AddHotelPageContent from './AddHotelPageContent';
-import EditableHotelDetail from './EditableHotelDetail';
+import SectionBasedHotelEditor from './SectionBasedHotelEditor';
 import AddRoomPageContent from './AddRoomPageContent';
 import BookingsReceivedPageContent from './BookingsReceivedPageContent';
 import ProfileSettingsPageContent from './ProfileSettingsPageContent';
@@ -491,7 +491,7 @@ const OwnerDashboard = () => {
         );
       case 'my-hotels':
         return (
-          <EditableHotelDetail setActiveSection={setActiveSection} />
+          <SectionBasedHotelEditor setActiveSection={setActiveSection} />
         );
       case 'add-room':
         return (
