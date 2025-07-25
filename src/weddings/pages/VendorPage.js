@@ -23,7 +23,7 @@ import {
   FaTimes,
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
-import { getVendorById } from '../data/vendors';
+import { useGetWeddingServiceByIdQuery } from '../../store/api/weddingApi';
 import { useAuth } from '../../context/AuthContext';
 
 const PageContainer = styled.div`
@@ -976,8 +976,17 @@ const VendorPage = () => {
   const pathSegments = currentPath.split('/').filter(Boolean);
   const vendorId = vendorSlug || pathSegments[pathSegments.length - 1];
 
-  const [vendor, setVendor] = useState(null);
-  const [loading, setLoading] = useState(true);
+  // RTK Query hook for fetching wedding service details
+  const {
+    data: vendorData,
+    error,
+    isLoading,
+    refetch
+  } = useGetWeddingServiceByIdQuery(vendorId, {
+    skip: !vendorId // Skip query if no vendorId
+  });
+
+  const vendor = vendorData?.data;
   const [scrolled, setScrolled] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -992,19 +1001,15 @@ const VendorPage = () => {
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    const vendorData = getVendorById(vendorId);
-    setVendor(vendorData);
-    setLoading(false);
-
     // Pre-fill form if user is logged in
     if (user) {
       setContactForm(prev => ({
         ...prev,
-        name: user.name || '',
-        email: user.email || '',
+        name: user.name || "",
+        email: user.email || "",
       }));
     }
-  }, [vendorId, user]);
+  }, [user]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -1077,12 +1082,42 @@ const VendorPage = () => {
     setOpenFaq(openFaq === index ? null : index);
   };
 
-  if (loading) {
+  if (isLoading) {
     return (
       <LoadingContainer>
         <LoadingSpinner>
           <FaSpinner />
         </LoadingSpinner>
+      </LoadingContainer>
+    );
+  }
+
+  if (error) {
+    return (
+      <LoadingContainer>
+        <div style={{ textAlign: "center", color: theme.colors.error }}>
+          <h2>Failed to load vendor</h2>
+          <p>We're having trouble loading this vendor's information. Please try again.</p>
+          <button
+            onClick={() => refetch()}
+            style={{
+              background: theme.colors.primary,
+              color: "white",
+              border: "none",
+              padding: "10px 20px",
+              borderRadius: "5px",
+              cursor: "pointer",
+              marginTop: "10px",
+              marginRight: "10px",
+            }}
+          >
+            Retry
+          </button>
+          <NavButton onClick={() => navigate("/weddings")}>
+            <FaArrowLeft />
+            Back to Vendors
+          </NavButton>
+        </div>
       </LoadingContainer>
     );
   }
