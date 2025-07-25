@@ -1006,6 +1006,107 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
     updateTempData('contactFields', newContactFields);
   };
 
+  // Custom section management functions
+  const addCustomSection = () => {
+    if (!newSectionData.title || !newSectionData.type) {
+      alert('Please provide a section title and select a type.');
+      return;
+    }
+
+    const sectionId = `custom-${Date.now()}`;
+    const newSection = {
+      id: sectionId,
+      title: newSectionData.title,
+      type: newSectionData.type,
+      content: newSectionData.content,
+      isVisible: true,
+      isCustom: true
+    };
+
+    // Add to custom sections
+    setCustomSections(prev => [...prev, newSection]);
+
+    // Add to section order
+    setSectionOrder(prev => [...prev, sectionId]);
+
+    // Update hotel data
+    dispatch(updateHotelField({
+      field: 'customSections',
+      value: [...customSections, newSection]
+    }));
+
+    // Close modal
+    closeModal();
+    alert('Custom section added! Remember to "Save & Go Live" to publish changes.');
+  };
+
+  const updateNewSectionData = (field, value) => {
+    setNewSectionData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const addContentItem = () => {
+    const { type } = newSectionData;
+    let newItem = {};
+
+    switch (type) {
+      case 'gallery':
+        newItem = { image: '', title: '', description: '' };
+        break;
+      case 'cards':
+        newItem = { title: '', description: '', image: '', link: '' };
+        break;
+      case 'text':
+        newItem = { content: '' };
+        break;
+      case 'list':
+        newItem = { text: '' };
+        break;
+      case 'testimonials':
+        newItem = { quote: '', author: '', designation: '', image: '' };
+        break;
+      case 'video':
+        newItem = { url: '', title: '', description: '' };
+        break;
+      case 'table':
+        newItem = { headers: ['Header 1', 'Header 2'], rows: [['Data 1', 'Data 2']] };
+        break;
+      default:
+        newItem = { content: '' };
+    }
+
+    setNewSectionData(prev => ({
+      ...prev,
+      content: [...prev.content, newItem]
+    }));
+  };
+
+  const removeContentItem = (index) => {
+    setNewSectionData(prev => ({
+      ...prev,
+      content: prev.content.filter((_, i) => i !== index)
+    }));
+  };
+
+  const updateContentItem = (index, field, value) => {
+    setNewSectionData(prev => ({
+      ...prev,
+      content: prev.content.map((item, i) =>
+        i === index ? { ...item, [field]: value } : item
+      )
+    }));
+  };
+
+  // Section type options
+  const sectionTypes = [
+    { id: 'text', name: 'Text Content', icon: FaTextHeight, description: 'Rich text content' },
+    { id: 'gallery', name: 'Image Gallery', icon: FaCamera, description: 'Collection of images' },
+    { id: 'cards', name: 'Info Cards', icon: FaGrip, description: 'Card-based content' },
+    { id: 'list', name: 'List Items', icon: FaList, description: 'Bulleted or numbered lists' },
+    { id: 'testimonials', name: 'Testimonials', icon: FaQuoteLeft, description: 'Customer reviews' },
+    { id: 'video', name: 'Video Content', icon: FaVideo, description: 'Video embeds' },
+    { id: 'table', name: 'Data Table', icon: FaTable, description: 'Tabular data' }
+  ];
+
   const handleSaveAndGoLive = () => {
     if (!editingHotel) return;
 
