@@ -1057,48 +1057,43 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
               )}
 
               {activeModal === 'contact' && (
-                <>
-                  <FormField>
-                    <Label>Address</Label>
-                    <Input
-                      value={tempData.address || ''}
-                      onChange={(e) => updateTempData('address', e.target.value)}
-                      placeholder="Enter hotel address"
-                    />
-                  </FormField>
-                  <FormField>
-                    <Label>Phone Number</Label>
-                    <Input
-                      value={tempData.phone || ''}
-                      onChange={(e) => updateTempData('phone', e.target.value)}
-                      placeholder="Enter phone number"
-                    />
-                  </FormField>
-                  <FormField>
-                    <Label>Email</Label>
-                    <Input
-                      value={tempData.email || ''}
-                      onChange={(e) => updateTempData('email', e.target.value)}
-                      placeholder="Enter email address"
-                    />
-                  </FormField>
-                  <FormField>
-                    <Label>Check-in Time</Label>
-                    <Input
-                      value={tempData.checkInTime || ''}
-                      onChange={(e) => updateTempData('checkInTime', e.target.value)}
-                      placeholder="e.g., 3:00 PM"
-                    />
-                  </FormField>
-                  <FormField>
-                    <Label>Check-out Time</Label>
-                    <Input
-                      value={tempData.checkOutTime || ''}
-                      onChange={(e) => updateTempData('checkOutTime', e.target.value)}
-                      placeholder="e.g., 11:00 AM"
-                    />
-                  </FormField>
-                </>
+                <FormField>
+                  <Label>Contact Information Fields</Label>
+                  <p style={{ color: theme.colors.gray600, marginBottom: theme.spacing.md }}>
+                    Manage contact information displayed on the hotel page.
+                  </p>
+                  {tempData.contactFields?.map((field, index) => (
+                    <div key={index} style={{
+                      display: 'flex',
+                      gap: theme.spacing.md,
+                      marginBottom: theme.spacing.md,
+                      padding: theme.spacing.md,
+                      border: `1px solid ${theme.colors.gray200}`,
+                      borderRadius: theme.borderRadius.md,
+                      alignItems: 'flex-start'
+                    }}>
+                      <div style={{ flex: 1 }}>
+                        <Input
+                          value={field.label}
+                          onChange={(e) => updateContactField(index, 'label', e.target.value)}
+                          placeholder="Label (e.g., Address, Phone)"
+                          style={{ marginBottom: theme.spacing.sm }}
+                        />
+                        <Input
+                          value={field.value}
+                          onChange={(e) => updateContactField(index, 'value', e.target.value)}
+                          placeholder="Value"
+                        />
+                      </div>
+                      <RemoveButton onClick={() => removeContactField(index)}>
+                        <FaTrash />
+                      </RemoveButton>
+                    </div>
+                  ))}
+                  <AddButton onClick={addContactField}>
+                    <FaPlus /> Add More Contact Field
+                  </AddButton>
+                </FormField>
               )}
 
               {activeModal === 'features' && (
