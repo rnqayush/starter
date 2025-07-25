@@ -147,6 +147,55 @@ const SectionInfo = styled.div`
   flex: 1;
 `;
 
+const SaveGoLiveBar = styled.div`
+  position: fixed;
+  bottom: ${theme.spacing.xl};
+  right: ${theme.spacing.xl};
+  background: ${theme.colors.white};
+  padding: ${theme.spacing.lg};
+  border-radius: ${theme.borderRadius.lg};
+  box-shadow: ${theme.shadows.xl};
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.md};
+  z-index: 100;
+  border: 1px solid ${theme.colors.gray200};
+  min-width: 300px;
+`;
+
+const SaveGoLiveButton = styled.button`
+  background: linear-gradient(135deg, ${theme.colors.success}, ${theme.colors.successDark});
+  color: white;
+  border: none;
+  padding: ${theme.spacing.md} ${theme.spacing.xl};
+  border-radius: ${theme.borderRadius.md};
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.sm};
+  transition: all 0.3s ease;
+  font-size: 1rem;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: ${theme.shadows.lg};
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+`;
+
+const ChangesIndicator = styled.div`
+  color: ${theme.colors.warning};
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.xs};
+`;
+
 const SectionIcon = styled.div`
   width: 60px;
   height: 60px;
