@@ -1051,21 +1051,17 @@ const HotelDetail = () => {
           </SectionHeader>
           <GallerySection>
             <GalleryGrid>
-              <GalleryItem image={hotel.images[0]}>
-                <GalleryOverlay>Hotel Exterior</GalleryOverlay>
-              </GalleryItem>
-              <GalleryItem image={hotel.images[1]}>
-                <GalleryOverlay>Luxury Rooms</GalleryOverlay>
-              </GalleryItem>
-              <GalleryItem image={hotel.images[2]}>
-                <GalleryOverlay>Dining Experience</GalleryOverlay>
-              </GalleryItem>
-              <GalleryItem image="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3">
-                <GalleryOverlay>Swimming Pool</GalleryOverlay>
-              </GalleryItem>
-              <GalleryItem image="https://images.unsplash.com/photo-1578645510447-e20b4311e3ce?ixlib=rb-4.0.3">
-                <GalleryOverlay>Spa & Wellness</GalleryOverlay>
-              </GalleryItem>
+              {(hotel.gallery || [
+                { title: 'Hotel Exterior', image: hotel.images?.[0] },
+                { title: 'Luxury Rooms', image: hotel.images?.[1] },
+                { title: 'Dining Experience', image: hotel.images?.[2] },
+                { title: 'Swimming Pool', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3' },
+                { title: 'Spa & Wellness', image: 'https://images.unsplash.com/photo-1578645510447-e20b4311e3ce?ixlib=rb-4.0.3' },
+              ]).slice(0, 5).map((item, index) => (
+                <GalleryItem key={index} image={item.image}>
+                  <GalleryOverlay>{item.title}</GalleryOverlay>
+                </GalleryItem>
+              ))}
             </GalleryGrid>
           </GallerySection>
         </Container>
