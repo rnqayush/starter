@@ -241,7 +241,9 @@ const ChangesPanelHeader = styled.div`
   color: ${theme.colors.gray900};
 `;
 
-const ChangesStatus = styled.div`
+const ChangesStatus = styled.div.withConfig({
+  shouldForwardProp: prop => prop !== 'hasChanges',
+})`
   font-size: 0.8rem;
   color: ${props => props.hasChanges ? theme.colors.warning : theme.colors.success};
   margin-bottom: ${theme.spacing.md};
