@@ -394,32 +394,13 @@ const ProfileSettingsPageContent = () => {
                 Ready to sign out? Click the button below to logout from your
                 account.
               </LogoutText>
-              <div style={{ display: 'flex', gap: theme.spacing.md, justifyContent: 'center' }}>
+              <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <Button variant="danger" onClick={handleLogout} size="large">
                   <FaSignOutAlt />
                   Logout
                 </Button>
-                <Button variant="error" onClick={handleDeleteAccount} size="large">
-                  <FaTrashAlt />
-                  Delete Account
-                </Button>
               </div>
             </LogoutSection>
-
-            <DangerZone>
-              <DangerTitle>
-                <FaExclamationTriangle />
-                Danger Zone
-              </DangerTitle>
-              <DangerText>
-                <strong>Warning:</strong> Deleting your account is permanent and cannot be undone.
-                All your hotel data, rooms, bookings, and personal information will be permanently removed.
-                This action cannot be reversed.
-              </DangerText>
-              <DangerText>
-                If you're sure you want to delete your account, please click the Delete Account button above.
-              </DangerText>
-            </DangerZone>
           </CardContent>
         </Card>
       </SettingsGrid>
