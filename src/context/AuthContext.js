@@ -1,7 +1,31 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
-import authService from '../services/authService';
-import { USER_ROLES } from '../constants/api';
+import { 
+  selectAuth, 
+  selectIsAuthenticated, 
+  selectUser, 
+  selectAuthLoading, 
+  selectAuthError,
+  loginStart,
+  loginSuccess,
+  loginFailure,
+  logout as logoutAction,
+  updateUser,
+  clearError
+} from '../store/slices/authSlice';
+import { 
+  useLoginMutation, 
+  useRegisterMutation, 
+  useVendorLoginMutation,
+  useVendorRegisterMutation,
+  useAdminLoginMutation,
+  useLogoutMutation,
+  useGetCurrentUserQuery,
+  useUpdateProfileMutation,
+  useRefreshTokenMutation
+} from '../store/api/authApi';
+import { USER_ROLES, STORAGE_KEYS } from '../constants/api';
 
 // Create Auth Context
 const AuthContext = createContext();
@@ -17,175 +41,145 @@ export const useAuth = () => {
 
 // Auth Provider Component
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const dispatch = useDispatch();
+  const auth = useSelector(selectAuth);
+  const isAuthenticated = useSelector(selectIsAuthenticated);
+  const user = useSelector(selectUser);
+  const loading = useSelector(selectAuthLoading);
+  const error = useSelector(selectAuthError);
+
+  // RTK Query mutations
+  const [loginMutation] = useLoginMutation();
+  const [registerMutation] = useRegisterMutation();
+  const [vendorLoginMutation] = useVendorLoginMutation();
+  const [vendorRegisterMutation] = useVendorRegisterMutation();
+  const [adminLoginMutation] = useAdminLoginMutation();
+  const [logoutMutation] = useLogoutMutation();
+  const [updateProfileMutation] = useUpdateProfileMutation();
+  const [refreshTokenMutation] = useRefreshTokenMutation();
+
+  // Get current user query (only if authenticated)
+  const { refetch: refetchUser } = useGetCurrentUserQuery(undefined, {
+    skip: !isAuthenticated,
+  });
 
   // Initialize auth state
   useEffect(() => {
     const initializeAuth = async () => {
       try {
-        // Check if user is authenticated
-        if (authService.isAuthenticated()) {
-          // Verify token is still valid by fetching current user
-          const result = await authService.refreshAuth();
+        const token = localStorage.getItem(STORAGE_KEYS.TOKEN);
+        const userData = localStorage.getItem(STORAGE_KEYS.USER);
+        
+        if (token && userData) {
+          const parsedUser = JSON.parse(userData);
+          dispatch(loginSuccess({ token, user: parsedUser }));
           
-          if (result.success) {
-            setUser(result.data);
-            setIsAuthenticated(true);
-          } else {
-            // Token expired or invalid
-            authService.clearUserSession();
-            setUser(null);
-            setIsAuthenticated(false);
+          // Verify token is still valid
+          try {
+            await refetchUser();
+          } catch (error) {
+            console.warn('Token verification failed:', error);
+            dispatch(logoutAction());
           }
         }
       } catch (error) {
         console.error('Auth initialization error:', error);
-        authService.clearUserSession();
-        setUser(null);
-        setIsAuthenticated(false);
-      } finally {
-        setLoading(false);
+        dispatch(logoutAction());
       }
     };
 
     initializeAuth();
-  }, []);
+  }, [dispatch, refetchUser]);
 
   // Login function
-  const login = async (credentials) => {
-    setLoading(true);
+  const login = async (credentials, userType = 'customer') => {
     try {
-      const result = await authService.login(credentials);
+      dispatch(loginStart());
       
+      let result;
+      switch (userType) {
+        case 'vendor':
+          result = await vendorLoginMutation(credentials).unwrap();
+          break;
+        case 'admin':
+          result = await adminLoginMutation(credentials).unwrap();
+          break;
+        default:
+          result = await loginMutation(credentials).unwrap();
+      }
+
       if (result.success) {
-        setUser(result.data.user);
-        setIsAuthenticated(true);
-        toast.success('Login successful!');
-        return result;
+        dispatch(loginSuccess({
+          token: result.data.token,
+          user: result.data.user
+        }));
+        toast.success(result.message || 'Login successful!');
+        return { success: true, data: result.data };
       } else {
-        toast.error(result.message || 'Login failed');
-        return result;
+        throw new Error(result.message || 'Login failed');
       }
     } catch (error) {
       const errorMessage = error.message || 'Login failed';
+      dispatch(loginFailure(errorMessage));
       toast.error(errorMessage);
       return { success: false, message: errorMessage };
-    } finally {
-      setLoading(false);
     }
   };
 
   // Register function
-  const register = async (userData) => {
-    setLoading(true);
+  const register = async (userData, userType = 'customer') => {
     try {
-      const result = await authService.register(userData);
+      dispatch(loginStart());
       
-      if (result.success) {
-        setUser(result.data.user);
-        setIsAuthenticated(true);
-        toast.success('Registration successful!');
-        return result;
+      let result;
+      if (userType === 'vendor') {
+        result = await vendorRegisterMutation(userData).unwrap();
       } else {
-        toast.error(result.message || 'Registration failed');
-        return result;
+        result = await registerMutation(userData).unwrap();
+      }
+
+      if (result.success) {
+        dispatch(loginSuccess({
+          token: result.data.token,
+          user: result.data.user
+        }));
+        toast.success(result.message || 'Registration successful!');
+        return { success: true, data: result.data };
+      } else {
+        throw new Error(result.message || 'Registration failed');
       }
     } catch (error) {
       const errorMessage = error.message || 'Registration failed';
+      dispatch(loginFailure(errorMessage));
       toast.error(errorMessage);
       return { success: false, message: errorMessage };
-    } finally {
-      setLoading(false);
     }
   };
 
-  // Vendor registration function
+  // Vendor registration function (alias for register with vendor type)
   const registerVendor = async (vendorData) => {
-    setLoading(true);
-    try {
-      const result = await authService.registerVendor(vendorData);
-      
-      if (result.success) {
-        setUser(result.data.user);
-        setIsAuthenticated(true);
-        toast.success('Vendor registration successful! Awaiting approval.');
-        return result;
-      } else {
-        toast.error(result.message || 'Vendor registration failed');
-        return result;
-      }
-    } catch (error) {
-      const errorMessage = error.message || 'Vendor registration failed';
-      toast.error(errorMessage);
-      return { success: false, message: errorMessage };
-    } finally {
-      setLoading(false);
-    }
+    return await register(vendorData, 'vendor');
   };
 
-  // Vendor login function
+  // Vendor login function (alias for login with vendor type)
   const loginVendor = async (credentials) => {
-    setLoading(true);
-    try {
-      const result = await authService.loginVendor(credentials);
-      
-      if (result.success) {
-        setUser(result.data.user);
-        setIsAuthenticated(true);
-        toast.success('Vendor login successful!');
-        return result;
-      } else {
-        toast.error(result.message || 'Vendor login failed');
-        return result;
-      }
-    } catch (error) {
-      const errorMessage = error.message || 'Vendor login failed';
-      toast.error(errorMessage);
-      return { success: false, message: errorMessage };
-    } finally {
-      setLoading(false);
-    }
+    return await login(credentials, 'vendor');
   };
 
-  // Admin login function
+  // Admin login function (alias for login with admin type)
   const loginAdmin = async (credentials) => {
-    setLoading(true);
-    try {
-      const result = await authService.loginAdmin(credentials);
-      
-      if (result.success) {
-        setUser(result.data.user);
-        setIsAuthenticated(true);
-        toast.success('Admin login successful!');
-        return result;
-      } else {
-        toast.error(result.message || 'Admin login failed');
-        return result;
-      }
-    } catch (error) {
-      const errorMessage = error.message || 'Admin login failed';
-      toast.error(errorMessage);
-      return { success: false, message: errorMessage };
-    } finally {
-      setLoading(false);
-    }
+    return await login(credentials, 'admin');
   };
 
   // Logout function
   const logout = async () => {
     try {
-      await authService.logout();
-      setUser(null);
-      setIsAuthenticated(false);
-      toast.success('Logged out successfully');
+      await logoutMutation().unwrap();
     } catch (error) {
       console.error('Logout error:', error);
-      // Still clear local state even if API call fails
-      setUser(null);
-      setIsAuthenticated(false);
-      authService.clearUserSession();
+    } finally {
+      dispatch(logoutAction());
+      toast.success('Logged out successfully');
     }
   };
 
@@ -193,84 +187,88 @@ export const AuthProvider = ({ children }) => {
   const updateProfile = async (updates) => {
     if (!user) return { success: false, message: 'No user logged in' };
 
-    setLoading(true);
     try {
-      const result = await authService.updateProfile(updates);
+      const result = await updateProfileMutation(updates).unwrap();
       
       if (result.success) {
-        setUser(result.data);
+        dispatch(updateUser(result.data));
         toast.success('Profile updated successfully!');
-        return result;
+        return { success: true, data: result.data };
       } else {
-        toast.error(result.message || 'Profile update failed');
-        return result;
+        throw new Error(result.message || 'Profile update failed');
       }
     } catch (error) {
       const errorMessage = error.message || 'Profile update failed';
       toast.error(errorMessage);
       return { success: false, message: errorMessage };
-    } finally {
-      setLoading(false);
     }
   };
 
   // Check if user has specific role
   const hasRole = (role) => {
-    return authService.hasRole(role);
+    return user?.role === role;
   };
 
   // Check if user is customer
   const isCustomer = () => {
-    return authService.isCustomer();
+    return hasRole(USER_ROLES.CUSTOMER);
   };
 
   // Check if user is vendor
   const isVendor = () => {
-    return authService.isVendor();
+    return hasRole(USER_ROLES.VENDOR);
   };
 
   // Check if user is admin
   const isAdmin = () => {
-    return authService.isAdmin();
+    return hasRole(USER_ROLES.ADMIN);
   };
 
   // Check if user can access vendor features
   const canAccessVendor = () => {
-    return authService.canAccessVendor();
+    return isVendor() || isAdmin();
   };
 
   // Check if user can access admin features
   const canAccessAdmin = () => {
-    return authService.canAccessAdmin();
+    return isAdmin();
   };
 
   // Get user display name
   const getDisplayName = () => {
-    return authService.getUserDisplayName();
+    if (!user) return 'Guest';
+    
+    return user.name || user.businessName || getNameFromEmail(user.email);
+  };
+
+  // Helper to extract name from email
+  const getNameFromEmail = (email) => {
+    if (!email) return 'User';
+    const name = email.split('@')[0];
+    return name.charAt(0).toUpperCase() + name.slice(1);
   };
 
   // Refresh authentication state
   const refreshAuth = async () => {
-    setLoading(true);
     try {
-      const result = await authService.refreshAuth();
+      const result = await refetchUser();
       
-      if (result.success) {
-        setUser(result.data);
-        setIsAuthenticated(true);
-        return result;
+      if (result.data?.success) {
+        dispatch(updateUser(result.data.data));
+        return { success: true, data: result.data.data };
       } else {
-        setUser(null);
-        setIsAuthenticated(false);
-        return result;
+        dispatch(logoutAction());
+        return { success: false, message: 'Session expired' };
       }
     } catch (error) {
-      setUser(null);
-      setIsAuthenticated(false);
+      dispatch(logoutAction());
       return { success: false, message: error.message };
-    } finally {
-      setLoading(false);
     }
+  };
+
+  // Clear error
+  const clearAuthError = () => {
+    dispatch(clearError());
   };
 
   const contextValue = {
@@ -278,6 +276,7 @@ export const AuthProvider = ({ children }) => {
     user,
     loading,
     isAuthenticated,
+    error,
 
     // Actions
     login,
@@ -288,6 +287,7 @@ export const AuthProvider = ({ children }) => {
     logout,
     updateProfile,
     refreshAuth,
+    clearAuthError,
 
     // Utilities
     hasRole,
