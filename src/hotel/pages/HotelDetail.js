@@ -1145,36 +1145,33 @@ const HotelDetail = () => {
             <LocationGrid>
               <ContactInfo>
                 <h4>Get in Touch</h4>
-                <ContactItem>
-                  <FaMapMarkerAlt className="icon" />
-                  <div className="content">
-                    <div className="label">Address</div>
-                    <div className="value">{hotel.address}</div>
-                  </div>
-                </ContactItem>
-                <ContactItem>
-                  <FaPhone className="icon" />
-                  <div className="content">
-                    <div className="label">Phone</div>
-                    <div className="value">+91 22 6601 1825</div>
-                  </div>
-                </ContactItem>
-                <ContactItem>
-                  <FaEnvelope className="icon" />
-                  <div className="content">
-                    <div className="label">Email</div>
-                    <div className="value">reservations@{hotel.slug}.com</div>
-                  </div>
-                </ContactItem>
-                <ContactItem>
-                  <FaClock className="icon" />
-                  <div className="content">
-                    <div className="label">Check-in / Check-out</div>
-                    <div className="value">
-                      {hotel.checkInTime} / {hotel.checkOutTime}
-                    </div>
-                  </div>
-                </ContactItem>
+                {(hotel.contactFields || [
+                  { label: 'Address', value: hotel.address },
+                  { label: 'Phone', value: hotel.phone || '+91 22 6601 1825' },
+                  { label: 'Email', value: hotel.email || `reservations@${hotel.slug}.com` },
+                  { label: 'Check-in / Check-out', value: `${hotel.checkInTime} / ${hotel.checkOutTime}` },
+                ]).map((field, index) => {
+                  const getIcon = (label) => {
+                    const iconMap = {
+                      'Address': FaMapMarkerAlt,
+                      'Phone': FaPhone,
+                      'Email': FaEnvelope,
+                      'Check-in / Check-out': FaClock,
+                    };
+                    return iconMap[label] || FaMapMarkerAlt;
+                  };
+                  const IconComponent = getIcon(field.label);
+
+                  return (
+                    <ContactItem key={index}>
+                      <IconComponent className="icon" />
+                      <div className="content">
+                        <div className="label">{field.label}</div>
+                        <div className="value">{field.value}</div>
+                      </div>
+                    </ContactItem>
+                  );
+                })}
               </ContactInfo>
               <MapPlaceholder>
                 <div>
