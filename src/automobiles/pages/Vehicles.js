@@ -7,8 +7,12 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import VehicleCard from '../components/VehicleCard';
 import BackToTop from '../../ecommerce/components/BackToTop';
-import { vehicles, categories, getVehiclesByCategory } from '../data/vehicles';
-import { getVendorByIdOrSlug } from '../data/vendors';
+import {
+  automobileVehicles as vehicles,
+  automobileCategories as categories,
+  getVehiclesByCategory,
+  getAutomobileVendorByIdOrSlug as getVendorByIdOrSlug,
+} from '../../DummyData';
 
 const PageContainer = styled.div`
   min-height: 100vh;
