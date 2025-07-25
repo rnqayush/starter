@@ -651,8 +651,15 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
   };
 
   const updateCategoryTitle = (categoryIndex, title) => {
-    const newCategories = [...tempData.amenityCategories];
-    newCategories[categoryIndex].title = title;
+    const newCategories = tempData.amenityCategories.map((category, index) => {
+      if (index === categoryIndex) {
+        return {
+          ...category,
+          title: title
+        };
+      }
+      return category;
+    });
     updateTempData('amenityCategories', newCategories);
   };
 
