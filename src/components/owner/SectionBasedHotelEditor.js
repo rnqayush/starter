@@ -881,19 +881,69 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
 
               {activeModal === 'amenities' && (
                 <FormField>
-                  <Label>Select Hotel Amenities</Label>
-                  <AmenitiesGrid>
-                    {amenitiesList.map(amenity => (
-                      <AmenityItem
-                        key={amenity.id}
-                        selected={tempData.amenities?.includes(amenity.id)}
-                        onClick={() => toggleAmenity(amenity.id)}
-                      >
-                        <span>{amenity.icon}</span>
-                        <span>{amenity.name}</span>
-                      </AmenityItem>
-                    ))}
-                  </AmenitiesGrid>
+                  <Label>Hotel Amenity Categories</Label>
+                  <p style={{ color: theme.colors.gray600, marginBottom: theme.spacing.md }}>
+                    Organize your amenities into categories with custom headers and items.
+                  </p>
+                  {tempData.amenityCategories?.map((category, categoryIndex) => (
+                    <AmenityCategoryItem key={categoryIndex}>
+                      <AmenityCategoryHeader>
+                        <Input
+                          value={category.title}
+                          onChange={(e) => updateCategoryTitle(categoryIndex, e.target.value)}
+                          placeholder="Category title (e.g., Recreation)"
+                          style={{ flex: 1 }}
+                        />
+                      </AmenityCategoryHeader>
+
+                      <AmenityItemsContainer>
+                        {category.items.map((item, itemIndex) => (
+                          <AmenityTag key={itemIndex}>
+                            {item}
+                            <button
+                              onClick={() => removeAmenityItem(categoryIndex, itemIndex)}
+                              style={{
+                                background: 'none',
+                                border: 'none',
+                                color: 'white',
+                                marginLeft: theme.spacing.xs,
+                                cursor: 'pointer'
+                              }}
+                            >
+                              <FaTimes />
+                            </button>
+                          </AmenityTag>
+                        ))}
+                      </AmenityItemsContainer>
+
+                      <AddAmenityForm>
+                        <Input
+                          value={newAmenityInputs[categoryIndex] || ''}
+                          onChange={(e) => setNewAmenityInputs(prev => ({
+                            ...prev,
+                            [categoryIndex]: e.target.value
+                          }))}
+                          placeholder="Add new amenity"
+                          style={{ flex: 1 }}
+                          onKeyPress={(e) => {
+                            if (e.key === 'Enter') {
+                              e.preventDefault();
+                              addAmenityItem(categoryIndex);
+                            }
+                          }}
+                        />
+                        <Button
+                          size="small"
+                          onClick={() => addAmenityItem(categoryIndex)}
+                        >
+                          <FaPlus />
+                        </Button>
+                      </AddAmenityForm>
+                    </AmenityCategoryItem>
+                  ))}
+                  <AddButton onClick={addAmenityCategory}>
+                    <FaPlus /> Add New Category
+                  </AddButton>
                 </FormField>
               )}
 
