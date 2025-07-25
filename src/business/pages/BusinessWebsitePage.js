@@ -17,7 +17,7 @@ import {
   FaTimes,
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
-import { getBusinessTemplate } from '../data/businessTemplates';
+import { getBusinessTemplate } from '../../DummyData';
 
 const PageContainer = styled.div`
   min-height: 100vh;
