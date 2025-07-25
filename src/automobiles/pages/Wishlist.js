@@ -7,8 +7,10 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import VehicleCard from '../components/VehicleCard';
 import BackToTop from '../../ecommerce/components/BackToTop';
-import { getVehicleById } from '../data/vehicles';
-import { getVendorByIdOrSlug } from '../data/vendors';
+import {
+  getVehicleById,
+  getAutomobileVendorByIdOrSlug as getVendorByIdOrSlug,
+} from '../../DummyData';
 
 const PageContainer = styled.div`
   min-height: 100vh;
