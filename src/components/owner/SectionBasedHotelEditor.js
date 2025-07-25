@@ -92,7 +92,9 @@ const SectionsGrid = styled.div`
   gap: ${theme.spacing.xl};
 `;
 
-const SectionCard = styled.div`
+const SectionCard = styled.div.withConfig({
+  shouldForwardProp: prop => prop !== 'isVisible',
+})`
   background: ${theme.colors.white};
   border-radius: ${theme.borderRadius.lg};
   padding: ${theme.spacing.xl};
@@ -100,12 +102,47 @@ const SectionCard = styled.div`
   cursor: pointer;
   transition: all 0.3s ease;
   border: 2px solid transparent;
+  opacity: ${props => props.isVisible ? 1 : 0.6};
 
   &:hover {
     transform: translateY(-4px);
     box-shadow: ${theme.shadows.xl};
     border-color: ${theme.colors.primary};
   }
+`;
+
+const SectionHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: ${theme.spacing.md};
+`;
+
+const ToggleSwitch = styled.div`
+  position: relative;
+  width: 44px;
+  height: 24px;
+  background: ${props => props.active ? theme.colors.primary : theme.colors.gray300};
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: white;
+    top: 2px;
+    left: ${props => props.active ? '22px' : '2px'};
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  }
+`;
+
+const SectionInfo = styled.div`
+  flex: 1;
 `;
 
 const SectionIcon = styled.div`
