@@ -80,6 +80,8 @@ const ProfileSettingsPageContent = () => {
   });
 
   const [isUpdating, setIsUpdating] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleteConfirmation, setDeleteConfirmation] = useState('');
 
   const handleProfileChange = e => {
     setProfileData({
