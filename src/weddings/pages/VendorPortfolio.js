@@ -14,7 +14,8 @@ import {
   FaHeart,
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
-import { getVendorById } from '../data/vendors';
+import { useGetWeddingServiceByIdQuery } from '../../store/api/weddingApi';
+import { FaSpinner } from 'react-icons/fa';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -456,8 +457,16 @@ const VendorPortfolio = () => {
   const pathSegments = currentPath.split('/').filter(Boolean);
   const vendorId = vendorSlug || pathSegments[0];
 
-  const [vendor, setVendor] = useState(null);
-  const [loading, setLoading] = useState(true);
+
+  // RTK Query hook for fetching wedding service details
+  const {
+    data: vendorData,
+    error,
+    isLoading,
+    refetch
+  } = useGetWeddingServiceByIdQuery(vendorId);
+
+  const vendor = vendorData?.data;
   const [selectedPortfolio, setSelectedPortfolio] = useState(null);
   const [imageViewer, setImageViewer] = useState({
     open: false,
@@ -465,11 +474,6 @@ const VendorPortfolio = () => {
     currentIndex: 0,
   });
 
-  useEffect(() => {
-    const vendorData = getVendorById(vendorId);
-    setVendor(vendorData);
-    setLoading(false);
-  }, [vendorId]);
 
   const openPortfolioModal = portfolio => {
     setSelectedPortfolio(portfolio);
@@ -522,10 +526,38 @@ const VendorPortfolio = () => {
     return () => document.removeEventListener('keydown', handleKeyPress);
   }, [handleKeyPress, imageViewer.open, selectedPortfolio]);
 
-  if (loading) {
+  if (isLoading) {
     return (
       <PageContainer>
-        <LoadingState>Loading portfolio...</LoadingState>
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh" }}>
+          <FaSpinner size={24} style={{ animation: "spin 1s linear infinite", marginRight: "10px" }} />
+          Loading portfolio...
+        </div>
+      </PageContainer>
+    );
+  }
+
+  if (error) {
+    return (
+      <PageContainer>
+        <div style={{ textAlign: "center", padding: "40px", color: theme.colors.error }}>
+          <h3>Failed to load portfolio</h3>
+          <p>We're having trouble loading this vendor's portfolio. Please try again.</p>
+          <button
+            onClick={() => refetch()}
+            style={{
+              background: theme.colors.primary,
+              color: "white",
+              border: "none",
+              padding: "10px 20px",
+              borderRadius: "5px",
+              cursor: "pointer",
+              marginTop: "10px",
+            }}
+          >
+            Retry
+          </button>
+        </div>
       </PageContainer>
     );
   }
