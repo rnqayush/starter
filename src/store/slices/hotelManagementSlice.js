@@ -8,6 +8,14 @@ const initialState = {
   changes: {},
   hasUnsavedChanges: false,
   activeHotelId: null,
+  sectionVisibility: {
+    hero: true,
+    about: true,
+    features: true,
+    gallery: true,
+    amenities: true,
+    contact: true,
+  },
 };
 
 const hotelManagementSlice = createSlice({
@@ -171,6 +179,98 @@ const hotelManagementSlice = createSlice({
       state.changes = {};
       state.hasUnsavedChanges = false;
       state.activeHotelId = null;
+    },
+
+    toggleSectionVisibility: (state, action) => {
+      const { section } = action.payload;
+      state.sectionVisibility[section] = !state.sectionVisibility[section];
+      state.hasUnsavedChanges = true;
+    },
+
+    updateFeatures: (state, action) => {
+      if (state.editingHotel) {
+        state.editingHotel.features = action.payload;
+        state.changes.features = {
+          old: state.originalHotel.features || [],
+          new: action.payload
+        };
+        state.hasUnsavedChanges = true;
+      }
+    },
+
+    addFeature: (state, action) => {
+      if (state.editingHotel) {
+        const newFeatures = [...(state.editingHotel.features || []), action.payload];
+        state.editingHotel.features = newFeatures;
+        state.changes.features = {
+          old: state.originalHotel.features || [],
+          new: newFeatures
+        };
+        state.hasUnsavedChanges = true;
+      }
+    },
+
+    removeFeature: (state, action) => {
+      if (state.editingHotel) {
+        const newFeatures = state.editingHotel.features.filter((_, index) => index !== action.payload);
+        state.editingHotel.features = newFeatures;
+        state.changes.features = {
+          old: state.originalHotel.features || [],
+          new: newFeatures
+        };
+        state.hasUnsavedChanges = true;
+      }
+    },
+
+    updateAmenityCategories: (state, action) => {
+      if (state.editingHotel) {
+        state.editingHotel.amenityCategories = action.payload;
+        state.changes.amenityCategories = {
+          old: state.originalHotel.amenityCategories || [],
+          new: action.payload
+        };
+        state.hasUnsavedChanges = true;
+      }
+    },
+
+    addAmenityCategory: (state, action) => {
+      if (state.editingHotel) {
+        const newCategories = [...(state.editingHotel.amenityCategories || []), action.payload];
+        state.editingHotel.amenityCategories = newCategories;
+        state.changes.amenityCategories = {
+          old: state.originalHotel.amenityCategories || [],
+          new: newCategories
+        };
+        state.hasUnsavedChanges = true;
+      }
+    },
+
+    addAmenityToCategory: (state, action) => {
+      const { categoryIndex, amenity } = action.payload;
+      if (state.editingHotel && state.editingHotel.amenityCategories) {
+        const newCategories = [...state.editingHotel.amenityCategories];
+        newCategories[categoryIndex].items.push(amenity);
+        state.editingHotel.amenityCategories = newCategories;
+        state.changes.amenityCategories = {
+          old: state.originalHotel.amenityCategories || [],
+          new: newCategories
+        };
+        state.hasUnsavedChanges = true;
+      }
+    },
+
+    removeAmenityFromCategory: (state, action) => {
+      const { categoryIndex, amenityIndex } = action.payload;
+      if (state.editingHotel && state.editingHotel.amenityCategories) {
+        const newCategories = [...state.editingHotel.amenityCategories];
+        newCategories[categoryIndex].items.splice(amenityIndex, 1);
+        state.editingHotel.amenityCategories = newCategories;
+        state.changes.amenityCategories = {
+          old: state.originalHotel.amenityCategories || [],
+          new: newCategories
+        };
+        state.hasUnsavedChanges = true;
+      }
     },
   },
 });
