@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import {
   FaMapMarkerAlt,
@@ -805,11 +806,35 @@ const HotelDetail = () => {
   const [hotel, setHotel] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // Get hotels from Redux store (includes any admin updates)
+  const hotelsFromStore = useSelector(state => state.hotelManagement?.hotels);
+
   useEffect(() => {
-    const foundHotel = getHotelByIdOrSlug(slugParam);
+    let foundHotel;
+
+    // Try to get hotel from Redux store first (for updated data)
+    if (hotelsFromStore && hotelsFromStore.length > 0) {
+      foundHotel = hotelsFromStore.find(h => h.slug === slugParam || h.id === parseInt(slugParam));
+    }
+
+    // Fallback to original data if not found in store
+    if (!foundHotel) {
+      foundHotel = getHotelByIdOrSlug(slugParam);
+    }
+
     setHotel(foundHotel);
     setLoading(false);
-  }, [slugParam]);
+  }, [slugParam, hotelsFromStore]);
+
+  // Re-render when Redux store updates (for live preview)
+  useEffect(() => {
+    if (hotelsFromStore && hotel) {
+      const updatedHotel = hotelsFromStore.find(h => h.id === hotel.id);
+      if (updatedHotel && JSON.stringify(updatedHotel) !== JSON.stringify(hotel)) {
+        setHotel(updatedHotel);
+      }
+    }
+  }, [hotelsFromStore, hotel]);
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -840,7 +865,8 @@ const HotelDetail = () => {
     );
   }
 
-  const features = [
+  // Use dynamic features from hotel data or fallback to defaults
+  const features = hotel.features || [
     {
       icon: FaConciergeBell,
       title: '24/7 Concierge',
@@ -866,7 +892,8 @@ const HotelDetail = () => {
     },
   ];
 
-  const amenityCategories = [
+  // Use dynamic amenity categories from hotel data or fallback to defaults
+  const amenityCategories = hotel.amenityCategories || [
     {
       title: 'Recreation',
       icon: FaSwimmingPool,
@@ -913,6 +940,17 @@ const HotelDetail = () => {
     },
   ];
 
+  // Get the appropriate icon for categories (fallback icons)
+  const getCategoryIcon = (title) => {
+    const iconMap = {
+      'Recreation': FaSwimmingPool,
+      'Dining': FaUtensils,
+      'Business': FaBusinessTime,
+      'Services': FaConciergeBell,
+    };
+    return iconMap[title] || FaConciergeBell;
+  };
+
   return (
     <PageContainer>
       <HotelNavbar />
@@ -951,119 +989,211 @@ const HotelDetail = () => {
         </HeroContent>
       </HeroBanner>
 
-      <ContentSection>
-        <Container>
-          <SectionHeader>
-            <SectionTitle>About {hotel.name}</SectionTitle>
-            <SectionSubtitle>
-              Learn more about our heritage, mission, and commitment to
-              excellence
-            </SectionSubtitle>
-          </SectionHeader>
-          <Description
-            style={{
-              fontSize: '1.1rem',
-              lineHeight: '1.8',
-              textAlign: 'center',
-              maxWidth: '800px',
-              margin: '0 auto',
-            }}
-          >
-            {hotel.name} stands as a beacon of luxury and elegance in the heart
-            of {hotel.city}. With our rich heritage of hospitality excellence
-            spanning decades, we have been creating unforgettable experiences
-            for discerning travelers from around the world. Our commitment to
-            impeccable service, combined with our stunning architecture and
-            world-class amenities, makes us the preferred choice for those
-            seeking the finest in luxury accommodation.
-          </Description>
-        </Container>
-      </ContentSection>
+      {/* Render sections in custom order - only if visible */}
+      {(hotel.sectionOrder || ['about', 'features', 'gallery', 'amenities', 'contact'])
+        .filter(sectionId => {
+          // Check if section is visible (from Redux state or default to true)
+          const sectionVisibility = hotel.sectionVisibility || {
+            hero: true,
+            about: true,
+            features: true,
+            gallery: true,
+            amenities: true,
+            contact: true,
+          };
+          return sectionVisibility[sectionId] !== false;
+        })
+        .map((sectionId, index) => {
+        const isAlt = index % 2 === 1; // Alternate background colors
 
-      <ContentSection className="alt">
-        <Container>
-          <SectionHeader>
-            <SectionTitle>Why Choose {hotel.name}?</SectionTitle>
-            <SectionSubtitle>
-              Discover the perfect blend of luxury, comfort, and exceptional
-              service
-            </SectionSubtitle>
-          </SectionHeader>
-          <FeaturesGrid>
-            {features.map((feature, index) => (
-              <FeatureCard key={index}>
-                <FeatureIcon>
-                  <feature.icon />
-                </FeatureIcon>
-                <FeatureTitle>{feature.title}</FeatureTitle>
-                <FeatureDescription>{feature.description}</FeatureDescription>
-              </FeatureCard>
-            ))}
-          </FeaturesGrid>
-        </Container>
-      </ContentSection>
+        switch (sectionId) {
+          case 'about':
+            return (
+              <ContentSection key={sectionId} className={isAlt ? 'alt' : ''}>
+                <Container>
+                  <SectionHeader>
+                    <SectionTitle>About {hotel.name}</SectionTitle>
+                    <SectionSubtitle>
+                      Learn more about our heritage, mission, and commitment to excellence
+                    </SectionSubtitle>
+                  </SectionHeader>
+                  <Description
+                    style={{
+                      fontSize: '1.1rem',
+                      lineHeight: '1.8',
+                      textAlign: 'center',
+                      maxWidth: '800px',
+                      margin: '0 auto',
+                    }}
+                  >
+                    {hotel.description || `${hotel.name} stands as a beacon of luxury and elegance in the heart of ${hotel.city}. With our rich heritage of hospitality excellence spanning decades, we have been creating unforgettable experiences for discerning travelers from around the world.`}
+                  </Description>
+                </Container>
+              </ContentSection>
+            );
 
-      <ContentSection>
-        <Container>
-          <SectionHeader>
-            <SectionTitle>Hotel Gallery</SectionTitle>
-            <SectionSubtitle>
-              Take a virtual tour of our stunning property and amenities
-            </SectionSubtitle>
-          </SectionHeader>
-          <GallerySection>
-            <GalleryGrid>
-              <GalleryItem image={hotel.images[0]}>
-                <GalleryOverlay>Hotel Exterior</GalleryOverlay>
-              </GalleryItem>
-              <GalleryItem image={hotel.images[1]}>
-                <GalleryOverlay>Luxury Rooms</GalleryOverlay>
-              </GalleryItem>
-              <GalleryItem image={hotel.images[2]}>
-                <GalleryOverlay>Dining Experience</GalleryOverlay>
-              </GalleryItem>
-              <GalleryItem image="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3">
-                <GalleryOverlay>Swimming Pool</GalleryOverlay>
-              </GalleryItem>
-              <GalleryItem image="https://images.unsplash.com/photo-1578645510447-e20b4311e3ce?ixlib=rb-4.0.3">
-                <GalleryOverlay>Spa & Wellness</GalleryOverlay>
-              </GalleryItem>
-            </GalleryGrid>
-          </GallerySection>
-        </Container>
-      </ContentSection>
-
-      <ContentSection className="alt">
-        <Container>
-          <SectionHeader>
-            <SectionTitle>World-Class Amenities</SectionTitle>
-            <SectionSubtitle>
-              Everything you need for a perfect stay, all under one roof
-            </SectionSubtitle>
-          </SectionHeader>
-          <AmenitiesSection>
-            <AmenitiesGrid>
-              {amenityCategories.map((category, index) => (
-                <AmenityCategory key={index}>
-                  <h4>
-                    <category.icon />
-                    {category.title}
-                  </h4>
-                  <AmenityList>
-                    {category.items.map((item, itemIndex) => (
-                      <AmenityItem key={itemIndex}>
-                        <FaCheckCircle className="icon" />
-                        {item}
-                      </AmenityItem>
+          case 'features':
+            return (
+              <ContentSection key={sectionId} className={isAlt ? 'alt' : ''}>
+                <Container>
+                  <SectionHeader>
+                    <SectionTitle>Why Choose {hotel.name}?</SectionTitle>
+                    <SectionSubtitle>
+                      Discover the perfect blend of luxury, comfort, and exceptional service
+                    </SectionSubtitle>
+                  </SectionHeader>
+                  <FeaturesGrid>
+                    {features.map((feature, index) => (
+                      <FeatureCard key={index}>
+                        <FeatureIcon>
+                          {feature.icon ? <feature.icon /> : <FaConciergeBell />}
+                        </FeatureIcon>
+                        <FeatureTitle>{feature.title}</FeatureTitle>
+                        <FeatureDescription>{feature.description}</FeatureDescription>
+                      </FeatureCard>
                     ))}
-                  </AmenityList>
-                </AmenityCategory>
-              ))}
-            </AmenitiesGrid>
-          </AmenitiesSection>
-        </Container>
-      </ContentSection>
+                  </FeaturesGrid>
+                </Container>
+              </ContentSection>
+            );
 
+          case 'gallery':
+            return (
+              <ContentSection key={sectionId} className={isAlt ? 'alt' : ''}>
+                <Container>
+                  <SectionHeader>
+                    <SectionTitle>Hotel Gallery</SectionTitle>
+                    <SectionSubtitle>
+                      Take a virtual tour of our stunning property and amenities
+                    </SectionSubtitle>
+                  </SectionHeader>
+                  <GallerySection>
+                    <GalleryGrid>
+                      {(hotel.gallery || [
+                        { title: 'Hotel Exterior', image: hotel.images?.[0] },
+                        { title: 'Luxury Rooms', image: hotel.images?.[1] },
+                        { title: 'Dining Experience', image: hotel.images?.[2] },
+                        { title: 'Swimming Pool', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3' },
+                        { title: 'Spa & Wellness', image: 'https://images.unsplash.com/photo-1578645510447-e20b4311e3ce?ixlib=rb-4.0.3' },
+                      ]).slice(0, 5).map((item, index) => (
+                        <GalleryItem key={index} image={item.image}>
+                          <GalleryOverlay>{item.title}</GalleryOverlay>
+                        </GalleryItem>
+                      ))}
+                    </GalleryGrid>
+                  </GallerySection>
+                </Container>
+              </ContentSection>
+            );
+
+          case 'amenities':
+            return (
+              <ContentSection key={sectionId} className={isAlt ? 'alt' : ''}>
+                <Container>
+                  <SectionHeader>
+                    <SectionTitle>World-Class Amenities</SectionTitle>
+                    <SectionSubtitle>
+                      Everything you need for a perfect stay, all under one roof
+                    </SectionSubtitle>
+                  </SectionHeader>
+                  <AmenitiesSection>
+                    <AmenitiesGrid>
+                      {amenityCategories.map((category, index) => {
+                        const CategoryIcon = category.icon || getCategoryIcon(category.title);
+                        return (
+                          <AmenityCategory key={index}>
+                            <h4>
+                              <CategoryIcon />
+                              {category.title}
+                            </h4>
+                            <AmenityList>
+                              {category.items.map((item, itemIndex) => (
+                                <AmenityItem key={itemIndex}>
+                                  <FaCheckCircle className="icon" />
+                                  {item}
+                                </AmenityItem>
+                              ))}
+                            </AmenityList>
+                          </AmenityCategory>
+                        );
+                      })}
+                    </AmenitiesGrid>
+                  </AmenitiesSection>
+                </Container>
+              </ContentSection>
+            );
+
+          case 'contact':
+            return (
+              <ContentSection key={sectionId} className={isAlt ? 'alt' : ''}>
+                <Container>
+                  <SectionHeader>
+                    <SectionTitle>Location & Contact</SectionTitle>
+                    <SectionSubtitle>
+                      Perfectly situated in the heart of {hotel.city}
+                    </SectionSubtitle>
+                  </SectionHeader>
+                  <LocationSection>
+                    <LocationGrid>
+                      <ContactInfo>
+                        <h4>Get in Touch</h4>
+                        {(hotel.contactFields || [
+                          { label: 'Address', value: hotel.address },
+                          { label: 'Phone', value: hotel.phone || '+91 22 6601 1825' },
+                          { label: 'Email', value: hotel.email || `reservations@${hotel.slug}.com` },
+                          { label: 'Check-in / Check-out', value: `${hotel.checkInTime} / ${hotel.checkOutTime}` },
+                        ]).map((field, index) => {
+                          const getIcon = (label) => {
+                            const iconMap = {
+                              'Address': FaMapMarkerAlt,
+                              'Phone': FaPhone,
+                              'Email': FaEnvelope,
+                              'Check-in / Check-out': FaClock,
+                            };
+                            return iconMap[label] || FaMapMarkerAlt;
+                          };
+                          const IconComponent = getIcon(field.label);
+
+                          return (
+                            <ContactItem key={index}>
+                              <IconComponent className="icon" />
+                              <div className="content">
+                                <div className="label">{field.label}</div>
+                                <div className="value">{field.value}</div>
+                              </div>
+                            </ContactItem>
+                          );
+                        })}
+                      </ContactInfo>
+                      <MapPlaceholder>
+                        <div>
+                          <FaMapMarkerAlt
+                            style={{ fontSize: '2rem', marginBottom: '1rem' }}
+                          />
+                          <div>Interactive Map View</div>
+                          <div
+                            style={{
+                              fontSize: '0.9rem',
+                              opacity: 0.7,
+                              marginTop: '0.5rem',
+                            }}
+                          >
+                            Prime location in {hotel.city}
+                          </div>
+                        </div>
+                      </MapPlaceholder>
+                    </LocationGrid>
+                  </LocationSection>
+                </Container>
+              </ContentSection>
+            );
+
+          default:
+            return null;
+        }
+      })}
+
+      {/* Always show testimonials section */}
       <ContentSection>
         <Container>
           <TestimonialsSection>
@@ -1093,71 +1223,6 @@ const HotelDetail = () => {
               </TestimonialAuthor>
             </TestimonialCard>
           </TestimonialsSection>
-        </Container>
-      </ContentSection>
-
-      <ContentSection className="alt">
-        <Container>
-          <SectionHeader>
-            <SectionTitle>Location & Contact</SectionTitle>
-            <SectionSubtitle>
-              Perfectly situated in the heart of {hotel.city}
-            </SectionSubtitle>
-          </SectionHeader>
-          <LocationSection>
-            <LocationGrid>
-              <ContactInfo>
-                <h4>Get in Touch</h4>
-                <ContactItem>
-                  <FaMapMarkerAlt className="icon" />
-                  <div className="content">
-                    <div className="label">Address</div>
-                    <div className="value">{hotel.address}</div>
-                  </div>
-                </ContactItem>
-                <ContactItem>
-                  <FaPhone className="icon" />
-                  <div className="content">
-                    <div className="label">Phone</div>
-                    <div className="value">+91 22 6601 1825</div>
-                  </div>
-                </ContactItem>
-                <ContactItem>
-                  <FaEnvelope className="icon" />
-                  <div className="content">
-                    <div className="label">Email</div>
-                    <div className="value">reservations@{hotel.slug}.com</div>
-                  </div>
-                </ContactItem>
-                <ContactItem>
-                  <FaClock className="icon" />
-                  <div className="content">
-                    <div className="label">Check-in / Check-out</div>
-                    <div className="value">
-                      {hotel.checkInTime} / {hotel.checkOutTime}
-                    </div>
-                  </div>
-                </ContactItem>
-              </ContactInfo>
-              <MapPlaceholder>
-                <div>
-                  <FaMapMarkerAlt
-                    style={{ fontSize: '2rem', marginBottom: '1rem' }}
-                  />
-                  <div>Interactive Map View</div>
-                  <div
-                    style={{
-                      fontSize: '0.9rem',
-                      opacity: 0.7,
-                      marginTop: '0.5rem',
-                    }}
-                  >
-                    Prime location in {hotel.city}
-                  </div>
-                </div>
-              </MapPlaceholder>
-            </LocationGrid>
-          </LocationSection>
         </Container>
       </ContentSection>
 

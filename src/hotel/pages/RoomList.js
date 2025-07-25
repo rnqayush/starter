@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import {
   FaArrowLeft,
@@ -491,6 +492,9 @@ const RoomList = () => {
   const navigate = useNavigate();
   const [hotel, setHotel] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  // Get updated hotel data from Redux if available
+  const { hotels } = useSelector(state => state.hotelManagement);
   const [searchParams, setSearchParams] = useState({
     checkIn: '',
     checkOut: '',
@@ -500,10 +504,20 @@ const RoomList = () => {
   const [filterBy, setFilterBy] = useState('all');
 
   useEffect(() => {
-    const foundHotel = getHotelByIdOrSlug(slug);
-    setHotel(foundHotel);
+    // First check if we have updated hotel data in Redux state
+    const updatedHotel = hotels.find(h => h.slug === slug);
+
+    if (updatedHotel) {
+      // Use updated hotel data from Redux (includes admin changes)
+      setHotel(updatedHotel);
+    } else {
+      // Fallback to original dummy data
+      const foundHotel = getHotelByIdOrSlug(slug);
+      setHotel(foundHotel);
+    }
+
     setLoading(false);
-  }, [slug]);
+  }, [slug, hotels]);
 
   const handleSearchChange = e => {
     const { name, value } = e.target;

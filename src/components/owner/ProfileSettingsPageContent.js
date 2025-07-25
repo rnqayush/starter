@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { FaUser, FaLock, FaSave, FaSignOutAlt } from 'react-icons/fa';
+import { FaUser, FaLock, FaSave, FaSignOutAlt, FaTrashAlt, FaExclamationTriangle } from 'react-icons/fa';
 import { Card, CardContent } from '../shared/Card';
 import { Button } from '../shared/Button';
 import { Input, FormGroup, Label, InputGroup } from '../shared/Input';
@@ -60,6 +60,70 @@ const LogoutText = styled.p`
   margin-bottom: ${theme.spacing.lg};
 `;
 
+const DeleteModal = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+`;
+
+const ModalContent = styled.div`
+  background: ${theme.colors.white};
+  border-radius: ${theme.borderRadius.lg};
+  padding: ${theme.spacing.xl};
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+`;
+
+const ModalIcon = styled.div`
+  color: ${theme.colors.error};
+  font-size: 3rem;
+  margin-bottom: ${theme.spacing.lg};
+`;
+
+const ModalTitle = styled.h2`
+  color: ${theme.colors.error};
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: ${theme.spacing.md};
+`;
+
+const ModalText = styled.p`
+  color: ${theme.colors.gray700};
+  line-height: 1.6;
+  margin-bottom: ${theme.spacing.xl};
+`;
+
+const ModalActions = styled.div`
+  display: flex;
+  gap: ${theme.spacing.md};
+  justify-content: center;
+`;
+
+const ConfirmationInput = styled.input`
+  width: 100%;
+  padding: ${theme.spacing.md};
+  border: 2px solid ${theme.colors.error};
+  border-radius: ${theme.borderRadius.md};
+  margin: ${theme.spacing.lg} 0;
+  font-size: 1rem;
+  text-align: center;
+
+  &:focus {
+    outline: none;
+    border-color: ${theme.colors.errorDark};
+  }
+`;
+
+
+
 const ProfileSettingsPageContent = () => {
   const navigate = useNavigate();
   const { user, setUser, setUserType } = useAppContext();
@@ -78,6 +142,8 @@ const ProfileSettingsPageContent = () => {
   });
 
   const [isUpdating, setIsUpdating] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleteConfirmation, setDeleteConfirmation] = useState('');
 
   const handleProfileChange = e => {
     setProfileData({
@@ -143,6 +209,28 @@ const ProfileSettingsPageContent = () => {
     } finally {
       setIsUpdating(false);
     }
+  };
+
+
+
+  const handleDeleteAccount = () => {
+    setShowDeleteModal(true);
+  };
+
+  const confirmDeleteAccount = () => {
+    if (deleteConfirmation.toLowerCase() === 'delete account') {
+      alert('Account deleted successfully. You will be redirected to the homepage.');
+      setUser(null);
+      setUserType(null);
+      navigate('/');
+    } else {
+      alert('Please type "DELETE ACCOUNT" exactly to confirm deletion.');
+    }
+  };
+
+  const cancelDeleteAccount = () => {
+    setShowDeleteModal(false);
+    setDeleteConfirmation('');
   };
 
   const handleLogout = () => {
@@ -285,14 +373,67 @@ const ProfileSettingsPageContent = () => {
                 Ready to sign out? Click the button below to logout from your
                 account.
               </LogoutText>
-              <Button variant="danger" onClick={handleLogout} size="large">
-                <FaSignOutAlt />
-                Logout
-              </Button>
+              <div style={{ display: 'flex', gap: theme.spacing.md, justifyContent: 'center' }}>
+                <Button variant="danger" onClick={handleLogout} size="large">
+                  <FaSignOutAlt />
+                  Logout
+                </Button>
+                <Button variant="error" onClick={handleDeleteAccount} size="large">
+                  <FaTrashAlt />
+                  Delete Account
+                </Button>
+              </div>
             </LogoutSection>
           </CardContent>
         </Card>
       </SettingsGrid>
+
+      {/* Delete Account Confirmation Modal */}
+      {showDeleteModal && (
+        <DeleteModal onClick={cancelDeleteAccount}>
+          <ModalContent onClick={(e) => e.stopPropagation()}>
+            <ModalIcon>
+              <FaExclamationTriangle />
+            </ModalIcon>
+            <ModalTitle>Delete Account</ModalTitle>
+            <ModalText>
+              <strong>This action cannot be undone!</strong>
+              <br /><br />
+              Deleting your account will permanently remove:
+              <br />
+              • All your hotel data and information
+              <br />
+              • All room listings and details
+              <br />
+              • All booking history
+              <br />
+              • Your personal profile and settings
+              <br /><br />
+              To confirm deletion, please type <strong>"DELETE ACCOUNT"</strong> below:
+            </ModalText>
+            <ConfirmationInput
+              type="text"
+              value={deleteConfirmation}
+              onChange={(e) => setDeleteConfirmation(e.target.value)}
+              placeholder="Type DELETE ACCOUNT to confirm"
+            />
+            <ModalActions>
+              <Button variant="outline" onClick={cancelDeleteAccount} size="large">
+                Cancel
+              </Button>
+              <Button
+                variant="error"
+                onClick={confirmDeleteAccount}
+                size="large"
+                disabled={deleteConfirmation.toLowerCase() !== 'delete account'}
+              >
+                <FaTrashAlt />
+                Delete Account
+              </Button>
+            </ModalActions>
+          </ModalContent>
+        </DeleteModal>
+      )}
     </>
   );
 };

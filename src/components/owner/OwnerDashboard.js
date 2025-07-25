@@ -9,10 +9,12 @@ import {
   FaEdit,
 } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import Sidebar from './Sidebar';
+import EnhancedSidebar from './EnhancedSidebar';
 import AddHotelPageContent from './AddHotelPageContent';
-import MyHotelsPageContent from './MyHotelsPageContent';
+import SectionBasedHotelEditor from './SectionBasedHotelEditor';
 import AddRoomPageContent from './AddRoomPageContent';
+import AddRoomManager from './AddRoomManager';
+import AllRoomsManager from './AllRoomsManager';
 import BookingsReceivedPageContent from './BookingsReceivedPageContent';
 import ProfileSettingsPageContent from './ProfileSettingsPageContent';
 import { Card, CardContent, Badge } from '../shared/Card';
@@ -439,9 +441,9 @@ const OwnerDashboard = () => {
       action: () => setActiveSection('add-hotel'),
     },
     {
-      title: 'Manage Hotel Content',
+      title: 'Edit Hotel Details',
       description:
-        'Edit hotel information, gallery, amenities and website content',
+        'Edit your hotel page content exactly as it appears to customers',
       icon: FaEdit,
       action: () => setActiveSection('my-hotels'),
     },
@@ -491,15 +493,15 @@ const OwnerDashboard = () => {
         );
       case 'my-hotels':
         return (
-          <PageContent>
-            <MyHotelsPageContent setActiveSection={setActiveSection} />
-          </PageContent>
+          <SectionBasedHotelEditor setActiveSection={setActiveSection} />
         );
       case 'add-room':
         return (
-          <PageContent>
-            <AddRoomPageContent setActiveSection={setActiveSection} />
-          </PageContent>
+          <AddRoomManager setActiveSection={setActiveSection} />
+        );
+      case 'all-rooms':
+        return (
+          <AllRoomsManager setActiveSection={setActiveSection} />
         );
       case 'bookings':
         return (
@@ -683,7 +685,7 @@ const OwnerDashboard = () => {
 
   return (
     <DashboardContainer>
-      <Sidebar
+      <EnhancedSidebar
         activeSection={activeSection}
         setActiveSection={setActiveSection}
       />

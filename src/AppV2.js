@@ -27,7 +27,6 @@ import AddRoomPage from './components/owner/AddRoomPage';
 import BookingsReceivedPage from './components/owner/BookingsReceivedPage';
 import ProfileSettingsPage from './components/owner/ProfileSettingsPage';
 import ContentManagerSelector from './components/owner/ContentManagerSelector';
-import HotelContentManager from './components/owner/HotelContentManager';
 
 // Mock data
 import {
@@ -186,10 +185,7 @@ function App() {
                   path="/owner/content-manager"
                   element={<ContentManagerSelector />}
                 />
-                <Route
-                  path="/owner/content-manager/:hotelId"
-                  element={<HotelContentManager />}
-                />
+
                 <Route path="/owner/dashboard" element={<HotelModule />} />
 
                 {/* Unified Slug-based Routes - All demo websites */}
