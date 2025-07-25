@@ -9,7 +9,7 @@ import {
   FaEdit,
 } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import Sidebar from './Sidebar';
+import EnhancedSidebar from './EnhancedSidebar';
 import AddHotelPageContent from './AddHotelPageContent';
 import HotelContentManager from './HotelContentManager';
 import AddRoomPageContent from './AddRoomPageContent';
@@ -683,7 +683,7 @@ const OwnerDashboard = () => {
 
   return (
     <DashboardContainer>
-      <Sidebar
+      <EnhancedSidebar
         activeSection={activeSection}
         setActiveSection={setActiveSection}
       />
