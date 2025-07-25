@@ -904,6 +904,8 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
       const newOrder = [...sectionOrder];
       [newOrder[index], newOrder[index - 1]] = [newOrder[index - 1], newOrder[index]];
       setSectionOrder(newOrder);
+      // Mark as unsaved change
+      dispatch(updateHotelField({ field: 'sectionOrder', value: newOrder }));
     }
   };
 
@@ -912,6 +914,8 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
       const newOrder = [...sectionOrder];
       [newOrder[index], newOrder[index + 1]] = [newOrder[index + 1], newOrder[index]];
       setSectionOrder(newOrder);
+      // Mark as unsaved change
+      dispatch(updateHotelField({ field: 'sectionOrder', value: newOrder }));
     }
   };
 
