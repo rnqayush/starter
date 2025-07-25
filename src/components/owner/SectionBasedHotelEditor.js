@@ -543,14 +543,20 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
     // Update the hotel data based on the active modal
     Object.keys(tempData).forEach(key => {
       if (tempData[key] !== undefined) {
-        dispatch(updateHotelField({ field: key, value: tempData[key] }));
+        if (key === 'features') {
+          dispatch(updateFeatures(tempData[key]));
+        } else if (key === 'amenityCategories') {
+          dispatch(updateAmenityCategories(tempData[key]));
+        } else {
+          dispatch(updateHotelField({ field: key, value: tempData[key] }));
+        }
       }
     });
 
-    // Save changes to store
+    // Save changes to store - this will update the live hotel data
     dispatch(saveChanges());
     closeModal();
-    alert('Section updated successfully!');
+    alert('Section updated successfully! Changes are now live.');
   };
 
   const updateTempData = (field, value) => {
