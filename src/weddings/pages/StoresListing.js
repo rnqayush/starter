@@ -10,7 +10,8 @@ import {
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
 import StoreCard from '../../components/shared/StoreCard';
-import { weddingVendors } from '../data/vendors';
+import { useGetWeddingServicesQuery } from '../../store/api/weddingApi';
+import { FaSpinner } from 'react-icons/fa';
 import {
   getCurrentLocation,
   getLocationFromZip,
@@ -339,14 +340,24 @@ const EmptyState = styled.div`
 
 const WeddingStoresListing = () => {
   const navigate = useNavigate();
+
+  // RTK Query hook for fetching wedding services
+  const {
+    data: weddingServicesData,
+    error,
+    isLoading: servicesLoading,
+    refetch
+  } = useGetWeddingServicesQuery();
+
+  const weddingVendors = weddingServicesData?.data || [];
   const [stores, setStores] = useState([]);
   const [filteredStores, setFilteredStores] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [geoLocationLoading, setGeoLocationLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentLocation, setCurrentLocation] = useState(null);
   const [activeFilter, setActiveFilter] = useState('all');
   const [sortBy, setSortBy] = useState('distance');
-  const [locationLoading, setLocationLoading] = useState(false);
+  const [geoLocationLoading, setGeoLocationLoading] = useState(false);
 
   const loadStoresForLocation = useCallback(location => {
     const vendorsWithDistance = updateVendorsWithDistance(
@@ -355,11 +366,11 @@ const WeddingStoresListing = () => {
     );
     setStores(vendorsWithDistance);
     setFilteredStores(vendorsWithDistance);
-    setLoading(false);
+    setGeoLocationLoading(false);
   }, []);
 
   const initializeLocation = useCallback(async () => {
-    setLoading(true);
+    setGeoLocationLoading(true);
     try {
       const location = await getCurrentLocation();
       setCurrentLocation(location);
@@ -376,7 +387,7 @@ const WeddingStoresListing = () => {
     e.preventDefault();
     if (!searchTerm.trim()) return;
 
-    setLocationLoading(true);
+    setGeoLocationLoading(true);
     try {
       let newLocation;
 
@@ -392,12 +403,12 @@ const WeddingStoresListing = () => {
     } catch (error) {
       alert('Location not found. Please try a different city or ZIP code.');
     } finally {
-      setLocationLoading(false);
+      setGeoLocationLoading(false);
     }
   };
 
   const handleUseCurrentLocation = async () => {
-    setLocationLoading(true);
+    setGeoLocationLoading(true);
     try {
       const location = await getCurrentLocation();
       setCurrentLocation(location);
@@ -407,7 +418,7 @@ const WeddingStoresListing = () => {
         'Unable to get your current location. Please check your browser settings.'
       );
     } finally {
-      setLocationLoading(false);
+      setGeoLocationLoading(false);
     }
   };
 
@@ -443,7 +454,9 @@ const WeddingStoresListing = () => {
     applyFilters();
   }, [applyFilters]);
 
-  if (loading) {
+  const isLoading = servicesLoading || geoLocationLoading;
+
+  if (isLoading) {
     return (
       <PageContainer>
         <NavHeader>
@@ -451,17 +464,56 @@ const WeddingStoresListing = () => {
             <Logo>
               <FaRing /> Wedding Vendors
             </Logo>
-            <BackButton onClick={() => navigate('/')}>
+            <BackButton onClick={() => navigate("/")}>
               <FaHome />
               Back to Home
             </BackButton>
           </NavContent>
         </NavHeader>
         <LoadingState>
-          <div className="spinner">💍</div>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "20px" }}>
+            <FaSpinner size={24} style={{ animation: "spin 1s linear infinite", marginRight: "10px" }} />
+            <span>💍</span>
+          </div>
           <h3>Finding wedding vendors near you...</h3>
           <p>Please wait while we locate nearby wedding services.</p>
         </LoadingState>
+      </PageContainer>
+    );
+  }
+
+  if (error) {
+    return (
+      <PageContainer>
+        <NavHeader>
+          <NavContent>
+            <Logo>
+              <FaRing /> Wedding Vendors
+            </Logo>
+            <BackButton onClick={() => navigate("/")}>
+              <FaHome />
+              Back to Home
+            </BackButton>
+          </NavContent>
+        </NavHeader>
+        <div style={{ textAlign: "center", padding: "40px", color: theme.colors.error }}>
+          <h3>Failed to load wedding vendors</h3>
+          <p>We're having trouble loading the wedding services. Please try again.</p>
+          <button
+            onClick={() => refetch()}
+            style={{
+              background: theme.colors.primary,
+              color: "white",
+              border: "none",
+              padding: "10px 20px",
+              borderRadius: "5px",
+              cursor: "pointer",
+              marginTop: "10px",
+            }}
+          >
+            Retry
+          </button>
+        </div>
       </PageContainer>
     );
   }
@@ -514,14 +566,14 @@ const WeddingStoresListing = () => {
             <LocationButton
               type="button"
               onClick={handleUseCurrentLocation}
-              disabled={locationLoading}
+              disabled={geoLocationLoading}
             >
               <FaLocationArrow />
               Use My Location
             </LocationButton>
 
-            <SearchButton type="submit" disabled={locationLoading}>
-              {locationLoading ? 'Searching...' : 'Search'}
+            <SearchButton type="submit" disabled={geoLocationLoading}>
+              {geoLocationLoading ? 'Searching...' : 'Search'}
             </SearchButton>
           </SearchForm>
         </SearchSection>
