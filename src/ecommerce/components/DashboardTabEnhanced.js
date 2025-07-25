@@ -13,14 +13,15 @@ import {
   FaEye,
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
-import {
+import { sellerDashboardData } from '../../DummyData';
+const {
   dashboardStats,
   salesTrendData,
   recentActivity,
   storeStatus,
   lowStockAlerts,
   topPerformingProducts,
-} from '../data/sellerData';
+} = sellerDashboardData;
 
 const DashboardContainer = styled.div`
   display: grid;
