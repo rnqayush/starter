@@ -1081,22 +1081,25 @@ const HotelDetail = () => {
           </SectionHeader>
           <AmenitiesSection>
             <AmenitiesGrid>
-              {amenityCategories.map((category, index) => (
-                <AmenityCategory key={index}>
-                  <h4>
-                    <category.icon />
-                    {category.title}
-                  </h4>
-                  <AmenityList>
-                    {category.items.map((item, itemIndex) => (
-                      <AmenityItem key={itemIndex}>
-                        <FaCheckCircle className="icon" />
-                        {item}
-                      </AmenityItem>
-                    ))}
-                  </AmenityList>
-                </AmenityCategory>
-              ))}
+              {amenityCategories.map((category, index) => {
+                const CategoryIcon = category.icon || getCategoryIcon(category.title);
+                return (
+                  <AmenityCategory key={index}>
+                    <h4>
+                      <CategoryIcon />
+                      {category.title}
+                    </h4>
+                    <AmenityList>
+                      {category.items.map((item, itemIndex) => (
+                        <AmenityItem key={itemIndex}>
+                          <FaCheckCircle className="icon" />
+                          {item}
+                        </AmenityItem>
+                      ))}
+                    </AmenityList>
+                  </AmenityCategory>
+                );
+              })}
             </AmenitiesGrid>
           </AmenitiesSection>
         </Container>
