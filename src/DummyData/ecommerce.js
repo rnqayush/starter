@@ -716,7 +716,9 @@ export const sellerDashboardData = {
       id: 'ORD-2024-003',
       customerName: 'Emily Davis',
       customerEmail: 'emily.d@email.com',
-      products: [{ name: 'Luxury Leather Handbag', quantity: 1, price: 249.99 }],
+      products: [
+        { name: 'Luxury Leather Handbag', quantity: 1, price: 249.99 },
+      ],
       total: 249.99,
       status: 'processing',
       paymentStatus: 'paid',
@@ -830,11 +832,15 @@ export const getOnSaleProducts = () => {
 };
 
 export const getProductsByAvailability = availability => {
-  return ecommerceProducts.filter(product => product.availability === availability);
+  return ecommerceProducts.filter(
+    product => product.availability === availability
+  );
 };
 
 export const updateProductAvailability = (productId, availability) => {
-  const productIndex = ecommerceProducts.findIndex(product => product.id === productId);
+  const productIndex = ecommerceProducts.findIndex(
+    product => product.id === productId
+  );
   if (productIndex !== -1) {
     ecommerceProducts[productIndex].availability = availability;
     switch (availability) {
@@ -843,7 +849,8 @@ export const updateProductAvailability = (productId, availability) => {
         break;
       case 'limited_stock':
         if (ecommerceProducts[productIndex].stock > 10) {
-          ecommerceProducts[productIndex].stock = Math.floor(Math.random() * 10) + 1;
+          ecommerceProducts[productIndex].stock =
+            Math.floor(Math.random() * 10) + 1;
         }
         break;
       case 'pre_order':

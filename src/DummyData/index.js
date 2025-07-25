@@ -8,11 +8,8 @@ import * as HotelData from './hotels';
 import * as WeddingData from './weddings';
 
 // Export data arrays/objects
-export const {
-  automobileCategories,
-  automobileVehicles,
-  automobileVendors,
-} = AutomobileData;
+export const { automobileCategories, automobileVehicles, automobileVendors } =
+  AutomobileData;
 
 export const { businessTemplates } = BusinessData;
 
@@ -23,12 +20,7 @@ export const {
   sellerDashboardData,
 } = EcommerceData;
 
-export const {
-  hotels,
-  hotelBookings,
-  ownerHotels,
-  amenitiesList,
-} = HotelData;
+export const { hotels, hotelBookings, ownerHotels, amenitiesList } = HotelData;
 
 export const { weddingVendors } = WeddingData;
 
@@ -101,10 +93,14 @@ export const products = ecommerceProducts;
 export const bookings = hotelBookings;
 
 // Generic vendor functions - these will route to the correct module based on context
-export const getVendorBySlug = (slug) => {
+export const getVendorBySlug = slug => {
   return getEcommerceVendorBySlug(slug) || getAutomobileVendorBySlug(slug);
 };
 
-export const getVendorById = (id) => {
-  return getWeddingVendorById(id) || getEcommerceVendorById(id) || getAutomobileVendorById(id);
+export const getVendorById = id => {
+  return (
+    getWeddingVendorById(id) ||
+    getEcommerceVendorById(id) ||
+    getAutomobileVendorById(id)
+  );
 };

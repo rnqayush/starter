@@ -583,7 +583,9 @@ export const automobileVendors = [
 
 // Utility functions for automobiles
 export const getVehiclesByCategory = categorySlug => {
-  return automobileVehicles.filter(vehicle => vehicle.category === categorySlug);
+  return automobileVehicles.filter(
+    vehicle => vehicle.category === categorySlug
+  );
 };
 
 export const getVehicleById = id => {
@@ -599,7 +601,9 @@ export const getOnSaleVehicles = () => {
 };
 
 export const getVehiclesByAvailability = availability => {
-  return automobileVehicles.filter(vehicle => vehicle.availability === availability);
+  return automobileVehicles.filter(
+    vehicle => vehicle.availability === availability
+  );
 };
 
 export const getVehiclesByCondition = condition => {

@@ -8,11 +8,8 @@ import {
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
 import { sellerDashboardData } from '../../DummyData';
-const {
-  categoryRevenueData,
-  bestSellingProducts,
-  salesTrendData,
-} = sellerDashboardData;
+const { categoryRevenueData, bestSellingProducts, salesTrendData } =
+  sellerDashboardData;
 
 const InsightsContainer = styled.div`
   display: grid;
