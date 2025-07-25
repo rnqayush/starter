@@ -482,23 +482,23 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
     if (editingHotel) {
       setTempData({
         name: editingHotel.name || '',
-        heroSubtitle: `Experience luxury hospitality in the heart of ${editingHotel.city || 'your city'}`,
+        heroSubtitle: editingHotel.heroSubtitle || `Experience luxury hospitality in the heart of ${editingHotel.city || 'your city'}`,
         description: editingHotel.description || '',
         image: editingHotel.image || '',
         images: editingHotel.images || [],
         amenities: editingHotel.amenities || [],
         address: editingHotel.address || '',
-        phone: '+91 22 6601 1825',
-        email: `reservations@${editingHotel.slug || 'hotel'}.com`,
+        phone: editingHotel.phone || '+91 22 6601 1825',
+        email: editingHotel.email || `reservations@${editingHotel.slug || 'hotel'}.com`,
         checkInTime: editingHotel.checkInTime || '3:00 PM',
         checkOutTime: editingHotel.checkOutTime || '11:00 AM',
-        features: [
+        features: editingHotel.features || [
           {
             title: '24/7 Concierge',
             description: 'Our dedicated concierge team is available round-the-clock to assist with all your needs.',
           },
           {
-            title: 'Luxury Amenities', 
+            title: 'Luxury Amenities',
             description: 'Enjoy world-class facilities including spa, pool, and fine dining restaurants.',
           },
           {
@@ -508,6 +508,24 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
           {
             title: 'Airport Transfer',
             description: 'Complimentary airport shuttle service for all our guests.',
+          },
+        ],
+        amenityCategories: editingHotel.amenityCategories || [
+          {
+            title: 'Recreation',
+            items: ['Swimming Pool', 'Fitness Center', 'Spa & Wellness']
+          },
+          {
+            title: 'Dining',
+            items: ['Fine Dining Restaurant', 'Rooftop Bar', 'Room Service']
+          },
+          {
+            title: 'Business',
+            items: ['Business Center', 'Meeting Rooms', 'Free WiFi']
+          },
+          {
+            title: 'Services',
+            items: ['24/7 Concierge', 'Valet Parking', 'Airport Transfer']
           },
         ]
       });
