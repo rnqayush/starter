@@ -555,17 +555,6 @@ const EnhancedSidebar = ({ activeSection, setActiveSection }) => {
             )}
 
             <ActionsContainer>
-              {editingHotel && (
-                <Button
-                  variant="outline"
-                  size="small"
-                  onClick={handlePreviewChanges}
-                  style={{ width: '100%' }}
-                >
-                  <FaEye /> Preview Live Page
-                </Button>
-              )}
-              
               {hasUnsavedChanges && (
                 <>
                   <Button
@@ -585,7 +574,7 @@ const EnhancedSidebar = ({ activeSection, setActiveSection }) => {
                   </Button>
                 </>
               )}
-              
+
               {editingHotel && (
                 <Button
                   variant="primary"
