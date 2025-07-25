@@ -184,6 +184,19 @@ const hotelManagementSlice = createSlice({
     toggleSectionVisibility: (state, action) => {
       const { section } = action.payload;
       state.sectionVisibility[section] = !state.sectionVisibility[section];
+
+      // Also update the editing hotel's sectionVisibility
+      if (state.editingHotel) {
+        if (!state.editingHotel.sectionVisibility) {
+          state.editingHotel.sectionVisibility = { ...state.sectionVisibility };
+        }
+        state.editingHotel.sectionVisibility[section] = state.sectionVisibility[section];
+        state.changes.sectionVisibility = {
+          old: state.originalHotel?.sectionVisibility || {},
+          new: state.editingHotel.sectionVisibility
+        };
+      }
+
       state.hasUnsavedChanges = true;
     },
 
