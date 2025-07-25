@@ -592,7 +592,7 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
   const [activeModal, setActiveModal] = useState(null);
   const [tempData, setTempData] = useState({});
   const [newAmenityInputs, setNewAmenityInputs] = useState({});
-  const [sectionOrder, setSectionOrder] = useState(['hero', 'about', 'features', 'gallery', 'amenities', 'contact']);
+  const [sectionOrder, setSectionOrder] = useState(['about', 'features', 'gallery', 'amenities', 'contact']);
 
   // Auto-select hotel based on URL slug
   useEffect(() => {
