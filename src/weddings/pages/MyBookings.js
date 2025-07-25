@@ -21,7 +21,8 @@ import {
   FaStar,
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
-import { weddingVendors } from '../data/vendors';
+import { useGetWeddingServicesQuery } from '../../store/api/weddingApi';
+import { FaSpinner } from 'react-icons/fa';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -405,6 +406,15 @@ const EmptyState = styled.div`
 
 const MyBookings = () => {
   const navigate = useNavigate();
+  // RTK Query hook for fetching wedding services
+  const {
+    data: servicesData,
+    error,
+    isLoading,
+    refetch
+  } = useGetWeddingServicesQuery();
+
+  const weddingServices = servicesData?.data || [];
   const [bookings, setBookings] = useState([]);
   const [filteredBookings, setFilteredBookings] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -504,7 +514,7 @@ const MyBookings = () => {
   }, [bookings, searchTerm, statusFilter, sortBy]);
 
   const getVendorDetails = vendorId => {
-    return weddingVendors.find(vendor => vendor.id === vendorId);
+    return weddingServices.find(service => service.id === vendorId);
   };
 
   const getStatusIcon = status => {
@@ -540,6 +550,65 @@ const MyBookings = () => {
     cancelled: bookings.filter(b => b.status === 'cancelled').length,
   };
 
+  if (isLoading) {
+    return (
+      <PageContainer>
+        <NavHeader>
+          <NavContent>
+            <BackButton onClick={() => navigate("/weddings")}>
+              <FaArrowLeft />
+              Back to Vendors
+            </BackButton>
+            <PageTitle>
+              <FaCalendarAlt />
+              My Wedding Bookings
+            </PageTitle>
+          </NavContent>
+        </NavHeader>
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "50vh" }}>
+          <FaSpinner size={24} style={{ animation: "spin 1s linear infinite", marginRight: "10px" }} />
+          Loading your bookings...
+        </div>
+      </PageContainer>
+    );
+  }
+
+  if (error) {
+    return (
+      <PageContainer>
+        <NavHeader>
+          <NavContent>
+            <BackButton onClick={() => navigate("/weddings")}>
+              <FaArrowLeft />
+              Back to Vendors
+            </BackButton>
+            <PageTitle>
+              <FaCalendarAlt />
+              My Wedding Bookings
+            </PageTitle>
+          </NavContent>
+        </NavHeader>
+        <div style={{ textAlign: "center", padding: "40px", color: theme.colors.error }}>
+          <h3>Failed to load wedding services</h3>
+          <p>We're having trouble loading the wedding services data. Please try again.</p>
+          <button
+            onClick={() => refetch()}
+            style={{
+              background: theme.colors.primary,
+              color: "white",
+              border: "none",
+              padding: "10px 20px",
+              borderRadius: "5px",
+              cursor: "pointer",
+              marginTop: "10px",
+            }}
+          >
+            Retry
+          </button>
+        </div>
+      </PageContainer>
+    );
+  }
   return (
     <PageContainer>
       <NavHeader>
