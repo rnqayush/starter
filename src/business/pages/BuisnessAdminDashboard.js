@@ -1914,12 +1914,59 @@ const BuisnessAdminDashboard = () => {
                         />
                       </FormGroup>
                       <FormGroup style={{ gridColumn: '1 / -1' }}>
-                        <FormLabel>Photo URL</FormLabel>
+                        <FormLabel>
+                          <FaCamera />
+                          Photo URL
+                          <input
+                            type="file"
+                            accept="image/*"
+                            style={{ display: 'none' }}
+                            id={`team-photo-${member.id}`}
+                            onChange={e => handleImageUpload(e, (url) => updateTeamMember(member.id, 'photo', url))}
+                          />
+                          <label
+                            htmlFor={`team-photo-${member.id}`}
+                            style={{
+                              marginLeft: '10px',
+                              cursor: 'pointer',
+                              color: '#3b82f6',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '4px'
+                            }}
+                          >
+                            <FaUpload /> Upload
+                          </label>
+                        </FormLabel>
                         <FormInput
                           value={member.photo}
                           onChange={e => updateTeamMember(member.id, 'photo', e.target.value)}
-                          placeholder="Profile photo URL"
+                          placeholder="Profile photo URL or upload"
                         />
+                        {member.photo && (
+                          <div style={{
+                            marginTop: '10px',
+                            padding: '10px',
+                            border: '1px solid #e2e8f0',
+                            borderRadius: '6px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '10px'
+                          }}>
+                            <div style={{
+                              width: '50px',
+                              height: '50px',
+                              backgroundImage: `url(${member.photo})`,
+                              backgroundSize: 'cover',
+                              backgroundPosition: 'center',
+                              borderRadius: '50%',
+                              border: '1px solid #d1d5db'
+                            }} />
+                            <span style={{ fontSize: '0.9rem', color: '#6b7280' }}>
+                              {member.name} photo
+                            </span>
+                          </div>
+                        )}
                       </FormGroup>
                       <FormGroup style={{ gridColumn: '1 / -1' }}>
                         <FormLabel>Bio</FormLabel>
