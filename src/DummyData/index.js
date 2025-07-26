@@ -25,6 +25,18 @@ export const { hotels, hotelBookings, ownerHotels, amenitiesList } = HotelData;
 
 export const { weddingVendors } = WeddingData;
 
+export const {
+  storeCategories,
+  platformStats,
+  platformBenefits,
+  platformTestimonials,
+  pricingPlans,
+  pricingFeatures,
+  pricingFAQs,
+  websiteTypes,
+  colorOptions
+} = PlatformData;
+
 // Export utility functions with prefixed names to avoid conflicts
 // Automobile functions
 export const {
