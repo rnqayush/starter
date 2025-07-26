@@ -2960,10 +2960,23 @@ const VendorDashboard = () => {
       case 'packages-pricing':
         return (
           <ContentSection>
-            <SectionTitle>
-              <FaDollarSign />
-              Packages & Pricing
-            </SectionTitle>
+            <SectionHeader>
+              <SectionTitle>
+                <FaDollarSign />
+                Packages & Pricing
+              </SectionTitle>
+              <VisibilityToggleContainer>
+                <span>{sectionVisibility['packages-pricing'] ? 'Visible' : 'Hidden'}</span>
+                <ToggleSwitch>
+                  <input
+                    type="checkbox"
+                    checked={sectionVisibility['packages-pricing']}
+                    onChange={() => toggleSectionVisibility('packages-pricing')}
+                  />
+                  <span></span>
+                </ToggleSwitch>
+              </VisibilityToggleContainer>
+            </SectionHeader>
             {packagesData.map(pkg => (
               <div
                 key={pkg.id}
