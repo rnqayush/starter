@@ -621,7 +621,13 @@ const VendorDashboard = () => {
     const vendorData = getVendorById(vendorId);
     if (vendorData) {
       setVendor(vendorData);
-      dispatch(setEditingVendor(vendorId));
+
+      // Initialize editing vendor in Redux
+      try {
+        dispatch(setEditingVendor(vendorId));
+      } catch (error) {
+        console.error('Error setting editing vendor:', error);
+      }
       
       // Pre-fill all form data from vendor data
       setHeroData({
