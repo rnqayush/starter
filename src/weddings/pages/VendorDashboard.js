@@ -1341,9 +1341,10 @@ const VendorDashboard = () => {
                 <FormLabel>Business Name</FormLabel>
                 <FormInput
                   value={heroData.name}
-                  onChange={e =>
-                    setHeroData(prev => ({ ...prev, name: e.target.value }))
-                  }
+                  onChange={e => {
+                    setHeroData(prev => ({ ...prev, name: e.target.value }));
+                    autoSaveForPreview();
+                  }}
                   placeholder="Enter your business name"
                 />
               </FormGroup>
