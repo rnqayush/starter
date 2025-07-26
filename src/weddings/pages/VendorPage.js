@@ -1035,14 +1035,27 @@ const VendorPage = () => {
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    // Check if this vendor is being edited and use editing data for real-time updates
+    let vendorData = null;
+
+    // Priority 1: Use editing vendor data for real-time updates during editing
     if (editingVendor && editingVendor.id === vendorId) {
-      setVendor(editingVendor);
-    } else {
-      // Otherwise, use data from vendors array (includes saved changes)
-      const vendorData =
-        vendors.find(v => v.id === vendorId) || getVendorById(vendorId);
+      vendorData = editingVendor;
+      console.log('Using editing vendor data for real-time updates:', editingVendor);
+    }
+    // Priority 2: Use saved vendor data from Redux vendors array
+    else if (vendors && vendors.length > 0) {
+      vendorData = vendors.find(v => v.id === vendorId);
+      console.log('Using saved vendor data from Redux:', vendorData);
+    }
+    // Priority 3: Fallback to dummy data
+    if (!vendorData) {
+      vendorData = getVendorById(vendorId);
+      console.log('Using fallback dummy data:', vendorData);
+    }
+
+    if (vendorData) {
       setVendor(vendorData);
+      console.log('VendorPage: Updated vendor data', vendorData);
     }
     setLoading(false);
 
