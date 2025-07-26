@@ -2956,14 +2956,28 @@ const BuisnessAdminDashboard = () => {
               </SectionTitle>
             </SectionHeader>
 
-            <AddButton onClick={addCustomSection}>
-              <FaPlus />
-              Add Custom Section
-            </AddButton>
+            <div style={{ display: 'flex', gap: '10px', marginBottom: '20px', flexWrap: 'wrap' }}>
+              <AddButton onClick={() => addCustomSection('text')}>
+                <FaTextHeight />
+                Add Text Section
+              </AddButton>
+              <AddButton onClick={() => addCustomSection('list')} style={{ background: '#10b981' }}>
+                <FaList />
+                Add List Section
+              </AddButton>
+              <AddButton onClick={() => addCustomSection('card')} style={{ background: '#8b5cf6' }}>
+                <FaServicestack />
+                Add Card Section
+              </AddButton>
+              <AddButton onClick={() => addCustomSection('image')} style={{ background: '#f59e0b' }}>
+                <FaImages />
+                Add Image Section
+              </AddButton>
+            </div>
 
             <ListContainer>
               {customSectionsData.map(section => (
-                <ListItem key={section.id}>
+                <ListItem key={section.id} style={{ border: `2px solid ${section.visible ? '#10b981' : '#6b7280'}` }}>
                   <div className="item-info">
                     <FormGrid>
                       <FormGroup>
@@ -2987,10 +3001,10 @@ const BuisnessAdminDashboard = () => {
                             width: '100%',
                           }}
                         >
-                          <option value="text">Text Content</option>
-                          <option value="list">List Items</option>
-                          <option value="card">Card Layout</option>
-                          <option value="image">Image Gallery</option>
+                          <option value="text">📝 Text Content</option>
+                          <option value="list">📋 List Items</option>
+                          <option value="card">🎴 Card Layout</option>
+                          <option value="image">🖼️ Image Gallery</option>
                         </select>
                       </FormGroup>
                       <FormGroup>
@@ -3001,11 +3015,147 @@ const BuisnessAdminDashboard = () => {
                             onChange={e => updateCustomSection(section.id, 'visible', e.target.checked)}
                             style={{ marginRight: '8px' }}
                           />
-                          Visible
+                          <span style={{ color: section.visible ? '#10b981' : '#6b7280' }}>
+                            {section.visible ? '👁️ Visible' : '🚫 Hidden'}
+                          </span>
                         </FormLabel>
                       </FormGroup>
-                      <FormGroup style={{ gridColumn: '1 / -1' }}>
-                        <FormLabel>Content (JSON format for advanced users)</FormLabel>
+
+                      {/* Smart editing interface based on section type */}
+                      {section.type === 'text' && (
+                        <>
+                          <FormGroup style={{ gridColumn: '1 / -1' }}>
+                            <FormLabel>Heading</FormLabel>
+                            <FormInput
+                              value={section.content.heading || ''}
+                              onChange={e => updateCustomSection(section.id, 'content', {
+                                ...section.content,
+                                heading: e.target.value
+                              })}
+                              placeholder="Section heading"
+                            />
+                          </FormGroup>
+                          <FormGroup style={{ gridColumn: '1 / -1' }}>
+                            <FormLabel>Description</FormLabel>
+                            <FormTextarea
+                              value={section.content.description || ''}
+                              onChange={e => updateCustomSection(section.id, 'content', {
+                                ...section.content,
+                                description: e.target.value
+                              })}
+                              placeholder="Your content here..."
+                              rows={4}
+                            />
+                          </FormGroup>
+                        </>
+                      )}
+
+                      {section.type === 'list' && (
+                        <>
+                          <FormGroup style={{ gridColumn: '1 / -1' }}>
+                            <FormLabel>List Heading</FormLabel>
+                            <FormInput
+                              value={section.content.heading || ''}
+                              onChange={e => updateCustomSection(section.id, 'content', {
+                                ...section.content,
+                                heading: e.target.value
+                              })}
+                              placeholder="List heading"
+                            />
+                          </FormGroup>
+                          <FormGroup style={{ gridColumn: '1 / -1' }}>
+                            <FormLabel>List Items (one per line)</FormLabel>
+                            <FormTextarea
+                              value={(section.content.items || []).join('\n')}
+                              onChange={e => updateCustomSection(section.id, 'content', {
+                                ...section.content,
+                                items: e.target.value.split('\n').filter(item => item.trim())
+                              })}
+                              placeholder="Item 1&#10;Item 2&#10;Item 3"
+                              rows={5}
+                            />
+                          </FormGroup>
+                        </>
+                      )}
+
+                      {section.type === 'card' && (
+                        <>
+                          <FormGroup style={{ gridColumn: '1 / -1' }}>
+                            <FormLabel>Card Section Heading</FormLabel>
+                            <FormInput
+                              value={section.content.heading || ''}
+                              onChange={e => updateCustomSection(section.id, 'content', {
+                                ...section.content,
+                                heading: e.target.value
+                              })}
+                              placeholder="Card section heading"
+                            />
+                          </FormGroup>
+                          <FormGroup style={{ gridColumn: '1 / -1' }}>
+                            <FormLabel>Cards (JSON format)</FormLabel>
+                            <FormTextarea
+                              value={JSON.stringify(section.content.cards || [], null, 2)}
+                              onChange={e => {
+                                try {
+                                  const cards = JSON.parse(e.target.value);
+                                  updateCustomSection(section.id, 'content', {
+                                    ...section.content,
+                                    cards
+                                  });
+                                } catch (error) {
+                                  // Invalid JSON, ignore
+                                }
+                              }}
+                              placeholder='[{"title": "Card Title", "description": "Card description", "icon": "🎯"}]'
+                              rows={6}
+                            />
+                          </FormGroup>
+                        </>
+                      )}
+
+                      {section.type === 'image' && (
+                        <>
+                          <FormGroup style={{ gridColumn: '1 / -1' }}>
+                            <FormLabel>Gallery Heading</FormLabel>
+                            <FormInput
+                              value={section.content.heading || ''}
+                              onChange={e => updateCustomSection(section.id, 'content', {
+                                ...section.content,
+                                heading: e.target.value
+                              })}
+                              placeholder="Gallery heading"
+                            />
+                          </FormGroup>
+                          <FormGroup>
+                            <FormLabel>Columns</FormLabel>
+                            <FormInput
+                              type="number"
+                              min="1"
+                              max="6"
+                              value={section.content.columns || 3}
+                              onChange={e => updateCustomSection(section.id, 'content', {
+                                ...section.content,
+                                columns: parseInt(e.target.value)
+                              })}
+                            />
+                          </FormGroup>
+                          <FormGroup style={{ gridColumn: '1 / -1' }}>
+                            <FormLabel>Image URLs (one per line)</FormLabel>
+                            <FormTextarea
+                              value={(section.content.images || []).join('\n')}
+                              onChange={e => updateCustomSection(section.id, 'content', {
+                                ...section.content,
+                                images: e.target.value.split('\n').filter(url => url.trim())
+                              })}
+                              placeholder="https://example.com/image1.jpg&#10;https://example.com/image2.jpg"
+                              rows={4}
+                            />
+                          </FormGroup>
+                        </>
+                      )}
+
+                      <FormGroup style={{ gridColumn: '1 / -1', marginTop: '20px', padding: '10px', background: '#f8f9fa', borderRadius: '6px' }}>
+                        <FormLabel>Advanced: Raw JSON Content</FormLabel>
                         <FormTextarea
                           value={JSON.stringify(section.content, null, 2)}
                           onChange={e => {
@@ -3018,12 +3168,43 @@ const BuisnessAdminDashboard = () => {
                             }
                           }}
                           placeholder='{"title": "Custom Content", "description": "Your content here"}'
-                          rows={6}
+                          rows={4}
+                          style={{ fontSize: '0.85rem', fontFamily: 'monospace' }}
                         />
                       </FormGroup>
                     </FormGrid>
                   </div>
                   <div className="item-actions">
+                    <ItemButton
+                      onClick={() => {
+                        const newOrder = customSectionsData.indexOf(section) - 1;
+                        if (newOrder >= 0) {
+                          const newData = [...customSectionsData];
+                          const [removed] = newData.splice(customSectionsData.indexOf(section), 1);
+                          newData.splice(newOrder, 0, removed);
+                          setCustomSectionsData(newData);
+                          trackSectionChange('custom');
+                        }
+                      }}
+                      disabled={customSectionsData.indexOf(section) === 0}
+                    >
+                      ↑ Up
+                    </ItemButton>
+                    <ItemButton
+                      onClick={() => {
+                        const newOrder = customSectionsData.indexOf(section) + 1;
+                        if (newOrder < customSectionsData.length) {
+                          const newData = [...customSectionsData];
+                          const [removed] = newData.splice(customSectionsData.indexOf(section), 1);
+                          newData.splice(newOrder, 0, removed);
+                          setCustomSectionsData(newData);
+                          trackSectionChange('custom');
+                        }
+                      }}
+                      disabled={customSectionsData.indexOf(section) === customSectionsData.length - 1}
+                    >
+                      ↓ Down
+                    </ItemButton>
                     <ItemButton
                       variant="danger"
                       onClick={() => deleteCustomSection(section.id)}
@@ -3034,6 +3215,19 @@ const BuisnessAdminDashboard = () => {
                   </div>
                 </ListItem>
               ))}
+              {customSectionsData.length === 0 && (
+                <div style={{
+                  textAlign: 'center',
+                  padding: '40px',
+                  color: '#6b7280',
+                  border: '2px dashed #d1d5db',
+                  borderRadius: '8px'
+                }}>
+                  <FaPlus style={{ fontSize: '3rem', marginBottom: '16px', opacity: 0.5 }} />
+                  <h3>No Custom Sections Yet</h3>
+                  <p>Click one of the buttons above to add your first custom section!</p>
+                </div>
+              )}
             </ListContainer>
           </ContentSection>
         );
