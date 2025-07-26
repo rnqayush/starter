@@ -268,3 +268,45 @@ export const pricingFAQs = [
       'Very secure! All plans include SSL certificates, regular backups, malware protection, and we follow industry best practices for security.',
   },
 ];
+
+export const websiteTypes = [
+  {
+    id: 'weddings',
+    icon: FaRing,
+    title: 'Weddings',
+    description: 'Wedding planners & venues',
+  },
+  {
+    id: 'hotels',
+    icon: FaHotel,
+    title: 'Hotels',
+    description: 'Hotels & accommodations',
+  },
+  {
+    id: 'ecommerce',
+    icon: FaShoppingCart,
+    title: 'Ecommerce',
+    description: 'Online stores',
+  },
+  {
+    id: 'automobiles',
+    icon: FaCar,
+    title: 'Automobiles',
+    description: 'Car dealers & rentals',
+  },
+  {
+    id: 'professional',
+    icon: FaBriefcase,
+    title: 'Professional',
+    description: 'Business websites',
+  },
+];
+
+export const colorOptions = [
+  '#10b981',
+  '#3b82f6',
+  '#8b5cf6',
+  '#f59e0b',
+  '#ef4444',
+  '#06b6d4',
+];
