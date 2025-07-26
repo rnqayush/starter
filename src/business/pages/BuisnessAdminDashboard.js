@@ -1724,6 +1724,29 @@ const BuisnessAdminDashboard = () => {
                 <FormLabel>
                   <FaCamera />
                   Profile Image URL
+                  <input
+                    type="file"
+                    accept="image/*"
+                    style={{ display: 'none' }}
+                    id="about-profile-upload"
+                    onChange={e => handleImageUpload(e, (url) => {
+                      setAboutData(prev => ({ ...prev, profileImage: url }));
+                      trackSectionChange('about-us');
+                    })}
+                  />
+                  <label
+                    htmlFor="about-profile-upload"
+                    style={{
+                      marginLeft: '10px',
+                      cursor: 'pointer',
+                      color: '#3b82f6',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px'
+                    }}
+                  >
+                    <FaUpload /> Upload
+                  </label>
                 </FormLabel>
                 <FormInput
                   value={aboutData.profileImage}
@@ -1731,8 +1754,32 @@ const BuisnessAdminDashboard = () => {
                     setAboutData(prev => ({ ...prev, profileImage: e.target.value }));
                     trackSectionChange('about-us');
                   }}
-                  placeholder="Enter profile image URL"
+                  placeholder="Enter profile image URL or upload"
                 />
+                {aboutData.profileImage && (
+                  <div style={{
+                    marginTop: '10px',
+                    padding: '10px',
+                    border: '1px solid #e2e8f0',
+                    borderRadius: '6px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px'
+                  }}>
+                    <div style={{
+                      width: '60px',
+                      height: '60px',
+                      backgroundImage: `url(${aboutData.profileImage})`,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                      borderRadius: '6px',
+                      border: '1px solid #d1d5db'
+                    }} />
+                    <span style={{ fontSize: '0.9rem', color: '#6b7280' }}>
+                      Profile image preview
+                    </span>
+                  </div>
+                )}
               </FormGroup>
             </FormGrid>
           </ContentSection>
