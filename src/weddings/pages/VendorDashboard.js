@@ -915,6 +915,10 @@ const VendorDashboard = () => {
           completedWeddings: aboutUsData.completedWeddings || '',
           satisfiedCouples: aboutUsData.satisfiedCouples || '',
           videoEmbed: aboutUsData.videoEmbed || '',
+          aboutImage: aboutUsData.aboutImage || '',
+          experienceVisible: aboutUsData.experienceVisible,
+          weddingsVisible: aboutUsData.weddingsVisible,
+          couplesVisible: aboutUsData.couplesVisible,
         },
         services: servicesData.map(service => ({
           id: service.id,
