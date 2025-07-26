@@ -2723,14 +2723,127 @@ const VendorDashboard = () => {
               <FaCog />
               Settings
             </SectionTitle>
-            <p
-              style={{
-                color: theme.colors.gray600,
-                marginBottom: theme.spacing.lg,
-              }}
-            >
-              Profile settings functionality will be implemented here.
-            </p>
+
+            {/* Basic Details */}
+            <div style={{ marginBottom: theme.spacing.xxl }}>
+              <h3 style={{ fontSize: '1.3rem', fontWeight: 600, marginBottom: theme.spacing.lg, color: theme.colors.gray900 }}>
+                Basic Details
+              </h3>
+              <FormGrid>
+                <FormGroup>
+                  <FormLabel>Business Name</FormLabel>
+                  <FormInput
+                    value={heroData.name}
+                    onChange={e => {
+                      setHeroData(prev => ({ ...prev, name: e.target.value }));
+                      trackSectionChange('settings');
+                    }}
+                    placeholder="Enter business name"
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <FormLabel>Email Address</FormLabel>
+                  <FormInput
+                    type="email"
+                    value={vendor?.email || ''}
+                    onChange={e => trackSectionChange('settings')}
+                    placeholder="business@example.com"
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <FormLabel>Phone Number</FormLabel>
+                  <FormInput
+                    type="tel"
+                    value={vendor?.phone || ''}
+                    onChange={e => trackSectionChange('settings')}
+                    placeholder="+1 (555) 123-4567"
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <FormLabel>Website URL</FormLabel>
+                  <FormInput
+                    type="url"
+                    value={vendor?.website || ''}
+                    onChange={e => trackSectionChange('settings')}
+                    placeholder="https://example.com"
+                  />
+                </FormGroup>
+                <FormGroup style={{ gridColumn: '1 / -1' }}>
+                  <FormLabel>Business Address</FormLabel>
+                  <FormTextarea
+                    value={vendor?.address || ''}
+                    onChange={e => trackSectionChange('settings')}
+                    placeholder="Enter your complete business address..."
+                    rows={3}
+                  />
+                </FormGroup>
+              </FormGrid>
+            </div>
+
+            {/* Password Update */}
+            <div style={{ marginBottom: theme.spacing.xxl }}>
+              <h3 style={{ fontSize: '1.3rem', fontWeight: 600, marginBottom: theme.spacing.lg, color: theme.colors.gray900 }}>
+                Update Password
+              </h3>
+              <FormGrid>
+                <FormGroup>
+                  <FormLabel>Current Password</FormLabel>
+                  <FormInput
+                    type="password"
+                    placeholder="Enter current password"
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <FormLabel>New Password</FormLabel>
+                  <FormInput
+                    type="password"
+                    placeholder="Enter new password"
+                  />
+                </FormGroup>
+                <FormGroup style={{ gridColumn: '1 / -1' }}>
+                  <FormLabel>Confirm New Password</FormLabel>
+                  <FormInput
+                    type="password"
+                    placeholder="Confirm new password"
+                  />
+                </FormGroup>
+              </FormGrid>
+              <div style={{ marginTop: theme.spacing.lg }}>
+                <ActionButton
+                  onClick={() => alert('Password update functionality will be implemented with backend integration')}
+                >
+                  <FaLock />
+                  Update Password
+                </ActionButton>
+              </div>
+            </div>
+
+            {/* Account Actions */}
+            <div>
+              <h3 style={{ fontSize: '1.3rem', fontWeight: 600, marginBottom: theme.spacing.lg, color: theme.colors.gray900 }}>
+                Account Actions
+              </h3>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: theme.spacing.md, maxWidth: '300px' }}>
+                <ActionButton
+                  onClick={() => {
+                    if (window.confirm('Are you sure you want to logout?')) {
+                      // Handle logout
+                      alert('Logout functionality will be implemented with auth integration');
+                    }
+                  }}
+                >
+                  <FaArrowLeft />
+                  Logout
+                </ActionButton>
+                <ActionButton
+                  variant="danger"
+                  onClick={() => setShowDeleteAccountModal(true)}
+                >
+                  <FaTrash />
+                  Delete Account
+                </ActionButton>
+              </div>
+            </div>
           </ContentSection>
         );
 
