@@ -764,6 +764,20 @@ const BuisnessAdminDashboard = () => {
       linkedin: '',
     },
   });
+  const [businessHoursData, setBusinessHoursData] = useState({
+    title: 'Business Hours',
+    hours: {
+      monday: '9:00 AM - 6:00 PM',
+      tuesday: '9:00 AM - 6:00 PM',
+      wednesday: '9:00 AM - 6:00 PM',
+      thursday: '9:00 AM - 6:00 PM',
+      friday: '9:00 AM - 6:00 PM',
+      saturday: '10:00 AM - 4:00 PM',
+      sunday: 'Closed',
+    },
+  });
+  const [customSectionsData, setCustomSectionsData] = useState([]);
+  const [sectionOrderData, setSectionOrderData] = useState([]);
 
   // Section visibility state
   const [sectionVisibility, setSectionVisibility] = useState({
@@ -1029,6 +1043,29 @@ const BuisnessAdminDashboard = () => {
       setExperienceData(sampleContent.experience || []);
       setGalleryData(sampleContent.gallery || []);
       setPackagesData(sampleContent.packages || []);
+      setTestimonialsData(sampleContent.testimonials || []);
+      setReviewsData(sampleContent.reviews || []);
+      setFaqData(sampleContent.faq || []);
+
+      // Initialize business hours
+      setBusinessHoursData({
+        title: 'Business Hours',
+        hours: {
+          monday: '9:00 AM - 6:00 PM',
+          tuesday: '9:00 AM - 6:00 PM',
+          wednesday: '9:00 AM - 6:00 PM',
+          thursday: '9:00 AM - 6:00 PM',
+          friday: '9:00 AM - 6:00 PM',
+          saturday: '10:00 AM - 4:00 PM',
+          sunday: 'Closed',
+        },
+      });
+
+      // Initialize section order
+      setSectionOrderData([
+        'hero', 'about-us', 'services-offered', 'portfolio', 'skills', 'experience',
+        'team', 'gallery', 'packages', 'testimonials', 'reviews', 'faq', 'business-hours', 'contact'
+      ]);
 
       // Initialize contact data
       setContactData({
@@ -1209,6 +1246,272 @@ const BuisnessAdminDashboard = () => {
   const deleteTeamMember = id => {
     setTeamData(prev => prev.filter(member => member.id !== id));
     trackSectionChange('team');
+  };
+
+  // Portfolio management functions
+  const addPortfolioItem = () => {
+    const newItem = {
+      id: Date.now(),
+      title: 'New Project',
+      category: 'Design',
+      description: 'Project description',
+      image: '',
+      technologies: [],
+    };
+    setPortfolioData(prev => [...prev, newItem]);
+    trackSectionChange('portfolio');
+  };
+
+  const updatePortfolioItem = (id, field, value) => {
+    setPortfolioData(prev =>
+      prev.map(item =>
+        item.id === id ? { ...item, [field]: value } : item
+      )
+    );
+    trackSectionChange('portfolio');
+  };
+
+  const deletePortfolioItem = id => {
+    setPortfolioData(prev => prev.filter(item => item.id !== id));
+    trackSectionChange('portfolio');
+  };
+
+  // Skills management functions
+  const addSkill = () => {
+    const newSkill = {
+      id: Date.now(),
+      name: 'New Skill',
+      level: 70,
+      icon: '🔧',
+    };
+    setSkillsData(prev => [...prev, newSkill]);
+    trackSectionChange('skills');
+  };
+
+  const updateSkill = (id, field, value) => {
+    setSkillsData(prev =>
+      prev.map(skill =>
+        skill.id === id ? { ...skill, [field]: value } : skill
+      )
+    );
+    trackSectionChange('skills');
+  };
+
+  const deleteSkill = id => {
+    setSkillsData(prev => prev.filter(skill => skill.id !== id));
+    trackSectionChange('skills');
+  };
+
+  // Experience management functions
+  const addExperience = () => {
+    const newExperience = {
+      id: Date.now(),
+      company: 'Company Name',
+      role: 'Position',
+      period: '2023 - Present',
+      description: 'Job description',
+    };
+    setExperienceData(prev => [...prev, newExperience]);
+    trackSectionChange('experience');
+  };
+
+  const updateExperience = (id, field, value) => {
+    setExperienceData(prev =>
+      prev.map(exp =>
+        exp.id === id ? { ...exp, [field]: value } : exp
+      )
+    );
+    trackSectionChange('experience');
+  };
+
+  const deleteExperience = id => {
+    setExperienceData(prev => prev.filter(exp => exp.id !== id));
+    trackSectionChange('experience');
+  };
+
+  // Gallery management functions
+  const addGalleryCategory = () => {
+    const newCategory = {
+      id: Date.now(),
+      category: 'New Category',
+      images: [],
+      description: 'Category description',
+    };
+    setGalleryData(prev => [...prev, newCategory]);
+    trackSectionChange('gallery');
+  };
+
+  const updateGalleryCategory = (id, field, value) => {
+    setGalleryData(prev =>
+      prev.map(cat =>
+        cat.id === id ? { ...cat, [field]: value } : cat
+      )
+    );
+    trackSectionChange('gallery');
+  };
+
+  const deleteGalleryCategory = id => {
+    setGalleryData(prev => prev.filter(cat => cat.id !== id));
+    trackSectionChange('gallery');
+  };
+
+  // Packages management functions
+  const addPackage = () => {
+    const newPackage = {
+      id: Date.now(),
+      name: 'New Package',
+      description: 'Package description',
+      price: '$0',
+      duration: '1 hour',
+      features: [],
+      featured: false,
+    };
+    setPackagesData(prev => [...prev, newPackage]);
+    trackSectionChange('packages');
+  };
+
+  const updatePackage = (id, field, value) => {
+    setPackagesData(prev =>
+      prev.map(pkg =>
+        pkg.id === id ? { ...pkg, [field]: value } : pkg
+      )
+    );
+    trackSectionChange('packages');
+  };
+
+  const deletePackage = id => {
+    setPackagesData(prev => prev.filter(pkg => pkg.id !== id));
+    trackSectionChange('packages');
+  };
+
+  // Testimonials management functions
+  const addTestimonial = () => {
+    const newTestimonial = {
+      id: Date.now(),
+      name: 'Client Name',
+      company: 'Company',
+      role: 'Position',
+      review: 'Great experience!',
+      rating: 5,
+      image: '',
+    };
+    setTestimonialsData(prev => [...prev, newTestimonial]);
+    trackSectionChange('testimonials');
+  };
+
+  const updateTestimonial = (id, field, value) => {
+    setTestimonialsData(prev =>
+      prev.map(testimonial =>
+        testimonial.id === id ? { ...testimonial, [field]: value } : testimonial
+      )
+    );
+    trackSectionChange('testimonials');
+  };
+
+  const deleteTestimonial = id => {
+    setTestimonialsData(prev => prev.filter(testimonial => testimonial.id !== id));
+    trackSectionChange('testimonials');
+  };
+
+  // Reviews management functions
+  const addReview = () => {
+    const newReview = {
+      id: Date.now(),
+      name: 'Reviewer Name',
+      date: new Date().toLocaleDateString(),
+      rating: 5,
+      review: 'Excellent service!',
+      avatar: '',
+    };
+    setReviewsData(prev => [...prev, newReview]);
+    trackSectionChange('reviews');
+  };
+
+  const updateReview = (id, field, value) => {
+    setReviewsData(prev =>
+      prev.map(review =>
+        review.id === id ? { ...review, [field]: value } : review
+      )
+    );
+    trackSectionChange('reviews');
+  };
+
+  const deleteReview = id => {
+    setReviewsData(prev => prev.filter(review => review.id !== id));
+    trackSectionChange('reviews');
+  };
+
+  // FAQ management functions
+  const addFAQ = () => {
+    const newFAQ = {
+      id: Date.now(),
+      question: 'New Question?',
+      answer: 'Answer to the question.',
+    };
+    setFaqData(prev => [...prev, newFAQ]);
+    trackSectionChange('faq');
+  };
+
+  const updateFAQ = (id, field, value) => {
+    setFaqData(prev =>
+      prev.map(faq =>
+        faq.id === id ? { ...faq, [field]: value } : faq
+      )
+    );
+    trackSectionChange('faq');
+  };
+
+  const deleteFAQ = id => {
+    setFaqData(prev => prev.filter(faq => faq.id !== id));
+    trackSectionChange('faq');
+  };
+
+  // Custom sections management
+  const addCustomSection = () => {
+    const newSection = {
+      id: Date.now(),
+      type: 'text', // text, list, card, image
+      title: 'Custom Section',
+      content: {},
+      order: customSectionsData.length,
+      visible: true,
+    };
+    setCustomSectionsData(prev => [...prev, newSection]);
+    trackSectionChange('custom');
+  };
+
+  const updateCustomSection = (id, field, value) => {
+    setCustomSectionsData(prev =>
+      prev.map(section =>
+        section.id === id ? { ...section, [field]: value } : section
+      )
+    );
+    trackSectionChange('custom');
+  };
+
+  const deleteCustomSection = id => {
+    setCustomSectionsData(prev => prev.filter(section => section.id !== id));
+    trackSectionChange('custom');
+  };
+
+  // Image upload handler
+  const handleImageUpload = (event, callback) => {
+    const file = event.target.files[0];
+    if (file) {
+      // In a real app, you would upload to a service like AWS S3, Cloudinary, etc.
+      // For demo purposes, we'll create a blob URL
+      const imageUrl = URL.createObjectURL(file);
+      callback(imageUrl);
+    }
+  };
+
+  // Section reorder handler
+  const reorderSections = (startIndex, endIndex) => {
+    const result = Array.from(sectionOrderData);
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
+    setSectionOrderData(result);
+    trackSectionChange('order');
   };
 
   const renderContent = () => {
