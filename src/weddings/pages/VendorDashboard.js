@@ -1870,7 +1870,7 @@ const VendorDashboard = () => {
                 value={galleryData.subtitle}
                 onChange={e => {
                   setGalleryData(prev => ({ ...prev, subtitle: e.target.value }));
-                  autoSaveForPreview();
+                  trackSectionChange('gallery');
                 }}
                 placeholder="Browse through our portfolio of beautiful weddings and events"
               />
