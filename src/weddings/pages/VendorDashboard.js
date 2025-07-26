@@ -2593,58 +2593,105 @@ const VendorDashboard = () => {
               Section Order
             </SectionTitle>
             <p style={{ color: theme.colors.gray600, marginBottom: theme.spacing.lg }}>
-              Drag and drop to reorder sections as they appear on your vendor page.
+              Drag and drop to reorder sections as they appear on your vendor page. Custom sections are automatically included.
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: theme.spacing.sm }}>
-              {sectionOrder.map((sectionId, index) => {
-                const section = navigationItems.find(item => item.id === sectionId);
-                if (!section) return null;
+              {(() => {
+                // Create a combined list of default sections and custom sections
+                const allSections = [...sectionOrder];
 
-                return (
-                  <div
-                    key={sectionId}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: theme.spacing.md,
-                      padding: theme.spacing.md,
-                      border: `1px solid ${theme.colors.gray200}`,
-                      borderRadius: theme.borderRadius.md,
-                      background: theme.colors.white,
-                    }}
-                  >
-                    <FaGripHorizontal style={{ color: theme.colors.gray400, cursor: 'grab' }} />
-                    <section.icon style={{ color: theme.colors.primary }} />
-                    <span style={{ flex: 1, fontWeight: 600 }}>{section.label}</span>
-                    <ActionButton
-                      onClick={() => {
-                        if (index > 0) {
-                          const newOrder = [...sectionOrder];
-                          [newOrder[index], newOrder[index - 1]] = [newOrder[index - 1], newOrder[index]];
-                          setSectionOrder(newOrder);
-                          trackSectionChange('section-order');
-                        }
+                // Add custom sections to the order if not already present
+                customSections.forEach(customSection => {
+                  const customId = `custom-${customSection.id}`;
+                  if (!allSections.includes(customId)) {
+                    allSections.push(customId);
+                  }
+                });
+
+                return allSections.map((sectionId, index) => {
+                  let section, isCustom = false;
+
+                  if (sectionId.startsWith('custom-')) {
+                    // This is a custom section
+                    const customId = sectionId.replace('custom-', '');
+                    const customSection = customSections.find(cs => cs.id === customId);
+                    if (customSection) {
+                      section = {
+                        id: sectionId,
+                        label: customSection.title,
+                        icon: FaPlus
+                      };
+                      isCustom = true;
+                    }
+                  } else {
+                    // This is a default section
+                    section = navigationItems.find(item => item.id === sectionId);
+                  }
+
+                  if (!section) return null;
+
+                  return (
+                    <div
+                      key={sectionId}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: theme.spacing.md,
+                        padding: theme.spacing.md,
+                        border: `1px solid ${isCustom ? theme.colors.primary : theme.colors.gray200}`,
+                        borderRadius: theme.borderRadius.md,
+                        background: isCustom ? theme.colors.primary + '10' : theme.colors.white,
                       }}
-                      disabled={index === 0}
                     >
-                      ↑
-                    </ActionButton>
-                    <ActionButton
-                      onClick={() => {
-                        if (index < sectionOrder.length - 1) {
-                          const newOrder = [...sectionOrder];
-                          [newOrder[index], newOrder[index + 1]] = [newOrder[index + 1], newOrder[index]];
-                          setSectionOrder(newOrder);
-                          trackSectionChange('section-order');
-                        }
-                      }}
-                      disabled={index === sectionOrder.length - 1}
-                    >
-                      ↓
-                    </ActionButton>
-                  </div>
-                );
-              })}
+                      <FaGripHorizontal style={{ color: theme.colors.gray400, cursor: 'grab' }} />
+                      <section.icon style={{ color: theme.colors.primary }} />
+                      <span style={{ flex: 1, fontWeight: 600 }}>
+                        {section.label}
+                        {isCustom && <span style={{ fontSize: '0.8rem', color: theme.colors.primary, marginLeft: '8px' }}>(Custom)</span>}
+                      </span>
+                      <ActionButton
+                        onClick={() => {
+                          if (index > 0) {
+                            const newOrder = [...allSections];
+                            [newOrder[index], newOrder[index - 1]] = [newOrder[index - 1], newOrder[index]];
+                            setSectionOrder(newOrder.filter(id => !id.startsWith('custom-')));
+                            trackSectionChange('section-order');
+                          }
+                        }}
+                        disabled={index === 0}
+                      >
+                        ↑
+                      </ActionButton>
+                      <ActionButton
+                        onClick={() => {
+                          if (index < allSections.length - 1) {
+                            const newOrder = [...allSections];
+                            [newOrder[index], newOrder[index + 1]] = [newOrder[index + 1], newOrder[index]];
+                            setSectionOrder(newOrder.filter(id => !id.startsWith('custom-')));
+                            trackSectionChange('section-order');
+                          }
+                        }}
+                        disabled={index === allSections.length - 1}
+                      >
+                        ↓
+                      </ActionButton>
+                      {isCustom && (
+                        <ActionButton
+                          variant="danger"
+                          onClick={() => {
+                            const customId = sectionId.replace('custom-', '');
+                            const updatedSections = customSections.filter(cs => cs.id !== customId);
+                            setCustomSections(updatedSections);
+                            trackSectionChange('section-order');
+                          }}
+                        >
+                          <FaTrash />
+                        </ActionButton>
+                      )}
+                    </div>
+                  );
+                });
+              })()}
             </div>
           </ContentSection>
         );
