@@ -24,7 +24,7 @@ import {
   storeCategories,
   platformStats,
   platformBenefits,
-  platformTestimonials
+  platformTestimonials,
 } from '../../DummyData/platform';
 
 const PageContainer = styled.div`

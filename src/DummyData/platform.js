@@ -17,7 +17,7 @@ import {
   FaChartLine,
   FaUsers,
   FaBriefcase,
-  FaShoppingCart
+  FaShoppingCart,
 } from 'react-icons/fa';
 
 export const storeCategories = [

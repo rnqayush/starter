@@ -1293,7 +1293,10 @@ const VendorPage = () => {
             if (!customSection) return null;
 
             // Check custom section visibility
-            if (vendor.customSectionVisibility && vendor.customSectionVisibility[customId] === false) {
+            if (
+              vendor.customSectionVisibility &&
+              vendor.customSectionVisibility[customId] === false
+            ) {
               return null;
             }
 
@@ -1373,7 +1376,10 @@ const VendorPage = () => {
 
           // Handle default sections
           // Check section visibility for default sections
-          if (vendor.sectionVisibility && vendor.sectionVisibility[sectionId] === false) {
+          if (
+            vendor.sectionVisibility &&
+            vendor.sectionVisibility[sectionId] === false
+          ) {
             return null;
           }
 

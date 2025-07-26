@@ -34,7 +34,7 @@ export const {
   pricingFeatures,
   pricingFAQs,
   websiteTypes,
-  colorOptions
+  colorOptions,
 } = PlatformData;
 
 // Export utility functions with prefixed names to avoid conflicts

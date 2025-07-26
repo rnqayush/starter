@@ -764,12 +764,12 @@ const VendorDashboard = () => {
 
   // Section visibility state
   const [sectionVisibility, setSectionVisibility] = useState({
-    'hero': true,
+    hero: true,
     'about-us': true,
     'services-offered': true,
     'recent-work': true,
-    'gallery': true,
-    'testimonials': true,
+    gallery: true,
+    testimonials: true,
     'packages-pricing': true,
   });
 
@@ -797,17 +797,17 @@ const VendorDashboard = () => {
   };
 
   // Handle section visibility toggle
-  const toggleSectionVisibility = (sectionId) => {
+  const toggleSectionVisibility = sectionId => {
     if (sectionId.startsWith('custom-')) {
       const customId = sectionId.replace('custom-', '');
       setCustomSectionVisibility(prev => ({
         ...prev,
-        [customId]: !prev[customId]
+        [customId]: !prev[customId],
       }));
     } else {
       setSectionVisibility(prev => ({
         ...prev,
-        [sectionId]: !prev[sectionId]
+        [sectionId]: !prev[sectionId],
       }));
     }
     trackSectionChange(sectionId);
@@ -894,7 +894,8 @@ const VendorDashboard = () => {
           });
           return cleanGallery;
         })(),
-        sectionOrder: completeSectionOrder.length > 0 ? completeSectionOrder : sectionOrder,
+        sectionOrder:
+          completeSectionOrder.length > 0 ? completeSectionOrder : sectionOrder,
         customSections: customSections,
         sectionVisibility: sectionVisibility,
         customSectionVisibility: customSectionVisibility,
@@ -1123,7 +1124,8 @@ const VendorDashboard = () => {
       // Initialize custom section visibility
       const customVisibility = {};
       customSectionsWithIds.forEach(section => {
-        customVisibility[section.id] = vendorData.customSectionVisibility?.[section.id] !== false;
+        customVisibility[section.id] =
+          vendorData.customSectionVisibility?.[section.id] !== false;
       });
       setCustomSectionVisibility(customVisibility);
 
@@ -1154,13 +1156,15 @@ const VendorDashboard = () => {
 
       // Initialize section visibility from vendor data
       const initialVisibility = {
-        'hero': vendorData.sectionVisibility?.hero !== false,
+        hero: vendorData.sectionVisibility?.hero !== false,
         'about-us': vendorData.sectionVisibility?.['about-us'] !== false,
-        'services-offered': vendorData.sectionVisibility?.['services-offered'] !== false,
+        'services-offered':
+          vendorData.sectionVisibility?.['services-offered'] !== false,
         'recent-work': vendorData.sectionVisibility?.['recent-work'] !== false,
-        'gallery': vendorData.sectionVisibility?.gallery !== false,
-        'testimonials': vendorData.sectionVisibility?.testimonials !== false,
-        'packages-pricing': vendorData.sectionVisibility?.['packages-pricing'] !== false,
+        gallery: vendorData.sectionVisibility?.gallery !== false,
+        testimonials: vendorData.sectionVisibility?.testimonials !== false,
+        'packages-pricing':
+          vendorData.sectionVisibility?.['packages-pricing'] !== false,
       };
       setSectionVisibility(initialVisibility);
     }
@@ -1389,7 +1393,13 @@ const VendorDashboard = () => {
       });
       dispatch({
         type: 'vendorManagement/updateVendorField',
-        payload: { field: 'sectionOrder', value: completeSectionOrder.length > 0 ? completeSectionOrder : sectionOrder },
+        payload: {
+          field: 'sectionOrder',
+          value:
+            completeSectionOrder.length > 0
+              ? completeSectionOrder
+              : sectionOrder,
+        },
       });
       dispatch({
         type: 'vendorManagement/updateVendorField',
@@ -1401,7 +1411,10 @@ const VendorDashboard = () => {
       });
       dispatch({
         type: 'vendorManagement/updateVendorField',
-        payload: { field: 'customSectionVisibility', value: customSectionVisibility },
+        payload: {
+          field: 'customSectionVisibility',
+          value: customSectionVisibility,
+        },
       });
 
       console.log('Saving changes...');
@@ -1547,20 +1560,24 @@ const VendorDashboard = () => {
 
       // Reset section visibility
       const originalVisibility = {
-        'hero': originalVendor.sectionVisibility?.hero !== false,
+        hero: originalVendor.sectionVisibility?.hero !== false,
         'about-us': originalVendor.sectionVisibility?.['about-us'] !== false,
-        'services-offered': originalVendor.sectionVisibility?.['services-offered'] !== false,
-        'recent-work': originalVendor.sectionVisibility?.['recent-work'] !== false,
-        'gallery': originalVendor.sectionVisibility?.gallery !== false,
-        'testimonials': originalVendor.sectionVisibility?.testimonials !== false,
-        'packages-pricing': originalVendor.sectionVisibility?.['packages-pricing'] !== false,
+        'services-offered':
+          originalVendor.sectionVisibility?.['services-offered'] !== false,
+        'recent-work':
+          originalVendor.sectionVisibility?.['recent-work'] !== false,
+        gallery: originalVendor.sectionVisibility?.gallery !== false,
+        testimonials: originalVendor.sectionVisibility?.testimonials !== false,
+        'packages-pricing':
+          originalVendor.sectionVisibility?.['packages-pricing'] !== false,
       };
       setSectionVisibility(originalVisibility);
 
       // Reset custom section visibility
       const originalCustomVisibility = {};
       originalCustomSectionsWithIds.forEach(section => {
-        originalCustomVisibility[section.id] = originalVendor.customSectionVisibility?.[section.id] !== false;
+        originalCustomVisibility[section.id] =
+          originalVendor.customSectionVisibility?.[section.id] !== false;
       });
       setCustomSectionVisibility(originalCustomVisibility);
 
@@ -1784,7 +1801,7 @@ const VendorDashboard = () => {
       // Update visibility for existing section
       setCustomSectionVisibility(prev => ({
         ...prev,
-        [sectionData.id]: sectionData.visible
+        [sectionData.id]: sectionData.visible,
       }));
     } else {
       // Add new section
@@ -1800,7 +1817,7 @@ const VendorDashboard = () => {
       // Set visibility for new custom section
       setCustomSectionVisibility(prev => ({
         ...prev,
-        [sectionData.id]: sectionData.visible
+        [sectionData.id]: sectionData.visible,
       }));
     }
 
@@ -2012,7 +2029,9 @@ const VendorDashboard = () => {
                 About Us
               </SectionTitle>
               <VisibilityToggleContainer>
-                <span>{sectionVisibility['about-us'] ? 'Visible' : 'Hidden'}</span>
+                <span>
+                  {sectionVisibility['about-us'] ? 'Visible' : 'Hidden'}
+                </span>
                 <ToggleSwitch>
                   <input
                     type="checkbox"
@@ -2279,7 +2298,9 @@ const VendorDashboard = () => {
                 Services Offered
               </SectionTitle>
               <VisibilityToggleContainer>
-                <span>{sectionVisibility['services-offered'] ? 'Visible' : 'Hidden'}</span>
+                <span>
+                  {sectionVisibility['services-offered'] ? 'Visible' : 'Hidden'}
+                </span>
                 <ToggleSwitch>
                   <input
                     type="checkbox"
@@ -2416,7 +2437,9 @@ const VendorDashboard = () => {
                 Portfolio & Recent Work
               </SectionTitle>
               <VisibilityToggleContainer>
-                <span>{sectionVisibility['recent-work'] ? 'Visible' : 'Hidden'}</span>
+                <span>
+                  {sectionVisibility['recent-work'] ? 'Visible' : 'Hidden'}
+                </span>
                 <ToggleSwitch>
                   <input
                     type="checkbox"
@@ -2744,7 +2767,9 @@ const VendorDashboard = () => {
                 Gallery
               </SectionTitle>
               <VisibilityToggleContainer>
-                <span>{sectionVisibility['gallery'] ? 'Visible' : 'Hidden'}</span>
+                <span>
+                  {sectionVisibility['gallery'] ? 'Visible' : 'Hidden'}
+                </span>
                 <ToggleSwitch>
                   <input
                     type="checkbox"
@@ -2914,7 +2939,9 @@ const VendorDashboard = () => {
                 Testimonials
               </SectionTitle>
               <VisibilityToggleContainer>
-                <span>{sectionVisibility['testimonials'] ? 'Visible' : 'Hidden'}</span>
+                <span>
+                  {sectionVisibility['testimonials'] ? 'Visible' : 'Hidden'}
+                </span>
                 <ToggleSwitch>
                   <input
                     type="checkbox"
@@ -3010,7 +3037,9 @@ const VendorDashboard = () => {
                 Packages & Pricing
               </SectionTitle>
               <VisibilityToggleContainer>
-                <span>{sectionVisibility['packages-pricing'] ? 'Visible' : 'Hidden'}</span>
+                <span>
+                  {sectionVisibility['packages-pricing'] ? 'Visible' : 'Hidden'}
+                </span>
                 <ToggleSwitch>
                   <input
                     type="checkbox"
@@ -3200,10 +3229,17 @@ const VendorDashboard = () => {
                             fontSize: '0.75rem',
                             color: (() => {
                               if (isCustom) {
-                                const customId = sectionId.replace('custom-', '');
-                                return customSectionVisibility[customId] ? theme.colors.success : theme.colors.gray400;
+                                const customId = sectionId.replace(
+                                  'custom-',
+                                  ''
+                                );
+                                return customSectionVisibility[customId]
+                                  ? theme.colors.success
+                                  : theme.colors.gray400;
                               }
-                              return sectionVisibility[sectionId] ? theme.colors.success : theme.colors.gray400;
+                              return sectionVisibility[sectionId]
+                                ? theme.colors.success
+                                : theme.colors.gray400;
                             })(),
                             marginLeft: '8px',
                             display: 'flex',
@@ -3214,9 +3250,17 @@ const VendorDashboard = () => {
                           {(() => {
                             if (isCustom) {
                               const customId = sectionId.replace('custom-', '');
-                              return customSectionVisibility[customId] ? <FaEye /> : <FaEyeSlash />;
+                              return customSectionVisibility[customId] ? (
+                                <FaEye />
+                              ) : (
+                                <FaEyeSlash />
+                              );
                             }
-                            return sectionVisibility[sectionId] ? <FaEye /> : <FaEyeSlash />;
+                            return sectionVisibility[sectionId] ? (
+                              <FaEye />
+                            ) : (
+                              <FaEyeSlash />
+                            );
                           })()}
                         </span>
                       </span>
@@ -3231,7 +3275,9 @@ const VendorDashboard = () => {
                             // Update the complete section order
                             setCompleteSectionOrder(newOrder);
                             // Update the default sections order (excluding custom ones)
-                            const defaultSections = newOrder.filter(id => !id.startsWith('custom-'));
+                            const defaultSections = newOrder.filter(
+                              id => !id.startsWith('custom-')
+                            );
                             setSectionOrder(defaultSections);
                             trackSectionChange('section-order');
                           }
@@ -3251,7 +3297,9 @@ const VendorDashboard = () => {
                             // Update the complete section order
                             setCompleteSectionOrder(newOrder);
                             // Update the default sections order (excluding custom ones)
-                            const defaultSections = newOrder.filter(id => !id.startsWith('custom-'));
+                            const defaultSections = newOrder.filter(
+                              id => !id.startsWith('custom-')
+                            );
                             setSectionOrder(defaultSections);
                             trackSectionChange('section-order');
                           }
@@ -3270,9 +3318,10 @@ const VendorDashboard = () => {
                             );
                             setCustomSections(updatedSections);
                             // Remove from complete section order
-                            const updatedCompleteOrder = completeSectionOrder.filter(
-                              id => id !== sectionId
-                            );
+                            const updatedCompleteOrder =
+                              completeSectionOrder.filter(
+                                id => id !== sectionId
+                              );
                             setCompleteSectionOrder(updatedCompleteOrder);
                             trackSectionChange('section-order');
                           }}
@@ -3328,14 +3377,26 @@ const VendorDashboard = () => {
                   <h3 style={{ margin: 0, color: theme.colors.primary }}>
                     {section.title}
                   </h3>
-                  <div style={{ display: 'flex', gap: theme.spacing.sm, alignItems: 'center' }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      gap: theme.spacing.sm,
+                      alignItems: 'center',
+                    }}
+                  >
                     <VisibilityToggleContainer>
-                      <span>{customSectionVisibility[section.id] ? 'Visible' : 'Hidden'}</span>
+                      <span>
+                        {customSectionVisibility[section.id]
+                          ? 'Visible'
+                          : 'Hidden'}
+                      </span>
                       <ToggleSwitch>
                         <input
                           type="checkbox"
                           checked={customSectionVisibility[section.id] || false}
-                          onChange={() => toggleSectionVisibility(`custom-${section.id}`)}
+                          onChange={() =>
+                            toggleSectionVisibility(`custom-${section.id}`)
+                          }
                         />
                         <span></span>
                       </ToggleSwitch>
@@ -3889,8 +3950,16 @@ const VendorDashboard = () => {
             <FormGroup style={{ marginBottom: theme.spacing.md }}>
               <VisibilityToggleContainer>
                 <FormLabel>Section Visibility</FormLabel>
-                <div style={{ display: 'flex', alignItems: 'center', gap: theme.spacing.sm }}>
-                  <span>{customSectionForm.visible ? 'Visible' : 'Hidden'}</span>
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: theme.spacing.sm,
+                  }}
+                >
+                  <span>
+                    {customSectionForm.visible ? 'Visible' : 'Hidden'}
+                  </span>
                   <ToggleSwitch>
                     <input
                       type="checkbox"

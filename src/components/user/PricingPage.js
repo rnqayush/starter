@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import {
-  FaCheck,
-  FaStar,
-  FaArrowRight,
-  FaPlus,
-  FaMinus,
-} from 'react-icons/fa';
+import { FaCheck, FaStar, FaArrowRight, FaPlus, FaMinus } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
 import Header from '../shared/Header';
-import { pricingPlans, pricingFeatures, pricingFAQs } from '../../DummyData/platform';
+import {
+  pricingPlans,
+  pricingFeatures,
+  pricingFAQs,
+} from '../../DummyData/platform';
 
 const PageContainer = styled.div`
   min-height: 100vh;
