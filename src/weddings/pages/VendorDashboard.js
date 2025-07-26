@@ -1853,75 +1853,129 @@ const VendorDashboard = () => {
               <FormLabel>Gallery Subtitle</FormLabel>
               <FormInput
                 value={galleryData.subtitle}
-                onChange={e =>
-                  setGalleryData(prev => ({ ...prev, subtitle: e.target.value }))
-                }
+                onChange={e => {
+                  setGalleryData(prev => ({ ...prev, subtitle: e.target.value }));
+                  autoSaveForPreview();
+                }}
                 placeholder="Browse through our portfolio of beautiful weddings and events"
               />
             </FormGroup>
-            
-            <TabsContainer>
-              {Object.entries(galleryData.categories).map(([key, category]) => (
-                <Tab
-                  key={key}
-                  active={galleryData.activeTab === key}
-                  onClick={() => setGalleryData(prev => ({ ...prev, activeTab: key }))}
-                >
-                  {category.title}
-                </Tab>
-              ))}
-            </TabsContainer>
-            
-            <div style={{ marginBottom: theme.spacing.lg }}>
-              <FormLabel>Add Images to {galleryData.categories[galleryData.activeTab]?.title}</FormLabel>
-              <FileUploadContainer>
-                <FileUploadBox>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    multiple
-                    onChange={e => {
-                      Array.from(e.target.files).forEach(file => {
-                        const reader = new FileReader();
-                        reader.onload = event => {
-                          addGalleryImage(galleryData.activeTab, event.target.result);
-                        };
-                        reader.readAsDataURL(file);
+
+            {/* Existing Categories */}
+            {Object.entries(galleryData.categories).map(([key, category]) => (
+              <div
+                key={key}
+                style={{
+                  border: `1px solid ${theme.colors.gray200}`,
+                  borderRadius: theme.borderRadius.md,
+                  padding: theme.spacing.lg,
+                  marginBottom: theme.spacing.lg,
+                }}
+              >
+                <FormGrid>
+                  <FormGroup>
+                    <FormLabel>Category Title</FormLabel>
+                    <FormInput
+                      value={category.title || key}
+                      onChange={e => {
+                        setGalleryData(prev => ({
+                          ...prev,
+                          categories: {
+                            ...prev.categories,
+                            [key]: {
+                              ...prev.categories[key],
+                              title: e.target.value,
+                            },
+                          },
+                        }));
+                        autoSaveForPreview();
+                      }}
+                      placeholder="Category name"
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <FormLabel>Add Images</FormLabel>
+                    <FileUploadContainer>
+                      <FileUploadBox>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          multiple
+                          onChange={e => {
+                            Array.from(e.target.files).forEach(file => {
+                              const reader = new FileReader();
+                              reader.onload = event => {
+                                addGalleryImage(key, event.target.result);
+                                autoSaveForPreview();
+                              };
+                              reader.readAsDataURL(file);
+                            });
+                          }}
+                        />
+                        <FaUpload size={20} color={theme.colors.gray400} />
+                        <span style={{ fontSize: '0.7rem', textAlign: 'center' }}>Upload</span>
+                      </FileUploadBox>
+                    </FileUploadContainer>
+                  </FormGroup>
+                </FormGrid>
+
+                {/* Category Images */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))', gap: theme.spacing.sm, marginTop: theme.spacing.md }}>
+                  {category.images?.map((image, index) => (
+                    <ImagePreview key={index} style={{ width: '120px', height: '80px' }}>
+                      <img src={image} alt={`${category.title} ${index}`} />
+                      <ImageOverlay>
+                        <RemoveImageButton
+                          onClick={() => {
+                            removeGalleryImage(key, index);
+                            autoSaveForPreview();
+                          }}
+                        >
+                          <FaTrash />
+                        </RemoveImageButton>
+                      </ImageOverlay>
+                    </ImagePreview>
+                  ))}
+                </div>
+
+                <div style={{ textAlign: 'right', marginTop: theme.spacing.md }}>
+                  <ActionButton
+                    variant="danger"
+                    onClick={() => {
+                      setGalleryData(prev => {
+                        const newCategories = { ...prev.categories };
+                        delete newCategories[key];
+                        return { ...prev, categories: newCategories };
                       });
+                      autoSaveForPreview();
                     }}
-                  />
-                  <FaUpload size={24} color={theme.colors.gray400} />
-                  <span style={{ fontSize: '0.8rem', textAlign: 'center' }}>Upload Images</span>
-                </FileUploadBox>
-                <FormGroup style={{ flex: 1 }}>
-                  <FormLabel>Or paste image URLs (one per line)</FormLabel>
-                  <FormTextarea
-                    placeholder="https://example.com/image1.jpg&#10;https://example.com/image2.jpg"
-                    rows={3}
-                    onBlur={e => {
-                      const urls = e.target.value.split('\n').filter(url => url.trim());
-                      urls.forEach(url => addGalleryImage(galleryData.activeTab, url.trim()));
-                      e.target.value = '';
-                    }}
-                  />
-                </FormGroup>
-              </FileUploadContainer>
-            </div>
-            
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: theme.spacing.md }}>
-              {galleryData.categories[galleryData.activeTab]?.images?.map((image, index) => (
-                <ImagePreview key={index}>
-                  <img src={image} alt={`Gallery ${index}`} />
-                  <ImageOverlay>
-                    <RemoveImageButton
-                      onClick={() => removeGalleryImage(galleryData.activeTab, index)}
-                    >
-                      <FaTrash />
-                    </RemoveImageButton>
-                  </ImageOverlay>
-                </ImagePreview>
-              ))}
-            </div>
+                  >
+                    <FaTrash />
+                    Remove Category
+                  </ActionButton>
+                </div>
+              </div>
+            ))}
+
+            {/* Add New Category Button */}
+            <ActionButton
+              onClick={() => {
+                const newCategoryKey = `category_${Date.now()}`;
+                setGalleryData(prev => ({
+                  ...prev,
+                  categories: {
+                    ...prev.categories,
+                    [newCategoryKey]: {
+                      title: 'New Category',
+                      images: [],
+                    },
+                  },
+                }));
+              }}
+            >
+              <FaPlus />
+              Add New Category
+            </ActionButton>
           </ContentSection>
         );
 
