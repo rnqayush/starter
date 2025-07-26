@@ -999,6 +999,18 @@ const BuisnessAdminDashboard = () => {
       section: 'Content Management',
     },
     {
+      id: 'custom-sections',
+      label: 'Custom Sections',
+      icon: FaPlus,
+      section: 'Advanced',
+    },
+    {
+      id: 'section-order',
+      label: 'Section Order',
+      icon: FaList,
+      section: 'Advanced',
+    },
+    {
       id: 'settings',
       label: 'Settings',
       icon: FaCog,
