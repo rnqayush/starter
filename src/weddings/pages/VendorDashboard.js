@@ -1165,16 +1165,32 @@ const VendorDashboard = () => {
       );
       setRecentWorkData(originalRecentWorkWithIds);
 
-      // Reset gallery
+      // Reset gallery - convert old format to new format
+      const originalGalleryCategories = {};
+      if (originalVendor.gallery) {
+        Object.keys(originalVendor.gallery).forEach(key => {
+          if (Array.isArray(originalVendor.gallery[key])) {
+            originalGalleryCategories[key] = {
+              title: key.charAt(0).toUpperCase() + key.slice(1),
+              images: originalVendor.gallery[key],
+            };
+          } else if (originalVendor.gallery[key]?.images) {
+            originalGalleryCategories[key] = originalVendor.gallery[key];
+          }
+        });
+      }
+
+      if (Object.keys(originalGalleryCategories).length === 0) {
+        originalGalleryCategories.decor = { title: 'Decor', images: [] };
+        originalGalleryCategories.venues = { title: 'Venues', images: [] };
+        originalGalleryCategories.photography = { title: 'Photography', images: [] };
+        originalGalleryCategories.catering = { title: 'Catering', images: [] };
+      }
+
       setGalleryData({
         subtitle: 'Browse through our portfolio of beautiful weddings and events',
-        activeTab: 'decor',
-        categories: originalVendor.gallery || {
-          decor: { title: 'Decor', images: [] },
-          venues: { title: 'Venues', images: [] },
-          photography: { title: 'Photography', images: [] },
-          catering: { title: 'Catering', images: [] },
-        },
+        activeTab: Object.keys(originalGalleryCategories)[0] || 'decor',
+        categories: originalGalleryCategories,
       });
 
       // Reset testimonials
