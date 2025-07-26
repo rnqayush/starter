@@ -1097,6 +1097,18 @@ const VendorDashboard = () => {
         }
       });
       setCompleteSectionOrder(completeOrder);
+
+      // Initialize section visibility from vendor data
+      const initialVisibility = {
+        'hero': vendorData.sectionVisibility?.hero !== false,
+        'about-us': vendorData.sectionVisibility?.['about-us'] !== false,
+        'services-offered': vendorData.sectionVisibility?.['services-offered'] !== false,
+        'recent-work': vendorData.sectionVisibility?.['recent-work'] !== false,
+        'gallery': vendorData.sectionVisibility?.gallery !== false,
+        'testimonials': vendorData.sectionVisibility?.testimonials !== false,
+        'packages-pricing': vendorData.sectionVisibility?.['packages-pricing'] !== false,
+      };
+      setSectionVisibility(initialVisibility);
     }
     setLoading(false);
   }, [vendorId, dispatch]);
