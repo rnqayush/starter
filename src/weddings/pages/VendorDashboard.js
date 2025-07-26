@@ -695,18 +695,23 @@ const VendorDashboard = () => {
     if (!editingVendor) return;
 
     try {
+      // Sanitize data to ensure it's serializable
+      const sanitizeData = (data) => {
+        return JSON.parse(JSON.stringify(data));
+      };
+
       // Update vendor data in Redux with all local changes
       dispatch(updateVendorField({ field: 'name', value: heroData.name }));
       dispatch(updateVendorField({ field: 'tagline', value: heroData.tagline }));
       dispatch(updateVendorField({ field: 'image', value: heroData.image }));
       dispatch(updateVendorField({ field: 'description', value: aboutUsData.description }));
 
-      // Update complex data structures
-      dispatch(updateServices(servicesData));
-      dispatch(updateRecentWork(recentWorkData));
-      dispatch(updateTestimonials(testimonialsData));
-      dispatch(updatePackages(packagesData));
-      dispatch(updateCustomSections(customSections));
+      // Update complex data structures with sanitized data
+      dispatch(updateServices(sanitizeData(servicesData)));
+      dispatch(updateRecentWork(sanitizeData(recentWorkData)));
+      dispatch(updateTestimonials(sanitizeData(testimonialsData)));
+      dispatch(updatePackages(sanitizeData(packagesData)));
+      dispatch(updateCustomSections(sanitizeData(customSections)));
 
       // Save all changes to global state
       dispatch(saveChanges());
