@@ -819,10 +819,13 @@ const VendorDashboard = () => {
         completedWeddings: vendorData.aboutUs?.completedWeddings || '0+',
         satisfiedCouples: vendorData.aboutUs?.satisfiedCouples || '0+',
         videoEmbed: vendorData.aboutUs?.videoEmbed || '',
+        aboutImage: vendorData.aboutUs?.aboutImage || '',
+        mediaType: vendorData.aboutUs?.videoEmbed ? 'video' : 'image',
         videoFile: null,
-        experienceVisible: true,
-        weddingsVisible: true,
-        couplesVisible: true,
+        imageFile: null,
+        experienceVisible: vendorData.aboutUs?.experienceVisible !== false,
+        weddingsVisible: vendorData.aboutUs?.weddingsVisible !== false,
+        couplesVisible: vendorData.aboutUs?.couplesVisible !== false,
       });
 
       // Pre-fill services with unique IDs
