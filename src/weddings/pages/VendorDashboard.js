@@ -1813,6 +1813,7 @@ const VendorDashboard = () => {
       content: '',
       images: [],
       cards: [],
+      visible: true,
     });
     trackSectionChange('custom-sections');
 
