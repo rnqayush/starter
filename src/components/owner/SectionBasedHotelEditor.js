@@ -749,6 +749,17 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
 
   const openModal = (sectionType) => {
     setActiveModal(sectionType);
+
+    // Reset new section data when opening add-section modal
+    if (sectionType === 'add-section') {
+      setNewSectionData({
+        title: '',
+        type: '',
+        content: []
+      });
+      return;
+    }
+
     // Initialize temp data with current hotel data - exactly as it appears on hotel detail page
     if (editingHotel) {
       setTempData({
