@@ -1530,9 +1530,19 @@ const VendorDashboard = () => {
   };
 
   const saveCustomSection = () => {
+    if (!customSectionForm.title.trim()) {
+      alert('Please enter a section title');
+      return;
+    }
+
     const sectionData = {
       id: editingCustomSection?.id || `custom-${Date.now()}`,
-      ...customSectionForm,
+      title: customSectionForm.title.trim(),
+      subtitle: customSectionForm.subtitle.trim(),
+      type: customSectionForm.type,
+      content: customSectionForm.content.trim(),
+      images: customSectionForm.images || [],
+      cards: customSectionForm.cards || []
     };
 
     if (editingCustomSection) {
@@ -1548,7 +1558,19 @@ const VendorDashboard = () => {
     }
 
     setShowCustomSectionModal(false);
+    setEditingCustomSection(null);
+    setCustomSectionForm({
+      title: '',
+      subtitle: '',
+      type: 'text',
+      content: '',
+      images: [],
+      cards: []
+    });
     trackSectionChange('custom-sections');
+
+    // Automatically trigger real-time updates
+    setTimeout(() => updateEditingVendorInRedux(), 100);
   };
 
   const addCustomSectionCard = () => {
