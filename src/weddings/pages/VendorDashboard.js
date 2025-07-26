@@ -732,6 +732,18 @@ const VendorDashboard = () => {
   const [packagesData, setPackagesData] = useState([]);
   const [customSections, setCustomSections] = useState([]);
 
+  const [sectionOrder, setSectionOrder] = useState([
+    'hero',
+    'about-us',
+    'services-offered',
+    'recent-work',
+    'gallery',
+    'packages-pricing',
+    'testimonials'
+  ]);
+
+  const [changedSections, setChangedSections] = useState(new Set());
+
   const navigationItems = [
     {
       id: 'hero',
