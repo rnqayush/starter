@@ -1352,9 +1352,10 @@ const VendorDashboard = () => {
                 <FormLabel>Tagline</FormLabel>
                 <FormTextarea
                   value={heroData.tagline}
-                  onChange={e =>
-                    setHeroData(prev => ({ ...prev, tagline: e.target.value }))
-                  }
+                  onChange={e => {
+                    setHeroData(prev => ({ ...prev, tagline: e.target.value }));
+                    autoSaveForPreview();
+                  }}
                   placeholder="Enter your business tagline..."
                   rows={3}
                 />
