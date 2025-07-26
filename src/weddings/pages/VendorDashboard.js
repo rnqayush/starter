@@ -851,7 +851,7 @@ const VendorDashboard = () => {
       );
       setServicesData(servicesWithIds);
 
-      // Pre-fill recent work data with unique IDs
+      // Pre-fill recent work data with unique IDs and full portfolio details
       const recentWorkWithIds = (vendorData.locationPortfolio || []).map(
         (work, index) => ({
           ...work,
@@ -860,6 +860,11 @@ const VendorDashboard = () => {
           location: work.city || '',
           date: work.weddingDate || '',
           image: work.coverImage || '',
+          coupleNames: work.coupleNames || '',
+          description: work.description || '',
+          services: work.services || [],
+          highlights: work.highlights || [],
+          gallery: work.gallery || [],
           imageFile: null,
         })
       );
