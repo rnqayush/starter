@@ -1042,14 +1042,15 @@ const VendorDashboard = () => {
 
       const cleanRecentWork = recentWorkData.map(work => ({
         id: work.id,
-        title: work.title || '',
-        location: work.location || '',
-        date: work.date || '',
-        image: work.image || '',
+        location: work.title || '',
         city: work.location || '',
         weddingDate: work.date || '',
-        coverImage: work.image || '',
+        coupleNames: work.coupleNames || '',
         description: work.description || '',
+        coverImage: work.image || '',
+        services: Array.isArray(work.services) ? work.services : [],
+        highlights: Array.isArray(work.highlights) ? work.highlights : [],
+        gallery: Array.isArray(work.gallery) ? work.gallery : [],
       }));
 
       const cleanTestimonials = testimonialsData.map(testimonial => ({
