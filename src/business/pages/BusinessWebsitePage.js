@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import {
   FaEdit,
@@ -1385,6 +1386,11 @@ const BusinessWebsitePage = () => {
   // Support both businessSlug (legacy routes) and slug (new optimized routes)
   const actualSlug = businessSlug || slug;
 
+  // Get business data from Redux store for real-time updates
+  const { businesses, editingBusiness } = useSelector(
+    state => state.businessManagement
+  );
+
   useEffect(() => {
     // Extract slug from URL - either from params or from pathname
     let extractedSlug = actualSlug;
@@ -1394,11 +1400,32 @@ const BusinessWebsitePage = () => {
       extractedSlug = pathSegments[0];
     }
 
-    const template = getBusinessTemplate(extractedSlug);
-    if (template) {
-      setBusinessData(template);
+    let businessTemplate = null;
+
+    // Priority 1: Use editing business data for real-time updates during editing
+    if (editingBusiness && editingBusiness.slug === extractedSlug) {
+      businessTemplate = editingBusiness;
+      console.log(
+        'Using editing business data for real-time updates:',
+        editingBusiness
+      );
     }
-  }, [actualSlug, location.pathname]);
+    // Priority 2: Use saved business data from Redux businesses array
+    else if (businesses && businesses.length > 0) {
+      businessTemplate = businesses.find(b => b.slug === extractedSlug);
+      console.log('Using saved business data from Redux:', businessTemplate);
+    }
+    // Priority 3: Fallback to template data
+    if (!businessTemplate) {
+      businessTemplate = getBusinessTemplate(extractedSlug);
+      console.log('Using fallback template data:', businessTemplate);
+    }
+
+    if (businessTemplate) {
+      setBusinessData(businessTemplate);
+      console.log('BusinessWebsitePage: Updated business data', businessTemplate);
+    }
+  }, [actualSlug, location.pathname, businesses, editingBusiness]);
 
   if (!businessData) {
     return (
