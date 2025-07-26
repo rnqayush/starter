@@ -880,9 +880,22 @@ const BuisnessAdminDashboard = () => {
           { id: 2, name: 'Spa Day', description: 'Full day relaxation with massage, facial, and beauty treatments', price: '$199', duration: '6 hours' },
         ],
         gallery: [
-          { id: 1, category: 'Hair Styling', images: 8 },
-          { id: 2, category: 'Nail Art', images: 6 },
-          { id: 3, category: 'Spa Treatments', images: 5 },
+          { id: 1, category: 'Hair Styling', images: 8, description: 'Latest hair styling work' },
+          { id: 2, category: 'Nail Art', images: 6, description: 'Creative nail designs' },
+          { id: 3, category: 'Spa Treatments', images: 5, description: 'Relaxing spa services' },
+        ],
+        testimonials: [
+          { id: 1, name: 'Emma Wilson', company: 'Marketing Pro', role: 'Manager', review: 'Amazing service! The team is professional and the results are outstanding.', rating: 5, image: '' },
+          { id: 2, name: 'Jessica Brown', company: 'Tech Solutions', role: 'CEO', review: 'Highly recommend! Great experience and excellent customer service.', rating: 5, image: '' },
+        ],
+        reviews: [
+          { id: 1, name: 'Sarah K.', date: '2023-12-15', rating: 5, review: 'Fantastic experience! Will definitely come back.', avatar: '' },
+          { id: 2, name: 'Mike R.', date: '2023-12-10', rating: 4, review: 'Great service and friendly staff.', avatar: '' },
+        ],
+        faq: [
+          { id: 1, question: 'What are your hours?', answer: 'We are open Monday through Saturday from 9 AM to 6 PM.' },
+          { id: 2, question: 'Do you accept walk-ins?', answer: 'We accept walk-ins based on availability, but appointments are recommended.' },
+          { id: 3, question: 'What payment methods do you accept?', answer: 'We accept cash, credit cards, and mobile payments.' },
         ]
       },
       freelancer: {
