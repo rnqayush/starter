@@ -742,7 +742,7 @@ const VendorDashboard = () => {
 
   const addService = () => {
     const newService = {
-      id: Date.now(),
+      id: `service-${Date.now()}-${Math.random()}`,
       name: 'New Service',
       description: 'Service description',
       price: '$0',
