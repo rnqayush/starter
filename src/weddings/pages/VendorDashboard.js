@@ -3330,12 +3330,47 @@ https://example.com/image2.jpg"
                         />
                       </FormGroup>
                       <FormGroup style={{ gridColumn: '1 / -1' }}>
-                        <FormLabel>Image URL (Optional)</FormLabel>
-                        <FormInput
-                          value={card.image}
-                          onChange={e => updateCustomSectionCard(index, 'image', e.target.value)}
-                          placeholder="https://example.com/image.jpg"
-                        />
+                        <FormLabel>Card Image (Optional)</FormLabel>
+                        <FileUploadContainer>
+                          {card.image && (
+                            <ImagePreview style={{ width: '120px', height: '80px' }}>
+                              <img src={card.image} alt={`Card ${index + 1}`} />
+                              <ImageOverlay>
+                                <RemoveImageButton
+                                  onClick={() => updateCustomSectionCard(index, 'image', '')}
+                                >
+                                  <FaTrash />
+                                </RemoveImageButton>
+                              </ImageOverlay>
+                            </ImagePreview>
+                          )}
+                          <FileUploadBox>
+                            <input
+                              type="file"
+                              accept="image/*"
+                              onChange={e => {
+                                const file = e.target.files[0];
+                                if (file) {
+                                  const reader = new FileReader();
+                                  reader.onload = event => {
+                                    updateCustomSectionCard(index, 'image', event.target.result);
+                                  };
+                                  reader.readAsDataURL(file);
+                                }
+                              }}
+                            />
+                            <FaUpload size={20} color={theme.colors.gray400} />
+                            <span style={{ fontSize: '0.7rem', textAlign: 'center' }}>Upload</span>
+                          </FileUploadBox>
+                          <FormGroup style={{ flex: 1 }}>
+                            <FormLabel>Or paste image URL</FormLabel>
+                            <FormInput
+                              value={card.image}
+                              onChange={e => updateCustomSectionCard(index, 'image', e.target.value)}
+                              placeholder="https://example.com/image.jpg"
+                            />
+                          </FormGroup>
+                        </FileUploadContainer>
                       </FormGroup>
                     </FormGrid>
                   </div>
