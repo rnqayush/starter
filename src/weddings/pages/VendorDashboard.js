@@ -623,8 +623,9 @@ const VendorDashboard = () => {
     if (vendorData) {
       setVendor(vendorData);
 
-      // Initialize editing vendor in Redux
+      // Initialize vendor in Redux state if it doesn't exist, then set as editing
       try {
+        dispatch(initializeVendor(vendorData));
         dispatch(setEditingVendor(vendorId));
       } catch (error) {
         console.error('Error setting editing vendor:', error);
