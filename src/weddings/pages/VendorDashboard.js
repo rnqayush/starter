@@ -1312,7 +1312,7 @@ const VendorDashboard = () => {
       });
       dispatch({
         type: 'vendorManagement/updateVendorField',
-        payload: { field: 'sectionOrder', value: sectionOrder },
+        payload: { field: 'sectionOrder', value: completeSectionOrder.length > 0 ? completeSectionOrder : sectionOrder },
       });
       dispatch({
         type: 'vendorManagement/updateVendorField',
