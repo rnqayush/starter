@@ -1423,7 +1423,10 @@ const BusinessWebsitePage = () => {
 
     if (businessTemplate) {
       setBusinessData(businessTemplate);
-      console.log('BusinessWebsitePage: Updated business data', businessTemplate);
+      console.log(
+        'BusinessWebsitePage: Updated business data',
+        businessTemplate
+      );
     }
   }, [actualSlug, location.pathname, businesses, editingBusiness]);
 
@@ -2007,9 +2010,10 @@ const BusinessWebsitePage = () => {
   };
 
   // Get content from editing business if available, otherwise use sample content
-  const content = editingBusiness && editingBusiness.slug === businessData.slug
-    ? editingBusiness
-    : getBusinessContent(businessData.slug);
+  const content =
+    editingBusiness && editingBusiness.slug === businessData.slug
+      ? editingBusiness
+      : getBusinessContent(businessData.slug);
 
   // Safety check to ensure content is loaded
   if (!content) {
@@ -2153,7 +2157,9 @@ const BusinessWebsitePage = () => {
       >
         <HeroContent>
           <HeroTitle>{content.hero?.title || businessData.name}</HeroTitle>
-          <HeroSubtitle>{content.hero?.subtitle || `Welcome to ${businessData.name}`}</HeroSubtitle>
+          <HeroSubtitle>
+            {content.hero?.subtitle || `Welcome to ${businessData.name}`}
+          </HeroSubtitle>
           <div
             style={{
               display: 'flex',
@@ -2197,7 +2203,10 @@ const BusinessWebsitePage = () => {
           <AboutGrid>
             <AboutContent>
               <h3>{content.about?.title || 'About Us'}</h3>
-              <p>{content.about?.description || `Learn more about ${businessData.name}`}</p>
+              <p>
+                {content.about?.description ||
+                  `Learn more about ${businessData.name}`}
+              </p>
               <p>
                 We pride ourselves on delivering exceptional service and
                 creating memorable experiences for all our clients. Our
@@ -2366,7 +2375,10 @@ const BusinessWebsitePage = () => {
           </SectionSubtitle>
           <ServicesGrid>
             {(content.services || []).map((service, index) => (
-              <ServiceCard key={service.id || index} primaryColor={businessData.primaryColor}>
+              <ServiceCard
+                key={service.id || index}
+                primaryColor={businessData.primaryColor}
+              >
                 <div className="icon">{service.icon}</div>
                 <h3>{service.title}</h3>
                 <p>{service.description}</p>
@@ -2401,7 +2413,15 @@ const BusinessWebsitePage = () => {
               <TeamCard key={member.id || index}>
                 <TeamPhoto primaryColor={businessData.primaryColor}>
                   {member.photo ? (
-                    <img src={member.photo} alt={member.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    <img
+                      src={member.photo}
+                      alt={member.name}
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                      }}
+                    />
                   ) : (
                     '👤'
                   )}
@@ -2756,26 +2776,32 @@ const BusinessWebsitePage = () => {
                   color: theme.colors.gray600,
                 }}
               >
-                {content.contact?.description || "We'd love to hear from you! Whether you have questions about our services, want to book an appointment, or need a custom quote, don't hesitate to reach out."}
+                {content.contact?.description ||
+                  "We'd love to hear from you! Whether you have questions about our services, want to book an appointment, or need a custom quote, don't hesitate to reach out."}
               </p>
               <div className="contact-item">
                 <div className="icon">
                   <FaPhone />
                 </div>
-                <div className="text">{content.contact?.phone || '+1 (555) 123-4567'}</div>
+                <div className="text">
+                  {content.contact?.phone || '+1 (555) 123-4567'}
+                </div>
               </div>
               <div className="contact-item">
                 <div className="icon">
                   <FaEnvelope />
                 </div>
-                <div className="text">{content.contact?.email || `info@${businessData.slug}.com`}</div>
+                <div className="text">
+                  {content.contact?.email || `info@${businessData.slug}.com`}
+                </div>
               </div>
               <div className="contact-item">
                 <div className="icon">
                   <FaMapMarkerAlt />
                 </div>
                 <div className="text">
-                  {content.contact?.address || '123 Business Street, City, State 12345'}
+                  {content.contact?.address ||
+                    '123 Business Street, City, State 12345'}
                 </div>
               </div>
             </ContactInfo>

@@ -685,12 +685,13 @@ const ItemButton = styled.button`
   display: flex;
   align-items: center;
   gap: ${theme.spacing.xs};
-  background: ${props => 
+  background: ${props =>
     props.variant === 'danger' ? theme.colors.error : theme.colors.white};
-  color: ${props => 
+  color: ${props =>
     props.variant === 'danger' ? 'white' : theme.colors.gray700};
-  border: 1px solid ${props => 
-    props.variant === 'danger' ? theme.colors.error : theme.colors.gray300};
+  border: 1px solid
+    ${props =>
+      props.variant === 'danger' ? theme.colors.error : theme.colors.gray300};
   padding: ${theme.spacing.sm} ${theme.spacing.md};
   border-radius: ${theme.borderRadius.sm};
   font-size: 0.9rem;
@@ -698,7 +699,7 @@ const ItemButton = styled.button`
   transition: all 0.2s ease;
 
   &:hover {
-    background: ${props => 
+    background: ${props =>
       props.variant === 'danger' ? '#dc2626' : theme.colors.gray50};
   }
 `;
@@ -859,7 +860,9 @@ const BuisnessAdminDashboard = () => {
           JSON.stringify(updatedBusiness[key]) !==
             JSON.stringify(editingBusiness[key])
         ) {
-          dispatch(updateBusinessField({ field: key, value: updatedBusiness[key] }));
+          dispatch(
+            updateBusinessField({ field: key, value: updatedBusiness[key] })
+          );
         }
       });
 
@@ -876,50 +879,192 @@ const BuisnessAdminDashboard = () => {
   };
 
   // Get sample content based on business type
-  const getSampleContent = (businessType) => {
+  const getSampleContent = businessType => {
     const baseContent = {
       salon: {
         services: [
-          { id: 1, icon: '✂️', title: 'Hair Styling', description: 'Professional cuts, colors, and treatments for all hair types', price: 'From $45' },
-          { id: 2, icon: '💅', title: 'Nail Care', description: 'Manicures, pedicures, and nail art by certified technicians', price: 'From $25' },
-          { id: 3, icon: '🧴', title: 'Spa Treatments', description: 'Relaxing facials, massages, and body treatments', price: 'From $65' },
+          {
+            id: 1,
+            icon: '✂️',
+            title: 'Hair Styling',
+            description:
+              'Professional cuts, colors, and treatments for all hair types',
+            price: 'From $45',
+          },
+          {
+            id: 2,
+            icon: '💅',
+            title: 'Nail Care',
+            description:
+              'Manicures, pedicures, and nail art by certified technicians',
+            price: 'From $25',
+          },
+          {
+            id: 3,
+            icon: '🧴',
+            title: 'Spa Treatments',
+            description: 'Relaxing facials, massages, and body treatments',
+            price: 'From $65',
+          },
         ],
         team: [
-          { id: 1, name: 'Sarah Johnson', role: 'Senior Stylist', bio: '15+ years experience in color and cutting', photo: '', specialties: ['Color Specialist', 'Bridal Hair'] },
-          { id: 2, name: 'Maria Garcia', role: 'Nail Specialist', bio: 'Expert in nail art and luxury manicures', photo: '', specialties: ['Nail Art', 'Gel Manicures'] },
+          {
+            id: 1,
+            name: 'Sarah Johnson',
+            role: 'Senior Stylist',
+            bio: '15+ years experience in color and cutting',
+            photo: '',
+            specialties: ['Color Specialist', 'Bridal Hair'],
+          },
+          {
+            id: 2,
+            name: 'Maria Garcia',
+            role: 'Nail Specialist',
+            bio: 'Expert in nail art and luxury manicures',
+            photo: '',
+            specialties: ['Nail Art', 'Gel Manicures'],
+          },
         ],
         packages: [
-          { id: 1, name: 'Bridal Package', description: 'Complete bridal beauty package including hair, makeup, and nails', price: '$299', duration: '4 hours' },
-          { id: 2, name: 'Spa Day', description: 'Full day relaxation with massage, facial, and beauty treatments', price: '$199', duration: '6 hours' },
+          {
+            id: 1,
+            name: 'Bridal Package',
+            description:
+              'Complete bridal beauty package including hair, makeup, and nails',
+            price: '$299',
+            duration: '4 hours',
+          },
+          {
+            id: 2,
+            name: 'Spa Day',
+            description:
+              'Full day relaxation with massage, facial, and beauty treatments',
+            price: '$199',
+            duration: '6 hours',
+          },
         ],
         gallery: [
-          { id: 1, category: 'Hair Styling', images: 8, description: 'Latest hair styling work' },
-          { id: 2, category: 'Nail Art', images: 6, description: 'Creative nail designs' },
-          { id: 3, category: 'Spa Treatments', images: 5, description: 'Relaxing spa services' },
+          {
+            id: 1,
+            category: 'Hair Styling',
+            images: 8,
+            description: 'Latest hair styling work',
+          },
+          {
+            id: 2,
+            category: 'Nail Art',
+            images: 6,
+            description: 'Creative nail designs',
+          },
+          {
+            id: 3,
+            category: 'Spa Treatments',
+            images: 5,
+            description: 'Relaxing spa services',
+          },
         ],
         testimonials: [
-          { id: 1, name: 'Emma Wilson', company: 'Marketing Pro', role: 'Manager', review: 'Amazing service! The team is professional and the results are outstanding.', rating: 5, image: '' },
-          { id: 2, name: 'Jessica Brown', company: 'Tech Solutions', role: 'CEO', review: 'Highly recommend! Great experience and excellent customer service.', rating: 5, image: '' },
+          {
+            id: 1,
+            name: 'Emma Wilson',
+            company: 'Marketing Pro',
+            role: 'Manager',
+            review:
+              'Amazing service! The team is professional and the results are outstanding.',
+            rating: 5,
+            image: '',
+          },
+          {
+            id: 2,
+            name: 'Jessica Brown',
+            company: 'Tech Solutions',
+            role: 'CEO',
+            review:
+              'Highly recommend! Great experience and excellent customer service.',
+            rating: 5,
+            image: '',
+          },
         ],
         reviews: [
-          { id: 1, name: 'Sarah K.', date: '2023-12-15', rating: 5, review: 'Fantastic experience! Will definitely come back.', avatar: '' },
-          { id: 2, name: 'Mike R.', date: '2023-12-10', rating: 4, review: 'Great service and friendly staff.', avatar: '' },
+          {
+            id: 1,
+            name: 'Sarah K.',
+            date: '2023-12-15',
+            rating: 5,
+            review: 'Fantastic experience! Will definitely come back.',
+            avatar: '',
+          },
+          {
+            id: 2,
+            name: 'Mike R.',
+            date: '2023-12-10',
+            rating: 4,
+            review: 'Great service and friendly staff.',
+            avatar: '',
+          },
         ],
         faq: [
-          { id: 1, question: 'What are your hours?', answer: 'We are open Monday through Saturday from 9 AM to 6 PM.' },
-          { id: 2, question: 'Do you accept walk-ins?', answer: 'We accept walk-ins based on availability, but appointments are recommended.' },
-          { id: 3, question: 'What payment methods do you accept?', answer: 'We accept cash, credit cards, and mobile payments.' },
-        ]
+          {
+            id: 1,
+            question: 'What are your hours?',
+            answer: 'We are open Monday through Saturday from 9 AM to 6 PM.',
+          },
+          {
+            id: 2,
+            question: 'Do you accept walk-ins?',
+            answer:
+              'We accept walk-ins based on availability, but appointments are recommended.',
+          },
+          {
+            id: 3,
+            question: 'What payment methods do you accept?',
+            answer: 'We accept cash, credit cards, and mobile payments.',
+          },
+        ],
       },
       freelancer: {
         services: [
-          { id: 1, icon: '🎨', title: 'Web Design', description: 'Custom website design tailored to your brand and business goals', price: 'From $1,200' },
-          { id: 2, icon: '📱', title: 'UI/UX Design', description: 'User-centered design for web and mobile applications', price: 'From $800' },
-          { id: 3, icon: '💻', title: 'Frontend Development', description: 'Modern, responsive websites built with latest technologies', price: 'From $1,500' },
+          {
+            id: 1,
+            icon: '🎨',
+            title: 'Web Design',
+            description:
+              'Custom website design tailored to your brand and business goals',
+            price: 'From $1,200',
+          },
+          {
+            id: 2,
+            icon: '📱',
+            title: 'UI/UX Design',
+            description: 'User-centered design for web and mobile applications',
+            price: 'From $800',
+          },
+          {
+            id: 3,
+            icon: '💻',
+            title: 'Frontend Development',
+            description:
+              'Modern, responsive websites built with latest technologies',
+            price: 'From $1,500',
+          },
         ],
         portfolio: [
-          { id: 1, title: 'E-commerce Platform', category: 'Web Development', description: 'Modern e-commerce platform with custom design and seamless user experience', technologies: ['React', 'Node.js', 'MongoDB'] },
-          { id: 2, title: 'Brand Identity Design', category: 'Branding', description: 'Complete brand identity including logo, color palette, and brand guidelines', technologies: ['Illustrator', 'Photoshop', 'Figma'] },
+          {
+            id: 1,
+            title: 'E-commerce Platform',
+            category: 'Web Development',
+            description:
+              'Modern e-commerce platform with custom design and seamless user experience',
+            technologies: ['React', 'Node.js', 'MongoDB'],
+          },
+          {
+            id: 2,
+            title: 'Brand Identity Design',
+            category: 'Branding',
+            description:
+              'Complete brand identity including logo, color palette, and brand guidelines',
+            technologies: ['Illustrator', 'Photoshop', 'Figma'],
+          },
         ],
         skills: [
           { id: 1, name: 'Web Design', level: 95, icon: '🎨' },
@@ -927,33 +1072,142 @@ const BuisnessAdminDashboard = () => {
           { id: 3, name: 'Frontend Development', level: 88, icon: '💻' },
         ],
         experience: [
-          { id: 1, company: 'Digital Agency Inc.', role: 'Senior Creative Designer', period: '2020 - Present', description: 'Lead designer for major client projects, specializing in web design and branding solutions.' },
-          { id: 2, company: 'Freelance', role: 'Independent Designer & Developer', period: '2018 - Present', description: 'Providing creative solutions for startups and established businesses across various industries.' },
+          {
+            id: 1,
+            company: 'Digital Agency Inc.',
+            role: 'Senior Creative Designer',
+            period: '2020 - Present',
+            description:
+              'Lead designer for major client projects, specializing in web design and branding solutions.',
+          },
+          {
+            id: 2,
+            company: 'Freelance',
+            role: 'Independent Designer & Developer',
+            period: '2018 - Present',
+            description:
+              'Providing creative solutions for startups and established businesses across various industries.',
+          },
         ],
         gallery: [
-          { id: 1, category: 'Web Design', images: 10, description: 'Modern web design projects' },
-          { id: 2, category: 'Branding', images: 8, description: 'Brand identity designs' },
-          { id: 3, category: 'Mobile Apps', images: 6, description: 'Mobile app UI designs' },
+          {
+            id: 1,
+            category: 'Web Design',
+            images: 10,
+            description: 'Modern web design projects',
+          },
+          {
+            id: 2,
+            category: 'Branding',
+            images: 8,
+            description: 'Brand identity designs',
+          },
+          {
+            id: 3,
+            category: 'Mobile Apps',
+            images: 6,
+            description: 'Mobile app UI designs',
+          },
         ],
         packages: [
-          { id: 1, name: 'Basic Package', description: 'Perfect for small projects', price: '$499', duration: '1 week', features: ['Logo Design', 'Basic Website', 'Mobile Responsive'], featured: false },
-          { id: 2, name: 'Professional Package', description: 'Complete business solution', price: '$1299', duration: '2-3 weeks', features: ['Custom Design', 'Full Website', 'SEO Optimization', 'Analytics'], featured: true },
-          { id: 3, name: 'Enterprise Package', description: 'Large scale projects', price: '$2999', duration: '4-6 weeks', features: ['Complex Website', 'E-commerce', 'CMS', 'Training', 'Support'], featured: false },
+          {
+            id: 1,
+            name: 'Basic Package',
+            description: 'Perfect for small projects',
+            price: '$499',
+            duration: '1 week',
+            features: ['Logo Design', 'Basic Website', 'Mobile Responsive'],
+            featured: false,
+          },
+          {
+            id: 2,
+            name: 'Professional Package',
+            description: 'Complete business solution',
+            price: '$1299',
+            duration: '2-3 weeks',
+            features: [
+              'Custom Design',
+              'Full Website',
+              'SEO Optimization',
+              'Analytics',
+            ],
+            featured: true,
+          },
+          {
+            id: 3,
+            name: 'Enterprise Package',
+            description: 'Large scale projects',
+            price: '$2999',
+            duration: '4-6 weeks',
+            features: [
+              'Complex Website',
+              'E-commerce',
+              'CMS',
+              'Training',
+              'Support',
+            ],
+            featured: false,
+          },
         ],
         testimonials: [
-          { id: 1, name: 'John Smith', company: 'Tech Startup', role: 'Founder', review: 'Exceptional work! Delivered exactly what we needed and more.', rating: 5, image: '' },
-          { id: 2, name: 'Lisa Chen', company: 'Design Agency', role: 'Creative Director', review: 'Professional, creative, and reliable. Highly recommend!', rating: 5, image: '' },
+          {
+            id: 1,
+            name: 'John Smith',
+            company: 'Tech Startup',
+            role: 'Founder',
+            review:
+              'Exceptional work! Delivered exactly what we needed and more.',
+            rating: 5,
+            image: '',
+          },
+          {
+            id: 2,
+            name: 'Lisa Chen',
+            company: 'Design Agency',
+            role: 'Creative Director',
+            review: 'Professional, creative, and reliable. Highly recommend!',
+            rating: 5,
+            image: '',
+          },
         ],
         reviews: [
-          { id: 1, name: 'Alex M.', date: '2023-12-20', rating: 5, review: 'Outstanding creativity and attention to detail.', avatar: '' },
-          { id: 2, name: 'Rachel T.', date: '2023-12-18', rating: 5, review: 'Perfect communication and excellent results.', avatar: '' },
+          {
+            id: 1,
+            name: 'Alex M.',
+            date: '2023-12-20',
+            rating: 5,
+            review: 'Outstanding creativity and attention to detail.',
+            avatar: '',
+          },
+          {
+            id: 2,
+            name: 'Rachel T.',
+            date: '2023-12-18',
+            rating: 5,
+            review: 'Perfect communication and excellent results.',
+            avatar: '',
+          },
         ],
         faq: [
-          { id: 1, question: 'What is your typical project timeline?', answer: 'Project timelines vary based on scope, typically 1-6 weeks for most projects.' },
-          { id: 2, question: 'Do you provide ongoing support?', answer: 'Yes, we offer ongoing support and maintenance packages for all projects.' },
-          { id: 3, question: 'What are your payment terms?', answer: 'We typically require 50% upfront and 50% upon completion.' },
-        ]
-      }
+          {
+            id: 1,
+            question: 'What is your typical project timeline?',
+            answer:
+              'Project timelines vary based on scope, typically 1-6 weeks for most projects.',
+          },
+          {
+            id: 2,
+            question: 'Do you provide ongoing support?',
+            answer:
+              'Yes, we offer ongoing support and maintenance packages for all projects.',
+          },
+          {
+            id: 3,
+            question: 'What are your payment terms?',
+            answer: 'We typically require 50% upfront and 50% upon completion.',
+          },
+        ],
+      },
     };
 
     return baseContent[businessType] || baseContent.salon;
@@ -978,45 +1232,47 @@ const BuisnessAdminDashboard = () => {
       icon: FaServicestack,
       section: 'Content Management',
     },
-    ...(business?.slug === 'freelancer' ? [
-      {
-        id: 'portfolio',
-        label: 'Portfolio',
-        icon: FaBriefcase,
-        section: 'Content Management',
-      },
-      {
-        id: 'skills',
-        label: 'Skills',
-        icon: FaGripHorizontal,
-        section: 'Content Management',
-      },
-      {
-        id: 'experience',
-        label: 'Experience',
-        icon: FaAddressCard,
-        section: 'Content Management',
-      },
-    ] : [
-      {
-        id: 'team',
-        label: 'Team',
-        icon: FaUsers,
-        section: 'Content Management',
-      },
-      {
-        id: 'gallery',
-        label: 'Gallery',
-        icon: FaImages,
-        section: 'Content Management',
-      },
-      {
-        id: 'packages',
-        label: 'Packages & Pricing',
-        icon: FaDollarSign,
-        section: 'Content Management',
-      },
-    ]),
+    ...(business?.slug === 'freelancer'
+      ? [
+          {
+            id: 'portfolio',
+            label: 'Portfolio',
+            icon: FaBriefcase,
+            section: 'Content Management',
+          },
+          {
+            id: 'skills',
+            label: 'Skills',
+            icon: FaGripHorizontal,
+            section: 'Content Management',
+          },
+          {
+            id: 'experience',
+            label: 'Experience',
+            icon: FaAddressCard,
+            section: 'Content Management',
+          },
+        ]
+      : [
+          {
+            id: 'team',
+            label: 'Team',
+            icon: FaUsers,
+            section: 'Content Management',
+          },
+          {
+            id: 'gallery',
+            label: 'Gallery',
+            icon: FaImages,
+            section: 'Content Management',
+          },
+          {
+            id: 'packages',
+            label: 'Packages & Pricing',
+            icon: FaDollarSign,
+            section: 'Content Management',
+          },
+        ]),
     {
       id: 'testimonials',
       label: 'Testimonials',
@@ -1085,13 +1341,17 @@ const BuisnessAdminDashboard = () => {
       // Pre-fill all form data from business data
       setHeroData({
         title: businessData.hero?.title || `${businessData.name}`,
-        subtitle: businessData.hero?.subtitle || `Welcome to ${businessData.name}`,
-        backgroundImage: businessData.hero?.backgroundImage || businessData.image || '',
+        subtitle:
+          businessData.hero?.subtitle || `Welcome to ${businessData.name}`,
+        backgroundImage:
+          businessData.hero?.backgroundImage || businessData.image || '',
       });
 
       setAboutData({
         title: businessData.about?.title || 'About Us',
-        description: businessData.about?.description || `Learn more about ${businessData.name}`,
+        description:
+          businessData.about?.description ||
+          `Learn more about ${businessData.name}`,
         profileImage: businessData.about?.profileImage || '',
       });
 
@@ -1124,8 +1384,20 @@ const BuisnessAdminDashboard = () => {
 
       // Initialize section order
       setSectionOrderData([
-        'hero', 'about-us', 'services-offered', 'portfolio', 'skills', 'experience',
-        'team', 'gallery', 'packages', 'testimonials', 'reviews', 'faq', 'business-hours', 'contact'
+        'hero',
+        'about-us',
+        'services-offered',
+        'portfolio',
+        'skills',
+        'experience',
+        'team',
+        'gallery',
+        'packages',
+        'testimonials',
+        'reviews',
+        'faq',
+        'business-hours',
+        'contact',
       ]);
 
       // Initialize contact data
@@ -1207,13 +1479,20 @@ const BuisnessAdminDashboard = () => {
       // Reset all local form data to original values
       setHeroData({
         title: originalBusiness.hero?.title || `${originalBusiness.name}`,
-        subtitle: originalBusiness.hero?.subtitle || `Welcome to ${originalBusiness.name}`,
-        backgroundImage: originalBusiness.hero?.backgroundImage || originalBusiness.image || '',
+        subtitle:
+          originalBusiness.hero?.subtitle ||
+          `Welcome to ${originalBusiness.name}`,
+        backgroundImage:
+          originalBusiness.hero?.backgroundImage ||
+          originalBusiness.image ||
+          '',
       });
 
       setAboutData({
         title: originalBusiness.about?.title || 'About Us',
-        description: originalBusiness.about?.description || `Learn more about ${originalBusiness.name}`,
+        description:
+          originalBusiness.about?.description ||
+          `Learn more about ${originalBusiness.name}`,
         profileImage: originalBusiness.about?.profileImage || '',
       });
 
@@ -1325,9 +1604,7 @@ const BuisnessAdminDashboard = () => {
 
   const updatePortfolioItem = (id, field, value) => {
     setPortfolioData(prev =>
-      prev.map(item =>
-        item.id === id ? { ...item, [field]: value } : item
-      )
+      prev.map(item => (item.id === id ? { ...item, [field]: value } : item))
     );
     trackSectionChange('portfolio');
   };
@@ -1378,9 +1655,7 @@ const BuisnessAdminDashboard = () => {
 
   const updateExperience = (id, field, value) => {
     setExperienceData(prev =>
-      prev.map(exp =>
-        exp.id === id ? { ...exp, [field]: value } : exp
-      )
+      prev.map(exp => (exp.id === id ? { ...exp, [field]: value } : exp))
     );
     trackSectionChange('experience');
   };
@@ -1404,9 +1679,7 @@ const BuisnessAdminDashboard = () => {
 
   const updateGalleryCategory = (id, field, value) => {
     setGalleryData(prev =>
-      prev.map(cat =>
-        cat.id === id ? { ...cat, [field]: value } : cat
-      )
+      prev.map(cat => (cat.id === id ? { ...cat, [field]: value } : cat))
     );
     trackSectionChange('gallery');
   };
@@ -1433,9 +1706,7 @@ const BuisnessAdminDashboard = () => {
 
   const updatePackage = (id, field, value) => {
     setPackagesData(prev =>
-      prev.map(pkg =>
-        pkg.id === id ? { ...pkg, [field]: value } : pkg
-      )
+      prev.map(pkg => (pkg.id === id ? { ...pkg, [field]: value } : pkg))
     );
     trackSectionChange('packages');
   };
@@ -1470,7 +1741,9 @@ const BuisnessAdminDashboard = () => {
   };
 
   const deleteTestimonial = id => {
-    setTestimonialsData(prev => prev.filter(testimonial => testimonial.id !== id));
+    setTestimonialsData(prev =>
+      prev.filter(testimonial => testimonial.id !== id)
+    );
     trackSectionChange('testimonials');
   };
 
@@ -1515,9 +1788,7 @@ const BuisnessAdminDashboard = () => {
 
   const updateFAQ = (id, field, value) => {
     setFaqData(prev =>
-      prev.map(faq =>
-        faq.id === id ? { ...faq, [field]: value } : faq
-      )
+      prev.map(faq => (faq.id === id ? { ...faq, [field]: value } : faq))
     );
     trackSectionChange('faq');
   };
@@ -1536,8 +1807,8 @@ const BuisnessAdminDashboard = () => {
           heading: 'Section Heading',
           description: 'Add your content here...',
           backgroundColor: '#ffffff',
-          textColor: '#333333'
-        }
+          textColor: '#333333',
+        },
       },
       list: {
         title: 'List Section',
@@ -1545,8 +1816,8 @@ const BuisnessAdminDashboard = () => {
           heading: 'List Heading',
           items: ['Item 1', 'Item 2', 'Item 3'],
           style: 'bullets', // bullets, numbers, icons
-          backgroundColor: '#f8f9fa'
-        }
+          backgroundColor: '#f8f9fa',
+        },
       },
       card: {
         title: 'Card Section',
@@ -1555,10 +1826,10 @@ const BuisnessAdminDashboard = () => {
           cards: [
             { title: 'Card 1', description: 'Description 1', icon: '🎯' },
             { title: 'Card 2', description: 'Description 2', icon: '⚡' },
-            { title: 'Card 3', description: 'Description 3', icon: '🚀' }
+            { title: 'Card 3', description: 'Description 3', icon: '🚀' },
           ],
-          layout: 'grid' // grid, horizontal, vertical
-        }
+          layout: 'grid', // grid, horizontal, vertical
+        },
       },
       image: {
         title: 'Image Gallery',
@@ -1566,9 +1837,9 @@ const BuisnessAdminDashboard = () => {
           heading: 'Image Gallery',
           images: [],
           layout: 'grid', // grid, masonry, carousel
-          columns: 3
-        }
-      }
+          columns: 3,
+        },
+      },
     };
 
     const template = templates[type] || templates.text;
@@ -1657,7 +1928,10 @@ const BuisnessAdminDashboard = () => {
                 <FormTextarea
                   value={heroData.subtitle}
                   onChange={e => {
-                    setHeroData(prev => ({ ...prev, subtitle: e.target.value }));
+                    setHeroData(prev => ({
+                      ...prev,
+                      subtitle: e.target.value,
+                    }));
                     trackSectionChange('hero');
                   }}
                   placeholder="Enter your business subtitle..."
@@ -1673,10 +1947,15 @@ const BuisnessAdminDashboard = () => {
                     accept="image/*"
                     style={{ display: 'none' }}
                     id="hero-background-upload"
-                    onChange={e => handleImageUpload(e, (url) => {
-                      setHeroData(prev => ({ ...prev, backgroundImage: url }));
-                      trackSectionChange('hero');
-                    })}
+                    onChange={e =>
+                      handleImageUpload(e, url => {
+                        setHeroData(prev => ({
+                          ...prev,
+                          backgroundImage: url,
+                        }));
+                        trackSectionChange('hero');
+                      })
+                    }
                   />
                   <label
                     htmlFor="hero-background-upload"
@@ -1686,7 +1965,7 @@ const BuisnessAdminDashboard = () => {
                       color: '#3b82f6',
                       display: 'inline-flex',
                       alignItems: 'center',
-                      gap: '4px'
+                      gap: '4px',
                     }}
                   >
                     <FaUpload /> Upload
@@ -1695,30 +1974,37 @@ const BuisnessAdminDashboard = () => {
                 <FormInput
                   value={heroData.backgroundImage}
                   onChange={e => {
-                    setHeroData(prev => ({ ...prev, backgroundImage: e.target.value }));
+                    setHeroData(prev => ({
+                      ...prev,
+                      backgroundImage: e.target.value,
+                    }));
                     trackSectionChange('hero');
                   }}
                   placeholder="Enter background image URL or upload"
                 />
                 {heroData.backgroundImage && (
-                  <div style={{
-                    marginTop: '10px',
-                    padding: '10px',
-                    border: '1px solid #e2e8f0',
-                    borderRadius: '6px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '10px'
-                  }}>
-                    <div style={{
-                      width: '60px',
-                      height: '60px',
-                      backgroundImage: `url(${heroData.backgroundImage})`,
-                      backgroundSize: 'cover',
-                      backgroundPosition: 'center',
+                  <div
+                    style={{
+                      marginTop: '10px',
+                      padding: '10px',
+                      border: '1px solid #e2e8f0',
                       borderRadius: '6px',
-                      border: '1px solid #d1d5db'
-                    }} />
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '10px',
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: '60px',
+                        height: '60px',
+                        backgroundImage: `url(${heroData.backgroundImage})`,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        borderRadius: '6px',
+                        border: '1px solid #d1d5db',
+                      }}
+                    />
                     <span style={{ fontSize: '0.9rem', color: '#6b7280' }}>
                       Image preview
                     </span>
@@ -1738,7 +2024,9 @@ const BuisnessAdminDashboard = () => {
                 About Us Section
               </SectionTitle>
               <VisibilityToggleContainer>
-                <span>{sectionVisibility['about-us'] ? 'Visible' : 'Hidden'}</span>
+                <span>
+                  {sectionVisibility['about-us'] ? 'Visible' : 'Hidden'}
+                </span>
                 <ToggleSwitch>
                   <input
                     type="checkbox"
@@ -1766,7 +2054,10 @@ const BuisnessAdminDashboard = () => {
                 <FormTextarea
                   value={aboutData.description}
                   onChange={e => {
-                    setAboutData(prev => ({ ...prev, description: e.target.value }));
+                    setAboutData(prev => ({
+                      ...prev,
+                      description: e.target.value,
+                    }));
                     trackSectionChange('about-us');
                   }}
                   placeholder="Enter about description..."
@@ -1782,10 +2073,12 @@ const BuisnessAdminDashboard = () => {
                     accept="image/*"
                     style={{ display: 'none' }}
                     id="about-profile-upload"
-                    onChange={e => handleImageUpload(e, (url) => {
-                      setAboutData(prev => ({ ...prev, profileImage: url }));
-                      trackSectionChange('about-us');
-                    })}
+                    onChange={e =>
+                      handleImageUpload(e, url => {
+                        setAboutData(prev => ({ ...prev, profileImage: url }));
+                        trackSectionChange('about-us');
+                      })
+                    }
                   />
                   <label
                     htmlFor="about-profile-upload"
@@ -1795,7 +2088,7 @@ const BuisnessAdminDashboard = () => {
                       color: '#3b82f6',
                       display: 'inline-flex',
                       alignItems: 'center',
-                      gap: '4px'
+                      gap: '4px',
                     }}
                   >
                     <FaUpload /> Upload
@@ -1804,30 +2097,37 @@ const BuisnessAdminDashboard = () => {
                 <FormInput
                   value={aboutData.profileImage}
                   onChange={e => {
-                    setAboutData(prev => ({ ...prev, profileImage: e.target.value }));
+                    setAboutData(prev => ({
+                      ...prev,
+                      profileImage: e.target.value,
+                    }));
                     trackSectionChange('about-us');
                   }}
                   placeholder="Enter profile image URL or upload"
                 />
                 {aboutData.profileImage && (
-                  <div style={{
-                    marginTop: '10px',
-                    padding: '10px',
-                    border: '1px solid #e2e8f0',
-                    borderRadius: '6px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '10px'
-                  }}>
-                    <div style={{
-                      width: '60px',
-                      height: '60px',
-                      backgroundImage: `url(${aboutData.profileImage})`,
-                      backgroundSize: 'cover',
-                      backgroundPosition: 'center',
+                  <div
+                    style={{
+                      marginTop: '10px',
+                      padding: '10px',
+                      border: '1px solid #e2e8f0',
                       borderRadius: '6px',
-                      border: '1px solid #d1d5db'
-                    }} />
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '10px',
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: '60px',
+                        height: '60px',
+                        backgroundImage: `url(${aboutData.profileImage})`,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        borderRadius: '6px',
+                        border: '1px solid #d1d5db',
+                      }}
+                    />
                     <span style={{ fontSize: '0.9rem', color: '#6b7280' }}>
                       Profile image preview
                     </span>
@@ -1847,7 +2147,9 @@ const BuisnessAdminDashboard = () => {
                 Services Offered
               </SectionTitle>
               <VisibilityToggleContainer>
-                <span>{sectionVisibility['services-offered'] ? 'Visible' : 'Hidden'}</span>
+                <span>
+                  {sectionVisibility['services-offered'] ? 'Visible' : 'Hidden'}
+                </span>
                 <ToggleSwitch>
                   <input
                     type="checkbox"
@@ -1858,7 +2160,7 @@ const BuisnessAdminDashboard = () => {
                 </ToggleSwitch>
               </VisibilityToggleContainer>
             </SectionHeader>
-            
+
             <AddButton onClick={addService}>
               <FaPlus />
               Add New Service
@@ -1873,7 +2175,9 @@ const BuisnessAdminDashboard = () => {
                         <FormLabel>Icon (Emoji)</FormLabel>
                         <FormInput
                           value={service.icon}
-                          onChange={e => updateService(service.id, 'icon', e.target.value)}
+                          onChange={e =>
+                            updateService(service.id, 'icon', e.target.value)
+                          }
                           placeholder="🔧"
                         />
                       </FormGroup>
@@ -1881,7 +2185,9 @@ const BuisnessAdminDashboard = () => {
                         <FormLabel>Price</FormLabel>
                         <FormInput
                           value={service.price}
-                          onChange={e => updateService(service.id, 'price', e.target.value)}
+                          onChange={e =>
+                            updateService(service.id, 'price', e.target.value)
+                          }
                           placeholder="From $0"
                         />
                       </FormGroup>
@@ -1889,7 +2195,9 @@ const BuisnessAdminDashboard = () => {
                         <FormLabel>Service Title</FormLabel>
                         <FormInput
                           value={service.title}
-                          onChange={e => updateService(service.id, 'title', e.target.value)}
+                          onChange={e =>
+                            updateService(service.id, 'title', e.target.value)
+                          }
                           placeholder="Service Name"
                         />
                       </FormGroup>
@@ -1897,7 +2205,13 @@ const BuisnessAdminDashboard = () => {
                         <FormLabel>Description</FormLabel>
                         <FormTextarea
                           value={service.description}
-                          onChange={e => updateService(service.id, 'description', e.target.value)}
+                          onChange={e =>
+                            updateService(
+                              service.id,
+                              'description',
+                              e.target.value
+                            )
+                          }
                           placeholder="Service description"
                           rows={3}
                         />
@@ -1905,8 +2219,8 @@ const BuisnessAdminDashboard = () => {
                     </FormGrid>
                   </div>
                   <div className="item-actions">
-                    <ItemButton 
-                      variant="danger" 
+                    <ItemButton
+                      variant="danger"
                       onClick={() => deleteService(service.id)}
                     >
                       <FaTrash />
@@ -1939,7 +2253,7 @@ const BuisnessAdminDashboard = () => {
                 </ToggleSwitch>
               </VisibilityToggleContainer>
             </SectionHeader>
-            
+
             <AddButton onClick={addTeamMember}>
               <FaPlus />
               Add Team Member
@@ -1954,7 +2268,9 @@ const BuisnessAdminDashboard = () => {
                         <FormLabel>Name</FormLabel>
                         <FormInput
                           value={member.name}
-                          onChange={e => updateTeamMember(member.id, 'name', e.target.value)}
+                          onChange={e =>
+                            updateTeamMember(member.id, 'name', e.target.value)
+                          }
                           placeholder="Team member name"
                         />
                       </FormGroup>
@@ -1962,7 +2278,9 @@ const BuisnessAdminDashboard = () => {
                         <FormLabel>Role</FormLabel>
                         <FormInput
                           value={member.role}
-                          onChange={e => updateTeamMember(member.id, 'role', e.target.value)}
+                          onChange={e =>
+                            updateTeamMember(member.id, 'role', e.target.value)
+                          }
                           placeholder="Job title"
                         />
                       </FormGroup>
@@ -1975,7 +2293,11 @@ const BuisnessAdminDashboard = () => {
                             accept="image/*"
                             style={{ display: 'none' }}
                             id={`team-photo-${member.id}`}
-                            onChange={e => handleImageUpload(e, (url) => updateTeamMember(member.id, 'photo', url))}
+                            onChange={e =>
+                              handleImageUpload(e, url =>
+                                updateTeamMember(member.id, 'photo', url)
+                              )
+                            }
                           />
                           <label
                             htmlFor={`team-photo-${member.id}`}
@@ -1985,7 +2307,7 @@ const BuisnessAdminDashboard = () => {
                               color: '#3b82f6',
                               display: 'inline-flex',
                               alignItems: 'center',
-                              gap: '4px'
+                              gap: '4px',
                             }}
                           >
                             <FaUpload /> Upload
@@ -1993,29 +2315,37 @@ const BuisnessAdminDashboard = () => {
                         </FormLabel>
                         <FormInput
                           value={member.photo}
-                          onChange={e => updateTeamMember(member.id, 'photo', e.target.value)}
+                          onChange={e =>
+                            updateTeamMember(member.id, 'photo', e.target.value)
+                          }
                           placeholder="Profile photo URL or upload"
                         />
                         {member.photo && (
-                          <div style={{
-                            marginTop: '10px',
-                            padding: '10px',
-                            border: '1px solid #e2e8f0',
-                            borderRadius: '6px',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '10px'
-                          }}>
-                            <div style={{
-                              width: '50px',
-                              height: '50px',
-                              backgroundImage: `url(${member.photo})`,
-                              backgroundSize: 'cover',
-                              backgroundPosition: 'center',
-                              borderRadius: '50%',
-                              border: '1px solid #d1d5db'
-                            }} />
-                            <span style={{ fontSize: '0.9rem', color: '#6b7280' }}>
+                          <div
+                            style={{
+                              marginTop: '10px',
+                              padding: '10px',
+                              border: '1px solid #e2e8f0',
+                              borderRadius: '6px',
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '10px',
+                            }}
+                          >
+                            <div
+                              style={{
+                                width: '50px',
+                                height: '50px',
+                                backgroundImage: `url(${member.photo})`,
+                                backgroundSize: 'cover',
+                                backgroundPosition: 'center',
+                                borderRadius: '50%',
+                                border: '1px solid #d1d5db',
+                              }}
+                            />
+                            <span
+                              style={{ fontSize: '0.9rem', color: '#6b7280' }}
+                            >
                               {member.name} photo
                             </span>
                           </div>
@@ -2025,7 +2355,9 @@ const BuisnessAdminDashboard = () => {
                         <FormLabel>Bio</FormLabel>
                         <FormTextarea
                           value={member.bio}
-                          onChange={e => updateTeamMember(member.id, 'bio', e.target.value)}
+                          onChange={e =>
+                            updateTeamMember(member.id, 'bio', e.target.value)
+                          }
                           placeholder="Brief bio about the team member"
                           rows={3}
                         />
@@ -2033,8 +2365,8 @@ const BuisnessAdminDashboard = () => {
                     </FormGrid>
                   </div>
                   <div className="item-actions">
-                    <ItemButton 
-                      variant="danger" 
+                    <ItemButton
+                      variant="danger"
                       onClick={() => deleteTeamMember(member.id)}
                     >
                       <FaTrash />
@@ -2056,7 +2388,9 @@ const BuisnessAdminDashboard = () => {
                 Portfolio Management
               </SectionTitle>
               <VisibilityToggleContainer>
-                <span>{sectionVisibility['portfolio'] ? 'Visible' : 'Hidden'}</span>
+                <span>
+                  {sectionVisibility['portfolio'] ? 'Visible' : 'Hidden'}
+                </span>
                 <ToggleSwitch>
                   <input
                     type="checkbox"
@@ -2082,7 +2416,13 @@ const BuisnessAdminDashboard = () => {
                         <FormLabel>Project Title</FormLabel>
                         <FormInput
                           value={item.title}
-                          onChange={e => updatePortfolioItem(item.id, 'title', e.target.value)}
+                          onChange={e =>
+                            updatePortfolioItem(
+                              item.id,
+                              'title',
+                              e.target.value
+                            )
+                          }
                           placeholder="Project Name"
                         />
                       </FormGroup>
@@ -2090,7 +2430,13 @@ const BuisnessAdminDashboard = () => {
                         <FormLabel>Category</FormLabel>
                         <FormInput
                           value={item.category}
-                          onChange={e => updatePortfolioItem(item.id, 'category', e.target.value)}
+                          onChange={e =>
+                            updatePortfolioItem(
+                              item.id,
+                              'category',
+                              e.target.value
+                            )
+                          }
                           placeholder="Design, Development, etc."
                         />
                       </FormGroup>
@@ -2103,15 +2449,32 @@ const BuisnessAdminDashboard = () => {
                             accept="image/*"
                             style={{ display: 'none' }}
                             id={`portfolio-image-${item.id}`}
-                            onChange={e => handleImageUpload(e, (url) => updatePortfolioItem(item.id, 'image', url))}
+                            onChange={e =>
+                              handleImageUpload(e, url =>
+                                updatePortfolioItem(item.id, 'image', url)
+                              )
+                            }
                           />
-                          <label htmlFor={`portfolio-image-${item.id}`} style={{ marginLeft: '10px', cursor: 'pointer', color: '#3b82f6' }}>
+                          <label
+                            htmlFor={`portfolio-image-${item.id}`}
+                            style={{
+                              marginLeft: '10px',
+                              cursor: 'pointer',
+                              color: '#3b82f6',
+                            }}
+                          >
                             <FaUpload /> Upload
                           </label>
                         </FormLabel>
                         <FormInput
                           value={item.image || ''}
-                          onChange={e => updatePortfolioItem(item.id, 'image', e.target.value)}
+                          onChange={e =>
+                            updatePortfolioItem(
+                              item.id,
+                              'image',
+                              e.target.value
+                            )
+                          }
                           placeholder="Enter image URL or upload"
                         />
                       </FormGroup>
@@ -2119,7 +2482,13 @@ const BuisnessAdminDashboard = () => {
                         <FormLabel>Description</FormLabel>
                         <FormTextarea
                           value={item.description}
-                          onChange={e => updatePortfolioItem(item.id, 'description', e.target.value)}
+                          onChange={e =>
+                            updatePortfolioItem(
+                              item.id,
+                              'description',
+                              e.target.value
+                            )
+                          }
                           placeholder="Project description"
                           rows={3}
                         />
@@ -2127,8 +2496,18 @@ const BuisnessAdminDashboard = () => {
                       <FormGroup style={{ gridColumn: '1 / -1' }}>
                         <FormLabel>Technologies (comma-separated)</FormLabel>
                         <FormInput
-                          value={Array.isArray(item.technologies) ? item.technologies.join(', ') : ''}
-                          onChange={e => updatePortfolioItem(item.id, 'technologies', e.target.value.split(', ').filter(t => t.trim()))}
+                          value={
+                            Array.isArray(item.technologies)
+                              ? item.technologies.join(', ')
+                              : ''
+                          }
+                          onChange={e =>
+                            updatePortfolioItem(
+                              item.id,
+                              'technologies',
+                              e.target.value.split(', ').filter(t => t.trim())
+                            )
+                          }
                           placeholder="React, Node.js, MongoDB"
                         />
                       </FormGroup>
@@ -2158,7 +2537,9 @@ const BuisnessAdminDashboard = () => {
                 Skills Management
               </SectionTitle>
               <VisibilityToggleContainer>
-                <span>{sectionVisibility['skills'] ? 'Visible' : 'Hidden'}</span>
+                <span>
+                  {sectionVisibility['skills'] ? 'Visible' : 'Hidden'}
+                </span>
                 <ToggleSwitch>
                   <input
                     type="checkbox"
@@ -2184,7 +2565,9 @@ const BuisnessAdminDashboard = () => {
                         <FormLabel>Skill Name</FormLabel>
                         <FormInput
                           value={skill.name}
-                          onChange={e => updateSkill(skill.id, 'name', e.target.value)}
+                          onChange={e =>
+                            updateSkill(skill.id, 'name', e.target.value)
+                          }
                           placeholder="Skill name"
                         />
                       </FormGroup>
@@ -2192,7 +2575,9 @@ const BuisnessAdminDashboard = () => {
                         <FormLabel>Icon (Emoji)</FormLabel>
                         <FormInput
                           value={skill.icon}
-                          onChange={e => updateSkill(skill.id, 'icon', e.target.value)}
+                          onChange={e =>
+                            updateSkill(skill.id, 'icon', e.target.value)
+                          }
                           placeholder="🔧"
                         />
                       </FormGroup>
@@ -2203,7 +2588,13 @@ const BuisnessAdminDashboard = () => {
                           min="0"
                           max="100"
                           value={skill.level}
-                          onChange={e => updateSkill(skill.id, 'level', parseInt(e.target.value))}
+                          onChange={e =>
+                            updateSkill(
+                              skill.id,
+                              'level',
+                              parseInt(e.target.value)
+                            )
+                          }
                         />
                       </FormGroup>
                     </FormGrid>
@@ -2232,7 +2623,9 @@ const BuisnessAdminDashboard = () => {
                 Experience Management
               </SectionTitle>
               <VisibilityToggleContainer>
-                <span>{sectionVisibility['experience'] ? 'Visible' : 'Hidden'}</span>
+                <span>
+                  {sectionVisibility['experience'] ? 'Visible' : 'Hidden'}
+                </span>
                 <ToggleSwitch>
                   <input
                     type="checkbox"
@@ -2258,7 +2651,9 @@ const BuisnessAdminDashboard = () => {
                         <FormLabel>Company</FormLabel>
                         <FormInput
                           value={exp.company}
-                          onChange={e => updateExperience(exp.id, 'company', e.target.value)}
+                          onChange={e =>
+                            updateExperience(exp.id, 'company', e.target.value)
+                          }
                           placeholder="Company name"
                         />
                       </FormGroup>
@@ -2266,7 +2661,9 @@ const BuisnessAdminDashboard = () => {
                         <FormLabel>Role</FormLabel>
                         <FormInput
                           value={exp.role}
-                          onChange={e => updateExperience(exp.id, 'role', e.target.value)}
+                          onChange={e =>
+                            updateExperience(exp.id, 'role', e.target.value)
+                          }
                           placeholder="Job title"
                         />
                       </FormGroup>
@@ -2274,7 +2671,9 @@ const BuisnessAdminDashboard = () => {
                         <FormLabel>Period</FormLabel>
                         <FormInput
                           value={exp.period}
-                          onChange={e => updateExperience(exp.id, 'period', e.target.value)}
+                          onChange={e =>
+                            updateExperience(exp.id, 'period', e.target.value)
+                          }
                           placeholder="2020 - Present"
                         />
                       </FormGroup>
@@ -2282,7 +2681,13 @@ const BuisnessAdminDashboard = () => {
                         <FormLabel>Description</FormLabel>
                         <FormTextarea
                           value={exp.description}
-                          onChange={e => updateExperience(exp.id, 'description', e.target.value)}
+                          onChange={e =>
+                            updateExperience(
+                              exp.id,
+                              'description',
+                              e.target.value
+                            )
+                          }
                           placeholder="Job description"
                           rows={3}
                         />
@@ -2313,7 +2718,9 @@ const BuisnessAdminDashboard = () => {
                 Gallery Management
               </SectionTitle>
               <VisibilityToggleContainer>
-                <span>{sectionVisibility['gallery'] ? 'Visible' : 'Hidden'}</span>
+                <span>
+                  {sectionVisibility['gallery'] ? 'Visible' : 'Hidden'}
+                </span>
                 <ToggleSwitch>
                   <input
                     type="checkbox"
@@ -2339,7 +2746,13 @@ const BuisnessAdminDashboard = () => {
                         <FormLabel>Category Name</FormLabel>
                         <FormInput
                           value={category.category}
-                          onChange={e => updateGalleryCategory(category.id, 'category', e.target.value)}
+                          onChange={e =>
+                            updateGalleryCategory(
+                              category.id,
+                              'category',
+                              e.target.value
+                            )
+                          }
                           placeholder="Category name"
                         />
                       </FormGroup>
@@ -2348,7 +2761,13 @@ const BuisnessAdminDashboard = () => {
                         <FormInput
                           type="number"
                           value={category.images}
-                          onChange={e => updateGalleryCategory(category.id, 'images', parseInt(e.target.value) || 0)}
+                          onChange={e =>
+                            updateGalleryCategory(
+                              category.id,
+                              'images',
+                              parseInt(e.target.value) || 0
+                            )
+                          }
                           placeholder="Number of images"
                         />
                       </FormGroup>
@@ -2356,7 +2775,13 @@ const BuisnessAdminDashboard = () => {
                         <FormLabel>Description</FormLabel>
                         <FormTextarea
                           value={category.description || ''}
-                          onChange={e => updateGalleryCategory(category.id, 'description', e.target.value)}
+                          onChange={e =>
+                            updateGalleryCategory(
+                              category.id,
+                              'description',
+                              e.target.value
+                            )
+                          }
                           placeholder="Category description"
                           rows={2}
                         />
@@ -2387,7 +2812,9 @@ const BuisnessAdminDashboard = () => {
                 Packages & Pricing
               </SectionTitle>
               <VisibilityToggleContainer>
-                <span>{sectionVisibility['packages'] ? 'Visible' : 'Hidden'}</span>
+                <span>
+                  {sectionVisibility['packages'] ? 'Visible' : 'Hidden'}
+                </span>
                 <ToggleSwitch>
                   <input
                     type="checkbox"
@@ -2413,7 +2840,9 @@ const BuisnessAdminDashboard = () => {
                         <FormLabel>Package Name</FormLabel>
                         <FormInput
                           value={pkg.name}
-                          onChange={e => updatePackage(pkg.id, 'name', e.target.value)}
+                          onChange={e =>
+                            updatePackage(pkg.id, 'name', e.target.value)
+                          }
                           placeholder="Package name"
                         />
                       </FormGroup>
@@ -2421,7 +2850,9 @@ const BuisnessAdminDashboard = () => {
                         <FormLabel>Price</FormLabel>
                         <FormInput
                           value={pkg.price}
-                          onChange={e => updatePackage(pkg.id, 'price', e.target.value)}
+                          onChange={e =>
+                            updatePackage(pkg.id, 'price', e.target.value)
+                          }
                           placeholder="$99"
                         />
                       </FormGroup>
@@ -2429,7 +2860,9 @@ const BuisnessAdminDashboard = () => {
                         <FormLabel>Duration</FormLabel>
                         <FormInput
                           value={pkg.duration}
-                          onChange={e => updatePackage(pkg.id, 'duration', e.target.value)}
+                          onChange={e =>
+                            updatePackage(pkg.id, 'duration', e.target.value)
+                          }
                           placeholder="2 hours"
                         />
                       </FormGroup>
@@ -2438,7 +2871,13 @@ const BuisnessAdminDashboard = () => {
                           <input
                             type="checkbox"
                             checked={pkg.featured || false}
-                            onChange={e => updatePackage(pkg.id, 'featured', e.target.checked)}
+                            onChange={e =>
+                              updatePackage(
+                                pkg.id,
+                                'featured',
+                                e.target.checked
+                              )
+                            }
                             style={{ marginRight: '8px' }}
                           />
                           Featured Package
@@ -2448,7 +2887,9 @@ const BuisnessAdminDashboard = () => {
                         <FormLabel>Description</FormLabel>
                         <FormTextarea
                           value={pkg.description}
-                          onChange={e => updatePackage(pkg.id, 'description', e.target.value)}
+                          onChange={e =>
+                            updatePackage(pkg.id, 'description', e.target.value)
+                          }
                           placeholder="Package description"
                           rows={3}
                         />
@@ -2456,8 +2897,18 @@ const BuisnessAdminDashboard = () => {
                       <FormGroup style={{ gridColumn: '1 / -1' }}>
                         <FormLabel>Features (comma-separated)</FormLabel>
                         <FormInput
-                          value={Array.isArray(pkg.features) ? pkg.features.join(', ') : ''}
-                          onChange={e => updatePackage(pkg.id, 'features', e.target.value.split(', ').filter(f => f.trim()))}
+                          value={
+                            Array.isArray(pkg.features)
+                              ? pkg.features.join(', ')
+                              : ''
+                          }
+                          onChange={e =>
+                            updatePackage(
+                              pkg.id,
+                              'features',
+                              e.target.value.split(', ').filter(f => f.trim())
+                            )
+                          }
                           placeholder="Feature 1, Feature 2, Feature 3"
                         />
                       </FormGroup>
@@ -2487,7 +2938,9 @@ const BuisnessAdminDashboard = () => {
                 Testimonials Management
               </SectionTitle>
               <VisibilityToggleContainer>
-                <span>{sectionVisibility['testimonials'] ? 'Visible' : 'Hidden'}</span>
+                <span>
+                  {sectionVisibility['testimonials'] ? 'Visible' : 'Hidden'}
+                </span>
                 <ToggleSwitch>
                   <input
                     type="checkbox"
@@ -2513,7 +2966,13 @@ const BuisnessAdminDashboard = () => {
                         <FormLabel>Client Name</FormLabel>
                         <FormInput
                           value={testimonial.name}
-                          onChange={e => updateTestimonial(testimonial.id, 'name', e.target.value)}
+                          onChange={e =>
+                            updateTestimonial(
+                              testimonial.id,
+                              'name',
+                              e.target.value
+                            )
+                          }
                           placeholder="Client name"
                         />
                       </FormGroup>
@@ -2521,7 +2980,13 @@ const BuisnessAdminDashboard = () => {
                         <FormLabel>Company</FormLabel>
                         <FormInput
                           value={testimonial.company}
-                          onChange={e => updateTestimonial(testimonial.id, 'company', e.target.value)}
+                          onChange={e =>
+                            updateTestimonial(
+                              testimonial.id,
+                              'company',
+                              e.target.value
+                            )
+                          }
                           placeholder="Company name"
                         />
                       </FormGroup>
@@ -2529,7 +2994,13 @@ const BuisnessAdminDashboard = () => {
                         <FormLabel>Role</FormLabel>
                         <FormInput
                           value={testimonial.role}
-                          onChange={e => updateTestimonial(testimonial.id, 'role', e.target.value)}
+                          onChange={e =>
+                            updateTestimonial(
+                              testimonial.id,
+                              'role',
+                              e.target.value
+                            )
+                          }
                           placeholder="Job title"
                         />
                       </FormGroup>
@@ -2540,7 +3011,13 @@ const BuisnessAdminDashboard = () => {
                           min="1"
                           max="5"
                           value={testimonial.rating}
-                          onChange={e => updateTestimonial(testimonial.id, 'rating', parseInt(e.target.value))}
+                          onChange={e =>
+                            updateTestimonial(
+                              testimonial.id,
+                              'rating',
+                              parseInt(e.target.value)
+                            )
+                          }
                         />
                       </FormGroup>
                       <FormGroup style={{ gridColumn: '1 / -1' }}>
@@ -2552,15 +3029,32 @@ const BuisnessAdminDashboard = () => {
                             accept="image/*"
                             style={{ display: 'none' }}
                             id={`testimonial-image-${testimonial.id}`}
-                            onChange={e => handleImageUpload(e, (url) => updateTestimonial(testimonial.id, 'image', url))}
+                            onChange={e =>
+                              handleImageUpload(e, url =>
+                                updateTestimonial(testimonial.id, 'image', url)
+                              )
+                            }
                           />
-                          <label htmlFor={`testimonial-image-${testimonial.id}`} style={{ marginLeft: '10px', cursor: 'pointer', color: '#3b82f6' }}>
+                          <label
+                            htmlFor={`testimonial-image-${testimonial.id}`}
+                            style={{
+                              marginLeft: '10px',
+                              cursor: 'pointer',
+                              color: '#3b82f6',
+                            }}
+                          >
                             <FaUpload /> Upload
                           </label>
                         </FormLabel>
                         <FormInput
                           value={testimonial.image || ''}
-                          onChange={e => updateTestimonial(testimonial.id, 'image', e.target.value)}
+                          onChange={e =>
+                            updateTestimonial(
+                              testimonial.id,
+                              'image',
+                              e.target.value
+                            )
+                          }
                           placeholder="Enter image URL or upload"
                         />
                       </FormGroup>
@@ -2568,7 +3062,13 @@ const BuisnessAdminDashboard = () => {
                         <FormLabel>Review</FormLabel>
                         <FormTextarea
                           value={testimonial.review}
-                          onChange={e => updateTestimonial(testimonial.id, 'review', e.target.value)}
+                          onChange={e =>
+                            updateTestimonial(
+                              testimonial.id,
+                              'review',
+                              e.target.value
+                            )
+                          }
                           placeholder="Client testimonial"
                           rows={4}
                         />
@@ -2599,7 +3099,9 @@ const BuisnessAdminDashboard = () => {
                 Reviews Management
               </SectionTitle>
               <VisibilityToggleContainer>
-                <span>{sectionVisibility['reviews'] ? 'Visible' : 'Hidden'}</span>
+                <span>
+                  {sectionVisibility['reviews'] ? 'Visible' : 'Hidden'}
+                </span>
                 <ToggleSwitch>
                   <input
                     type="checkbox"
@@ -2625,7 +3127,9 @@ const BuisnessAdminDashboard = () => {
                         <FormLabel>Reviewer Name</FormLabel>
                         <FormInput
                           value={review.name}
-                          onChange={e => updateReview(review.id, 'name', e.target.value)}
+                          onChange={e =>
+                            updateReview(review.id, 'name', e.target.value)
+                          }
                           placeholder="Reviewer name"
                         />
                       </FormGroup>
@@ -2634,7 +3138,9 @@ const BuisnessAdminDashboard = () => {
                         <FormInput
                           type="date"
                           value={review.date}
-                          onChange={e => updateReview(review.id, 'date', e.target.value)}
+                          onChange={e =>
+                            updateReview(review.id, 'date', e.target.value)
+                          }
                         />
                       </FormGroup>
                       <FormGroup>
@@ -2644,7 +3150,13 @@ const BuisnessAdminDashboard = () => {
                           min="1"
                           max="5"
                           value={review.rating}
-                          onChange={e => updateReview(review.id, 'rating', parseInt(e.target.value))}
+                          onChange={e =>
+                            updateReview(
+                              review.id,
+                              'rating',
+                              parseInt(e.target.value)
+                            )
+                          }
                         />
                       </FormGroup>
                       <FormGroup style={{ gridColumn: '1 / -1' }}>
@@ -2656,15 +3168,28 @@ const BuisnessAdminDashboard = () => {
                             accept="image/*"
                             style={{ display: 'none' }}
                             id={`review-avatar-${review.id}`}
-                            onChange={e => handleImageUpload(e, (url) => updateReview(review.id, 'avatar', url))}
+                            onChange={e =>
+                              handleImageUpload(e, url =>
+                                updateReview(review.id, 'avatar', url)
+                              )
+                            }
                           />
-                          <label htmlFor={`review-avatar-${review.id}`} style={{ marginLeft: '10px', cursor: 'pointer', color: '#3b82f6' }}>
+                          <label
+                            htmlFor={`review-avatar-${review.id}`}
+                            style={{
+                              marginLeft: '10px',
+                              cursor: 'pointer',
+                              color: '#3b82f6',
+                            }}
+                          >
                             <FaUpload /> Upload
                           </label>
                         </FormLabel>
                         <FormInput
                           value={review.avatar || ''}
-                          onChange={e => updateReview(review.id, 'avatar', e.target.value)}
+                          onChange={e =>
+                            updateReview(review.id, 'avatar', e.target.value)
+                          }
                           placeholder="Enter avatar URL or upload"
                         />
                       </FormGroup>
@@ -2672,7 +3197,9 @@ const BuisnessAdminDashboard = () => {
                         <FormLabel>Review Text</FormLabel>
                         <FormTextarea
                           value={review.review}
-                          onChange={e => updateReview(review.id, 'review', e.target.value)}
+                          onChange={e =>
+                            updateReview(review.id, 'review', e.target.value)
+                          }
                           placeholder="Review content"
                           rows={3}
                         />
@@ -2729,7 +3256,9 @@ const BuisnessAdminDashboard = () => {
                         <FormLabel>Question</FormLabel>
                         <FormInput
                           value={faq.question}
-                          onChange={e => updateFAQ(faq.id, 'question', e.target.value)}
+                          onChange={e =>
+                            updateFAQ(faq.id, 'question', e.target.value)
+                          }
                           placeholder="Frequently asked question"
                         />
                       </FormGroup>
@@ -2737,7 +3266,9 @@ const BuisnessAdminDashboard = () => {
                         <FormLabel>Answer</FormLabel>
                         <FormTextarea
                           value={faq.answer}
-                          onChange={e => updateFAQ(faq.id, 'answer', e.target.value)}
+                          onChange={e =>
+                            updateFAQ(faq.id, 'answer', e.target.value)
+                          }
                           placeholder="Answer to the question"
                           rows={4}
                         />
@@ -2768,7 +3299,9 @@ const BuisnessAdminDashboard = () => {
                 Business Hours
               </SectionTitle>
               <VisibilityToggleContainer>
-                <span>{sectionVisibility['business-hours'] ? 'Visible' : 'Hidden'}</span>
+                <span>
+                  {sectionVisibility['business-hours'] ? 'Visible' : 'Hidden'}
+                </span>
                 <ToggleSwitch>
                   <input
                     type="checkbox"
@@ -2785,7 +3318,10 @@ const BuisnessAdminDashboard = () => {
                 <FormInput
                   value={businessHoursData.title}
                   onChange={e => {
-                    setBusinessHoursData(prev => ({ ...prev, title: e.target.value }));
+                    setBusinessHoursData(prev => ({
+                      ...prev,
+                      title: e.target.value,
+                    }));
                     trackSectionChange('business-hours');
                   }}
                   placeholder="Business Hours"
@@ -2793,13 +3329,15 @@ const BuisnessAdminDashboard = () => {
               </FormGroup>
               {Object.entries(businessHoursData.hours).map(([day, time]) => (
                 <FormGroup key={day}>
-                  <FormLabel>{day.charAt(0).toUpperCase() + day.slice(1)}</FormLabel>
+                  <FormLabel>
+                    {day.charAt(0).toUpperCase() + day.slice(1)}
+                  </FormLabel>
                   <FormInput
                     value={time}
                     onChange={e => {
                       setBusinessHoursData(prev => ({
                         ...prev,
-                        hours: { ...prev.hours, [day]: e.target.value }
+                        hours: { ...prev.hours, [day]: e.target.value },
                       }));
                       trackSectionChange('business-hours');
                     }}
@@ -2820,7 +3358,9 @@ const BuisnessAdminDashboard = () => {
                 Contact Information
               </SectionTitle>
               <VisibilityToggleContainer>
-                <span>{sectionVisibility['contact'] ? 'Visible' : 'Hidden'}</span>
+                <span>
+                  {sectionVisibility['contact'] ? 'Visible' : 'Hidden'}
+                </span>
                 <ToggleSwitch>
                   <input
                     type="checkbox"
@@ -2837,7 +3377,10 @@ const BuisnessAdminDashboard = () => {
                 <FormInput
                   value={contactData.title}
                   onChange={e => {
-                    setContactData(prev => ({ ...prev, title: e.target.value }));
+                    setContactData(prev => ({
+                      ...prev,
+                      title: e.target.value,
+                    }));
                     trackSectionChange('contact');
                   }}
                   placeholder="Get In Touch"
@@ -2848,7 +3391,10 @@ const BuisnessAdminDashboard = () => {
                 <FormTextarea
                   value={contactData.description}
                   onChange={e => {
-                    setContactData(prev => ({ ...prev, description: e.target.value }));
+                    setContactData(prev => ({
+                      ...prev,
+                      description: e.target.value,
+                    }));
                     trackSectionChange('contact');
                   }}
                   placeholder="Contact section description"
@@ -2861,7 +3407,10 @@ const BuisnessAdminDashboard = () => {
                   type="email"
                   value={contactData.email}
                   onChange={e => {
-                    setContactData(prev => ({ ...prev, email: e.target.value }));
+                    setContactData(prev => ({
+                      ...prev,
+                      email: e.target.value,
+                    }));
                     trackSectionChange('contact');
                   }}
                   placeholder="hello@business.com"
@@ -2873,7 +3422,10 @@ const BuisnessAdminDashboard = () => {
                   type="tel"
                   value={contactData.phone}
                   onChange={e => {
-                    setContactData(prev => ({ ...prev, phone: e.target.value }));
+                    setContactData(prev => ({
+                      ...prev,
+                      phone: e.target.value,
+                    }));
                     trackSectionChange('contact');
                   }}
                   placeholder="+1 (555) 123-4567"
@@ -2884,7 +3436,10 @@ const BuisnessAdminDashboard = () => {
                 <FormTextarea
                   value={contactData.address}
                   onChange={e => {
-                    setContactData(prev => ({ ...prev, address: e.target.value }));
+                    setContactData(prev => ({
+                      ...prev,
+                      address: e.target.value,
+                    }));
                     trackSectionChange('contact');
                   }}
                   placeholder="123 Business Street, City, State 12345"
@@ -2901,7 +3456,10 @@ const BuisnessAdminDashboard = () => {
                       onChange={e => {
                         setContactData(prev => ({
                           ...prev,
-                          socialMedia: { ...prev.socialMedia, facebook: e.target.value }
+                          socialMedia: {
+                            ...prev.socialMedia,
+                            facebook: e.target.value,
+                          },
                         }));
                         trackSectionChange('contact');
                       }}
@@ -2915,7 +3473,10 @@ const BuisnessAdminDashboard = () => {
                       onChange={e => {
                         setContactData(prev => ({
                           ...prev,
-                          socialMedia: { ...prev.socialMedia, instagram: e.target.value }
+                          socialMedia: {
+                            ...prev.socialMedia,
+                            instagram: e.target.value,
+                          },
                         }));
                         trackSectionChange('contact');
                       }}
@@ -2929,7 +3490,10 @@ const BuisnessAdminDashboard = () => {
                       onChange={e => {
                         setContactData(prev => ({
                           ...prev,
-                          socialMedia: { ...prev.socialMedia, twitter: e.target.value }
+                          socialMedia: {
+                            ...prev.socialMedia,
+                            twitter: e.target.value,
+                          },
                         }));
                         trackSectionChange('contact');
                       }}
@@ -2943,7 +3507,10 @@ const BuisnessAdminDashboard = () => {
                       onChange={e => {
                         setContactData(prev => ({
                           ...prev,
-                          socialMedia: { ...prev.socialMedia, linkedin: e.target.value }
+                          socialMedia: {
+                            ...prev.socialMedia,
+                            linkedin: e.target.value,
+                          },
                         }));
                         trackSectionChange('contact');
                       }}
@@ -2966,20 +3533,36 @@ const BuisnessAdminDashboard = () => {
               </SectionTitle>
             </SectionHeader>
 
-            <div style={{ display: 'flex', gap: '10px', marginBottom: '20px', flexWrap: 'wrap' }}>
+            <div
+              style={{
+                display: 'flex',
+                gap: '10px',
+                marginBottom: '20px',
+                flexWrap: 'wrap',
+              }}
+            >
               <AddButton onClick={() => addCustomSection('text')}>
                 <FaTextHeight />
                 Add Text Section
               </AddButton>
-              <AddButton onClick={() => addCustomSection('list')} style={{ background: '#10b981' }}>
+              <AddButton
+                onClick={() => addCustomSection('list')}
+                style={{ background: '#10b981' }}
+              >
                 <FaList />
                 Add List Section
               </AddButton>
-              <AddButton onClick={() => addCustomSection('card')} style={{ background: '#8b5cf6' }}>
+              <AddButton
+                onClick={() => addCustomSection('card')}
+                style={{ background: '#8b5cf6' }}
+              >
                 <FaServicestack />
                 Add Card Section
               </AddButton>
-              <AddButton onClick={() => addCustomSection('image')} style={{ background: '#f59e0b' }}>
+              <AddButton
+                onClick={() => addCustomSection('image')}
+                style={{ background: '#f59e0b' }}
+              >
                 <FaImages />
                 Add Image Section
               </AddButton>
@@ -2987,14 +3570,25 @@ const BuisnessAdminDashboard = () => {
 
             <ListContainer>
               {customSectionsData.map(section => (
-                <ListItem key={section.id} style={{ border: `2px solid ${section.visible ? '#10b981' : '#6b7280'}` }}>
+                <ListItem
+                  key={section.id}
+                  style={{
+                    border: `2px solid ${section.visible ? '#10b981' : '#6b7280'}`,
+                  }}
+                >
                   <div className="item-info">
                     <FormGrid>
                       <FormGroup>
                         <FormLabel>Section Title</FormLabel>
                         <FormInput
                           value={section.title}
-                          onChange={e => updateCustomSection(section.id, 'title', e.target.value)}
+                          onChange={e =>
+                            updateCustomSection(
+                              section.id,
+                              'title',
+                              e.target.value
+                            )
+                          }
                           placeholder="Section title"
                         />
                       </FormGroup>
@@ -3002,7 +3596,13 @@ const BuisnessAdminDashboard = () => {
                         <FormLabel>Section Type</FormLabel>
                         <select
                           value={section.type}
-                          onChange={e => updateCustomSection(section.id, 'type', e.target.value)}
+                          onChange={e =>
+                            updateCustomSection(
+                              section.id,
+                              'type',
+                              e.target.value
+                            )
+                          }
                           style={{
                             padding: '10px',
                             border: '2px solid #e2e8f0',
@@ -3022,10 +3622,20 @@ const BuisnessAdminDashboard = () => {
                           <input
                             type="checkbox"
                             checked={section.visible || false}
-                            onChange={e => updateCustomSection(section.id, 'visible', e.target.checked)}
+                            onChange={e =>
+                              updateCustomSection(
+                                section.id,
+                                'visible',
+                                e.target.checked
+                              )
+                            }
                             style={{ marginRight: '8px' }}
                           />
-                          <span style={{ color: section.visible ? '#10b981' : '#6b7280' }}>
+                          <span
+                            style={{
+                              color: section.visible ? '#10b981' : '#6b7280',
+                            }}
+                          >
                             {section.visible ? '👁️ Visible' : '🚫 Hidden'}
                           </span>
                         </FormLabel>
@@ -3038,10 +3648,12 @@ const BuisnessAdminDashboard = () => {
                             <FormLabel>Heading</FormLabel>
                             <FormInput
                               value={section.content.heading || ''}
-                              onChange={e => updateCustomSection(section.id, 'content', {
-                                ...section.content,
-                                heading: e.target.value
-                              })}
+                              onChange={e =>
+                                updateCustomSection(section.id, 'content', {
+                                  ...section.content,
+                                  heading: e.target.value,
+                                })
+                              }
                               placeholder="Section heading"
                             />
                           </FormGroup>
@@ -3049,10 +3661,12 @@ const BuisnessAdminDashboard = () => {
                             <FormLabel>Description</FormLabel>
                             <FormTextarea
                               value={section.content.description || ''}
-                              onChange={e => updateCustomSection(section.id, 'content', {
-                                ...section.content,
-                                description: e.target.value
-                              })}
+                              onChange={e =>
+                                updateCustomSection(section.id, 'content', {
+                                  ...section.content,
+                                  description: e.target.value,
+                                })
+                              }
                               placeholder="Your content here..."
                               rows={4}
                             />
@@ -3066,10 +3680,12 @@ const BuisnessAdminDashboard = () => {
                             <FormLabel>List Heading</FormLabel>
                             <FormInput
                               value={section.content.heading || ''}
-                              onChange={e => updateCustomSection(section.id, 'content', {
-                                ...section.content,
-                                heading: e.target.value
-                              })}
+                              onChange={e =>
+                                updateCustomSection(section.id, 'content', {
+                                  ...section.content,
+                                  heading: e.target.value,
+                                })
+                              }
                               placeholder="List heading"
                             />
                           </FormGroup>
@@ -3077,10 +3693,14 @@ const BuisnessAdminDashboard = () => {
                             <FormLabel>List Items (one per line)</FormLabel>
                             <FormTextarea
                               value={(section.content.items || []).join('\n')}
-                              onChange={e => updateCustomSection(section.id, 'content', {
-                                ...section.content,
-                                items: e.target.value.split('\n').filter(item => item.trim())
-                              })}
+                              onChange={e =>
+                                updateCustomSection(section.id, 'content', {
+                                  ...section.content,
+                                  items: e.target.value
+                                    .split('\n')
+                                    .filter(item => item.trim()),
+                                })
+                              }
                               placeholder="Item 1&#10;Item 2&#10;Item 3"
                               rows={5}
                             />
@@ -3094,23 +3714,29 @@ const BuisnessAdminDashboard = () => {
                             <FormLabel>Card Section Heading</FormLabel>
                             <FormInput
                               value={section.content.heading || ''}
-                              onChange={e => updateCustomSection(section.id, 'content', {
-                                ...section.content,
-                                heading: e.target.value
-                              })}
+                              onChange={e =>
+                                updateCustomSection(section.id, 'content', {
+                                  ...section.content,
+                                  heading: e.target.value,
+                                })
+                              }
                               placeholder="Card section heading"
                             />
                           </FormGroup>
                           <FormGroup style={{ gridColumn: '1 / -1' }}>
                             <FormLabel>Cards (JSON format)</FormLabel>
                             <FormTextarea
-                              value={JSON.stringify(section.content.cards || [], null, 2)}
+                              value={JSON.stringify(
+                                section.content.cards || [],
+                                null,
+                                2
+                              )}
                               onChange={e => {
                                 try {
                                   const cards = JSON.parse(e.target.value);
                                   updateCustomSection(section.id, 'content', {
                                     ...section.content,
-                                    cards
+                                    cards,
                                   });
                                 } catch (error) {
                                   // Invalid JSON, ignore
@@ -3129,10 +3755,12 @@ const BuisnessAdminDashboard = () => {
                             <FormLabel>Gallery Heading</FormLabel>
                             <FormInput
                               value={section.content.heading || ''}
-                              onChange={e => updateCustomSection(section.id, 'content', {
-                                ...section.content,
-                                heading: e.target.value
-                              })}
+                              onChange={e =>
+                                updateCustomSection(section.id, 'content', {
+                                  ...section.content,
+                                  heading: e.target.value,
+                                })
+                              }
                               placeholder="Gallery heading"
                             />
                           </FormGroup>
@@ -3143,20 +3771,26 @@ const BuisnessAdminDashboard = () => {
                               min="1"
                               max="6"
                               value={section.content.columns || 3}
-                              onChange={e => updateCustomSection(section.id, 'content', {
-                                ...section.content,
-                                columns: parseInt(e.target.value)
-                              })}
+                              onChange={e =>
+                                updateCustomSection(section.id, 'content', {
+                                  ...section.content,
+                                  columns: parseInt(e.target.value),
+                                })
+                              }
                             />
                           </FormGroup>
                           <FormGroup style={{ gridColumn: '1 / -1' }}>
                             <FormLabel>Image URLs (one per line)</FormLabel>
                             <FormTextarea
                               value={(section.content.images || []).join('\n')}
-                              onChange={e => updateCustomSection(section.id, 'content', {
-                                ...section.content,
-                                images: e.target.value.split('\n').filter(url => url.trim())
-                              })}
+                              onChange={e =>
+                                updateCustomSection(section.id, 'content', {
+                                  ...section.content,
+                                  images: e.target.value
+                                    .split('\n')
+                                    .filter(url => url.trim()),
+                                })
+                              }
                               placeholder="https://example.com/image1.jpg&#10;https://example.com/image2.jpg"
                               rows={4}
                             />
@@ -3164,22 +3798,39 @@ const BuisnessAdminDashboard = () => {
                         </>
                       )}
 
-                      <FormGroup style={{ gridColumn: '1 / -1', marginTop: '20px', padding: '10px', background: '#f8f9fa', borderRadius: '6px' }}>
+                      <FormGroup
+                        style={{
+                          gridColumn: '1 / -1',
+                          marginTop: '20px',
+                          padding: '10px',
+                          background: '#f8f9fa',
+                          borderRadius: '6px',
+                        }}
+                      >
                         <FormLabel>Advanced: Raw JSON Content</FormLabel>
                         <FormTextarea
                           value={JSON.stringify(section.content, null, 2)}
                           onChange={e => {
                             try {
                               const content = JSON.parse(e.target.value);
-                              updateCustomSection(section.id, 'content', content);
+                              updateCustomSection(
+                                section.id,
+                                'content',
+                                content
+                              );
                             } catch (error) {
                               // Invalid JSON, but still update to show user's input
-                              updateCustomSection(section.id, 'content', { raw: e.target.value });
+                              updateCustomSection(section.id, 'content', {
+                                raw: e.target.value,
+                              });
                             }
                           }}
                           placeholder='{"title": "Custom Content", "description": "Your content here"}'
                           rows={4}
-                          style={{ fontSize: '0.85rem', fontFamily: 'monospace' }}
+                          style={{
+                            fontSize: '0.85rem',
+                            fontFamily: 'monospace',
+                          }}
                         />
                       </FormGroup>
                     </FormGrid>
@@ -3187,10 +3838,14 @@ const BuisnessAdminDashboard = () => {
                   <div className="item-actions">
                     <ItemButton
                       onClick={() => {
-                        const newOrder = customSectionsData.indexOf(section) - 1;
+                        const newOrder =
+                          customSectionsData.indexOf(section) - 1;
                         if (newOrder >= 0) {
                           const newData = [...customSectionsData];
-                          const [removed] = newData.splice(customSectionsData.indexOf(section), 1);
+                          const [removed] = newData.splice(
+                            customSectionsData.indexOf(section),
+                            1
+                          );
                           newData.splice(newOrder, 0, removed);
                           setCustomSectionsData(newData);
                           trackSectionChange('custom');
@@ -3202,16 +3857,23 @@ const BuisnessAdminDashboard = () => {
                     </ItemButton>
                     <ItemButton
                       onClick={() => {
-                        const newOrder = customSectionsData.indexOf(section) + 1;
+                        const newOrder =
+                          customSectionsData.indexOf(section) + 1;
                         if (newOrder < customSectionsData.length) {
                           const newData = [...customSectionsData];
-                          const [removed] = newData.splice(customSectionsData.indexOf(section), 1);
+                          const [removed] = newData.splice(
+                            customSectionsData.indexOf(section),
+                            1
+                          );
                           newData.splice(newOrder, 0, removed);
                           setCustomSectionsData(newData);
                           trackSectionChange('custom');
                         }
                       }}
-                      disabled={customSectionsData.indexOf(section) === customSectionsData.length - 1}
+                      disabled={
+                        customSectionsData.indexOf(section) ===
+                        customSectionsData.length - 1
+                      }
                     >
                       ↓ Down
                     </ItemButton>
@@ -3226,16 +3888,27 @@ const BuisnessAdminDashboard = () => {
                 </ListItem>
               ))}
               {customSectionsData.length === 0 && (
-                <div style={{
-                  textAlign: 'center',
-                  padding: '40px',
-                  color: '#6b7280',
-                  border: '2px dashed #d1d5db',
-                  borderRadius: '8px'
-                }}>
-                  <FaPlus style={{ fontSize: '3rem', marginBottom: '16px', opacity: 0.5 }} />
+                <div
+                  style={{
+                    textAlign: 'center',
+                    padding: '40px',
+                    color: '#6b7280',
+                    border: '2px dashed #d1d5db',
+                    borderRadius: '8px',
+                  }}
+                >
+                  <FaPlus
+                    style={{
+                      fontSize: '3rem',
+                      marginBottom: '16px',
+                      opacity: 0.5,
+                    }}
+                  />
                   <h3>No Custom Sections Yet</h3>
-                  <p>Click one of the buttons above to add your first custom section!</p>
+                  <p>
+                    Click one of the buttons above to add your first custom
+                    section!
+                  </p>
                 </div>
               )}
             </ListContainer>
@@ -3252,27 +3925,60 @@ const BuisnessAdminDashboard = () => {
               </SectionTitle>
             </SectionHeader>
 
-            <div style={{
-              background: '#eff6ff',
-              border: '1px solid #dbeafe',
-              padding: '16px',
-              borderRadius: '8px',
-              marginBottom: '24px'
-            }}>
-              <h4 style={{ margin: '0 0 8px 0', color: '#1e40af', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <div
+              style={{
+                background: '#eff6ff',
+                border: '1px solid #dbeafe',
+                padding: '16px',
+                borderRadius: '8px',
+                marginBottom: '24px',
+              }}
+            >
+              <h4
+                style={{
+                  margin: '0 0 8px 0',
+                  color: '#1e40af',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                }}
+              >
                 <FaChartBar />
                 Section Management
               </h4>
               <p style={{ margin: '0', color: '#1e40af', fontSize: '0.9rem' }}>
-                Reorder sections to customize your website layout. Use the arrow buttons to move sections up or down.
-                Disabled sections will appear grayed out but can still be reordered.
+                Reorder sections to customize your website layout. Use the arrow
+                buttons to move sections up or down. Disabled sections will
+                appear grayed out but can still be reordered.
               </p>
             </div>
 
-            <div style={{ display: 'flex', gap: '12px', marginBottom: '20px', flexWrap: 'wrap' }}>
+            <div
+              style={{
+                display: 'flex',
+                gap: '12px',
+                marginBottom: '20px',
+                flexWrap: 'wrap',
+              }}
+            >
               <button
                 onClick={() => {
-                  const defaultOrder = ['hero', 'about-us', 'services-offered', 'portfolio', 'skills', 'experience', 'team', 'gallery', 'packages', 'testimonials', 'reviews', 'faq', 'business-hours', 'contact'];
+                  const defaultOrder = [
+                    'hero',
+                    'about-us',
+                    'services-offered',
+                    'portfolio',
+                    'skills',
+                    'experience',
+                    'team',
+                    'gallery',
+                    'packages',
+                    'testimonials',
+                    'reviews',
+                    'faq',
+                    'business-hours',
+                    'contact',
+                  ];
                   setSectionOrderData(defaultOrder);
                   trackSectionChange('order');
                 }}
@@ -3286,7 +3992,7 @@ const BuisnessAdminDashboard = () => {
                   fontSize: '0.9rem',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '6px'
+                  gap: '6px',
                 }}
               >
                 <FaUndo />
@@ -3294,7 +4000,9 @@ const BuisnessAdminDashboard = () => {
               </button>
               <button
                 onClick={() => {
-                  const shuffled = [...sectionOrderData].sort(() => Math.random() - 0.5);
+                  const shuffled = [...sectionOrderData].sort(
+                    () => Math.random() - 0.5
+                  );
                   setSectionOrderData(shuffled);
                   trackSectionChange('order');
                 }}
@@ -3308,7 +4016,7 @@ const BuisnessAdminDashboard = () => {
                   fontSize: '0.9rem',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '6px'
+                  gap: '6px',
                 }}
               >
                 <FaRandom />
@@ -3319,22 +4027,23 @@ const BuisnessAdminDashboard = () => {
             <ListContainer>
               {sectionOrderData.map((sectionId, index) => {
                 const isVisible = sectionVisibility[sectionId];
-                const sectionIcon = {
-                  'hero': '🏠',
-                  'about-us': '👥',
-                  'services-offered': '⚙️',
-                  'portfolio': '💼',
-                  'skills': '🎯',
-                  'experience': '📄',
-                  'team': '👨‍👩‍👧‍👦',
-                  'gallery': '📸',
-                  'packages': '💰',
-                  'testimonials': '💬',
-                  'reviews': '⭐',
-                  'faq': '❓',
-                  'business-hours': '🕐',
-                  'contact': '📞'
-                }[sectionId] || '📋';
+                const sectionIcon =
+                  {
+                    hero: '🏠',
+                    'about-us': '👥',
+                    'services-offered': '⚙️',
+                    portfolio: '💼',
+                    skills: '🎯',
+                    experience: '📄',
+                    team: '👨‍👩‍👧‍👦',
+                    gallery: '📸',
+                    packages: '💰',
+                    testimonials: '💬',
+                    reviews: '⭐',
+                    faq: '❓',
+                    'business-hours': '🕐',
+                    contact: '📞',
+                  }[sectionId] || '📋';
 
                 return (
                   <ListItem
@@ -3343,43 +4052,52 @@ const BuisnessAdminDashboard = () => {
                       cursor: 'move',
                       opacity: isVisible ? 1 : 0.6,
                       border: `2px solid ${isVisible ? '#10b981' : '#6b7280'}`,
-                      background: isVisible ? '#ffffff' : '#f9fafb'
+                      background: isVisible ? '#ffffff' : '#f9fafb',
                     }}
                   >
-                    <div className="item-info" style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '12px',
-                      flex: 1
-                    }}>
-                      <div style={{
+                    <div
+                      className="item-info"
+                      style={{
                         display: 'flex',
                         alignItems: 'center',
-                        justifyContent: 'center',
-                        width: '32px',
-                        height: '32px',
-                        background: '#f3f4f6',
-                        borderRadius: '6px',
-                        fontSize: '1.2rem'
-                      }}>
+                        gap: '12px',
+                        flex: 1,
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          width: '32px',
+                          height: '32px',
+                          background: '#f3f4f6',
+                          borderRadius: '6px',
+                          fontSize: '1.2rem',
+                        }}
+                      >
                         {index + 1}
                       </div>
                       <span style={{ fontSize: '1.5rem' }}>{sectionIcon}</span>
                       <div style={{ flex: 1 }}>
-                        <div style={{
-                          fontWeight: '600',
-                          textTransform: 'capitalize',
-                          color: isVisible ? '#111827' : '#6b7280'
-                        }}>
+                        <div
+                          style={{
+                            fontWeight: '600',
+                            textTransform: 'capitalize',
+                            color: isVisible ? '#111827' : '#6b7280',
+                          }}
+                        >
                           {sectionId.replace(/-/g, ' ')}
                         </div>
-                        <div style={{
-                          fontSize: '0.8rem',
-                          color: isVisible ? '#10b981' : '#6b7280',
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '4px'
-                        }}>
+                        <div
+                          style={{
+                            fontSize: '0.8rem',
+                            color: isVisible ? '#10b981' : '#6b7280',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '4px',
+                          }}
+                        >
                           {isVisible ? (
                             <>
                               <FaEye />
@@ -3393,7 +4111,9 @@ const BuisnessAdminDashboard = () => {
                           )}
                         </div>
                       </div>
-                      <FaGripHorizontal style={{ color: '#9ca3af', fontSize: '1.2rem' }} />
+                      <FaGripHorizontal
+                        style={{ color: '#9ca3af', fontSize: '1.2rem' }}
+                      />
                     </div>
                     <div className="item-actions">
                       <ItemButton
@@ -3422,7 +4142,7 @@ const BuisnessAdminDashboard = () => {
                         onClick={() => toggleSectionVisibility(sectionId)}
                         style={{
                           background: isVisible ? '#ef4444' : '#10b981',
-                          color: 'white'
+                          color: 'white',
                         }}
                         title={isVisible ? 'Hide section' : 'Show section'}
                       >
@@ -3435,13 +4155,15 @@ const BuisnessAdminDashboard = () => {
             </ListContainer>
 
             {/* Preview order */}
-            <div style={{
-              marginTop: '24px',
-              padding: '16px',
-              background: '#f8fafc',
-              border: '1px solid #e2e8f0',
-              borderRadius: '8px'
-            }}>
+            <div
+              style={{
+                marginTop: '24px',
+                padding: '16px',
+                background: '#f8fafc',
+                border: '1px solid #e2e8f0',
+                borderRadius: '8px',
+              }}
+            >
               <h4 style={{ margin: '0 0 12px 0', color: '#374151' }}>
                 Section Preview Order
               </h4>
@@ -3451,11 +4173,13 @@ const BuisnessAdminDashboard = () => {
                     key={sectionId}
                     style={{
                       padding: '4px 8px',
-                      background: sectionVisibility[sectionId] ? '#3b82f6' : '#6b7280',
+                      background: sectionVisibility[sectionId]
+                        ? '#3b82f6'
+                        : '#6b7280',
                       color: 'white',
                       borderRadius: '4px',
                       fontSize: '0.8rem',
-                      opacity: sectionVisibility[sectionId] ? 1 : 0.6
+                      opacity: sectionVisibility[sectionId] ? 1 : 0.6,
                     }}
                   >
                     {index + 1}. {sectionId.replace(/-/g, ' ')}
@@ -3471,10 +4195,19 @@ const BuisnessAdminDashboard = () => {
           <ContentSection>
             <SectionTitle>
               <FaEdit />
-              {activeSection.charAt(0).toUpperCase() + activeSection.slice(1).replace(/-/g, ' ')} Management
+              {activeSection.charAt(0).toUpperCase() +
+                activeSection.slice(1).replace(/-/g, ' ')}{' '}
+              Management
             </SectionTitle>
-            <p>This section is under development. Please select another section to edit.</p>
-            <p>Available sections: Hero, About Us, Services, Team, Portfolio, Skills, Experience, Gallery, Packages, Testimonials, Reviews, FAQ, Business Hours, Contact</p>
+            <p>
+              This section is under development. Please select another section
+              to edit.
+            </p>
+            <p>
+              Available sections: Hero, About Us, Services, Team, Portfolio,
+              Skills, Experience, Gallery, Packages, Testimonials, Reviews, FAQ,
+              Business Hours, Contact
+            </p>
           </ContentSection>
         );
     }
@@ -3632,25 +4365,30 @@ const BuisnessAdminDashboard = () => {
                 </SaveButton>
 
                 {changedSections.size > 0 && (
-                  <div style={{
-                    marginTop: '16px',
-                    padding: '12px',
-                    background: '#fef3c7',
-                    borderRadius: '6px',
-                    fontSize: '0.85rem'
-                  }}>
+                  <div
+                    style={{
+                      marginTop: '16px',
+                      padding: '12px',
+                      background: '#fef3c7',
+                      borderRadius: '6px',
+                      fontSize: '0.85rem',
+                    }}
+                  >
                     <strong>Changed sections:</strong>
                     <div style={{ marginTop: '4px' }}>
                       {Array.from(changedSections).map(section => (
-                        <span key={section} style={{
-                          display: 'inline-block',
-                          background: '#f59e0b',
-                          color: 'white',
-                          padding: '2px 6px',
-                          borderRadius: '3px',
-                          margin: '2px',
-                          fontSize: '0.8rem'
-                        }}>
+                        <span
+                          key={section}
+                          style={{
+                            display: 'inline-block',
+                            background: '#f59e0b',
+                            color: 'white',
+                            padding: '2px 6px',
+                            borderRadius: '3px',
+                            margin: '2px',
+                            fontSize: '0.8rem',
+                          }}
+                        >
                           {section.replace(/-/g, ' ')}
                         </span>
                       ))}
@@ -3661,8 +4399,6 @@ const BuisnessAdminDashboard = () => {
             </div>
           </NavSection>
         </SidebarNav>
-
-
       </Sidebar>
 
       {/* Main Content */}
