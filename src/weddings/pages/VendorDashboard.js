@@ -794,6 +794,12 @@ const VendorDashboard = () => {
       section: 'Content Management',
     },
     {
+      id: 'section-order',
+      label: 'Section Order',
+      icon: FaList,
+      section: 'Content Management',
+    },
+    {
       id: 'settings',
       label: 'Settings',
       icon: FaCog,
