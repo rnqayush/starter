@@ -1905,9 +1905,15 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
               <Button variant="outline" onClick={closeModal}>
                 Cancel
               </Button>
-              <Button onClick={saveSection}>
-                <FaSave /> Save Changes
-              </Button>
+              {activeModal === 'add-section' ? (
+                <Button onClick={addCustomSection}>
+                  <FaPlus /> Add Section
+                </Button>
+              ) : (
+                <Button onClick={saveSection}>
+                  <FaSave /> Save Changes
+                </Button>
+              )}
             </ModalFooter>
           </Modal>
         </Overlay>
