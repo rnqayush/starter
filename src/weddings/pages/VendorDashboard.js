@@ -727,7 +727,7 @@ const VendorDashboard = () => {
     } else {
       const newSection = {
         ...newCustomSection,
-        id: Date.now(),
+        id: `custom-section-${Date.now()}-${Math.random()}`,
       };
       setCustomSections(prev => [...prev, newSection]);
     }
