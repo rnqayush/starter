@@ -679,6 +679,7 @@ const VendorDashboard = () => {
 
   // Auto-save function for real-time preview updates
   const autoSaveForPreview = () => {
+    trackSectionChange(activeSection);
     if (autoSaveTimeout) {
       clearTimeout(autoSaveTimeout);
     }
