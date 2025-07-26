@@ -1615,6 +1615,29 @@ const BuisnessAdminDashboard = () => {
                 <FormLabel>
                   <FaCamera />
                   Background Image URL
+                  <input
+                    type="file"
+                    accept="image/*"
+                    style={{ display: 'none' }}
+                    id="hero-background-upload"
+                    onChange={e => handleImageUpload(e, (url) => {
+                      setHeroData(prev => ({ ...prev, backgroundImage: url }));
+                      trackSectionChange('hero');
+                    })}
+                  />
+                  <label
+                    htmlFor="hero-background-upload"
+                    style={{
+                      marginLeft: '10px',
+                      cursor: 'pointer',
+                      color: '#3b82f6',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px'
+                    }}
+                  >
+                    <FaUpload /> Upload
+                  </label>
                 </FormLabel>
                 <FormInput
                   value={heroData.backgroundImage}
@@ -1622,8 +1645,32 @@ const BuisnessAdminDashboard = () => {
                     setHeroData(prev => ({ ...prev, backgroundImage: e.target.value }));
                     trackSectionChange('hero');
                   }}
-                  placeholder="Enter background image URL"
+                  placeholder="Enter background image URL or upload"
                 />
+                {heroData.backgroundImage && (
+                  <div style={{
+                    marginTop: '10px',
+                    padding: '10px',
+                    border: '1px solid #e2e8f0',
+                    borderRadius: '6px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px'
+                  }}>
+                    <div style={{
+                      width: '60px',
+                      height: '60px',
+                      backgroundImage: `url(${heroData.backgroundImage})`,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                      borderRadius: '6px',
+                      border: '1px solid #d1d5db'
+                    }} />
+                    <span style={{ fontSize: '0.9rem', color: '#6b7280' }}>
+                      Image preview
+                    </span>
+                  </div>
+                )}
               </FormGroup>
             </FormGrid>
           </ContentSection>
