@@ -1354,6 +1354,54 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
             <SectionPreview>{section.preview}</SectionPreview>
           </SectionCard>
         ))}
+
+        {/* Show custom sections */}
+        {customSections.map(section => (
+          <SectionCard
+            key={section.id}
+            isVisible={section.isVisible}
+            onClick={(e) => {
+              if (e.target.closest('.toggle-switch')) return;
+              openModal(section.id);
+            }}
+          >
+            <SectionHeader>
+              <SectionInfo>
+                <SectionIcon>
+                  {section.type === 'gallery' && <FaCamera />}
+                  {section.type === 'cards' && <FaGrip />}
+                  {section.type === 'text' && <FaTextHeight />}
+                  {section.type === 'list' && <FaList />}
+                  {section.type === 'testimonials' && <FaQuoteLeft />}
+                  {section.type === 'video' && <FaVideo />}
+                  {section.type === 'table' && <FaTable />}
+                </SectionIcon>
+                <SectionTitle>{section.title}</SectionTitle>
+                <SectionDescription>Custom {section.type} section</SectionDescription>
+              </SectionInfo>
+              <ToggleSwitch
+                className="toggle-switch"
+                active={section.isVisible}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleSectionToggle(section.id);
+                }}
+              />
+            </SectionHeader>
+            <SectionPreview>{section.content.length} {section.type} items</SectionPreview>
+          </SectionCard>
+        ))}
+
+        {/* Add Section Card */}
+        <AddSectionCard onClick={() => openModal('add-section')}>
+          <AddSectionIcon>
+            <FaPlus />
+          </AddSectionIcon>
+          <AddSectionText>
+            <h3>Add Custom Section</h3>
+            <p>Create a new section with custom content</p>
+          </AddSectionText>
+        </AddSectionCard>
       </SectionsGrid>
 
       {/* Modal Overlays */}
