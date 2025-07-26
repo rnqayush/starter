@@ -1379,6 +1379,8 @@ const VendorDashboard = () => {
         trackSectionChange('about-us');
       } else {
         setter(prev => ({ ...prev, [field]: e.target.result, [`${field}File`]: file }));
+        // Trigger real-time updates for other image uploads
+        setTimeout(() => updateEditingVendorInRedux(), 100);
       }
     };
     reader.readAsDataURL(file);
