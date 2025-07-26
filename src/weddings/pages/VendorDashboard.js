@@ -1110,6 +1110,13 @@ const VendorDashboard = () => {
       );
       setCustomSections(customSectionsWithIds);
 
+      // Initialize custom section visibility
+      const customVisibility = {};
+      customSectionsWithIds.forEach(section => {
+        customVisibility[section.id] = vendorData.customSectionVisibility?.[section.id] !== false;
+      });
+      setCustomSectionVisibility(customVisibility);
+
       // Initialize complete section order
       const defaultOrder = [
         'hero',
