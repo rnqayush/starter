@@ -1830,7 +1830,7 @@ const VendorDashboard = () => {
           <ContentSection>
             <SectionTitle>
               <FaBriefcase />
-              Recent Work
+              Portfolio & Recent Work
             </SectionTitle>
             {recentWorkData.map(work => (
               <div
@@ -1839,91 +1839,247 @@ const VendorDashboard = () => {
                   border: `1px solid ${theme.colors.gray200}`,
                   borderRadius: theme.borderRadius.md,
                   padding: theme.spacing.lg,
-                  marginBottom: theme.spacing.lg,
+                  marginBottom: theme.spacing.xl,
+                  backgroundColor: theme.colors.gray50,
                 }}
               >
+                <h3 style={{ marginBottom: theme.spacing.lg, color: theme.colors.primary }}>
+                  {work.title || 'New Project'}
+                </h3>
+
+                {/* Basic Information */}
                 <FormGrid>
                   <FormGroup>
-                    <FormLabel>Project Title</FormLabel>
+                    <FormLabel>Venue/Location Name</FormLabel>
                     <FormInput
                       value={work.title}
-                      onChange={e =>
-                        updateRecentWork(work.id, 'title', e.target.value)
-                      }
-                      placeholder="Sarah & Michael Wedding"
+                      onChange={e => {
+                        updateRecentWork(work.id, 'title', e.target.value);
+                        trackSectionChange('recent-work');
+                      }}
+                      placeholder="Napa Valley Vineyard"
                     />
                   </FormGroup>
                   <FormGroup>
-                    <FormLabel>Location</FormLabel>
+                    <FormLabel>City</FormLabel>
                     <FormInput
                       value={work.location}
-                      onChange={e =>
-                        updateRecentWork(work.id, 'location', e.target.value)
-                      }
+                      onChange={e => {
+                        updateRecentWork(work.id, 'location', e.target.value);
+                        trackSectionChange('recent-work');
+                      }}
                       placeholder="Napa Valley"
                     />
                   </FormGroup>
                   <FormGroup>
-                    <FormLabel>Date</FormLabel>
+                    <FormLabel>Wedding Date</FormLabel>
                     <FormInput
                       value={work.date}
-                      onChange={e =>
-                        updateRecentWork(work.id, 'date', e.target.value)
-                      }
+                      onChange={e => {
+                        updateRecentWork(work.id, 'date', e.target.value);
+                        trackSectionChange('recent-work');
+                      }}
                       placeholder="September 2023"
                     />
                   </FormGroup>
                   <FormGroup>
-                    <FormLabel>
-                      <FaFileImage />
-                      Featured Image
-                    </FormLabel>
-                    <FileUploadContainer>
-                      {work.image && (
-                        <ImagePreview>
-                          <img src={work.image} alt="Work" />
+                    <FormLabel>Couple Names</FormLabel>
+                    <FormInput
+                      value={work.coupleNames}
+                      onChange={e => {
+                        updateRecentWork(work.id, 'coupleNames', e.target.value);
+                        trackSectionChange('recent-work');
+                      }}
+                      placeholder="Sarah & Michael"
+                    />
+                  </FormGroup>
+                </FormGrid>
+
+                {/* Description */}
+                <FormGroup style={{ marginTop: theme.spacing.md }}>
+                  <FormLabel>Project Description</FormLabel>
+                  <FormTextarea
+                    value={work.description}
+                    onChange={e => {
+                      updateRecentWork(work.id, 'description', e.target.value);
+                      trackSectionChange('recent-work');
+                    }}
+                    placeholder="An enchanting vineyard wedding with rustic elegance and breathtaking sunset views..."
+                    rows={4}
+                  />
+                </FormGroup>
+
+                {/* Cover Image */}
+                <FormGroup style={{ marginTop: theme.spacing.md }}>
+                  <FormLabel>
+                    <FaFileImage />
+                    Cover Image
+                  </FormLabel>
+                  <FileUploadContainer>
+                    {work.image && (
+                      <ImagePreview>
+                        <img src={work.image} alt="Work cover" />
+                        <ImageOverlay>
+                          <RemoveImageButton
+                            onClick={() => {
+                              updateRecentWork(work.id, 'image', '');
+                              trackSectionChange('recent-work');
+                            }}
+                          >
+                            <FaTrash />
+                          </RemoveImageButton>
+                        </ImageOverlay>
+                      </ImagePreview>
+                    )}
+                    <FileUploadBox>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={e => {
+                          const file = e.target.files[0];
+                          const reader = new FileReader();
+                          reader.onload = event => {
+                            updateRecentWork(work.id, 'image', event.target.result);
+                            trackSectionChange('recent-work');
+                          };
+                          reader.readAsDataURL(file);
+                        }}
+                      />
+                      <FaUpload size={20} color={theme.colors.gray400} />
+                      <span style={{ fontSize: '0.7rem', textAlign: 'center' }}>Upload Cover</span>
+                    </FileUploadBox>
+                    <FormGroup style={{ flex: 1 }}>
+                      <FormInput
+                        value={work.image}
+                        onChange={e => {
+                          updateRecentWork(work.id, 'image', e.target.value);
+                          trackSectionChange('recent-work');
+                        }}
+                        placeholder="Or paste image URL..."
+                      />
+                    </FormGroup>
+                  </FileUploadContainer>
+                </FormGroup>
+
+                {/* Services Provided */}
+                <FormGroup style={{ marginTop: theme.spacing.md }}>
+                  <FormLabel>Services Provided (one per line)</FormLabel>
+                  <FormTextarea
+                    value={Array.isArray(work.services) ? work.services.join('\n') : ''}
+                    onChange={e => {
+                      const services = e.target.value.split('\n').filter(s => s.trim());
+                      updateRecentWork(work.id, 'services', services);
+                      trackSectionChange('recent-work');
+                    }}
+                    placeholder="Full Wedding Planning&#10;Floral Design&#10;Venue Decoration&#10;Day-of Coordination"
+                    rows={4}
+                  />
+                </FormGroup>
+
+                {/* Project Highlights */}
+                <FormGroup style={{ marginTop: theme.spacing.md }}>
+                  <FormLabel>Project Highlights (one per line)</FormLabel>
+                  <FormTextarea
+                    value={Array.isArray(work.highlights) ? work.highlights.join('\n') : ''}
+                    onChange={e => {
+                      const highlights = e.target.value.split('\n').filter(h => h.trim());
+                      updateRecentWork(work.id, 'highlights', highlights);
+                      trackSectionChange('recent-work');
+                    }}
+                    placeholder="Custom vineyard ceremony setup&#10;Rustic chic reception decor&#10;Farm-to-table catering coordination&#10;Sunset photography session"
+                    rows={4}
+                  />
+                </FormGroup>
+
+                {/* Gallery Images */}
+                <FormGroup style={{ marginTop: theme.spacing.md }}>
+                  <FormLabel>
+                    <FaImages />
+                    Portfolio Gallery Images
+                  </FormLabel>
+                  <FileUploadContainer>
+                    <FileUploadBox>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        onChange={e => {
+                          Array.from(e.target.files).forEach(file => {
+                            const reader = new FileReader();
+                            reader.onload = event => {
+                              const currentGallery = work.gallery || [];
+                              updateRecentWork(work.id, 'gallery', [...currentGallery, event.target.result]);
+                              trackSectionChange('recent-work');
+                            };
+                            reader.readAsDataURL(file);
+                          });
+                        }}
+                      />
+                      <FaUpload size={20} color={theme.colors.gray400} />
+                      <span style={{ fontSize: '0.7rem', textAlign: 'center' }}>Add Gallery Images</span>
+                    </FileUploadBox>
+                    <FormGroup style={{ flex: 1 }}>
+                      <FormTextarea
+                        placeholder="Or paste image URLs (one per line)&#10;https://example.com/image1.jpg&#10;https://example.com/image2.jpg"
+                        rows={3}
+                        onBlur={e => {
+                          const urls = e.target.value.split('\n').filter(url => url.trim());
+                          if (urls.length > 0) {
+                            const currentGallery = work.gallery || [];
+                            updateRecentWork(work.id, 'gallery', [...currentGallery, ...urls]);
+                            trackSectionChange('recent-work');
+                            e.target.value = '';
+                          }
+                        }}
+                      />
+                    </FormGroup>
+                  </FileUploadContainer>
+
+                  {/* Gallery Preview */}
+                  {work.gallery && work.gallery.length > 0 && (
+                    <div style={{
+                      display: 'grid',
+                      gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))',
+                      gap: theme.spacing.sm,
+                      marginTop: theme.spacing.md
+                    }}>
+                      {work.gallery.map((image, index) => (
+                        <ImagePreview key={index} style={{ width: '120px', height: '80px' }}>
+                          <img src={image} alt={`Gallery ${index}`} />
                           <ImageOverlay>
                             <RemoveImageButton
-                              onClick={() => updateRecentWork(work.id, 'image', '')}
+                              onClick={() => {
+                                const newGallery = work.gallery.filter((_, i) => i !== index);
+                                updateRecentWork(work.id, 'gallery', newGallery);
+                                trackSectionChange('recent-work');
+                              }}
                             >
                               <FaTrash />
                             </RemoveImageButton>
                           </ImageOverlay>
                         </ImagePreview>
-                      )}
-                      <FileUploadBox>
-                        <input
-                          type="file"
-                          accept="image/*"
-                          onChange={e => {
-                            const file = e.target.files[0];
-                            const reader = new FileReader();
-                            reader.onload = event => {
-                              updateRecentWork(work.id, 'image', event.target.result);
-                            };
-                            reader.readAsDataURL(file);
-                          }}
-                        />
-                        <FaUpload size={20} color={theme.colors.gray400} />
-                        <span style={{ fontSize: '0.7rem', textAlign: 'center' }}>Upload</span>
-                      </FileUploadBox>
-                    </FileUploadContainer>
-                  </FormGroup>
-                  <div style={{ gridColumn: '1 / -1', textAlign: 'right' }}>
-                    <ActionButton
-                      variant="danger"
-                      onClick={() => deleteRecentWork(work.id)}
-                    >
-                      <FaTrash />
-                      Remove Project
-                    </ActionButton>
-                  </div>
-                </FormGrid>
+                      ))}
+                    </div>
+                  )}
+                </FormGroup>
+
+                <div style={{ textAlign: 'right', marginTop: theme.spacing.lg, paddingTop: theme.spacing.md, borderTop: `1px solid ${theme.colors.gray200}` }}>
+                  <ActionButton
+                    variant="danger"
+                    onClick={() => {
+                      deleteRecentWork(work.id);
+                      trackSectionChange('recent-work');
+                    }}
+                  >
+                    <FaTrash />
+                    Remove This Project
+                  </ActionButton>
+                </div>
               </div>
             ))}
             <ActionButton onClick={addRecentWork}>
               <FaPlus />
-              Add New Project
+              Add New Portfolio Project
             </ActionButton>
           </ContentSection>
         );
