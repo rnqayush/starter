@@ -1856,10 +1856,23 @@ const VendorDashboard = () => {
       case 'hero':
         return (
           <ContentSection>
-            <SectionTitle>
-              <FaImages />
-              Hero Section
-            </SectionTitle>
+            <SectionHeader>
+              <SectionTitle>
+                <FaImages />
+                Hero Section
+              </SectionTitle>
+              <VisibilityToggleContainer>
+                <span>{sectionVisibility['hero'] ? 'Visible' : 'Hidden'}</span>
+                <ToggleSwitch>
+                  <input
+                    type="checkbox"
+                    checked={sectionVisibility['hero']}
+                    onChange={() => toggleSectionVisibility('hero')}
+                  />
+                  <span></span>
+                </ToggleSwitch>
+              </VisibilityToggleContainer>
+            </SectionHeader>
             <FormGrid>
               <FormGroup style={{ gridColumn: '1 / -1' }}>
                 <FormLabel>Business Name</FormLabel>
