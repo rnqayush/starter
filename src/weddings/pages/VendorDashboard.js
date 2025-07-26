@@ -998,6 +998,7 @@ const VendorDashboard = () => {
       });
 
       setSaved(true);
+      setChangedSections(new Set());
       alert('Changes saved! You can preview them in the vendor page. Click "Save & Go Live" to publish permanently.');
       console.log('Updated editing vendor for real-time preview:', updatedVendor);
     } catch (error) {
