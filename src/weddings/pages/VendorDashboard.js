@@ -794,6 +794,15 @@ const VendorDashboard = () => {
     updateEditingVendorInRedux();
   };
 
+  // Handle section visibility toggle
+  const toggleSectionVisibility = (sectionId) => {
+    setSectionVisibility(prev => ({
+      ...prev,
+      [sectionId]: !prev[sectionId]
+    }));
+    trackSectionChange(sectionId);
+  };
+
   // Helper function to immediately update Redux editing vendor
   const updateEditingVendorInRedux = () => {
     if (!editingVendor) return;
