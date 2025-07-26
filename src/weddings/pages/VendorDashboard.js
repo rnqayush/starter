@@ -731,6 +731,16 @@ const VendorDashboard = () => {
   ]);
 
   const [changedSections, setChangedSections] = useState(new Set());
+  const [showCustomSectionModal, setShowCustomSectionModal] = useState(false);
+  const [editingCustomSection, setEditingCustomSection] = useState(null);
+  const [customSectionForm, setCustomSectionForm] = useState({
+    title: '',
+    subtitle: '',
+    type: 'text',
+    content: '',
+    images: [],
+    cards: []
+  });
 
   // Track changes in a section and update Redux editing vendor for real-time preview
   const trackSectionChange = (sectionId) => {
