@@ -1404,6 +1404,8 @@ const VendorDashboard = () => {
         service.id === id ? { ...service, [field]: value } : service
       )
     );
+    // Automatically trigger real-time updates
+    setTimeout(() => updateEditingVendorInRedux(), 100);
   };
 
   const deleteService = id => {
