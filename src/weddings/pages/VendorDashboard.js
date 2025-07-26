@@ -37,6 +37,11 @@ import {
   FaQuoteLeft,
   FaUndo,
   FaCheckCircle,
+  FaVideo,
+  FaEyeSlash,
+  FaFileImage,
+  FaLink,
+  FaCopy,
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
 import { getWeddingVendorById as getVendorById } from '../../DummyData';
@@ -99,6 +104,8 @@ const Sidebar = styled.div.withConfig({
   height: 100vh;
   overflow-y: auto;
   z-index: 100;
+  display: flex;
+  flex-direction: column;
 
   @media (max-width: ${theme.breakpoints.tablet}) {
     width: 260px;
@@ -139,6 +146,8 @@ const VendorRole = styled.p`
 
 const SidebarNav = styled.nav`
   padding: ${theme.spacing.lg} 0;
+  flex: 1;
+  overflow-y: auto;
 `;
 
 const NavSection = styled.div`
@@ -184,6 +193,71 @@ const NavItem = styled.button.withConfig({
   svg {
     font-size: 1rem;
   }
+`;
+
+const SidebarFooter = styled.div`
+  padding: ${theme.spacing.lg};
+  border-top: 1px solid ${theme.colors.gray200};
+  background: ${theme.colors.gray50};
+`;
+
+const SaveActionsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${theme.spacing.md};
+`;
+
+const SaveButton = styled.button.withConfig({
+  shouldForwardProp: prop => !['variant', 'disabled'].includes(prop),
+})`
+  background: ${props =>
+    props.variant === 'primary'
+      ? `linear-gradient(135deg, ${theme.colors.success}, ${theme.colors.successDark})`
+      : props.variant === 'secondary'
+        ? theme.colors.gray300
+        : theme.colors.white};
+  color: ${props =>
+    props.variant === 'primary'
+      ? 'white'
+      : props.variant === 'secondary'
+        ? theme.colors.gray700
+        : theme.colors.gray700};
+  border: ${props =>
+    props.variant === 'primary' ? 'none' : `2px solid ${theme.colors.gray300}`};
+  padding: ${theme.spacing.md} ${theme.spacing.lg};
+  border-radius: ${theme.borderRadius.md};
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: ${theme.spacing.sm};
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  width: 100%;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: ${theme.shadows.md};
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+`;
+
+const ChangesIndicator = styled.div`
+  color: ${theme.colors.warning};
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.xs};
+  font-size: 0.85rem;
+  margin-bottom: ${theme.spacing.sm};
+  justify-content: center;
 `;
 
 const MobileMenuButton = styled.button`
@@ -241,7 +315,6 @@ const MainContent = styled.div`
   margin-left: 280px;
   padding: ${theme.spacing.xl};
   min-height: 100vh;
-  padding-bottom: 120px; /* Space for save bar */
 
   @media (max-width: ${theme.breakpoints.tablet}) {
     margin-left: 260px;
@@ -251,8 +324,7 @@ const MainContent = styled.div`
   @media (max-width: ${theme.breakpoints.mobile}) {
     margin-left: 0;
     padding: ${theme.spacing.md};
-    padding-top: 4rem; /* Account for mobile menu button */
-    padding-bottom: 140px; /* More space for mobile save bar */
+    padding-top: 4rem;
   }
 `;
 
@@ -397,6 +469,9 @@ const FormLabel = styled.label`
   font-weight: 600;
   color: ${theme.colors.gray900};
   font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.xs};
 `;
 
 const FormInput = styled.input`
@@ -429,88 +504,151 @@ const FormTextarea = styled.textarea`
   }
 `;
 
-const SaveActionsBar = styled.div`
-  position: fixed;
-  bottom: ${theme.spacing.xl};
-  right: ${theme.spacing.xl};
-  background: ${theme.colors.white};
-  padding: ${theme.spacing.lg};
-  border-radius: ${theme.borderRadius.lg};
-  box-shadow: ${theme.shadows.xl};
+const FileUploadContainer = styled.div`
   display: flex;
-  align-items: center;
   gap: ${theme.spacing.md};
-  z-index: 100;
-  border: 1px solid ${theme.colors.gray200};
-  min-width: 400px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+`;
 
-  @media (max-width: ${theme.breakpoints.mobile}) {
-    bottom: ${theme.spacing.md};
-    right: ${theme.spacing.md};
-    left: ${theme.spacing.md};
-    min-width: auto;
-    flex-direction: column;
-    gap: ${theme.spacing.sm};
+const FileUploadBox = styled.label`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  height: 120px;
+  border: 2px dashed ${theme.colors.gray300};
+  border-radius: ${theme.borderRadius.md};
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: ${theme.colors.gray50};
+
+  &:hover {
+    border-color: ${theme.colors.primary};
+    background: ${theme.colors.primary}10;
+  }
+
+  input {
+    display: none;
   }
 `;
 
-const SaveButton = styled.button.withConfig({
-  shouldForwardProp: prop => !['variant'].includes(prop),
+const ImagePreview = styled.div`
+  position: relative;
+  width: 120px;
+  height: 120px;
+  border-radius: ${theme.borderRadius.md};
+  overflow: hidden;
+  box-shadow: ${theme.shadows.sm};
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+`;
+
+const ImageOverlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    opacity: 1;
+  }
+`;
+
+const RemoveImageButton = styled.button`
+  background: ${theme.colors.error};
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+`;
+
+const ToggleSwitch = styled.label`
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+  margin-left: auto;
+
+  input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  span {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: ${theme.colors.gray300};
+    transition: 0.4s;
+    border-radius: 24px;
+
+    &:before {
+      position: absolute;
+      content: '';
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: 0.4s;
+      border-radius: 50%;
+    }
+  }
+
+  input:checked + span {
+    background-color: ${theme.colors.primary};
+  }
+
+  input:checked + span:before {
+    transform: translateX(26px);
+  }
+`;
+
+const TabsContainer = styled.div`
+  display: flex;
+  gap: ${theme.spacing.sm};
+  margin-bottom: ${theme.spacing.lg};
+  flex-wrap: wrap;
+`;
+
+const Tab = styled.button.withConfig({
+  shouldForwardProp: prop => !['active'].includes(prop),
 })`
   background: ${props =>
-    props.variant === 'primary'
-      ? `linear-gradient(135deg, ${theme.colors.success}, ${theme.colors.successDark})`
-      : props.variant === 'secondary'
-        ? theme.colors.gray300
-        : theme.colors.white};
-  color: ${props =>
-    props.variant === 'primary'
-      ? 'white'
-      : props.variant === 'secondary'
-        ? theme.colors.gray700
-        : theme.colors.gray700};
-  border: ${props =>
-    props.variant === 'primary' ? 'none' : `2px solid ${theme.colors.gray300}`};
-  padding: ${theme.spacing.md} ${theme.spacing.xl};
+    props.active ? theme.colors.primary : theme.colors.gray100};
+  color: ${props => (props.active ? 'white' : theme.colors.gray700)};
+  border: none;
+  padding: ${theme.spacing.sm} ${theme.spacing.md};
   border-radius: ${theme.borderRadius.md};
   font-weight: 600;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: ${theme.spacing.sm};
-  transition: all 0.3s ease;
-  font-size: 1rem;
-  white-space: nowrap;
+  transition: all 0.2s ease;
 
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: ${theme.shadows.lg};
-  }
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    transform: none;
-  }
-
-  @media (max-width: ${theme.breakpoints.mobile}) {
-    width: 100%;
-    justify-content: center;
-  }
-`;
-
-const ChangesIndicator = styled.div`
-  color: ${theme.colors.warning};
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: ${theme.spacing.xs};
-  font-size: 0.9rem;
-
-  @media (max-width: ${theme.breakpoints.mobile}) {
-    order: -1;
-    width: 100%;
-    justify-content: center;
+    background: ${props =>
+      props.active ? theme.colors.primaryDark : theme.colors.gray200};
   }
 `;
 
@@ -525,13 +663,6 @@ const VendorDashboard = () => {
     state => state.vendorManagement
   );
 
-  // Debug: Check if action creators are properly imported
-  console.log('Action creators:', {
-    updateVendorField,
-    updateServices,
-    saveChanges,
-  });
-
   // Get vendor ID from URL path
   const currentPath = window.location.pathname;
   const pathSegments = currentPath.split('/').filter(Boolean);
@@ -541,27 +672,41 @@ const VendorDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [activeSection, setActiveSection] = useState('hero');
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+  const [saved, setSaved] = useState(false);
 
   // Local form states - these hold temporary changes
   const [heroData, setHeroData] = useState({
     name: '',
     tagline: '',
     image: '',
+    imageFile: null,
   });
 
   const [aboutUsData, setAboutUsData] = useState({
     description: '',
     mission: '',
     experience: '',
-    specialization: '',
+    completedWeddings: '',
+    satisfiedCouples: '',
+    videoEmbed: '',
+    videoFile: null,
+    experienceVisible: true,
+    weddingsVisible: true,
+    couplesVisible: true,
   });
 
   const [servicesData, setServicesData] = useState([]);
   const [recentWorkData, setRecentWorkData] = useState([]);
-  const [photosMediaData, setPhotosMediaData] = useState({
-    profileImage: '',
-    bannerImage: '',
-    gallery: {},
+  
+  const [galleryData, setGalleryData] = useState({
+    subtitle: '',
+    activeTab: 'decor',
+    categories: {
+      decor: { title: 'Decor', images: [] },
+      venues: { title: 'Venues', images: [] },
+      photography: { title: 'Photography', images: [] },
+      catering: { title: 'Catering', images: [] },
+    },
   });
 
   const [testimonialsData, setTestimonialsData] = useState([]);
@@ -594,8 +739,8 @@ const VendorDashboard = () => {
       section: 'Content Management',
     },
     {
-      id: 'photos-media',
-      label: 'Photos & Media',
+      id: 'gallery',
+      label: 'Gallery',
       icon: FaImages,
       section: 'Content Management',
     },
@@ -643,13 +788,20 @@ const VendorDashboard = () => {
         name: vendorData.name || '',
         tagline: vendorData.tagline || '',
         image: vendorData.image || '',
+        imageFile: null,
       });
 
       setAboutUsData({
         description: vendorData.description || vendorData.aboutUs?.text || '',
         mission: vendorData.mission || '',
-        experience: vendorData.aboutUs?.experience || '',
-        specialization: vendorData.specialties?.join(', ') || '',
+        experience: vendorData.aboutUs?.experience || '0+',
+        completedWeddings: vendorData.aboutUs?.completedWeddings || '0+',
+        satisfiedCouples: vendorData.aboutUs?.satisfiedCouples || '0+',
+        videoEmbed: vendorData.aboutUs?.videoEmbed || '',
+        videoFile: null,
+        experienceVisible: true,
+        weddingsVisible: true,
+        couplesVisible: true,
       });
 
       // Pre-fill services with unique IDs
@@ -658,6 +810,7 @@ const VendorDashboard = () => {
           ...service,
           id: service.id || `service-${Date.now()}-${index}`,
           price: service.price || '$0',
+          imageFile: null,
         })
       );
       setServicesData(servicesWithIds);
@@ -671,15 +824,21 @@ const VendorDashboard = () => {
           location: work.city || '',
           date: work.weddingDate || '',
           image: work.coverImage || '',
+          imageFile: null,
         })
       );
       setRecentWorkData(recentWorkWithIds);
 
-      // Pre-fill photos & media data
-      setPhotosMediaData({
-        profileImage: vendorData.logo || '',
-        bannerImage: vendorData.image || '',
-        gallery: vendorData.gallery || {},
+      // Pre-fill gallery data
+      setGalleryData({
+        subtitle: 'Browse through our portfolio of beautiful weddings and events',
+        activeTab: 'decor',
+        categories: vendorData.gallery || {
+          decor: { title: 'Decor', images: [] },
+          venues: { title: 'Venues', images: [] },
+          photography: { title: 'Photography', images: [] },
+          catering: { title: 'Catering', images: [] },
+        },
       });
 
       // Pre-fill testimonials data with unique IDs
@@ -698,6 +857,7 @@ const VendorDashboard = () => {
       const packagesWithIds = (vendorData.packages || []).map((pkg, index) => ({
         ...pkg,
         id: pkg.id || `package-${Date.now()}-${index}`,
+        features: pkg.features || [],
       }));
       setPackagesData(packagesWithIds);
 
@@ -712,6 +872,13 @@ const VendorDashboard = () => {
     }
     setLoading(false);
   }, [vendorId, dispatch]);
+
+  // Handle Save Changes - saves to editing state
+  const handleSaveChanges = () => {
+    console.log('handleSaveChanges called');
+    setSaved(true);
+    alert('Changes saved! Click "Save & Go Live" to publish them.');
+  };
 
   // Handle Save & Go Live - publishes changes to global state
   const handleSaveAndGoLive = () => {
@@ -730,35 +897,51 @@ const VendorDashboard = () => {
       };
 
       console.log('Dispatching vendor field updates...');
-      // Update vendor data in Redux with all local changes - test one at a time
-      console.log('Dispatching name update:', heroData.name);
+      // Update vendor data in Redux with all local changes
       dispatch(updateVendorField({ field: 'name', value: heroData.name }));
-
-      console.log('Dispatching tagline update:', heroData.tagline);
-      dispatch(
-        updateVendorField({ field: 'tagline', value: heroData.tagline })
-      );
-
-      console.log('Dispatching image update:', heroData.image);
+      dispatch(updateVendorField({ field: 'tagline', value: heroData.tagline }));
       dispatch(updateVendorField({ field: 'image', value: heroData.image }));
+      dispatch(updateVendorField({ field: 'description', value: aboutUsData.description }));
+      
+      // Update About Us data
+      dispatch(updateVendorField({ 
+        field: 'aboutUs', 
+        value: {
+          text: aboutUsData.description,
+          experience: aboutUsData.experience,
+          completedWeddings: aboutUsData.completedWeddings,
+          satisfiedCouples: aboutUsData.satisfiedCouples,
+          videoEmbed: aboutUsData.videoEmbed,
+        }
+      }));
 
-      console.log('Dispatching description update:', aboutUsData.description);
-      dispatch(
-        updateVendorField({
-          field: 'description',
-          value: aboutUsData.description,
-        })
-      );
+      // Update gallery data
+      dispatch(updateVendorField({ field: 'gallery', value: galleryData.categories }));
 
       console.log('Dispatching services update...');
       const sanitizedServices = sanitizeData(servicesData);
-      console.log('Sanitized services:', sanitizedServices);
       dispatch(updateServices(sanitizedServices));
+
+      console.log('Dispatching recent work update...');
+      const sanitizedRecentWork = sanitizeData(recentWorkData);
+      dispatch(updateRecentWork(sanitizedRecentWork));
+
+      console.log('Dispatching packages update...');
+      const sanitizedPackages = sanitizeData(packagesData);
+      dispatch(updatePackages(sanitizedPackages));
+
+      console.log('Dispatching testimonials update...');
+      const sanitizedTestimonials = sanitizeData(testimonialsData);
+      dispatch(updateTestimonials(sanitizedTestimonials));
 
       console.log('Saving changes...');
       // Save all changes to global state
       dispatch(saveChanges());
+      setSaved(false);
       alert('All changes published to live vendor page successfully!');
+      
+      // Navigate back to vendor page
+      navigate(`/${vendorId}`);
     } catch (error) {
       console.error('Error saving changes:', error);
       alert('Error saving changes. Please try again.');
@@ -775,14 +958,20 @@ const VendorDashboard = () => {
         name: originalVendor.name || '',
         tagline: originalVendor.tagline || '',
         image: originalVendor.image || '',
+        imageFile: null,
       });
 
       setAboutUsData({
-        description:
-          originalVendor.description || originalVendor.aboutUs?.text || '',
+        description: originalVendor.description || originalVendor.aboutUs?.text || '',
         mission: originalVendor.mission || '',
-        experience: originalVendor.aboutUs?.experience || '',
-        specialization: originalVendor.specialties?.join(', ') || '',
+        experience: originalVendor.aboutUs?.experience || '0+',
+        completedWeddings: originalVendor.aboutUs?.completedWeddings || '0+',
+        satisfiedCouples: originalVendor.aboutUs?.satisfiedCouples || '0+',
+        videoEmbed: originalVendor.aboutUs?.videoEmbed || '',
+        videoFile: null,
+        experienceVisible: true,
+        weddingsVisible: true,
+        couplesVisible: true,
       });
 
       // Reset services
@@ -791,40 +980,47 @@ const VendorDashboard = () => {
           ...service,
           id: service.id || `service-${Date.now()}-${index}`,
           price: service.price || '$0',
+          imageFile: null,
         })
       );
       setServicesData(originalServicesWithIds);
 
       // Reset recent work
-      const originalRecentWorkWithIds = (
-        originalVendor.locationPortfolio || []
-      ).map((work, index) => ({
-        ...work,
-        id: work.id || `work-${Date.now()}-${index}`,
-        title: work.location || '',
-        location: work.city || '',
-        date: work.weddingDate || '',
-        image: work.coverImage || '',
-      }));
+      const originalRecentWorkWithIds = (originalVendor.locationPortfolio || []).map(
+        (work, index) => ({
+          ...work,
+          id: work.id || `work-${Date.now()}-${index}`,
+          title: work.location || '',
+          location: work.city || '',
+          date: work.weddingDate || '',
+          image: work.coverImage || '',
+          imageFile: null,
+        })
+      );
       setRecentWorkData(originalRecentWorkWithIds);
 
-      // Reset photos & media
-      setPhotosMediaData({
-        profileImage: originalVendor.logo || '',
-        bannerImage: originalVendor.image || '',
-        gallery: originalVendor.gallery || {},
+      // Reset gallery
+      setGalleryData({
+        subtitle: 'Browse through our portfolio of beautiful weddings and events',
+        activeTab: 'decor',
+        categories: originalVendor.gallery || {
+          decor: { title: 'Decor', images: [] },
+          venues: { title: 'Venues', images: [] },
+          photography: { title: 'Photography', images: [] },
+          catering: { title: 'Catering', images: [] },
+        },
       });
 
       // Reset testimonials
-      const originalTestimonialsWithIds = (
-        originalVendor.testimonials || []
-      ).map((testimonial, index) => ({
-        ...testimonial,
-        id: testimonial.id || `testimonial-${Date.now()}-${index}`,
-        client: testimonial.name || '',
-        text: testimonial.text || '',
-        rating: testimonial.rating || 5,
-      }));
+      const originalTestimonialsWithIds = (originalVendor.testimonials || []).map(
+        (testimonial, index) => ({
+          ...testimonial,
+          id: testimonial.id || `testimonial-${Date.now()}-${index}`,
+          client: testimonial.name || '',
+          text: testimonial.text || '',
+          rating: testimonial.rating || 5,
+        })
+      );
       setTestimonialsData(originalTestimonialsWithIds);
 
       // Reset packages
@@ -832,21 +1028,23 @@ const VendorDashboard = () => {
         (pkg, index) => ({
           ...pkg,
           id: pkg.id || `package-${Date.now()}-${index}`,
+          features: pkg.features || [],
         })
       );
       setPackagesData(originalPackagesWithIds);
 
       // Reset custom sections
-      const originalCustomSectionsWithIds = (
-        originalVendor.customSections || []
-      ).map((section, index) => ({
-        ...section,
-        id: section.id || `custom-section-${Date.now()}-${index}`,
-      }));
+      const originalCustomSectionsWithIds = (originalVendor.customSections || []).map(
+        (section, index) => ({
+          ...section,
+          id: section.id || `custom-section-${Date.now()}-${index}`,
+        })
+      );
       setCustomSections(originalCustomSectionsWithIds);
 
       // Discard changes in Redux
       dispatch(discardChanges());
+      setSaved(false);
       alert('All changes discarded. Form reset to original values.');
     } catch (error) {
       console.error('Error discarding changes:', error);
@@ -881,6 +1079,15 @@ const VendorDashboard = () => {
     };
   }, [mobileSidebarOpen]);
 
+  // File upload handlers
+  const handleImageUpload = (file, setter, field) => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      setter(prev => ({ ...prev, [field]: e.target.result, [`${field}File`]: file }));
+    };
+    reader.readAsDataURL(file);
+  };
+
   // Helper functions for managing dynamic lists
   const addService = () => {
     const newService = {
@@ -890,6 +1097,7 @@ const VendorDashboard = () => {
       price: '$0',
       icon: '💍',
       image: '',
+      imageFile: null,
     };
     setServicesData(prev => [...prev, newService]);
   };
@@ -913,6 +1121,7 @@ const VendorDashboard = () => {
       location: 'Location',
       date: 'Date',
       image: '',
+      imageFile: null,
     };
     setRecentWorkData(prev => [...prev, newWork]);
   };
@@ -972,6 +1181,33 @@ const VendorDashboard = () => {
     setPackagesData(prev => prev.filter(pkg => pkg.id !== id));
   };
 
+  // Gallery helpers
+  const addGalleryImage = (category, imageUrl) => {
+    setGalleryData(prev => ({
+      ...prev,
+      categories: {
+        ...prev.categories,
+        [category]: {
+          ...prev.categories[category],
+          images: [...(prev.categories[category]?.images || []), imageUrl],
+        },
+      },
+    }));
+  };
+
+  const removeGalleryImage = (category, imageIndex) => {
+    setGalleryData(prev => ({
+      ...prev,
+      categories: {
+        ...prev.categories,
+        [category]: {
+          ...prev.categories[category],
+          images: prev.categories[category].images.filter((_, index) => index !== imageIndex),
+        },
+      },
+    }));
+  };
+
   const renderContent = () => {
     switch (activeSection) {
       case 'hero':
@@ -1004,14 +1240,46 @@ const VendorDashboard = () => {
                 />
               </FormGroup>
               <FormGroup style={{ gridColumn: '1 / -1' }}>
-                <FormLabel>Hero Background Image URL</FormLabel>
-                <FormInput
-                  value={heroData.image}
-                  onChange={e =>
-                    setHeroData(prev => ({ ...prev, image: e.target.value }))
-                  }
-                  placeholder="Enter background image URL"
-                />
+                <FormLabel>
+                  <FaCamera />
+                  Hero Background Image
+                </FormLabel>
+                <FileUploadContainer>
+                  {heroData.image && (
+                    <ImagePreview>
+                      <img src={heroData.image} alt="Hero background" />
+                      <ImageOverlay>
+                        <RemoveImageButton
+                          onClick={() => setHeroData(prev => ({ ...prev, image: '', imageFile: null }))}
+                        >
+                          <FaTrash />
+                        </RemoveImageButton>
+                      </ImageOverlay>
+                    </ImagePreview>
+                  )}
+                  <FileUploadBox>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={e => handleImageUpload(e.target.files[0], setHeroData, 'image')}
+                    />
+                    <FaUpload size={24} color={theme.colors.gray400} />
+                    <span style={{ fontSize: '0.8rem', textAlign: 'center' }}>Upload Image</span>
+                  </FileUploadBox>
+                  <FormGroup style={{ flex: 1 }}>
+                    <FormLabel>
+                      <FaLink />
+                      Or paste image URL
+                    </FormLabel>
+                    <FormInput
+                      value={heroData.image}
+                      onChange={e =>
+                        setHeroData(prev => ({ ...prev, image: e.target.value }))
+                      }
+                      placeholder="https://example.com/image.jpg"
+                    />
+                  </FormGroup>
+                </FileUploadContainer>
               </FormGroup>
             </FormGrid>
           </ContentSection>
@@ -1053,8 +1321,20 @@ const VendorDashboard = () => {
                   rows={4}
                 />
               </FormGroup>
+              
+              {/* Statistics Section */}
               <FormGroup>
-                <FormLabel>Years of Experience</FormLabel>
+                <FormLabel style={{ justifyContent: 'space-between' }}>
+                  Years of Experience
+                  <ToggleSwitch>
+                    <input 
+                      type="checkbox" 
+                      checked={aboutUsData.experienceVisible}
+                      onChange={e => setAboutUsData(prev => ({ ...prev, experienceVisible: e.target.checked }))}
+                    />
+                    <span></span>
+                  </ToggleSwitch>
+                </FormLabel>
                 <FormInput
                   value={aboutUsData.experience}
                   onChange={e =>
@@ -1063,21 +1343,93 @@ const VendorDashboard = () => {
                       experience: e.target.value,
                     }))
                   }
-                  placeholder="e.g., 10+ years in wedding planning"
+                  placeholder="e.g., 10+"
+                  disabled={!aboutUsData.experienceVisible}
                 />
               </FormGroup>
+              
               <FormGroup>
-                <FormLabel>Specialization</FormLabel>
+                <FormLabel style={{ justifyContent: 'space-between' }}>
+                  Completed Weddings
+                  <ToggleSwitch>
+                    <input 
+                      type="checkbox" 
+                      checked={aboutUsData.weddingsVisible}
+                      onChange={e => setAboutUsData(prev => ({ ...prev, weddingsVisible: e.target.checked }))}
+                    />
+                    <span></span>
+                  </ToggleSwitch>
+                </FormLabel>
                 <FormInput
-                  value={aboutUsData.specialization}
+                  value={aboutUsData.completedWeddings}
                   onChange={e =>
                     setAboutUsData(prev => ({
                       ...prev,
-                      specialization: e.target.value,
+                      completedWeddings: e.target.value,
                     }))
                   }
-                  placeholder="e.g., Luxury weddings, Destination weddings"
+                  placeholder="e.g., 250+"
+                  disabled={!aboutUsData.weddingsVisible}
                 />
+              </FormGroup>
+              
+              <FormGroup>
+                <FormLabel style={{ justifyContent: 'space-between' }}>
+                  Happy Couples
+                  <ToggleSwitch>
+                    <input 
+                      type="checkbox" 
+                      checked={aboutUsData.couplesVisible}
+                      onChange={e => setAboutUsData(prev => ({ ...prev, couplesVisible: e.target.checked }))}
+                    />
+                    <span></span>
+                  </ToggleSwitch>
+                </FormLabel>
+                <FormInput
+                  value={aboutUsData.satisfiedCouples}
+                  onChange={e =>
+                    setAboutUsData(prev => ({
+                      ...prev,
+                      satisfiedCouples: e.target.value,
+                    }))
+                  }
+                  placeholder="e.g., 500+"
+                  disabled={!aboutUsData.couplesVisible}
+                />
+              </FormGroup>
+              
+              <FormGroup style={{ gridColumn: '1 / -1' }}>
+                <FormLabel>
+                  <FaVideo />
+                  About Us Video
+                </FormLabel>
+                <FileUploadContainer>
+                  <FileUploadBox>
+                    <input
+                      type="file"
+                      accept="video/*"
+                      onChange={e => {
+                        const file = e.target.files[0];
+                        setAboutUsData(prev => ({ ...prev, videoFile: file }));
+                      }}
+                    />
+                    <FaVideo size={24} color={theme.colors.gray400} />
+                    <span style={{ fontSize: '0.8rem', textAlign: 'center' }}>Upload Video</span>
+                  </FileUploadBox>
+                  <FormGroup style={{ flex: 1 }}>
+                    <FormLabel>
+                      <FaLink />
+                      Or paste video embed URL
+                    </FormLabel>
+                    <FormInput
+                      value={aboutUsData.videoEmbed}
+                      onChange={e =>
+                        setAboutUsData(prev => ({ ...prev, videoEmbed: e.target.value }))
+                      }
+                      placeholder="https://www.youtube.com/embed/..."
+                    />
+                  </FormGroup>
+                </FileUploadContainer>
               </FormGroup>
             </FormGrid>
           </ContentSection>
@@ -1132,14 +1484,40 @@ const VendorDashboard = () => {
                     />
                   </FormGroup>
                   <FormGroup>
-                    <FormLabel>Service Image URL</FormLabel>
-                    <FormInput
-                      value={service.image}
-                      onChange={e =>
-                        updateService(service.id, 'image', e.target.value)
-                      }
-                      placeholder="https://example.com/image.jpg"
-                    />
+                    <FormLabel>
+                      <FaFileImage />
+                      Service Image
+                    </FormLabel>
+                    <FileUploadContainer>
+                      {service.image && (
+                        <ImagePreview>
+                          <img src={service.image} alt="Service" />
+                          <ImageOverlay>
+                            <RemoveImageButton
+                              onClick={() => updateService(service.id, 'image', '')}
+                            >
+                              <FaTrash />
+                            </RemoveImageButton>
+                          </ImageOverlay>
+                        </ImagePreview>
+                      )}
+                      <FileUploadBox>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={e => {
+                            const file = e.target.files[0];
+                            const reader = new FileReader();
+                            reader.onload = event => {
+                              updateService(service.id, 'image', event.target.result);
+                            };
+                            reader.readAsDataURL(file);
+                          }}
+                        />
+                        <FaUpload size={20} color={theme.colors.gray400} />
+                        <span style={{ fontSize: '0.7rem', textAlign: 'center' }}>Upload</span>
+                      </FileUploadBox>
+                    </FileUploadContainer>
                   </FormGroup>
                   <FormGroup style={{ gridColumn: '1 / -1' }}>
                     <FormLabel>Service Description</FormLabel>
@@ -1220,14 +1598,40 @@ const VendorDashboard = () => {
                     />
                   </FormGroup>
                   <FormGroup>
-                    <FormLabel>Featured Image URL</FormLabel>
-                    <FormInput
-                      value={work.image}
-                      onChange={e =>
-                        updateRecentWork(work.id, 'image', e.target.value)
-                      }
-                      placeholder="https://example.com/image.jpg"
-                    />
+                    <FormLabel>
+                      <FaFileImage />
+                      Featured Image
+                    </FormLabel>
+                    <FileUploadContainer>
+                      {work.image && (
+                        <ImagePreview>
+                          <img src={work.image} alt="Work" />
+                          <ImageOverlay>
+                            <RemoveImageButton
+                              onClick={() => updateRecentWork(work.id, 'image', '')}
+                            >
+                              <FaTrash />
+                            </RemoveImageButton>
+                          </ImageOverlay>
+                        </ImagePreview>
+                      )}
+                      <FileUploadBox>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={e => {
+                            const file = e.target.files[0];
+                            const reader = new FileReader();
+                            reader.onload = event => {
+                              updateRecentWork(work.id, 'image', event.target.result);
+                            };
+                            reader.readAsDataURL(file);
+                          }}
+                        />
+                        <FaUpload size={20} color={theme.colors.gray400} />
+                        <span style={{ fontSize: '0.7rem', textAlign: 'center' }}>Upload</span>
+                      </FileUploadBox>
+                    </FileUploadContainer>
                   </FormGroup>
                   <div style={{ gridColumn: '1 / -1', textAlign: 'right' }}>
                     <ActionButton
@@ -1248,41 +1652,86 @@ const VendorDashboard = () => {
           </ContentSection>
         );
 
-      case 'photos-media':
+      case 'gallery':
         return (
           <ContentSection>
             <SectionTitle>
               <FaImages />
-              Photos & Media
+              Gallery
             </SectionTitle>
-            <FormGrid>
-              <FormGroup>
-                <FormLabel>Profile Image URL</FormLabel>
-                <FormInput
-                  value={photosMediaData.profileImage}
-                  onChange={e =>
-                    setPhotosMediaData(prev => ({
-                      ...prev,
-                      profileImage: e.target.value,
-                    }))
-                  }
-                  placeholder="https://example.com/profile.jpg"
-                />
-              </FormGroup>
-              <FormGroup>
-                <FormLabel>Banner Image URL</FormLabel>
-                <FormInput
-                  value={photosMediaData.bannerImage}
-                  onChange={e =>
-                    setPhotosMediaData(prev => ({
-                      ...prev,
-                      bannerImage: e.target.value,
-                    }))
-                  }
-                  placeholder="https://example.com/banner.jpg"
-                />
-              </FormGroup>
-            </FormGrid>
+            <FormGroup style={{ marginBottom: theme.spacing.lg }}>
+              <FormLabel>Gallery Subtitle</FormLabel>
+              <FormInput
+                value={galleryData.subtitle}
+                onChange={e =>
+                  setGalleryData(prev => ({ ...prev, subtitle: e.target.value }))
+                }
+                placeholder="Browse through our portfolio of beautiful weddings and events"
+              />
+            </FormGroup>
+            
+            <TabsContainer>
+              {Object.entries(galleryData.categories).map(([key, category]) => (
+                <Tab
+                  key={key}
+                  active={galleryData.activeTab === key}
+                  onClick={() => setGalleryData(prev => ({ ...prev, activeTab: key }))}
+                >
+                  {category.title}
+                </Tab>
+              ))}
+            </TabsContainer>
+            
+            <div style={{ marginBottom: theme.spacing.lg }}>
+              <FormLabel>Add Images to {galleryData.categories[galleryData.activeTab]?.title}</FormLabel>
+              <FileUploadContainer>
+                <FileUploadBox>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    onChange={e => {
+                      Array.from(e.target.files).forEach(file => {
+                        const reader = new FileReader();
+                        reader.onload = event => {
+                          addGalleryImage(galleryData.activeTab, event.target.result);
+                        };
+                        reader.readAsDataURL(file);
+                      });
+                    }}
+                  />
+                  <FaUpload size={24} color={theme.colors.gray400} />
+                  <span style={{ fontSize: '0.8rem', textAlign: 'center' }}>Upload Images</span>
+                </FileUploadBox>
+                <FormGroup style={{ flex: 1 }}>
+                  <FormLabel>Or paste image URLs (one per line)</FormLabel>
+                  <FormTextarea
+                    placeholder="https://example.com/image1.jpg&#10;https://example.com/image2.jpg"
+                    rows={3}
+                    onBlur={e => {
+                      const urls = e.target.value.split('\n').filter(url => url.trim());
+                      urls.forEach(url => addGalleryImage(galleryData.activeTab, url.trim()));
+                      e.target.value = '';
+                    }}
+                  />
+                </FormGroup>
+              </FileUploadContainer>
+            </div>
+            
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: theme.spacing.md }}>
+              {galleryData.categories[galleryData.activeTab]?.images?.map((image, index) => (
+                <ImagePreview key={index}>
+                  <img src={image} alt={`Gallery ${index}`} />
+                  <ImageOverlay>
+                    <RemoveImageButton
+                      onClick={() => removeGalleryImage(galleryData.activeTab, index)}
+                    >
+                      <FaTrash />
+                    </RemoveImageButton>
+                  </ImageOverlay>
+                </ImagePreview>
+              ))}
+            </div>
           </ContentSection>
         );
 
@@ -1415,6 +1864,17 @@ const VendorDashboard = () => {
                       }
                       placeholder="Essential wedding planning services..."
                       rows={3}
+                    />
+                  </FormGroup>
+                  <FormGroup style={{ gridColumn: '1 / -1' }}>
+                    <FormLabel>Features (one per line)</FormLabel>
+                    <FormTextarea
+                      value={pkg.features?.join('\n') || ''}
+                      onChange={e =>
+                        updatePackage(pkg.id, 'features', e.target.value.split('\n').filter(f => f.trim()))
+                      }
+                      placeholder="Feature 1&#10;Feature 2&#10;Feature 3"
+                      rows={4}
                     />
                   </FormGroup>
                   <div style={{ gridColumn: '1 / -1', textAlign: 'right' }}>
@@ -1575,6 +2035,36 @@ const VendorDashboard = () => {
             </NavSection>
           ))}
         </SidebarNav>
+
+        <SidebarFooter>
+          <SaveActionsContainer>
+            {hasUnsavedChanges && (
+              <ChangesIndicator>
+                <FaEdit />
+                You have unsaved changes
+              </ChangesIndicator>
+            )}
+            <SaveButton variant="secondary" onClick={handleDiscardChanges}>
+              <FaUndo />
+              Discard
+            </SaveButton>
+            <SaveButton 
+              onClick={handleSaveChanges}
+              disabled={saved}
+            >
+              <FaSave />
+              {saved ? 'Saved' : 'Save Changes'}
+            </SaveButton>
+            <SaveButton 
+              variant="primary" 
+              onClick={handleSaveAndGoLive}
+              disabled={!saved}
+            >
+              <FaCheckCircle />
+              Save & Go Live
+            </SaveButton>
+          </SaveActionsContainer>
+        </SidebarFooter>
       </Sidebar>
 
       <MainContent>
@@ -1609,22 +2099,6 @@ const VendorDashboard = () => {
 
         {renderContent()}
       </MainContent>
-
-      {/* Save & Go Live Action Bar */}
-      <SaveActionsBar>
-        <ChangesIndicator>
-          <FaEdit />
-          You have unsaved changes
-        </ChangesIndicator>
-        <SaveButton variant="secondary" onClick={handleDiscardChanges}>
-          <FaUndo />
-          Discard
-        </SaveButton>
-        <SaveButton variant="primary" onClick={handleSaveAndGoLive}>
-          <FaCheckCircle />
-          Save & Go Live
-        </SaveButton>
-      </SaveActionsBar>
     </DashboardContainer>
   );
 };
