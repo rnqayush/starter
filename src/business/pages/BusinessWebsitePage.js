@@ -1391,6 +1391,14 @@ const BusinessWebsitePage = () => {
     state => state.businessManagement
   );
 
+  // Helper function to check if a section should be visible
+  const isSectionVisible = (sectionId) => {
+    if (businessData?.sectionVisibility) {
+      return businessData.sectionVisibility[sectionId] !== false;
+    }
+    return true; // Default to visible if no visibility settings
+  };
+
   useEffect(() => {
     // Extract slug from URL - either from params or from pathname
     let extractedSlug = actualSlug;
