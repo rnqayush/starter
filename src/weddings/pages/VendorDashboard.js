@@ -1963,10 +1963,23 @@ const VendorDashboard = () => {
       case 'about-us':
         return (
           <ContentSection>
-            <SectionTitle>
-              <FaUser />
-              About Us
-            </SectionTitle>
+            <SectionHeader>
+              <SectionTitle>
+                <FaUser />
+                About Us
+              </SectionTitle>
+              <VisibilityToggleContainer>
+                <span>{sectionVisibility['about-us'] ? 'Visible' : 'Hidden'}</span>
+                <ToggleSwitch>
+                  <input
+                    type="checkbox"
+                    checked={sectionVisibility['about-us']}
+                    onChange={() => toggleSectionVisibility('about-us')}
+                  />
+                  <span></span>
+                </ToggleSwitch>
+              </VisibilityToggleContainer>
+            </SectionHeader>
             <FormGrid>
               <FormGroup style={{ gridColumn: '1 / -1' }}>
                 <FormLabel>Business Description</FormLabel>
