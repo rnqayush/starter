@@ -1497,7 +1497,7 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
               <SectionInfo>
                 <SectionIcon>
                   {section.type === 'gallery' && <FaCamera />}
-                  {section.type === 'cards' && <FaGrip />}
+                  {section.type === 'cards' && <FaGripHorizontal />}
                   {section.type === 'text' && <FaTextHeight />}
                   {section.type === 'list' && <FaList />}
                   {section.type === 'testimonials' && <FaQuoteLeft />}
