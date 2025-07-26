@@ -1,275 +1,358 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import {
   FaArrowLeft,
+  FaUser,
+  FaImages,
+  FaCog,
+  FaServicestack,
+  FaBriefcase,
+  FaAddressCard,
+  FaQuestionCircle,
+  FaComments,
+  FaDollarSign,
+  FaUpload,
+  FaTrash,
+  FaPlus,
   FaEdit,
   FaSave,
+  FaTimes,
+  FaExternalLinkAlt,
   FaEye,
-  FaImage,
-  FaPlus,
-  FaTrash,
-  FaCog,
+  FaCamera,
+  FaGlobe,
+  FaPhone,
+  FaEnvelope,
+  FaMapMarkerAlt,
+  FaStar,
+  FaChevronRight,
+  FaChevronUp,
+  FaChevronDown,
+  FaCheck,
+  FaBars,
+  FaLock,
+  FaGripHorizontal,
+  FaTextHeight,
+  FaList,
+  FaQuoteLeft,
+  FaUndo,
+  FaCheckCircle,
+  FaVideo,
+  FaEyeSlash,
+  FaFileImage,
+  FaLink,
+  FaCopy,
   FaUsers,
   FaChartBar,
   FaPalette,
-  FaTimes,
-  FaCheck,
-  FaUpload,
+  FaClock,
+  FaCalendarAlt,
+  FaRandom,
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
 import { getBusinessTemplate } from '../../DummyData';
+import { useAuth } from '../../context/AuthContext';
+import {
+  setEditingBusiness,
+  initializeBusiness,
+  updateBusinessField,
+  updateBusinessImage,
+  updateBusinessGallery,
+  updateBusinessServices,
+  updateBusinessTestimonials,
+  updateBusinessPackages,
+  updateBusinessPortfolio,
+  updateBusinessSkills,
+  updateBusinessExperience,
+  updateBusinessTeam,
+  updateBusinessCustomSections,
+  saveBusinessChanges,
+  discardBusinessChanges,
+  toggleBusinessSectionVisibility,
+} from '../../store/slices/businessManagementSlice';
 
 const DashboardContainer = styled.div`
   min-height: 100vh;
   background: ${theme.colors.gray50};
+  display: flex;
 `;
 
-const DashboardHeader = styled.div`
-  background: ${theme.colors.white};
-  box-shadow: ${theme.shadows.sm};
-  padding: ${theme.spacing.lg} 0;
-  border-bottom: 1px solid ${theme.colors.gray200};
+const MobileSidebarCloseButton = styled.button`
+  display: none;
 
-  @media (max-width: ${theme.breakpoints.tablet}) {
-    padding: ${theme.spacing.md} 0;
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    display: flex;
+    position: absolute;
+    top: ${theme.spacing.lg};
+    right: ${theme.spacing.lg};
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    z-index: 1001;
+    padding: ${theme.spacing.sm};
+    border-radius: ${theme.borderRadius.md};
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
   }
 `;
 
-const HeaderContent = styled.div`
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 ${theme.spacing.md};
+const Sidebar = styled.div.withConfig({
+  shouldForwardProp: prop => prop !== 'mobileOpen',
+})`
+  width: 280px;
+  background: ${theme.colors.white};
+  border-right: 1px solid ${theme.colors.gray200};
+  box-shadow: ${theme.shadows.md};
+  position: fixed;
+  height: 100vh;
+  overflow-y: auto;
+  z-index: 100;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
 
   @media (max-width: ${theme.breakpoints.tablet}) {
-    flex-direction: column;
-    gap: ${theme.spacing.md};
-    align-items: flex-start;
+    width: 260px;
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    padding: 0 ${theme.spacing.sm};
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 1000;
+    transform: translateX(${props => (props.mobileOpen ? '0' : '-100%')});
+    transition: transform 0.3s ease;
+    overflow-y: auto;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   }
 `;
 
-const BackButton = styled.button`
+const SidebarHeader = styled.div`
+  padding: ${theme.spacing.xl};
+  border-bottom: 1px solid ${theme.colors.gray200};
+  background: ${theme.colors.primary};
+  color: white;
+  flex-shrink: 0;
+`;
+
+const BusinessName = styled.h2`
+  margin: 0 0 ${theme.spacing.xs} 0;
+  font-size: 1.3rem;
+  font-weight: 700;
+`;
+
+const BusinessRole = styled.p`
+  margin: 0;
+  font-size: 0.9rem;
+  opacity: 0.9;
+`;
+
+const SidebarNav = styled.nav`
+  padding: ${theme.spacing.lg} 0;
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+`;
+
+const NavSection = styled.div`
+  margin-bottom: ${theme.spacing.lg};
+`;
+
+const NavSectionTitle = styled.h3`
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: ${theme.colors.gray500};
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 0 ${theme.spacing.lg};
+  margin: 0 0 ${theme.spacing.sm} 0;
+`;
+
+const NavItem = styled.button.withConfig({
+  shouldForwardProp: prop => !['active'].includes(prop),
+})`
+  width: 100%;
+  padding: ${theme.spacing.md} ${theme.spacing.lg};
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: ${props =>
+    props.active ? theme.colors.primary : theme.colors.gray700};
+  background: ${props =>
+    props.active ? theme.colors.primary + '10' : 'transparent'};
+  transition: all 0.2s ease;
   display: flex;
   align-items: center;
   gap: ${theme.spacing.sm};
-  background: transparent;
-  border: 1px solid ${theme.colors.gray300};
-  color: ${theme.colors.gray700};
-  padding: ${theme.spacing.sm} ${theme.spacing.md};
-  border-radius: ${theme.borderRadius.md};
-  cursor: pointer;
-  transition: all 0.2s ease;
+  border-left: 3px solid
+    ${props => (props.active ? theme.colors.primary : 'transparent')};
 
   &:hover {
     background: ${theme.colors.gray50};
-  }
-`;
-
-const DashboardTitle = styled.div`
-  h1 {
-    font-size: 2rem;
-    font-weight: 700;
-    color: ${theme.colors.gray900};
-    margin-bottom: ${theme.spacing.xs};
-
-    @media (max-width: ${theme.breakpoints.tablet}) {
-      font-size: 1.5rem;
-    }
-
-    @media (max-width: ${theme.breakpoints.mobile}) {
-      font-size: 1.3rem;
-    }
-  }
-
-  p {
-    color: ${theme.colors.gray600};
-    font-size: 1rem;
-
-    @media (max-width: ${theme.breakpoints.mobile}) {
-      font-size: 0.9rem;
-    }
-  }
-`;
-
-const ActionButtons = styled.div`
-  display: flex;
-  gap: ${theme.spacing.md};
-
-  @media (max-width: ${theme.breakpoints.tablet}) {
-    width: 100%;
-    justify-content: flex-end;
-  }
-
-  @media (max-width: ${theme.breakpoints.mobile}) {
-    flex-direction: column;
-    gap: ${theme.spacing.sm};
-  }
-`;
-
-const Button = styled.button.withConfig({
-  shouldForwardProp: prop => prop !== 'variant' && prop !== 'primaryColor',
-})`
-  display: flex;
-  align-items: center;
-  gap: ${theme.spacing.sm};
-  padding: ${theme.spacing.sm} ${theme.spacing.lg};
-  border-radius: ${theme.borderRadius.md};
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border: none;
-
-  ${props =>
-    props.variant === 'primary'
-      ? `
-    background: ${props.primaryColor || theme.colors.primary};
-    color: ${theme.colors.white};
-    
-    &:hover {
-      opacity: 0.9;
-      transform: translateY(-1px);
-    }
-  `
-      : `
-    background: ${theme.colors.white};
-    color: ${theme.colors.gray700};
-    border: 1px solid ${theme.colors.gray300};
-    
-    &:hover {
-      background: ${theme.colors.gray50};
-    }
-  `}
-`;
-
-const DashboardLayout = styled.div`
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: ${theme.spacing.xl} ${theme.spacing.md};
-  display: grid;
-  grid-template-columns: 300px 1fr;
-  gap: ${theme.spacing.xl};
-
-  @media (max-width: ${theme.breakpoints.tablet}) {
-    grid-template-columns: 1fr;
-    gap: ${theme.spacing.lg};
-    padding: ${theme.spacing.lg} ${theme.spacing.md};
-  }
-
-  @media (max-width: ${theme.breakpoints.mobile}) {
-    padding: ${theme.spacing.md} ${theme.spacing.sm};
-    gap: ${theme.spacing.md};
-  }
-`;
-
-const Sidebar = styled.div`
-  background: ${theme.colors.white};
-  border-radius: ${theme.borderRadius.xl};
-  padding: ${theme.spacing.xl};
-  height: fit-content;
-  box-shadow: ${theme.shadows.sm};
-  border: 1px solid ${theme.colors.gray200};
-
-  @media (max-width: ${theme.breakpoints.tablet}) {
-    padding: ${theme.spacing.lg};
-    margin-bottom: ${theme.spacing.lg};
-  }
-
-  @media (max-width: ${theme.breakpoints.mobile}) {
-    padding: ${theme.spacing.md};
-    border-radius: ${theme.borderRadius.lg};
-  }
-`;
-
-const SidebarTitle = styled.h3`
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: ${theme.colors.gray900};
-  margin-bottom: ${theme.spacing.lg};
-  display: flex;
-  align-items: center;
-  gap: ${theme.spacing.sm};
-`;
-
-const SidebarMenu = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${theme.spacing.sm};
-`;
-
-const MenuItem = styled.button.withConfig({
-  shouldForwardProp: prop => prop !== 'active' && prop !== 'primaryColor',
-})`
-  display: flex;
-  align-items: center;
-  gap: ${theme.spacing.md};
-  padding: ${theme.spacing.md};
-  border: none;
-  border-radius: ${theme.borderRadius.md};
-  background: ${props =>
-    props.active ? props.primaryColor + '15' : 'transparent'};
-  color: ${props =>
-    props.active
-      ? props.primaryColor || theme.colors.primary
-      : theme.colors.gray700};
-  font-weight: ${props => (props.active ? '600' : '500')};
-  cursor: pointer;
-  transition: all 0.2s ease;
-  text-align: left;
-  width: 100%;
-  font-size: 0.95rem;
-
-  &:hover {
-    background: ${props => props.primaryColor + '10' || theme.colors.gray50};
+    color: ${theme.colors.primary};
   }
 
   svg {
-    font-size: 1.1rem;
-    min-width: 1.1rem;
+    font-size: 1rem;
   }
+`;
 
-  @media (max-width: ${theme.breakpoints.tablet}) {
-    padding: ${theme.spacing.sm} ${theme.spacing.md};
-    font-size: 0.9rem;
+const SidebarFooter = styled.div`
+  border-top: 1px solid ${theme.colors.gray200};
+  background: ${theme.colors.gray50};
+  flex-shrink: 0;
+  max-height: 350px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+`;
 
-    svg {
-      font-size: 1rem;
+const SidebarFooterContent = styled.div`
+  padding: ${theme.spacing.lg};
+  flex: 1;
+  min-height: 0;
+`;
+
+const SaveActionsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${theme.spacing.md};
+`;
+
+const SaveButton = styled.button.withConfig({
+  shouldForwardProp: prop => !['variant', 'disabled', 'saved'].includes(prop),
+})`
+  background: ${props => {
+    if (props.disabled) {
+      return props.saved ? theme.colors.success : theme.colors.gray300;
     }
+    return props.variant === 'primary'
+      ? `linear-gradient(135deg, ${theme.colors.primary}, ${theme.colors.primaryDark})`
+      : props.variant === 'secondary'
+        ? theme.colors.gray300
+        : theme.colors.white;
+  }};
+  color: ${props => {
+    if (props.disabled) {
+      return props.saved ? 'white' : theme.colors.gray500;
+    }
+    return props.variant === 'primary'
+      ? 'white'
+      : props.variant === 'secondary'
+        ? theme.colors.gray700
+        : theme.colors.gray700;
+  }};
+  border: ${props =>
+    props.variant === 'primary'
+      ? 'none'
+      : `2px solid ${props.disabled && props.saved ? theme.colors.success : theme.colors.gray300}`};
+  padding: ${theme.spacing.md} ${theme.spacing.lg};
+  border-radius: ${theme.borderRadius.md};
+  font-weight: 600;
+  cursor: ${props => (props.disabled ? 'not-allowed' : 'pointer')};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: ${theme.spacing.sm};
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  width: 100%;
+
+  &:hover {
+    transform: ${props => (props.disabled ? 'none' : 'translateY(-1px)')};
+    box-shadow: ${props => (props.disabled ? 'none' : theme.shadows.md)};
+  }
+`;
+
+const ChangesIndicator = styled.div`
+  color: ${theme.colors.warning};
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.xs};
+  font-size: 0.85rem;
+  margin-bottom: ${theme.spacing.sm};
+  justify-content: center;
+`;
+
+const MobileMenuButton = styled.button`
+  display: none;
+  position: fixed;
+  top: ${theme.spacing.lg};
+  left: ${theme.spacing.lg};
+  z-index: 1001;
+  background: ${theme.colors.primary};
+  color: white;
+  border: none;
+  border-radius: ${theme.borderRadius.md};
+  padding: ${theme.spacing.sm};
+  font-size: 1.25rem;
+  cursor: pointer;
+  box-shadow: ${theme.shadows.md};
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: ${theme.colors.primaryDark};
+    transform: scale(1.05);
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    padding: ${theme.spacing.sm};
-    gap: ${theme.spacing.sm};
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+`;
 
-    svg {
-      font-size: 0.9rem;
-    }
+const MobileSidebarOverlay = styled.div.withConfig({
+  shouldForwardProp: prop => prop !== 'isOpen',
+})`
+  display: none;
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.2);
+    z-index: 999;
+    opacity: ${props => (props.isOpen ? '1' : '0')};
+    visibility: ${props => (props.isOpen ? 'visible' : 'hidden')};
+    transition:
+      opacity 0.3s ease,
+      visibility 0.3s ease;
   }
 `;
 
 const MainContent = styled.div`
-  background: ${theme.colors.white};
-  border-radius: ${theme.borderRadius.xl};
+  flex: 1;
+  margin-left: 280px;
   padding: ${theme.spacing.xl};
-  box-shadow: ${theme.shadows.sm};
-  border: 1px solid ${theme.colors.gray200};
-  min-height: 600px;
+  min-height: 100vh;
 
   @media (max-width: ${theme.breakpoints.tablet}) {
+    margin-left: 260px;
     padding: ${theme.spacing.lg};
-    min-height: 400px;
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
+    margin-left: 0;
     padding: ${theme.spacing.md};
-    border-radius: ${theme.borderRadius.lg};
-    min-height: 300px;
+    padding-top: 4rem;
   }
 `;
 
@@ -277,66 +360,266 @@ const ContentHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: ${theme.spacing.xl};
+  margin-bottom: ${theme.spacing.xxl};
   padding-bottom: ${theme.spacing.lg};
   border-bottom: 1px solid ${theme.colors.gray200};
 
-  h2 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: ${theme.colors.gray900};
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: ${theme.spacing.md};
   }
 `;
 
-const EditableField = styled.div.withConfig({
-  shouldForwardProp: prop => prop !== 'primaryColor',
-})`
-  margin-bottom: ${theme.spacing.lg};
+const PageTitle = styled.h1`
+  font-size: 2rem;
+  font-weight: 700;
+  color: ${theme.colors.gray900};
+  margin: 0;
+  flex: 1;
+`;
 
-  label {
-    display: block;
-    font-weight: 600;
-    color: ${theme.colors.gray900};
-    margin-bottom: ${theme.spacing.sm};
+const PageActions = styled.div`
+  display: flex;
+  gap: ${theme.spacing.md};
+  align-items: center;
+  flex-wrap: wrap;
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    width: 100%;
+    justify-content: flex-start;
+  }
+`;
+
+const ActionButton = styled.button.withConfig({
+  shouldForwardProp: prop => !['variant'].includes(prop),
+})`
+  background: ${props =>
+    props.variant === 'primary'
+      ? theme.colors.primary
+      : props.variant === 'success'
+        ? theme.colors.green500
+        : props.variant === 'danger'
+          ? theme.colors.error
+          : theme.colors.white};
+  color: ${props =>
+    props.variant === 'primary' ||
+    props.variant === 'success' ||
+    props.variant === 'danger'
+      ? 'white'
+      : theme.colors.gray700};
+  border: 2px solid
+    ${props =>
+      props.variant === 'primary'
+        ? theme.colors.primary
+        : props.variant === 'success'
+          ? theme.colors.green500
+          : props.variant === 'danger'
+            ? theme.colors.error
+            : theme.colors.gray200};
+  padding: ${theme.spacing.sm} ${theme.spacing.lg};
+  border-radius: ${theme.borderRadius.md};
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.xs};
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: ${theme.shadows.md};
   }
 
-  input,
-  textarea {
-    width: 100%;
-    padding: ${theme.spacing.md};
-    border: 2px solid ${theme.colors.gray200};
-    border-radius: ${theme.borderRadius.md};
-    font-size: 1rem;
-    transition: border-color 0.2s ease;
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
 
-    &:focus {
-      outline: none;
-      border-color: ${props => props.primaryColor || theme.colors.primary};
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.xs} ${theme.spacing.md};
+    font-size: 0.9rem;
+    gap: ${theme.spacing.xs};
+    white-space: nowrap;
+
+    &:hover {
+      transform: none;
+    }
+  }
+`;
+
+const ContentSection = styled.div`
+  background: ${theme.colors.white};
+  border-radius: ${theme.borderRadius.lg};
+  padding: ${theme.spacing.xxl};
+  box-shadow: ${theme.shadows.sm};
+  margin-bottom: ${theme.spacing.xl};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.lg};
+    margin-bottom: ${theme.spacing.lg};
+    border-radius: ${theme.borderRadius.md};
+  }
+`;
+
+const SectionTitle = styled.h2`
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: ${theme.colors.gray900};
+  margin: 0 0 ${theme.spacing.lg} 0;
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.sm};
+`;
+
+const SectionHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: ${theme.spacing.lg};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: ${theme.spacing.md};
+  }
+`;
+
+const VisibilityToggleContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.sm};
+  font-size: 0.9rem;
+  color: ${theme.colors.gray700};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    width: 100%;
+    justify-content: space-between;
+  }
+`;
+
+const FormGrid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: ${theme.spacing.lg};
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    grid-template-columns: 1fr;
+    gap: ${theme.spacing.md};
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    gap: ${theme.spacing.sm};
+  }
+`;
+
+const FormGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${theme.spacing.sm};
+`;
+
+const FormLabel = styled.label`
+  font-weight: 600;
+  color: ${theme.colors.gray900};
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.xs};
+`;
+
+const FormInput = styled.input`
+  padding: ${theme.spacing.md};
+  border: 2px solid ${theme.colors.gray200};
+  border-radius: ${theme.borderRadius.md};
+  font-size: 1rem;
+  transition: all 0.2s ease;
+
+  &:focus {
+    outline: none;
+    border-color: ${theme.colors.primary};
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  }
+`;
+
+const FormTextarea = styled.textarea`
+  padding: ${theme.spacing.md};
+  border: 2px solid ${theme.colors.gray200};
+  border-radius: ${theme.borderRadius.md};
+  font-size: 1rem;
+  min-height: 120px;
+  resize: vertical;
+  transition: all 0.2s ease;
+
+  &:focus {
+    outline: none;
+    border-color: ${theme.colors.primary};
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  }
+`;
+
+const ToggleSwitch = styled.label`
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+  margin-left: auto;
+
+  input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  span {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: ${theme.colors.gray300};
+    transition: 0.4s;
+    border-radius: 24px;
+
+    &:before {
+      position: absolute;
+      content: '';
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: 0.4s;
+      border-radius: 50%;
     }
   }
 
-  textarea {
-    min-height: 120px;
-    resize: vertical;
+  input:checked + span {
+    background-color: ${theme.colors.primary};
+  }
+
+  input:checked + span:before {
+    transform: translateX(26px);
   }
 `;
 
-const SectionList = styled.div`
+const ListContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${theme.spacing.md};
 `;
 
-const SectionItem = styled.div`
+const ListItem = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   padding: ${theme.spacing.lg};
   border: 1px solid ${theme.colors.gray200};
   border-radius: ${theme.borderRadius.md};
   background: ${theme.colors.gray50};
 
-  .section-info {
+  .item-info {
     flex: 1;
     min-width: 0;
 
@@ -349,2579 +632,3800 @@ const SectionItem = styled.div`
     p {
       color: ${theme.colors.gray600};
       font-size: 0.9rem;
+      margin-bottom: ${theme.spacing.xs};
+    }
+
+    .item-meta {
+      font-size: 0.8rem;
+      color: ${theme.colors.gray500};
     }
   }
 
-  .section-actions {
+  .item-actions {
     display: flex;
     gap: ${theme.spacing.sm};
     flex-shrink: 0;
+    margin-left: ${theme.spacing.md};
   }
 
   @media (max-width: ${theme.breakpoints.tablet}) {
     flex-direction: column;
     align-items: flex-start;
     gap: ${theme.spacing.md};
-    padding: ${theme.spacing.md};
 
-    .section-actions {
+    .item-actions {
       width: 100%;
       justify-content: flex-end;
-    }
-  }
-
-  @media (max-width: ${theme.breakpoints.mobile}) {
-    padding: ${theme.spacing.sm};
-
-    .section-actions {
-      flex-direction: column;
-      width: 100%;
-      gap: ${theme.spacing.xs};
+      margin-left: 0;
     }
   }
 `;
 
-// Modal and Form Styles
-const ModalOverlay = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
+const AddButton = styled.button`
   display: flex;
   align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  padding: ${theme.spacing.lg};
-
-  @media (max-width: ${theme.breakpoints.tablet}) {
-    padding: ${theme.spacing.md};
-    align-items: flex-start;
-    padding-top: ${theme.spacing.xl};
-  }
-
-  @media (max-width: ${theme.breakpoints.mobile}) {
-    padding: ${theme.spacing.sm};
-    padding-top: ${theme.spacing.lg};
-  }
-`;
-
-const ModalContent = styled.div`
-  background: ${theme.colors.white};
-  border-radius: ${theme.borderRadius.xl};
-  padding: ${theme.spacing.xl};
-  max-width: 600px;
-  width: 100%;
-  max-height: 90vh;
-  overflow-y: auto;
-  box-shadow: ${theme.shadows.xl};
-  position: relative;
-
-  @media (max-width: ${theme.breakpoints.tablet}) {
-    max-width: 90vw;
-    max-height: 85vh;
-    padding: ${theme.spacing.lg};
-  }
-
-  @media (max-width: ${theme.breakpoints.mobile}) {
-    max-width: 95vw;
-    max-height: 90vh;
-    padding: ${theme.spacing.md};
-    border-radius: ${theme.borderRadius.lg};
-  }
-`;
-
-const ModalHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: ${theme.spacing.xl};
-  padding-bottom: ${theme.spacing.lg};
-  border-bottom: 1px solid ${theme.colors.gray200};
-
-  h3 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: ${theme.colors.gray900};
-    margin: 0;
-  }
-`;
-
-const CloseButton = styled.button`
-  background: none;
+  gap: ${theme.spacing.sm};
+  background: ${theme.colors.primary};
+  color: white;
   border: none;
-  font-size: 1.5rem;
-  color: ${theme.colors.gray500};
-  cursor: pointer;
-  padding: ${theme.spacing.sm};
-  border-radius: ${theme.borderRadius.md};
-  transition: all 0.2s ease;
-
-  &:hover {
-    background: ${theme.colors.gray100};
-    color: ${theme.colors.gray700};
-  }
-`;
-
-const FormField = styled.div.withConfig({
-  shouldForwardProp: prop => prop !== 'primaryColor',
-})`
-  margin-bottom: ${theme.spacing.lg};
-
-  label {
-    display: block;
-    font-weight: 600;
-    color: ${theme.colors.gray900};
-    margin-bottom: ${theme.spacing.sm};
-    font-size: 0.9rem;
-  }
-
-  input,
-  textarea,
-  select {
-    width: 100%;
-    padding: ${theme.spacing.md};
-    border: 2px solid ${theme.colors.gray200};
-    border-radius: ${theme.borderRadius.md};
-    font-size: 1rem;
-    transition: border-color 0.2s ease;
-    font-family: inherit;
-
-    &:focus {
-      outline: none;
-      border-color: ${props => props.primaryColor || theme.colors.primary};
-    }
-  }
-
-  textarea {
-    min-height: 100px;
-    resize: vertical;
-  }
-
-  .help-text {
-    font-size: 0.8rem;
-    color: ${theme.colors.gray500};
-    margin-top: ${theme.spacing.xs};
-  }
-`;
-
-const TagInput = styled.div.withConfig({
-  shouldForwardProp: prop => prop !== 'primaryColor',
-})`
-  .tags-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: ${theme.spacing.sm};
-    margin-bottom: ${theme.spacing.sm};
-  }
-
-  .tag {
-    background: ${props =>
-      props.primaryColor + '20' || theme.colors.primary + '20'};
-    color: ${props => props.primaryColor || theme.colors.primary};
-    padding: ${theme.spacing.xs} ${theme.spacing.sm};
-    border-radius: ${theme.borderRadius.sm};
-    font-size: 0.8rem;
-    display: flex;
-    align-items: center;
-    gap: ${theme.spacing.xs};
-
-    .remove {
-      cursor: pointer;
-      font-weight: bold;
-
-      &:hover {
-        color: ${theme.colors.error};
-      }
-    }
-  }
-
-  .tag-input {
-    padding: ${theme.spacing.sm};
-    border: 1px solid ${theme.colors.gray300};
-    border-radius: ${theme.borderRadius.sm};
-    font-size: 0.9rem;
-
-    &:focus {
-      outline: none;
-      border-color: ${props => props.primaryColor || theme.colors.primary};
-    }
-  }
-`;
-
-const RangeSlider = styled.input.withConfig({
-  shouldForwardProp: prop => prop !== 'primaryColor',
-})`
-  width: 100%;
-  height: 6px;
-  border-radius: 3px;
-  background: ${theme.colors.gray200};
-  outline: none;
-  -webkit-appearance: none;
-
-  &::-webkit-slider-thumb {
-    appearance: none;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: ${props => props.primaryColor || theme.colors.primary};
-    cursor: pointer;
-  }
-
-  &::-moz-range-thumb {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: ${props => props.primaryColor || theme.colors.primary};
-    cursor: pointer;
-    border: none;
-  }
-`;
-
-const ModalActions = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  gap: ${theme.spacing.md};
-  margin-top: ${theme.spacing.xl};
-  padding-top: ${theme.spacing.lg};
-  border-top: 1px solid ${theme.colors.gray200};
-`;
-
-const ActionButton = styled.button.withConfig({
-  shouldForwardProp: prop => prop !== 'variant' && prop !== 'primaryColor',
-})`
   padding: ${theme.spacing.md} ${theme.spacing.lg};
   border-radius: ${theme.borderRadius.md};
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
-  border: none;
-  display: flex;
-  align-items: center;
-  gap: ${theme.spacing.sm};
-
-  ${props =>
-    props.variant === 'primary'
-      ? `
-    background: ${props.primaryColor || theme.colors.primary};
-    color: ${theme.colors.white};
-
-    &:hover {
-      opacity: 0.9;
-      transform: translateY(-1px);
-    }
-  `
-      : props.variant === 'danger'
-        ? `
-    background: ${theme.colors.error};
-    color: ${theme.colors.white};
-
-    &:hover {
-      background: #dc2626;
-    }
-  `
-        : `
-    background: ${theme.colors.white};
-    color: ${theme.colors.gray700};
-    border: 1px solid ${theme.colors.gray300};
-
-    &:hover {
-      background: ${theme.colors.gray50};
-    }
-  `}
-`;
-
-// Image Upload Components
-const ImageUploadContainer = styled.div`
   margin-bottom: ${theme.spacing.lg};
-`;
-
-const ImageUploadArea = styled.div.withConfig({
-  shouldForwardProp: prop => prop !== 'primaryColor' && prop !== 'hasImage',
-})`
-  border: 2px dashed
-    ${props =>
-      props.hasImage
-        ? props.primaryColor || theme.colors.primary
-        : theme.colors.gray300};
-  border-radius: ${theme.borderRadius.lg};
-  padding: ${theme.spacing.xl};
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  background: ${props =>
-    props.hasImage ? 'transparent' : theme.colors.gray50};
-  position: relative;
-  min-height: 200px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
 
   &:hover {
-    border-color: ${props => props.primaryColor || theme.colors.primary};
-    background: ${props => props.primaryColor + '05' || theme.colors.gray100};
-  }
-
-  .upload-icon {
-    font-size: 3rem;
-    color: ${theme.colors.gray400};
-    margin-bottom: ${theme.spacing.md};
-  }
-
-  .upload-text {
-    color: ${theme.colors.gray600};
-    font-weight: 500;
-    margin-bottom: ${theme.spacing.sm};
-  }
-
-  .upload-hint {
-    color: ${theme.colors.gray500};
-    font-size: 0.8rem;
-  }
-
-  input[type='file'] {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    cursor: pointer;
+    background: ${theme.colors.primaryDark};
+    transform: translateY(-1px);
   }
 `;
 
-const ImagePreview = styled.div`
-  position: relative;
-  width: 100%;
-  height: 200px;
-  border-radius: ${theme.borderRadius.md};
-  overflow: hidden;
-  margin-bottom: ${theme.spacing.md};
-
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .image-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.7);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-
-    &:hover {
-      opacity: 1;
-    }
-  }
-
-  .image-actions {
-    display: flex;
-    gap: ${theme.spacing.sm};
-  }
-
-  .image-action-btn {
-    background: ${theme.colors.white};
-    border: none;
-    border-radius: ${theme.borderRadius.md};
-    padding: ${theme.spacing.sm};
-    cursor: pointer;
-    transition: all 0.2s ease;
-
-    &:hover {
-      background: ${theme.colors.gray100};
-    }
-  }
-`;
-
-const ImageUrlInput = styled.div.withConfig({
-  shouldForwardProp: prop => prop !== 'primaryColor',
-})`
-  display: flex;
-  gap: ${theme.spacing.sm};
-  align-items: flex-end;
-
-  .url-input {
-    flex: 1;
-  }
-
-  .url-button {
-    padding: ${theme.spacing.md};
-    background: ${props => props.primaryColor || theme.colors.primary};
-    color: white;
-    border: none;
-    border-radius: ${theme.borderRadius.md};
-    cursor: pointer;
-    font-weight: 600;
-    white-space: nowrap;
-
-    &:hover {
-      opacity: 0.9;
-    }
-  }
-`;
-
-const VisibilityToggle = styled.div.withConfig({
-  shouldForwardProp: prop => prop !== 'primaryColor' && prop !== 'isVisible',
-})`
+const ItemButton = styled.button`
   display: flex;
   align-items: center;
-  gap: ${theme.spacing.sm};
+  gap: ${theme.spacing.xs};
+  background: ${props =>
+    props.variant === 'danger' ? theme.colors.error : theme.colors.white};
+  color: ${props =>
+    props.variant === 'danger' ? 'white' : theme.colors.gray700};
+  border: 1px solid
+    ${props =>
+      props.variant === 'danger' ? theme.colors.error : theme.colors.gray300};
+  padding: ${theme.spacing.sm} ${theme.spacing.md};
+  border-radius: ${theme.borderRadius.sm};
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
 
-  .toggle-switch {
-    position: relative;
-    width: 44px;
-    height: 24px;
+  &:hover {
     background: ${props =>
-      props.isVisible
-        ? props.primaryColor || theme.colors.primary
-        : theme.colors.gray300};
-    border-radius: 12px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-
-    &::after {
-      content: '';
-      position: absolute;
-      top: 2px;
-      left: ${props => (props.isVisible ? '22px' : '2px')};
-      width: 20px;
-      height: 20px;
-      background: ${theme.colors.white};
-      border-radius: 50%;
-      transition: left 0.3s ease;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    }
-  }
-
-  .toggle-label {
-    font-size: 0.8rem;
-    color: ${props =>
-      props.isVisible ? theme.colors.gray700 : theme.colors.gray500};
-    font-weight: 500;
+      props.variant === 'danger' ? '#dc2626' : theme.colors.gray50};
   }
 `;
 
 const BuisnessAdminDashboard = () => {
   const { businessSlug, slug } = useParams();
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const dispatch = useDispatch();
 
   // Support both businessSlug (legacy routes) and slug (new optimized routes)
   const actualSlug = businessSlug || slug;
-  const [businessData, setBusinessData] = useState(null);
-  const [activeSection, setActiveSection] = useState('content');
-  const [isEditing, setIsEditing] = useState(false);
-  const [editingItem, setEditingItem] = useState(null);
-  const [showModal, setShowModal] = useState(false);
-  const [modalType, setModalType] = useState('');
-  const [formData, setFormData] = useState({});
-  const [currentData, setCurrentData] = useState({
-    sectionVisibility: {
-      hero: true,
-      about: true,
-      services: true,
-      portfolio: true,
-      skills: true,
-      experience: true,
-      team: true,
-      gallery: true,
-      contact: true,
-    },
-    hero: {
-      title: 'Creative Freelancer Portfolio',
-      subtitle:
-        'Transforming ideas into stunning visual experiences. Specialized in design, development, and creative solutions for modern businesses.',
-      backgroundImage:
-        'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-4.0.3&w=1200&q=80',
-    },
-    about: {
-      title: 'About Me',
-      description:
-        "I'm a passionate creative professional with 8+ years of experience helping businesses and individuals bring their visions to life through innovative design and development.",
-      profileImage:
-        'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&w=400&q=80',
-    },
-    services: [
-      {
-        id: 1,
-        icon: '🎨',
-        title: 'Web Design',
-        description:
-          'Custom website design tailored to your brand and business goals',
-        price: 'From $1,200',
-      },
-      {
-        id: 2,
-        icon: '📱',
-        title: 'UI/UX Design',
-        description: 'User-centered design for web and mobile applications',
-        price: 'From $800',
-      },
-      {
-        id: 3,
-        icon: '💻',
-        title: 'Frontend Development',
-        description:
-          'Modern, responsive websites built with latest technologies',
-        price: 'From $1,500',
-      },
-    ],
-    portfolio: [
-      {
-        id: 1,
-        title: 'E-commerce Platform',
-        category: 'Web Development',
-        description:
-          'Modern e-commerce platform with custom design and seamless user experience',
-        technologies: ['React', 'Node.js', 'MongoDB'],
-        image:
-          'https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&w=600&q=80',
-      },
-      {
-        id: 2,
-        title: 'Brand Identity Design',
-        category: 'Branding',
-        description:
-          'Complete brand identity including logo, color palette, and brand guidelines',
-        technologies: ['Illustrator', 'Photoshop', 'Figma'],
-        image:
-          'https://images.unsplash.com/photo-1558655146-d09347e92766?ixlib=rb-4.0.3&w=600&q=80',
-      },
-    ],
-    skills: [
-      { id: 1, name: 'Web Design', level: 95, icon: '🎨' },
-      { id: 2, name: 'UI/UX Design', level: 90, icon: '���' },
-      { id: 3, name: 'Frontend Development', level: 88, icon: '💻' },
-    ],
-    experience: [
-      {
-        id: 1,
-        company: 'Digital Agency Inc.',
-        role: 'Senior Creative Designer',
-        period: '2020 - Present',
-        description:
-          'Lead designer for major client projects, specializing in web design and branding solutions.',
-      },
-      {
-        id: 2,
-        company: 'Freelance',
-        role: 'Independent Designer & Developer',
-        period: '2018 - Present',
-        description:
-          'Providing creative solutions for startups and established businesses across various industries.',
-      },
-    ],
-    team: [
-      {
-        id: 1,
-        name: 'Sarah Johnson',
-        role: 'Senior Stylist',
-        bio: '15+ years experience in color and cutting',
-        specialties: ['Color Specialist', 'Bridal Hair'],
-        photo:
-          'https://images.unsplash.com/photo-1594824388853-bf7e0ad7b2ad?ixlib=rb-4.0.3&w=400&q=80',
-      },
-      {
-        id: 2,
-        name: 'Maria Garcia',
-        role: 'Nail Specialist',
-        bio: 'Expert in nail art and luxury manicures',
-        specialties: ['Nail Art', 'Gel Manicures'],
-        photo:
-          'https://images.unsplash.com/photo-1580618672591-eb180b1a973f?ixlib=rb-4.0.3&w=400&q=80',
-      },
-    ],
-    gallery: [
-      {
-        id: 1,
-        category: 'Hair Styling',
-        images: 8,
-        coverImage:
-          'https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-4.0.3&w=600&q=80',
-      },
-      {
-        id: 2,
-        category: 'Nail Art',
-        images: 6,
-        coverImage:
-          'https://images.unsplash.com/photo-1604654894610-df63bc536371?ixlib=rb-4.0.3&w=600&q=80',
-      },
-      {
-        id: 3,
-        category: 'Spa Treatments',
-        images: 5,
-        coverImage:
-          'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&w=600&q=80',
-      },
-    ],
-    contact: {
-      title: 'Get In Touch',
-      description:
-        "Ready to start your next project? Contact me today and let's discuss how I can help bring your vision to life.",
-      email: 'hello@freelancer.com',
-      phone: '+1 (555) 123-4567',
-      address: '123 Creative Street, Design City, DC 12345',
-      hours: {
-        monday: '9:00 AM - 6:00 PM',
-        tuesday: '9:00 AM - 6:00 PM',
-        wednesday: '9:00 AM - 6:00 PM',
-        thursday: '9:00 AM - 6:00 PM',
-        friday: '9:00 AM - 6:00 PM',
-        saturday: '10:00 AM - 4:00 PM',
-        sunday: 'Closed',
-      },
-      socialMedia: {
-        linkedin: 'https://linkedin.com/in/freelancer',
-        twitter: 'https://twitter.com/freelancer',
-        instagram: 'https://instagram.com/freelancer',
-        website: 'https://portfolio.freelancer.com',
-      },
-    },
+
+  // Redux state
+  const { editingBusiness, hasUnsavedChanges, originalBusiness } = useSelector(
+    state => state.businessManagement
+  );
+
+  // Get business ID from URL path
+  const currentPath = window.location.pathname;
+  const pathSegments = currentPath.split('/').filter(Boolean);
+  const businessId = actualSlug || pathSegments[0];
+
+  const [business, setBusiness] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [activeSection, setActiveSection] = useState('hero');
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const [changedSections, setChangedSections] = useState(new Set());
+
+  // Local form states
+  const [heroData, setHeroData] = useState({
+    title: '',
+    subtitle: '',
+    backgroundImage: '',
   });
 
-  useEffect(() => {
-    const template = getBusinessTemplate(actualSlug);
-    if (template) {
-      setBusinessData(template);
-    }
-  }, [actualSlug]);
+  const [aboutData, setAboutData] = useState({
+    title: '',
+    description: '',
+    profileImage: '',
+  });
 
-  if (!businessData) {
+  const [servicesData, setServicesData] = useState([]);
+  const [teamData, setTeamData] = useState([]);
+  const [portfolioData, setPortfolioData] = useState([]);
+  const [skillsData, setSkillsData] = useState([]);
+  const [experienceData, setExperienceData] = useState([]);
+  const [galleryData, setGalleryData] = useState([]);
+  const [packagesData, setPackagesData] = useState([]);
+  const [testimonialsData, setTestimonialsData] = useState([]);
+  const [reviewsData, setReviewsData] = useState([]);
+  const [faqData, setFaqData] = useState([]);
+  const [contactData, setContactData] = useState({
+    title: 'Get In Touch',
+    description: '',
+    email: '',
+    phone: '',
+    address: '',
+    hours: {
+      monday: '9:00 AM - 6:00 PM',
+      tuesday: '9:00 AM - 6:00 PM',
+      wednesday: '9:00 AM - 6:00 PM',
+      thursday: '9:00 AM - 6:00 PM',
+      friday: '9:00 AM - 6:00 PM',
+      saturday: '10:00 AM - 4:00 PM',
+      sunday: 'Closed',
+    },
+    socialMedia: {
+      facebook: '',
+      twitter: '',
+      instagram: '',
+      linkedin: '',
+    },
+  });
+  const [businessHoursData, setBusinessHoursData] = useState({
+    title: 'Business Hours',
+    hours: {
+      monday: '9:00 AM - 6:00 PM',
+      tuesday: '9:00 AM - 6:00 PM',
+      wednesday: '9:00 AM - 6:00 PM',
+      thursday: '9:00 AM - 6:00 PM',
+      friday: '9:00 AM - 6:00 PM',
+      saturday: '10:00 AM - 4:00 PM',
+      sunday: 'Closed',
+    },
+  });
+  const [customSectionsData, setCustomSectionsData] = useState([]);
+  const [sectionOrderData, setSectionOrderData] = useState([]);
+
+  // Section visibility state
+  const [sectionVisibility, setSectionVisibility] = useState({
+    hero: true,
+    'about-us': true,
+    'services-offered': true,
+    portfolio: true,
+    skills: true,
+    experience: true,
+    team: true,
+    gallery: true,
+    packages: true,
+    testimonials: true,
+    reviews: true,
+    faq: true,
+    'business-hours': true,
+    contact: true,
+  });
+
+  // Track changes in a section and update Redux editing business for real-time preview
+  const trackSectionChange = sectionId => {
+    setChangedSections(prev => new Set([...prev, sectionId]));
+    setSaved(false);
+
+    // Immediately update Redux editing business for real-time preview
+    updateEditingBusinessInRedux();
+  };
+
+  // Handle section visibility toggle
+  const toggleSectionVisibility = sectionId => {
+    setSectionVisibility(prev => ({
+      ...prev,
+      [sectionId]: !prev[sectionId],
+    }));
+    trackSectionChange(sectionId);
+  };
+
+  // Helper function to immediately update Redux editing business
+  const updateEditingBusinessInRedux = () => {
+    if (!editingBusiness) return;
+
+    try {
+      // Create updated business object with current form data
+      const updatedBusiness = {
+        ...editingBusiness,
+        hero: heroData,
+        about: aboutData,
+        services: servicesData,
+        team: teamData,
+        portfolio: portfolioData,
+        skills: skillsData,
+        experience: experienceData,
+        gallery: galleryData,
+        packages: packagesData,
+        testimonials: testimonialsData,
+        reviews: reviewsData,
+        faq: faqData,
+        contact: contactData,
+        businessHours: businessHoursData,
+        customSections: customSectionsData,
+        sectionOrder: sectionOrderData,
+        sectionVisibility: sectionVisibility,
+      };
+
+      // Update Redux with the current form data for real-time preview
+      Object.keys(updatedBusiness).forEach(key => {
+        if (
+          key !== 'id' &&
+          JSON.stringify(updatedBusiness[key]) !==
+            JSON.stringify(editingBusiness[key])
+        ) {
+          dispatch(
+            updateBusinessField({ field: key, value: updatedBusiness[key] })
+          );
+        }
+      });
+
+      console.log(
+        'Real-time preview: Updated editing business in Redux',
+        updatedBusiness
+      );
+    } catch (error) {
+      console.error(
+        'Error updating editing business for real-time preview:',
+        error
+      );
+    }
+  };
+
+  // Get sample content based on business type
+  const getSampleContent = businessType => {
+    const baseContent = {
+      salon: {
+        services: [
+          {
+            id: 1,
+            icon: '✂️',
+            title: 'Hair Styling',
+            description:
+              'Professional cuts, colors, and treatments for all hair types',
+            price: 'From $45',
+          },
+          {
+            id: 2,
+            icon: '💅',
+            title: 'Nail Care',
+            description:
+              'Manicures, pedicures, and nail art by certified technicians',
+            price: 'From $25',
+          },
+          {
+            id: 3,
+            icon: '🧴',
+            title: 'Spa Treatments',
+            description: 'Relaxing facials, massages, and body treatments',
+            price: 'From $65',
+          },
+        ],
+        team: [
+          {
+            id: 1,
+            name: 'Sarah Johnson',
+            role: 'Senior Stylist',
+            bio: '15+ years experience in color and cutting',
+            photo: '',
+            specialties: ['Color Specialist', 'Bridal Hair'],
+          },
+          {
+            id: 2,
+            name: 'Maria Garcia',
+            role: 'Nail Specialist',
+            bio: 'Expert in nail art and luxury manicures',
+            photo: '',
+            specialties: ['Nail Art', 'Gel Manicures'],
+          },
+        ],
+        packages: [
+          {
+            id: 1,
+            name: 'Bridal Package',
+            description:
+              'Complete bridal beauty package including hair, makeup, and nails',
+            price: '$299',
+            duration: '4 hours',
+          },
+          {
+            id: 2,
+            name: 'Spa Day',
+            description:
+              'Full day relaxation with massage, facial, and beauty treatments',
+            price: '$199',
+            duration: '6 hours',
+          },
+        ],
+        gallery: [
+          {
+            id: 1,
+            category: 'Hair Styling',
+            images: 8,
+            description: 'Latest hair styling work',
+          },
+          {
+            id: 2,
+            category: 'Nail Art',
+            images: 6,
+            description: 'Creative nail designs',
+          },
+          {
+            id: 3,
+            category: 'Spa Treatments',
+            images: 5,
+            description: 'Relaxing spa services',
+          },
+        ],
+        testimonials: [
+          {
+            id: 1,
+            name: 'Emma Wilson',
+            company: 'Marketing Pro',
+            role: 'Manager',
+            review:
+              'Amazing service! The team is professional and the results are outstanding.',
+            rating: 5,
+            image: '',
+          },
+          {
+            id: 2,
+            name: 'Jessica Brown',
+            company: 'Tech Solutions',
+            role: 'CEO',
+            review:
+              'Highly recommend! Great experience and excellent customer service.',
+            rating: 5,
+            image: '',
+          },
+        ],
+        reviews: [
+          {
+            id: 1,
+            name: 'Sarah K.',
+            date: '2023-12-15',
+            rating: 5,
+            review: 'Fantastic experience! Will definitely come back.',
+            avatar: '',
+          },
+          {
+            id: 2,
+            name: 'Mike R.',
+            date: '2023-12-10',
+            rating: 4,
+            review: 'Great service and friendly staff.',
+            avatar: '',
+          },
+        ],
+        faq: [
+          {
+            id: 1,
+            question: 'What are your hours?',
+            answer: 'We are open Monday through Saturday from 9 AM to 6 PM.',
+          },
+          {
+            id: 2,
+            question: 'Do you accept walk-ins?',
+            answer:
+              'We accept walk-ins based on availability, but appointments are recommended.',
+          },
+          {
+            id: 3,
+            question: 'What payment methods do you accept?',
+            answer: 'We accept cash, credit cards, and mobile payments.',
+          },
+        ],
+      },
+      freelancer: {
+        services: [
+          {
+            id: 1,
+            icon: '🎨',
+            title: 'Web Design',
+            description:
+              'Custom website design tailored to your brand and business goals',
+            price: 'From $1,200',
+          },
+          {
+            id: 2,
+            icon: '📱',
+            title: 'UI/UX Design',
+            description: 'User-centered design for web and mobile applications',
+            price: 'From $800',
+          },
+          {
+            id: 3,
+            icon: '💻',
+            title: 'Frontend Development',
+            description:
+              'Modern, responsive websites built with latest technologies',
+            price: 'From $1,500',
+          },
+        ],
+        portfolio: [
+          {
+            id: 1,
+            title: 'E-commerce Platform',
+            category: 'Web Development',
+            description:
+              'Modern e-commerce platform with custom design and seamless user experience',
+            technologies: ['React', 'Node.js', 'MongoDB'],
+          },
+          {
+            id: 2,
+            title: 'Brand Identity Design',
+            category: 'Branding',
+            description:
+              'Complete brand identity including logo, color palette, and brand guidelines',
+            technologies: ['Illustrator', 'Photoshop', 'Figma'],
+          },
+        ],
+        skills: [
+          { id: 1, name: 'Web Design', level: 95, icon: '🎨' },
+          { id: 2, name: 'UI/UX Design', level: 90, icon: '📱' },
+          { id: 3, name: 'Frontend Development', level: 88, icon: '💻' },
+        ],
+        experience: [
+          {
+            id: 1,
+            company: 'Digital Agency Inc.',
+            role: 'Senior Creative Designer',
+            period: '2020 - Present',
+            description:
+              'Lead designer for major client projects, specializing in web design and branding solutions.',
+          },
+          {
+            id: 2,
+            company: 'Freelance',
+            role: 'Independent Designer & Developer',
+            period: '2018 - Present',
+            description:
+              'Providing creative solutions for startups and established businesses across various industries.',
+          },
+        ],
+        gallery: [
+          {
+            id: 1,
+            category: 'Web Design',
+            images: 10,
+            description: 'Modern web design projects',
+          },
+          {
+            id: 2,
+            category: 'Branding',
+            images: 8,
+            description: 'Brand identity designs',
+          },
+          {
+            id: 3,
+            category: 'Mobile Apps',
+            images: 6,
+            description: 'Mobile app UI designs',
+          },
+        ],
+        packages: [
+          {
+            id: 1,
+            name: 'Basic Package',
+            description: 'Perfect for small projects',
+            price: '$499',
+            duration: '1 week',
+            features: ['Logo Design', 'Basic Website', 'Mobile Responsive'],
+            featured: false,
+          },
+          {
+            id: 2,
+            name: 'Professional Package',
+            description: 'Complete business solution',
+            price: '$1299',
+            duration: '2-3 weeks',
+            features: [
+              'Custom Design',
+              'Full Website',
+              'SEO Optimization',
+              'Analytics',
+            ],
+            featured: true,
+          },
+          {
+            id: 3,
+            name: 'Enterprise Package',
+            description: 'Large scale projects',
+            price: '$2999',
+            duration: '4-6 weeks',
+            features: [
+              'Complex Website',
+              'E-commerce',
+              'CMS',
+              'Training',
+              'Support',
+            ],
+            featured: false,
+          },
+        ],
+        testimonials: [
+          {
+            id: 1,
+            name: 'John Smith',
+            company: 'Tech Startup',
+            role: 'Founder',
+            review:
+              'Exceptional work! Delivered exactly what we needed and more.',
+            rating: 5,
+            image: '',
+          },
+          {
+            id: 2,
+            name: 'Lisa Chen',
+            company: 'Design Agency',
+            role: 'Creative Director',
+            review: 'Professional, creative, and reliable. Highly recommend!',
+            rating: 5,
+            image: '',
+          },
+        ],
+        reviews: [
+          {
+            id: 1,
+            name: 'Alex M.',
+            date: '2023-12-20',
+            rating: 5,
+            review: 'Outstanding creativity and attention to detail.',
+            avatar: '',
+          },
+          {
+            id: 2,
+            name: 'Rachel T.',
+            date: '2023-12-18',
+            rating: 5,
+            review: 'Perfect communication and excellent results.',
+            avatar: '',
+          },
+        ],
+        faq: [
+          {
+            id: 1,
+            question: 'What is your typical project timeline?',
+            answer:
+              'Project timelines vary based on scope, typically 1-6 weeks for most projects.',
+          },
+          {
+            id: 2,
+            question: 'Do you provide ongoing support?',
+            answer:
+              'Yes, we offer ongoing support and maintenance packages for all projects.',
+          },
+          {
+            id: 3,
+            question: 'What are your payment terms?',
+            answer: 'We typically require 50% upfront and 50% upon completion.',
+          },
+        ],
+      },
+    };
+
+    return baseContent[businessType] || baseContent.salon;
+  };
+
+  const navigationItems = [
+    {
+      id: 'hero',
+      label: 'Hero Section',
+      icon: FaImages,
+      section: 'Content Management',
+    },
+    {
+      id: 'about-us',
+      label: 'About Us',
+      icon: FaUser,
+      section: 'Content Management',
+    },
+    {
+      id: 'services-offered',
+      label: 'Services Offered',
+      icon: FaServicestack,
+      section: 'Content Management',
+    },
+    ...(business?.slug === 'freelancer'
+      ? [
+          {
+            id: 'portfolio',
+            label: 'Portfolio',
+            icon: FaBriefcase,
+            section: 'Content Management',
+          },
+          {
+            id: 'skills',
+            label: 'Skills',
+            icon: FaGripHorizontal,
+            section: 'Content Management',
+          },
+          {
+            id: 'experience',
+            label: 'Experience',
+            icon: FaAddressCard,
+            section: 'Content Management',
+          },
+        ]
+      : [
+          {
+            id: 'team',
+            label: 'Team',
+            icon: FaUsers,
+            section: 'Content Management',
+          },
+          {
+            id: 'gallery',
+            label: 'Gallery',
+            icon: FaImages,
+            section: 'Content Management',
+          },
+          {
+            id: 'packages',
+            label: 'Packages & Pricing',
+            icon: FaDollarSign,
+            section: 'Content Management',
+          },
+        ]),
+    {
+      id: 'testimonials',
+      label: 'Testimonials',
+      icon: FaComments,
+      section: 'Content Management',
+    },
+    {
+      id: 'reviews',
+      label: 'Reviews',
+      icon: FaStar,
+      section: 'Content Management',
+    },
+    {
+      id: 'faq',
+      label: 'FAQ',
+      icon: FaQuestionCircle,
+      section: 'Content Management',
+    },
+    {
+      id: 'business-hours',
+      label: 'Business Hours',
+      icon: FaClock,
+      section: 'Content Management',
+    },
+    {
+      id: 'contact',
+      label: 'Contact Info',
+      icon: FaPhone,
+      section: 'Content Management',
+    },
+    {
+      id: 'custom-sections',
+      label: 'Custom Sections',
+      icon: FaPlus,
+      section: 'Advanced',
+    },
+    {
+      id: 'section-order',
+      label: 'Section Order',
+      icon: FaList,
+      section: 'Advanced',
+    },
+    {
+      id: 'settings',
+      label: 'Settings',
+      icon: FaCog,
+      section: 'Account Management',
+    },
+  ];
+
+  useEffect(() => {
+    const businessData = getBusinessTemplate(businessId);
+    if (businessData) {
+      setBusiness(businessData);
+
+      // Initialize business in Redux state if it doesn't exist, then set as editing
+      try {
+        // Create a sanitized version for Redux
+        const sanitizedBusiness = JSON.parse(JSON.stringify(businessData));
+        dispatch(initializeBusiness(sanitizedBusiness));
+        dispatch(setEditingBusiness(businessId));
+      } catch (error) {
+        console.error('Error setting editing business:', error);
+      }
+
+      // Pre-fill all form data from business data
+      setHeroData({
+        title: businessData.hero?.title || `${businessData.name}`,
+        subtitle:
+          businessData.hero?.subtitle || `Welcome to ${businessData.name}`,
+        backgroundImage:
+          businessData.hero?.backgroundImage || businessData.image || '',
+      });
+
+      setAboutData({
+        title: businessData.about?.title || 'About Us',
+        description:
+          businessData.about?.description ||
+          `Learn more about ${businessData.name}`,
+        profileImage: businessData.about?.profileImage || '',
+      });
+
+      // Initialize sample content based on business type
+      const sampleContent = getSampleContent(businessData.slug);
+      setServicesData(sampleContent.services || []);
+      setTeamData(sampleContent.team || []);
+      setPortfolioData(sampleContent.portfolio || []);
+      setSkillsData(sampleContent.skills || []);
+      setExperienceData(sampleContent.experience || []);
+      setGalleryData(sampleContent.gallery || []);
+      setPackagesData(sampleContent.packages || []);
+      setTestimonialsData(sampleContent.testimonials || []);
+      setReviewsData(sampleContent.reviews || []);
+      setFaqData(sampleContent.faq || []);
+
+      // Initialize business hours
+      setBusinessHoursData({
+        title: 'Business Hours',
+        hours: {
+          monday: '9:00 AM - 6:00 PM',
+          tuesday: '9:00 AM - 6:00 PM',
+          wednesday: '9:00 AM - 6:00 PM',
+          thursday: '9:00 AM - 6:00 PM',
+          friday: '9:00 AM - 6:00 PM',
+          saturday: '10:00 AM - 4:00 PM',
+          sunday: 'Closed',
+        },
+      });
+
+      // Initialize section order
+      setSectionOrderData([
+        'hero',
+        'about-us',
+        'services-offered',
+        'portfolio',
+        'skills',
+        'experience',
+        'team',
+        'gallery',
+        'packages',
+        'testimonials',
+        'reviews',
+        'faq',
+        'business-hours',
+        'contact',
+      ]);
+
+      // Initialize contact data
+      setContactData({
+        title: 'Get In Touch',
+        description: `Contact us to learn more about ${businessData.name}`,
+        email: `hello@${businessData.slug}.com`,
+        phone: '+1 (555) 123-4567',
+        address: '123 Business Street, City, State 12345',
+        hours: {
+          monday: '9:00 AM - 6:00 PM',
+          tuesday: '9:00 AM - 6:00 PM',
+          wednesday: '9:00 AM - 6:00 PM',
+          thursday: '9:00 AM - 6:00 PM',
+          friday: '9:00 AM - 6:00 PM',
+          saturday: '10:00 AM - 4:00 PM',
+          sunday: 'Closed',
+        },
+        socialMedia: {
+          facebook: '',
+          twitter: '',
+          instagram: '',
+          linkedin: '',
+        },
+      });
+    }
+    setLoading(false);
+  }, [businessId, dispatch]);
+
+  // Handle Save Changes - saves to editing state for real-time preview
+  const handleSaveChanges = () => {
+    console.log('handleSaveChanges called');
+
+    try {
+      // Update editing business with current form data for real-time preview
+      updateEditingBusinessInRedux();
+
+      setSaved(true);
+      setChangedSections(new Set());
+      alert(
+        'Changes saved! You can preview them in the business page. Click "Save & Go Live" to publish permanently.'
+      );
+      console.log('Updated editing business for real-time preview');
+    } catch (error) {
+      console.error('Error saving changes for preview:', error);
+      alert('Error saving changes for preview. Please try again.');
+    }
+  };
+
+  // Handle Save & Go Live - publishes changes to global state
+  const handleSaveAndGoLive = () => {
+    console.log('handleSaveAndGoLive called');
+
+    if (!editingBusiness) {
+      alert('No business is being edited. Please try refreshing the page.');
+      return;
+    }
+
+    try {
+      console.log('Saving business changes...');
+      dispatch(saveBusinessChanges());
+
+      setSaved(false);
+      alert('All changes published to live business page successfully!');
+
+      // Navigate back to business page
+      navigate(`/${businessId}`);
+    } catch (error) {
+      console.error('Error saving changes:', error);
+      alert('Error saving changes. Please try again.');
+    }
+  };
+
+  // Handle Discard Changes - revert to original state
+  const handleDiscardChanges = () => {
+    if (!originalBusiness) return;
+
+    try {
+      // Reset all local form data to original values
+      setHeroData({
+        title: originalBusiness.hero?.title || `${originalBusiness.name}`,
+        subtitle:
+          originalBusiness.hero?.subtitle ||
+          `Welcome to ${originalBusiness.name}`,
+        backgroundImage:
+          originalBusiness.hero?.backgroundImage ||
+          originalBusiness.image ||
+          '',
+      });
+
+      setAboutData({
+        title: originalBusiness.about?.title || 'About Us',
+        description:
+          originalBusiness.about?.description ||
+          `Learn more about ${originalBusiness.name}`,
+        profileImage: originalBusiness.about?.profileImage || '',
+      });
+
+      // Discard changes in Redux
+      dispatch(discardBusinessChanges());
+      setSaved(false);
+      setChangedSections(new Set());
+      alert('All changes discarded. Form reset to original values.');
+    } catch (error) {
+      console.error('Error discarding changes:', error);
+      alert('Error discarding changes. Please try again.');
+    }
+  };
+
+  const closeMobileSidebar = () => setMobileSidebarOpen(false);
+
+  // Close mobile sidebar on escape key
+  useEffect(() => {
+    const handleEscapeKey = event => {
+      if (event.key === 'Escape' && mobileSidebarOpen) {
+        closeMobileSidebar();
+      }
+    };
+
+    document.addEventListener('keydown', handleEscapeKey);
+    return () => document.removeEventListener('keydown', handleEscapeKey);
+  }, [mobileSidebarOpen]);
+
+  // Prevent body scroll when mobile sidebar is open
+  useEffect(() => {
+    if (mobileSidebarOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [mobileSidebarOpen]);
+
+  // Helper functions for managing dynamic lists
+  const addService = () => {
+    const newService = {
+      id: Date.now(),
+      icon: '🔧',
+      title: 'New Service',
+      description: 'Service description',
+      price: 'From $0',
+    };
+    setServicesData(prev => [...prev, newService]);
+    trackSectionChange('services-offered');
+  };
+
+  const updateService = (id, field, value) => {
+    setServicesData(prev =>
+      prev.map(service =>
+        service.id === id ? { ...service, [field]: value } : service
+      )
+    );
+    trackSectionChange('services-offered');
+  };
+
+  const deleteService = id => {
+    setServicesData(prev => prev.filter(service => service.id !== id));
+    trackSectionChange('services-offered');
+  };
+
+  const addTeamMember = () => {
+    const newMember = {
+      id: Date.now(),
+      name: 'New Team Member',
+      role: 'Role',
+      bio: 'Bio description',
+      photo: '',
+      specialties: [],
+    };
+    setTeamData(prev => [...prev, newMember]);
+    trackSectionChange('team');
+  };
+
+  const updateTeamMember = (id, field, value) => {
+    setTeamData(prev =>
+      prev.map(member =>
+        member.id === id ? { ...member, [field]: value } : member
+      )
+    );
+    trackSectionChange('team');
+  };
+
+  const deleteTeamMember = id => {
+    setTeamData(prev => prev.filter(member => member.id !== id));
+    trackSectionChange('team');
+  };
+
+  // Portfolio management functions
+  const addPortfolioItem = () => {
+    const newItem = {
+      id: Date.now(),
+      title: 'New Project',
+      category: 'Design',
+      description: 'Project description',
+      image: '',
+      technologies: [],
+    };
+    setPortfolioData(prev => [...prev, newItem]);
+    trackSectionChange('portfolio');
+  };
+
+  const updatePortfolioItem = (id, field, value) => {
+    setPortfolioData(prev =>
+      prev.map(item => (item.id === id ? { ...item, [field]: value } : item))
+    );
+    trackSectionChange('portfolio');
+  };
+
+  const deletePortfolioItem = id => {
+    setPortfolioData(prev => prev.filter(item => item.id !== id));
+    trackSectionChange('portfolio');
+  };
+
+  // Skills management functions
+  const addSkill = () => {
+    const newSkill = {
+      id: Date.now(),
+      name: 'New Skill',
+      level: 70,
+      icon: '🔧',
+    };
+    setSkillsData(prev => [...prev, newSkill]);
+    trackSectionChange('skills');
+  };
+
+  const updateSkill = (id, field, value) => {
+    setSkillsData(prev =>
+      prev.map(skill =>
+        skill.id === id ? { ...skill, [field]: value } : skill
+      )
+    );
+    trackSectionChange('skills');
+  };
+
+  const deleteSkill = id => {
+    setSkillsData(prev => prev.filter(skill => skill.id !== id));
+    trackSectionChange('skills');
+  };
+
+  // Experience management functions
+  const addExperience = () => {
+    const newExperience = {
+      id: Date.now(),
+      company: 'Company Name',
+      role: 'Position',
+      period: '2023 - Present',
+      description: 'Job description',
+    };
+    setExperienceData(prev => [...prev, newExperience]);
+    trackSectionChange('experience');
+  };
+
+  const updateExperience = (id, field, value) => {
+    setExperienceData(prev =>
+      prev.map(exp => (exp.id === id ? { ...exp, [field]: value } : exp))
+    );
+    trackSectionChange('experience');
+  };
+
+  const deleteExperience = id => {
+    setExperienceData(prev => prev.filter(exp => exp.id !== id));
+    trackSectionChange('experience');
+  };
+
+  // Gallery management functions
+  const addGalleryCategory = () => {
+    const newCategory = {
+      id: Date.now(),
+      category: 'New Category',
+      images: [],
+      description: 'Category description',
+    };
+    setGalleryData(prev => [...prev, newCategory]);
+    trackSectionChange('gallery');
+  };
+
+  const updateGalleryCategory = (id, field, value) => {
+    setGalleryData(prev =>
+      prev.map(cat => (cat.id === id ? { ...cat, [field]: value } : cat))
+    );
+    trackSectionChange('gallery');
+  };
+
+  const deleteGalleryCategory = id => {
+    setGalleryData(prev => prev.filter(cat => cat.id !== id));
+    trackSectionChange('gallery');
+  };
+
+  // Packages management functions
+  const addPackage = () => {
+    const newPackage = {
+      id: Date.now(),
+      name: 'New Package',
+      description: 'Package description',
+      price: '$0',
+      duration: '1 hour',
+      features: [],
+      featured: false,
+    };
+    setPackagesData(prev => [...prev, newPackage]);
+    trackSectionChange('packages');
+  };
+
+  const updatePackage = (id, field, value) => {
+    setPackagesData(prev =>
+      prev.map(pkg => (pkg.id === id ? { ...pkg, [field]: value } : pkg))
+    );
+    trackSectionChange('packages');
+  };
+
+  const deletePackage = id => {
+    setPackagesData(prev => prev.filter(pkg => pkg.id !== id));
+    trackSectionChange('packages');
+  };
+
+  // Testimonials management functions
+  const addTestimonial = () => {
+    const newTestimonial = {
+      id: Date.now(),
+      name: 'Client Name',
+      company: 'Company',
+      role: 'Position',
+      review: 'Great experience!',
+      rating: 5,
+      image: '',
+    };
+    setTestimonialsData(prev => [...prev, newTestimonial]);
+    trackSectionChange('testimonials');
+  };
+
+  const updateTestimonial = (id, field, value) => {
+    setTestimonialsData(prev =>
+      prev.map(testimonial =>
+        testimonial.id === id ? { ...testimonial, [field]: value } : testimonial
+      )
+    );
+    trackSectionChange('testimonials');
+  };
+
+  const deleteTestimonial = id => {
+    setTestimonialsData(prev =>
+      prev.filter(testimonial => testimonial.id !== id)
+    );
+    trackSectionChange('testimonials');
+  };
+
+  // Reviews management functions
+  const addReview = () => {
+    const newReview = {
+      id: Date.now(),
+      name: 'Reviewer Name',
+      date: new Date().toLocaleDateString(),
+      rating: 5,
+      review: 'Excellent service!',
+      avatar: '',
+    };
+    setReviewsData(prev => [...prev, newReview]);
+    trackSectionChange('reviews');
+  };
+
+  const updateReview = (id, field, value) => {
+    setReviewsData(prev =>
+      prev.map(review =>
+        review.id === id ? { ...review, [field]: value } : review
+      )
+    );
+    trackSectionChange('reviews');
+  };
+
+  const deleteReview = id => {
+    setReviewsData(prev => prev.filter(review => review.id !== id));
+    trackSectionChange('reviews');
+  };
+
+  // FAQ management functions
+  const addFAQ = () => {
+    const newFAQ = {
+      id: Date.now(),
+      question: 'New Question?',
+      answer: 'Answer to the question.',
+    };
+    setFaqData(prev => [...prev, newFAQ]);
+    trackSectionChange('faq');
+  };
+
+  const updateFAQ = (id, field, value) => {
+    setFaqData(prev =>
+      prev.map(faq => (faq.id === id ? { ...faq, [field]: value } : faq))
+    );
+    trackSectionChange('faq');
+  };
+
+  const deleteFAQ = id => {
+    setFaqData(prev => prev.filter(faq => faq.id !== id));
+    trackSectionChange('faq');
+  };
+
+  // Custom sections management
+  const addCustomSection = (type = 'text') => {
+    const templates = {
+      text: {
+        title: 'Text Section',
+        content: {
+          heading: 'Section Heading',
+          description: 'Add your content here...',
+          backgroundColor: '#ffffff',
+          textColor: '#333333',
+        },
+      },
+      list: {
+        title: 'List Section',
+        content: {
+          heading: 'List Heading',
+          items: ['Item 1', 'Item 2', 'Item 3'],
+          style: 'bullets', // bullets, numbers, icons
+          backgroundColor: '#f8f9fa',
+        },
+      },
+      card: {
+        title: 'Card Section',
+        content: {
+          heading: 'Card Section',
+          cards: [
+            { title: 'Card 1', description: 'Description 1', icon: '🎯' },
+            { title: 'Card 2', description: 'Description 2', icon: '⚡' },
+            { title: 'Card 3', description: 'Description 3', icon: '🚀' },
+          ],
+          layout: 'grid', // grid, horizontal, vertical
+        },
+      },
+      image: {
+        title: 'Image Gallery',
+        content: {
+          heading: 'Image Gallery',
+          images: [],
+          layout: 'grid', // grid, masonry, carousel
+          columns: 3,
+        },
+      },
+    };
+
+    const template = templates[type] || templates.text;
+    const newSection = {
+      id: Date.now(),
+      type,
+      title: template.title,
+      content: template.content,
+      order: customSectionsData.length,
+      visible: true,
+    };
+    setCustomSectionsData(prev => [...prev, newSection]);
+    trackSectionChange('custom');
+  };
+
+  const updateCustomSection = (id, field, value) => {
+    setCustomSectionsData(prev =>
+      prev.map(section =>
+        section.id === id ? { ...section, [field]: value } : section
+      )
+    );
+    trackSectionChange('custom');
+  };
+
+  const deleteCustomSection = id => {
+    setCustomSectionsData(prev => prev.filter(section => section.id !== id));
+    trackSectionChange('custom');
+  };
+
+  // Image upload handler
+  const handleImageUpload = (event, callback) => {
+    const file = event.target.files[0];
+    if (file) {
+      // In a real app, you would upload to a service like AWS S3, Cloudinary, etc.
+      // For demo purposes, we'll create a blob URL
+      const imageUrl = URL.createObjectURL(file);
+      callback(imageUrl);
+    }
+  };
+
+  // Section reorder handler
+  const reorderSections = (startIndex, endIndex) => {
+    const result = Array.from(sectionOrderData);
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
+    setSectionOrderData(result);
+    trackSectionChange('order');
+  };
+
+  const renderContent = () => {
+    switch (activeSection) {
+      case 'hero':
+        return (
+          <ContentSection>
+            <SectionHeader>
+              <SectionTitle>
+                <FaImages />
+                Hero Section
+              </SectionTitle>
+              <VisibilityToggleContainer>
+                <span>{sectionVisibility['hero'] ? 'Visible' : 'Hidden'}</span>
+                <ToggleSwitch>
+                  <input
+                    type="checkbox"
+                    checked={sectionVisibility['hero']}
+                    onChange={() => toggleSectionVisibility('hero')}
+                  />
+                  <span></span>
+                </ToggleSwitch>
+              </VisibilityToggleContainer>
+            </SectionHeader>
+            <FormGrid>
+              <FormGroup style={{ gridColumn: '1 / -1' }}>
+                <FormLabel>Business Title</FormLabel>
+                <FormInput
+                  value={heroData.title}
+                  onChange={e => {
+                    setHeroData(prev => ({ ...prev, title: e.target.value }));
+                    trackSectionChange('hero');
+                  }}
+                  placeholder="Enter your business title"
+                />
+              </FormGroup>
+              <FormGroup style={{ gridColumn: '1 / -1' }}>
+                <FormLabel>Subtitle</FormLabel>
+                <FormTextarea
+                  value={heroData.subtitle}
+                  onChange={e => {
+                    setHeroData(prev => ({
+                      ...prev,
+                      subtitle: e.target.value,
+                    }));
+                    trackSectionChange('hero');
+                  }}
+                  placeholder="Enter your business subtitle..."
+                  rows={3}
+                />
+              </FormGroup>
+              <FormGroup style={{ gridColumn: '1 / -1' }}>
+                <FormLabel>
+                  <FaCamera />
+                  Background Image URL
+                  <input
+                    type="file"
+                    accept="image/*"
+                    style={{ display: 'none' }}
+                    id="hero-background-upload"
+                    onChange={e =>
+                      handleImageUpload(e, url => {
+                        setHeroData(prev => ({
+                          ...prev,
+                          backgroundImage: url,
+                        }));
+                        trackSectionChange('hero');
+                      })
+                    }
+                  />
+                  <label
+                    htmlFor="hero-background-upload"
+                    style={{
+                      marginLeft: '10px',
+                      cursor: 'pointer',
+                      color: '#3b82f6',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                    }}
+                  >
+                    <FaUpload /> Upload
+                  </label>
+                </FormLabel>
+                <FormInput
+                  value={heroData.backgroundImage}
+                  onChange={e => {
+                    setHeroData(prev => ({
+                      ...prev,
+                      backgroundImage: e.target.value,
+                    }));
+                    trackSectionChange('hero');
+                  }}
+                  placeholder="Enter background image URL or upload"
+                />
+                {heroData.backgroundImage && (
+                  <div
+                    style={{
+                      marginTop: '10px',
+                      padding: '10px',
+                      border: '1px solid #e2e8f0',
+                      borderRadius: '6px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '10px',
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: '60px',
+                        height: '60px',
+                        backgroundImage: `url(${heroData.backgroundImage})`,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        borderRadius: '6px',
+                        border: '1px solid #d1d5db',
+                      }}
+                    />
+                    <span style={{ fontSize: '0.9rem', color: '#6b7280' }}>
+                      Image preview
+                    </span>
+                  </div>
+                )}
+              </FormGroup>
+            </FormGrid>
+          </ContentSection>
+        );
+
+      case 'about-us':
+        return (
+          <ContentSection>
+            <SectionHeader>
+              <SectionTitle>
+                <FaUser />
+                About Us Section
+              </SectionTitle>
+              <VisibilityToggleContainer>
+                <span>
+                  {sectionVisibility['about-us'] ? 'Visible' : 'Hidden'}
+                </span>
+                <ToggleSwitch>
+                  <input
+                    type="checkbox"
+                    checked={sectionVisibility['about-us']}
+                    onChange={() => toggleSectionVisibility('about-us')}
+                  />
+                  <span></span>
+                </ToggleSwitch>
+              </VisibilityToggleContainer>
+            </SectionHeader>
+            <FormGrid>
+              <FormGroup style={{ gridColumn: '1 / -1' }}>
+                <FormLabel>Section Title</FormLabel>
+                <FormInput
+                  value={aboutData.title}
+                  onChange={e => {
+                    setAboutData(prev => ({ ...prev, title: e.target.value }));
+                    trackSectionChange('about-us');
+                  }}
+                  placeholder="Enter section title"
+                />
+              </FormGroup>
+              <FormGroup style={{ gridColumn: '1 / -1' }}>
+                <FormLabel>Description</FormLabel>
+                <FormTextarea
+                  value={aboutData.description}
+                  onChange={e => {
+                    setAboutData(prev => ({
+                      ...prev,
+                      description: e.target.value,
+                    }));
+                    trackSectionChange('about-us');
+                  }}
+                  placeholder="Enter about description..."
+                  rows={5}
+                />
+              </FormGroup>
+              <FormGroup style={{ gridColumn: '1 / -1' }}>
+                <FormLabel>
+                  <FaCamera />
+                  Profile Image URL
+                  <input
+                    type="file"
+                    accept="image/*"
+                    style={{ display: 'none' }}
+                    id="about-profile-upload"
+                    onChange={e =>
+                      handleImageUpload(e, url => {
+                        setAboutData(prev => ({ ...prev, profileImage: url }));
+                        trackSectionChange('about-us');
+                      })
+                    }
+                  />
+                  <label
+                    htmlFor="about-profile-upload"
+                    style={{
+                      marginLeft: '10px',
+                      cursor: 'pointer',
+                      color: '#3b82f6',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                    }}
+                  >
+                    <FaUpload /> Upload
+                  </label>
+                </FormLabel>
+                <FormInput
+                  value={aboutData.profileImage}
+                  onChange={e => {
+                    setAboutData(prev => ({
+                      ...prev,
+                      profileImage: e.target.value,
+                    }));
+                    trackSectionChange('about-us');
+                  }}
+                  placeholder="Enter profile image URL or upload"
+                />
+                {aboutData.profileImage && (
+                  <div
+                    style={{
+                      marginTop: '10px',
+                      padding: '10px',
+                      border: '1px solid #e2e8f0',
+                      borderRadius: '6px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '10px',
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: '60px',
+                        height: '60px',
+                        backgroundImage: `url(${aboutData.profileImage})`,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        borderRadius: '6px',
+                        border: '1px solid #d1d5db',
+                      }}
+                    />
+                    <span style={{ fontSize: '0.9rem', color: '#6b7280' }}>
+                      Profile image preview
+                    </span>
+                  </div>
+                )}
+              </FormGroup>
+            </FormGrid>
+          </ContentSection>
+        );
+
+      case 'services-offered':
+        return (
+          <ContentSection>
+            <SectionHeader>
+              <SectionTitle>
+                <FaServicestack />
+                Services Offered
+              </SectionTitle>
+              <VisibilityToggleContainer>
+                <span>
+                  {sectionVisibility['services-offered'] ? 'Visible' : 'Hidden'}
+                </span>
+                <ToggleSwitch>
+                  <input
+                    type="checkbox"
+                    checked={sectionVisibility['services-offered']}
+                    onChange={() => toggleSectionVisibility('services-offered')}
+                  />
+                  <span></span>
+                </ToggleSwitch>
+              </VisibilityToggleContainer>
+            </SectionHeader>
+
+            <AddButton onClick={addService}>
+              <FaPlus />
+              Add New Service
+            </AddButton>
+
+            <ListContainer>
+              {servicesData.map(service => (
+                <ListItem key={service.id}>
+                  <div className="item-info">
+                    <FormGrid>
+                      <FormGroup>
+                        <FormLabel>Icon (Emoji)</FormLabel>
+                        <FormInput
+                          value={service.icon}
+                          onChange={e =>
+                            updateService(service.id, 'icon', e.target.value)
+                          }
+                          placeholder="🔧"
+                        />
+                      </FormGroup>
+                      <FormGroup>
+                        <FormLabel>Price</FormLabel>
+                        <FormInput
+                          value={service.price}
+                          onChange={e =>
+                            updateService(service.id, 'price', e.target.value)
+                          }
+                          placeholder="From $0"
+                        />
+                      </FormGroup>
+                      <FormGroup style={{ gridColumn: '1 / -1' }}>
+                        <FormLabel>Service Title</FormLabel>
+                        <FormInput
+                          value={service.title}
+                          onChange={e =>
+                            updateService(service.id, 'title', e.target.value)
+                          }
+                          placeholder="Service Name"
+                        />
+                      </FormGroup>
+                      <FormGroup style={{ gridColumn: '1 / -1' }}>
+                        <FormLabel>Description</FormLabel>
+                        <FormTextarea
+                          value={service.description}
+                          onChange={e =>
+                            updateService(
+                              service.id,
+                              'description',
+                              e.target.value
+                            )
+                          }
+                          placeholder="Service description"
+                          rows={3}
+                        />
+                      </FormGroup>
+                    </FormGrid>
+                  </div>
+                  <div className="item-actions">
+                    <ItemButton
+                      variant="danger"
+                      onClick={() => deleteService(service.id)}
+                    >
+                      <FaTrash />
+                      Delete
+                    </ItemButton>
+                  </div>
+                </ListItem>
+              ))}
+            </ListContainer>
+          </ContentSection>
+        );
+
+      case 'team':
+        return (
+          <ContentSection>
+            <SectionHeader>
+              <SectionTitle>
+                <FaUsers />
+                Team Management
+              </SectionTitle>
+              <VisibilityToggleContainer>
+                <span>{sectionVisibility['team'] ? 'Visible' : 'Hidden'}</span>
+                <ToggleSwitch>
+                  <input
+                    type="checkbox"
+                    checked={sectionVisibility['team']}
+                    onChange={() => toggleSectionVisibility('team')}
+                  />
+                  <span></span>
+                </ToggleSwitch>
+              </VisibilityToggleContainer>
+            </SectionHeader>
+
+            <AddButton onClick={addTeamMember}>
+              <FaPlus />
+              Add Team Member
+            </AddButton>
+
+            <ListContainer>
+              {teamData.map(member => (
+                <ListItem key={member.id}>
+                  <div className="item-info">
+                    <FormGrid>
+                      <FormGroup>
+                        <FormLabel>Name</FormLabel>
+                        <FormInput
+                          value={member.name}
+                          onChange={e =>
+                            updateTeamMember(member.id, 'name', e.target.value)
+                          }
+                          placeholder="Team member name"
+                        />
+                      </FormGroup>
+                      <FormGroup>
+                        <FormLabel>Role</FormLabel>
+                        <FormInput
+                          value={member.role}
+                          onChange={e =>
+                            updateTeamMember(member.id, 'role', e.target.value)
+                          }
+                          placeholder="Job title"
+                        />
+                      </FormGroup>
+                      <FormGroup style={{ gridColumn: '1 / -1' }}>
+                        <FormLabel>
+                          <FaCamera />
+                          Photo URL
+                          <input
+                            type="file"
+                            accept="image/*"
+                            style={{ display: 'none' }}
+                            id={`team-photo-${member.id}`}
+                            onChange={e =>
+                              handleImageUpload(e, url =>
+                                updateTeamMember(member.id, 'photo', url)
+                              )
+                            }
+                          />
+                          <label
+                            htmlFor={`team-photo-${member.id}`}
+                            style={{
+                              marginLeft: '10px',
+                              cursor: 'pointer',
+                              color: '#3b82f6',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '4px',
+                            }}
+                          >
+                            <FaUpload /> Upload
+                          </label>
+                        </FormLabel>
+                        <FormInput
+                          value={member.photo}
+                          onChange={e =>
+                            updateTeamMember(member.id, 'photo', e.target.value)
+                          }
+                          placeholder="Profile photo URL or upload"
+                        />
+                        {member.photo && (
+                          <div
+                            style={{
+                              marginTop: '10px',
+                              padding: '10px',
+                              border: '1px solid #e2e8f0',
+                              borderRadius: '6px',
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '10px',
+                            }}
+                          >
+                            <div
+                              style={{
+                                width: '50px',
+                                height: '50px',
+                                backgroundImage: `url(${member.photo})`,
+                                backgroundSize: 'cover',
+                                backgroundPosition: 'center',
+                                borderRadius: '50%',
+                                border: '1px solid #d1d5db',
+                              }}
+                            />
+                            <span
+                              style={{ fontSize: '0.9rem', color: '#6b7280' }}
+                            >
+                              {member.name} photo
+                            </span>
+                          </div>
+                        )}
+                      </FormGroup>
+                      <FormGroup style={{ gridColumn: '1 / -1' }}>
+                        <FormLabel>Bio</FormLabel>
+                        <FormTextarea
+                          value={member.bio}
+                          onChange={e =>
+                            updateTeamMember(member.id, 'bio', e.target.value)
+                          }
+                          placeholder="Brief bio about the team member"
+                          rows={3}
+                        />
+                      </FormGroup>
+                    </FormGrid>
+                  </div>
+                  <div className="item-actions">
+                    <ItemButton
+                      variant="danger"
+                      onClick={() => deleteTeamMember(member.id)}
+                    >
+                      <FaTrash />
+                      Delete
+                    </ItemButton>
+                  </div>
+                </ListItem>
+              ))}
+            </ListContainer>
+          </ContentSection>
+        );
+
+      case 'portfolio':
+        return (
+          <ContentSection>
+            <SectionHeader>
+              <SectionTitle>
+                <FaBriefcase />
+                Portfolio Management
+              </SectionTitle>
+              <VisibilityToggleContainer>
+                <span>
+                  {sectionVisibility['portfolio'] ? 'Visible' : 'Hidden'}
+                </span>
+                <ToggleSwitch>
+                  <input
+                    type="checkbox"
+                    checked={sectionVisibility['portfolio']}
+                    onChange={() => toggleSectionVisibility('portfolio')}
+                  />
+                  <span></span>
+                </ToggleSwitch>
+              </VisibilityToggleContainer>
+            </SectionHeader>
+
+            <AddButton onClick={addPortfolioItem}>
+              <FaPlus />
+              Add Portfolio Item
+            </AddButton>
+
+            <ListContainer>
+              {portfolioData.map(item => (
+                <ListItem key={item.id}>
+                  <div className="item-info">
+                    <FormGrid>
+                      <FormGroup>
+                        <FormLabel>Project Title</FormLabel>
+                        <FormInput
+                          value={item.title}
+                          onChange={e =>
+                            updatePortfolioItem(
+                              item.id,
+                              'title',
+                              e.target.value
+                            )
+                          }
+                          placeholder="Project Name"
+                        />
+                      </FormGroup>
+                      <FormGroup>
+                        <FormLabel>Category</FormLabel>
+                        <FormInput
+                          value={item.category}
+                          onChange={e =>
+                            updatePortfolioItem(
+                              item.id,
+                              'category',
+                              e.target.value
+                            )
+                          }
+                          placeholder="Design, Development, etc."
+                        />
+                      </FormGroup>
+                      <FormGroup style={{ gridColumn: '1 / -1' }}>
+                        <FormLabel>
+                          <FaFileImage />
+                          Project Image URL
+                          <input
+                            type="file"
+                            accept="image/*"
+                            style={{ display: 'none' }}
+                            id={`portfolio-image-${item.id}`}
+                            onChange={e =>
+                              handleImageUpload(e, url =>
+                                updatePortfolioItem(item.id, 'image', url)
+                              )
+                            }
+                          />
+                          <label
+                            htmlFor={`portfolio-image-${item.id}`}
+                            style={{
+                              marginLeft: '10px',
+                              cursor: 'pointer',
+                              color: '#3b82f6',
+                            }}
+                          >
+                            <FaUpload /> Upload
+                          </label>
+                        </FormLabel>
+                        <FormInput
+                          value={item.image || ''}
+                          onChange={e =>
+                            updatePortfolioItem(
+                              item.id,
+                              'image',
+                              e.target.value
+                            )
+                          }
+                          placeholder="Enter image URL or upload"
+                        />
+                      </FormGroup>
+                      <FormGroup style={{ gridColumn: '1 / -1' }}>
+                        <FormLabel>Description</FormLabel>
+                        <FormTextarea
+                          value={item.description}
+                          onChange={e =>
+                            updatePortfolioItem(
+                              item.id,
+                              'description',
+                              e.target.value
+                            )
+                          }
+                          placeholder="Project description"
+                          rows={3}
+                        />
+                      </FormGroup>
+                      <FormGroup style={{ gridColumn: '1 / -1' }}>
+                        <FormLabel>Technologies (comma-separated)</FormLabel>
+                        <FormInput
+                          value={
+                            Array.isArray(item.technologies)
+                              ? item.technologies.join(', ')
+                              : ''
+                          }
+                          onChange={e =>
+                            updatePortfolioItem(
+                              item.id,
+                              'technologies',
+                              e.target.value.split(', ').filter(t => t.trim())
+                            )
+                          }
+                          placeholder="React, Node.js, MongoDB"
+                        />
+                      </FormGroup>
+                    </FormGrid>
+                  </div>
+                  <div className="item-actions">
+                    <ItemButton
+                      variant="danger"
+                      onClick={() => deletePortfolioItem(item.id)}
+                    >
+                      <FaTrash />
+                      Delete
+                    </ItemButton>
+                  </div>
+                </ListItem>
+              ))}
+            </ListContainer>
+          </ContentSection>
+        );
+
+      case 'skills':
+        return (
+          <ContentSection>
+            <SectionHeader>
+              <SectionTitle>
+                <FaGripHorizontal />
+                Skills Management
+              </SectionTitle>
+              <VisibilityToggleContainer>
+                <span>
+                  {sectionVisibility['skills'] ? 'Visible' : 'Hidden'}
+                </span>
+                <ToggleSwitch>
+                  <input
+                    type="checkbox"
+                    checked={sectionVisibility['skills']}
+                    onChange={() => toggleSectionVisibility('skills')}
+                  />
+                  <span></span>
+                </ToggleSwitch>
+              </VisibilityToggleContainer>
+            </SectionHeader>
+
+            <AddButton onClick={addSkill}>
+              <FaPlus />
+              Add Skill
+            </AddButton>
+
+            <ListContainer>
+              {skillsData.map(skill => (
+                <ListItem key={skill.id}>
+                  <div className="item-info">
+                    <FormGrid>
+                      <FormGroup>
+                        <FormLabel>Skill Name</FormLabel>
+                        <FormInput
+                          value={skill.name}
+                          onChange={e =>
+                            updateSkill(skill.id, 'name', e.target.value)
+                          }
+                          placeholder="Skill name"
+                        />
+                      </FormGroup>
+                      <FormGroup>
+                        <FormLabel>Icon (Emoji)</FormLabel>
+                        <FormInput
+                          value={skill.icon}
+                          onChange={e =>
+                            updateSkill(skill.id, 'icon', e.target.value)
+                          }
+                          placeholder="🔧"
+                        />
+                      </FormGroup>
+                      <FormGroup style={{ gridColumn: '1 / -1' }}>
+                        <FormLabel>Skill Level ({skill.level}%)</FormLabel>
+                        <FormInput
+                          type="range"
+                          min="0"
+                          max="100"
+                          value={skill.level}
+                          onChange={e =>
+                            updateSkill(
+                              skill.id,
+                              'level',
+                              parseInt(e.target.value)
+                            )
+                          }
+                        />
+                      </FormGroup>
+                    </FormGrid>
+                  </div>
+                  <div className="item-actions">
+                    <ItemButton
+                      variant="danger"
+                      onClick={() => deleteSkill(skill.id)}
+                    >
+                      <FaTrash />
+                      Delete
+                    </ItemButton>
+                  </div>
+                </ListItem>
+              ))}
+            </ListContainer>
+          </ContentSection>
+        );
+
+      case 'experience':
+        return (
+          <ContentSection>
+            <SectionHeader>
+              <SectionTitle>
+                <FaAddressCard />
+                Experience Management
+              </SectionTitle>
+              <VisibilityToggleContainer>
+                <span>
+                  {sectionVisibility['experience'] ? 'Visible' : 'Hidden'}
+                </span>
+                <ToggleSwitch>
+                  <input
+                    type="checkbox"
+                    checked={sectionVisibility['experience']}
+                    onChange={() => toggleSectionVisibility('experience')}
+                  />
+                  <span></span>
+                </ToggleSwitch>
+              </VisibilityToggleContainer>
+            </SectionHeader>
+
+            <AddButton onClick={addExperience}>
+              <FaPlus />
+              Add Experience
+            </AddButton>
+
+            <ListContainer>
+              {experienceData.map(exp => (
+                <ListItem key={exp.id}>
+                  <div className="item-info">
+                    <FormGrid>
+                      <FormGroup>
+                        <FormLabel>Company</FormLabel>
+                        <FormInput
+                          value={exp.company}
+                          onChange={e =>
+                            updateExperience(exp.id, 'company', e.target.value)
+                          }
+                          placeholder="Company name"
+                        />
+                      </FormGroup>
+                      <FormGroup>
+                        <FormLabel>Role</FormLabel>
+                        <FormInput
+                          value={exp.role}
+                          onChange={e =>
+                            updateExperience(exp.id, 'role', e.target.value)
+                          }
+                          placeholder="Job title"
+                        />
+                      </FormGroup>
+                      <FormGroup>
+                        <FormLabel>Period</FormLabel>
+                        <FormInput
+                          value={exp.period}
+                          onChange={e =>
+                            updateExperience(exp.id, 'period', e.target.value)
+                          }
+                          placeholder="2020 - Present"
+                        />
+                      </FormGroup>
+                      <FormGroup style={{ gridColumn: '1 / -1' }}>
+                        <FormLabel>Description</FormLabel>
+                        <FormTextarea
+                          value={exp.description}
+                          onChange={e =>
+                            updateExperience(
+                              exp.id,
+                              'description',
+                              e.target.value
+                            )
+                          }
+                          placeholder="Job description"
+                          rows={3}
+                        />
+                      </FormGroup>
+                    </FormGrid>
+                  </div>
+                  <div className="item-actions">
+                    <ItemButton
+                      variant="danger"
+                      onClick={() => deleteExperience(exp.id)}
+                    >
+                      <FaTrash />
+                      Delete
+                    </ItemButton>
+                  </div>
+                </ListItem>
+              ))}
+            </ListContainer>
+          </ContentSection>
+        );
+
+      case 'gallery':
+        return (
+          <ContentSection>
+            <SectionHeader>
+              <SectionTitle>
+                <FaImages />
+                Gallery Management
+              </SectionTitle>
+              <VisibilityToggleContainer>
+                <span>
+                  {sectionVisibility['gallery'] ? 'Visible' : 'Hidden'}
+                </span>
+                <ToggleSwitch>
+                  <input
+                    type="checkbox"
+                    checked={sectionVisibility['gallery']}
+                    onChange={() => toggleSectionVisibility('gallery')}
+                  />
+                  <span></span>
+                </ToggleSwitch>
+              </VisibilityToggleContainer>
+            </SectionHeader>
+
+            <AddButton onClick={addGalleryCategory}>
+              <FaPlus />
+              Add Gallery Category
+            </AddButton>
+
+            <ListContainer>
+              {galleryData.map(category => (
+                <ListItem key={category.id}>
+                  <div className="item-info">
+                    <FormGrid>
+                      <FormGroup>
+                        <FormLabel>Category Name</FormLabel>
+                        <FormInput
+                          value={category.category}
+                          onChange={e =>
+                            updateGalleryCategory(
+                              category.id,
+                              'category',
+                              e.target.value
+                            )
+                          }
+                          placeholder="Category name"
+                        />
+                      </FormGroup>
+                      <FormGroup>
+                        <FormLabel>Image Count</FormLabel>
+                        <FormInput
+                          type="number"
+                          value={category.images}
+                          onChange={e =>
+                            updateGalleryCategory(
+                              category.id,
+                              'images',
+                              parseInt(e.target.value) || 0
+                            )
+                          }
+                          placeholder="Number of images"
+                        />
+                      </FormGroup>
+                      <FormGroup style={{ gridColumn: '1 / -1' }}>
+                        <FormLabel>Description</FormLabel>
+                        <FormTextarea
+                          value={category.description || ''}
+                          onChange={e =>
+                            updateGalleryCategory(
+                              category.id,
+                              'description',
+                              e.target.value
+                            )
+                          }
+                          placeholder="Category description"
+                          rows={2}
+                        />
+                      </FormGroup>
+                    </FormGrid>
+                  </div>
+                  <div className="item-actions">
+                    <ItemButton
+                      variant="danger"
+                      onClick={() => deleteGalleryCategory(category.id)}
+                    >
+                      <FaTrash />
+                      Delete
+                    </ItemButton>
+                  </div>
+                </ListItem>
+              ))}
+            </ListContainer>
+          </ContentSection>
+        );
+
+      case 'packages':
+        return (
+          <ContentSection>
+            <SectionHeader>
+              <SectionTitle>
+                <FaDollarSign />
+                Packages & Pricing
+              </SectionTitle>
+              <VisibilityToggleContainer>
+                <span>
+                  {sectionVisibility['packages'] ? 'Visible' : 'Hidden'}
+                </span>
+                <ToggleSwitch>
+                  <input
+                    type="checkbox"
+                    checked={sectionVisibility['packages']}
+                    onChange={() => toggleSectionVisibility('packages')}
+                  />
+                  <span></span>
+                </ToggleSwitch>
+              </VisibilityToggleContainer>
+            </SectionHeader>
+
+            <AddButton onClick={addPackage}>
+              <FaPlus />
+              Add Package
+            </AddButton>
+
+            <ListContainer>
+              {packagesData.map(pkg => (
+                <ListItem key={pkg.id}>
+                  <div className="item-info">
+                    <FormGrid>
+                      <FormGroup>
+                        <FormLabel>Package Name</FormLabel>
+                        <FormInput
+                          value={pkg.name}
+                          onChange={e =>
+                            updatePackage(pkg.id, 'name', e.target.value)
+                          }
+                          placeholder="Package name"
+                        />
+                      </FormGroup>
+                      <FormGroup>
+                        <FormLabel>Price</FormLabel>
+                        <FormInput
+                          value={pkg.price}
+                          onChange={e =>
+                            updatePackage(pkg.id, 'price', e.target.value)
+                          }
+                          placeholder="$99"
+                        />
+                      </FormGroup>
+                      <FormGroup>
+                        <FormLabel>Duration</FormLabel>
+                        <FormInput
+                          value={pkg.duration}
+                          onChange={e =>
+                            updatePackage(pkg.id, 'duration', e.target.value)
+                          }
+                          placeholder="2 hours"
+                        />
+                      </FormGroup>
+                      <FormGroup>
+                        <FormLabel>
+                          <input
+                            type="checkbox"
+                            checked={pkg.featured || false}
+                            onChange={e =>
+                              updatePackage(
+                                pkg.id,
+                                'featured',
+                                e.target.checked
+                              )
+                            }
+                            style={{ marginRight: '8px' }}
+                          />
+                          Featured Package
+                        </FormLabel>
+                      </FormGroup>
+                      <FormGroup style={{ gridColumn: '1 / -1' }}>
+                        <FormLabel>Description</FormLabel>
+                        <FormTextarea
+                          value={pkg.description}
+                          onChange={e =>
+                            updatePackage(pkg.id, 'description', e.target.value)
+                          }
+                          placeholder="Package description"
+                          rows={3}
+                        />
+                      </FormGroup>
+                      <FormGroup style={{ gridColumn: '1 / -1' }}>
+                        <FormLabel>Features (comma-separated)</FormLabel>
+                        <FormInput
+                          value={
+                            Array.isArray(pkg.features)
+                              ? pkg.features.join(', ')
+                              : ''
+                          }
+                          onChange={e =>
+                            updatePackage(
+                              pkg.id,
+                              'features',
+                              e.target.value.split(', ').filter(f => f.trim())
+                            )
+                          }
+                          placeholder="Feature 1, Feature 2, Feature 3"
+                        />
+                      </FormGroup>
+                    </FormGrid>
+                  </div>
+                  <div className="item-actions">
+                    <ItemButton
+                      variant="danger"
+                      onClick={() => deletePackage(pkg.id)}
+                    >
+                      <FaTrash />
+                      Delete
+                    </ItemButton>
+                  </div>
+                </ListItem>
+              ))}
+            </ListContainer>
+          </ContentSection>
+        );
+
+      case 'testimonials':
+        return (
+          <ContentSection>
+            <SectionHeader>
+              <SectionTitle>
+                <FaComments />
+                Testimonials Management
+              </SectionTitle>
+              <VisibilityToggleContainer>
+                <span>
+                  {sectionVisibility['testimonials'] ? 'Visible' : 'Hidden'}
+                </span>
+                <ToggleSwitch>
+                  <input
+                    type="checkbox"
+                    checked={sectionVisibility['testimonials']}
+                    onChange={() => toggleSectionVisibility('testimonials')}
+                  />
+                  <span></span>
+                </ToggleSwitch>
+              </VisibilityToggleContainer>
+            </SectionHeader>
+
+            <AddButton onClick={addTestimonial}>
+              <FaPlus />
+              Add Testimonial
+            </AddButton>
+
+            <ListContainer>
+              {testimonialsData.map(testimonial => (
+                <ListItem key={testimonial.id}>
+                  <div className="item-info">
+                    <FormGrid>
+                      <FormGroup>
+                        <FormLabel>Client Name</FormLabel>
+                        <FormInput
+                          value={testimonial.name}
+                          onChange={e =>
+                            updateTestimonial(
+                              testimonial.id,
+                              'name',
+                              e.target.value
+                            )
+                          }
+                          placeholder="Client name"
+                        />
+                      </FormGroup>
+                      <FormGroup>
+                        <FormLabel>Company</FormLabel>
+                        <FormInput
+                          value={testimonial.company}
+                          onChange={e =>
+                            updateTestimonial(
+                              testimonial.id,
+                              'company',
+                              e.target.value
+                            )
+                          }
+                          placeholder="Company name"
+                        />
+                      </FormGroup>
+                      <FormGroup>
+                        <FormLabel>Role</FormLabel>
+                        <FormInput
+                          value={testimonial.role}
+                          onChange={e =>
+                            updateTestimonial(
+                              testimonial.id,
+                              'role',
+                              e.target.value
+                            )
+                          }
+                          placeholder="Job title"
+                        />
+                      </FormGroup>
+                      <FormGroup>
+                        <FormLabel>Rating</FormLabel>
+                        <FormInput
+                          type="number"
+                          min="1"
+                          max="5"
+                          value={testimonial.rating}
+                          onChange={e =>
+                            updateTestimonial(
+                              testimonial.id,
+                              'rating',
+                              parseInt(e.target.value)
+                            )
+                          }
+                        />
+                      </FormGroup>
+                      <FormGroup style={{ gridColumn: '1 / -1' }}>
+                        <FormLabel>
+                          <FaFileImage />
+                          Client Photo URL
+                          <input
+                            type="file"
+                            accept="image/*"
+                            style={{ display: 'none' }}
+                            id={`testimonial-image-${testimonial.id}`}
+                            onChange={e =>
+                              handleImageUpload(e, url =>
+                                updateTestimonial(testimonial.id, 'image', url)
+                              )
+                            }
+                          />
+                          <label
+                            htmlFor={`testimonial-image-${testimonial.id}`}
+                            style={{
+                              marginLeft: '10px',
+                              cursor: 'pointer',
+                              color: '#3b82f6',
+                            }}
+                          >
+                            <FaUpload /> Upload
+                          </label>
+                        </FormLabel>
+                        <FormInput
+                          value={testimonial.image || ''}
+                          onChange={e =>
+                            updateTestimonial(
+                              testimonial.id,
+                              'image',
+                              e.target.value
+                            )
+                          }
+                          placeholder="Enter image URL or upload"
+                        />
+                      </FormGroup>
+                      <FormGroup style={{ gridColumn: '1 / -1' }}>
+                        <FormLabel>Review</FormLabel>
+                        <FormTextarea
+                          value={testimonial.review}
+                          onChange={e =>
+                            updateTestimonial(
+                              testimonial.id,
+                              'review',
+                              e.target.value
+                            )
+                          }
+                          placeholder="Client testimonial"
+                          rows={4}
+                        />
+                      </FormGroup>
+                    </FormGrid>
+                  </div>
+                  <div className="item-actions">
+                    <ItemButton
+                      variant="danger"
+                      onClick={() => deleteTestimonial(testimonial.id)}
+                    >
+                      <FaTrash />
+                      Delete
+                    </ItemButton>
+                  </div>
+                </ListItem>
+              ))}
+            </ListContainer>
+          </ContentSection>
+        );
+
+      case 'reviews':
+        return (
+          <ContentSection>
+            <SectionHeader>
+              <SectionTitle>
+                <FaStar />
+                Reviews Management
+              </SectionTitle>
+              <VisibilityToggleContainer>
+                <span>
+                  {sectionVisibility['reviews'] ? 'Visible' : 'Hidden'}
+                </span>
+                <ToggleSwitch>
+                  <input
+                    type="checkbox"
+                    checked={sectionVisibility['reviews']}
+                    onChange={() => toggleSectionVisibility('reviews')}
+                  />
+                  <span></span>
+                </ToggleSwitch>
+              </VisibilityToggleContainer>
+            </SectionHeader>
+
+            <AddButton onClick={addReview}>
+              <FaPlus />
+              Add Review
+            </AddButton>
+
+            <ListContainer>
+              {reviewsData.map(review => (
+                <ListItem key={review.id}>
+                  <div className="item-info">
+                    <FormGrid>
+                      <FormGroup>
+                        <FormLabel>Reviewer Name</FormLabel>
+                        <FormInput
+                          value={review.name}
+                          onChange={e =>
+                            updateReview(review.id, 'name', e.target.value)
+                          }
+                          placeholder="Reviewer name"
+                        />
+                      </FormGroup>
+                      <FormGroup>
+                        <FormLabel>Date</FormLabel>
+                        <FormInput
+                          type="date"
+                          value={review.date}
+                          onChange={e =>
+                            updateReview(review.id, 'date', e.target.value)
+                          }
+                        />
+                      </FormGroup>
+                      <FormGroup>
+                        <FormLabel>Rating</FormLabel>
+                        <FormInput
+                          type="number"
+                          min="1"
+                          max="5"
+                          value={review.rating}
+                          onChange={e =>
+                            updateReview(
+                              review.id,
+                              'rating',
+                              parseInt(e.target.value)
+                            )
+                          }
+                        />
+                      </FormGroup>
+                      <FormGroup style={{ gridColumn: '1 / -1' }}>
+                        <FormLabel>
+                          <FaFileImage />
+                          Avatar URL
+                          <input
+                            type="file"
+                            accept="image/*"
+                            style={{ display: 'none' }}
+                            id={`review-avatar-${review.id}`}
+                            onChange={e =>
+                              handleImageUpload(e, url =>
+                                updateReview(review.id, 'avatar', url)
+                              )
+                            }
+                          />
+                          <label
+                            htmlFor={`review-avatar-${review.id}`}
+                            style={{
+                              marginLeft: '10px',
+                              cursor: 'pointer',
+                              color: '#3b82f6',
+                            }}
+                          >
+                            <FaUpload /> Upload
+                          </label>
+                        </FormLabel>
+                        <FormInput
+                          value={review.avatar || ''}
+                          onChange={e =>
+                            updateReview(review.id, 'avatar', e.target.value)
+                          }
+                          placeholder="Enter avatar URL or upload"
+                        />
+                      </FormGroup>
+                      <FormGroup style={{ gridColumn: '1 / -1' }}>
+                        <FormLabel>Review Text</FormLabel>
+                        <FormTextarea
+                          value={review.review}
+                          onChange={e =>
+                            updateReview(review.id, 'review', e.target.value)
+                          }
+                          placeholder="Review content"
+                          rows={3}
+                        />
+                      </FormGroup>
+                    </FormGrid>
+                  </div>
+                  <div className="item-actions">
+                    <ItemButton
+                      variant="danger"
+                      onClick={() => deleteReview(review.id)}
+                    >
+                      <FaTrash />
+                      Delete
+                    </ItemButton>
+                  </div>
+                </ListItem>
+              ))}
+            </ListContainer>
+          </ContentSection>
+        );
+
+      case 'faq':
+        return (
+          <ContentSection>
+            <SectionHeader>
+              <SectionTitle>
+                <FaQuestionCircle />
+                FAQ Management
+              </SectionTitle>
+              <VisibilityToggleContainer>
+                <span>{sectionVisibility['faq'] ? 'Visible' : 'Hidden'}</span>
+                <ToggleSwitch>
+                  <input
+                    type="checkbox"
+                    checked={sectionVisibility['faq']}
+                    onChange={() => toggleSectionVisibility('faq')}
+                  />
+                  <span></span>
+                </ToggleSwitch>
+              </VisibilityToggleContainer>
+            </SectionHeader>
+
+            <AddButton onClick={addFAQ}>
+              <FaPlus />
+              Add FAQ
+            </AddButton>
+
+            <ListContainer>
+              {faqData.map(faq => (
+                <ListItem key={faq.id}>
+                  <div className="item-info">
+                    <FormGrid>
+                      <FormGroup style={{ gridColumn: '1 / -1' }}>
+                        <FormLabel>Question</FormLabel>
+                        <FormInput
+                          value={faq.question}
+                          onChange={e =>
+                            updateFAQ(faq.id, 'question', e.target.value)
+                          }
+                          placeholder="Frequently asked question"
+                        />
+                      </FormGroup>
+                      <FormGroup style={{ gridColumn: '1 / -1' }}>
+                        <FormLabel>Answer</FormLabel>
+                        <FormTextarea
+                          value={faq.answer}
+                          onChange={e =>
+                            updateFAQ(faq.id, 'answer', e.target.value)
+                          }
+                          placeholder="Answer to the question"
+                          rows={4}
+                        />
+                      </FormGroup>
+                    </FormGrid>
+                  </div>
+                  <div className="item-actions">
+                    <ItemButton
+                      variant="danger"
+                      onClick={() => deleteFAQ(faq.id)}
+                    >
+                      <FaTrash />
+                      Delete
+                    </ItemButton>
+                  </div>
+                </ListItem>
+              ))}
+            </ListContainer>
+          </ContentSection>
+        );
+
+      case 'business-hours':
+        return (
+          <ContentSection>
+            <SectionHeader>
+              <SectionTitle>
+                <FaClock />
+                Business Hours
+              </SectionTitle>
+              <VisibilityToggleContainer>
+                <span>
+                  {sectionVisibility['business-hours'] ? 'Visible' : 'Hidden'}
+                </span>
+                <ToggleSwitch>
+                  <input
+                    type="checkbox"
+                    checked={sectionVisibility['business-hours']}
+                    onChange={() => toggleSectionVisibility('business-hours')}
+                  />
+                  <span></span>
+                </ToggleSwitch>
+              </VisibilityToggleContainer>
+            </SectionHeader>
+            <FormGrid>
+              <FormGroup style={{ gridColumn: '1 / -1' }}>
+                <FormLabel>Section Title</FormLabel>
+                <FormInput
+                  value={businessHoursData.title}
+                  onChange={e => {
+                    setBusinessHoursData(prev => ({
+                      ...prev,
+                      title: e.target.value,
+                    }));
+                    trackSectionChange('business-hours');
+                  }}
+                  placeholder="Business Hours"
+                />
+              </FormGroup>
+              {Object.entries(businessHoursData.hours).map(([day, time]) => (
+                <FormGroup key={day}>
+                  <FormLabel>
+                    {day.charAt(0).toUpperCase() + day.slice(1)}
+                  </FormLabel>
+                  <FormInput
+                    value={time}
+                    onChange={e => {
+                      setBusinessHoursData(prev => ({
+                        ...prev,
+                        hours: { ...prev.hours, [day]: e.target.value },
+                      }));
+                      trackSectionChange('business-hours');
+                    }}
+                    placeholder="9:00 AM - 6:00 PM"
+                  />
+                </FormGroup>
+              ))}
+            </FormGrid>
+          </ContentSection>
+        );
+
+      case 'contact':
+        return (
+          <ContentSection>
+            <SectionHeader>
+              <SectionTitle>
+                <FaPhone />
+                Contact Information
+              </SectionTitle>
+              <VisibilityToggleContainer>
+                <span>
+                  {sectionVisibility['contact'] ? 'Visible' : 'Hidden'}
+                </span>
+                <ToggleSwitch>
+                  <input
+                    type="checkbox"
+                    checked={sectionVisibility['contact']}
+                    onChange={() => toggleSectionVisibility('contact')}
+                  />
+                  <span></span>
+                </ToggleSwitch>
+              </VisibilityToggleContainer>
+            </SectionHeader>
+            <FormGrid>
+              <FormGroup style={{ gridColumn: '1 / -1' }}>
+                <FormLabel>Section Title</FormLabel>
+                <FormInput
+                  value={contactData.title}
+                  onChange={e => {
+                    setContactData(prev => ({
+                      ...prev,
+                      title: e.target.value,
+                    }));
+                    trackSectionChange('contact');
+                  }}
+                  placeholder="Get In Touch"
+                />
+              </FormGroup>
+              <FormGroup style={{ gridColumn: '1 / -1' }}>
+                <FormLabel>Description</FormLabel>
+                <FormTextarea
+                  value={contactData.description}
+                  onChange={e => {
+                    setContactData(prev => ({
+                      ...prev,
+                      description: e.target.value,
+                    }));
+                    trackSectionChange('contact');
+                  }}
+                  placeholder="Contact section description"
+                  rows={3}
+                />
+              </FormGroup>
+              <FormGroup>
+                <FormLabel>Email</FormLabel>
+                <FormInput
+                  type="email"
+                  value={contactData.email}
+                  onChange={e => {
+                    setContactData(prev => ({
+                      ...prev,
+                      email: e.target.value,
+                    }));
+                    trackSectionChange('contact');
+                  }}
+                  placeholder="hello@business.com"
+                />
+              </FormGroup>
+              <FormGroup>
+                <FormLabel>Phone</FormLabel>
+                <FormInput
+                  type="tel"
+                  value={contactData.phone}
+                  onChange={e => {
+                    setContactData(prev => ({
+                      ...prev,
+                      phone: e.target.value,
+                    }));
+                    trackSectionChange('contact');
+                  }}
+                  placeholder="+1 (555) 123-4567"
+                />
+              </FormGroup>
+              <FormGroup style={{ gridColumn: '1 / -1' }}>
+                <FormLabel>Address</FormLabel>
+                <FormTextarea
+                  value={contactData.address}
+                  onChange={e => {
+                    setContactData(prev => ({
+                      ...prev,
+                      address: e.target.value,
+                    }));
+                    trackSectionChange('contact');
+                  }}
+                  placeholder="123 Business Street, City, State 12345"
+                  rows={3}
+                />
+              </FormGroup>
+              <FormGroup style={{ gridColumn: '1 / -1' }}>
+                <FormLabel>Social Media</FormLabel>
+                <FormGrid>
+                  <FormGroup>
+                    <FormLabel>Facebook</FormLabel>
+                    <FormInput
+                      value={contactData.socialMedia?.facebook || ''}
+                      onChange={e => {
+                        setContactData(prev => ({
+                          ...prev,
+                          socialMedia: {
+                            ...prev.socialMedia,
+                            facebook: e.target.value,
+                          },
+                        }));
+                        trackSectionChange('contact');
+                      }}
+                      placeholder="Facebook URL"
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <FormLabel>Instagram</FormLabel>
+                    <FormInput
+                      value={contactData.socialMedia?.instagram || ''}
+                      onChange={e => {
+                        setContactData(prev => ({
+                          ...prev,
+                          socialMedia: {
+                            ...prev.socialMedia,
+                            instagram: e.target.value,
+                          },
+                        }));
+                        trackSectionChange('contact');
+                      }}
+                      placeholder="Instagram URL"
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <FormLabel>Twitter</FormLabel>
+                    <FormInput
+                      value={contactData.socialMedia?.twitter || ''}
+                      onChange={e => {
+                        setContactData(prev => ({
+                          ...prev,
+                          socialMedia: {
+                            ...prev.socialMedia,
+                            twitter: e.target.value,
+                          },
+                        }));
+                        trackSectionChange('contact');
+                      }}
+                      placeholder="Twitter URL"
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <FormLabel>LinkedIn</FormLabel>
+                    <FormInput
+                      value={contactData.socialMedia?.linkedin || ''}
+                      onChange={e => {
+                        setContactData(prev => ({
+                          ...prev,
+                          socialMedia: {
+                            ...prev.socialMedia,
+                            linkedin: e.target.value,
+                          },
+                        }));
+                        trackSectionChange('contact');
+                      }}
+                      placeholder="LinkedIn URL"
+                    />
+                  </FormGroup>
+                </FormGrid>
+              </FormGroup>
+            </FormGrid>
+          </ContentSection>
+        );
+
+      case 'custom-sections':
+        return (
+          <ContentSection>
+            <SectionHeader>
+              <SectionTitle>
+                <FaPlus />
+                Custom Sections
+              </SectionTitle>
+            </SectionHeader>
+
+            <div
+              style={{
+                display: 'flex',
+                gap: '10px',
+                marginBottom: '20px',
+                flexWrap: 'wrap',
+              }}
+            >
+              <AddButton onClick={() => addCustomSection('text')}>
+                <FaTextHeight />
+                Add Text Section
+              </AddButton>
+              <AddButton
+                onClick={() => addCustomSection('list')}
+                style={{ background: '#10b981' }}
+              >
+                <FaList />
+                Add List Section
+              </AddButton>
+              <AddButton
+                onClick={() => addCustomSection('card')}
+                style={{ background: '#8b5cf6' }}
+              >
+                <FaServicestack />
+                Add Card Section
+              </AddButton>
+              <AddButton
+                onClick={() => addCustomSection('image')}
+                style={{ background: '#f59e0b' }}
+              >
+                <FaImages />
+                Add Image Section
+              </AddButton>
+            </div>
+
+            <ListContainer>
+              {customSectionsData.map(section => (
+                <ListItem
+                  key={section.id}
+                  style={{
+                    border: `2px solid ${section.visible ? '#10b981' : '#6b7280'}`,
+                  }}
+                >
+                  <div className="item-info">
+                    <FormGrid>
+                      <FormGroup>
+                        <FormLabel>Section Title</FormLabel>
+                        <FormInput
+                          value={section.title}
+                          onChange={e =>
+                            updateCustomSection(
+                              section.id,
+                              'title',
+                              e.target.value
+                            )
+                          }
+                          placeholder="Section title"
+                        />
+                      </FormGroup>
+                      <FormGroup>
+                        <FormLabel>Section Type</FormLabel>
+                        <select
+                          value={section.type}
+                          onChange={e =>
+                            updateCustomSection(
+                              section.id,
+                              'type',
+                              e.target.value
+                            )
+                          }
+                          style={{
+                            padding: '10px',
+                            border: '2px solid #e2e8f0',
+                            borderRadius: '6px',
+                            fontSize: '1rem',
+                            width: '100%',
+                          }}
+                        >
+                          <option value="text">📝 Text Content</option>
+                          <option value="list">📋 List Items</option>
+                          <option value="card">🎴 Card Layout</option>
+                          <option value="image">🖼️ Image Gallery</option>
+                        </select>
+                      </FormGroup>
+                      <FormGroup>
+                        <FormLabel>
+                          <input
+                            type="checkbox"
+                            checked={section.visible || false}
+                            onChange={e =>
+                              updateCustomSection(
+                                section.id,
+                                'visible',
+                                e.target.checked
+                              )
+                            }
+                            style={{ marginRight: '8px' }}
+                          />
+                          <span
+                            style={{
+                              color: section.visible ? '#10b981' : '#6b7280',
+                            }}
+                          >
+                            {section.visible ? '👁️ Visible' : '🚫 Hidden'}
+                          </span>
+                        </FormLabel>
+                      </FormGroup>
+
+                      {/* Smart editing interface based on section type */}
+                      {section.type === 'text' && (
+                        <>
+                          <FormGroup style={{ gridColumn: '1 / -1' }}>
+                            <FormLabel>Heading</FormLabel>
+                            <FormInput
+                              value={section.content.heading || ''}
+                              onChange={e =>
+                                updateCustomSection(section.id, 'content', {
+                                  ...section.content,
+                                  heading: e.target.value,
+                                })
+                              }
+                              placeholder="Section heading"
+                            />
+                          </FormGroup>
+                          <FormGroup style={{ gridColumn: '1 / -1' }}>
+                            <FormLabel>Description</FormLabel>
+                            <FormTextarea
+                              value={section.content.description || ''}
+                              onChange={e =>
+                                updateCustomSection(section.id, 'content', {
+                                  ...section.content,
+                                  description: e.target.value,
+                                })
+                              }
+                              placeholder="Your content here..."
+                              rows={4}
+                            />
+                          </FormGroup>
+                        </>
+                      )}
+
+                      {section.type === 'list' && (
+                        <>
+                          <FormGroup style={{ gridColumn: '1 / -1' }}>
+                            <FormLabel>List Heading</FormLabel>
+                            <FormInput
+                              value={section.content.heading || ''}
+                              onChange={e =>
+                                updateCustomSection(section.id, 'content', {
+                                  ...section.content,
+                                  heading: e.target.value,
+                                })
+                              }
+                              placeholder="List heading"
+                            />
+                          </FormGroup>
+                          <FormGroup style={{ gridColumn: '1 / -1' }}>
+                            <FormLabel>List Items (one per line)</FormLabel>
+                            <FormTextarea
+                              value={(section.content.items || []).join('\n')}
+                              onChange={e =>
+                                updateCustomSection(section.id, 'content', {
+                                  ...section.content,
+                                  items: e.target.value
+                                    .split('\n')
+                                    .filter(item => item.trim()),
+                                })
+                              }
+                              placeholder="Item 1&#10;Item 2&#10;Item 3"
+                              rows={5}
+                            />
+                          </FormGroup>
+                        </>
+                      )}
+
+                      {section.type === 'card' && (
+                        <>
+                          <FormGroup style={{ gridColumn: '1 / -1' }}>
+                            <FormLabel>Card Section Heading</FormLabel>
+                            <FormInput
+                              value={section.content.heading || ''}
+                              onChange={e =>
+                                updateCustomSection(section.id, 'content', {
+                                  ...section.content,
+                                  heading: e.target.value,
+                                })
+                              }
+                              placeholder="Card section heading"
+                            />
+                          </FormGroup>
+                          <FormGroup style={{ gridColumn: '1 / -1' }}>
+                            <FormLabel>Cards (JSON format)</FormLabel>
+                            <FormTextarea
+                              value={JSON.stringify(
+                                section.content.cards || [],
+                                null,
+                                2
+                              )}
+                              onChange={e => {
+                                try {
+                                  const cards = JSON.parse(e.target.value);
+                                  updateCustomSection(section.id, 'content', {
+                                    ...section.content,
+                                    cards,
+                                  });
+                                } catch (error) {
+                                  // Invalid JSON, ignore
+                                }
+                              }}
+                              placeholder='[{"title": "Card Title", "description": "Card description", "icon": "🎯"}]'
+                              rows={6}
+                            />
+                          </FormGroup>
+                        </>
+                      )}
+
+                      {section.type === 'image' && (
+                        <>
+                          <FormGroup style={{ gridColumn: '1 / -1' }}>
+                            <FormLabel>Gallery Heading</FormLabel>
+                            <FormInput
+                              value={section.content.heading || ''}
+                              onChange={e =>
+                                updateCustomSection(section.id, 'content', {
+                                  ...section.content,
+                                  heading: e.target.value,
+                                })
+                              }
+                              placeholder="Gallery heading"
+                            />
+                          </FormGroup>
+                          <FormGroup>
+                            <FormLabel>Columns</FormLabel>
+                            <FormInput
+                              type="number"
+                              min="1"
+                              max="6"
+                              value={section.content.columns || 3}
+                              onChange={e =>
+                                updateCustomSection(section.id, 'content', {
+                                  ...section.content,
+                                  columns: parseInt(e.target.value),
+                                })
+                              }
+                            />
+                          </FormGroup>
+                          <FormGroup style={{ gridColumn: '1 / -1' }}>
+                            <FormLabel>Image URLs (one per line)</FormLabel>
+                            <FormTextarea
+                              value={(section.content.images || []).join('\n')}
+                              onChange={e =>
+                                updateCustomSection(section.id, 'content', {
+                                  ...section.content,
+                                  images: e.target.value
+                                    .split('\n')
+                                    .filter(url => url.trim()),
+                                })
+                              }
+                              placeholder="https://example.com/image1.jpg&#10;https://example.com/image2.jpg"
+                              rows={4}
+                            />
+                          </FormGroup>
+                        </>
+                      )}
+
+                      <FormGroup
+                        style={{
+                          gridColumn: '1 / -1',
+                          marginTop: '20px',
+                          padding: '10px',
+                          background: '#f8f9fa',
+                          borderRadius: '6px',
+                        }}
+                      >
+                        <FormLabel>Advanced: Raw JSON Content</FormLabel>
+                        <FormTextarea
+                          value={JSON.stringify(section.content, null, 2)}
+                          onChange={e => {
+                            try {
+                              const content = JSON.parse(e.target.value);
+                              updateCustomSection(
+                                section.id,
+                                'content',
+                                content
+                              );
+                            } catch (error) {
+                              // Invalid JSON, but still update to show user's input
+                              updateCustomSection(section.id, 'content', {
+                                raw: e.target.value,
+                              });
+                            }
+                          }}
+                          placeholder='{"title": "Custom Content", "description": "Your content here"}'
+                          rows={4}
+                          style={{
+                            fontSize: '0.85rem',
+                            fontFamily: 'monospace',
+                          }}
+                        />
+                      </FormGroup>
+                    </FormGrid>
+                  </div>
+                  <div className="item-actions">
+                    <ItemButton
+                      onClick={() => {
+                        const newOrder =
+                          customSectionsData.indexOf(section) - 1;
+                        if (newOrder >= 0) {
+                          const newData = [...customSectionsData];
+                          const [removed] = newData.splice(
+                            customSectionsData.indexOf(section),
+                            1
+                          );
+                          newData.splice(newOrder, 0, removed);
+                          setCustomSectionsData(newData);
+                          trackSectionChange('custom');
+                        }
+                      }}
+                      disabled={customSectionsData.indexOf(section) === 0}
+                    >
+                      ↑ Up
+                    </ItemButton>
+                    <ItemButton
+                      onClick={() => {
+                        const newOrder =
+                          customSectionsData.indexOf(section) + 1;
+                        if (newOrder < customSectionsData.length) {
+                          const newData = [...customSectionsData];
+                          const [removed] = newData.splice(
+                            customSectionsData.indexOf(section),
+                            1
+                          );
+                          newData.splice(newOrder, 0, removed);
+                          setCustomSectionsData(newData);
+                          trackSectionChange('custom');
+                        }
+                      }}
+                      disabled={
+                        customSectionsData.indexOf(section) ===
+                        customSectionsData.length - 1
+                      }
+                    >
+                      ↓ Down
+                    </ItemButton>
+                    <ItemButton
+                      variant="danger"
+                      onClick={() => deleteCustomSection(section.id)}
+                    >
+                      <FaTrash />
+                      Delete
+                    </ItemButton>
+                  </div>
+                </ListItem>
+              ))}
+              {customSectionsData.length === 0 && (
+                <div
+                  style={{
+                    textAlign: 'center',
+                    padding: '40px',
+                    color: '#6b7280',
+                    border: '2px dashed #d1d5db',
+                    borderRadius: '8px',
+                  }}
+                >
+                  <FaPlus
+                    style={{
+                      fontSize: '3rem',
+                      marginBottom: '16px',
+                      opacity: 0.5,
+                    }}
+                  />
+                  <h3>No Custom Sections Yet</h3>
+                  <p>
+                    Click one of the buttons above to add your first custom
+                    section!
+                  </p>
+                </div>
+              )}
+            </ListContainer>
+          </ContentSection>
+        );
+
+      case 'section-order':
+        return (
+          <ContentSection>
+            <SectionHeader>
+              <SectionTitle>
+                <FaList />
+                Section Order Management
+              </SectionTitle>
+            </SectionHeader>
+
+            <div
+              style={{
+                background: '#eff6ff',
+                border: '1px solid #dbeafe',
+                padding: '16px',
+                borderRadius: '8px',
+                marginBottom: '24px',
+              }}
+            >
+              <h4
+                style={{
+                  margin: '0 0 8px 0',
+                  color: '#1e40af',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                }}
+              >
+                <FaChartBar />
+                Section Management
+              </h4>
+              <p style={{ margin: '0', color: '#1e40af', fontSize: '0.9rem' }}>
+                Reorder sections to customize your website layout. Use the arrow
+                buttons to move sections up or down. Disabled sections will
+                appear grayed out but can still be reordered.
+              </p>
+            </div>
+
+            <div
+              style={{
+                display: 'flex',
+                gap: '12px',
+                marginBottom: '20px',
+                flexWrap: 'wrap',
+              }}
+            >
+              <button
+                onClick={() => {
+                  const defaultOrder = [
+                    'hero',
+                    'about-us',
+                    'services-offered',
+                    'portfolio',
+                    'skills',
+                    'experience',
+                    'team',
+                    'gallery',
+                    'packages',
+                    'testimonials',
+                    'reviews',
+                    'faq',
+                    'business-hours',
+                    'contact',
+                  ];
+                  setSectionOrderData(defaultOrder);
+                  trackSectionChange('order');
+                }}
+                style={{
+                  padding: '8px 16px',
+                  background: '#3b82f6',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '6px',
+                  cursor: 'pointer',
+                  fontSize: '0.9rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                }}
+              >
+                <FaUndo />
+                Reset to Default
+              </button>
+              <button
+                onClick={() => {
+                  const shuffled = [...sectionOrderData].sort(
+                    () => Math.random() - 0.5
+                  );
+                  setSectionOrderData(shuffled);
+                  trackSectionChange('order');
+                }}
+                style={{
+                  padding: '8px 16px',
+                  background: '#8b5cf6',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '6px',
+                  cursor: 'pointer',
+                  fontSize: '0.9rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                }}
+              >
+                <FaRandom />
+                Shuffle
+              </button>
+            </div>
+
+            <ListContainer>
+              {sectionOrderData.map((sectionId, index) => {
+                const isVisible = sectionVisibility[sectionId];
+                const sectionIcon =
+                  {
+                    hero: '🏠',
+                    'about-us': '👥',
+                    'services-offered': '⚙️',
+                    portfolio: '💼',
+                    skills: '🎯',
+                    experience: '📄',
+                    team: '👨‍👩‍👧‍👦',
+                    gallery: '📸',
+                    packages: '💰',
+                    testimonials: '💬',
+                    reviews: '⭐',
+                    faq: '❓',
+                    'business-hours': '🕐',
+                    contact: '📞',
+                  }[sectionId] || '📋';
+
+                return (
+                  <ListItem
+                    key={sectionId}
+                    style={{
+                      cursor: 'move',
+                      opacity: isVisible ? 1 : 0.6,
+                      border: `2px solid ${isVisible ? '#10b981' : '#6b7280'}`,
+                      background: isVisible ? '#ffffff' : '#f9fafb',
+                    }}
+                  >
+                    <div
+                      className="item-info"
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '12px',
+                        flex: 1,
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          width: '32px',
+                          height: '32px',
+                          background: '#f3f4f6',
+                          borderRadius: '6px',
+                          fontSize: '1.2rem',
+                        }}
+                      >
+                        {index + 1}
+                      </div>
+                      <span style={{ fontSize: '1.5rem' }}>{sectionIcon}</span>
+                      <div style={{ flex: 1 }}>
+                        <div
+                          style={{
+                            fontWeight: '600',
+                            textTransform: 'capitalize',
+                            color: isVisible ? '#111827' : '#6b7280',
+                          }}
+                        >
+                          {sectionId.replace(/-/g, ' ')}
+                        </div>
+                        <div
+                          style={{
+                            fontSize: '0.8rem',
+                            color: isVisible ? '#10b981' : '#6b7280',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '4px',
+                          }}
+                        >
+                          {isVisible ? (
+                            <>
+                              <FaEye />
+                              Visible
+                            </>
+                          ) : (
+                            <>
+                              <FaEyeSlash />
+                              Hidden
+                            </>
+                          )}
+                        </div>
+                      </div>
+                      <FaGripHorizontal
+                        style={{ color: '#9ca3af', fontSize: '1.2rem' }}
+                      />
+                    </div>
+                    <div className="item-actions">
+                      <ItemButton
+                        onClick={() => {
+                          if (index > 0) {
+                            reorderSections(index, index - 1);
+                          }
+                        }}
+                        disabled={index === 0}
+                        title="Move up"
+                      >
+                        <FaChevronUp />
+                      </ItemButton>
+                      <ItemButton
+                        onClick={() => {
+                          if (index < sectionOrderData.length - 1) {
+                            reorderSections(index, index + 1);
+                          }
+                        }}
+                        disabled={index === sectionOrderData.length - 1}
+                        title="Move down"
+                      >
+                        <FaChevronDown />
+                      </ItemButton>
+                      <ItemButton
+                        onClick={() => toggleSectionVisibility(sectionId)}
+                        style={{
+                          background: isVisible ? '#ef4444' : '#10b981',
+                          color: 'white',
+                        }}
+                        title={isVisible ? 'Hide section' : 'Show section'}
+                      >
+                        {isVisible ? <FaEyeSlash /> : <FaEye />}
+                      </ItemButton>
+                    </div>
+                  </ListItem>
+                );
+              })}
+            </ListContainer>
+
+            {/* Preview order */}
+            <div
+              style={{
+                marginTop: '24px',
+                padding: '16px',
+                background: '#f8fafc',
+                border: '1px solid #e2e8f0',
+                borderRadius: '8px',
+              }}
+            >
+              <h4 style={{ margin: '0 0 12px 0', color: '#374151' }}>
+                Section Preview Order
+              </h4>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                {sectionOrderData.map((sectionId, index) => (
+                  <span
+                    key={sectionId}
+                    style={{
+                      padding: '4px 8px',
+                      background: sectionVisibility[sectionId]
+                        ? '#3b82f6'
+                        : '#6b7280',
+                      color: 'white',
+                      borderRadius: '4px',
+                      fontSize: '0.8rem',
+                      opacity: sectionVisibility[sectionId] ? 1 : 0.6,
+                    }}
+                  >
+                    {index + 1}. {sectionId.replace(/-/g, ' ')}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </ContentSection>
+        );
+
+      default:
+        return (
+          <ContentSection>
+            <SectionTitle>
+              <FaEdit />
+              {activeSection.charAt(0).toUpperCase() +
+                activeSection.slice(1).replace(/-/g, ' ')}{' '}
+              Management
+            </SectionTitle>
+            <p>
+              This section is under development. Please select another section
+              to edit.
+            </p>
+            <p>
+              Available sections: Hero, About Us, Services, Team, Portfolio,
+              Skills, Experience, Gallery, Packages, Testimonials, Reviews, FAQ,
+              Business Hours, Contact
+            </p>
+          </ContentSection>
+        );
+    }
+  };
+
+  if (loading) {
     return (
       <DashboardContainer>
         <div style={{ padding: '4rem', textAlign: 'center' }}>
-          <h2>Business Not Found</h2>
-          <p>The business you're trying to edit doesn't exist.</p>
+          <h2>Loading Dashboard...</h2>
+          <p>Please wait while we load your business dashboard.</p>
         </div>
       </DashboardContainer>
     );
   }
 
-  const handleBackToWebsite = () => {
-    navigate(`/${actualSlug}`);
-  };
-
-  const handlePreview = () => {
-    window.open(`/${actualSlug}`, '_blank');
-  };
-
-  // Modal and form handlers
-  const openModal = (type, item = null) => {
-    setModalType(type);
-    setEditingItem(item);
-    setFormData(item || {});
-    setShowModal(true);
-  };
-
-  const closeModal = () => {
-    setShowModal(false);
-    setModalType('');
-    setEditingItem(null);
-    setFormData({});
-  };
-
-  const handleInputChange = (field, value) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: value,
-    }));
-  };
-
-  const handleSave = () => {
-    if (!modalType) return;
-
-    if (modalType.includes('hero') || modalType.includes('about')) {
-      setCurrentData(prev => ({
-        ...prev,
-        [modalType]: formData,
-      }));
-    } else {
-      const section = modalType.split('-')[0];
-      if (editingItem) {
-        // Edit existing item
-        setCurrentData(prev => ({
-          ...prev,
-          [section]: prev[section].map(item =>
-            item.id === editingItem.id ? { ...item, ...formData } : item
-          ),
-        }));
-      } else {
-        // Add new item
-        const newItem = {
-          ...formData,
-          id: Date.now(), // Simple ID generation
-        };
-        setCurrentData(prev => ({
-          ...prev,
-          [section]: [...prev[section], newItem],
-        }));
-      }
-    }
-    closeModal();
-  };
-
-  const handleDelete = (section, id) => {
-    setCurrentData(prev => ({
-      ...prev,
-      [section]: prev[section].filter(item => item.id !== id),
-    }));
-  };
-
-  // Image upload handlers
-  const handleImageUpload = (file, field) => {
-    if (file && file.type.startsWith('image/')) {
-      const reader = new FileReader();
-      reader.onload = e => {
-        handleInputChange(field, e.target.result);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const handleImageUrl = (url, field) => {
-    if (url.trim()) {
-      handleInputChange(field, url.trim());
-    }
-  };
-
-  const removeImage = field => {
-    handleInputChange(field, '');
-  };
-
-  // Visibility toggle handler
-  const toggleSectionVisibility = section => {
-    setCurrentData(prev => ({
-      ...prev,
-      sectionVisibility: {
-        ...prev.sectionVisibility,
-        [section]: !prev.sectionVisibility[section],
-      },
-    }));
-  };
-
-  const menuItems =
-    businessData?.slug === 'freelancer'
-      ? [
-          { id: 'content', label: 'Content Editor', icon: FaEdit },
-          { id: 'portfolio', label: 'Portfolio Manager', icon: FaImage },
-          { id: 'skills', label: 'Skills & Experience', icon: FaUsers },
-          { id: 'design', label: 'Design & Theme', icon: FaPalette },
-          { id: 'analytics', label: 'Analytics', icon: FaChartBar },
-          { id: 'settings', label: 'Settings', icon: FaCog },
-        ]
-      : [
-          { id: 'content', label: 'Content Editor', icon: FaEdit },
-          { id: 'design', label: 'Design & Theme', icon: FaPalette },
-          { id: 'images', label: 'Media Library', icon: FaImage },
-          { id: 'analytics', label: 'Analytics', icon: FaChartBar },
-          { id: 'settings', label: 'Settings', icon: FaCog },
-        ];
-
-  // Reusable Image Upload Component
-  const ImageUpload = ({ field, label, currentImage, primaryColor }) => {
-    const [tempUrl, setTempUrl] = useState('');
-
+  if (!business) {
     return (
-      <ImageUploadContainer>
-        <FormField primaryColor={primaryColor}>
-          <label>{label}</label>
-
-          {currentImage ? (
-            <ImagePreview>
-              <img src={currentImage} alt="Preview" />
-              <div className="image-overlay">
-                <div className="image-actions">
-                  <button
-                    className="image-action-btn"
-                    onClick={() => removeImage(field)}
-                    title="Remove Image"
-                  >
-                    <FaTrash />
-                  </button>
-                </div>
-              </div>
-            </ImagePreview>
-          ) : (
-            <ImageUploadArea
-              hasImage={false}
-              primaryColor={primaryColor}
-              onClick={() => document.getElementById(`file-${field}`).click()}
-            >
-              <FaUpload className="upload-icon" />
-              <div className="upload-text">Click to upload image</div>
-              <div className="upload-hint">
-                Supports JPG, PNG, GIF up to 10MB
-              </div>
-              <input
-                id={`file-${field}`}
-                type="file"
-                accept="image/*"
-                onChange={e => {
-                  const file = e.target.files[0];
-                  if (file) {
-                    handleImageUpload(file, field);
-                  }
-                }}
-              />
-            </ImageUploadArea>
-          )}
-
-          <div style={{ marginTop: theme.spacing.md }}>
-            <label
-              style={{ fontSize: '0.8rem', marginBottom: theme.spacing.xs }}
-            >
-              Or enter image URL:
-            </label>
-            <ImageUrlInput primaryColor={primaryColor}>
-              <div className="url-input">
-                <input
-                  type="url"
-                  value={tempUrl}
-                  onChange={e => setTempUrl(e.target.value)}
-                  placeholder="https://example.com/image.jpg"
-                />
-              </div>
-              <button
-                className="url-button"
-                onClick={() => {
-                  if (tempUrl) {
-                    handleImageUrl(tempUrl, field);
-                    setTempUrl('');
-                  }
-                }}
-              >
-                Add URL
-              </button>
-            </ImageUrlInput>
-          </div>
-        </FormField>
-      </ImageUploadContainer>
+      <DashboardContainer>
+        <div style={{ padding: '4rem', textAlign: 'center' }}>
+          <h2>Business Not Found</h2>
+          <p>The business you're trying to edit doesn't exist.</p>
+          <ActionButton onClick={() => navigate('/business-websites')}>
+            <FaArrowLeft />
+            Back to Business Templates
+          </ActionButton>
+        </div>
+      </DashboardContainer>
     );
-  };
-
-  // Render modal for editing
-  const renderModal = () => {
-    if (!showModal) return null;
-
-    const renderForm = () => {
-      switch (modalType) {
-        case 'hero':
-          return (
-            <>
-              <FormField primaryColor={businessData.primaryColor}>
-                <label>Title</label>
-                <input
-                  type="text"
-                  value={formData.title || ''}
-                  onChange={e => handleInputChange('title', e.target.value)}
-                  placeholder="Enter hero title"
-                />
-              </FormField>
-              <ImageUpload
-                field="backgroundImage"
-                label="Background Image"
-                currentImage={formData.backgroundImage}
-                primaryColor={businessData.primaryColor}
-              />
-              <FormField primaryColor={businessData.primaryColor}>
-                <label>Subtitle</label>
-                <textarea
-                  value={formData.subtitle || ''}
-                  onChange={e => handleInputChange('subtitle', e.target.value)}
-                  placeholder="Enter hero subtitle"
-                />
-              </FormField>
-            </>
-          );
-
-        case 'about':
-          return (
-            <>
-              <FormField primaryColor={businessData.primaryColor}>
-                <label>Section Title</label>
-                <input
-                  type="text"
-                  value={formData.title || ''}
-                  onChange={e => handleInputChange('title', e.target.value)}
-                  placeholder="Enter section title"
-                />
-              </FormField>
-              <ImageUpload
-                field="profileImage"
-                label={
-                  businessData.slug === 'freelancer'
-                    ? 'Profile Photo'
-                    : 'Business Image'
-                }
-                currentImage={formData.profileImage}
-                primaryColor={businessData.primaryColor}
-              />
-              <FormField primaryColor={businessData.primaryColor}>
-                <label>Description</label>
-                <textarea
-                  value={formData.description || ''}
-                  onChange={e =>
-                    handleInputChange('description', e.target.value)
-                  }
-                  placeholder="Enter about description"
-                />
-              </FormField>
-            </>
-          );
-
-        case 'services':
-          return (
-            <>
-              <FormField primaryColor={businessData.primaryColor}>
-                <label>Icon (Emoji)</label>
-                <input
-                  type="text"
-                  value={formData.icon || ''}
-                  onChange={e => handleInputChange('icon', e.target.value)}
-                  placeholder="🎨"
-                />
-                <div className="help-text">
-                  Choose an emoji to represent this service
-                </div>
-              </FormField>
-              <FormField primaryColor={businessData.primaryColor}>
-                <label>Service Title</label>
-                <input
-                  type="text"
-                  value={formData.title || ''}
-                  onChange={e => handleInputChange('title', e.target.value)}
-                  placeholder="Web Design"
-                />
-              </FormField>
-              <FormField primaryColor={businessData.primaryColor}>
-                <label>Description</label>
-                <textarea
-                  value={formData.description || ''}
-                  onChange={e =>
-                    handleInputChange('description', e.target.value)
-                  }
-                  placeholder="Describe your service"
-                />
-              </FormField>
-              <FormField primaryColor={businessData.primaryColor}>
-                <label>Price</label>
-                <input
-                  type="text"
-                  value={formData.price || ''}
-                  onChange={e => handleInputChange('price', e.target.value)}
-                  placeholder="From $1,200"
-                />
-              </FormField>
-            </>
-          );
-
-        case 'portfolio':
-          return (
-            <>
-              <FormField primaryColor={businessData.primaryColor}>
-                <label>Project Title</label>
-                <input
-                  type="text"
-                  value={formData.title || ''}
-                  onChange={e => handleInputChange('title', e.target.value)}
-                  placeholder="E-commerce Platform"
-                />
-              </FormField>
-              <FormField primaryColor={businessData.primaryColor}>
-                <label>Category</label>
-                <select
-                  value={formData.category || ''}
-                  onChange={e => handleInputChange('category', e.target.value)}
-                >
-                  <option value="">Select Category</option>
-                  <option value="Web Development">Web Development</option>
-                  <option value="UI/UX Design">UI/UX Design</option>
-                  <option value="Branding">Branding</option>
-                  <option value="Mobile App">Mobile App</option>
-                  <option value="Graphic Design">Graphic Design</option>
-                </select>
-              </FormField>
-              <ImageUpload
-                field="image"
-                label="Project Image"
-                currentImage={formData.image}
-                primaryColor={businessData.primaryColor}
-              />
-              <FormField primaryColor={businessData.primaryColor}>
-                <label>Description</label>
-                <textarea
-                  value={formData.description || ''}
-                  onChange={e =>
-                    handleInputChange('description', e.target.value)
-                  }
-                  placeholder="Describe the project"
-                />
-              </FormField>
-              <FormField primaryColor={businessData.primaryColor}>
-                <label>Technologies</label>
-                <TagInput primaryColor={businessData.primaryColor}>
-                  <div className="tags-container">
-                    {(formData.technologies || []).map((tech, index) => (
-                      <div key={index} className="tag">
-                        {tech}
-                        <span
-                          className="remove"
-                          onClick={() => {
-                            const newTechs = formData.technologies.filter(
-                              (_, i) => i !== index
-                            );
-                            handleInputChange('technologies', newTechs);
-                          }}
-                        >
-                          ×
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                  <input
-                    type="text"
-                    className="tag-input"
-                    placeholder="Add technology (press Enter)"
-                    onKeyPress={e => {
-                      if (e.key === 'Enter' && e.target.value.trim()) {
-                        const newTechs = [
-                          ...(formData.technologies || []),
-                          e.target.value.trim(),
-                        ];
-                        handleInputChange('technologies', newTechs);
-                        e.target.value = '';
-                      }
-                    }}
-                  />
-                </TagInput>
-              </FormField>
-            </>
-          );
-
-        case 'skills':
-          return (
-            <>
-              <FormField primaryColor={businessData.primaryColor}>
-                <label>Icon (Emoji)</label>
-                <input
-                  type="text"
-                  value={formData.icon || ''}
-                  onChange={e => handleInputChange('icon', e.target.value)}
-                  placeholder="🎨"
-                />
-              </FormField>
-              <FormField primaryColor={businessData.primaryColor}>
-                <label>Skill Name</label>
-                <input
-                  type="text"
-                  value={formData.name || ''}
-                  onChange={e => handleInputChange('name', e.target.value)}
-                  placeholder="Web Design"
-                />
-              </FormField>
-              <FormField primaryColor={businessData.primaryColor}>
-                <label>Proficiency Level: {formData.level || 50}%</label>
-                <RangeSlider
-                  type="range"
-                  min="0"
-                  max="100"
-                  value={formData.level || 50}
-                  onChange={e =>
-                    handleInputChange('level', parseInt(e.target.value))
-                  }
-                  primaryColor={businessData.primaryColor}
-                />
-              </FormField>
-            </>
-          );
-
-        case 'experience':
-          return (
-            <>
-              <FormField primaryColor={businessData.primaryColor}>
-                <label>Company</label>
-                <input
-                  type="text"
-                  value={formData.company || ''}
-                  onChange={e => handleInputChange('company', e.target.value)}
-                  placeholder="Digital Agency Inc."
-                />
-              </FormField>
-              <FormField primaryColor={businessData.primaryColor}>
-                <label>Role</label>
-                <input
-                  type="text"
-                  value={formData.role || ''}
-                  onChange={e => handleInputChange('role', e.target.value)}
-                  placeholder="Senior Creative Designer"
-                />
-              </FormField>
-              <FormField primaryColor={businessData.primaryColor}>
-                <label>Period</label>
-                <input
-                  type="text"
-                  value={formData.period || ''}
-                  onChange={e => handleInputChange('period', e.target.value)}
-                  placeholder="2020 - Present"
-                />
-              </FormField>
-              <FormField primaryColor={businessData.primaryColor}>
-                <label>Description</label>
-                <textarea
-                  value={formData.description || ''}
-                  onChange={e =>
-                    handleInputChange('description', e.target.value)
-                  }
-                  placeholder="Describe your role and achievements"
-                />
-              </FormField>
-            </>
-          );
-
-        case 'team':
-          return (
-            <>
-              <FormField primaryColor={businessData.primaryColor}>
-                <label>Name</label>
-                <input
-                  type="text"
-                  value={formData.name || ''}
-                  onChange={e => handleInputChange('name', e.target.value)}
-                  placeholder="Sarah Johnson"
-                />
-              </FormField>
-              <ImageUpload
-                field="photo"
-                label="Team Member Photo"
-                currentImage={formData.photo}
-                primaryColor={businessData.primaryColor}
-              />
-              <FormField primaryColor={businessData.primaryColor}>
-                <label>Role</label>
-                <input
-                  type="text"
-                  value={formData.role || ''}
-                  onChange={e => handleInputChange('role', e.target.value)}
-                  placeholder="Senior Stylist"
-                />
-              </FormField>
-              <FormField primaryColor={businessData.primaryColor}>
-                <label>Bio</label>
-                <textarea
-                  value={formData.bio || ''}
-                  onChange={e => handleInputChange('bio', e.target.value)}
-                  placeholder="Brief bio about the team member"
-                />
-              </FormField>
-              <FormField primaryColor={businessData.primaryColor}>
-                <label>Specialties</label>
-                <TagInput primaryColor={businessData.primaryColor}>
-                  <div className="tags-container">
-                    {(formData.specialties || []).map((specialty, index) => (
-                      <div key={index} className="tag">
-                        {specialty}
-                        <span
-                          className="remove"
-                          onClick={() => {
-                            const newSpecialties = formData.specialties.filter(
-                              (_, i) => i !== index
-                            );
-                            handleInputChange('specialties', newSpecialties);
-                          }}
-                        >
-                          ×
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                  <input
-                    type="text"
-                    className="tag-input"
-                    placeholder="Add specialty (press Enter)"
-                    onKeyPress={e => {
-                      if (e.key === 'Enter' && e.target.value.trim()) {
-                        const newSpecialties = [
-                          ...(formData.specialties || []),
-                          e.target.value.trim(),
-                        ];
-                        handleInputChange('specialties', newSpecialties);
-                        e.target.value = '';
-                      }
-                    }}
-                  />
-                </TagInput>
-              </FormField>
-            </>
-          );
-
-        case 'gallery':
-          return (
-            <>
-              <FormField primaryColor={businessData.primaryColor}>
-                <label>Category Name</label>
-                <input
-                  type="text"
-                  value={formData.category || ''}
-                  onChange={e => handleInputChange('category', e.target.value)}
-                  placeholder="Hair Styling"
-                />
-              </FormField>
-              <ImageUpload
-                field="coverImage"
-                label="Cover Image"
-                currentImage={formData.coverImage}
-                primaryColor={businessData.primaryColor}
-              />
-              <FormField primaryColor={businessData.primaryColor}>
-                <label>Number of Images</label>
-                <input
-                  type="number"
-                  value={formData.images || ''}
-                  onChange={e =>
-                    handleInputChange('images', parseInt(e.target.value))
-                  }
-                  placeholder="8"
-                  min="1"
-                />
-                <div className="help-text">
-                  How many photos are in this category
-                </div>
-              </FormField>
-            </>
-          );
-
-        case 'contact':
-          return (
-            <>
-              <FormField primaryColor={businessData.primaryColor}>
-                <label>Section Title</label>
-                <input
-                  type="text"
-                  value={formData.title || ''}
-                  onChange={e => handleInputChange('title', e.target.value)}
-                  placeholder="Get In Touch"
-                />
-              </FormField>
-              <FormField primaryColor={businessData.primaryColor}>
-                <label>Description</label>
-                <textarea
-                  value={formData.description || ''}
-                  onChange={e =>
-                    handleInputChange('description', e.target.value)
-                  }
-                  placeholder="Ready to start your next project?"
-                />
-              </FormField>
-              <FormField primaryColor={businessData.primaryColor}>
-                <label>Email</label>
-                <input
-                  type="email"
-                  value={formData.email || ''}
-                  onChange={e => handleInputChange('email', e.target.value)}
-                  placeholder="hello@business.com"
-                />
-              </FormField>
-              <FormField primaryColor={businessData.primaryColor}>
-                <label>Phone</label>
-                <input
-                  type="tel"
-                  value={formData.phone || ''}
-                  onChange={e => handleInputChange('phone', e.target.value)}
-                  placeholder="+1 (555) 123-4567"
-                />
-              </FormField>
-              <FormField primaryColor={businessData.primaryColor}>
-                <label>Address</label>
-                <textarea
-                  value={formData.address || ''}
-                  onChange={e => handleInputChange('address', e.target.value)}
-                  placeholder="123 Business Street, City, State 12345"
-                  style={{ minHeight: '80px' }}
-                />
-              </FormField>
-              <FormField primaryColor={businessData.primaryColor}>
-                <label>Business Hours</label>
-                <div style={{ display: 'grid', gap: theme.spacing.sm }}>
-                  {[
-                    'monday',
-                    'tuesday',
-                    'wednesday',
-                    'thursday',
-                    'friday',
-                    'saturday',
-                    'sunday',
-                  ].map(day => (
-                    <div
-                      key={day}
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: theme.spacing.md,
-                      }}
-                    >
-                      <label
-                        style={{
-                          minWidth: '100px',
-                          textTransform: 'capitalize',
-                          fontSize: '0.9rem',
-                        }}
-                      >
-                        {day}:
-                      </label>
-                      <input
-                        type="text"
-                        value={formData.hours?.[day] || ''}
-                        onChange={e =>
-                          handleInputChange('hours', {
-                            ...formData.hours,
-                            [day]: e.target.value,
-                          })
-                        }
-                        placeholder={
-                          day === 'sunday' ? 'Closed' : '9:00 AM - 6:00 PM'
-                        }
-                        style={{ flex: 1 }}
-                      />
-                    </div>
-                  ))}
-                </div>
-              </FormField>
-            </>
-          );
-
-        default:
-          return <div>Form not implemented for {modalType}</div>;
-      }
-    };
-
-    return (
-      <ModalOverlay onClick={closeModal}>
-        <ModalContent onClick={e => e.stopPropagation()}>
-          <ModalHeader>
-            <h3>
-              {editingItem ? 'Edit' : 'Add'}{' '}
-              {modalType.charAt(0).toUpperCase() + modalType.slice(1)}
-            </h3>
-            <CloseButton onClick={closeModal}>
-              <FaTimes />
-            </CloseButton>
-          </ModalHeader>
-
-          {renderForm()}
-
-          <ModalActions>
-            <ActionButton onClick={closeModal}>Cancel</ActionButton>
-            {editingItem && (
-              <ActionButton
-                variant="danger"
-                onClick={() => {
-                  const section = modalType.split('-')[0];
-                  handleDelete(section, editingItem.id);
-                  closeModal();
-                }}
-              >
-                <FaTrash />
-                Delete
-              </ActionButton>
-            )}
-            <ActionButton
-              variant="primary"
-              primaryColor={businessData.primaryColor}
-              onClick={handleSave}
-            >
-              <FaCheck />
-              Save
-            </ActionButton>
-          </ModalActions>
-        </ModalContent>
-      </ModalOverlay>
-    );
-  };
-
-  const renderContent = () => {
-    switch (activeSection) {
-      case 'content':
-        return (
-          <div>
-            <ContentHeader>
-              <h2>Content Editor</h2>
-              <Button
-                variant="primary"
-                primaryColor={businessData.primaryColor}
-                onClick={() => setIsEditing(!isEditing)}
-              >
-                <FaEdit />
-                {isEditing ? 'Save Changes' : 'Edit Content'}
-              </Button>
-            </ContentHeader>
-
-            <SectionList>
-              <SectionItem>
-                <div className="section-info">
-                  <h4>Hero Section</h4>
-                  <p>Main headline, subtitle, and call-to-action buttons</p>
-                  <div
-                    style={{
-                      fontSize: '0.8rem',
-                      color: theme.colors.gray500,
-                      marginTop: '4px',
-                    }}
-                  >
-                    Current: "{currentData.hero?.title}"
-                  </div>
-                  <VisibilityToggle
-                    primaryColor={businessData.primaryColor}
-                    isVisible={currentData.sectionVisibility?.hero}
-                    style={{ marginTop: theme.spacing.sm }}
-                  >
-                    <div
-                      className="toggle-switch"
-                      onClick={() => toggleSectionVisibility('hero')}
-                    />
-                    <span className="toggle-label">
-                      {currentData.sectionVisibility?.hero
-                        ? 'Visible'
-                        : 'Hidden'}
-                    </span>
-                  </VisibilityToggle>
-                </div>
-                <div className="section-actions">
-                  <Button onClick={() => openModal('hero', currentData.hero)}>
-                    <FaEdit />
-                    Edit
-                  </Button>
-                </div>
-              </SectionItem>
-
-              <SectionItem>
-                <div className="section-info">
-                  <h4>About Section</h4>
-                  <p>
-                    {businessData.slug === 'freelancer'
-                      ? 'Personal story, background, and professional journey'
-                      : 'Business story, values, and statistics'}
-                  </p>
-                  <div
-                    style={{
-                      fontSize: '0.8rem',
-                      color: theme.colors.gray500,
-                      marginTop: '4px',
-                    }}
-                  >
-                    Current: "{currentData.about?.title}"
-                  </div>
-                  <VisibilityToggle
-                    primaryColor={businessData.primaryColor}
-                    isVisible={currentData.sectionVisibility?.about}
-                    style={{ marginTop: theme.spacing.sm }}
-                  >
-                    <div
-                      className="toggle-switch"
-                      onClick={() => toggleSectionVisibility('about')}
-                    />
-                    <span className="toggle-label">
-                      {currentData.sectionVisibility?.about
-                        ? 'Visible'
-                        : 'Hidden'}
-                    </span>
-                  </VisibilityToggle>
-                </div>
-                <div className="section-actions">
-                  <Button onClick={() => openModal('about', currentData.about)}>
-                    <FaEdit />
-                    Edit
-                  </Button>
-                </div>
-              </SectionItem>
-
-              <SectionItem>
-                <div className="section-info">
-                  <h4>Services Section</h4>
-                  <p>
-                    {businessData.slug === 'freelancer'
-                      ? 'Professional services offered to clients'
-                      : 'List of services, pricing, and descriptions'}
-                  </p>
-                  <div
-                    style={{
-                      fontSize: '0.8rem',
-                      color: theme.colors.gray500,
-                      marginTop: '4px',
-                    }}
-                  >
-                    {currentData.services?.length || 0} services configured
-                  </div>
-                  <VisibilityToggle
-                    primaryColor={businessData.primaryColor}
-                    isVisible={currentData.sectionVisibility?.services}
-                    style={{ marginTop: theme.spacing.sm }}
-                  >
-                    <div
-                      className="toggle-switch"
-                      onClick={() => toggleSectionVisibility('services')}
-                    />
-                    <span className="toggle-label">
-                      {currentData.sectionVisibility?.services
-                        ? 'Visible'
-                        : 'Hidden'}
-                    </span>
-                  </VisibilityToggle>
-                </div>
-                <div className="section-actions">
-                  <Button onClick={() => openModal('services')}>
-                    <FaPlus />
-                    Add Service
-                  </Button>
-                </div>
-              </SectionItem>
-
-              <SectionItem>
-                <div className="section-info">
-                  <h4>Team Section</h4>
-                  <p>Staff profiles, photos, and bios</p>
-                  <div
-                    style={{
-                      fontSize: '0.8rem',
-                      color: theme.colors.gray500,
-                      marginTop: '4px',
-                    }}
-                  >
-                    {currentData.team?.length || 0} team members
-                  </div>
-                  <VisibilityToggle
-                    primaryColor={businessData.primaryColor}
-                    isVisible={currentData.sectionVisibility?.team}
-                    style={{ marginTop: theme.spacing.sm }}
-                  >
-                    <div
-                      className="toggle-switch"
-                      onClick={() => toggleSectionVisibility('team')}
-                    />
-                    <span className="toggle-label">
-                      {currentData.sectionVisibility?.team
-                        ? 'Visible'
-                        : 'Hidden'}
-                    </span>
-                  </VisibilityToggle>
-                </div>
-                <div className="section-actions">
-                  <Button onClick={() => openModal('team')}>
-                    <FaPlus />
-                    Add Member
-                  </Button>
-                </div>
-              </SectionItem>
-
-              <SectionItem>
-                <div className="section-info">
-                  <h4>Contact Section</h4>
-                  <p>Contact form, address, and business hours</p>
-                  <div
-                    style={{
-                      fontSize: '0.8rem',
-                      color: theme.colors.gray500,
-                      marginTop: '4px',
-                    }}
-                  >
-                    Current: "{currentData.contact?.title}"
-                  </div>
-                  <VisibilityToggle
-                    primaryColor={businessData.primaryColor}
-                    isVisible={currentData.sectionVisibility?.contact}
-                    style={{ marginTop: theme.spacing.sm }}
-                  >
-                    <div
-                      className="toggle-switch"
-                      onClick={() => toggleSectionVisibility('contact')}
-                    />
-                    <span className="toggle-label">
-                      {currentData.sectionVisibility?.contact
-                        ? 'Visible'
-                        : 'Hidden'}
-                    </span>
-                  </VisibilityToggle>
-                </div>
-                <div className="section-actions">
-                  <Button
-                    onClick={() => openModal('contact', currentData.contact)}
-                  >
-                    <FaEdit />
-                    Edit
-                  </Button>
-                </div>
-              </SectionItem>
-
-              {businessData.slug !== 'freelancer' && (
-                <SectionItem>
-                  <div className="section-info">
-                    <h4>Gallery Section</h4>
-                    <p>Photo galleries organized by categories</p>
-                    <div
-                      style={{
-                        fontSize: '0.8rem',
-                        color: theme.colors.gray500,
-                        marginTop: '4px',
-                      }}
-                    >
-                      {currentData.gallery?.length || 0} galleries configured
-                    </div>
-                    <VisibilityToggle
-                      primaryColor={businessData.primaryColor}
-                      isVisible={currentData.sectionVisibility?.gallery}
-                      style={{ marginTop: theme.spacing.sm }}
-                    >
-                      <div
-                        className="toggle-switch"
-                        onClick={() => toggleSectionVisibility('gallery')}
-                      />
-                      <span className="toggle-label">
-                        {currentData.sectionVisibility?.gallery
-                          ? 'Visible'
-                          : 'Hidden'}
-                      </span>
-                    </VisibilityToggle>
-                  </div>
-                  <div className="section-actions">
-                    <Button onClick={() => openModal('gallery')}>
-                      <FaPlus />
-                      Add Gallery
-                    </Button>
-                  </div>
-                </SectionItem>
-              )}
-            </SectionList>
-
-            {/* Services List */}
-            <div style={{ marginTop: theme.spacing.xl }}>
-              <h3
-                style={{
-                  marginBottom: theme.spacing.lg,
-                  color: theme.colors.gray900,
-                }}
-              >
-                Current Services
-              </h3>
-              <SectionList>
-                {(currentData.services || []).map((service, index) => (
-                  <SectionItem key={service.id}>
-                    <div className="section-info">
-                      <h4>
-                        {service.icon} {service.title}
-                      </h4>
-                      <p>{service.description}</p>
-                      {service.price && (
-                        <div
-                          style={{
-                            fontSize: '0.8rem',
-                            color: businessData.primaryColor,
-                            fontWeight: 600,
-                            marginTop: '4px',
-                          }}
-                        >
-                          {service.price}
-                        </div>
-                      )}
-                    </div>
-                    <div className="section-actions">
-                      <Button onClick={() => openModal('services', service)}>
-                        <FaEdit />
-                        Edit
-                      </Button>
-                      <Button
-                        onClick={() => handleDelete('services', service.id)}
-                      >
-                        <FaTrash />
-                        Delete
-                      </Button>
-                    </div>
-                  </SectionItem>
-                ))}
-              </SectionList>
-            </div>
-
-            {/* Team Members List */}
-            <div style={{ marginTop: theme.spacing.xl }}>
-              <h3
-                style={{
-                  marginBottom: theme.spacing.lg,
-                  color: theme.colors.gray900,
-                }}
-              >
-                Team Members
-              </h3>
-              <SectionList>
-                {(currentData.team || []).map((member, index) => (
-                  <SectionItem key={member.id}>
-                    <div className="section-info">
-                      <div
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: theme.spacing.md,
-                        }}
-                      >
-                        {member.photo && (
-                          <div
-                            style={{
-                              width: '50px',
-                              height: '50px',
-                              borderRadius: '50%',
-                              backgroundImage: `url(${member.photo})`,
-                              backgroundSize: 'cover',
-                              backgroundPosition: 'center',
-                            }}
-                          />
-                        )}
-                        <div>
-                          <h4>{member.name}</h4>
-                          <p>{member.role}</p>
-                          {member.specialties && (
-                            <div
-                              style={{
-                                fontSize: '0.8rem',
-                                color: theme.colors.gray500,
-                                marginTop: '4px',
-                              }}
-                            >
-                              {member.specialties.join(', ')}
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="section-actions">
-                      <Button onClick={() => openModal('team', member)}>
-                        <FaEdit />
-                        Edit
-                      </Button>
-                      <Button onClick={() => handleDelete('team', member.id)}>
-                        <FaTrash />
-                        Delete
-                      </Button>
-                    </div>
-                  </SectionItem>
-                ))}
-              </SectionList>
-            </div>
-
-            {/* Gallery List for Non-Freelancers */}
-            {businessData.slug !== 'freelancer' && (
-              <div style={{ marginTop: theme.spacing.xl }}>
-                <h3
-                  style={{
-                    marginBottom: theme.spacing.lg,
-                    color: theme.colors.gray900,
-                  }}
-                >
-                  Gallery Categories
-                </h3>
-                <SectionList>
-                  {(currentData.gallery || []).map((gallery, index) => (
-                    <SectionItem key={gallery.id}>
-                      <div className="section-info">
-                        <h4>{gallery.category}</h4>
-                        <p>{gallery.images} images</p>
-                        {gallery.coverImage && (
-                          <div
-                            style={{
-                              marginTop: theme.spacing.sm,
-                              width: '60px',
-                              height: '40px',
-                              borderRadius: theme.borderRadius.sm,
-                              backgroundImage: `url(${gallery.coverImage})`,
-                              backgroundSize: 'cover',
-                              backgroundPosition: 'center',
-                            }}
-                          />
-                        )}
-                      </div>
-                      <div className="section-actions">
-                        <Button onClick={() => openModal('gallery', gallery)}>
-                          <FaEdit />
-                          Edit
-                        </Button>
-                        <Button
-                          onClick={() => handleDelete('gallery', gallery.id)}
-                        >
-                          <FaTrash />
-                          Delete
-                        </Button>
-                      </div>
-                    </SectionItem>
-                  ))}
-                </SectionList>
-              </div>
-            )}
-          </div>
-        );
-
-      case 'portfolio':
-        return businessData.slug === 'freelancer' ? (
-          <div>
-            <ContentHeader>
-              <h2>Portfolio Manager</h2>
-              <Button
-                variant="primary"
-                primaryColor={businessData.primaryColor}
-                onClick={() => openModal('portfolio')}
-              >
-                <FaPlus />
-                Add New Project
-              </Button>
-            </ContentHeader>
-
-            <div style={{ marginBottom: theme.spacing.xl }}>
-              <h3
-                style={{
-                  marginBottom: theme.spacing.lg,
-                  color: theme.colors.gray900,
-                }}
-              >
-                Portfolio Projects
-              </h3>
-
-              {(currentData.portfolio || []).map((project, index) => (
-                <div
-                  key={project.id}
-                  style={{
-                    background: theme.colors.white,
-                    border: `1px solid ${theme.colors.gray200}`,
-                    borderRadius: theme.borderRadius.lg,
-                    padding: theme.spacing.lg,
-                    marginBottom: theme.spacing.md,
-                  }}
-                >
-                  <div
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                      marginBottom: theme.spacing.md,
-                    }}
-                  >
-                    <h4
-                      style={{ fontWeight: 600, color: theme.colors.gray900 }}
-                    >
-                      {project.title}
-                    </h4>
-                    <div style={{ display: 'flex', gap: theme.spacing.sm }}>
-                      <Button onClick={() => openModal('portfolio', project)}>
-                        <FaEdit />
-                        Edit
-                      </Button>
-                      <Button
-                        onClick={() => handleDelete('portfolio', project.id)}
-                      >
-                        <FaTrash />
-                        Delete
-                      </Button>
-                    </div>
-                  </div>
-                  <div
-                    style={{
-                      display: 'grid',
-                      gridTemplateColumns:
-                        'repeat(auto-fit, minmax(200px, 1fr))',
-                      gap: theme.spacing.md,
-                    }}
-                  >
-                    <div>
-                      <label
-                        style={{
-                          display: 'block',
-                          fontSize: '0.8rem',
-                          fontWeight: 600,
-                          color: theme.colors.gray700,
-                          marginBottom: theme.spacing.xs,
-                          textTransform: 'uppercase',
-                        }}
-                      >
-                        Category
-                      </label>
-                      <div
-                        style={{ color: theme.colors.gray900, fontWeight: 500 }}
-                      >
-                        {project.category}
-                      </div>
-                    </div>
-                    <div>
-                      <label
-                        style={{
-                          display: 'block',
-                          fontSize: '0.8rem',
-                          fontWeight: 600,
-                          color: theme.colors.gray700,
-                          marginBottom: theme.spacing.xs,
-                          textTransform: 'uppercase',
-                        }}
-                      >
-                        Technologies
-                      </label>
-                      <div
-                        style={{ color: theme.colors.gray900, fontWeight: 500 }}
-                      >
-                        {project.technologies?.join(', ')}
-                      </div>
-                    </div>
-                    <div>
-                      <label
-                        style={{
-                          display: 'block',
-                          fontSize: '0.8rem',
-                          fontWeight: 600,
-                          color: theme.colors.gray700,
-                          marginBottom: theme.spacing.xs,
-                          textTransform: 'uppercase',
-                        }}
-                      >
-                        Description
-                      </label>
-                      <div
-                        style={{
-                          color: theme.colors.gray600,
-                          fontSize: '0.9rem',
-                        }}
-                      >
-                        {project.description}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        ) : null;
-
-      case 'skills':
-        return businessData.slug === 'freelancer' ? (
-          <div>
-            <ContentHeader>
-              <h2>Skills & Experience</h2>
-              <Button
-                variant="primary"
-                primaryColor={businessData.primaryColor}
-                onClick={() => openModal('skills')}
-              >
-                <FaPlus />
-                Add New Skill
-              </Button>
-            </ContentHeader>
-
-            <div style={{ marginBottom: theme.spacing.xl }}>
-              <h3
-                style={{
-                  marginBottom: theme.spacing.lg,
-                  color: theme.colors.gray900,
-                }}
-              >
-                Technical Skills
-              </h3>
-
-              {(currentData.skills || []).map((skill, index) => (
-                <div
-                  key={skill.id}
-                  style={{
-                    background: theme.colors.white,
-                    border: `1px solid ${theme.colors.gray200}`,
-                    borderRadius: theme.borderRadius.lg,
-                    padding: theme.spacing.lg,
-                    marginBottom: theme.spacing.md,
-                  }}
-                >
-                  <div
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                      marginBottom: theme.spacing.md,
-                    }}
-                  >
-                    <div
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: theme.spacing.md,
-                      }}
-                    >
-                      <div style={{ fontSize: '1.5rem' }}>{skill.icon}</div>
-                      <h4
-                        style={{
-                          fontWeight: 600,
-                          color: theme.colors.gray900,
-                          margin: 0,
-                        }}
-                      >
-                        {skill.name}
-                      </h4>
-                    </div>
-                    <div style={{ display: 'flex', gap: theme.spacing.sm }}>
-                      <Button onClick={() => openModal('skills', skill)}>
-                        <FaEdit />
-                        Edit
-                      </Button>
-                      <Button onClick={() => handleDelete('skills', skill.id)}>
-                        <FaTrash />
-                        Delete
-                      </Button>
-                    </div>
-                  </div>
-                  <div
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: theme.spacing.md,
-                    }}
-                  >
-                    <div
-                      style={{
-                        flex: 1,
-                        height: '8px',
-                        background: theme.colors.gray200,
-                        borderRadius: '4px',
-                        overflow: 'hidden',
-                        position: 'relative',
-                      }}
-                    >
-                      <div
-                        style={{
-                          height: '100%',
-                          background: businessData.primaryColor,
-                          width: `${skill.level}%`,
-                          transition: 'width 0.3s ease',
-                        }}
-                      ></div>
-                    </div>
-                    <div
-                      style={{
-                        fontWeight: 600,
-                        color: businessData.primaryColor,
-                        minWidth: '40px',
-                      }}
-                    >
-                      {skill.level}%
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div>
-              <h3
-                style={{
-                  marginBottom: theme.spacing.lg,
-                  color: theme.colors.gray900,
-                }}
-              >
-                Professional Experience
-              </h3>
-
-              <SectionList>
-                {(currentData.experience || []).map((exp, index) => (
-                  <SectionItem key={exp.id}>
-                    <div className="section-info">
-                      <h4>{exp.role}</h4>
-                      <p>
-                        {exp.company} • {exp.period}
-                      </p>
-                      {exp.description && (
-                        <div
-                          style={{
-                            fontSize: '0.8rem',
-                            color: theme.colors.gray500,
-                            marginTop: '4px',
-                          }}
-                        >
-                          {exp.description.substring(0, 100)}...
-                        </div>
-                      )}
-                    </div>
-                    <div className="section-actions">
-                      <Button onClick={() => openModal('experience', exp)}>
-                        <FaEdit />
-                        Edit
-                      </Button>
-                      <Button
-                        onClick={() => handleDelete('experience', exp.id)}
-                      >
-                        <FaTrash />
-                        Delete
-                      </Button>
-                    </div>
-                  </SectionItem>
-                ))}
-              </SectionList>
-
-              <Button
-                variant="primary"
-                primaryColor={businessData.primaryColor}
-                style={{ marginTop: theme.spacing.lg }}
-                onClick={() => openModal('experience')}
-              >
-                <FaPlus />
-                Add Experience
-              </Button>
-            </div>
-          </div>
-        ) : null;
-
-      case 'design':
-        return (
-          <div>
-            <ContentHeader>
-              <h2>Design & Theme</h2>
-            </ContentHeader>
-            <EditableField primaryColor={businessData.primaryColor}>
-              <label>Primary Color</label>
-              <input type="color" defaultValue={businessData.primaryColor} />
-            </EditableField>
-            <EditableField primaryColor={businessData.primaryColor}>
-              <label>Business Name</label>
-              <input type="text" defaultValue={businessData.name} />
-            </EditableField>
-            <EditableField primaryColor={businessData.primaryColor}>
-              <label>Logo Upload</label>
-              <ImageUpload primaryColor={businessData.primaryColor}>
-                <FaImage className="icon" />
-                <p>Click to upload logo or drag and drop</p>
-              </ImageUpload>
-            </EditableField>
-          </div>
-        );
-
-      case 'images':
-        return businessData.slug !== 'freelancer' ? (
-          <div>
-            <ContentHeader>
-              <h2>Media Library</h2>
-              <Button
-                variant="primary"
-                primaryColor={businessData.primaryColor}
-                onClick={() => openModal('gallery')}
-              >
-                <FaPlus />
-                Add Gallery Category
-              </Button>
-            </ContentHeader>
-
-            <div style={{ marginBottom: theme.spacing.xl }}>
-              <h3
-                style={{
-                  marginBottom: theme.spacing.lg,
-                  color: theme.colors.gray900,
-                }}
-              >
-                Gallery Categories
-              </h3>
-
-              {(currentData.gallery || []).length === 0 ? (
-                <div
-                  style={{
-                    background: theme.colors.gray50,
-                    border: `2px dashed ${theme.colors.gray300}`,
-                    borderRadius: theme.borderRadius.lg,
-                    padding: theme.spacing.xl,
-                    textAlign: 'center',
-                  }}
-                >
-                  <FaImage
-                    style={{
-                      fontSize: '3rem',
-                      color: theme.colors.gray400,
-                      marginBottom: theme.spacing.md,
-                    }}
-                  />
-                  <h4
-                    style={{
-                      color: theme.colors.gray600,
-                      marginBottom: theme.spacing.sm,
-                    }}
-                  >
-                    No gallery categories yet
-                  </h4>
-                  <p
-                    style={{
-                      color: theme.colors.gray500,
-                      marginBottom: theme.spacing.lg,
-                    }}
-                  >
-                    Create your first gallery category to organize your photos
-                  </p>
-                  <Button
-                    variant="primary"
-                    primaryColor={businessData.primaryColor}
-                    onClick={() => openModal('gallery')}
-                  >
-                    <FaPlus />
-                    Create First Gallery
-                  </Button>
-                </div>
-              ) : (
-                <div
-                  style={{
-                    display: 'grid',
-                    gridTemplateColumns:
-                      'repeat(auto-fill, minmax(300px, 1fr))',
-                    gap: theme.spacing.lg,
-                  }}
-                >
-                  {(currentData.gallery || []).map((gallery, index) => (
-                    <div
-                      key={gallery.id}
-                      style={{
-                        background: theme.colors.white,
-                        border: `1px solid ${theme.colors.gray200}`,
-                        borderRadius: theme.borderRadius.lg,
-                        overflow: 'hidden',
-                        transition: 'transform 0.2s ease, box-shadow 0.2s ease',
-                        cursor: 'pointer',
-                      }}
-                    >
-                      {/* Gallery Cover Image */}
-                      <div
-                        style={{
-                          height: '200px',
-                          backgroundImage: gallery.coverImage
-                            ? `url(${gallery.coverImage})`
-                            : 'none',
-                          backgroundColor: gallery.coverImage
-                            ? 'transparent'
-                            : theme.colors.gray100,
-                          backgroundSize: 'cover',
-                          backgroundPosition: 'center',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          position: 'relative',
-                        }}
-                      >
-                        {!gallery.coverImage && (
-                          <div
-                            style={{
-                              textAlign: 'center',
-                              color: theme.colors.gray500,
-                            }}
-                          >
-                            <FaImage
-                              style={{
-                                fontSize: '2rem',
-                                marginBottom: theme.spacing.sm,
-                              }}
-                            />
-                            <div>No cover image</div>
-                          </div>
-                        )}
-                        <div
-                          style={{
-                            position: 'absolute',
-                            top: theme.spacing.sm,
-                            right: theme.spacing.sm,
-                            display: 'flex',
-                            gap: theme.spacing.xs,
-                          }}
-                        >
-                          <button
-                            style={{
-                              background: 'rgba(255, 255, 255, 0.9)',
-                              border: 'none',
-                              borderRadius: theme.borderRadius.sm,
-                              padding: theme.spacing.xs,
-                              cursor: 'pointer',
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                            }}
-                            onClick={e => {
-                              e.stopPropagation();
-                              openModal('gallery', gallery);
-                            }}
-                          >
-                            <FaEdit size={14} />
-                          </button>
-                          <button
-                            style={{
-                              background: 'rgba(255, 255, 255, 0.9)',
-                              border: 'none',
-                              borderRadius: theme.borderRadius.sm,
-                              padding: theme.spacing.xs,
-                              cursor: 'pointer',
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              color: theme.colors.error,
-                            }}
-                            onClick={e => {
-                              e.stopPropagation();
-                              handleDelete('gallery', gallery.id);
-                            }}
-                          >
-                            <FaTrash size={14} />
-                          </button>
-                        </div>
-                      </div>
-
-                      {/* Gallery Info */}
-                      <div style={{ padding: theme.spacing.lg }}>
-                        <h4
-                          style={{
-                            margin: 0,
-                            marginBottom: theme.spacing.sm,
-                            fontWeight: 600,
-                            color: theme.colors.gray900,
-                          }}
-                        >
-                          {gallery.category}
-                        </h4>
-                        <div
-                          style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: theme.spacing.sm,
-                            color: theme.colors.gray600,
-                            fontSize: '0.9rem',
-                          }}
-                        >
-                          <FaImage size={14} />
-                          <span>{gallery.images || 0} images</span>
-                        </div>
-
-                        <div
-                          style={{
-                            marginTop: theme.spacing.md,
-                            display: 'flex',
-                            gap: theme.spacing.sm,
-                          }}
-                        >
-                          <Button
-                            style={{ flex: 1, fontSize: '0.8rem' }}
-                            onClick={() => openModal('gallery', gallery)}
-                          >
-                            <FaEdit size={12} />
-                            Edit
-                          </Button>
-                          <Button
-                            style={{ fontSize: '0.8rem' }}
-                            onClick={() => {
-                              // Manage gallery functionality would be implemented here
-                            }}
-                          >
-                            <FaImage size={12} />
-                            Manage
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* Quick Upload Section */}
-            <div style={{ marginTop: theme.spacing.xl }}>
-              <h3
-                style={{
-                  marginBottom: theme.spacing.lg,
-                  color: theme.colors.gray900,
-                }}
-              >
-                Quick Upload
-              </h3>
-              <div
-                style={{
-                  background: theme.colors.white,
-                  border: `1px solid ${theme.colors.gray200}`,
-                  borderRadius: theme.borderRadius.lg,
-                  padding: theme.spacing.xl,
-                }}
-              >
-                <ImageUploadArea
-                  hasImage={false}
-                  primaryColor={businessData.primaryColor}
-                  onClick={() => document.getElementById('bulk-upload').click()}
-                >
-                  <FaUpload className="upload-icon" />
-                  <div className="upload-text">Upload multiple images</div>
-                  <div className="upload-hint">
-                    Select images to add to your media library
-                  </div>
-                  <input
-                    id="bulk-upload"
-                    type="file"
-                    accept="image/*"
-                    multiple
-                    onChange={() => {
-                      // Bulk upload functionality would be implemented here
-                    }}
-                  />
-                </ImageUploadArea>
-
-                <div
-                  style={{
-                    marginTop: theme.spacing.lg,
-                    padding: theme.spacing.md,
-                    background: theme.colors.gray50,
-                    borderRadius: theme.borderRadius.md,
-                    border: `1px solid ${theme.colors.gray200}`,
-                  }}
-                >
-                  <h4
-                    style={{
-                      margin: 0,
-                      marginBottom: theme.spacing.sm,
-                      fontSize: '0.9rem',
-                      fontWeight: 600,
-                      color: theme.colors.gray900,
-                    }}
-                  >
-                    Upload Tips:
-                  </h4>
-                  <ul
-                    style={{
-                      margin: 0,
-                      paddingLeft: theme.spacing.lg,
-                      fontSize: '0.8rem',
-                      color: theme.colors.gray600,
-                      lineHeight: '1.5',
-                    }}
-                  >
-                    <li>Recommended image size: 1200x800px or higher</li>
-                    <li>Supported formats: JPG, PNG, GIF, WebP</li>
-                    <li>Maximum file size: 10MB per image</li>
-                    <li>
-                      Organize images into categories for better management
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-        ) : null;
-
-      case 'analytics':
-        return (
-          <div>
-            <ContentHeader>
-              <h2>Analytics</h2>
-            </ContentHeader>
-            <p
-              style={{
-                color: theme.colors.gray600,
-                textAlign: 'center',
-                padding: '2rem',
-              }}
-            >
-              Analytics dashboard coming soon. Track your website visitors,
-              popular pages, and engagement metrics.
-            </p>
-          </div>
-        );
-
-      case 'settings':
-        return (
-          <div>
-            <ContentHeader>
-              <h2>Website Settings</h2>
-            </ContentHeader>
-            <EditableField primaryColor={businessData.primaryColor}>
-              <label>Website URL</label>
-              <input
-                type="text"
-                defaultValue={`yourdomain.com/business/${businessData.slug}`}
-              />
-            </EditableField>
-            <EditableField primaryColor={businessData.primaryColor}>
-              <label>SEO Meta Description</label>
-              <textarea defaultValue={businessData.description} />
-            </EditableField>
-            <EditableField primaryColor={businessData.primaryColor}>
-              <label>Contact Email</label>
-              <input
-                type="email"
-                defaultValue={`info@${businessData.slug}.com`}
-              />
-            </EditableField>
-            <EditableField primaryColor={businessData.primaryColor}>
-              <label>Phone Number</label>
-              <input type="tel" defaultValue="+1 (555) 123-4567" />
-            </EditableField>
-          </div>
-        );
-
-      default:
-        return null;
-    }
-  };
+  }
 
   return (
     <DashboardContainer>
-      <DashboardHeader>
-        <HeaderContent>
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: theme.spacing.lg,
-            }}
-          >
-            <BackButton onClick={handleBackToWebsite}>
-              <FaArrowLeft />
-              Back to Website
-            </BackButton>
-            <DashboardTitle>
-              <h1>{businessData.name} - Owner Dashboard</h1>
-              <p>Manage your website content, design, and settings</p>
-            </DashboardTitle>
-          </div>
-          <ActionButtons>
-            <Button onClick={handlePreview}>
-              <FaEye />
-              Preview Website
-            </Button>
-            <Button variant="primary" primaryColor={businessData.primaryColor}>
-              <FaSave />
-              Save Changes
-            </Button>
-          </ActionButtons>
-        </HeaderContent>
-      </DashboardHeader>
+      {/* Mobile Sidebar Overlay */}
+      <MobileSidebarOverlay
+        isOpen={mobileSidebarOpen}
+        onClick={closeMobileSidebar}
+      />
 
-      <DashboardLayout>
-        <Sidebar>
-          <SidebarTitle>
-            <FaCog />
-            Dashboard Menu
-          </SidebarTitle>
-          <SidebarMenu>
-            {menuItems.map(item => {
-              const IconComponent = item.icon;
-              return (
-                <MenuItem
+      {/* Mobile Menu Button */}
+      <MobileMenuButton
+        onClick={() => setMobileSidebarOpen(!mobileSidebarOpen)}
+        aria-label={mobileSidebarOpen ? 'Close menu' : 'Open menu'}
+      >
+        {mobileSidebarOpen ? <FaTimes /> : <FaBars />}
+      </MobileMenuButton>
+
+      {/* Sidebar */}
+      <Sidebar mobileOpen={mobileSidebarOpen}>
+        <MobileSidebarCloseButton onClick={closeMobileSidebar}>
+          <FaTimes />
+        </MobileSidebarCloseButton>
+
+        <SidebarHeader>
+          <BusinessName>{business.name}</BusinessName>
+          <BusinessRole>Business Dashboard</BusinessRole>
+        </SidebarHeader>
+
+        <SidebarNav>
+          <NavSection>
+            <NavSectionTitle>Content Management</NavSectionTitle>
+            {navigationItems
+              .filter(item => item.section === 'Content Management')
+              .map(item => (
+                <NavItem
                   key={item.id}
                   active={activeSection === item.id}
-                  primaryColor={businessData.primaryColor}
                   onClick={() => setActiveSection(item.id)}
                 >
-                  <IconComponent />
+                  <item.icon />
                   {item.label}
-                </MenuItem>
-              );
-            })}
-          </SidebarMenu>
-        </Sidebar>
+                </NavItem>
+              ))}
+          </NavSection>
 
-        <MainContent>{renderContent()}</MainContent>
-      </DashboardLayout>
+          <NavSection>
+            <NavSectionTitle>Advanced</NavSectionTitle>
+            {navigationItems
+              .filter(item => item.section === 'Advanced')
+              .map(item => (
+                <NavItem
+                  key={item.id}
+                  active={activeSection === item.id}
+                  onClick={() => setActiveSection(item.id)}
+                >
+                  <item.icon />
+                  {item.label}
+                </NavItem>
+              ))}
+          </NavSection>
 
-      {/* Render Modal */}
-      {renderModal()}
+          <NavSection>
+            <NavSectionTitle>Account Management</NavSectionTitle>
+            {navigationItems
+              .filter(item => item.section === 'Account Management')
+              .map(item => (
+                <NavItem
+                  key={item.id}
+                  active={activeSection === item.id}
+                  onClick={() => setActiveSection(item.id)}
+                >
+                  <item.icon />
+                  {item.label}
+                </NavItem>
+              ))}
+          </NavSection>
+
+          {/* Save Changes Section - Now part of scrollable content */}
+          <NavSection>
+            <NavSectionTitle>Save Changes</NavSectionTitle>
+            <div style={{ padding: '0 16px' }}>
+              <SaveActionsContainer>
+                {hasUnsavedChanges && (
+                  <ChangesIndicator>
+                    <FaEdit />
+                    Unsaved changes
+                  </ChangesIndicator>
+                )}
+
+                <SaveButton
+                  variant="primary"
+                  onClick={handleSaveChanges}
+                  disabled={!hasUnsavedChanges}
+                  saved={saved && !hasUnsavedChanges}
+                >
+                  {saved && !hasUnsavedChanges ? (
+                    <>
+                      <FaCheckCircle />
+                      Changes Saved
+                    </>
+                  ) : (
+                    <>
+                      <FaSave />
+                      Save Changes
+                    </>
+                  )}
+                </SaveButton>
+
+                <SaveButton
+                  variant="success"
+                  onClick={handleSaveAndGoLive}
+                  disabled={hasUnsavedChanges && !saved}
+                >
+                  <FaCheckCircle />
+                  Save & Go Live
+                </SaveButton>
+
+                <SaveButton
+                  variant="secondary"
+                  onClick={handleDiscardChanges}
+                  disabled={!hasUnsavedChanges}
+                >
+                  <FaUndo />
+                  Discard Changes
+                </SaveButton>
+
+                {changedSections.size > 0 && (
+                  <div
+                    style={{
+                      marginTop: '16px',
+                      padding: '12px',
+                      background: '#fef3c7',
+                      borderRadius: '6px',
+                      fontSize: '0.85rem',
+                    }}
+                  >
+                    <strong>Changed sections:</strong>
+                    <div style={{ marginTop: '4px' }}>
+                      {Array.from(changedSections).map(section => (
+                        <span
+                          key={section}
+                          style={{
+                            display: 'inline-block',
+                            background: '#f59e0b',
+                            color: 'white',
+                            padding: '2px 6px',
+                            borderRadius: '3px',
+                            margin: '2px',
+                            fontSize: '0.8rem',
+                          }}
+                        >
+                          {section.replace(/-/g, ' ')}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </SaveActionsContainer>
+            </div>
+          </NavSection>
+        </SidebarNav>
+      </Sidebar>
+
+      {/* Main Content */}
+      <MainContent>
+        <ContentHeader>
+          <PageTitle>Business Dashboard</PageTitle>
+          <PageActions>
+            <ActionButton
+              onClick={() => navigate(`/${businessId}`)}
+              aria-label="Preview business website"
+            >
+              <FaEye />
+              Preview Website
+            </ActionButton>
+            <ActionButton
+              variant="primary"
+              onClick={() => window.open(`/${businessId}`, '_blank')}
+              aria-label="Open business website in new tab"
+            >
+              <FaExternalLinkAlt />
+              Open Website
+            </ActionButton>
+          </PageActions>
+        </ContentHeader>
+
+        {renderContent()}
+      </MainContent>
     </DashboardContainer>
   );
 };
