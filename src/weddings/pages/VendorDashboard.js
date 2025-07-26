@@ -2411,6 +2411,7 @@ const VendorDashboard = () => {
                 <SaveButton
                   onClick={handleSaveChanges}
                   disabled={changedSections.size === 0 || saved}
+                  saved={saved}
                 >
                   <FaSave />
                   {saved ? 'Saved' : 'Save Changes'}
