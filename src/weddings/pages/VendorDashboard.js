@@ -1903,7 +1903,7 @@ const VendorDashboard = () => {
                             },
                           },
                         }));
-                        autoSaveForPreview();
+                        trackSectionChange('gallery');
                       }}
                       placeholder="Category name"
                     />
