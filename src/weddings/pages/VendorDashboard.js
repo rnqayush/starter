@@ -1771,6 +1771,7 @@ const VendorDashboard = () => {
       content: customSectionForm.content.trim(),
       images: customSectionForm.images || [],
       cards: customSectionForm.cards || [],
+      visible: customSectionForm.visible,
     };
 
     if (editingCustomSection) {
