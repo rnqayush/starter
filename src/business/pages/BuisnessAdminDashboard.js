@@ -45,6 +45,8 @@ import {
   FaUsers,
   FaChartBar,
   FaPalette,
+  FaClock,
+  FaCalendarAlt,
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
 import { getBusinessTemplate } from '../../DummyData';
@@ -137,6 +139,7 @@ const SidebarHeader = styled.div`
   border-bottom: 1px solid ${theme.colors.gray200};
   background: ${theme.colors.primary};
   color: white;
+  flex-shrink: 0;
 `;
 
 const BusinessName = styled.h2`
@@ -155,6 +158,7 @@ const SidebarNav = styled.nav`
   padding: ${theme.spacing.lg} 0;
   flex: 1;
   overflow-y: auto;
+  min-height: 0;
 `;
 
 const NavSection = styled.div`
@@ -206,7 +210,9 @@ const SidebarFooter = styled.div`
   padding: ${theme.spacing.lg};
   border-top: 1px solid ${theme.colors.gray200};
   background: ${theme.colors.gray50};
-  margin-top: auto;
+  flex-shrink: 0;
+  max-height: 300px;
+  overflow-y: auto;
 `;
 
 const SaveActionsContainer = styled.div`
@@ -588,6 +594,105 @@ const ToggleSwitch = styled.label`
   }
 `;
 
+const ListContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${theme.spacing.md};
+`;
+
+const ListItem = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: ${theme.spacing.lg};
+  border: 1px solid ${theme.colors.gray200};
+  border-radius: ${theme.borderRadius.md};
+  background: ${theme.colors.gray50};
+
+  .item-info {
+    flex: 1;
+    min-width: 0;
+
+    h4 {
+      font-weight: 600;
+      color: ${theme.colors.gray900};
+      margin-bottom: ${theme.spacing.xs};
+    }
+
+    p {
+      color: ${theme.colors.gray600};
+      font-size: 0.9rem;
+      margin-bottom: ${theme.spacing.xs};
+    }
+
+    .item-meta {
+      font-size: 0.8rem;
+      color: ${theme.colors.gray500};
+    }
+  }
+
+  .item-actions {
+    display: flex;
+    gap: ${theme.spacing.sm};
+    flex-shrink: 0;
+    margin-left: ${theme.spacing.md};
+  }
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: ${theme.spacing.md};
+
+    .item-actions {
+      width: 100%;
+      justify-content: flex-end;
+      margin-left: 0;
+    }
+  }
+`;
+
+const AddButton = styled.button`
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.sm};
+  background: ${theme.colors.primary};
+  color: white;
+  border: none;
+  padding: ${theme.spacing.md} ${theme.spacing.lg};
+  border-radius: ${theme.borderRadius.md};
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: ${theme.spacing.lg};
+
+  &:hover {
+    background: ${theme.colors.primaryDark};
+    transform: translateY(-1px);
+  }
+`;
+
+const ItemButton = styled.button`
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.xs};
+  background: ${props => 
+    props.variant === 'danger' ? theme.colors.error : theme.colors.white};
+  color: ${props => 
+    props.variant === 'danger' ? 'white' : theme.colors.gray700};
+  border: 1px solid ${props => 
+    props.variant === 'danger' ? theme.colors.error : theme.colors.gray300};
+  padding: ${theme.spacing.sm} ${theme.spacing.md};
+  border-radius: ${theme.borderRadius.sm};
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: ${props => 
+      props.variant === 'danger' ? '#dc2626' : theme.colors.gray50};
+  }
+`;
+
 const BuisnessAdminDashboard = () => {
   const { businessSlug, slug } = useParams();
   const navigate = useNavigate();
@@ -619,39 +724,44 @@ const BuisnessAdminDashboard = () => {
     title: '',
     subtitle: '',
     backgroundImage: '',
-    backgroundImageFile: null,
   });
 
   const [aboutData, setAboutData] = useState({
     title: '',
     description: '',
     profileImage: '',
-    profileImageFile: null,
   });
 
   const [servicesData, setServicesData] = useState([]);
   const [teamData, setTeamData] = useState([]);
+  const [portfolioData, setPortfolioData] = useState([]);
+  const [skillsData, setSkillsData] = useState([]);
+  const [experienceData, setExperienceData] = useState([]);
+  const [galleryData, setGalleryData] = useState([]);
+  const [packagesData, setPackagesData] = useState([]);
   const [testimonialsData, setTestimonialsData] = useState([]);
+  const [reviewsData, setReviewsData] = useState([]);
+  const [faqData, setFaqData] = useState([]);
   const [contactData, setContactData] = useState({
-    title: '',
+    title: 'Get In Touch',
     description: '',
     email: '',
     phone: '',
     address: '',
     hours: {
-      monday: '',
-      tuesday: '',
-      wednesday: '',
-      thursday: '',
-      friday: '',
-      saturday: '',
-      sunday: '',
+      monday: '9:00 AM - 6:00 PM',
+      tuesday: '9:00 AM - 6:00 PM',
+      wednesday: '9:00 AM - 6:00 PM',
+      thursday: '9:00 AM - 6:00 PM',
+      friday: '9:00 AM - 6:00 PM',
+      saturday: '10:00 AM - 4:00 PM',
+      sunday: 'Closed',
     },
     socialMedia: {
-      linkedin: '',
+      facebook: '',
       twitter: '',
       instagram: '',
-      facebook: '',
+      linkedin: '',
     },
   });
 
@@ -665,8 +775,11 @@ const BuisnessAdminDashboard = () => {
     experience: true,
     team: true,
     gallery: true,
+    packages: true,
     testimonials: true,
-    'packages-pricing': true,
+    reviews: true,
+    faq: true,
+    'business-hours': true,
     contact: true,
   });
 
@@ -696,38 +809,18 @@ const BuisnessAdminDashboard = () => {
       // Create updated business object with current form data
       const updatedBusiness = {
         ...editingBusiness,
-        hero: {
-          title: heroData.title || editingBusiness.hero?.title || '',
-          subtitle: heroData.subtitle || editingBusiness.hero?.subtitle || '',
-          backgroundImage: heroData.backgroundImage || editingBusiness.hero?.backgroundImage || '',
-        },
-        about: {
-          title: aboutData.title || editingBusiness.about?.title || '',
-          description: aboutData.description || editingBusiness.about?.description || '',
-          profileImage: aboutData.profileImage || editingBusiness.about?.profileImage || '',
-        },
-        services: servicesData.map(service => ({
-          id: service.id,
-          icon: service.icon || '',
-          title: service.title || '',
-          description: service.description || '',
-          price: service.price || '',
-        })),
-        team: teamData.map(member => ({
-          id: member.id,
-          name: member.name || '',
-          role: member.role || '',
-          bio: member.bio || '',
-          photo: member.photo || '',
-          specialties: Array.isArray(member.specialties) ? member.specialties : [],
-        })),
-        testimonials: testimonialsData.map(testimonial => ({
-          id: testimonial.id,
-          name: testimonial.name || '',
-          text: testimonial.text || '',
-          rating: testimonial.rating || 5,
-          company: testimonial.company || '',
-        })),
+        hero: heroData,
+        about: aboutData,
+        services: servicesData,
+        team: teamData,
+        portfolio: portfolioData,
+        skills: skillsData,
+        experience: experienceData,
+        gallery: galleryData,
+        packages: packagesData,
+        testimonials: testimonialsData,
+        reviews: reviewsData,
+        faq: faqData,
         contact: contactData,
         sectionVisibility: sectionVisibility,
       };
@@ -755,6 +848,54 @@ const BuisnessAdminDashboard = () => {
     }
   };
 
+  // Get sample content based on business type
+  const getSampleContent = (businessType) => {
+    const baseContent = {
+      salon: {
+        services: [
+          { id: 1, icon: '✂️', title: 'Hair Styling', description: 'Professional cuts, colors, and treatments for all hair types', price: 'From $45' },
+          { id: 2, icon: '💅', title: 'Nail Care', description: 'Manicures, pedicures, and nail art by certified technicians', price: 'From $25' },
+          { id: 3, icon: '🧴', title: 'Spa Treatments', description: 'Relaxing facials, massages, and body treatments', price: 'From $65' },
+        ],
+        team: [
+          { id: 1, name: 'Sarah Johnson', role: 'Senior Stylist', bio: '15+ years experience in color and cutting', photo: '', specialties: ['Color Specialist', 'Bridal Hair'] },
+          { id: 2, name: 'Maria Garcia', role: 'Nail Specialist', bio: 'Expert in nail art and luxury manicures', photo: '', specialties: ['Nail Art', 'Gel Manicures'] },
+        ],
+        packages: [
+          { id: 1, name: 'Bridal Package', description: 'Complete bridal beauty package including hair, makeup, and nails', price: '$299', duration: '4 hours' },
+          { id: 2, name: 'Spa Day', description: 'Full day relaxation with massage, facial, and beauty treatments', price: '$199', duration: '6 hours' },
+        ],
+        gallery: [
+          { id: 1, category: 'Hair Styling', images: 8 },
+          { id: 2, category: 'Nail Art', images: 6 },
+          { id: 3, category: 'Spa Treatments', images: 5 },
+        ]
+      },
+      freelancer: {
+        services: [
+          { id: 1, icon: '🎨', title: 'Web Design', description: 'Custom website design tailored to your brand and business goals', price: 'From $1,200' },
+          { id: 2, icon: '📱', title: 'UI/UX Design', description: 'User-centered design for web and mobile applications', price: 'From $800' },
+          { id: 3, icon: '💻', title: 'Frontend Development', description: 'Modern, responsive websites built with latest technologies', price: 'From $1,500' },
+        ],
+        portfolio: [
+          { id: 1, title: 'E-commerce Platform', category: 'Web Development', description: 'Modern e-commerce platform with custom design and seamless user experience', technologies: ['React', 'Node.js', 'MongoDB'] },
+          { id: 2, title: 'Brand Identity Design', category: 'Branding', description: 'Complete brand identity including logo, color palette, and brand guidelines', technologies: ['Illustrator', 'Photoshop', 'Figma'] },
+        ],
+        skills: [
+          { id: 1, name: 'Web Design', level: 95, icon: '🎨' },
+          { id: 2, name: 'UI/UX Design', level: 90, icon: '📱' },
+          { id: 3, name: 'Frontend Development', level: 88, icon: '💻' },
+        ],
+        experience: [
+          { id: 1, company: 'Digital Agency Inc.', role: 'Senior Creative Designer', period: '2020 - Present', description: 'Lead designer for major client projects, specializing in web design and branding solutions.' },
+          { id: 2, company: 'Freelance', role: 'Independent Designer & Developer', period: '2018 - Present', description: 'Providing creative solutions for startups and established businesses across various industries.' },
+        ]
+      }
+    };
+
+    return baseContent[businessType] || baseContent.salon;
+  };
+
   const navigationItems = [
     {
       id: 'hero',
@@ -774,16 +915,67 @@ const BuisnessAdminDashboard = () => {
       icon: FaServicestack,
       section: 'Content Management',
     },
-    {
-      id: 'team',
-      label: 'Team',
-      icon: FaUsers,
-      section: 'Content Management',
-    },
+    ...(business?.slug === 'freelancer' ? [
+      {
+        id: 'portfolio',
+        label: 'Portfolio',
+        icon: FaBriefcase,
+        section: 'Content Management',
+      },
+      {
+        id: 'skills',
+        label: 'Skills',
+        icon: FaGripHorizontal,
+        section: 'Content Management',
+      },
+      {
+        id: 'experience',
+        label: 'Experience',
+        icon: FaAddressCard,
+        section: 'Content Management',
+      },
+    ] : [
+      {
+        id: 'team',
+        label: 'Team',
+        icon: FaUsers,
+        section: 'Content Management',
+      },
+      {
+        id: 'gallery',
+        label: 'Gallery',
+        icon: FaImages,
+        section: 'Content Management',
+      },
+      {
+        id: 'packages',
+        label: 'Packages & Pricing',
+        icon: FaDollarSign,
+        section: 'Content Management',
+      },
+    ]),
     {
       id: 'testimonials',
       label: 'Testimonials',
       icon: FaComments,
+      section: 'Content Management',
+    },
+    {
+      id: 'reviews',
+      label: 'Reviews',
+      icon: FaStar,
+      section: 'Content Management',
+    },
+    {
+      id: 'faq',
+      label: 'FAQ',
+      icon: FaQuestionCircle,
+      section: 'Content Management',
+    },
+    {
+      id: 'business-hours',
+      label: 'Business Hours',
+      icon: FaClock,
       section: 'Content Management',
     },
     {
@@ -817,32 +1009,32 @@ const BuisnessAdminDashboard = () => {
 
       // Pre-fill all form data from business data
       setHeroData({
-        title: businessData.hero?.title || `${businessData.name} Website`,
+        title: businessData.hero?.title || `${businessData.name}`,
         subtitle: businessData.hero?.subtitle || `Welcome to ${businessData.name}`,
         backgroundImage: businessData.hero?.backgroundImage || businessData.image || '',
-        backgroundImageFile: null,
       });
 
       setAboutData({
         title: businessData.about?.title || 'About Us',
         description: businessData.about?.description || `Learn more about ${businessData.name}`,
         profileImage: businessData.about?.profileImage || '',
-        profileImageFile: null,
       });
 
-      // Initialize services with sample data if needed
-      if (businessData.services && businessData.services.length > 0) {
-        setServicesData(businessData.services.map((service, index) => ({
-          ...service,
-          id: service.id || `service-${Date.now()}-${index}`,
-        })));
-      }
+      // Initialize sample content based on business type
+      const sampleContent = getSampleContent(businessData.slug);
+      setServicesData(sampleContent.services || []);
+      setTeamData(sampleContent.team || []);
+      setPortfolioData(sampleContent.portfolio || []);
+      setSkillsData(sampleContent.skills || []);
+      setExperienceData(sampleContent.experience || []);
+      setGalleryData(sampleContent.gallery || []);
+      setPackagesData(sampleContent.packages || []);
 
       // Initialize contact data
-      setContactData(businessData.contact || {
+      setContactData({
         title: 'Get In Touch',
         description: `Contact us to learn more about ${businessData.name}`,
-        email: 'hello@business.com',
+        email: `hello@${businessData.slug}.com`,
         phone: '+1 (555) 123-4567',
         address: '123 Business Street, City, State 12345',
         hours: {
@@ -855,10 +1047,10 @@ const BuisnessAdminDashboard = () => {
           sunday: 'Closed',
         },
         socialMedia: {
-          linkedin: '',
+          facebook: '',
           twitter: '',
           instagram: '',
-          facebook: '',
+          linkedin: '',
         },
       });
     }
@@ -916,17 +1108,15 @@ const BuisnessAdminDashboard = () => {
     try {
       // Reset all local form data to original values
       setHeroData({
-        title: originalBusiness.hero?.title || `${originalBusiness.name} Website`,
+        title: originalBusiness.hero?.title || `${originalBusiness.name}`,
         subtitle: originalBusiness.hero?.subtitle || `Welcome to ${originalBusiness.name}`,
         backgroundImage: originalBusiness.hero?.backgroundImage || originalBusiness.image || '',
-        backgroundImageFile: null,
       });
 
       setAboutData({
         title: originalBusiness.about?.title || 'About Us',
         description: originalBusiness.about?.description || `Learn more about ${originalBusiness.name}`,
         profileImage: originalBusiness.about?.profileImage || '',
-        profileImageFile: null,
       });
 
       // Discard changes in Redux
@@ -966,6 +1156,60 @@ const BuisnessAdminDashboard = () => {
       document.body.style.overflow = 'unset';
     };
   }, [mobileSidebarOpen]);
+
+  // Helper functions for managing dynamic lists
+  const addService = () => {
+    const newService = {
+      id: Date.now(),
+      icon: '🔧',
+      title: 'New Service',
+      description: 'Service description',
+      price: 'From $0',
+    };
+    setServicesData(prev => [...prev, newService]);
+    trackSectionChange('services-offered');
+  };
+
+  const updateService = (id, field, value) => {
+    setServicesData(prev =>
+      prev.map(service =>
+        service.id === id ? { ...service, [field]: value } : service
+      )
+    );
+    trackSectionChange('services-offered');
+  };
+
+  const deleteService = id => {
+    setServicesData(prev => prev.filter(service => service.id !== id));
+    trackSectionChange('services-offered');
+  };
+
+  const addTeamMember = () => {
+    const newMember = {
+      id: Date.now(),
+      name: 'New Team Member',
+      role: 'Role',
+      bio: 'Bio description',
+      photo: '',
+      specialties: [],
+    };
+    setTeamData(prev => [...prev, newMember]);
+    trackSectionChange('team');
+  };
+
+  const updateTeamMember = (id, field, value) => {
+    setTeamData(prev =>
+      prev.map(member =>
+        member.id === id ? { ...member, [field]: value } : member
+      )
+    );
+    trackSectionChange('team');
+  };
+
+  const deleteTeamMember = id => {
+    setTeamData(prev => prev.filter(member => member.id !== id));
+    trackSectionChange('team');
+  };
 
   const renderContent = () => {
     switch (activeSection) {
@@ -1093,6 +1337,168 @@ const BuisnessAdminDashboard = () => {
           </ContentSection>
         );
 
+      case 'services-offered':
+        return (
+          <ContentSection>
+            <SectionHeader>
+              <SectionTitle>
+                <FaServicestack />
+                Services Offered
+              </SectionTitle>
+              <VisibilityToggleContainer>
+                <span>{sectionVisibility['services-offered'] ? 'Visible' : 'Hidden'}</span>
+                <ToggleSwitch>
+                  <input
+                    type="checkbox"
+                    checked={sectionVisibility['services-offered']}
+                    onChange={() => toggleSectionVisibility('services-offered')}
+                  />
+                  <span></span>
+                </ToggleSwitch>
+              </VisibilityToggleContainer>
+            </SectionHeader>
+            
+            <AddButton onClick={addService}>
+              <FaPlus />
+              Add New Service
+            </AddButton>
+
+            <ListContainer>
+              {servicesData.map(service => (
+                <ListItem key={service.id}>
+                  <div className="item-info">
+                    <FormGrid>
+                      <FormGroup>
+                        <FormLabel>Icon (Emoji)</FormLabel>
+                        <FormInput
+                          value={service.icon}
+                          onChange={e => updateService(service.id, 'icon', e.target.value)}
+                          placeholder="🔧"
+                        />
+                      </FormGroup>
+                      <FormGroup>
+                        <FormLabel>Price</FormLabel>
+                        <FormInput
+                          value={service.price}
+                          onChange={e => updateService(service.id, 'price', e.target.value)}
+                          placeholder="From $0"
+                        />
+                      </FormGroup>
+                      <FormGroup style={{ gridColumn: '1 / -1' }}>
+                        <FormLabel>Service Title</FormLabel>
+                        <FormInput
+                          value={service.title}
+                          onChange={e => updateService(service.id, 'title', e.target.value)}
+                          placeholder="Service Name"
+                        />
+                      </FormGroup>
+                      <FormGroup style={{ gridColumn: '1 / -1' }}>
+                        <FormLabel>Description</FormLabel>
+                        <FormTextarea
+                          value={service.description}
+                          onChange={e => updateService(service.id, 'description', e.target.value)}
+                          placeholder="Service description"
+                          rows={3}
+                        />
+                      </FormGroup>
+                    </FormGrid>
+                  </div>
+                  <div className="item-actions">
+                    <ItemButton 
+                      variant="danger" 
+                      onClick={() => deleteService(service.id)}
+                    >
+                      <FaTrash />
+                      Delete
+                    </ItemButton>
+                  </div>
+                </ListItem>
+              ))}
+            </ListContainer>
+          </ContentSection>
+        );
+
+      case 'team':
+        return (
+          <ContentSection>
+            <SectionHeader>
+              <SectionTitle>
+                <FaUsers />
+                Team Management
+              </SectionTitle>
+              <VisibilityToggleContainer>
+                <span>{sectionVisibility['team'] ? 'Visible' : 'Hidden'}</span>
+                <ToggleSwitch>
+                  <input
+                    type="checkbox"
+                    checked={sectionVisibility['team']}
+                    onChange={() => toggleSectionVisibility('team')}
+                  />
+                  <span></span>
+                </ToggleSwitch>
+              </VisibilityToggleContainer>
+            </SectionHeader>
+            
+            <AddButton onClick={addTeamMember}>
+              <FaPlus />
+              Add Team Member
+            </AddButton>
+
+            <ListContainer>
+              {teamData.map(member => (
+                <ListItem key={member.id}>
+                  <div className="item-info">
+                    <FormGrid>
+                      <FormGroup>
+                        <FormLabel>Name</FormLabel>
+                        <FormInput
+                          value={member.name}
+                          onChange={e => updateTeamMember(member.id, 'name', e.target.value)}
+                          placeholder="Team member name"
+                        />
+                      </FormGroup>
+                      <FormGroup>
+                        <FormLabel>Role</FormLabel>
+                        <FormInput
+                          value={member.role}
+                          onChange={e => updateTeamMember(member.id, 'role', e.target.value)}
+                          placeholder="Job title"
+                        />
+                      </FormGroup>
+                      <FormGroup style={{ gridColumn: '1 / -1' }}>
+                        <FormLabel>Photo URL</FormLabel>
+                        <FormInput
+                          value={member.photo}
+                          onChange={e => updateTeamMember(member.id, 'photo', e.target.value)}
+                          placeholder="Profile photo URL"
+                        />
+                      </FormGroup>
+                      <FormGroup style={{ gridColumn: '1 / -1' }}>
+                        <FormLabel>Bio</FormLabel>
+                        <FormTextarea
+                          value={member.bio}
+                          onChange={e => updateTeamMember(member.id, 'bio', e.target.value)}
+                          placeholder="Brief bio about the team member"
+                          rows={3}
+                        />
+                      </FormGroup>
+                    </FormGrid>
+                  </div>
+                  <div className="item-actions">
+                    <ItemButton 
+                      variant="danger" 
+                      onClick={() => deleteTeamMember(member.id)}
+                    >
+                      <FaTrash />
+                      Delete
+                    </ItemButton>
+                  </div>
+                </ListItem>
+              ))}
+            </ListContainer>
+          </ContentSection>
+        );
+
       case 'contact':
         return (
           <ContentSection>
@@ -1114,6 +1520,29 @@ const BuisnessAdminDashboard = () => {
               </VisibilityToggleContainer>
             </SectionHeader>
             <FormGrid>
+              <FormGroup style={{ gridColumn: '1 / -1' }}>
+                <FormLabel>Section Title</FormLabel>
+                <FormInput
+                  value={contactData.title}
+                  onChange={e => {
+                    setContactData(prev => ({ ...prev, title: e.target.value }));
+                    trackSectionChange('contact');
+                  }}
+                  placeholder="Get In Touch"
+                />
+              </FormGroup>
+              <FormGroup style={{ gridColumn: '1 / -1' }}>
+                <FormLabel>Description</FormLabel>
+                <FormTextarea
+                  value={contactData.description}
+                  onChange={e => {
+                    setContactData(prev => ({ ...prev, description: e.target.value }));
+                    trackSectionChange('contact');
+                  }}
+                  placeholder="Contact section description"
+                  rows={3}
+                />
+              </FormGroup>
               <FormGroup>
                 <FormLabel>Email</FormLabel>
                 <FormInput
@@ -1162,6 +1591,7 @@ const BuisnessAdminDashboard = () => {
               {activeSection.charAt(0).toUpperCase() + activeSection.slice(1).replace(/-/g, ' ')} Management
             </SectionTitle>
             <p>This section is under development. Please select another section to edit.</p>
+            <p>Available sections: Hero, About Us, Services, Team, Contact</p>
           </ContentSection>
         );
     }
