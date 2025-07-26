@@ -747,6 +747,7 @@ const VendorDashboard = () => {
   const [testimonialsData, setTestimonialsData] = useState([]);
   const [packagesData, setPackagesData] = useState([]);
   const [customSections, setCustomSections] = useState([]);
+  const [customSectionVisibility, setCustomSectionVisibility] = useState({});
 
   const [sectionOrder, setSectionOrder] = useState([
     'hero',
