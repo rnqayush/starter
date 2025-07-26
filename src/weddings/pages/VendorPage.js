@@ -1312,19 +1312,19 @@ const VendorPage = () => {
                 )}
               </AboutStats>
             </AboutContent>
-            {(vendor.aboutUs?.videoEmbed || vendor.aboutUs?.aboutImage) && (
+            {(vendor.aboutUs?.aboutImage || vendor.aboutUs?.videoEmbed) && (
               <VideoContainer>
-                {vendor.aboutUs?.videoEmbed ? (
-                  <VideoEmbed
-                    src={vendor.aboutUs.videoEmbed}
-                    allow="autoplay; fullscreen; picture-in-picture"
-                    allowFullScreen
-                  />
-                ) : vendor.aboutUs?.aboutImage ? (
+                {vendor.aboutUs?.aboutImage ? (
                   <img
                     src={vendor.aboutUs.aboutImage}
                     alt="About us"
                     style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '8px' }}
+                  />
+                ) : vendor.aboutUs?.videoEmbed ? (
+                  <VideoEmbed
+                    src={vendor.aboutUs.videoEmbed}
+                    allow="autoplay; fullscreen; picture-in-picture"
+                    allowFullScreen
                   />
                 ) : null}
               </VideoContainer>
