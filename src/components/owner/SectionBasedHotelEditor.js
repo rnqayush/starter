@@ -777,6 +777,17 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
       return;
     }
 
+    // Check if this is a custom section being edited
+    const customSection = customSections.find(cs => cs.id === sectionType);
+    if (customSection) {
+      setNewSectionData({
+        title: customSection.title,
+        type: customSection.type,
+        content: customSection.content || [],
+      });
+      return;
+    }
+
     // Initialize temp data with current hotel data - exactly as it appears on hotel detail page
     if (editingHotel) {
       setTempData({
