@@ -2990,6 +2990,22 @@ const BuisnessAdminDashboard = () => {
           </NavSection>
 
           <NavSection>
+            <NavSectionTitle>Advanced</NavSectionTitle>
+            {navigationItems
+              .filter(item => item.section === 'Advanced')
+              .map(item => (
+                <NavItem
+                  key={item.id}
+                  active={activeSection === item.id}
+                  onClick={() => setActiveSection(item.id)}
+                >
+                  <item.icon />
+                  {item.label}
+                </NavItem>
+              ))}
+          </NavSection>
+
+          <NavSection>
             <NavSectionTitle>Account Management</NavSectionTitle>
             {navigationItems
               .filter(item => item.section === 'Account Management')
