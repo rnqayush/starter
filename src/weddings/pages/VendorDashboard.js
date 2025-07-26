@@ -2139,37 +2139,41 @@ const VendorDashboard = () => {
               ))}
             </NavSection>
           ))}
-        </SidebarNav>
 
-        <SidebarFooter>
-          <SaveActionsContainer>
-            {hasUnsavedChanges && (
-              <ChangesIndicator>
-                <FaEdit />
-                You have unsaved changes
-              </ChangesIndicator>
-            )}
-            <SaveButton variant="secondary" onClick={handleDiscardChanges}>
-              <FaUndo />
-              Discard
-            </SaveButton>
-            <SaveButton 
-              onClick={handleSaveChanges}
-              disabled={saved}
-            >
-              <FaSave />
-              {saved ? 'Saved' : 'Save Changes'}
-            </SaveButton>
-            <SaveButton 
-              variant="primary" 
-              onClick={handleSaveAndGoLive}
-              disabled={!saved}
-            >
-              <FaCheckCircle />
-              Save & Go Live
-            </SaveButton>
-          </SaveActionsContainer>
-        </SidebarFooter>
+          {/* Save Actions Section - Now part of scrollable content */}
+          <NavSection>
+            <NavSectionTitle>Actions</NavSectionTitle>
+            <SidebarFooter>
+              <SaveActionsContainer>
+                {(hasUnsavedChanges || saved) && (
+                  <ChangesIndicator>
+                    <FaEdit />
+                    {saved ? 'Changes saved - Ready to publish' : 'You have unsaved changes'}
+                  </ChangesIndicator>
+                )}
+                <SaveButton variant="secondary" onClick={handleDiscardChanges}>
+                  <FaUndo />
+                  Discard
+                </SaveButton>
+                <SaveButton
+                  onClick={handleSaveChanges}
+                  disabled={saved}
+                >
+                  <FaSave />
+                  {saved ? 'Saved' : 'Save Changes'}
+                </SaveButton>
+                <SaveButton
+                  variant="primary"
+                  onClick={handleSaveAndGoLive}
+                  disabled={!saved}
+                >
+                  <FaCheckCircle />
+                  Save & Go Live
+                </SaveButton>
+              </SaveActionsContainer>
+            </SidebarFooter>
+          </NavSection>
+        </SidebarNav>
       </Sidebar>
 
       <MainContent>
