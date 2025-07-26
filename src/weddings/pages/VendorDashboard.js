@@ -1156,7 +1156,7 @@ const VendorDashboard = () => {
       );
       setServicesData(originalServicesWithIds);
 
-      // Reset recent work
+      // Reset recent work with full portfolio details
       const originalRecentWorkWithIds = (originalVendor.locationPortfolio || []).map(
         (work, index) => ({
           ...work,
@@ -1165,6 +1165,11 @@ const VendorDashboard = () => {
           location: work.city || '',
           date: work.weddingDate || '',
           image: work.coverImage || '',
+          coupleNames: work.coupleNames || '',
+          description: work.description || '',
+          services: work.services || [],
+          highlights: work.highlights || [],
+          gallery: work.gallery || [],
           imageFile: null,
         })
       );
