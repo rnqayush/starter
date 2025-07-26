@@ -722,19 +722,23 @@ const VendorDashboard = () => {
       };
 
       console.log('Dispatching vendor field updates...');
-      // Update vendor data in Redux with all local changes
+      // Update vendor data in Redux with all local changes - test one at a time
+      console.log('Dispatching name update:', heroData.name);
       dispatch(updateVendorField({ field: 'name', value: heroData.name }));
+
+      console.log('Dispatching tagline update:', heroData.tagline);
       dispatch(updateVendorField({ field: 'tagline', value: heroData.tagline }));
+
+      console.log('Dispatching image update:', heroData.image);
       dispatch(updateVendorField({ field: 'image', value: heroData.image }));
+
+      console.log('Dispatching description update:', aboutUsData.description);
       dispatch(updateVendorField({ field: 'description', value: aboutUsData.description }));
 
-      console.log('Dispatching complex data updates...');
-      // Update complex data structures with sanitized data
-      dispatch(updateServices(sanitizeData(servicesData)));
-      dispatch(updateRecentWork(sanitizeData(recentWorkData)));
-      dispatch(updateTestimonials(sanitizeData(testimonialsData)));
-      dispatch(updatePackages(sanitizeData(packagesData)));
-      dispatch(updateCustomSections(sanitizeData(customSections)));
+      console.log('Dispatching services update...');
+      const sanitizedServices = sanitizeData(servicesData);
+      console.log('Sanitized services:', sanitizedServices);
+      dispatch(updateServices(sanitizedServices));
 
       console.log('Saving changes...');
       // Save all changes to global state
