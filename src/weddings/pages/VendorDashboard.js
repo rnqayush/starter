@@ -2367,10 +2367,23 @@ const VendorDashboard = () => {
       case 'recent-work':
         return (
           <ContentSection>
-            <SectionTitle>
-              <FaBriefcase />
-              Portfolio & Recent Work
-            </SectionTitle>
+            <SectionHeader>
+              <SectionTitle>
+                <FaBriefcase />
+                Portfolio & Recent Work
+              </SectionTitle>
+              <VisibilityToggleContainer>
+                <span>{sectionVisibility['recent-work'] ? 'Visible' : 'Hidden'}</span>
+                <ToggleSwitch>
+                  <input
+                    type="checkbox"
+                    checked={sectionVisibility['recent-work']}
+                    onChange={() => toggleSectionVisibility('recent-work')}
+                  />
+                  <span></span>
+                </ToggleSwitch>
+              </VisibilityToggleContainer>
+            </SectionHeader>
             {recentWorkData.map(work => (
               <div
                 key={work.id}
