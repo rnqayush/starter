@@ -876,11 +876,84 @@ const VendorDashboard = () => {
     setLoading(false);
   }, [vendorId, dispatch]);
 
-  // Handle Save Changes - saves to editing state
+  // Handle Save Changes - saves to editing state for real-time preview
   const handleSaveChanges = () => {
     console.log('handleSaveChanges called');
-    setSaved(true);
-    alert('Changes saved! Click "Save & Go Live" to publish them.');
+
+    try {
+      // Update editing vendor with current form data for real-time preview
+      const updatedVendor = {
+        ...editingVendor,
+        name: heroData.name || '',
+        tagline: heroData.tagline || '',
+        image: heroData.image || '',
+        description: aboutUsData.description || '',
+        aboutUs: {
+          text: aboutUsData.description || '',
+          experience: aboutUsData.experience || '',
+          completedWeddings: aboutUsData.completedWeddings || '',
+          satisfiedCouples: aboutUsData.satisfiedCouples || '',
+          videoEmbed: aboutUsData.videoEmbed || '',
+        },
+        services: servicesData.map(service => ({
+          id: service.id,
+          name: service.name || '',
+          description: service.description || '',
+          price: service.price || '',
+          icon: service.icon || '',
+          image: service.image || '',
+        })),
+        locationPortfolio: recentWorkData.map(work => ({
+          id: work.id,
+          location: work.title || '',
+          city: work.location || '',
+          weddingDate: work.date || '',
+          coverImage: work.image || '',
+          description: work.description || '',
+        })),
+        testimonials: testimonialsData.map(testimonial => ({
+          id: testimonial.id,
+          name: testimonial.client || '',
+          text: testimonial.text || '',
+          rating: testimonial.rating || 5,
+          wedding: testimonial.wedding || '',
+        })),
+        packages: packagesData.map(pkg => ({
+          id: pkg.id,
+          name: pkg.name || '',
+          description: pkg.description || '',
+          price: pkg.price || '',
+          features: Array.isArray(pkg.features) ? pkg.features : [],
+        })),
+        gallery: (() => {
+          const cleanGallery = {};
+          Object.keys(galleryData.categories || {}).forEach(key => {
+            cleanGallery[key] = {
+              title: galleryData.categories[key]?.title || key,
+              images: Array.isArray(galleryData.categories[key]?.images)
+                ? galleryData.categories[key].images.filter(img => typeof img === 'string')
+                : [],
+            };
+          });
+          return cleanGallery;
+        })(),
+      };
+
+      // Update the editing vendor in Redux for real-time preview
+      dispatch({ type: 'vendorManagement/setEditingVendor', payload: updatedVendor.id });
+      Object.keys(updatedVendor).forEach(key => {
+        if (key !== 'id') {
+          dispatch({ type: 'vendorManagement/updateVendorField', payload: { field: key, value: updatedVendor[key] } });
+        }
+      });
+
+      setSaved(true);
+      alert('Changes saved! You can preview them in the vendor page. Click "Save & Go Live" to publish permanently.');
+      console.log('Updated editing vendor for real-time preview:', updatedVendor);
+    } catch (error) {
+      console.error('Error saving changes for preview:', error);
+      alert('Error saving changes for preview. Please try again.');
+    }
   };
 
   // Handle Save & Go Live - publishes changes to global state
