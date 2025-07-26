@@ -1383,7 +1383,7 @@ const VendorDashboard = () => {
                   value={heroData.tagline}
                   onChange={e => {
                     setHeroData(prev => ({ ...prev, tagline: e.target.value }));
-                    autoSaveForPreview();
+                    trackSectionChange('hero');
                   }}
                   placeholder="Enter your business tagline..."
                   rows={3}
