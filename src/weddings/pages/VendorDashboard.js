@@ -1526,37 +1526,92 @@ const VendorDashboard = () => {
               </FormGroup>
               
               <FormGroup style={{ gridColumn: '1 / -1' }}>
-                <FormLabel>
-                  <FaVideo />
-                  About Us Video
-                </FormLabel>
-                <FileUploadContainer>
-                  <FileUploadBox>
-                    <input
-                      type="file"
-                      accept="video/*"
-                      onChange={e => {
-                        const file = e.target.files[0];
-                        setAboutUsData(prev => ({ ...prev, videoFile: file }));
-                      }}
-                    />
-                    <FaVideo size={24} color={theme.colors.gray400} />
-                    <span style={{ fontSize: '0.8rem', textAlign: 'center' }}>Upload Video</span>
-                  </FileUploadBox>
-                  <FormGroup style={{ flex: 1 }}>
-                    <FormLabel>
-                      <FaLink />
-                      Or paste video embed URL
-                    </FormLabel>
-                    <FormInput
-                      value={aboutUsData.videoEmbed}
-                      onChange={e =>
-                        setAboutUsData(prev => ({ ...prev, videoEmbed: e.target.value }))
-                      }
-                      placeholder="https://www.youtube.com/embed/..."
-                    />
-                  </FormGroup>
-                </FileUploadContainer>
+                <FormLabel>About Us Media</FormLabel>
+                <TabsContainer>
+                  <Tab
+                    active={aboutUsData.mediaType === 'video'}
+                    onClick={() => setAboutUsData(prev => ({ ...prev, mediaType: 'video' }))}
+                  >
+                    <FaVideo />
+                    Video
+                  </Tab>
+                  <Tab
+                    active={aboutUsData.mediaType === 'image'}
+                    onClick={() => setAboutUsData(prev => ({ ...prev, mediaType: 'image' }))}
+                  >
+                    <FaFileImage />
+                    Image
+                  </Tab>
+                </TabsContainer>
+
+                {aboutUsData.mediaType === 'video' ? (
+                  <FileUploadContainer>
+                    <FileUploadBox>
+                      <input
+                        type="file"
+                        accept="video/*"
+                        onChange={e => {
+                          const file = e.target.files[0];
+                          setAboutUsData(prev => ({ ...prev, videoFile: file }));
+                        }}
+                      />
+                      <FaVideo size={24} color={theme.colors.gray400} />
+                      <span style={{ fontSize: '0.8rem', textAlign: 'center' }}>Upload Video</span>
+                    </FileUploadBox>
+                    <FormGroup style={{ flex: 1 }}>
+                      <FormLabel>
+                        <FaLink />
+                        Or paste video embed URL
+                      </FormLabel>
+                      <FormInput
+                        value={aboutUsData.videoEmbed}
+                        onChange={e => {
+                          setAboutUsData(prev => ({ ...prev, videoEmbed: e.target.value }));
+                          autoSaveForPreview();
+                        }}
+                        placeholder="https://www.youtube.com/embed/..."
+                      />
+                    </FormGroup>
+                  </FileUploadContainer>
+                ) : (
+                  <FileUploadContainer>
+                    {aboutUsData.aboutImage && (
+                      <ImagePreview>
+                        <img src={aboutUsData.aboutImage} alt="About us" />
+                        <ImageOverlay>
+                          <RemoveImageButton
+                            onClick={() => setAboutUsData(prev => ({ ...prev, aboutImage: '', imageFile: null }))}
+                          >
+                            <FaTrash />
+                          </RemoveImageButton>
+                        </ImageOverlay>
+                      </ImagePreview>
+                    )}
+                    <FileUploadBox>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={e => handleImageUpload(e.target.files[0], setAboutUsData, 'aboutImage')}
+                      />
+                      <FaUpload size={24} color={theme.colors.gray400} />
+                      <span style={{ fontSize: '0.8rem', textAlign: 'center' }}>Upload Image</span>
+                    </FileUploadBox>
+                    <FormGroup style={{ flex: 1 }}>
+                      <FormLabel>
+                        <FaLink />
+                        Or paste image URL
+                      </FormLabel>
+                      <FormInput
+                        value={aboutUsData.aboutImage}
+                        onChange={e => {
+                          setAboutUsData(prev => ({ ...prev, aboutImage: e.target.value }));
+                          autoSaveForPreview();
+                        }}
+                        placeholder="https://example.com/image.jpg"
+                      />
+                    </FormGroup>
+                  </FileUploadContainer>
+                )}
               </FormGroup>
             </FormGrid>
           </ContentSection>
