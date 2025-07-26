@@ -1740,6 +1740,7 @@ const VendorDashboard = () => {
         content: section.content || '',
         images: Array.isArray(section.images) ? [...section.images] : [],
         cards: Array.isArray(section.cards) ? [...section.cards] : [],
+        visible: section.visible !== false, // Default to true if not specified
       });
     } else {
       setEditingCustomSection(null);
