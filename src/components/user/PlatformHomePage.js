@@ -20,6 +20,12 @@ import { Button } from '../shared/Button';
 import { theme, media } from '../../styles/GlobalStyle';
 import { useAuth } from '../../context/AuthContext';
 import AuthModal from '../auth/AuthModal';
+import {
+  storeCategories,
+  platformStats,
+  platformBenefits,
+  platformTestimonials
+} from '../../DummyData/platform';
 
 const PageContainer = styled.div`
   min-height: 100vh;
