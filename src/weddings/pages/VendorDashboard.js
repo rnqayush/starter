@@ -675,6 +675,7 @@ const VendorDashboard = () => {
   const [activeSection, setActiveSection] = useState('hero');
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [autoSaveTimeout, setAutoSaveTimeout] = useState(null);
 
   // Local form states - these hold temporary changes
   const [heroData, setHeroData] = useState({
