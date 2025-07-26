@@ -1297,6 +1297,11 @@ const VendorPage = () => {
               return null;
             }
 
+            // Also check the visible field directly on the custom section
+            if (customSection.visible === false) {
+              return null;
+            }
+
             return (
               <Section
                 key={`custom-${customSection.id}`}
