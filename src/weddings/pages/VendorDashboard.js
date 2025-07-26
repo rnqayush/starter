@@ -2230,10 +2230,23 @@ const VendorDashboard = () => {
       case 'services-offered':
         return (
           <ContentSection>
-            <SectionTitle>
-              <FaServicestack />
-              Services Offered
-            </SectionTitle>
+            <SectionHeader>
+              <SectionTitle>
+                <FaServicestack />
+                Services Offered
+              </SectionTitle>
+              <VisibilityToggleContainer>
+                <span>{sectionVisibility['services-offered'] ? 'Visible' : 'Hidden'}</span>
+                <ToggleSwitch>
+                  <input
+                    type="checkbox"
+                    checked={sectionVisibility['services-offered']}
+                    onChange={() => toggleSectionVisibility('services-offered')}
+                  />
+                  <span></span>
+                </ToggleSwitch>
+              </VisibilityToggleContainer>
+            </SectionHeader>
             {servicesData.map(service => (
               <div
                 key={service.id}
