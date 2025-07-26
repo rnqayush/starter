@@ -1435,26 +1435,39 @@ const VendorPage = () => {
             Browse through our portfolio of beautiful weddings and events
           </SectionSubtitle>
           <GalleryTabs>
-            {Object.keys(vendor.gallery || {}).map(category => (
-              <GalleryTab
-                key={category}
-                active={activeGalleryTab === category}
-                primaryColor={primaryColor}
-                onClick={() => setActiveGalleryTab(category)}
-              >
-                <FaImages />
-                {category.charAt(0).toUpperCase() + category.slice(1)}
-              </GalleryTab>
-            ))}
+            {Object.keys(vendor.gallery || {}).map(category => {
+              const categoryData = vendor.gallery[category];
+              const categoryTitle = categoryData?.title || category.charAt(0).toUpperCase() + category.slice(1);
+
+              return (
+                <GalleryTab
+                  key={category}
+                  active={activeGalleryTab === category}
+                  primaryColor={primaryColor}
+                  onClick={() => setActiveGalleryTab(category)}
+                >
+                  <FaImages />
+                  {categoryTitle}
+                </GalleryTab>
+              );
+            })}
           </GalleryTabs>
           <GalleryGrid>
-            {vendor.gallery?.[activeGalleryTab]?.map((image, index) => (
-              <GalleryItem
-                key={index}
-                src={image}
-                alt={`${vendor.name} ${activeGalleryTab} ${index + 1}`}
-              />
-            ))}
+            {(() => {
+              const activeCategory = vendor.gallery?.[activeGalleryTab];
+              // Handle both old format (direct array) and new format (object with images array)
+              const images = Array.isArray(activeCategory)
+                ? activeCategory
+                : activeCategory?.images || [];
+
+              return images.map((image, index) => (
+                <GalleryItem
+                  key={index}
+                  src={image}
+                  alt={`${vendor.name} ${activeGalleryTab} ${index + 1}`}
+                />
+              ));
+            })()}
           </GalleryGrid>
         </Container>
       </Section>
