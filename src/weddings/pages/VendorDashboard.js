@@ -887,76 +887,87 @@ const VendorDashboard = () => {
   const handleSaveAndGoLive = () => {
     console.log('handleSaveAndGoLive called');
 
+    if (!editingVendor) {
+      alert('No vendor is being edited. Please try refreshing the page.');
+      return;
+    }
+
     try {
-      // Sanitize data to ensure it's serializable - remove File objects and functions
-      const sanitizeData = data => {
-        if (Array.isArray(data)) {
-          return data.map(item => {
-            if (typeof item === 'object' && item !== null) {
-              const sanitized = {};
-              Object.keys(item).forEach(key => {
-                // Skip File objects and functions
-                if (!(item[key] instanceof File) && typeof item[key] !== 'function') {
-                  sanitized[key] = item[key];
-                }
-              });
-              return sanitized;
-            }
-            return item;
-          });
-        } else if (typeof data === 'object' && data !== null) {
-          const sanitized = {};
-          Object.keys(data).forEach(key => {
-            // Skip File objects and functions
-            if (!(data[key] instanceof File) && typeof data[key] !== 'function') {
-              sanitized[key] = data[key];
-            }
-          });
-          return sanitized;
-        }
-        return data;
+      // Create clean, serializable objects without File references
+      const cleanServices = servicesData.map(service => ({
+        id: service.id,
+        name: service.name || '',
+        description: service.description || '',
+        price: service.price || '',
+        icon: service.icon || '',
+        image: service.image || '',
+      }));
+
+      const cleanRecentWork = recentWorkData.map(work => ({
+        id: work.id,
+        title: work.title || '',
+        location: work.location || '',
+        date: work.date || '',
+        image: work.image || '',
+        city: work.location || '',
+        weddingDate: work.date || '',
+        coverImage: work.image || '',
+        description: work.description || '',
+      }));
+
+      const cleanTestimonials = testimonialsData.map(testimonial => ({
+        id: testimonial.id,
+        client: testimonial.client || '',
+        name: testimonial.client || '', // Map client to name for compatibility
+        text: testimonial.text || '',
+        rating: testimonial.rating || 5,
+        wedding: testimonial.wedding || '',
+      }));
+
+      const cleanPackages = packagesData.map(pkg => ({
+        id: pkg.id,
+        name: pkg.name || '',
+        description: pkg.description || '',
+        price: pkg.price || '',
+        features: Array.isArray(pkg.features) ? pkg.features : [],
+      }));
+
+      const cleanGallery = {};
+      Object.keys(galleryData.categories || {}).forEach(key => {
+        cleanGallery[key] = {
+          title: galleryData.categories[key]?.title || key,
+          images: Array.isArray(galleryData.categories[key]?.images)
+            ? galleryData.categories[key].images.filter(img => typeof img === 'string')
+            : [],
+        };
+      });
+
+      const cleanAboutUs = {
+        text: aboutUsData.description || '',
+        experience: aboutUsData.experience || '',
+        completedWeddings: aboutUsData.completedWeddings || '',
+        satisfiedCouples: aboutUsData.satisfiedCouples || '',
+        videoEmbed: aboutUsData.videoEmbed || '',
       };
 
-      console.log('Dispatching vendor field updates...');
-      // Update vendor data in Redux with all local changes
-      dispatch(updateVendorField({ field: 'name', value: heroData.name }));
-      dispatch(updateVendorField({ field: 'tagline', value: heroData.tagline }));
-      dispatch(updateVendorField({ field: 'image', value: heroData.image }));
-      dispatch(updateVendorField({ field: 'description', value: aboutUsData.description }));
+      console.log('Dispatching basic field updates...');
+      // Update basic fields one by one
+      dispatch({ type: 'vendorManagement/updateVendorField', payload: { field: 'name', value: heroData.name || '' } });
+      dispatch({ type: 'vendorManagement/updateVendorField', payload: { field: 'tagline', value: heroData.tagline || '' } });
+      dispatch({ type: 'vendorManagement/updateVendorField', payload: { field: 'image', value: heroData.image || '' } });
+      dispatch({ type: 'vendorManagement/updateVendorField', payload: { field: 'description', value: aboutUsData.description || '' } });
+      dispatch({ type: 'vendorManagement/updateVendorField', payload: { field: 'aboutUs', value: cleanAboutUs } });
 
-      // Update About Us data
-      const aboutUsPayload = {
-        text: aboutUsData.description,
-        experience: aboutUsData.experience,
-        completedWeddings: aboutUsData.completedWeddings,
-        satisfiedCouples: aboutUsData.satisfiedCouples,
-        videoEmbed: aboutUsData.videoEmbed,
-      };
-      dispatch(updateVendorField({ field: 'aboutUs', value: aboutUsPayload }));
-
-      // Update gallery data
-      const galleryPayload = sanitizeData(galleryData.categories);
-      dispatch(updateVendorGallery(galleryPayload));
-
-      console.log('Dispatching services update...');
-      const sanitizedServices = sanitizeData(servicesData);
-      dispatch(updateServices(sanitizedServices));
-
-      console.log('Dispatching recent work update...');
-      const sanitizedRecentWork = sanitizeData(recentWorkData);
-      dispatch(updateRecentWork(sanitizedRecentWork));
-
-      console.log('Dispatching packages update...');
-      const sanitizedPackages = sanitizeData(packagesData);
-      dispatch(updatePackages(sanitizedPackages));
-
-      console.log('Dispatching testimonials update...');
-      const sanitizedTestimonials = sanitizeData(testimonialsData);
-      dispatch(updateTestimonials(sanitizedTestimonials));
+      console.log('Dispatching array updates...');
+      dispatch({ type: 'vendorManagement/updateServices', payload: cleanServices });
+      dispatch({ type: 'vendorManagement/updateRecentWork', payload: cleanRecentWork });
+      dispatch({ type: 'vendorManagement/updateTestimonials', payload: cleanTestimonials });
+      dispatch({ type: 'vendorManagement/updatePackages', payload: cleanPackages });
+      dispatch({ type: 'vendorManagement/updateVendorGallery', payload: cleanGallery });
 
       console.log('Saving changes...');
-      // Save all changes to global state
-      dispatch(saveChanges());
+      dispatch({ type: 'vendorManagement/saveChanges' });
+
       setSaved(false);
       alert('All changes published to live vendor page successfully!');
 
