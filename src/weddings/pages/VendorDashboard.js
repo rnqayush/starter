@@ -1751,6 +1751,7 @@ const VendorDashboard = () => {
         content: '',
         images: [],
         cards: [],
+        visible: true,
       });
     }
     setShowCustomSectionModal(true);
