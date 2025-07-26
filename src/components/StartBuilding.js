@@ -2,11 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import {
-  FaRing,
-  FaHotel,
-  FaShoppingCart,
-  FaCar,
-  FaBriefcase,
   FaArrowLeft,
   FaArrowRight,
   FaCheck,
@@ -15,6 +10,7 @@ import {
 } from 'react-icons/fa';
 import { theme, media } from '../styles/GlobalStyle';
 import { Button } from './shared/Button';
+import { websiteTypes, colorOptions } from '../DummyData/platform';
 
 const Container = styled.div`
   min-height: 100vh;
