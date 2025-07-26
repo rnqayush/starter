@@ -836,6 +836,9 @@ const BuisnessAdminDashboard = () => {
         reviews: reviewsData,
         faq: faqData,
         contact: contactData,
+        businessHours: businessHoursData,
+        customSections: customSectionsData,
+        sectionOrder: sectionOrderData,
         sectionVisibility: sectionVisibility,
       };
 
