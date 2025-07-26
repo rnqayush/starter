@@ -3411,51 +3411,80 @@ const BuisnessAdminDashboard = () => {
         </SidebarNav>
 
         <SidebarFooter>
-          <SaveActionsContainer>
-            {hasUnsavedChanges && (
-              <ChangesIndicator>
-                <FaEdit />
-                Unsaved changes
-              </ChangesIndicator>
-            )}
-
-            <SaveButton
-              variant="primary"
-              onClick={handleSaveChanges}
-              disabled={!hasUnsavedChanges}
-              saved={saved && !hasUnsavedChanges}
-            >
-              {saved && !hasUnsavedChanges ? (
-                <>
-                  <FaCheckCircle />
-                  Changes Saved
-                </>
-              ) : (
-                <>
-                  <FaSave />
-                  Save Changes
-                </>
+          <SidebarFooterContent>
+            <SaveActionsContainer>
+              {hasUnsavedChanges && (
+                <ChangesIndicator>
+                  <FaEdit />
+                  Unsaved changes
+                </ChangesIndicator>
               )}
-            </SaveButton>
 
-            <SaveButton
-              variant="success"
-              onClick={handleSaveAndGoLive}
-              disabled={hasUnsavedChanges && !saved}
-            >
-              <FaCheckCircle />
-              Save & Go Live
-            </SaveButton>
+              <SaveButton
+                variant="primary"
+                onClick={handleSaveChanges}
+                disabled={!hasUnsavedChanges}
+                saved={saved && !hasUnsavedChanges}
+              >
+                {saved && !hasUnsavedChanges ? (
+                  <>
+                    <FaCheckCircle />
+                    Changes Saved
+                  </>
+                ) : (
+                  <>
+                    <FaSave />
+                    Save Changes
+                  </>
+                )}
+              </SaveButton>
 
-            <SaveButton
-              variant="secondary"
-              onClick={handleDiscardChanges}
-              disabled={!hasUnsavedChanges}
-            >
-              <FaUndo />
-              Discard Changes
-            </SaveButton>
-          </SaveActionsContainer>
+              <SaveButton
+                variant="success"
+                onClick={handleSaveAndGoLive}
+                disabled={hasUnsavedChanges && !saved}
+              >
+                <FaCheckCircle />
+                Save & Go Live
+              </SaveButton>
+
+              <SaveButton
+                variant="secondary"
+                onClick={handleDiscardChanges}
+                disabled={!hasUnsavedChanges}
+              >
+                <FaUndo />
+                Discard Changes
+              </SaveButton>
+
+              {changedSections.size > 0 && (
+                <div style={{
+                  marginTop: '16px',
+                  padding: '12px',
+                  background: '#fef3c7',
+                  borderRadius: '6px',
+                  fontSize: '0.85rem'
+                }}>
+                  <strong>Changed sections:</strong>
+                  <div style={{ marginTop: '4px' }}>
+                    {Array.from(changedSections).map(section => (
+                      <span key={section} style={{
+                        display: 'inline-block',
+                        background: '#f59e0b',
+                        color: 'white',
+                        padding: '2px 6px',
+                        borderRadius: '3px',
+                        margin: '2px',
+                        fontSize: '0.8rem'
+                      }}>
+                        {section.replace(/-/g, ' ')}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </SaveActionsContainer>
+          </SidebarFooterContent>
         </SidebarFooter>
       </Sidebar>
 
