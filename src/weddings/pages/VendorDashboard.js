@@ -525,6 +525,13 @@ const VendorDashboard = () => {
     state => state.vendorManagement
   );
 
+  // Debug: Check if action creators are properly imported
+  console.log('Action creators:', {
+    updateVendorField,
+    updateServices,
+    saveChanges
+  });
+
   // Get vendor ID from URL path
   const currentPath = window.location.pathname;
   const pathSegments = currentPath.split('/').filter(Boolean);
