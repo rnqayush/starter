@@ -745,6 +745,10 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
     if (editingHotel && editingHotel.sectionOrder) {
       setSectionOrder(editingHotel.sectionOrder);
     }
+    // Initialize custom sections from hotel data
+    if (editingHotel && editingHotel.customSections) {
+      setCustomSections(editingHotel.customSections);
+    }
   }, [editingHotel]);
 
   const openModal = (sectionType) => {
