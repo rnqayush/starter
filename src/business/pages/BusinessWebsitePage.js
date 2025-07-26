@@ -2006,7 +2006,10 @@ const BusinessWebsitePage = () => {
     };
   };
 
-  const content = getBusinessContent(businessData.slug);
+  // Get content from editing business if available, otherwise use sample content
+  const content = editingBusiness && editingBusiness.slug === businessData.slug
+    ? editingBusiness
+    : getBusinessContent(businessData.slug);
 
   // Safety check to ensure content is loaded
   if (!content) {
@@ -2149,8 +2152,8 @@ const BusinessWebsitePage = () => {
         businessType={businessData.slug}
       >
         <HeroContent>
-          <HeroTitle>{content.hero.title}</HeroTitle>
-          <HeroSubtitle>{content.hero.subtitle}</HeroSubtitle>
+          <HeroTitle>{content.hero?.title || businessData.name}</HeroTitle>
+          <HeroSubtitle>{content.hero?.subtitle || `Welcome to ${businessData.name}`}</HeroSubtitle>
           <div
             style={{
               display: 'flex',
@@ -2193,8 +2196,8 @@ const BusinessWebsitePage = () => {
         <SectionContainer>
           <AboutGrid>
             <AboutContent>
-              <h3>{content.about.title}</h3>
-              <p>{content.about.description}</p>
+              <h3>{content.about?.title || 'About Us'}</h3>
+              <p>{content.about?.description || `Learn more about ${businessData.name}`}</p>
               <p>
                 We pride ourselves on delivering exceptional service and
                 creating memorable experiences for all our clients. Our
@@ -2363,7 +2366,7 @@ const BusinessWebsitePage = () => {
           </SectionSubtitle>
           <ServicesGrid>
             {(content.services || []).map((service, index) => (
-              <ServiceCard key={index} primaryColor={businessData.primaryColor}>
+              <ServiceCard key={service.id || index} primaryColor={businessData.primaryColor}>
                 <div className="icon">{service.icon}</div>
                 <h3>{service.title}</h3>
                 <p>{service.description}</p>
@@ -2395,9 +2398,13 @@ const BusinessWebsitePage = () => {
           </SectionSubtitle>
           <TeamGrid>
             {(content.team || []).map((member, index) => (
-              <TeamCard key={index}>
+              <TeamCard key={member.id || index}>
                 <TeamPhoto primaryColor={businessData.primaryColor}>
-                  👤
+                  {member.photo ? (
+                    <img src={member.photo} alt={member.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  ) : (
+                    '👤'
+                  )}
                 </TeamPhoto>
                 <TeamInfo primaryColor={businessData.primaryColor}>
                   <h3>{member.name}</h3>
@@ -2742,35 +2749,33 @@ const BusinessWebsitePage = () => {
             </ContactForm>
 
             <ContactInfo primaryColor={businessData.primaryColor}>
-              <h3>Send us a Message</h3>
+              <h3>{content.contact?.title || 'Send us a Message'}</h3>
               <p
                 style={{
                   marginBottom: theme.spacing.lg,
                   color: theme.colors.gray600,
                 }}
               >
-                We'd love to hear from you! Whether you have questions about our
-                services, want to book an appointment, or need a custom quote,
-                don't hesitate to reach out.
+                {content.contact?.description || "We'd love to hear from you! Whether you have questions about our services, want to book an appointment, or need a custom quote, don't hesitate to reach out."}
               </p>
               <div className="contact-item">
                 <div className="icon">
                   <FaPhone />
                 </div>
-                <div className="text">+1 (555) 123-4567</div>
+                <div className="text">{content.contact?.phone || '+1 (555) 123-4567'}</div>
               </div>
               <div className="contact-item">
                 <div className="icon">
                   <FaEnvelope />
                 </div>
-                <div className="text">info@{businessData.slug}.com</div>
+                <div className="text">{content.contact?.email || `info@${businessData.slug}.com`}</div>
               </div>
               <div className="contact-item">
                 <div className="icon">
                   <FaMapMarkerAlt />
                 </div>
                 <div className="text">
-                  123 Business Street, City, State 12345
+                  {content.contact?.address || '123 Business Street, City, State 12345'}
                 </div>
               </div>
             </ContactInfo>
