@@ -2772,10 +2772,7 @@ const VendorDashboard = () => {
 
             {/* Add New Custom Section Button */}
             <ActionButton
-              onClick={() => {
-                setEditingCustomSection(null);
-                setShowCustomSectionModal(true);
-              }}
+              onClick={() => openCustomSectionModal()}
             >
               <FaPlus />
               Add Custom Section
