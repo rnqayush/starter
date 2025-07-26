@@ -821,6 +821,8 @@ const VendorDashboard = () => {
           });
           return cleanGallery;
         })(),
+        sectionOrder: sectionOrder,
+        customSections: customSections,
       };
 
       // Update Redux with the current form data for real-time preview
