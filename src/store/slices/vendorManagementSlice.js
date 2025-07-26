@@ -154,6 +154,15 @@ const vendorManagementSlice = createSlice({
       }
     },
     
+    initializeVendor: (state, action) => {
+      const vendor = action.payload;
+      const existingVendor = state.vendors.find(v => v.id === vendor.id);
+
+      if (!existingVendor) {
+        state.vendors.push(vendor);
+      }
+    },
+
     clearEditingVendor: (state) => {
       state.editingVendor = null;
       state.originalVendor = null;
