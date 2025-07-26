@@ -990,7 +990,9 @@ const HotelDetail = () => {
       </HeroBanner>
 
       {/* Render sections in custom order - only if visible */}
-      {(hotel.sectionOrder || ['about', 'features', 'gallery', 'amenities', 'contact'])
+      {(hotel.sectionOrder || ['about', 'features', 'gallery', 'amenities', 'contact'].concat(
+        (hotel.customSections || []).map(cs => cs.id)
+      ))
         .filter(sectionId => {
           // Check if section is visible (from Redux state or default to true)
           const sectionVisibility = hotel.sectionVisibility || {
