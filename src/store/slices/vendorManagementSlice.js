@@ -194,6 +194,7 @@ const vendorManagementSlice = createSlice({
 
 export const {
   setEditingVendor,
+  initializeVendor,
   updateVendorField,
   updateVendorImage,
   updateVendorGallery,
