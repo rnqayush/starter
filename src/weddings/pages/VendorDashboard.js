@@ -732,6 +732,9 @@ const VendorDashboard = () => {
     'testimonials',
   ]);
 
+  // Complete section order including custom sections
+  const [completeSectionOrder, setCompleteSectionOrder] = useState([]);
+
   const [changedSections, setChangedSections] = useState(new Set());
   const [showCustomSectionModal, setShowCustomSectionModal] = useState(false);
   const [editingCustomSection, setEditingCustomSection] = useState(null);
