@@ -620,36 +620,52 @@ const VendorDashboard = () => {
         specialization: vendorData.specialization || 'Highlight your specializations and unique services.',
       });
       
-      // Initialize Services data
-      setServicesData(vendorData.services || [
-        { id: 1, name: 'Wedding Planning', description: 'Complete wedding planning service from start to finish.', price: '$2000-$5000' },
-        { id: 2, name: 'Day-of Coordination', description: 'Professional coordination on your wedding day.', price: '$800-$1500' },
-      ]);
-      
-      // Initialize Recent Work data
-      setRecentWorkData(vendorData.locationPortfolio || [
-        { id: 1, title: 'Sarah & Michael Wedding', location: 'Napa Valley', date: 'September 2023', image: vendorData.image },
-        { id: 2, title: 'Emily & James Wedding', location: 'San Francisco', date: 'August 2023', image: vendorData.image },
-      ]);
-      
+      // Initialize Services data with unique IDs
+      const servicesWithIds = (vendorData.services || [
+        { name: 'Wedding Planning', description: 'Complete wedding planning service from start to finish.', price: '$2000-$5000' },
+        { name: 'Day-of Coordination', description: 'Professional coordination on your wedding day.', price: '$800-$1500' },
+      ]).map((service, index) => ({
+        ...service,
+        id: service.id || `service-${Date.now()}-${index}`
+      }));
+      setServicesData(servicesWithIds);
+
+      // Initialize Recent Work data with unique IDs
+      const recentWorkWithIds = (vendorData.locationPortfolio || [
+        { title: 'Sarah & Michael Wedding', location: 'Napa Valley', date: 'September 2023', image: vendorData.image },
+        { title: 'Emily & James Wedding', location: 'San Francisco', date: 'August 2023', image: vendorData.image },
+      ]).map((work, index) => ({
+        ...work,
+        id: work.id || `work-${Date.now()}-${index}`
+      }));
+      setRecentWorkData(recentWorkWithIds);
+
       // Initialize Photos & Media data
       setPhotosMediaData({
         profileImage: vendorData.logo || '',
         bannerImage: vendorData.image || '',
         gallery: vendorData.portfolioImages || [],
       });
-      
-      // Initialize Testimonials data
-      setTestimonialsData(vendorData.testimonials || [
-        { id: 1, client: 'Sarah & Michael', text: 'Amazing service! Highly recommended.', rating: 5 },
-        { id: 2, client: 'Emily & James', text: 'Professional and creative. Made our day perfect.', rating: 5 },
-      ]);
-      
-      // Initialize Packages data
-      setPackagesData(vendorData.packages || [
-        { id: 1, name: 'Basic Package', description: 'Essential wedding planning services', price: '$2000' },
-        { id: 2, name: 'Premium Package', description: 'Full-service wedding planning with premium features', price: '$5000' },
-      ]);
+
+      // Initialize Testimonials data with unique IDs
+      const testimonialsWithIds = (vendorData.testimonials || [
+        { client: 'Sarah & Michael', text: 'Amazing service! Highly recommended.', rating: 5 },
+        { client: 'Emily & James', text: 'Professional and creative. Made our day perfect.', rating: 5 },
+      ]).map((testimonial, index) => ({
+        ...testimonial,
+        id: testimonial.id || `testimonial-${Date.now()}-${index}`
+      }));
+      setTestimonialsData(testimonialsWithIds);
+
+      // Initialize Packages data with unique IDs
+      const packagesWithIds = (vendorData.packages || [
+        { name: 'Basic Package', description: 'Essential wedding planning services', price: '$2000' },
+        { name: 'Premium Package', description: 'Full-service wedding planning with premium features', price: '$5000' },
+      ]).map((pkg, index) => ({
+        ...pkg,
+        id: pkg.id || `package-${Date.now()}-${index}`
+      }));
+      setPackagesData(packagesWithIds);
       
       // Initialize Custom Sections
       setCustomSections(vendorData.customSections || []);
