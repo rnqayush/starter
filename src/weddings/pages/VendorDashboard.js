@@ -883,17 +883,35 @@ const VendorDashboard = () => {
   // Handle Save & Go Live - publishes changes to global state
   const handleSaveAndGoLive = () => {
     console.log('handleSaveAndGoLive called');
-    console.log('editingVendor:', editingVendor);
-
-    if (!editingVendor) {
-      alert('No vendor is being edited. Please try refreshing the page.');
-      return;
-    }
 
     try {
-      // Sanitize data to ensure it's serializable
+      // Sanitize data to ensure it's serializable - remove File objects and functions
       const sanitizeData = data => {
-        return JSON.parse(JSON.stringify(data));
+        if (Array.isArray(data)) {
+          return data.map(item => {
+            if (typeof item === 'object' && item !== null) {
+              const sanitized = {};
+              Object.keys(item).forEach(key => {
+                // Skip File objects and functions
+                if (!(item[key] instanceof File) && typeof item[key] !== 'function') {
+                  sanitized[key] = item[key];
+                }
+              });
+              return sanitized;
+            }
+            return item;
+          });
+        } else if (typeof data === 'object' && data !== null) {
+          const sanitized = {};
+          Object.keys(data).forEach(key => {
+            // Skip File objects and functions
+            if (!(data[key] instanceof File) && typeof data[key] !== 'function') {
+              sanitized[key] = data[key];
+            }
+          });
+          return sanitized;
+        }
+        return data;
       };
 
       console.log('Dispatching vendor field updates...');
@@ -902,21 +920,20 @@ const VendorDashboard = () => {
       dispatch(updateVendorField({ field: 'tagline', value: heroData.tagline }));
       dispatch(updateVendorField({ field: 'image', value: heroData.image }));
       dispatch(updateVendorField({ field: 'description', value: aboutUsData.description }));
-      
+
       // Update About Us data
-      dispatch(updateVendorField({ 
-        field: 'aboutUs', 
-        value: {
-          text: aboutUsData.description,
-          experience: aboutUsData.experience,
-          completedWeddings: aboutUsData.completedWeddings,
-          satisfiedCouples: aboutUsData.satisfiedCouples,
-          videoEmbed: aboutUsData.videoEmbed,
-        }
-      }));
+      const aboutUsPayload = {
+        text: aboutUsData.description,
+        experience: aboutUsData.experience,
+        completedWeddings: aboutUsData.completedWeddings,
+        satisfiedCouples: aboutUsData.satisfiedCouples,
+        videoEmbed: aboutUsData.videoEmbed,
+      };
+      dispatch(updateVendorField({ field: 'aboutUs', value: aboutUsPayload }));
 
       // Update gallery data
-      dispatch(updateVendorField({ field: 'gallery', value: galleryData.categories }));
+      const galleryPayload = sanitizeData(galleryData.categories);
+      dispatch(updateVendorField({ field: 'gallery', value: galleryPayload }));
 
       console.log('Dispatching services update...');
       const sanitizedServices = sanitizeData(servicesData);
@@ -939,7 +956,7 @@ const VendorDashboard = () => {
       dispatch(saveChanges());
       setSaved(false);
       alert('All changes published to live vendor page successfully!');
-      
+
       // Navigate back to vendor page
       navigate(`/${vendorId}`);
     } catch (error) {
