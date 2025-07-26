@@ -2556,14 +2556,64 @@ const VendorDashboard = () => {
               <FaPlus />
               Custom Sections
             </SectionTitle>
-            <p
-              style={{
-                color: theme.colors.gray600,
-                marginBottom: theme.spacing.lg,
+            <p style={{ color: theme.colors.gray600, marginBottom: theme.spacing.lg }}>
+              Create custom sections for your vendor page with different content types like text, galleries, or cards.
+            </p>
+
+            {/* Existing Custom Sections */}
+            {customSections.map(section => (
+              <div
+                key={section.id}
+                style={{
+                  border: `1px solid ${theme.colors.gray200}`,
+                  borderRadius: theme.borderRadius.md,
+                  padding: theme.spacing.lg,
+                  marginBottom: theme.spacing.lg,
+                  backgroundColor: theme.colors.gray50,
+                }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: theme.spacing.md }}>
+                  <h3 style={{ margin: 0, color: theme.colors.primary }}>{section.title}</h3>
+                  <div style={{ display: 'flex', gap: theme.spacing.sm }}>
+                    <ActionButton
+                      onClick={() => {
+                        setEditingCustomSection(section);
+                        setShowCustomSectionModal(true);
+                      }}
+                    >
+                      <FaEdit />
+                      Edit
+                    </ActionButton>
+                    <ActionButton
+                      variant="danger"
+                      onClick={() => {
+                        const updatedSections = customSections.filter(s => s.id !== section.id);
+                        setCustomSections(updatedSections);
+                        trackSectionChange('custom-sections');
+                      }}
+                    >
+                      <FaTrash />
+                      Delete
+                    </ActionButton>
+                  </div>
+                </div>
+                <p style={{ color: theme.colors.gray600, margin: 0 }}>{section.subtitle}</p>
+                <p style={{ color: theme.colors.gray500, fontSize: '0.9rem', margin: '8px 0 0 0' }}>
+                  Type: {section.type === 'text' ? 'Text Content' : section.type === 'gallery' ? 'Image Gallery' : 'Card Layout'}
+                </p>
+              </div>
+            ))}
+
+            {/* Add New Custom Section Button */}
+            <ActionButton
+              onClick={() => {
+                setEditingCustomSection(null);
+                setShowCustomSectionModal(true);
               }}
             >
-              Custom sections functionality will be implemented here.
-            </p>
+              <FaPlus />
+              Add Custom Section
+            </ActionButton>
           </ContentSection>
         );
 
