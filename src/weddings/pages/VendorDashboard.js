@@ -967,8 +967,12 @@ const VendorDashboard = () => {
           location: work.title || '',
           city: work.location || '',
           weddingDate: work.date || '',
-          coverImage: work.image || '',
+          coupleNames: work.coupleNames || '',
           description: work.description || '',
+          coverImage: work.image || '',
+          services: Array.isArray(work.services) ? work.services : [],
+          highlights: Array.isArray(work.highlights) ? work.highlights : [],
+          gallery: Array.isArray(work.gallery) ? work.gallery : [],
         })),
         testimonials: testimonialsData.map(testimonial => ({
           id: testimonial.id,
