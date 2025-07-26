@@ -735,6 +735,17 @@ const VendorDashboard = () => {
   // Complete section order including custom sections
   const [completeSectionOrder, setCompleteSectionOrder] = useState([]);
 
+  // Section visibility state
+  const [sectionVisibility, setSectionVisibility] = useState({
+    'hero': true,
+    'about-us': true,
+    'services-offered': true,
+    'recent-work': true,
+    'gallery': true,
+    'testimonials': true,
+    'packages-pricing': true,
+  });
+
   const [changedSections, setChangedSections] = useState(new Set());
   const [showCustomSectionModal, setShowCustomSectionModal] = useState(false);
   const [editingCustomSection, setEditingCustomSection] = useState(null);
