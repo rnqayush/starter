@@ -1792,10 +1792,10 @@ const VendorDashboard = () => {
         }
         return prev;
       });
-      // Set default visibility for new custom section
+      // Set visibility for new custom section
       setCustomSectionVisibility(prev => ({
         ...prev,
-        [sectionData.id]: true
+        [sectionData.id]: sectionData.visible
       }));
     }
 
