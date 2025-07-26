@@ -1128,6 +1128,9 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
     // Save section order along with other changes
     dispatch(updateHotelField({ field: 'sectionOrder', value: sectionOrder }));
 
+    // Save custom sections
+    dispatch(updateHotelField({ field: 'customSections', value: customSections }));
+
     // Save all changes to global state (this will update the live hotel page)
     dispatch(saveChanges());
     alert('All changes published to live hotel page successfully!');
