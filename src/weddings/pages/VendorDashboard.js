@@ -778,7 +778,9 @@ const VendorDashboard = () => {
 
       // Initialize vendor in Redux state if it doesn't exist, then set as editing
       try {
-        dispatch(initializeVendor(vendorData));
+        // Create a sanitized version for Redux
+        const sanitizedVendor = JSON.parse(JSON.stringify(vendorData));
+        dispatch(initializeVendor(sanitizedVendor));
         dispatch(setEditingVendor(vendorId));
       } catch (error) {
         console.error('Error setting editing vendor:', error);
