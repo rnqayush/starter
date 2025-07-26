@@ -8,7 +8,7 @@ import BusinessModule from '../business';
 import {
   getHotelBySlug,
   getVendorBySlug,
-  getVendorBySlug as getAutomobileVendorBySlug,
+  getAutomobileVendorBySlug,
   getVendorById,
   getBusinessTemplate,
 } from '../DummyData';
