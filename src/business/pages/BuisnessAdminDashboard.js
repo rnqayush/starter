@@ -3249,47 +3249,217 @@ const BuisnessAdminDashboard = () => {
               </SectionTitle>
             </SectionHeader>
 
-            <p style={{ marginBottom: '20px', color: '#6b7280' }}>
-              Drag and drop sections to reorder them on your website
-            </p>
+            <div style={{
+              background: '#eff6ff',
+              border: '1px solid #dbeafe',
+              padding: '16px',
+              borderRadius: '8px',
+              marginBottom: '24px'
+            }}>
+              <h4 style={{ margin: '0 0 8px 0', color: '#1e40af', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <FaChartBar />
+                Section Management
+              </h4>
+              <p style={{ margin: '0', color: '#1e40af', fontSize: '0.9rem' }}>
+                Reorder sections to customize your website layout. Use the arrow buttons to move sections up or down.
+                Disabled sections will appear grayed out but can still be reordered.
+              </p>
+            </div>
+
+            <div style={{ display: 'flex', gap: '12px', marginBottom: '20px', flexWrap: 'wrap' }}>
+              <button
+                onClick={() => {
+                  const defaultOrder = ['hero', 'about-us', 'services-offered', 'portfolio', 'skills', 'experience', 'team', 'gallery', 'packages', 'testimonials', 'reviews', 'faq', 'business-hours', 'contact'];
+                  setSectionOrderData(defaultOrder);
+                  trackSectionChange('order');
+                }}
+                style={{
+                  padding: '8px 16px',
+                  background: '#3b82f6',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '6px',
+                  cursor: 'pointer',
+                  fontSize: '0.9rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px'
+                }}
+              >
+                <FaUndo />
+                Reset to Default
+              </button>
+              <button
+                onClick={() => {
+                  const shuffled = [...sectionOrderData].sort(() => Math.random() - 0.5);
+                  setSectionOrderData(shuffled);
+                  trackSectionChange('order');
+                }}
+                style={{
+                  padding: '8px 16px',
+                  background: '#8b5cf6',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '6px',
+                  cursor: 'pointer',
+                  fontSize: '0.9rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px'
+                }}
+              >
+                <FaRandom />
+                Shuffle
+              </button>
+            </div>
 
             <ListContainer>
-              {sectionOrderData.map((sectionId, index) => (
-                <ListItem key={sectionId} style={{ cursor: 'move' }}>
-                  <div className="item-info" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                    <FaGripHorizontal style={{ color: '#9ca3af' }} />
-                    <span style={{ fontWeight: '600', textTransform: 'capitalize' }}>
-                      {sectionId.replace(/-/g, ' ')}
-                    </span>
-                    <span style={{ color: '#6b7280', fontSize: '0.9rem' }}>
-                      Position: {index + 1}
-                    </span>
-                  </div>
-                  <div className="item-actions">
-                    <ItemButton
-                      onClick={() => {
-                        if (index > 0) {
-                          reorderSections(index, index - 1);
-                        }
-                      }}
-                      disabled={index === 0}
-                    >
-                      ↑ Move Up
-                    </ItemButton>
-                    <ItemButton
-                      onClick={() => {
-                        if (index < sectionOrderData.length - 1) {
-                          reorderSections(index, index + 1);
-                        }
-                      }}
-                      disabled={index === sectionOrderData.length - 1}
-                    >
-                      ↓ Move Down
-                    </ItemButton>
-                  </div>
-                </ListItem>
-              ))}
+              {sectionOrderData.map((sectionId, index) => {
+                const isVisible = sectionVisibility[sectionId];
+                const sectionIcon = {
+                  'hero': '🏠',
+                  'about-us': '👥',
+                  'services-offered': '⚙️',
+                  'portfolio': '💼',
+                  'skills': '🎯',
+                  'experience': '📄',
+                  'team': '👨‍👩‍👧‍👦',
+                  'gallery': '📸',
+                  'packages': '💰',
+                  'testimonials': '💬',
+                  'reviews': '⭐',
+                  'faq': '❓',
+                  'business-hours': '🕐',
+                  'contact': '📞'
+                }[sectionId] || '📋';
+
+                return (
+                  <ListItem
+                    key={sectionId}
+                    style={{
+                      cursor: 'move',
+                      opacity: isVisible ? 1 : 0.6,
+                      border: `2px solid ${isVisible ? '#10b981' : '#6b7280'}`,
+                      background: isVisible ? '#ffffff' : '#f9fafb'
+                    }}
+                  >
+                    <div className="item-info" style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '12px',
+                      flex: 1
+                    }}>
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        width: '32px',
+                        height: '32px',
+                        background: '#f3f4f6',
+                        borderRadius: '6px',
+                        fontSize: '1.2rem'
+                      }}>
+                        {index + 1}
+                      </div>
+                      <span style={{ fontSize: '1.5rem' }}>{sectionIcon}</span>
+                      <div style={{ flex: 1 }}>
+                        <div style={{
+                          fontWeight: '600',
+                          textTransform: 'capitalize',
+                          color: isVisible ? '#111827' : '#6b7280'
+                        }}>
+                          {sectionId.replace(/-/g, ' ')}
+                        </div>
+                        <div style={{
+                          fontSize: '0.8rem',
+                          color: isVisible ? '#10b981' : '#6b7280',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '4px'
+                        }}>
+                          {isVisible ? (
+                            <>
+                              <FaEye />
+                              Visible
+                            </>
+                          ) : (
+                            <>
+                              <FaEyeSlash />
+                              Hidden
+                            </>
+                          )}
+                        </div>
+                      </div>
+                      <FaGripHorizontal style={{ color: '#9ca3af', fontSize: '1.2rem' }} />
+                    </div>
+                    <div className="item-actions">
+                      <ItemButton
+                        onClick={() => {
+                          if (index > 0) {
+                            reorderSections(index, index - 1);
+                          }
+                        }}
+                        disabled={index === 0}
+                        title="Move up"
+                      >
+                        <FaChevronUp />
+                      </ItemButton>
+                      <ItemButton
+                        onClick={() => {
+                          if (index < sectionOrderData.length - 1) {
+                            reorderSections(index, index + 1);
+                          }
+                        }}
+                        disabled={index === sectionOrderData.length - 1}
+                        title="Move down"
+                      >
+                        <FaChevronDown />
+                      </ItemButton>
+                      <ItemButton
+                        onClick={() => toggleSectionVisibility(sectionId)}
+                        style={{
+                          background: isVisible ? '#ef4444' : '#10b981',
+                          color: 'white'
+                        }}
+                        title={isVisible ? 'Hide section' : 'Show section'}
+                      >
+                        {isVisible ? <FaEyeSlash /> : <FaEye />}
+                      </ItemButton>
+                    </div>
+                  </ListItem>
+                );
+              })}
             </ListContainer>
+
+            {/* Preview order */}
+            <div style={{
+              marginTop: '24px',
+              padding: '16px',
+              background: '#f8fafc',
+              border: '1px solid #e2e8f0',
+              borderRadius: '8px'
+            }}>
+              <h4 style={{ margin: '0 0 12px 0', color: '#374151' }}>
+                Section Preview Order
+              </h4>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                {sectionOrderData.map((sectionId, index) => (
+                  <span
+                    key={sectionId}
+                    style={{
+                      padding: '4px 8px',
+                      background: sectionVisibility[sectionId] ? '#3b82f6' : '#6b7280',
+                      color: 'white',
+                      borderRadius: '4px',
+                      fontSize: '0.8rem',
+                      opacity: sectionVisibility[sectionId] ? 1 : 0.6
+                    }}
+                  >
+                    {index + 1}. {sectionId.replace(/-/g, ' ')}
+                  </span>
+                ))}
+              </div>
+            </div>
           </ContentSection>
         );
 
