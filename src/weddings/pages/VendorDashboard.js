@@ -2371,13 +2371,46 @@ const VendorDashboard = () => {
 
           {/* Save Actions Section - Now part of scrollable content */}
           <NavSection>
+            <NavSectionTitle>Changes</NavSectionTitle>
+            {changedSections.size > 0 && (
+              <div style={{ padding: `0 ${theme.spacing.lg}`, marginBottom: theme.spacing.md }}>
+                <p style={{ fontSize: '0.85rem', color: theme.colors.gray600, margin: '0 0 8px 0' }}>
+                  Modified sections:
+                </p>
+                {Array.from(changedSections).map(sectionId => {
+                  const section = navigationItems.find(item => item.id === sectionId);
+                  return (
+                    <div key={sectionId} style={{
+                      fontSize: '0.8rem',
+                      color: theme.colors.warning,
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      marginBottom: '4px'
+                    }}>
+                      <FaEdit size={10} />
+                      {section?.label || sectionId}
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </NavSection>
+
+          <NavSection>
             <NavSectionTitle>Actions</NavSectionTitle>
             <SidebarFooter>
               <SaveActionsContainer>
-                {(hasUnsavedChanges || saved) && (
+                {changedSections.size > 0 && !saved && (
                   <ChangesIndicator>
                     <FaEdit />
-                    {saved ? 'Changes saved - Ready to publish' : 'You have unsaved changes'}
+                    {changedSections.size} section{changedSections.size > 1 ? 's' : ''} modified
+                  </ChangesIndicator>
+                )}
+                {saved && (
+                  <ChangesIndicator style={{ color: theme.colors.success }}>
+                    <FaCheckCircle />
+                    Changes saved - Ready to publish
                   </ChangesIndicator>
                 )}
                 <SaveButton variant="secondary" onClick={handleDiscardChanges}>
@@ -2386,7 +2419,7 @@ const VendorDashboard = () => {
                 </SaveButton>
                 <SaveButton
                   onClick={handleSaveChanges}
-                  disabled={saved}
+                  disabled={changedSections.size === 0 || saved}
                 >
                   <FaSave />
                   {saved ? 'Saved' : 'Save Changes'}
