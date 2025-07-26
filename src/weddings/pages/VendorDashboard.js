@@ -744,6 +744,12 @@ const VendorDashboard = () => {
 
   const [changedSections, setChangedSections] = useState(new Set());
 
+  // Track changes in a section
+  const trackSectionChange = (sectionId) => {
+    setChangedSections(prev => new Set([...prev, sectionId]));
+    setSaved(false);
+  };
+
   const navigationItems = [
     {
       id: 'hero',
