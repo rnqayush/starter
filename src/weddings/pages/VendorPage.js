@@ -67,14 +67,23 @@ const BackToTopButton = styled.button.withConfig({
 `;
 
 // Hero Section
-const HeroSection = styled.section`
+const HeroSection = styled.section.withConfig({
+  shouldForwardProp: prop => !['backgroundImage'].includes(prop),
+})`
   position: relative;
   height: 100vh;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4));
+  background: ${props =>
+    props.backgroundImage
+      ? `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(${props.backgroundImage})`
+      : 'linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4))'
+  };
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     height: 100vh;
