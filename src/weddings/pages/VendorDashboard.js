@@ -705,7 +705,10 @@ const VendorDashboard = () => {
     completedWeddings: '',
     satisfiedCouples: '',
     videoEmbed: '',
+    aboutImage: '',
+    mediaType: 'video', // 'video' or 'image'
     videoFile: null,
+    imageFile: null,
     experienceVisible: true,
     weddingsVisible: true,
     couplesVisible: true,
