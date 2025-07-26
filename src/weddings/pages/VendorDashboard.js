@@ -3875,6 +3875,28 @@ const VendorDashboard = () => {
               </select>
             </FormGroup>
 
+            <FormGroup style={{ marginBottom: theme.spacing.md }}>
+              <VisibilityToggleContainer>
+                <FormLabel>Section Visibility</FormLabel>
+                <div style={{ display: 'flex', alignItems: 'center', gap: theme.spacing.sm }}>
+                  <span>{customSectionForm.visible ? 'Visible' : 'Hidden'}</span>
+                  <ToggleSwitch>
+                    <input
+                      type="checkbox"
+                      checked={customSectionForm.visible || true}
+                      onChange={e =>
+                        setCustomSectionForm(prev => ({
+                          ...prev,
+                          visible: e.target.checked,
+                        }))
+                      }
+                    />
+                    <span></span>
+                  </ToggleSwitch>
+                </div>
+              </VisibilityToggleContainer>
+            </FormGroup>
+
             {/* Content Input Fields Based on Type */}
             {customSectionForm.type === 'text' && (
               <FormGroup style={{ marginBottom: theme.spacing.md }}>
