@@ -2166,6 +2166,70 @@ const VendorDashboard = () => {
           </ContentSection>
         );
 
+      case 'section-order':
+        return (
+          <ContentSection>
+            <SectionTitle>
+              <FaList />
+              Section Order
+            </SectionTitle>
+            <p style={{ color: theme.colors.gray600, marginBottom: theme.spacing.lg }}>
+              Drag and drop to reorder sections as they appear on your vendor page.
+            </p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: theme.spacing.sm }}>
+              {sectionOrder.map((sectionId, index) => {
+                const section = navigationItems.find(item => item.id === sectionId);
+                if (!section) return null;
+
+                return (
+                  <div
+                    key={sectionId}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: theme.spacing.md,
+                      padding: theme.spacing.md,
+                      border: `1px solid ${theme.colors.gray200}`,
+                      borderRadius: theme.borderRadius.md,
+                      background: theme.colors.white,
+                    }}
+                  >
+                    <FaGripHorizontal style={{ color: theme.colors.gray400, cursor: 'grab' }} />
+                    <section.icon style={{ color: theme.colors.primary }} />
+                    <span style={{ flex: 1, fontWeight: 600 }}>{section.label}</span>
+                    <ActionButton
+                      onClick={() => {
+                        if (index > 0) {
+                          const newOrder = [...sectionOrder];
+                          [newOrder[index], newOrder[index - 1]] = [newOrder[index - 1], newOrder[index]];
+                          setSectionOrder(newOrder);
+                          trackSectionChange('section-order');
+                        }
+                      }}
+                      disabled={index === 0}
+                    >
+                      ↑
+                    </ActionButton>
+                    <ActionButton
+                      onClick={() => {
+                        if (index < sectionOrder.length - 1) {
+                          const newOrder = [...sectionOrder];
+                          [newOrder[index], newOrder[index + 1]] = [newOrder[index + 1], newOrder[index]];
+                          setSectionOrder(newOrder);
+                          trackSectionChange('section-order');
+                        }
+                      }}
+                      disabled={index === sectionOrder.length - 1}
+                    >
+                      ↓
+                    </ActionButton>
+                  </div>
+                );
+              })}
+            </div>
+          </ContentSection>
+        );
+
       case 'custom-sections':
         return (
           <ContentSection>
