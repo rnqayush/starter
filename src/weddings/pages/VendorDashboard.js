@@ -838,7 +838,7 @@ const VendorDashboard = () => {
           });
           return cleanGallery;
         })(),
-        sectionOrder: sectionOrder,
+        sectionOrder: completeSectionOrder.length > 0 ? completeSectionOrder : sectionOrder,
         customSections: customSections,
       };
 
