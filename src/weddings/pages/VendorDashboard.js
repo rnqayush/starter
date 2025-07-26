@@ -1921,7 +1921,7 @@ const VendorDashboard = () => {
                               const reader = new FileReader();
                               reader.onload = event => {
                                 addGalleryImage(key, event.target.result);
-                                autoSaveForPreview();
+                                trackSectionChange('gallery');
                               };
                               reader.readAsDataURL(file);
                             });
