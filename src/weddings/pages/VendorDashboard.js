@@ -1061,6 +1061,31 @@ const VendorDashboard = () => {
         })
       );
       setCustomSections(customSectionsWithIds);
+
+      // Initialize complete section order
+      const defaultOrder = [
+        'hero',
+        'about-us',
+        'services-offered',
+        'recent-work',
+        'gallery',
+        'packages-pricing',
+        'testimonials',
+      ];
+
+      // Use vendor's section order if available, otherwise use default
+      const vendorSectionOrder = vendorData.sectionOrder || defaultOrder;
+      setSectionOrder(vendorSectionOrder);
+
+      // Build complete section order including custom sections
+      const completeOrder = [...vendorSectionOrder];
+      customSectionsWithIds.forEach(customSection => {
+        const customId = `custom-${customSection.id}`;
+        if (!completeOrder.includes(customId)) {
+          completeOrder.push(customId);
+        }
+      });
+      setCompleteSectionOrder(completeOrder);
     }
     setLoading(false);
   }, [vendorId, dispatch]);
