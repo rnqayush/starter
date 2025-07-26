@@ -700,7 +700,13 @@ const VendorDashboard = () => {
 
   // Handle Save & Go Live - publishes changes to global state
   const handleSaveAndGoLive = () => {
-    if (!editingVendor) return;
+    console.log('handleSaveAndGoLive called');
+    console.log('editingVendor:', editingVendor);
+
+    if (!editingVendor) {
+      alert('No vendor is being edited. Please try refreshing the page.');
+      return;
+    }
 
     try {
       // Sanitize data to ensure it's serializable
@@ -708,12 +714,14 @@ const VendorDashboard = () => {
         return JSON.parse(JSON.stringify(data));
       };
 
+      console.log('Dispatching vendor field updates...');
       // Update vendor data in Redux with all local changes
       dispatch(updateVendorField({ field: 'name', value: heroData.name }));
       dispatch(updateVendorField({ field: 'tagline', value: heroData.tagline }));
       dispatch(updateVendorField({ field: 'image', value: heroData.image }));
       dispatch(updateVendorField({ field: 'description', value: aboutUsData.description }));
 
+      console.log('Dispatching complex data updates...');
       // Update complex data structures with sanitized data
       dispatch(updateServices(sanitizeData(servicesData)));
       dispatch(updateRecentWork(sanitizeData(recentWorkData)));
@@ -721,6 +729,7 @@ const VendorDashboard = () => {
       dispatch(updatePackages(sanitizeData(packagesData)));
       dispatch(updateCustomSections(sanitizeData(customSections)));
 
+      console.log('Saving changes...');
       // Save all changes to global state
       dispatch(saveChanges());
       alert('All changes published to live vendor page successfully!');
