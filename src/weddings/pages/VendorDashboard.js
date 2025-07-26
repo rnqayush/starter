@@ -1207,6 +1207,7 @@ const VendorDashboard = () => {
       // Discard changes in Redux
       dispatch(discardChanges());
       setSaved(false);
+      setChangedSections(new Set());
       alert('All changes discarded. Form reset to original values.');
     } catch (error) {
       console.error('Error discarding changes:', error);
