@@ -2695,10 +2695,23 @@ const VendorDashboard = () => {
       case 'gallery':
         return (
           <ContentSection>
-            <SectionTitle>
-              <FaImages />
-              Gallery
-            </SectionTitle>
+            <SectionHeader>
+              <SectionTitle>
+                <FaImages />
+                Gallery
+              </SectionTitle>
+              <VisibilityToggleContainer>
+                <span>{sectionVisibility['gallery'] ? 'Visible' : 'Hidden'}</span>
+                <ToggleSwitch>
+                  <input
+                    type="checkbox"
+                    checked={sectionVisibility['gallery']}
+                    onChange={() => toggleSectionVisibility('gallery')}
+                  />
+                  <span></span>
+                </ToggleSwitch>
+              </VisibilityToggleContainer>
+            </SectionHeader>
             <FormGroup style={{ marginBottom: theme.spacing.lg }}>
               <FormLabel>Gallery Subtitle</FormLabel>
               <FormInput
