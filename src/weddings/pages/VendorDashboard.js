@@ -741,6 +741,7 @@ const VendorDashboard = () => {
     images: [],
     cards: []
   });
+  const [showDeleteAccountModal, setShowDeleteAccountModal] = useState(false);
 
   // Track changes in a section and update Redux editing vendor for real-time preview
   const trackSectionChange = (sectionId) => {
