@@ -1590,7 +1590,7 @@ const VendorDashboard = () => {
                         value={aboutUsData.videoEmbed}
                         onChange={e => {
                           setAboutUsData(prev => ({ ...prev, videoEmbed: e.target.value }));
-                          autoSaveForPreview();
+                          trackSectionChange('about-us');
                         }}
                         placeholder="https://www.youtube.com/embed/..."
                       />
