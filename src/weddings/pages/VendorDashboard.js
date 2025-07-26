@@ -3053,6 +3053,202 @@ const VendorDashboard = () => {
 
         {renderContent()}
       </MainContent>
+
+      {/* Custom Section Modal */}
+      {showCustomSectionModal && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          background: 'rgba(0, 0, 0, 0.5)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 2000,
+          padding: theme.spacing.lg,
+        }}>
+          <div style={{
+            background: theme.colors.white,
+            borderRadius: theme.borderRadius.lg,
+            padding: theme.spacing.xl,
+            maxWidth: '600px',
+            width: '100%',
+            maxHeight: '80vh',
+            overflowY: 'auto',
+          }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: theme.spacing.lg }}>
+              <h2 style={{ margin: 0, fontSize: '1.5rem', fontWeight: 600 }}>
+                {editingCustomSection ? 'Edit Custom Section' : 'Add Custom Section'}
+              </h2>
+              <button
+                onClick={() => setShowCustomSectionModal(false)}
+                style={{ background: 'none', border: 'none', fontSize: '1.5rem', cursor: 'pointer' }}
+              >
+                <FaTimes />
+              </button>
+            </div>
+
+            <FormGroup style={{ marginBottom: theme.spacing.md }}>
+              <FormLabel>Section Title</FormLabel>
+              <FormInput
+                value={customSectionForm.title}
+                onChange={e => setCustomSectionForm(prev => ({ ...prev, title: e.target.value }))}
+                placeholder="Enter section title"
+              />
+            </FormGroup>
+
+            <FormGroup style={{ marginBottom: theme.spacing.md }}>
+              <FormLabel>Section Subtitle (Optional)</FormLabel>
+              <FormInput
+                value={customSectionForm.subtitle}
+                onChange={e => setCustomSectionForm(prev => ({ ...prev, subtitle: e.target.value }))}
+                placeholder="Enter section subtitle"
+              />
+            </FormGroup>
+
+            <FormGroup style={{ marginBottom: theme.spacing.md }}>
+              <FormLabel>Content Type</FormLabel>
+              <select
+                value={customSectionForm.type}
+                onChange={e => setCustomSectionForm(prev => ({ ...prev, type: e.target.value }))}
+                style={{
+                  padding: theme.spacing.md,
+                  border: `2px solid ${theme.colors.gray200}`,
+                  borderRadius: theme.borderRadius.md,
+                  fontSize: '1rem',
+                  width: '100%',
+                }}
+              >
+                <option value="text">Text Content</option>
+                <option value="gallery">Image Gallery</option>
+                <option value="cards">Card Layout</option>
+              </select>
+            </FormGroup>
+
+            {customSectionForm.type === 'text' && (
+              <FormGroup style={{ marginBottom: theme.spacing.md }}>
+                <FormLabel>Content</FormLabel>
+                <FormTextarea
+                  value={customSectionForm.content}
+                  onChange={e => setCustomSectionForm(prev => ({ ...prev, content: e.target.value }))}
+                  placeholder="Enter your content here..."
+                  rows={6}
+                />
+              </FormGroup>
+            )}
+
+            <div style={{ display: 'flex', gap: theme.spacing.md, justifyContent: 'flex-end', marginTop: theme.spacing.xl }}>
+              <button
+                onClick={() => setShowCustomSectionModal(false)}
+                style={{
+                  background: theme.colors.gray300,
+                  color: theme.colors.gray700,
+                  border: 'none',
+                  padding: `${theme.spacing.md} ${theme.spacing.lg}`,
+                  borderRadius: theme.borderRadius.md,
+                  cursor: 'pointer'
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={saveCustomSection}
+                style={{
+                  background: theme.colors.primary,
+                  color: 'white',
+                  border: 'none',
+                  padding: `${theme.spacing.md} ${theme.spacing.lg}`,
+                  borderRadius: theme.borderRadius.md,
+                  cursor: 'pointer'
+                }}
+              >
+                {editingCustomSection ? 'Update Section' : 'Add Section'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Account Modal */}
+      {showDeleteAccountModal && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          background: 'rgba(0, 0, 0, 0.5)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 2000,
+          padding: theme.spacing.lg,
+        }}>
+          <div style={{
+            background: theme.colors.white,
+            borderRadius: theme.borderRadius.lg,
+            padding: theme.spacing.xl,
+            maxWidth: '500px',
+            width: '100%',
+            textAlign: 'center',
+            border: `3px solid ${theme.colors.error}`,
+          }}>
+            <div style={{ fontSize: '3rem', color: theme.colors.error, marginBottom: theme.spacing.lg }}>
+              ⚠️
+            </div>
+            <h2 style={{ margin: `0 0 ${theme.spacing.md} 0`, fontSize: '1.5rem', fontWeight: 700, color: theme.colors.error }}>
+              Delete Account
+            </h2>
+            <p style={{ marginBottom: theme.spacing.lg, color: theme.colors.gray700, lineHeight: 1.6 }}>
+              <strong>Warning:</strong> This action cannot be undone. Deleting your account will permanently remove:
+            </p>
+            <ul style={{ textAlign: 'left', marginBottom: theme.spacing.xl, color: theme.colors.gray600 }}>
+              <li>Your vendor profile and all content</li>
+              <li>All portfolio images and work history</li>
+              <li>Customer reviews and testimonials</li>
+              <li>All account data and settings</li>
+            </ul>
+            <p style={{ marginBottom: theme.spacing.xl, fontWeight: 600, color: theme.colors.error }}>
+              This action cannot be recovered. Are you absolutely sure?
+            </p>
+            <div style={{ display: 'flex', gap: theme.spacing.md, justifyContent: 'center' }}>
+              <button
+                onClick={() => setShowDeleteAccountModal(false)}
+                style={{
+                  background: theme.colors.gray300,
+                  color: theme.colors.gray700,
+                  border: 'none',
+                  padding: `${theme.spacing.md} ${theme.spacing.lg}`,
+                  borderRadius: theme.borderRadius.md,
+                  cursor: 'pointer',
+                  fontWeight: 600,
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  alert('Delete account functionality will be implemented with backend integration');
+                  setShowDeleteAccountModal(false);
+                }}
+                style={{
+                  background: theme.colors.error,
+                  color: 'white',
+                  border: 'none',
+                  padding: `${theme.spacing.md} ${theme.spacing.lg}`,
+                  borderRadius: theme.borderRadius.md,
+                  cursor: 'pointer',
+                  fontWeight: 600,
+                }}
+              >
+                Yes, Delete Account
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </DashboardContainer>
   );
 };
