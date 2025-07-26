@@ -2,10 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import {
-  FaHotel,
-  FaCar,
-  FaRing,
-  FaShoppingBag,
   FaArrowRight,
   FaFacebook,
   FaTwitter,
@@ -14,15 +10,10 @@ import {
   FaPhone,
   FaEnvelope,
   FaMapMarkerAlt,
-  FaPalette,
   FaRocket,
   FaCheck,
   FaStar,
   FaQuoteLeft,
-  FaCode,
-  FaCloud,
-  FaLock,
-  FaGlobe,
 } from 'react-icons/fa';
 import Header from '../shared/Header';
 import { Button } from '../shared/Button';
