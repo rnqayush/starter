@@ -1206,6 +1206,8 @@ const VendorDashboard = () => {
       dispatch({ type: 'vendorManagement/updateTestimonials', payload: cleanTestimonials });
       dispatch({ type: 'vendorManagement/updatePackages', payload: cleanPackages });
       dispatch({ type: 'vendorManagement/updateVendorGallery', payload: cleanGallery });
+      dispatch({ type: 'vendorManagement/updateVendorField', payload: { field: 'sectionOrder', value: sectionOrder } });
+      dispatch({ type: 'vendorManagement/updateVendorField', payload: { field: 'customSections', value: customSections } });
 
       console.log('Saving changes...');
       dispatch({ type: 'vendorManagement/saveChanges' });
