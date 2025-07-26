@@ -1556,6 +1556,13 @@ const VendorDashboard = () => {
       };
       setSectionVisibility(originalVisibility);
 
+      // Reset custom section visibility
+      const originalCustomVisibility = {};
+      originalCustomSectionsWithIds.forEach(section => {
+        originalCustomVisibility[section.id] = originalVendor.customSectionVisibility?.[section.id] !== false;
+      });
+      setCustomSectionVisibility(originalCustomVisibility);
+
       // Discard changes in Redux
       dispatch(discardChanges());
       setSaved(false);
