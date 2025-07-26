@@ -28,6 +28,8 @@ import {
   FaMapMarkerAlt,
   FaStar,
   FaChevronRight,
+  FaChevronUp,
+  FaChevronDown,
   FaCheck,
   FaBars,
   FaLock,
@@ -47,6 +49,7 @@ import {
   FaPalette,
   FaClock,
   FaCalendarAlt,
+  FaRandom,
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
 import { getBusinessTemplate } from '../../DummyData';
