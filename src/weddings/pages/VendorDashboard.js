@@ -2957,13 +2957,14 @@ const VendorDashboard = () => {
                       min="1"
                       max="5"
                       value={testimonial.rating}
-                      onChange={e =>
+                      onChange={e => {
+                        const rating = parseInt(e.target.value);
                         updateTestimonial(
                           testimonial.id,
                           'rating',
-                          parseInt(e.target.value)
-                        )
-                      }
+                          isNaN(rating) ? 5 : Math.max(1, Math.min(5, rating))
+                        );
+                      }}
                     />
                   </FormGroup>
                   <FormGroup style={{ gridColumn: '1 / -1' }}>
