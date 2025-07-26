@@ -1490,12 +1490,13 @@ const VendorDashboard = () => {
                 </FormLabel>
                 <FormInput
                   value={aboutUsData.experience}
-                  onChange={e =>
+                  onChange={e => {
                     setAboutUsData(prev => ({
                       ...prev,
                       experience: e.target.value,
-                    }))
-                  }
+                    }));
+                    trackSectionChange('about-us');
+                  }}
                   placeholder="e.g., 10+"
                   disabled={!aboutUsData.experienceVisible}
                 />
