@@ -2502,6 +2502,10 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
                 <Button onClick={addCustomSection}>
                   <FaPlus /> Add Section
                 </Button>
+              ) : customSections.find(cs => cs.id === activeModal) ? (
+                <Button onClick={updateCustomSection}>
+                  <FaSave /> Update Section
+                </Button>
               ) : (
                 <Button onClick={saveSection}>
                   <FaSave /> Save Changes
