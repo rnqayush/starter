@@ -2745,10 +2745,7 @@ const VendorDashboard = () => {
                   <h3 style={{ margin: 0, color: theme.colors.primary }}>{section.title}</h3>
                   <div style={{ display: 'flex', gap: theme.spacing.sm }}>
                     <ActionButton
-                      onClick={() => {
-                        setEditingCustomSection(section);
-                        setShowCustomSectionModal(true);
-                      }}
+                      onClick={() => openCustomSectionModal(section)}
                     >
                       <FaEdit />
                       Edit
