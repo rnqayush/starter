@@ -1108,14 +1108,14 @@ const VendorDashboard = () => {
       });
 
       setAboutUsData({
-        description: originalVendor.description || originalVendor.aboutUs?.text || '',
+        description: originalVendor.aboutUs?.text || originalVendor.description || '',
         mission: originalVendor.mission || '',
         experience: originalVendor.aboutUs?.experience || '0+',
         completedWeddings: originalVendor.aboutUs?.completedWeddings || '0+',
         satisfiedCouples: originalVendor.aboutUs?.satisfiedCouples || '0+',
         videoEmbed: originalVendor.aboutUs?.videoEmbed || '',
         aboutImage: originalVendor.aboutUs?.aboutImage || '',
-        mediaType: originalVendor.aboutUs?.videoEmbed ? 'video' : 'image',
+        mediaType: originalVendor.aboutUs?.videoEmbed && !originalVendor.aboutUs?.aboutImage ? 'video' : 'image',
         videoFile: null,
         imageFile: null,
         experienceVisible: originalVendor.aboutUs?.experienceVisible !== false,
