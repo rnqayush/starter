@@ -1127,10 +1127,13 @@ const VendorDashboard = () => {
         completedWeddings: originalVendor.aboutUs?.completedWeddings || '0+',
         satisfiedCouples: originalVendor.aboutUs?.satisfiedCouples || '0+',
         videoEmbed: originalVendor.aboutUs?.videoEmbed || '',
+        aboutImage: originalVendor.aboutUs?.aboutImage || '',
+        mediaType: originalVendor.aboutUs?.videoEmbed ? 'video' : 'image',
         videoFile: null,
-        experienceVisible: true,
-        weddingsVisible: true,
-        couplesVisible: true,
+        imageFile: null,
+        experienceVisible: originalVendor.aboutUs?.experienceVisible !== false,
+        weddingsVisible: originalVendor.aboutUs?.weddingsVisible !== false,
+        couplesVisible: originalVendor.aboutUs?.couplesVisible !== false,
       });
 
       // Reset services
