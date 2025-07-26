@@ -1005,6 +1005,9 @@ const VendorPage = () => {
   const pathSegments = currentPath.split('/').filter(Boolean);
   const vendorId = vendorSlug || pathSegments[pathSegments.length - 1];
 
+  // Get vendor data from Redux store for real-time updates
+  const { vendors, editingVendor } = useSelector(state => state.vendorManagement);
+
   const [vendor, setVendor] = useState(null);
   const [loading, setLoading] = useState(true);
   const [scrolled, setScrolled] = useState(false);
@@ -1021,8 +1024,14 @@ const VendorPage = () => {
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    const vendorData = getVendorById(vendorId);
-    setVendor(vendorData);
+    // Check if this vendor is being edited and use editing data for real-time updates
+    if (editingVendor && editingVendor.id === vendorId) {
+      setVendor(editingVendor);
+    } else {
+      // Otherwise, use data from vendors array (includes saved changes)
+      const vendorData = vendors.find(v => v.id === vendorId) || getVendorById(vendorId);
+      setVendor(vendorData);
+    }
     setLoading(false);
 
     // Pre-fill form if user is logged in
@@ -1033,7 +1042,7 @@ const VendorPage = () => {
         email: user.email || '',
       }));
     }
-  }, [vendorId, user]);
+  }, [vendorId, user, vendors, editingVendor]);
 
   useEffect(() => {
     const handleScroll = () => {
