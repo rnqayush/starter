@@ -1442,7 +1442,8 @@ const VendorDashboard = () => {
             <FormGroup>
               <FormLabel>Section Type</FormLabel>
               <SectionTypeOptions>
-                <SectionTypeCard 
+                <SectionTypeCard
+                  key="section-type-text"
                   selected={newCustomSection.type === 'text'}
                   onClick={() => setNewCustomSection(prev => ({ ...prev, type: 'text' }))}
                 >
@@ -1450,7 +1451,8 @@ const VendorDashboard = () => {
                   <h4>Text</h4>
                   <p>Rich text content</p>
                 </SectionTypeCard>
-                <SectionTypeCard 
+                <SectionTypeCard
+                  key="section-type-gallery"
                   selected={newCustomSection.type === 'gallery'}
                   onClick={() => setNewCustomSection(prev => ({ ...prev, type: 'gallery' }))}
                 >
@@ -1458,7 +1460,8 @@ const VendorDashboard = () => {
                   <h4>Gallery</h4>
                   <p>Image gallery</p>
                 </SectionTypeCard>
-                <SectionTypeCard 
+                <SectionTypeCard
+                  key="section-type-list"
                   selected={newCustomSection.type === 'list'}
                   onClick={() => setNewCustomSection(prev => ({ ...prev, type: 'list' }))}
                 >
@@ -1466,7 +1469,8 @@ const VendorDashboard = () => {
                   <h4>List</h4>
                   <p>Bullet point list</p>
                 </SectionTypeCard>
-                <SectionTypeCard 
+                <SectionTypeCard
+                  key="section-type-testimonial"
                   selected={newCustomSection.type === 'testimonial'}
                   onClick={() => setNewCustomSection(prev => ({ ...prev, type: 'testimonial' }))}
                 >
