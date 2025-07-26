@@ -1802,6 +1802,770 @@ const BuisnessAdminDashboard = () => {
           </ContentSection>
         );
 
+      case 'portfolio':
+        return (
+          <ContentSection>
+            <SectionHeader>
+              <SectionTitle>
+                <FaBriefcase />
+                Portfolio Management
+              </SectionTitle>
+              <VisibilityToggleContainer>
+                <span>{sectionVisibility['portfolio'] ? 'Visible' : 'Hidden'}</span>
+                <ToggleSwitch>
+                  <input
+                    type="checkbox"
+                    checked={sectionVisibility['portfolio']}
+                    onChange={() => toggleSectionVisibility('portfolio')}
+                  />
+                  <span></span>
+                </ToggleSwitch>
+              </VisibilityToggleContainer>
+            </SectionHeader>
+
+            <AddButton onClick={addPortfolioItem}>
+              <FaPlus />
+              Add Portfolio Item
+            </AddButton>
+
+            <ListContainer>
+              {portfolioData.map(item => (
+                <ListItem key={item.id}>
+                  <div className="item-info">
+                    <FormGrid>
+                      <FormGroup>
+                        <FormLabel>Project Title</FormLabel>
+                        <FormInput
+                          value={item.title}
+                          onChange={e => updatePortfolioItem(item.id, 'title', e.target.value)}
+                          placeholder="Project Name"
+                        />
+                      </FormGroup>
+                      <FormGroup>
+                        <FormLabel>Category</FormLabel>
+                        <FormInput
+                          value={item.category}
+                          onChange={e => updatePortfolioItem(item.id, 'category', e.target.value)}
+                          placeholder="Design, Development, etc."
+                        />
+                      </FormGroup>
+                      <FormGroup style={{ gridColumn: '1 / -1' }}>
+                        <FormLabel>
+                          <FaFileImage />
+                          Project Image URL
+                          <input
+                            type="file"
+                            accept="image/*"
+                            style={{ display: 'none' }}
+                            id={`portfolio-image-${item.id}`}
+                            onChange={e => handleImageUpload(e, (url) => updatePortfolioItem(item.id, 'image', url))}
+                          />
+                          <label htmlFor={`portfolio-image-${item.id}`} style={{ marginLeft: '10px', cursor: 'pointer', color: '#3b82f6' }}>
+                            <FaUpload /> Upload
+                          </label>
+                        </FormLabel>
+                        <FormInput
+                          value={item.image || ''}
+                          onChange={e => updatePortfolioItem(item.id, 'image', e.target.value)}
+                          placeholder="Enter image URL or upload"
+                        />
+                      </FormGroup>
+                      <FormGroup style={{ gridColumn: '1 / -1' }}>
+                        <FormLabel>Description</FormLabel>
+                        <FormTextarea
+                          value={item.description}
+                          onChange={e => updatePortfolioItem(item.id, 'description', e.target.value)}
+                          placeholder="Project description"
+                          rows={3}
+                        />
+                      </FormGroup>
+                      <FormGroup style={{ gridColumn: '1 / -1' }}>
+                        <FormLabel>Technologies (comma-separated)</FormLabel>
+                        <FormInput
+                          value={Array.isArray(item.technologies) ? item.technologies.join(', ') : ''}
+                          onChange={e => updatePortfolioItem(item.id, 'technologies', e.target.value.split(', ').filter(t => t.trim()))}
+                          placeholder="React, Node.js, MongoDB"
+                        />
+                      </FormGroup>
+                    </FormGrid>
+                  </div>
+                  <div className="item-actions">
+                    <ItemButton
+                      variant="danger"
+                      onClick={() => deletePortfolioItem(item.id)}
+                    >
+                      <FaTrash />
+                      Delete
+                    </ItemButton>
+                  </div>
+                </ListItem>
+              ))}
+            </ListContainer>
+          </ContentSection>
+        );
+
+      case 'skills':
+        return (
+          <ContentSection>
+            <SectionHeader>
+              <SectionTitle>
+                <FaGripHorizontal />
+                Skills Management
+              </SectionTitle>
+              <VisibilityToggleContainer>
+                <span>{sectionVisibility['skills'] ? 'Visible' : 'Hidden'}</span>
+                <ToggleSwitch>
+                  <input
+                    type="checkbox"
+                    checked={sectionVisibility['skills']}
+                    onChange={() => toggleSectionVisibility('skills')}
+                  />
+                  <span></span>
+                </ToggleSwitch>
+              </VisibilityToggleContainer>
+            </SectionHeader>
+
+            <AddButton onClick={addSkill}>
+              <FaPlus />
+              Add Skill
+            </AddButton>
+
+            <ListContainer>
+              {skillsData.map(skill => (
+                <ListItem key={skill.id}>
+                  <div className="item-info">
+                    <FormGrid>
+                      <FormGroup>
+                        <FormLabel>Skill Name</FormLabel>
+                        <FormInput
+                          value={skill.name}
+                          onChange={e => updateSkill(skill.id, 'name', e.target.value)}
+                          placeholder="Skill name"
+                        />
+                      </FormGroup>
+                      <FormGroup>
+                        <FormLabel>Icon (Emoji)</FormLabel>
+                        <FormInput
+                          value={skill.icon}
+                          onChange={e => updateSkill(skill.id, 'icon', e.target.value)}
+                          placeholder="🔧"
+                        />
+                      </FormGroup>
+                      <FormGroup style={{ gridColumn: '1 / -1' }}>
+                        <FormLabel>Skill Level ({skill.level}%)</FormLabel>
+                        <FormInput
+                          type="range"
+                          min="0"
+                          max="100"
+                          value={skill.level}
+                          onChange={e => updateSkill(skill.id, 'level', parseInt(e.target.value))}
+                        />
+                      </FormGroup>
+                    </FormGrid>
+                  </div>
+                  <div className="item-actions">
+                    <ItemButton
+                      variant="danger"
+                      onClick={() => deleteSkill(skill.id)}
+                    >
+                      <FaTrash />
+                      Delete
+                    </ItemButton>
+                  </div>
+                </ListItem>
+              ))}
+            </ListContainer>
+          </ContentSection>
+        );
+
+      case 'experience':
+        return (
+          <ContentSection>
+            <SectionHeader>
+              <SectionTitle>
+                <FaAddressCard />
+                Experience Management
+              </SectionTitle>
+              <VisibilityToggleContainer>
+                <span>{sectionVisibility['experience'] ? 'Visible' : 'Hidden'}</span>
+                <ToggleSwitch>
+                  <input
+                    type="checkbox"
+                    checked={sectionVisibility['experience']}
+                    onChange={() => toggleSectionVisibility('experience')}
+                  />
+                  <span></span>
+                </ToggleSwitch>
+              </VisibilityToggleContainer>
+            </SectionHeader>
+
+            <AddButton onClick={addExperience}>
+              <FaPlus />
+              Add Experience
+            </AddButton>
+
+            <ListContainer>
+              {experienceData.map(exp => (
+                <ListItem key={exp.id}>
+                  <div className="item-info">
+                    <FormGrid>
+                      <FormGroup>
+                        <FormLabel>Company</FormLabel>
+                        <FormInput
+                          value={exp.company}
+                          onChange={e => updateExperience(exp.id, 'company', e.target.value)}
+                          placeholder="Company name"
+                        />
+                      </FormGroup>
+                      <FormGroup>
+                        <FormLabel>Role</FormLabel>
+                        <FormInput
+                          value={exp.role}
+                          onChange={e => updateExperience(exp.id, 'role', e.target.value)}
+                          placeholder="Job title"
+                        />
+                      </FormGroup>
+                      <FormGroup>
+                        <FormLabel>Period</FormLabel>
+                        <FormInput
+                          value={exp.period}
+                          onChange={e => updateExperience(exp.id, 'period', e.target.value)}
+                          placeholder="2020 - Present"
+                        />
+                      </FormGroup>
+                      <FormGroup style={{ gridColumn: '1 / -1' }}>
+                        <FormLabel>Description</FormLabel>
+                        <FormTextarea
+                          value={exp.description}
+                          onChange={e => updateExperience(exp.id, 'description', e.target.value)}
+                          placeholder="Job description"
+                          rows={3}
+                        />
+                      </FormGroup>
+                    </FormGrid>
+                  </div>
+                  <div className="item-actions">
+                    <ItemButton
+                      variant="danger"
+                      onClick={() => deleteExperience(exp.id)}
+                    >
+                      <FaTrash />
+                      Delete
+                    </ItemButton>
+                  </div>
+                </ListItem>
+              ))}
+            </ListContainer>
+          </ContentSection>
+        );
+
+      case 'gallery':
+        return (
+          <ContentSection>
+            <SectionHeader>
+              <SectionTitle>
+                <FaImages />
+                Gallery Management
+              </SectionTitle>
+              <VisibilityToggleContainer>
+                <span>{sectionVisibility['gallery'] ? 'Visible' : 'Hidden'}</span>
+                <ToggleSwitch>
+                  <input
+                    type="checkbox"
+                    checked={sectionVisibility['gallery']}
+                    onChange={() => toggleSectionVisibility('gallery')}
+                  />
+                  <span></span>
+                </ToggleSwitch>
+              </VisibilityToggleContainer>
+            </SectionHeader>
+
+            <AddButton onClick={addGalleryCategory}>
+              <FaPlus />
+              Add Gallery Category
+            </AddButton>
+
+            <ListContainer>
+              {galleryData.map(category => (
+                <ListItem key={category.id}>
+                  <div className="item-info">
+                    <FormGrid>
+                      <FormGroup>
+                        <FormLabel>Category Name</FormLabel>
+                        <FormInput
+                          value={category.category}
+                          onChange={e => updateGalleryCategory(category.id, 'category', e.target.value)}
+                          placeholder="Category name"
+                        />
+                      </FormGroup>
+                      <FormGroup>
+                        <FormLabel>Image Count</FormLabel>
+                        <FormInput
+                          type="number"
+                          value={category.images}
+                          onChange={e => updateGalleryCategory(category.id, 'images', parseInt(e.target.value) || 0)}
+                          placeholder="Number of images"
+                        />
+                      </FormGroup>
+                      <FormGroup style={{ gridColumn: '1 / -1' }}>
+                        <FormLabel>Description</FormLabel>
+                        <FormTextarea
+                          value={category.description || ''}
+                          onChange={e => updateGalleryCategory(category.id, 'description', e.target.value)}
+                          placeholder="Category description"
+                          rows={2}
+                        />
+                      </FormGroup>
+                    </FormGrid>
+                  </div>
+                  <div className="item-actions">
+                    <ItemButton
+                      variant="danger"
+                      onClick={() => deleteGalleryCategory(category.id)}
+                    >
+                      <FaTrash />
+                      Delete
+                    </ItemButton>
+                  </div>
+                </ListItem>
+              ))}
+            </ListContainer>
+          </ContentSection>
+        );
+
+      case 'packages':
+        return (
+          <ContentSection>
+            <SectionHeader>
+              <SectionTitle>
+                <FaDollarSign />
+                Packages & Pricing
+              </SectionTitle>
+              <VisibilityToggleContainer>
+                <span>{sectionVisibility['packages'] ? 'Visible' : 'Hidden'}</span>
+                <ToggleSwitch>
+                  <input
+                    type="checkbox"
+                    checked={sectionVisibility['packages']}
+                    onChange={() => toggleSectionVisibility('packages')}
+                  />
+                  <span></span>
+                </ToggleSwitch>
+              </VisibilityToggleContainer>
+            </SectionHeader>
+
+            <AddButton onClick={addPackage}>
+              <FaPlus />
+              Add Package
+            </AddButton>
+
+            <ListContainer>
+              {packagesData.map(pkg => (
+                <ListItem key={pkg.id}>
+                  <div className="item-info">
+                    <FormGrid>
+                      <FormGroup>
+                        <FormLabel>Package Name</FormLabel>
+                        <FormInput
+                          value={pkg.name}
+                          onChange={e => updatePackage(pkg.id, 'name', e.target.value)}
+                          placeholder="Package name"
+                        />
+                      </FormGroup>
+                      <FormGroup>
+                        <FormLabel>Price</FormLabel>
+                        <FormInput
+                          value={pkg.price}
+                          onChange={e => updatePackage(pkg.id, 'price', e.target.value)}
+                          placeholder="$99"
+                        />
+                      </FormGroup>
+                      <FormGroup>
+                        <FormLabel>Duration</FormLabel>
+                        <FormInput
+                          value={pkg.duration}
+                          onChange={e => updatePackage(pkg.id, 'duration', e.target.value)}
+                          placeholder="2 hours"
+                        />
+                      </FormGroup>
+                      <FormGroup>
+                        <FormLabel>
+                          <input
+                            type="checkbox"
+                            checked={pkg.featured || false}
+                            onChange={e => updatePackage(pkg.id, 'featured', e.target.checked)}
+                            style={{ marginRight: '8px' }}
+                          />
+                          Featured Package
+                        </FormLabel>
+                      </FormGroup>
+                      <FormGroup style={{ gridColumn: '1 / -1' }}>
+                        <FormLabel>Description</FormLabel>
+                        <FormTextarea
+                          value={pkg.description}
+                          onChange={e => updatePackage(pkg.id, 'description', e.target.value)}
+                          placeholder="Package description"
+                          rows={3}
+                        />
+                      </FormGroup>
+                      <FormGroup style={{ gridColumn: '1 / -1' }}>
+                        <FormLabel>Features (comma-separated)</FormLabel>
+                        <FormInput
+                          value={Array.isArray(pkg.features) ? pkg.features.join(', ') : ''}
+                          onChange={e => updatePackage(pkg.id, 'features', e.target.value.split(', ').filter(f => f.trim()))}
+                          placeholder="Feature 1, Feature 2, Feature 3"
+                        />
+                      </FormGroup>
+                    </FormGrid>
+                  </div>
+                  <div className="item-actions">
+                    <ItemButton
+                      variant="danger"
+                      onClick={() => deletePackage(pkg.id)}
+                    >
+                      <FaTrash />
+                      Delete
+                    </ItemButton>
+                  </div>
+                </ListItem>
+              ))}
+            </ListContainer>
+          </ContentSection>
+        );
+
+      case 'testimonials':
+        return (
+          <ContentSection>
+            <SectionHeader>
+              <SectionTitle>
+                <FaComments />
+                Testimonials Management
+              </SectionTitle>
+              <VisibilityToggleContainer>
+                <span>{sectionVisibility['testimonials'] ? 'Visible' : 'Hidden'}</span>
+                <ToggleSwitch>
+                  <input
+                    type="checkbox"
+                    checked={sectionVisibility['testimonials']}
+                    onChange={() => toggleSectionVisibility('testimonials')}
+                  />
+                  <span></span>
+                </ToggleSwitch>
+              </VisibilityToggleContainer>
+            </SectionHeader>
+
+            <AddButton onClick={addTestimonial}>
+              <FaPlus />
+              Add Testimonial
+            </AddButton>
+
+            <ListContainer>
+              {testimonialsData.map(testimonial => (
+                <ListItem key={testimonial.id}>
+                  <div className="item-info">
+                    <FormGrid>
+                      <FormGroup>
+                        <FormLabel>Client Name</FormLabel>
+                        <FormInput
+                          value={testimonial.name}
+                          onChange={e => updateTestimonial(testimonial.id, 'name', e.target.value)}
+                          placeholder="Client name"
+                        />
+                      </FormGroup>
+                      <FormGroup>
+                        <FormLabel>Company</FormLabel>
+                        <FormInput
+                          value={testimonial.company}
+                          onChange={e => updateTestimonial(testimonial.id, 'company', e.target.value)}
+                          placeholder="Company name"
+                        />
+                      </FormGroup>
+                      <FormGroup>
+                        <FormLabel>Role</FormLabel>
+                        <FormInput
+                          value={testimonial.role}
+                          onChange={e => updateTestimonial(testimonial.id, 'role', e.target.value)}
+                          placeholder="Job title"
+                        />
+                      </FormGroup>
+                      <FormGroup>
+                        <FormLabel>Rating</FormLabel>
+                        <FormInput
+                          type="number"
+                          min="1"
+                          max="5"
+                          value={testimonial.rating}
+                          onChange={e => updateTestimonial(testimonial.id, 'rating', parseInt(e.target.value))}
+                        />
+                      </FormGroup>
+                      <FormGroup style={{ gridColumn: '1 / -1' }}>
+                        <FormLabel>
+                          <FaFileImage />
+                          Client Photo URL
+                          <input
+                            type="file"
+                            accept="image/*"
+                            style={{ display: 'none' }}
+                            id={`testimonial-image-${testimonial.id}`}
+                            onChange={e => handleImageUpload(e, (url) => updateTestimonial(testimonial.id, 'image', url))}
+                          />
+                          <label htmlFor={`testimonial-image-${testimonial.id}`} style={{ marginLeft: '10px', cursor: 'pointer', color: '#3b82f6' }}>
+                            <FaUpload /> Upload
+                          </label>
+                        </FormLabel>
+                        <FormInput
+                          value={testimonial.image || ''}
+                          onChange={e => updateTestimonial(testimonial.id, 'image', e.target.value)}
+                          placeholder="Enter image URL or upload"
+                        />
+                      </FormGroup>
+                      <FormGroup style={{ gridColumn: '1 / -1' }}>
+                        <FormLabel>Review</FormLabel>
+                        <FormTextarea
+                          value={testimonial.review}
+                          onChange={e => updateTestimonial(testimonial.id, 'review', e.target.value)}
+                          placeholder="Client testimonial"
+                          rows={4}
+                        />
+                      </FormGroup>
+                    </FormGrid>
+                  </div>
+                  <div className="item-actions">
+                    <ItemButton
+                      variant="danger"
+                      onClick={() => deleteTestimonial(testimonial.id)}
+                    >
+                      <FaTrash />
+                      Delete
+                    </ItemButton>
+                  </div>
+                </ListItem>
+              ))}
+            </ListContainer>
+          </ContentSection>
+        );
+
+      case 'reviews':
+        return (
+          <ContentSection>
+            <SectionHeader>
+              <SectionTitle>
+                <FaStar />
+                Reviews Management
+              </SectionTitle>
+              <VisibilityToggleContainer>
+                <span>{sectionVisibility['reviews'] ? 'Visible' : 'Hidden'}</span>
+                <ToggleSwitch>
+                  <input
+                    type="checkbox"
+                    checked={sectionVisibility['reviews']}
+                    onChange={() => toggleSectionVisibility('reviews')}
+                  />
+                  <span></span>
+                </ToggleSwitch>
+              </VisibilityToggleContainer>
+            </SectionHeader>
+
+            <AddButton onClick={addReview}>
+              <FaPlus />
+              Add Review
+            </AddButton>
+
+            <ListContainer>
+              {reviewsData.map(review => (
+                <ListItem key={review.id}>
+                  <div className="item-info">
+                    <FormGrid>
+                      <FormGroup>
+                        <FormLabel>Reviewer Name</FormLabel>
+                        <FormInput
+                          value={review.name}
+                          onChange={e => updateReview(review.id, 'name', e.target.value)}
+                          placeholder="Reviewer name"
+                        />
+                      </FormGroup>
+                      <FormGroup>
+                        <FormLabel>Date</FormLabel>
+                        <FormInput
+                          type="date"
+                          value={review.date}
+                          onChange={e => updateReview(review.id, 'date', e.target.value)}
+                        />
+                      </FormGroup>
+                      <FormGroup>
+                        <FormLabel>Rating</FormLabel>
+                        <FormInput
+                          type="number"
+                          min="1"
+                          max="5"
+                          value={review.rating}
+                          onChange={e => updateReview(review.id, 'rating', parseInt(e.target.value))}
+                        />
+                      </FormGroup>
+                      <FormGroup style={{ gridColumn: '1 / -1' }}>
+                        <FormLabel>
+                          <FaFileImage />
+                          Avatar URL
+                          <input
+                            type="file"
+                            accept="image/*"
+                            style={{ display: 'none' }}
+                            id={`review-avatar-${review.id}`}
+                            onChange={e => handleImageUpload(e, (url) => updateReview(review.id, 'avatar', url))}
+                          />
+                          <label htmlFor={`review-avatar-${review.id}`} style={{ marginLeft: '10px', cursor: 'pointer', color: '#3b82f6' }}>
+                            <FaUpload /> Upload
+                          </label>
+                        </FormLabel>
+                        <FormInput
+                          value={review.avatar || ''}
+                          onChange={e => updateReview(review.id, 'avatar', e.target.value)}
+                          placeholder="Enter avatar URL or upload"
+                        />
+                      </FormGroup>
+                      <FormGroup style={{ gridColumn: '1 / -1' }}>
+                        <FormLabel>Review Text</FormLabel>
+                        <FormTextarea
+                          value={review.review}
+                          onChange={e => updateReview(review.id, 'review', e.target.value)}
+                          placeholder="Review content"
+                          rows={3}
+                        />
+                      </FormGroup>
+                    </FormGrid>
+                  </div>
+                  <div className="item-actions">
+                    <ItemButton
+                      variant="danger"
+                      onClick={() => deleteReview(review.id)}
+                    >
+                      <FaTrash />
+                      Delete
+                    </ItemButton>
+                  </div>
+                </ListItem>
+              ))}
+            </ListContainer>
+          </ContentSection>
+        );
+
+      case 'faq':
+        return (
+          <ContentSection>
+            <SectionHeader>
+              <SectionTitle>
+                <FaQuestionCircle />
+                FAQ Management
+              </SectionTitle>
+              <VisibilityToggleContainer>
+                <span>{sectionVisibility['faq'] ? 'Visible' : 'Hidden'}</span>
+                <ToggleSwitch>
+                  <input
+                    type="checkbox"
+                    checked={sectionVisibility['faq']}
+                    onChange={() => toggleSectionVisibility('faq')}
+                  />
+                  <span></span>
+                </ToggleSwitch>
+              </VisibilityToggleContainer>
+            </SectionHeader>
+
+            <AddButton onClick={addFAQ}>
+              <FaPlus />
+              Add FAQ
+            </AddButton>
+
+            <ListContainer>
+              {faqData.map(faq => (
+                <ListItem key={faq.id}>
+                  <div className="item-info">
+                    <FormGrid>
+                      <FormGroup style={{ gridColumn: '1 / -1' }}>
+                        <FormLabel>Question</FormLabel>
+                        <FormInput
+                          value={faq.question}
+                          onChange={e => updateFAQ(faq.id, 'question', e.target.value)}
+                          placeholder="Frequently asked question"
+                        />
+                      </FormGroup>
+                      <FormGroup style={{ gridColumn: '1 / -1' }}>
+                        <FormLabel>Answer</FormLabel>
+                        <FormTextarea
+                          value={faq.answer}
+                          onChange={e => updateFAQ(faq.id, 'answer', e.target.value)}
+                          placeholder="Answer to the question"
+                          rows={4}
+                        />
+                      </FormGroup>
+                    </FormGrid>
+                  </div>
+                  <div className="item-actions">
+                    <ItemButton
+                      variant="danger"
+                      onClick={() => deleteFAQ(faq.id)}
+                    >
+                      <FaTrash />
+                      Delete
+                    </ItemButton>
+                  </div>
+                </ListItem>
+              ))}
+            </ListContainer>
+          </ContentSection>
+        );
+
+      case 'business-hours':
+        return (
+          <ContentSection>
+            <SectionHeader>
+              <SectionTitle>
+                <FaClock />
+                Business Hours
+              </SectionTitle>
+              <VisibilityToggleContainer>
+                <span>{sectionVisibility['business-hours'] ? 'Visible' : 'Hidden'}</span>
+                <ToggleSwitch>
+                  <input
+                    type="checkbox"
+                    checked={sectionVisibility['business-hours']}
+                    onChange={() => toggleSectionVisibility('business-hours')}
+                  />
+                  <span></span>
+                </ToggleSwitch>
+              </VisibilityToggleContainer>
+            </SectionHeader>
+            <FormGrid>
+              <FormGroup style={{ gridColumn: '1 / -1' }}>
+                <FormLabel>Section Title</FormLabel>
+                <FormInput
+                  value={businessHoursData.title}
+                  onChange={e => {
+                    setBusinessHoursData(prev => ({ ...prev, title: e.target.value }));
+                    trackSectionChange('business-hours');
+                  }}
+                  placeholder="Business Hours"
+                />
+              </FormGroup>
+              {Object.entries(businessHoursData.hours).map(([day, time]) => (
+                <FormGroup key={day}>
+                  <FormLabel>{day.charAt(0).toUpperCase() + day.slice(1)}</FormLabel>
+                  <FormInput
+                    value={time}
+                    onChange={e => {
+                      setBusinessHoursData(prev => ({
+                        ...prev,
+                        hours: { ...prev.hours, [day]: e.target.value }
+                      }));
+                      trackSectionChange('business-hours');
+                    }}
+                    placeholder="9:00 AM - 6:00 PM"
+                  />
+                </FormGroup>
+              ))}
+            </FormGrid>
+          </ContentSection>
+        );
+
       case 'contact':
         return (
           <ContentSection>
@@ -1881,6 +2645,67 @@ const BuisnessAdminDashboard = () => {
                   placeholder="123 Business Street, City, State 12345"
                   rows={3}
                 />
+              </FormGroup>
+              <FormGroup style={{ gridColumn: '1 / -1' }}>
+                <FormLabel>Social Media</FormLabel>
+                <FormGrid>
+                  <FormGroup>
+                    <FormLabel>Facebook</FormLabel>
+                    <FormInput
+                      value={contactData.socialMedia?.facebook || ''}
+                      onChange={e => {
+                        setContactData(prev => ({
+                          ...prev,
+                          socialMedia: { ...prev.socialMedia, facebook: e.target.value }
+                        }));
+                        trackSectionChange('contact');
+                      }}
+                      placeholder="Facebook URL"
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <FormLabel>Instagram</FormLabel>
+                    <FormInput
+                      value={contactData.socialMedia?.instagram || ''}
+                      onChange={e => {
+                        setContactData(prev => ({
+                          ...prev,
+                          socialMedia: { ...prev.socialMedia, instagram: e.target.value }
+                        }));
+                        trackSectionChange('contact');
+                      }}
+                      placeholder="Instagram URL"
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <FormLabel>Twitter</FormLabel>
+                    <FormInput
+                      value={contactData.socialMedia?.twitter || ''}
+                      onChange={e => {
+                        setContactData(prev => ({
+                          ...prev,
+                          socialMedia: { ...prev.socialMedia, twitter: e.target.value }
+                        }));
+                        trackSectionChange('contact');
+                      }}
+                      placeholder="Twitter URL"
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <FormLabel>LinkedIn</FormLabel>
+                    <FormInput
+                      value={contactData.socialMedia?.linkedin || ''}
+                      onChange={e => {
+                        setContactData(prev => ({
+                          ...prev,
+                          socialMedia: { ...prev.socialMedia, linkedin: e.target.value }
+                        }));
+                        trackSectionChange('contact');
+                      }}
+                      placeholder="LinkedIn URL"
+                    />
+                  </FormGroup>
+                </FormGrid>
               </FormGroup>
             </FormGrid>
           </ContentSection>
