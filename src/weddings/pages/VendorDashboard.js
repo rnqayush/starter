@@ -1943,7 +1943,7 @@ const VendorDashboard = () => {
                         <RemoveImageButton
                           onClick={() => {
                             removeGalleryImage(key, index);
-                            autoSaveForPreview();
+                            trackSectionChange('gallery');
                           }}
                         >
                           <FaTrash />
