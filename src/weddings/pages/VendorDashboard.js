@@ -1498,6 +1498,8 @@ const VendorDashboard = () => {
         },
       },
     }));
+    // Automatically trigger real-time updates
+    setTimeout(() => updateEditingVendorInRedux(), 100);
   };
 
   const removeGalleryImage = (category, imageIndex) => {
@@ -1511,6 +1513,8 @@ const VendorDashboard = () => {
         },
       },
     }));
+    // Automatically trigger real-time updates
+    setTimeout(() => updateEditingVendorInRedux(), 100);
   };
 
   const renderContent = () => {
