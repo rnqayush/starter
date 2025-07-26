@@ -916,6 +916,29 @@ const BuisnessAdminDashboard = () => {
         experience: [
           { id: 1, company: 'Digital Agency Inc.', role: 'Senior Creative Designer', period: '2020 - Present', description: 'Lead designer for major client projects, specializing in web design and branding solutions.' },
           { id: 2, company: 'Freelance', role: 'Independent Designer & Developer', period: '2018 - Present', description: 'Providing creative solutions for startups and established businesses across various industries.' },
+        ],
+        gallery: [
+          { id: 1, category: 'Web Design', images: 10, description: 'Modern web design projects' },
+          { id: 2, category: 'Branding', images: 8, description: 'Brand identity designs' },
+          { id: 3, category: 'Mobile Apps', images: 6, description: 'Mobile app UI designs' },
+        ],
+        packages: [
+          { id: 1, name: 'Basic Package', description: 'Perfect for small projects', price: '$499', duration: '1 week', features: ['Logo Design', 'Basic Website', 'Mobile Responsive'], featured: false },
+          { id: 2, name: 'Professional Package', description: 'Complete business solution', price: '$1299', duration: '2-3 weeks', features: ['Custom Design', 'Full Website', 'SEO Optimization', 'Analytics'], featured: true },
+          { id: 3, name: 'Enterprise Package', description: 'Large scale projects', price: '$2999', duration: '4-6 weeks', features: ['Complex Website', 'E-commerce', 'CMS', 'Training', 'Support'], featured: false },
+        ],
+        testimonials: [
+          { id: 1, name: 'John Smith', company: 'Tech Startup', role: 'Founder', review: 'Exceptional work! Delivered exactly what we needed and more.', rating: 5, image: '' },
+          { id: 2, name: 'Lisa Chen', company: 'Design Agency', role: 'Creative Director', review: 'Professional, creative, and reliable. Highly recommend!', rating: 5, image: '' },
+        ],
+        reviews: [
+          { id: 1, name: 'Alex M.', date: '2023-12-20', rating: 5, review: 'Outstanding creativity and attention to detail.', avatar: '' },
+          { id: 2, name: 'Rachel T.', date: '2023-12-18', rating: 5, review: 'Perfect communication and excellent results.', avatar: '' },
+        ],
+        faq: [
+          { id: 1, question: 'What is your typical project timeline?', answer: 'Project timelines vary based on scope, typically 1-6 weeks for most projects.' },
+          { id: 2, question: 'Do you provide ongoing support?', answer: 'Yes, we offer ongoing support and maintenance packages for all projects.' },
+          { id: 3, question: 'What are your payment terms?', answer: 'We typically require 50% upfront and 50% upon completion.' },
         ]
       }
     };
