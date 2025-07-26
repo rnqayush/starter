@@ -1046,6 +1046,10 @@ const VendorDashboard = () => {
         completedWeddings: aboutUsData.completedWeddings || '',
         satisfiedCouples: aboutUsData.satisfiedCouples || '',
         videoEmbed: aboutUsData.videoEmbed || '',
+        aboutImage: aboutUsData.aboutImage || '',
+        experienceVisible: aboutUsData.experienceVisible,
+        weddingsVisible: aboutUsData.weddingsVisible,
+        couplesVisible: aboutUsData.couplesVisible,
       };
 
       console.log('Dispatching basic field updates...');
