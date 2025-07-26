@@ -1324,6 +1324,11 @@ const VendorDashboard = () => {
       location: 'Location',
       date: 'Date',
       image: '',
+      coupleNames: '',
+      description: '',
+      services: [],
+      highlights: [],
+      gallery: [],
       imageFile: null,
     };
     setRecentWorkData(prev => [...prev, newWork]);
