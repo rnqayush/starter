@@ -1781,6 +1781,11 @@ const VendorDashboard = () => {
           section.id === editingCustomSection.id ? sectionData : section
         )
       );
+      // Update visibility for existing section
+      setCustomSectionVisibility(prev => ({
+        ...prev,
+        [sectionData.id]: sectionData.visible
+      }));
     } else {
       // Add new section
       setCustomSections(prev => [...prev, sectionData]);
