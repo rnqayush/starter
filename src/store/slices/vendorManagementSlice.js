@@ -43,100 +43,102 @@ const vendorManagementSlice = createSlice({
       state.changes = {};
       state.hasUnsavedChanges = false;
     },
-    
+
     updateVendorField: (state, action) => {
       const { field, value } = action.payload;
       if (state.editingVendor) {
         state.editingVendor[field] = value;
         state.changes[field] = {
           old: state.originalVendor[field],
-          new: value
+          new: value,
         };
         state.hasUnsavedChanges = true;
       }
     },
-    
+
     updateVendorImage: (state, action) => {
       const { field, url } = action.payload;
       if (state.editingVendor) {
         state.editingVendor[field] = url;
         state.changes[field] = {
           old: state.originalVendor[field],
-          new: url
+          new: url,
         };
         state.hasUnsavedChanges = true;
       }
     },
-    
+
     updateVendorGallery: (state, action) => {
       if (state.editingVendor) {
         state.editingVendor.gallery = action.payload;
         state.changes.gallery = {
           old: state.originalVendor.gallery,
-          new: action.payload
+          new: action.payload,
         };
         state.hasUnsavedChanges = true;
       }
     },
-    
+
     updateServices: (state, action) => {
       if (state.editingVendor) {
         state.editingVendor.services = action.payload;
         state.changes.services = {
           old: state.originalVendor.services,
-          new: action.payload
+          new: action.payload,
         };
         state.hasUnsavedChanges = true;
       }
     },
-    
+
     updateTestimonials: (state, action) => {
       if (state.editingVendor) {
         state.editingVendor.testimonials = action.payload;
         state.changes.testimonials = {
           old: state.originalVendor.testimonials,
-          new: action.payload
+          new: action.payload,
         };
         state.hasUnsavedChanges = true;
       }
     },
-    
+
     updatePackages: (state, action) => {
       if (state.editingVendor) {
         state.editingVendor.packages = action.payload;
         state.changes.packages = {
           old: state.originalVendor.packages,
-          new: action.payload
+          new: action.payload,
         };
         state.hasUnsavedChanges = true;
       }
     },
-    
+
     updateRecentWork: (state, action) => {
       if (state.editingVendor) {
         state.editingVendor.locationPortfolio = action.payload;
         state.changes.locationPortfolio = {
           old: state.originalVendor.locationPortfolio,
-          new: action.payload
+          new: action.payload,
         };
         state.hasUnsavedChanges = true;
       }
     },
-    
+
     updateCustomSections: (state, action) => {
       if (state.editingVendor) {
         state.editingVendor.customSections = action.payload;
         state.changes.customSections = {
           old: state.originalVendor.customSections || [],
-          new: action.payload
+          new: action.payload,
         };
         state.hasUnsavedChanges = true;
       }
     },
-    
-    saveChanges: (state) => {
+
+    saveChanges: state => {
       if (state.editingVendor && state.hasUnsavedChanges) {
-        const vendorIndex = state.vendors.findIndex(v => v.id === state.editingVendor.id);
+        const vendorIndex = state.vendors.findIndex(
+          v => v.id === state.editingVendor.id
+        );
         if (vendorIndex !== -1) {
           state.vendors[vendorIndex] = { ...state.editingVendor };
         }
@@ -145,15 +147,15 @@ const vendorManagementSlice = createSlice({
         state.hasUnsavedChanges = false;
       }
     },
-    
-    discardChanges: (state) => {
+
+    discardChanges: state => {
       if (state.originalVendor) {
         state.editingVendor = { ...state.originalVendor };
         state.changes = {};
         state.hasUnsavedChanges = false;
       }
     },
-    
+
     initializeVendor: (state, action) => {
       const vendor = action.payload;
       const existingVendor = state.vendors.find(v => v.id === vendor.id);
@@ -163,7 +165,7 @@ const vendorManagementSlice = createSlice({
       }
     },
 
-    clearEditingVendor: (state) => {
+    clearEditingVendor: state => {
       state.editingVendor = null;
       state.originalVendor = null;
       state.changes = {};
@@ -178,12 +180,15 @@ const vendorManagementSlice = createSlice({
       // Also update the editing vendor's sectionVisibility
       if (state.editingVendor) {
         if (!state.editingVendor.sectionVisibility) {
-          state.editingVendor.sectionVisibility = { ...state.sectionVisibility };
+          state.editingVendor.sectionVisibility = {
+            ...state.sectionVisibility,
+          };
         }
-        state.editingVendor.sectionVisibility[section] = state.sectionVisibility[section];
+        state.editingVendor.sectionVisibility[section] =
+          state.sectionVisibility[section];
         state.changes.sectionVisibility = {
           old: state.originalVendor?.sectionVisibility || {},
-          new: state.editingVendor.sectionVisibility
+          new: state.editingVendor.sectionVisibility,
         };
       }
 

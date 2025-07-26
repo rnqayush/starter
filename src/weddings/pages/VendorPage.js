@@ -1006,7 +1006,9 @@ const VendorPage = () => {
   const vendorId = vendorSlug || pathSegments[pathSegments.length - 1];
 
   // Get vendor data from Redux store for real-time updates
-  const { vendors, editingVendor } = useSelector(state => state.vendorManagement);
+  const { vendors, editingVendor } = useSelector(
+    state => state.vendorManagement
+  );
 
   const [vendor, setVendor] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -1029,7 +1031,8 @@ const VendorPage = () => {
       setVendor(editingVendor);
     } else {
       // Otherwise, use data from vendors array (includes saved changes)
-      const vendorData = vendors.find(v => v.id === vendorId) || getVendorById(vendorId);
+      const vendorData =
+        vendors.find(v => v.id === vendorId) || getVendorById(vendorId);
       setVendor(vendorData);
     }
     setLoading(false);

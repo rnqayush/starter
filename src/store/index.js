@@ -7,7 +7,7 @@ export const store = configureStore({
     hotelManagement: hotelManagementReducer,
     vendorManagement: vendorManagementReducer,
   },
-  middleware: (getDefaultMiddleware) =>
+  middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       serializableCheck: {
         ignoredActions: ['persist/PERSIST'],
