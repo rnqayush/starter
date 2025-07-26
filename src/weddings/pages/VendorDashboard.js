@@ -1523,6 +1523,18 @@ const VendorDashboard = () => {
       }));
       setCustomSections(originalCustomSectionsWithIds);
 
+      // Reset section visibility
+      const originalVisibility = {
+        'hero': originalVendor.sectionVisibility?.hero !== false,
+        'about-us': originalVendor.sectionVisibility?.['about-us'] !== false,
+        'services-offered': originalVendor.sectionVisibility?.['services-offered'] !== false,
+        'recent-work': originalVendor.sectionVisibility?.['recent-work'] !== false,
+        'gallery': originalVendor.sectionVisibility?.gallery !== false,
+        'testimonials': originalVendor.sectionVisibility?.testimonials !== false,
+        'packages-pricing': originalVendor.sectionVisibility?.['packages-pricing'] !== false,
+      };
+      setSectionVisibility(originalVisibility);
+
       // Discard changes in Redux
       dispatch(discardChanges());
       setSaved(false);
