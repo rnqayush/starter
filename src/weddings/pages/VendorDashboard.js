@@ -1512,8 +1512,8 @@ const VendorDashboard = () => {
         subtitle: section.subtitle || '',
         type: section.type || 'text',
         content: section.content || '',
-        images: section.images || [],
-        cards: section.cards || []
+        images: Array.isArray(section.images) ? [...section.images] : [],
+        cards: Array.isArray(section.cards) ? [...section.cards] : []
       });
     } else {
       setEditingCustomSection(null);
