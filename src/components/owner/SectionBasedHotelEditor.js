@@ -1414,7 +1414,10 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
           <Modal onClick={(e) => e.stopPropagation()}>
             <ModalHeader>
               <ModalTitle>
-                Edit {sections.find(s => s.id === activeModal)?.title}
+                {activeModal === 'add-section'
+                  ? 'Add Custom Section'
+                  : `Edit ${sections.find(s => s.id === activeModal)?.title || customSections.find(s => s.id === activeModal)?.title || activeModal}`
+                }
               </ModalTitle>
               <CloseButton onClick={closeModal}>
                 <FaTimes />
