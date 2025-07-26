@@ -694,20 +694,27 @@ const VendorDashboard = () => {
   const handleSaveAndGoLive = () => {
     if (!editingVendor) return;
 
-    // Update vendor data in Redux with all local changes
-    dispatch(updateVendorField({ field: 'name', value: heroData.name }));
-    dispatch(updateVendorField({ field: 'tagline', value: heroData.tagline }));
-    dispatch(updateVendorField({ field: 'image', value: heroData.image }));
-    dispatch(updateVendorField({ field: 'description', value: aboutUsData.description }));
-    dispatch(updateServices(servicesData));
-    dispatch(updateRecentWork(recentWorkData));
-    dispatch(updateTestimonials(testimonialsData));
-    dispatch(updatePackages(packagesData));
-    dispatch(updateCustomSections(customSections));
+    try {
+      // Update vendor data in Redux with all local changes
+      dispatch(updateVendorField({ field: 'name', value: heroData.name }));
+      dispatch(updateVendorField({ field: 'tagline', value: heroData.tagline }));
+      dispatch(updateVendorField({ field: 'image', value: heroData.image }));
+      dispatch(updateVendorField({ field: 'description', value: aboutUsData.description }));
 
-    // Save all changes to global state
-    dispatch(saveChanges());
-    alert('All changes published to live vendor page successfully!');
+      // Update complex data structures
+      dispatch(updateServices(servicesData));
+      dispatch(updateRecentWork(recentWorkData));
+      dispatch(updateTestimonials(testimonialsData));
+      dispatch(updatePackages(packagesData));
+      dispatch(updateCustomSections(customSections));
+
+      // Save all changes to global state
+      dispatch(saveChanges());
+      alert('All changes published to live vendor page successfully!');
+    } catch (error) {
+      console.error('Error saving changes:', error);
+      alert('Error saving changes. Please try again.');
+    }
   };
 
   // Handle Discard Changes - revert to original state
