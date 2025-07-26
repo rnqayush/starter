@@ -2903,16 +2903,19 @@ const VendorDashboard = () => {
               }}
             >
               {(() => {
-                // Create a combined list of default sections and custom sections
-                const allSections = [...sectionOrder];
+                // Use complete section order that includes both default and custom sections
+                let allSections = [...completeSectionOrder];
 
-                // Add custom sections to the order if not already present
-                customSections.forEach(customSection => {
-                  const customId = `custom-${customSection.id}`;
-                  if (!allSections.includes(customId)) {
-                    allSections.push(customId);
-                  }
-                });
+                // If completeSectionOrder is empty (on initial load), build it
+                if (allSections.length === 0) {
+                  allSections = [...sectionOrder];
+                  customSections.forEach(customSection => {
+                    const customId = `custom-${customSection.id}`;
+                    if (!allSections.includes(customId)) {
+                      allSections.push(customId);
+                    }
+                  });
+                }
 
                 return allSections.map((sectionId, index) => {
                   let section,
