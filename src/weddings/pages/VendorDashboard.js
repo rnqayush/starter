@@ -1398,6 +1398,10 @@ const VendorDashboard = () => {
         type: 'vendorManagement/updateVendorField',
         payload: { field: 'sectionVisibility', value: sectionVisibility },
       });
+      dispatch({
+        type: 'vendorManagement/updateVendorField',
+        payload: { field: 'customSectionVisibility', value: customSectionVisibility },
+      });
 
       console.log('Saving changes...');
       dispatch({ type: 'vendorManagement/saveChanges' });
