@@ -797,10 +797,18 @@ const VendorDashboard = () => {
 
   // Handle section visibility toggle
   const toggleSectionVisibility = (sectionId) => {
-    setSectionVisibility(prev => ({
-      ...prev,
-      [sectionId]: !prev[sectionId]
-    }));
+    if (sectionId.startsWith('custom-')) {
+      const customId = sectionId.replace('custom-', '');
+      setCustomSectionVisibility(prev => ({
+        ...prev,
+        [customId]: !prev[customId]
+      }));
+    } else {
+      setSectionVisibility(prev => ({
+        ...prev,
+        [sectionId]: !prev[sectionId]
+      }));
+    }
     trackSectionChange(sectionId);
   };
 
