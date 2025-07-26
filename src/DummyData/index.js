@@ -6,6 +6,7 @@ import * as BusinessData from './business';
 import * as EcommerceData from './ecommerce';
 import * as HotelData from './hotels';
 import * as WeddingData from './weddings';
+import * as PlatformData from './platform';
 
 // Export data arrays/objects
 export const { automobileCategories, automobileVehicles, automobileVendors } =
