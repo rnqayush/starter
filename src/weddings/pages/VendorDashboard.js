@@ -450,6 +450,32 @@ const SectionTitle = styled.h2`
   gap: ${theme.spacing.sm};
 `;
 
+const SectionHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: ${theme.spacing.lg};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: ${theme.spacing.md};
+  }
+`;
+
+const VisibilityToggleContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.sm};
+  font-size: 0.9rem;
+  color: ${theme.colors.gray700};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    width: 100%;
+    justify-content: space-between;
+  }
+`;
+
 const FormGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
