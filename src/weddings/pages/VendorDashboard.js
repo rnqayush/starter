@@ -200,6 +200,7 @@ const SidebarFooter = styled.div`
   padding: ${theme.spacing.lg};
   border-top: 1px solid ${theme.colors.gray200};
   background: ${theme.colors.gray50};
+  margin-top: auto;
 `;
 
 const SaveActionsContainer = styled.div`
