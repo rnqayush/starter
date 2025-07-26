@@ -1,14 +1,21 @@
 // Platform-specific data for the main website
-import { 
-  FaHotel, 
-  FaCar, 
-  FaRing, 
-  FaShoppingBag, 
+import {
+  FaHotel,
+  FaCar,
+  FaRing,
+  FaShoppingBag,
   FaGlobe,
   FaCode,
   FaPalette,
   FaCloud,
-  FaLock
+  FaLock,
+  FaRocket,
+  FaCrown,
+  FaAward,
+  FaShieldAlt,
+  FaHeadset,
+  FaChartLine,
+  FaUsers
 } from 'react-icons/fa';
 
 export const storeCategories = [
