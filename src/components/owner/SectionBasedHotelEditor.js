@@ -1132,6 +1132,28 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
     setNewSectionData(prev => ({ ...prev, [field]: value }));
   };
 
+  const updateCustomSection = () => {
+    const customSectionId = activeModal;
+    const updatedSections = customSections.map(section =>
+      section.id === customSectionId
+        ? { ...section, ...newSectionData }
+        : section
+    );
+
+    setCustomSections(updatedSections);
+
+    // Update in Redux store
+    dispatch(
+      updateHotelField({
+        field: 'customSections',
+        value: updatedSections,
+      })
+    );
+
+    closeModal();
+    alert('Custom section updated! Remember to "Save & Go Live" to publish changes.');
+  };
+
   const addContentItem = () => {
     const { type } = newSectionData;
     let newItem = {};
