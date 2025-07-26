@@ -1672,40 +1672,7 @@ const VendorPage = () => {
         });
       })()}
 
-      {/* Custom Sections */}
-      {vendor.customSections?.map((section, index) => (
-        <Section key={`custom-${section.id}`} id={`custom-${section.id}`}>
-          <Container>
-            <SectionTitle>{section.title}</SectionTitle>
-            {section.subtitle && <SectionSubtitle>{section.subtitle}</SectionSubtitle>}
-            {/* Render custom section content based on type */}
-            {section.type === 'text' && (
-              <div dangerouslySetInnerHTML={{ __html: section.content }} />
-            )}
-            {section.type === 'gallery' && section.images && (
-              <GalleryGrid>
-                {section.images.map((image, idx) => (
-                  <GalleryItem key={idx} src={image} alt={`${section.title} ${idx + 1}`} />
-                ))}
-              </GalleryGrid>
-            )}
-            {section.type === 'cards' && section.cards && (
-              <ServicesGrid>
-                {section.cards.map((card, idx) => (
-                  <ServiceCard key={idx}>
-                    {card.image && <ServiceImage src={card.image} alt={card.title} />}
-                    <ServiceContent>
-                      {card.icon && <ServiceIcon>{card.icon}</ServiceIcon>}
-                      <ServiceName>{card.title}</ServiceName>
-                      <ServiceDescription>{card.description}</ServiceDescription>
-                    </ServiceContent>
-                  </ServiceCard>
-                ))}
-              </ServicesGrid>
-            )}
-          </Container>
-        </Section>
-      ))}
+
 
       {/* FAQ Section */}
       <Section id="faq">
@@ -1967,7 +1934,7 @@ const VendorPage = () => {
         primaryColor={primaryColor}
         onClick={scrollToTop}
       >
-        ↑
+        ���
       </BackToTopButton>
     </PageContainer>
   );
