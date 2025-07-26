@@ -1628,7 +1628,7 @@ const VendorDashboard = () => {
                         value={aboutUsData.aboutImage}
                         onChange={e => {
                           setAboutUsData(prev => ({ ...prev, aboutImage: e.target.value }));
-                          autoSaveForPreview();
+                          trackSectionChange('about-us');
                         }}
                         placeholder="https://example.com/image.jpg"
                       />
