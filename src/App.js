@@ -20,15 +20,7 @@ import ScrollToTop from './components/shared/ScrollToTop';
 import SmartRouter from './components/SmartRouter';
 
 // Hotel Module
-import HotelModule from './hotel';
-
-// Owner Components (Legacy routes - should be migrated to slug-based)
-import AddHotelPage from './components/owner/AddHotelPage';
-import MyHotelsPage from './components/owner/MyHotelsPage';
-import AddRoomPage from './components/owner/AddRoomPage';
-import BookingsReceivedPage from './components/owner/BookingsReceivedPage';
-import ProfileSettingsPage from './components/owner/ProfileSettingsPage';
-import ContentManagerSelector from './components/owner/ContentManagerSelector';
+// Note: HotelModule removed as it's not used in current routing
 
 // Mock data
 import {
