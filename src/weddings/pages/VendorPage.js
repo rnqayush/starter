@@ -1284,35 +1284,49 @@ const VendorPage = () => {
           <SectionTitle>About Us</SectionTitle>
           <AboutGrid>
             <AboutContent>
-              <AboutText>{vendor.aboutUs?.text}</AboutText>
+              <AboutText>{vendor.aboutUs?.text || vendor.description}</AboutText>
               <AboutStats>
-                <StatCard>
-                  <StatNumber primaryColor={primaryColor}>
-                    {vendor.aboutUs?.experience}
-                  </StatNumber>
-                  <StatLabel>Experience</StatLabel>
-                </StatCard>
-                <StatCard>
-                  <StatNumber primaryColor={primaryColor}>
-                    {vendor.aboutUs?.completedWeddings}
-                  </StatNumber>
-                  <StatLabel>Weddings</StatLabel>
-                </StatCard>
-                <StatCard>
-                  <StatNumber primaryColor={primaryColor}>
-                    {vendor.aboutUs?.satisfiedCouples}
-                  </StatNumber>
-                  <StatLabel>Happy Couples</StatLabel>
-                </StatCard>
+                {vendor.aboutUs?.experienceVisible !== false && vendor.aboutUs?.experience && (
+                  <StatCard>
+                    <StatNumber primaryColor={primaryColor}>
+                      {vendor.aboutUs.experience}
+                    </StatNumber>
+                    <StatLabel>Experience</StatLabel>
+                  </StatCard>
+                )}
+                {vendor.aboutUs?.weddingsVisible !== false && vendor.aboutUs?.completedWeddings && (
+                  <StatCard>
+                    <StatNumber primaryColor={primaryColor}>
+                      {vendor.aboutUs.completedWeddings}
+                    </StatNumber>
+                    <StatLabel>Weddings</StatLabel>
+                  </StatCard>
+                )}
+                {vendor.aboutUs?.couplesVisible !== false && vendor.aboutUs?.satisfiedCouples && (
+                  <StatCard>
+                    <StatNumber primaryColor={primaryColor}>
+                      {vendor.aboutUs.satisfiedCouples}
+                    </StatNumber>
+                    <StatLabel>Happy Couples</StatLabel>
+                  </StatCard>
+                )}
               </AboutStats>
             </AboutContent>
-            {vendor.aboutUs?.videoEmbed && (
+            {(vendor.aboutUs?.videoEmbed || vendor.aboutUs?.aboutImage) && (
               <VideoContainer>
-                <VideoEmbed
-                  src={vendor.aboutUs.videoEmbed}
-                  allow="autoplay; fullscreen; picture-in-picture"
-                  allowFullScreen
-                />
+                {vendor.aboutUs?.videoEmbed ? (
+                  <VideoEmbed
+                    src={vendor.aboutUs.videoEmbed}
+                    allow="autoplay; fullscreen; picture-in-picture"
+                    allowFullScreen
+                  />
+                ) : vendor.aboutUs?.aboutImage ? (
+                  <img
+                    src={vendor.aboutUs.aboutImage}
+                    alt="About us"
+                    style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '8px' }}
+                  />
+                ) : null}
               </VideoContainer>
             )}
           </AboutGrid>
