@@ -446,6 +446,148 @@ const ContentSection = styled.div`
   }
 `;
 
+const SectionTitle = styled.h2`
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: ${theme.colors.gray900};
+  margin: 0 0 ${theme.spacing.lg} 0;
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.sm};
+`;
+
+const SectionHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: ${theme.spacing.lg};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: ${theme.spacing.md};
+  }
+`;
+
+const VisibilityToggleContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.sm};
+  font-size: 0.9rem;
+  color: ${theme.colors.gray700};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    width: 100%;
+    justify-content: space-between;
+  }
+`;
+
+const FormGrid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: ${theme.spacing.lg};
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    grid-template-columns: 1fr;
+    gap: ${theme.spacing.md};
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    gap: ${theme.spacing.sm};
+  }
+`;
+
+const FormGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${theme.spacing.sm};
+`;
+
+const FormLabel = styled.label`
+  font-weight: 600;
+  color: ${theme.colors.gray900};
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.xs};
+`;
+
+const FormInput = styled.input`
+  padding: ${theme.spacing.md};
+  border: 2px solid ${theme.colors.gray200};
+  border-radius: ${theme.borderRadius.md};
+  font-size: 1rem;
+  transition: all 0.2s ease;
+
+  &:focus {
+    outline: none;
+    border-color: ${theme.colors.primary};
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  }
+`;
+
+const FormTextarea = styled.textarea`
+  padding: ${theme.spacing.md};
+  border: 2px solid ${theme.colors.gray200};
+  border-radius: ${theme.borderRadius.md};
+  font-size: 1rem;
+  min-height: 120px;
+  resize: vertical;
+  transition: all 0.2s ease;
+
+  &:focus {
+    outline: none;
+    border-color: ${theme.colors.primary};
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  }
+`;
+
+const ToggleSwitch = styled.label`
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+  margin-left: auto;
+
+  input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  span {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: ${theme.colors.gray300};
+    transition: 0.4s;
+    border-radius: 24px;
+
+    &:before {
+      position: absolute;
+      content: '';
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: 0.4s;
+      border-radius: 50%;
+    }
+  }
+
+  input:checked + span {
+    background-color: ${theme.colors.primary};
+  }
+
+  input:checked + span:before {
+    transform: translateX(26px);
+  }
+`;
+
 const BuisnessAdminDashboard = () => {
   const { businessSlug, slug } = useParams();
   const navigate = useNavigate();
@@ -470,6 +612,148 @@ const BuisnessAdminDashboard = () => {
   const [activeSection, setActiveSection] = useState('hero');
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [changedSections, setChangedSections] = useState(new Set());
+
+  // Local form states
+  const [heroData, setHeroData] = useState({
+    title: '',
+    subtitle: '',
+    backgroundImage: '',
+    backgroundImageFile: null,
+  });
+
+  const [aboutData, setAboutData] = useState({
+    title: '',
+    description: '',
+    profileImage: '',
+    profileImageFile: null,
+  });
+
+  const [servicesData, setServicesData] = useState([]);
+  const [teamData, setTeamData] = useState([]);
+  const [testimonialsData, setTestimonialsData] = useState([]);
+  const [contactData, setContactData] = useState({
+    title: '',
+    description: '',
+    email: '',
+    phone: '',
+    address: '',
+    hours: {
+      monday: '',
+      tuesday: '',
+      wednesday: '',
+      thursday: '',
+      friday: '',
+      saturday: '',
+      sunday: '',
+    },
+    socialMedia: {
+      linkedin: '',
+      twitter: '',
+      instagram: '',
+      facebook: '',
+    },
+  });
+
+  // Section visibility state
+  const [sectionVisibility, setSectionVisibility] = useState({
+    hero: true,
+    'about-us': true,
+    'services-offered': true,
+    portfolio: true,
+    skills: true,
+    experience: true,
+    team: true,
+    gallery: true,
+    testimonials: true,
+    'packages-pricing': true,
+    contact: true,
+  });
+
+  // Track changes in a section and update Redux editing business for real-time preview
+  const trackSectionChange = sectionId => {
+    setChangedSections(prev => new Set([...prev, sectionId]));
+    setSaved(false);
+
+    // Immediately update Redux editing business for real-time preview
+    updateEditingBusinessInRedux();
+  };
+
+  // Handle section visibility toggle
+  const toggleSectionVisibility = sectionId => {
+    setSectionVisibility(prev => ({
+      ...prev,
+      [sectionId]: !prev[sectionId],
+    }));
+    trackSectionChange(sectionId);
+  };
+
+  // Helper function to immediately update Redux editing business
+  const updateEditingBusinessInRedux = () => {
+    if (!editingBusiness) return;
+
+    try {
+      // Create updated business object with current form data
+      const updatedBusiness = {
+        ...editingBusiness,
+        hero: {
+          title: heroData.title || editingBusiness.hero?.title || '',
+          subtitle: heroData.subtitle || editingBusiness.hero?.subtitle || '',
+          backgroundImage: heroData.backgroundImage || editingBusiness.hero?.backgroundImage || '',
+        },
+        about: {
+          title: aboutData.title || editingBusiness.about?.title || '',
+          description: aboutData.description || editingBusiness.about?.description || '',
+          profileImage: aboutData.profileImage || editingBusiness.about?.profileImage || '',
+        },
+        services: servicesData.map(service => ({
+          id: service.id,
+          icon: service.icon || '',
+          title: service.title || '',
+          description: service.description || '',
+          price: service.price || '',
+        })),
+        team: teamData.map(member => ({
+          id: member.id,
+          name: member.name || '',
+          role: member.role || '',
+          bio: member.bio || '',
+          photo: member.photo || '',
+          specialties: Array.isArray(member.specialties) ? member.specialties : [],
+        })),
+        testimonials: testimonialsData.map(testimonial => ({
+          id: testimonial.id,
+          name: testimonial.name || '',
+          text: testimonial.text || '',
+          rating: testimonial.rating || 5,
+          company: testimonial.company || '',
+        })),
+        contact: contactData,
+        sectionVisibility: sectionVisibility,
+      };
+
+      // Update Redux with the current form data for real-time preview
+      Object.keys(updatedBusiness).forEach(key => {
+        if (
+          key !== 'id' &&
+          JSON.stringify(updatedBusiness[key]) !==
+            JSON.stringify(editingBusiness[key])
+        ) {
+          dispatch(updateBusinessField({ field: key, value: updatedBusiness[key] }));
+        }
+      });
+
+      console.log(
+        'Real-time preview: Updated editing business in Redux',
+        updatedBusiness
+      );
+    } catch (error) {
+      console.error(
+        'Error updating editing business for real-time preview:',
+        error
+      );
+    }
+  };
 
   const navigationItems = [
     {
@@ -491,45 +775,15 @@ const BuisnessAdminDashboard = () => {
       section: 'Content Management',
     },
     {
-      id: 'portfolio',
-      label: 'Portfolio',
-      icon: FaBriefcase,
-      section: 'Content Management',
-    },
-    {
-      id: 'skills',
-      label: 'Skills',
-      icon: FaGripHorizontal,
-      section: 'Content Management',
-    },
-    {
-      id: 'experience',
-      label: 'Experience',
-      icon: FaAddressCard,
-      section: 'Content Management',
-    },
-    {
       id: 'team',
       label: 'Team',
       icon: FaUsers,
       section: 'Content Management',
     },
     {
-      id: 'gallery',
-      label: 'Gallery',
-      icon: FaImages,
-      section: 'Content Management',
-    },
-    {
       id: 'testimonials',
       label: 'Testimonials',
       icon: FaComments,
-      section: 'Content Management',
-    },
-    {
-      id: 'packages-pricing',
-      label: 'Packages & Pricing',
-      icon: FaDollarSign,
       section: 'Content Management',
     },
     {
@@ -560,6 +814,53 @@ const BuisnessAdminDashboard = () => {
       } catch (error) {
         console.error('Error setting editing business:', error);
       }
+
+      // Pre-fill all form data from business data
+      setHeroData({
+        title: businessData.hero?.title || `${businessData.name} Website`,
+        subtitle: businessData.hero?.subtitle || `Welcome to ${businessData.name}`,
+        backgroundImage: businessData.hero?.backgroundImage || businessData.image || '',
+        backgroundImageFile: null,
+      });
+
+      setAboutData({
+        title: businessData.about?.title || 'About Us',
+        description: businessData.about?.description || `Learn more about ${businessData.name}`,
+        profileImage: businessData.about?.profileImage || '',
+        profileImageFile: null,
+      });
+
+      // Initialize services with sample data if needed
+      if (businessData.services && businessData.services.length > 0) {
+        setServicesData(businessData.services.map((service, index) => ({
+          ...service,
+          id: service.id || `service-${Date.now()}-${index}`,
+        })));
+      }
+
+      // Initialize contact data
+      setContactData(businessData.contact || {
+        title: 'Get In Touch',
+        description: `Contact us to learn more about ${businessData.name}`,
+        email: 'hello@business.com',
+        phone: '+1 (555) 123-4567',
+        address: '123 Business Street, City, State 12345',
+        hours: {
+          monday: '9:00 AM - 6:00 PM',
+          tuesday: '9:00 AM - 6:00 PM',
+          wednesday: '9:00 AM - 6:00 PM',
+          thursday: '9:00 AM - 6:00 PM',
+          friday: '9:00 AM - 6:00 PM',
+          saturday: '10:00 AM - 4:00 PM',
+          sunday: 'Closed',
+        },
+        socialMedia: {
+          linkedin: '',
+          twitter: '',
+          instagram: '',
+          facebook: '',
+        },
+      });
     }
     setLoading(false);
   }, [businessId, dispatch]);
@@ -569,8 +870,11 @@ const BuisnessAdminDashboard = () => {
     console.log('handleSaveChanges called');
 
     try {
-      // Mark as saved and clear changed sections
+      // Update editing business with current form data for real-time preview
+      updateEditingBusinessInRedux();
+
       setSaved(true);
+      setChangedSections(new Set());
       alert(
         'Changes saved! You can preview them in the business page. Click "Save & Go Live" to publish permanently.'
       );
@@ -610,9 +914,25 @@ const BuisnessAdminDashboard = () => {
     if (!originalBusiness) return;
 
     try {
+      // Reset all local form data to original values
+      setHeroData({
+        title: originalBusiness.hero?.title || `${originalBusiness.name} Website`,
+        subtitle: originalBusiness.hero?.subtitle || `Welcome to ${originalBusiness.name}`,
+        backgroundImage: originalBusiness.hero?.backgroundImage || originalBusiness.image || '',
+        backgroundImageFile: null,
+      });
+
+      setAboutData({
+        title: originalBusiness.about?.title || 'About Us',
+        description: originalBusiness.about?.description || `Learn more about ${originalBusiness.name}`,
+        profileImage: originalBusiness.about?.profileImage || '',
+        profileImageFile: null,
+      });
+
       // Discard changes in Redux
       dispatch(discardBusinessChanges());
       setSaved(false);
+      setChangedSections(new Set());
       alert('All changes discarded. Form reset to original values.');
     } catch (error) {
       console.error('Error discarding changes:', error);
@@ -652,72 +972,196 @@ const BuisnessAdminDashboard = () => {
       case 'hero':
         return (
           <ContentSection>
-            <h2>Hero Section Management</h2>
-            <p>Manage your business hero section content, images, and call-to-action buttons.</p>
+            <SectionHeader>
+              <SectionTitle>
+                <FaImages />
+                Hero Section
+              </SectionTitle>
+              <VisibilityToggleContainer>
+                <span>{sectionVisibility['hero'] ? 'Visible' : 'Hidden'}</span>
+                <ToggleSwitch>
+                  <input
+                    type="checkbox"
+                    checked={sectionVisibility['hero']}
+                    onChange={() => toggleSectionVisibility('hero')}
+                  />
+                  <span></span>
+                </ToggleSwitch>
+              </VisibilityToggleContainer>
+            </SectionHeader>
+            <FormGrid>
+              <FormGroup style={{ gridColumn: '1 / -1' }}>
+                <FormLabel>Business Title</FormLabel>
+                <FormInput
+                  value={heroData.title}
+                  onChange={e => {
+                    setHeroData(prev => ({ ...prev, title: e.target.value }));
+                    trackSectionChange('hero');
+                  }}
+                  placeholder="Enter your business title"
+                />
+              </FormGroup>
+              <FormGroup style={{ gridColumn: '1 / -1' }}>
+                <FormLabel>Subtitle</FormLabel>
+                <FormTextarea
+                  value={heroData.subtitle}
+                  onChange={e => {
+                    setHeroData(prev => ({ ...prev, subtitle: e.target.value }));
+                    trackSectionChange('hero');
+                  }}
+                  placeholder="Enter your business subtitle..."
+                  rows={3}
+                />
+              </FormGroup>
+              <FormGroup style={{ gridColumn: '1 / -1' }}>
+                <FormLabel>
+                  <FaCamera />
+                  Background Image URL
+                </FormLabel>
+                <FormInput
+                  value={heroData.backgroundImage}
+                  onChange={e => {
+                    setHeroData(prev => ({ ...prev, backgroundImage: e.target.value }));
+                    trackSectionChange('hero');
+                  }}
+                  placeholder="Enter background image URL"
+                />
+              </FormGroup>
+            </FormGrid>
           </ContentSection>
         );
 
       case 'about-us':
         return (
           <ContentSection>
-            <h2>About Us Section</h2>
-            <p>Edit your business story, mission, and company information.</p>
-          </ContentSection>
-        );
-
-      case 'services-offered':
-        return (
-          <ContentSection>
-            <h2>Services Management</h2>
-            <p>Add, edit, and organize your business services and pricing.</p>
-          </ContentSection>
-        );
-
-      case 'portfolio':
-        return (
-          <ContentSection>
-            <h2>Portfolio Management</h2>
-            <p>Showcase your best work and projects to potential clients.</p>
-          </ContentSection>
-        );
-
-      case 'team':
-        return (
-          <ContentSection>
-            <h2>Team Management</h2>
-            <p>Add and manage your team members, their roles, and profiles.</p>
-          </ContentSection>
-        );
-
-      case 'testimonials':
-        return (
-          <ContentSection>
-            <h2>Testimonials Management</h2>
-            <p>Display customer reviews and testimonials to build trust.</p>
+            <SectionHeader>
+              <SectionTitle>
+                <FaUser />
+                About Us Section
+              </SectionTitle>
+              <VisibilityToggleContainer>
+                <span>{sectionVisibility['about-us'] ? 'Visible' : 'Hidden'}</span>
+                <ToggleSwitch>
+                  <input
+                    type="checkbox"
+                    checked={sectionVisibility['about-us']}
+                    onChange={() => toggleSectionVisibility('about-us')}
+                  />
+                  <span></span>
+                </ToggleSwitch>
+              </VisibilityToggleContainer>
+            </SectionHeader>
+            <FormGrid>
+              <FormGroup style={{ gridColumn: '1 / -1' }}>
+                <FormLabel>Section Title</FormLabel>
+                <FormInput
+                  value={aboutData.title}
+                  onChange={e => {
+                    setAboutData(prev => ({ ...prev, title: e.target.value }));
+                    trackSectionChange('about-us');
+                  }}
+                  placeholder="Enter section title"
+                />
+              </FormGroup>
+              <FormGroup style={{ gridColumn: '1 / -1' }}>
+                <FormLabel>Description</FormLabel>
+                <FormTextarea
+                  value={aboutData.description}
+                  onChange={e => {
+                    setAboutData(prev => ({ ...prev, description: e.target.value }));
+                    trackSectionChange('about-us');
+                  }}
+                  placeholder="Enter about description..."
+                  rows={5}
+                />
+              </FormGroup>
+              <FormGroup style={{ gridColumn: '1 / -1' }}>
+                <FormLabel>
+                  <FaCamera />
+                  Profile Image URL
+                </FormLabel>
+                <FormInput
+                  value={aboutData.profileImage}
+                  onChange={e => {
+                    setAboutData(prev => ({ ...prev, profileImage: e.target.value }));
+                    trackSectionChange('about-us');
+                  }}
+                  placeholder="Enter profile image URL"
+                />
+              </FormGroup>
+            </FormGrid>
           </ContentSection>
         );
 
       case 'contact':
         return (
           <ContentSection>
-            <h2>Contact Information</h2>
-            <p>Manage your business contact details, hours, and location.</p>
-          </ContentSection>
-        );
-
-      case 'settings':
-        return (
-          <ContentSection>
-            <h2>Business Settings</h2>
-            <p>Configure your business settings, branding, and preferences.</p>
+            <SectionHeader>
+              <SectionTitle>
+                <FaPhone />
+                Contact Information
+              </SectionTitle>
+              <VisibilityToggleContainer>
+                <span>{sectionVisibility['contact'] ? 'Visible' : 'Hidden'}</span>
+                <ToggleSwitch>
+                  <input
+                    type="checkbox"
+                    checked={sectionVisibility['contact']}
+                    onChange={() => toggleSectionVisibility('contact')}
+                  />
+                  <span></span>
+                </ToggleSwitch>
+              </VisibilityToggleContainer>
+            </SectionHeader>
+            <FormGrid>
+              <FormGroup>
+                <FormLabel>Email</FormLabel>
+                <FormInput
+                  type="email"
+                  value={contactData.email}
+                  onChange={e => {
+                    setContactData(prev => ({ ...prev, email: e.target.value }));
+                    trackSectionChange('contact');
+                  }}
+                  placeholder="hello@business.com"
+                />
+              </FormGroup>
+              <FormGroup>
+                <FormLabel>Phone</FormLabel>
+                <FormInput
+                  type="tel"
+                  value={contactData.phone}
+                  onChange={e => {
+                    setContactData(prev => ({ ...prev, phone: e.target.value }));
+                    trackSectionChange('contact');
+                  }}
+                  placeholder="+1 (555) 123-4567"
+                />
+              </FormGroup>
+              <FormGroup style={{ gridColumn: '1 / -1' }}>
+                <FormLabel>Address</FormLabel>
+                <FormTextarea
+                  value={contactData.address}
+                  onChange={e => {
+                    setContactData(prev => ({ ...prev, address: e.target.value }));
+                    trackSectionChange('contact');
+                  }}
+                  placeholder="123 Business Street, City, State 12345"
+                  rows={3}
+                />
+              </FormGroup>
+            </FormGrid>
           </ContentSection>
         );
 
       default:
         return (
           <ContentSection>
-            <h2>Welcome to Business Dashboard</h2>
-            <p>Select a section from the sidebar to start editing your business website.</p>
+            <SectionTitle>
+              <FaEdit />
+              {activeSection.charAt(0).toUpperCase() + activeSection.slice(1).replace(/-/g, ' ')} Management
+            </SectionTitle>
+            <p>This section is under development. Please select another section to edit.</p>
           </ContentSection>
         );
     }
