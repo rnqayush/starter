@@ -81,11 +81,12 @@ const HotelGrid = styled.div`
 const HotelSelectCard = styled.div`
   cursor: pointer;
   transition: all 0.3s ease;
-  border: 2px solid ${props => props.selected ? theme.colors.primary : theme.colors.gray300};
+  border: 2px solid
+    ${props => (props.selected ? theme.colors.primary : theme.colors.gray300)};
   border-radius: ${theme.borderRadius.lg};
   overflow: hidden;
   background: ${theme.colors.white};
-  
+
   &:hover {
     transform: translateY(-4px);
     box-shadow: ${theme.shadows.xl};
@@ -109,7 +110,7 @@ const SectionCard = styled.div.withConfig({
   cursor: pointer;
   transition: all 0.3s ease;
   border: 2px solid transparent;
-  opacity: ${props => props.isVisible ? 1 : 0.6};
+  opacity: ${props => (props.isVisible ? 1 : 0.6)};
 
   &:hover {
     transform: translateY(-4px);
@@ -131,7 +132,8 @@ const ToggleSwitch = styled.div.withConfig({
   position: relative;
   width: 44px;
   height: 24px;
-  background: ${props => props.active ? theme.colors.primary : theme.colors.gray300};
+  background: ${props =>
+    props.active ? theme.colors.primary : theme.colors.gray300};
   border-radius: 12px;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -144,9 +146,9 @@ const ToggleSwitch = styled.div.withConfig({
     border-radius: 50%;
     background: white;
     top: 2px;
-    left: ${props => props.active ? '22px' : '2px'};
+    left: ${props => (props.active ? '22px' : '2px')};
     transition: all 0.3s ease;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   }
 `;
 
@@ -171,7 +173,11 @@ const SaveGoLiveBar = styled.div`
 `;
 
 const SaveGoLiveButton = styled.button`
-  background: linear-gradient(135deg, ${theme.colors.success}, ${theme.colors.successDark});
+  background: linear-gradient(
+    135deg,
+    ${theme.colors.success},
+    ${theme.colors.successDark}
+  );
   color: white;
   border: none;
   padding: ${theme.spacing.md} ${theme.spacing.xl};
@@ -395,7 +401,7 @@ const TextArea = styled.textarea`
   line-height: 1.5;
   resize: vertical;
   min-height: 100px;
-  
+
   &:focus {
     outline: none;
     border-color: ${theme.colors.primary};
@@ -416,7 +422,7 @@ const ImageItem = styled.div`
   border: 2px dashed ${theme.colors.gray300};
   border-radius: ${theme.borderRadius.md};
   overflow: hidden;
-  
+
   &.has-image {
     border: none;
   }
@@ -446,7 +452,7 @@ const ImageButton = styled.button`
   padding: ${theme.spacing.xs};
   cursor: pointer;
   font-size: 0.8rem;
-  
+
   &:hover {
     background: ${theme.colors.white};
   }
@@ -480,9 +486,11 @@ const AmenityItem = styled.div`
   border-radius: ${theme.borderRadius.md};
   cursor: pointer;
   transition: all 0.3s ease;
-  background: ${props => props.selected ? theme.colors.primary : theme.colors.white};
-  color: ${props => props.selected ? theme.colors.white : theme.colors.gray700};
-  
+  background: ${props =>
+    props.selected ? theme.colors.primary : theme.colors.white};
+  color: ${props =>
+    props.selected ? theme.colors.white : theme.colors.gray700};
+
   &:hover {
     border-color: ${theme.colors.primary};
   }
@@ -599,12 +607,14 @@ const SectionTypeCard = styled.div.withConfig({
   shouldForwardProp: prop => prop !== 'selected',
 })`
   padding: ${theme.spacing.lg};
-  border: 2px solid ${props => props.selected ? theme.colors.primary : theme.colors.gray300};
+  border: 2px solid
+    ${props => (props.selected ? theme.colors.primary : theme.colors.gray300)};
   border-radius: ${theme.borderRadius.md};
   text-align: center;
   cursor: pointer;
   transition: all 0.3s ease;
-  background: ${props => props.selected ? theme.colors.primary + '10' : theme.colors.white};
+  background: ${props =>
+    props.selected ? theme.colors.primary + '10' : theme.colors.white};
 
   &:hover {
     border-color: ${theme.colors.primary};
@@ -617,7 +627,8 @@ const SectionTypeIcon = styled.div.withConfig({
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background: ${props => props.selected ? theme.colors.primary : theme.colors.gray400};
+  background: ${props =>
+    props.selected ? theme.colors.primary : theme.colors.gray400};
   color: white;
   display: flex;
   align-items: center;
@@ -693,24 +704,26 @@ const AddAmenityForm = styled.div`
 const SectionBasedHotelEditor = ({ setActiveSection }) => {
   const dispatch = useDispatch();
   const { ownerHotels } = useAppContext();
-  const {
-    editingHotel,
-    hasUnsavedChanges,
-    changes,
-    sectionVisibility,
-  } = useSelector(state => state.hotelManagement);
+  const { editingHotel, hasUnsavedChanges, changes, sectionVisibility } =
+    useSelector(state => state.hotelManagement);
 
   const { slug } = useParams(); // Get slug from URL
   const [selectedHotelId, setSelectedHotelId] = useState(null);
   const [activeModal, setActiveModal] = useState(null);
   const [tempData, setTempData] = useState({});
   const [newAmenityInputs, setNewAmenityInputs] = useState({});
-  const [sectionOrder, setSectionOrder] = useState(['about', 'features', 'gallery', 'amenities', 'contact']);
+  const [sectionOrder, setSectionOrder] = useState([
+    'about',
+    'features',
+    'gallery',
+    'amenities',
+    'contact',
+  ]);
   const [customSections, setCustomSections] = useState([]);
   const [newSectionData, setNewSectionData] = useState({
     title: '',
     type: '',
-    content: []
+    content: [],
   });
 
   // Auto-select hotel based on URL slug and initialize section order
@@ -751,7 +764,7 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
     }
   }, [editingHotel]);
 
-  const openModal = (sectionType) => {
+  const openModal = sectionType => {
     setActiveModal(sectionType);
 
     // Reset new section data when opening add-section modal
@@ -759,7 +772,7 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
       setNewSectionData({
         title: '',
         type: '',
-        content: []
+        content: [],
       });
       return;
     }
@@ -768,64 +781,88 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
     if (editingHotel) {
       setTempData({
         name: editingHotel.name || '',
-        heroSubtitle: editingHotel.heroSubtitle || `Experience luxury hospitality in the heart of ${editingHotel.city || 'your city'}`,
+        heroSubtitle:
+          editingHotel.heroSubtitle ||
+          `Experience luxury hospitality in the heart of ${editingHotel.city || 'your city'}`,
         description: editingHotel.description || '',
         image: editingHotel.image || '',
         gallery: editingHotel.gallery || [
           { title: 'Hotel Exterior', image: editingHotel.images?.[0] || '' },
           { title: 'Luxury Rooms', image: editingHotel.images?.[1] || '' },
           { title: 'Dining Experience', image: editingHotel.images?.[2] || '' },
-          { title: 'Swimming Pool', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3' },
-          { title: 'Spa & Wellness', image: 'https://images.unsplash.com/photo-1578645510447-e20b4311e3ce?ixlib=rb-4.0.3' },
+          {
+            title: 'Swimming Pool',
+            image:
+              'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3',
+          },
+          {
+            title: 'Spa & Wellness',
+            image:
+              'https://images.unsplash.com/photo-1578645510447-e20b4311e3ce?ixlib=rb-4.0.3',
+          },
         ],
         amenities: editingHotel.amenities || [],
         address: editingHotel.address || '',
         phone: editingHotel.phone || '+91 22 6601 1825',
-        email: editingHotel.email || `reservations@${editingHotel.slug || 'hotel'}.com`,
+        email:
+          editingHotel.email ||
+          `reservations@${editingHotel.slug || 'hotel'}.com`,
         checkInTime: editingHotel.checkInTime || '3:00 PM',
         checkOutTime: editingHotel.checkOutTime || '11:00 AM',
         features: editingHotel.features || [
           {
             title: '24/7 Concierge',
-            description: 'Our dedicated concierge team is available round-the-clock to assist with all your needs.',
+            description:
+              'Our dedicated concierge team is available round-the-clock to assist with all your needs.',
           },
           {
             title: 'Luxury Amenities',
-            description: 'Enjoy world-class facilities including spa, pool, and fine dining restaurants.',
+            description:
+              'Enjoy world-class facilities including spa, pool, and fine dining restaurants.',
           },
           {
             title: 'Business Center',
-            description: 'Fully equipped business facilities for meetings and corporate events.',
+            description:
+              'Fully equipped business facilities for meetings and corporate events.',
           },
           {
             title: 'Airport Transfer',
-            description: 'Complimentary airport shuttle service for all our guests.',
+            description:
+              'Complimentary airport shuttle service for all our guests.',
           },
         ],
         amenityCategories: editingHotel.amenityCategories || [
           {
             title: 'Recreation',
-            items: ['Swimming Pool', 'Fitness Center', 'Spa & Wellness']
+            items: ['Swimming Pool', 'Fitness Center', 'Spa & Wellness'],
           },
           {
             title: 'Dining',
-            items: ['Fine Dining Restaurant', 'Rooftop Bar', 'Room Service']
+            items: ['Fine Dining Restaurant', 'Rooftop Bar', 'Room Service'],
           },
           {
             title: 'Business',
-            items: ['Business Center', 'Meeting Rooms', 'Free WiFi']
+            items: ['Business Center', 'Meeting Rooms', 'Free WiFi'],
           },
           {
             title: 'Services',
-            items: ['24/7 Concierge', 'Valet Parking', 'Airport Transfer']
+            items: ['24/7 Concierge', 'Valet Parking', 'Airport Transfer'],
           },
         ],
         contactFields: editingHotel.contactFields || [
           { label: 'Address', value: editingHotel.address || '' },
           { label: 'Phone', value: editingHotel.phone || '+91 22 6601 1825' },
-          { label: 'Email', value: editingHotel.email || `reservations@${editingHotel.slug || 'hotel'}.com` },
-          { label: 'Check-in / Check-out', value: `${editingHotel.checkInTime || '3:00 PM'} / ${editingHotel.checkOutTime || '11:00 AM'}` },
-        ]
+          {
+            label: 'Email',
+            value:
+              editingHotel.email ||
+              `reservations@${editingHotel.slug || 'hotel'}.com`,
+          },
+          {
+            label: 'Check-in / Check-out',
+            value: `${editingHotel.checkInTime || '3:00 PM'} / ${editingHotel.checkOutTime || '11:00 AM'}`,
+          },
+        ],
       });
     }
   };
@@ -846,9 +883,13 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
         } else if (key === 'amenityCategories') {
           dispatch(updateAmenityCategories(tempData[key]));
         } else if (key === 'gallery') {
-          dispatch(updateHotelField({ field: 'gallery', value: tempData[key] }));
+          dispatch(
+            updateHotelField({ field: 'gallery', value: tempData[key] })
+          );
         } else if (key === 'contactFields') {
-          dispatch(updateHotelField({ field: 'contactFields', value: tempData[key] }));
+          dispatch(
+            updateHotelField({ field: 'contactFields', value: tempData[key] })
+          );
         } else {
           dispatch(updateHotelField({ field: key, value: tempData[key] }));
         }
@@ -857,7 +898,9 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
 
     // DON'T save to global state here - only save to editing state
     closeModal();
-    alert('Section updated! Click "Save & Go Live" to publish changes to the live hotel page.');
+    alert(
+      'Section updated! Click "Save & Go Live" to publish changes to the live hotel page.'
+    );
   };
 
   const updateTempData = (field, value) => {
@@ -886,12 +929,12 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
     }
   };
 
-  const removeImage = (index) => {
+  const removeImage = index => {
     const newImages = tempData.images.filter((_, i) => i !== index);
     updateTempData('images', newImages);
   };
 
-  const toggleAmenity = (amenityId) => {
+  const toggleAmenity = amenityId => {
     const currentAmenities = tempData.amenities || [];
     const newAmenities = currentAmenities.includes(amenityId)
       ? currentAmenities.filter(id => id !== amenityId)
@@ -902,13 +945,13 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
   const addFeatureItem = () => {
     const newFeature = {
       title: '',
-      description: ''
+      description: '',
     };
     const newFeatures = [...(tempData.features || []), newFeature];
     updateTempData('features', newFeatures);
   };
 
-  const removeFeatureItem = (index) => {
+  const removeFeatureItem = index => {
     const newFeatures = tempData.features.filter((_, i) => i !== index);
     updateTempData('features', newFeatures);
   };
@@ -923,18 +966,20 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
     updateTempData('features', newFeatures);
   };
 
-  const addAmenityItem = (categoryIndex) => {
+  const addAmenityItem = categoryIndex => {
     const input = newAmenityInputs[categoryIndex];
     if (input && input.trim()) {
-      const newCategories = tempData.amenityCategories.map((category, index) => {
-        if (index === categoryIndex) {
-          return {
-            ...category,
-            items: [...category.items, input.trim()]
-          };
+      const newCategories = tempData.amenityCategories.map(
+        (category, index) => {
+          if (index === categoryIndex) {
+            return {
+              ...category,
+              items: [...category.items, input.trim()],
+            };
+          }
+          return category;
         }
-        return category;
-      });
+      );
       updateTempData('amenityCategories', newCategories);
       setNewAmenityInputs(prev => ({ ...prev, [categoryIndex]: '' }));
     }
@@ -945,7 +990,7 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
       if (index === categoryIndex) {
         return {
           ...category,
-          items: category.items.filter((_, i) => i !== itemIndex)
+          items: category.items.filter((_, i) => i !== itemIndex),
         };
       }
       return category;
@@ -958,7 +1003,7 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
       if (index === categoryIndex) {
         return {
           ...category,
-          title: title
+          title: title,
         };
       }
       return category;
@@ -969,13 +1014,13 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
   const addAmenityCategory = () => {
     const newCategory = {
       title: '',
-      items: []
+      items: [],
     };
     const newCategories = [...tempData.amenityCategories, newCategory];
     updateTempData('amenityCategories', newCategories);
   };
 
-  const handleSectionToggle = (sectionId) => {
+  const handleSectionToggle = sectionId => {
     dispatch(toggleSectionVisibility({ section: sectionId }));
   };
 
@@ -985,7 +1030,7 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
     updateTempData('gallery', newGallery);
   };
 
-  const removeGalleryItem = (index) => {
+  const removeGalleryItem = index => {
     const newGallery = tempData.gallery.filter((_, i) => i !== index);
     updateTempData('gallery', newGallery);
   };
@@ -1002,12 +1047,17 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
 
   // Contact fields management
   const addContactField = () => {
-    const newContactFields = [...(tempData.contactFields || []), { label: '', value: '' }];
+    const newContactFields = [
+      ...(tempData.contactFields || []),
+      { label: '', value: '' },
+    ];
     updateTempData('contactFields', newContactFields);
   };
 
-  const removeContactField = (index) => {
-    const newContactFields = tempData.contactFields.filter((_, i) => i !== index);
+  const removeContactField = index => {
+    const newContactFields = tempData.contactFields.filter(
+      (_, i) => i !== index
+    );
     updateTempData('contactFields', newContactFields);
   };
 
@@ -1035,7 +1085,7 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
       type: newSectionData.type,
       content: newSectionData.content,
       isVisible: true,
-      isCustom: true
+      isCustom: true,
     };
 
     // Add to custom sections
@@ -1045,14 +1095,18 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
     setSectionOrder(prev => [...prev, sectionId]);
 
     // Update hotel data
-    dispatch(updateHotelField({
-      field: 'customSections',
-      value: [...customSections, newSection]
-    }));
+    dispatch(
+      updateHotelField({
+        field: 'customSections',
+        value: [...customSections, newSection],
+      })
+    );
 
     // Close modal
     closeModal();
-    alert('Custom section added! Remember to "Save & Go Live" to publish changes.');
+    alert(
+      'Custom section added! Remember to "Save & Go Live" to publish changes.'
+    );
   };
 
   const updateNewSectionData = (field, value) => {
@@ -1083,7 +1137,10 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
         newItem = { url: '', title: '', description: '' };
         break;
       case 'table':
-        newItem = { headers: ['Header 1', 'Header 2'], rows: [['Data 1', 'Data 2']] };
+        newItem = {
+          headers: ['Header 1', 'Header 2'],
+          rows: [['Data 1', 'Data 2']],
+        };
         break;
       default:
         newItem = { content: '' };
@@ -1091,14 +1148,14 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
 
     setNewSectionData(prev => ({
       ...prev,
-      content: [...prev.content, newItem]
+      content: [...prev.content, newItem],
     }));
   };
 
-  const removeContentItem = (index) => {
+  const removeContentItem = index => {
     setNewSectionData(prev => ({
       ...prev,
-      content: prev.content.filter((_, i) => i !== index)
+      content: prev.content.filter((_, i) => i !== index),
     }));
   };
 
@@ -1107,19 +1164,54 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
       ...prev,
       content: prev.content.map((item, i) =>
         i === index ? { ...item, [field]: value } : item
-      )
+      ),
     }));
   };
 
   // Section type options
   const sectionTypes = [
-    { id: 'text', name: 'Text Content', icon: FaTextHeight, description: 'Rich text content' },
-    { id: 'gallery', name: 'Image Gallery', icon: FaCamera, description: 'Collection of images' },
-    { id: 'cards', name: 'Info Cards', icon: FaGrip, description: 'Card-based content' },
-    { id: 'list', name: 'List Items', icon: FaList, description: 'Bulleted or numbered lists' },
-    { id: 'testimonials', name: 'Testimonials', icon: FaQuoteLeft, description: 'Customer reviews' },
-    { id: 'video', name: 'Video Content', icon: FaVideo, description: 'Video embeds' },
-    { id: 'table', name: 'Data Table', icon: FaTable, description: 'Tabular data' }
+    {
+      id: 'text',
+      name: 'Text Content',
+      icon: FaTextHeight,
+      description: 'Rich text content',
+    },
+    {
+      id: 'gallery',
+      name: 'Image Gallery',
+      icon: FaCamera,
+      description: 'Collection of images',
+    },
+    {
+      id: 'cards',
+      name: 'Info Cards',
+      icon: FaGrip,
+      description: 'Card-based content',
+    },
+    {
+      id: 'list',
+      name: 'List Items',
+      icon: FaList,
+      description: 'Bulleted or numbered lists',
+    },
+    {
+      id: 'testimonials',
+      name: 'Testimonials',
+      icon: FaQuoteLeft,
+      description: 'Customer reviews',
+    },
+    {
+      id: 'video',
+      name: 'Video Content',
+      icon: FaVideo,
+      description: 'Video embeds',
+    },
+    {
+      id: 'table',
+      name: 'Data Table',
+      icon: FaTable,
+      description: 'Tabular data',
+    },
   ];
 
   const handleSaveAndGoLive = () => {
@@ -1129,7 +1221,9 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
     dispatch(updateHotelField({ field: 'sectionOrder', value: sectionOrder }));
 
     // Save custom sections
-    dispatch(updateHotelField({ field: 'customSections', value: customSections }));
+    dispatch(
+      updateHotelField({ field: 'customSections', value: customSections })
+    );
 
     // Save all changes to global state (this will update the live hotel page)
     dispatch(saveChanges());
@@ -1137,20 +1231,26 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
   };
 
   // Section reordering functions
-  const moveSectionUp = (index) => {
+  const moveSectionUp = index => {
     if (index > 0) {
       const newOrder = [...sectionOrder];
-      [newOrder[index], newOrder[index - 1]] = [newOrder[index - 1], newOrder[index]];
+      [newOrder[index], newOrder[index - 1]] = [
+        newOrder[index - 1],
+        newOrder[index],
+      ];
       setSectionOrder(newOrder);
       // Mark as unsaved change
       dispatch(updateHotelField({ field: 'sectionOrder', value: newOrder }));
     }
   };
 
-  const moveSectionDown = (index) => {
+  const moveSectionDown = index => {
     if (index < sectionOrder.length - 1) {
       const newOrder = [...sectionOrder];
-      [newOrder[index], newOrder[index + 1]] = [newOrder[index + 1], newOrder[index]];
+      [newOrder[index], newOrder[index + 1]] = [
+        newOrder[index + 1],
+        newOrder[index],
+      ];
       setSectionOrder(newOrder);
       // Mark as unsaved change
       dispatch(updateHotelField({ field: 'sectionOrder', value: newOrder }));
@@ -1161,7 +1261,7 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
   const handleImageUpload = (file, callback) => {
     if (file && file.type.startsWith('image/')) {
       const reader = new FileReader();
-      reader.onload = (e) => {
+      reader.onload = e => {
         callback(e.target.result);
       };
       reader.readAsDataURL(file);
@@ -1186,18 +1286,22 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
                 onClick={() => setSelectedHotelId(hotel.id)}
                 selected={selectedHotelId === hotel.id}
               >
-                <img 
-                  src={hotel.image} 
+                <img
+                  src={hotel.image}
                   alt={hotel.name}
-                  style={{ 
-                    width: '100%', 
-                    height: '200px', 
-                    objectFit: 'cover'
-                  }} 
+                  style={{
+                    width: '100%',
+                    height: '200px',
+                    objectFit: 'cover',
+                  }}
                 />
                 <div style={{ padding: theme.spacing.lg }}>
-                  <h3 style={{ marginBottom: theme.spacing.sm }}>{hotel.name}</h3>
-                  <p style={{ color: theme.colors.gray600 }}>{hotel.location}</p>
+                  <h3 style={{ marginBottom: theme.spacing.sm }}>
+                    {hotel.name}
+                  </h3>
+                  <p style={{ color: theme.colors.gray600 }}>
+                    {hotel.location}
+                  </p>
                 </div>
               </HotelSelectCard>
             ))}
@@ -1214,15 +1318,17 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
       description: 'Update background image and hotel title',
       icon: FaImage,
       preview: `${editingHotel.name} - ${editingHotel.city}`,
-      isVisible: sectionVisibility.hero
+      isVisible: sectionVisibility.hero,
     },
     about: {
       id: 'about',
       title: 'About Section',
       description: 'Edit hotel description and story',
       icon: FaInfo,
-      preview: editingHotel.description?.substring(0, 100) + '...' || 'No description set',
-      isVisible: sectionVisibility.about
+      preview:
+        editingHotel.description?.substring(0, 100) + '...' ||
+        'No description set',
+      isVisible: sectionVisibility.about,
     },
     features: {
       id: 'features',
@@ -1230,7 +1336,7 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
       description: 'Manage hotel features and benefits',
       icon: FaStar,
       preview: `${editingHotel.features?.length || 4} features configured`,
-      isVisible: sectionVisibility.features
+      isVisible: sectionVisibility.features,
     },
     gallery: {
       id: 'gallery',
@@ -1238,7 +1344,7 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
       description: 'Manage hotel images and gallery',
       icon: FaCamera,
       preview: `${editingHotel.gallery?.length || 5} gallery items`,
-      isVisible: sectionVisibility.gallery
+      isVisible: sectionVisibility.gallery,
     },
     amenities: {
       id: 'amenities',
@@ -1246,7 +1352,7 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
       description: 'Update hotel amenities and services',
       icon: FaConciergeBell,
       preview: `${editingHotel.amenityCategories?.length || 4} categories`,
-      isVisible: sectionVisibility.amenities
+      isVisible: sectionVisibility.amenities,
     },
     contact: {
       id: 'contact',
@@ -1254,12 +1360,14 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
       description: 'Update contact information and address',
       icon: FaMapMarkerAlt,
       preview: `${editingHotel.contactFields?.length || 4} contact fields`,
-      isVisible: sectionVisibility.contact
-    }
+      isVisible: sectionVisibility.contact,
+    },
   };
 
   // Create ordered sections array based on sectionOrder
-  const sections = sectionOrder.map(sectionId => allSections[sectionId]).filter(Boolean);
+  const sections = sectionOrder
+    .map(sectionId => allSections[sectionId])
+    .filter(Boolean);
 
   return (
     <EditorContainer>
@@ -1269,11 +1377,22 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
       </Header>
 
       <SectionReorderContainer>
-        <h3 style={{ marginBottom: theme.spacing.lg, color: theme.colors.gray900 }}>
+        <h3
+          style={{
+            marginBottom: theme.spacing.lg,
+            color: theme.colors.gray900,
+          }}
+        >
           Section Order Management
         </h3>
-        <p style={{ color: theme.colors.gray600, marginBottom: theme.spacing.lg }}>
-          Drag sections up or down to change their order on the hotel detail page.
+        <p
+          style={{
+            color: theme.colors.gray600,
+            marginBottom: theme.spacing.lg,
+          }}
+        >
+          Drag sections up or down to change their order on the hotel detail
+          page.
         </p>
         {sectionOrder.map((sectionId, index) => {
           const section = allSections[sectionId];
@@ -1306,7 +1425,7 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
         <SectionCard
           key="hero"
           isVisible={allSections.hero.isVisible}
-          onClick={(e) => {
+          onClick={e => {
             if (e.target.closest('.toggle-switch')) return;
             openModal('hero');
           }}
@@ -1317,12 +1436,14 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
                 <allSections.hero.icon />
               </SectionIcon>
               <SectionTitle>{allSections.hero.title}</SectionTitle>
-              <SectionDescription>{allSections.hero.description}</SectionDescription>
+              <SectionDescription>
+                {allSections.hero.description}
+              </SectionDescription>
             </SectionInfo>
             <ToggleSwitch
               className="toggle-switch"
               active={allSections.hero.isVisible}
-              onClick={(e) => {
+              onClick={e => {
                 e.stopPropagation();
                 handleSectionToggle('hero');
               }}
@@ -1336,7 +1457,7 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
           <SectionCard
             key={section.id}
             isVisible={section.isVisible}
-            onClick={(e) => {
+            onClick={e => {
               if (e.target.closest('.toggle-switch')) return;
               openModal(section.id);
             }}
@@ -1352,7 +1473,7 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
               <ToggleSwitch
                 className="toggle-switch"
                 active={section.isVisible}
-                onClick={(e) => {
+                onClick={e => {
                   e.stopPropagation();
                   handleSectionToggle(section.id);
                 }}
@@ -1367,7 +1488,7 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
           <SectionCard
             key={section.id}
             isVisible={section.isVisible}
-            onClick={(e) => {
+            onClick={e => {
               if (e.target.closest('.toggle-switch')) return;
               openModal(section.id);
             }}
@@ -1384,18 +1505,22 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
                   {section.type === 'table' && <FaTable />}
                 </SectionIcon>
                 <SectionTitle>{section.title}</SectionTitle>
-                <SectionDescription>Custom {section.type} section</SectionDescription>
+                <SectionDescription>
+                  Custom {section.type} section
+                </SectionDescription>
               </SectionInfo>
               <ToggleSwitch
                 className="toggle-switch"
                 active={section.isVisible}
-                onClick={(e) => {
+                onClick={e => {
                   e.stopPropagation();
                   handleSectionToggle(section.id);
                 }}
               />
             </SectionHeader>
-            <SectionPreview>{section.content.length} {section.type} items</SectionPreview>
+            <SectionPreview>
+              {section.content.length} {section.type} items
+            </SectionPreview>
           </SectionCard>
         ))}
 
@@ -1414,13 +1539,12 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
       {/* Modal Overlays */}
       {activeModal && (
         <Overlay onClick={closeModal}>
-          <Modal onClick={(e) => e.stopPropagation()}>
+          <Modal onClick={e => e.stopPropagation()}>
             <ModalHeader>
               <ModalTitle>
                 {activeModal === 'add-section'
                   ? 'Add Custom Section'
-                  : `Edit ${sections.find(s => s.id === activeModal)?.title || customSections.find(s => s.id === activeModal)?.title || activeModal}`
-                }
+                  : `Edit ${sections.find(s => s.id === activeModal)?.title || customSections.find(s => s.id === activeModal)?.title || activeModal}`}
               </ModalTitle>
               <CloseButton onClick={closeModal}>
                 <FaTimes />
@@ -1434,7 +1558,7 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
                     <Label>Hotel Name</Label>
                     <Input
                       value={tempData.name || ''}
-                      onChange={(e) => updateTempData('name', e.target.value)}
+                      onChange={e => updateTempData('name', e.target.value)}
                       placeholder="Enter hotel name"
                     />
                   </FormField>
@@ -1442,7 +1566,9 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
                     <Label>Hero Subtitle</Label>
                     <TextArea
                       value={tempData.heroSubtitle || ''}
-                      onChange={(e) => updateTempData('heroSubtitle', e.target.value)}
+                      onChange={e =>
+                        updateTempData('heroSubtitle', e.target.value)
+                      }
                       placeholder="Enter hero subtitle"
                       rows={3}
                     />
@@ -1451,7 +1577,7 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
                     <Label>Background Image</Label>
                     <Input
                       value={tempData.image || ''}
-                      onChange={(e) => updateTempData('image', e.target.value)}
+                      onChange={e => updateTempData('image', e.target.value)}
                       placeholder="Enter image URL"
                     />
                     <ImageUploadContainer>
@@ -1462,10 +1588,10 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
                         <input
                           type="file"
                           accept="image/*"
-                          onChange={(e) => {
+                          onChange={e => {
                             const file = e.target.files[0];
                             if (file) {
-                              handleImageUpload(file, (dataUrl) => {
+                              handleImageUpload(file, dataUrl => {
                                 updateTempData('image', dataUrl);
                               });
                             }
@@ -1482,7 +1608,7 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
                             width: '100%',
                             height: '200px',
                             objectFit: 'cover',
-                            borderRadius: theme.borderRadius.md
+                            borderRadius: theme.borderRadius.md,
                           }}
                         />
                       </div>
@@ -1496,7 +1622,9 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
                   <Label>Hotel Description</Label>
                   <TextArea
                     value={tempData.description || ''}
-                    onChange={(e) => updateTempData('description', e.target.value)}
+                    onChange={e =>
+                      updateTempData('description', e.target.value)
+                    }
                     placeholder="Enter hotel description"
                     rows={8}
                   />
@@ -1506,23 +1634,43 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
               {activeModal === 'gallery' && (
                 <FormField>
                   <Label>Hotel Gallery</Label>
-                  <p style={{ color: theme.colors.gray600, marginBottom: theme.spacing.md }}>
+                  <p
+                    style={{
+                      color: theme.colors.gray600,
+                      marginBottom: theme.spacing.md,
+                    }}
+                  >
                     Manage gallery images with titles for better organization.
                   </p>
                   {tempData.gallery?.map((item, index) => (
-                    <div key={index} style={{
-                      marginBottom: theme.spacing.lg,
-                      padding: theme.spacing.md,
-                      border: `1px solid ${theme.colors.gray200}`,
-                      borderRadius: theme.borderRadius.md
-                    }}>
-                      <div style={{ display: 'flex', gap: theme.spacing.md, alignItems: 'flex-start' }}>
+                    <div
+                      key={index}
+                      style={{
+                        marginBottom: theme.spacing.lg,
+                        padding: theme.spacing.md,
+                        border: `1px solid ${theme.colors.gray200}`,
+                        borderRadius: theme.borderRadius.md,
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: 'flex',
+                          gap: theme.spacing.md,
+                          alignItems: 'flex-start',
+                        }}
+                      >
                         <div style={{ flex: 1 }}>
                           <FormField>
                             <Label>Image Title</Label>
                             <Input
                               value={item.title}
-                              onChange={(e) => updateGalleryItem(index, 'title', e.target.value)}
+                              onChange={e =>
+                                updateGalleryItem(
+                                  index,
+                                  'title',
+                                  e.target.value
+                                )
+                              }
                               placeholder="e.g., Hotel Exterior, Luxury Rooms"
                             />
                           </FormField>
@@ -1530,7 +1678,13 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
                             <Label>Image URL</Label>
                             <Input
                               value={item.image}
-                              onChange={(e) => updateGalleryItem(index, 'image', e.target.value)}
+                              onChange={e =>
+                                updateGalleryItem(
+                                  index,
+                                  'image',
+                                  e.target.value
+                                )
+                              }
                               placeholder="Enter image URL"
                             />
                             <ImageUploadContainer>
@@ -1541,11 +1695,15 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
                                 <input
                                   type="file"
                                   accept="image/*"
-                                  onChange={(e) => {
+                                  onChange={e => {
                                     const file = e.target.files[0];
                                     if (file) {
-                                      handleImageUpload(file, (dataUrl) => {
-                                        updateGalleryItem(index, 'image', dataUrl);
+                                      handleImageUpload(file, dataUrl => {
+                                        updateGalleryItem(
+                                          index,
+                                          'image',
+                                          dataUrl
+                                        );
                                       });
                                     }
                                   }}
@@ -1563,7 +1721,7 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
                                 width: '100%',
                                 height: '100%',
                                 objectFit: 'cover',
-                                borderRadius: theme.borderRadius.md
+                                borderRadius: theme.borderRadius.md,
                               }}
                             />
                           </div>
@@ -1583,65 +1741,79 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
               {activeModal === 'amenities' && (
                 <FormField>
                   <Label>Hotel Amenity Categories</Label>
-                  <p style={{ color: theme.colors.gray600, marginBottom: theme.spacing.md }}>
-                    Organize your amenities into categories with custom headers and items.
+                  <p
+                    style={{
+                      color: theme.colors.gray600,
+                      marginBottom: theme.spacing.md,
+                    }}
+                  >
+                    Organize your amenities into categories with custom headers
+                    and items.
                   </p>
-                  {tempData.amenityCategories?.map((category, categoryIndex) => (
-                    <AmenityCategoryItem key={categoryIndex}>
-                      <AmenityCategoryHeader>
-                        <Input
-                          value={category.title}
-                          onChange={(e) => updateCategoryTitle(categoryIndex, e.target.value)}
-                          placeholder="Category title (e.g., Recreation)"
-                          style={{ flex: 1 }}
-                        />
-                      </AmenityCategoryHeader>
-
-                      <AmenityItemsContainer>
-                        {category.items.map((item, itemIndex) => (
-                          <AmenityTag key={itemIndex}>
-                            {item}
-                            <button
-                              onClick={() => removeAmenityItem(categoryIndex, itemIndex)}
-                              style={{
-                                background: 'none',
-                                border: 'none',
-                                color: 'white',
-                                marginLeft: theme.spacing.xs,
-                                cursor: 'pointer'
-                              }}
-                            >
-                              <FaTimes />
-                            </button>
-                          </AmenityTag>
-                        ))}
-                      </AmenityItemsContainer>
-
-                      <AddAmenityForm>
-                        <Input
-                          value={newAmenityInputs[categoryIndex] || ''}
-                          onChange={(e) => setNewAmenityInputs(prev => ({
-                            ...prev,
-                            [categoryIndex]: e.target.value
-                          }))}
-                          placeholder="Add new amenity"
-                          style={{ flex: 1 }}
-                          onKeyPress={(e) => {
-                            if (e.key === 'Enter') {
-                              e.preventDefault();
-                              addAmenityItem(categoryIndex);
+                  {tempData.amenityCategories?.map(
+                    (category, categoryIndex) => (
+                      <AmenityCategoryItem key={categoryIndex}>
+                        <AmenityCategoryHeader>
+                          <Input
+                            value={category.title}
+                            onChange={e =>
+                              updateCategoryTitle(categoryIndex, e.target.value)
                             }
-                          }}
-                        />
-                        <Button
-                          size="small"
-                          onClick={() => addAmenityItem(categoryIndex)}
-                        >
-                          <FaPlus />
-                        </Button>
-                      </AddAmenityForm>
-                    </AmenityCategoryItem>
-                  ))}
+                            placeholder="Category title (e.g., Recreation)"
+                            style={{ flex: 1 }}
+                          />
+                        </AmenityCategoryHeader>
+
+                        <AmenityItemsContainer>
+                          {category.items.map((item, itemIndex) => (
+                            <AmenityTag key={itemIndex}>
+                              {item}
+                              <button
+                                onClick={() =>
+                                  removeAmenityItem(categoryIndex, itemIndex)
+                                }
+                                style={{
+                                  background: 'none',
+                                  border: 'none',
+                                  color: 'white',
+                                  marginLeft: theme.spacing.xs,
+                                  cursor: 'pointer',
+                                }}
+                              >
+                                <FaTimes />
+                              </button>
+                            </AmenityTag>
+                          ))}
+                        </AmenityItemsContainer>
+
+                        <AddAmenityForm>
+                          <Input
+                            value={newAmenityInputs[categoryIndex] || ''}
+                            onChange={e =>
+                              setNewAmenityInputs(prev => ({
+                                ...prev,
+                                [categoryIndex]: e.target.value,
+                              }))
+                            }
+                            placeholder="Add new amenity"
+                            style={{ flex: 1 }}
+                            onKeyPress={e => {
+                              if (e.key === 'Enter') {
+                                e.preventDefault();
+                                addAmenityItem(categoryIndex);
+                              }
+                            }}
+                          />
+                          <Button
+                            size="small"
+                            onClick={() => addAmenityItem(categoryIndex)}
+                          >
+                            <FaPlus />
+                          </Button>
+                        </AddAmenityForm>
+                      </AmenityCategoryItem>
+                    )
+                  )}
                   <AddButton onClick={addAmenityCategory}>
                     <FaPlus /> Add New Category
                   </AddButton>
@@ -1651,29 +1823,41 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
               {activeModal === 'contact' && (
                 <FormField>
                   <Label>Contact Information Fields</Label>
-                  <p style={{ color: theme.colors.gray600, marginBottom: theme.spacing.md }}>
+                  <p
+                    style={{
+                      color: theme.colors.gray600,
+                      marginBottom: theme.spacing.md,
+                    }}
+                  >
                     Manage contact information displayed on the hotel page.
                   </p>
                   {tempData.contactFields?.map((field, index) => (
-                    <div key={index} style={{
-                      display: 'flex',
-                      gap: theme.spacing.md,
-                      marginBottom: theme.spacing.md,
-                      padding: theme.spacing.md,
-                      border: `1px solid ${theme.colors.gray200}`,
-                      borderRadius: theme.borderRadius.md,
-                      alignItems: 'flex-start'
-                    }}>
+                    <div
+                      key={index}
+                      style={{
+                        display: 'flex',
+                        gap: theme.spacing.md,
+                        marginBottom: theme.spacing.md,
+                        padding: theme.spacing.md,
+                        border: `1px solid ${theme.colors.gray200}`,
+                        borderRadius: theme.borderRadius.md,
+                        alignItems: 'flex-start',
+                      }}
+                    >
                       <div style={{ flex: 1 }}>
                         <Input
                           value={field.label}
-                          onChange={(e) => updateContactField(index, 'label', e.target.value)}
+                          onChange={e =>
+                            updateContactField(index, 'label', e.target.value)
+                          }
                           placeholder="Label (e.g., Address, Phone)"
                           style={{ marginBottom: theme.spacing.sm }}
                         />
                         <Input
                           value={field.value}
-                          onChange={(e) => updateContactField(index, 'value', e.target.value)}
+                          onChange={e =>
+                            updateContactField(index, 'value', e.target.value)
+                          }
                           placeholder="Value"
                         />
                       </div>
@@ -1691,8 +1875,14 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
               {activeModal === 'features' && (
                 <FormField>
                   <Label>Hotel Features</Label>
-                  <p style={{ color: theme.colors.gray600, marginBottom: theme.spacing.md }}>
-                    These are the key features shown in the "Why Choose Us" section.
+                  <p
+                    style={{
+                      color: theme.colors.gray600,
+                      marginBottom: theme.spacing.md,
+                    }}
+                  >
+                    These are the key features shown in the "Why Choose Us"
+                    section.
                   </p>
                   <FeaturesList>
                     {tempData.features?.map((feature, index) => (
@@ -1700,13 +1890,21 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
                         <div style={{ flex: 1 }}>
                           <Input
                             value={feature.title}
-                            onChange={(e) => updateFeatureItem(index, 'title', e.target.value)}
+                            onChange={e =>
+                              updateFeatureItem(index, 'title', e.target.value)
+                            }
                             placeholder="Feature title"
                             style={{ marginBottom: theme.spacing.sm }}
                           />
                           <TextArea
                             value={feature.description}
-                            onChange={(e) => updateFeatureItem(index, 'description', e.target.value)}
+                            onChange={e =>
+                              updateFeatureItem(
+                                index,
+                                'description',
+                                e.target.value
+                              )
+                            }
                             placeholder="Feature description"
                             rows={3}
                           />
@@ -1729,14 +1927,21 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
                     <Label>Section Title</Label>
                     <Input
                       value={newSectionData.title}
-                      onChange={(e) => updateNewSectionData('title', e.target.value)}
+                      onChange={e =>
+                        updateNewSectionData('title', e.target.value)
+                      }
                       placeholder="Enter section title (e.g., Our Awards, Special Offers)"
                     />
                   </FormField>
 
                   <FormField>
                     <Label>Section Type</Label>
-                    <p style={{ color: theme.colors.gray600, marginBottom: theme.spacing.md }}>
+                    <p
+                      style={{
+                        color: theme.colors.gray600,
+                        marginBottom: theme.spacing.md,
+                      }}
+                    >
                       Choose the type of content for this section.
                     </p>
                     <SectionTypeGrid>
@@ -1746,13 +1951,27 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
                           selected={newSectionData.type === type.id}
                           onClick={() => updateNewSectionData('type', type.id)}
                         >
-                          <SectionTypeIcon selected={newSectionData.type === type.id}>
+                          <SectionTypeIcon
+                            selected={newSectionData.type === type.id}
+                          >
                             <type.icon />
                           </SectionTypeIcon>
-                          <h4 style={{ margin: 0, marginBottom: theme.spacing.xs, fontSize: '0.9rem' }}>
+                          <h4
+                            style={{
+                              margin: 0,
+                              marginBottom: theme.spacing.xs,
+                              fontSize: '0.9rem',
+                            }}
+                          >
                             {type.name}
                           </h4>
-                          <p style={{ margin: 0, fontSize: '0.8rem', color: theme.colors.gray600 }}>
+                          <p
+                            style={{
+                              margin: 0,
+                              fontSize: '0.8rem',
+                              color: theme.colors.gray600,
+                            }}
+                          >
                             {type.description}
                           </p>
                         </SectionTypeCard>
@@ -1763,8 +1982,14 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
                   {newSectionData.type && (
                     <FormField>
                       <Label>Content Items</Label>
-                      <p style={{ color: theme.colors.gray600, marginBottom: theme.spacing.md }}>
-                        Add content items for your {newSectionData.type} section.
+                      <p
+                        style={{
+                          color: theme.colors.gray600,
+                          marginBottom: theme.spacing.md,
+                        }}
+                      >
+                        Add content items for your {newSectionData.type}{' '}
+                        section.
                       </p>
 
                       <ContentForm>
@@ -1774,7 +1999,13 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
                               {newSectionData.type === 'text' && (
                                 <TextArea
                                   value={item.content || ''}
-                                  onChange={(e) => updateContentItem(index, 'content', e.target.value)}
+                                  onChange={e =>
+                                    updateContentItem(
+                                      index,
+                                      'content',
+                                      e.target.value
+                                    )
+                                  }
                                   placeholder="Enter your text content here..."
                                   rows={4}
                                 />
@@ -1784,19 +2015,37 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
                                 <>
                                   <Input
                                     value={item.title || ''}
-                                    onChange={(e) => updateContentItem(index, 'title', e.target.value)}
+                                    onChange={e =>
+                                      updateContentItem(
+                                        index,
+                                        'title',
+                                        e.target.value
+                                      )
+                                    }
                                     placeholder="Image title"
                                     style={{ marginBottom: theme.spacing.sm }}
                                   />
                                   <Input
                                     value={item.image || ''}
-                                    onChange={(e) => updateContentItem(index, 'image', e.target.value)}
+                                    onChange={e =>
+                                      updateContentItem(
+                                        index,
+                                        'image',
+                                        e.target.value
+                                      )
+                                    }
                                     placeholder="Image URL"
                                     style={{ marginBottom: theme.spacing.sm }}
                                   />
                                   <TextArea
                                     value={item.description || ''}
-                                    onChange={(e) => updateContentItem(index, 'description', e.target.value)}
+                                    onChange={e =>
+                                      updateContentItem(
+                                        index,
+                                        'description',
+                                        e.target.value
+                                      )
+                                    }
                                     placeholder="Image description (optional)"
                                     rows={2}
                                   />
@@ -1808,13 +2057,25 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
                                   <div>
                                     <Input
                                       value={item.title || ''}
-                                      onChange={(e) => updateContentItem(index, 'title', e.target.value)}
+                                      onChange={e =>
+                                        updateContentItem(
+                                          index,
+                                          'title',
+                                          e.target.value
+                                        )
+                                      }
                                       placeholder="Card title"
                                       style={{ marginBottom: theme.spacing.sm }}
                                     />
                                     <TextArea
                                       value={item.description || ''}
-                                      onChange={(e) => updateContentItem(index, 'description', e.target.value)}
+                                      onChange={e =>
+                                        updateContentItem(
+                                          index,
+                                          'description',
+                                          e.target.value
+                                        )
+                                      }
                                       placeholder="Card description"
                                       rows={3}
                                     />
@@ -1822,13 +2083,25 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
                                   <div>
                                     <Input
                                       value={item.image || ''}
-                                      onChange={(e) => updateContentItem(index, 'image', e.target.value)}
+                                      onChange={e =>
+                                        updateContentItem(
+                                          index,
+                                          'image',
+                                          e.target.value
+                                        )
+                                      }
                                       placeholder="Card image URL (optional)"
                                       style={{ marginBottom: theme.spacing.sm }}
                                     />
                                     <Input
                                       value={item.link || ''}
-                                      onChange={(e) => updateContentItem(index, 'link', e.target.value)}
+                                      onChange={e =>
+                                        updateContentItem(
+                                          index,
+                                          'link',
+                                          e.target.value
+                                        )
+                                      }
                                       placeholder="Card link URL (optional)"
                                     />
                                   </div>
@@ -1838,7 +2111,13 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
                               {newSectionData.type === 'list' && (
                                 <Input
                                   value={item.text || ''}
-                                  onChange={(e) => updateContentItem(index, 'text', e.target.value)}
+                                  onChange={e =>
+                                    updateContentItem(
+                                      index,
+                                      'text',
+                                      e.target.value
+                                    )
+                                  }
                                   placeholder="List item text"
                                 />
                               )}
@@ -1847,7 +2126,13 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
                                 <>
                                   <TextArea
                                     value={item.quote || ''}
-                                    onChange={(e) => updateContentItem(index, 'quote', e.target.value)}
+                                    onChange={e =>
+                                      updateContentItem(
+                                        index,
+                                        'quote',
+                                        e.target.value
+                                      )
+                                    }
                                     placeholder="Customer testimonial quote"
                                     rows={3}
                                     style={{ marginBottom: theme.spacing.sm }}
@@ -1855,18 +2140,36 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
                                   <CardContentForm>
                                     <Input
                                       value={item.author || ''}
-                                      onChange={(e) => updateContentItem(index, 'author', e.target.value)}
+                                      onChange={e =>
+                                        updateContentItem(
+                                          index,
+                                          'author',
+                                          e.target.value
+                                        )
+                                      }
                                       placeholder="Author name"
                                     />
                                     <Input
                                       value={item.designation || ''}
-                                      onChange={(e) => updateContentItem(index, 'designation', e.target.value)}
+                                      onChange={e =>
+                                        updateContentItem(
+                                          index,
+                                          'designation',
+                                          e.target.value
+                                        )
+                                      }
                                       placeholder="Author designation"
                                     />
                                   </CardContentForm>
                                   <Input
                                     value={item.image || ''}
-                                    onChange={(e) => updateContentItem(index, 'image', e.target.value)}
+                                    onChange={e =>
+                                      updateContentItem(
+                                        index,
+                                        'image',
+                                        e.target.value
+                                      )
+                                    }
                                     placeholder="Author image URL (optional)"
                                   />
                                 </>
@@ -1876,26 +2179,46 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
                                 <>
                                   <Input
                                     value={item.title || ''}
-                                    onChange={(e) => updateContentItem(index, 'title', e.target.value)}
+                                    onChange={e =>
+                                      updateContentItem(
+                                        index,
+                                        'title',
+                                        e.target.value
+                                      )
+                                    }
                                     placeholder="Video title"
                                     style={{ marginBottom: theme.spacing.sm }}
                                   />
                                   <Input
                                     value={item.url || ''}
-                                    onChange={(e) => updateContentItem(index, 'url', e.target.value)}
+                                    onChange={e =>
+                                      updateContentItem(
+                                        index,
+                                        'url',
+                                        e.target.value
+                                      )
+                                    }
                                     placeholder="Video URL (YouTube, Vimeo, etc.)"
                                     style={{ marginBottom: theme.spacing.sm }}
                                   />
                                   <TextArea
                                     value={item.description || ''}
-                                    onChange={(e) => updateContentItem(index, 'description', e.target.value)}
+                                    onChange={e =>
+                                      updateContentItem(
+                                        index,
+                                        'description',
+                                        e.target.value
+                                      )
+                                    }
                                     placeholder="Video description (optional)"
                                     rows={2}
                                   />
                                 </>
                               )}
                             </div>
-                            <RemoveButton onClick={() => removeContentItem(index)}>
+                            <RemoveButton
+                              onClick={() => removeContentItem(index)}
+                            >
                               <FaTrash />
                             </RemoveButton>
                           </ContentItem>
@@ -1934,7 +2257,8 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
         <SaveGoLiveBar>
           <ChangesIndicator>
             <FaEdit />
-            {Object.keys(hasUnsavedChanges ? changes : {}).length} unsaved changes
+            {Object.keys(hasUnsavedChanges ? changes : {}).length} unsaved
+            changes
           </ChangesIndicator>
           <SaveGoLiveButton
             onClick={handleSaveAndGoLive}
