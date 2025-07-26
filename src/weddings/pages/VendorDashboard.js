@@ -934,7 +934,7 @@ const VendorDashboard = () => {
 
       // Update gallery data
       const galleryPayload = sanitizeData(galleryData.categories);
-      dispatch(updateVendorField({ field: 'gallery', value: galleryPayload }));
+      dispatch(updateVendorGallery(galleryPayload));
 
       console.log('Dispatching services update...');
       const sanitizedServices = sanitizeData(servicesData);
