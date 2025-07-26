@@ -2954,9 +2954,11 @@ const VendorDashboard = () => {
                               newOrder[index - 1],
                               newOrder[index],
                             ];
-                            setSectionOrder(
-                              newOrder.filter(id => !id.startsWith('custom-'))
-                            );
+                            // Update the complete section order including custom sections
+                            const defaultSections = newOrder.filter(id => !id.startsWith('custom-'));
+                            setSectionOrder(defaultSections);
+                            // Update custom sections order by keeping track of the full order
+                            updateEditingVendorInRedux();
                             trackSectionChange('section-order');
                           }
                         }}
@@ -2972,9 +2974,11 @@ const VendorDashboard = () => {
                               newOrder[index + 1],
                               newOrder[index],
                             ];
-                            setSectionOrder(
-                              newOrder.filter(id => !id.startsWith('custom-'))
-                            );
+                            // Update the complete section order including custom sections
+                            const defaultSections = newOrder.filter(id => !id.startsWith('custom-'));
+                            setSectionOrder(defaultSections);
+                            // Update custom sections order by keeping track of the full order
+                            updateEditingVendorInRedux();
                             trackSectionChange('section-order');
                           }
                         }}
