@@ -1241,18 +1241,16 @@ const VendorPage = () => {
       </NavBar>
 
       {/* Hero Section */}
-      <HeroSection id="hero">
-        <HeroMedia>
-          {vendor.heroVideo ? (
+      <HeroSection id="hero" backgroundImage={vendor.image}>
+        {vendor.heroVideo && (
+          <HeroMedia>
             <HeroVideo
               src={vendor.heroVideo}
               allow="autoplay; fullscreen; picture-in-picture"
               allowFullScreen
             />
-          ) : (
-            <HeroImage src={vendor.image} alt={vendor.name} />
-          )}
-        </HeroMedia>
+          </HeroMedia>
+        )}
         <HeroOverlay />
         <HeroContent>
           <HeroTitle>{vendor.name}</HeroTitle>
