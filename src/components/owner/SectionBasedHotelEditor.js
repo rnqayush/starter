@@ -1185,7 +1185,7 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
     {
       id: 'cards',
       name: 'Info Cards',
-      icon: FaGrip,
+      icon: FaGripHorizontal,
       description: 'Card-based content',
     },
     {
