@@ -16,7 +16,7 @@ import {
   FaTrash,
   FaList,
   FaTextHeight,
-  FaGrip,
+  FaGripHorizontal,
   FaQuoteLeft,
   FaVideo,
   FaTable,
