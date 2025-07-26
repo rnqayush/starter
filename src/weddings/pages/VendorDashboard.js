@@ -3026,6 +3026,11 @@ const VendorDashboard = () => {
                               cs => cs.id !== customId
                             );
                             setCustomSections(updatedSections);
+                            // Remove from complete section order
+                            const updatedCompleteOrder = completeSectionOrder.filter(
+                              id => id !== sectionId
+                            );
+                            setCompleteSectionOrder(updatedCompleteOrder);
                             trackSectionChange('section-order');
                           }}
                         >
