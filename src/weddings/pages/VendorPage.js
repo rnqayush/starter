@@ -1267,7 +1267,76 @@ const VendorPage = () => {
 
         const sectionOrder = vendor.sectionOrder || defaultOrder;
 
-        return sectionOrder.map(sectionId => {
+        // Combine default sections with custom sections
+        const allSections = [...sectionOrder];
+
+        // Add custom sections to the end if not already included
+        if (vendor.customSections) {
+          vendor.customSections.forEach(customSection => {
+            const customId = `custom-${customSection.id}`;
+            if (!allSections.includes(customId)) {
+              allSections.push(customId);
+            }
+          });
+        }
+
+        return allSections.map(sectionId => {
+          // Check if this is a custom section
+          if (sectionId.startsWith('custom-')) {
+            const customId = sectionId.replace('custom-', '');
+            const customSection = vendor.customSections?.find(cs => cs.id === customId);
+
+            if (!customSection) return null;
+
+            return (
+              <Section key={`custom-${customSection.id}`} id={`custom-${customSection.id}`}>
+                <Container>
+                  <SectionTitle>{customSection.title}</SectionTitle>
+                  {customSection.subtitle && <SectionSubtitle>{customSection.subtitle}</SectionSubtitle>}
+
+                  {/* Render custom section content based on type */}
+                  {customSection.type === 'text' && customSection.content && (
+                    <div style={{
+                      fontSize: '1.1rem',
+                      lineHeight: 1.7,
+                      color: theme.colors.gray700,
+                      textAlign: 'center',
+                      maxWidth: '800px',
+                      margin: '0 auto',
+                      whiteSpace: 'pre-line'
+                    }}>
+                      {customSection.content}
+                    </div>
+                  )}
+
+                  {customSection.type === 'gallery' && customSection.images && customSection.images.length > 0 && (
+                    <GalleryGrid>
+                      {customSection.images.map((image, idx) => (
+                        <GalleryItem key={idx} src={image} alt={`${customSection.title} ${idx + 1}`} />
+                      ))}
+                    </GalleryGrid>
+                  )}
+
+                  {customSection.type === 'cards' && customSection.cards && customSection.cards.length > 0 && (
+                    <ServicesGrid>
+                      {customSection.cards.map((card, idx) => (
+                        <ServiceCard key={idx}>
+                          {card.image && <ServiceImage src={card.image} alt={card.title} />}
+                          <ServiceContent>
+                            {card.icon && <ServiceIcon>{card.icon}</ServiceIcon>}
+                            <ServiceName>{card.title}</ServiceName>
+                            <ServiceDescription>{card.description}</ServiceDescription>
+                          </ServiceContent>
+                        </ServiceCard>
+                      ))}
+                    </ServicesGrid>
+                  )}
+                </Container>
+              </Section>
+            );
+          }
+
+          // Handle default sections
           switch (sectionId) {
             case 'hero':
               return (
