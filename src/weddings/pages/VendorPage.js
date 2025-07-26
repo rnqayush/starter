@@ -1367,6 +1367,11 @@ const VendorPage = () => {
           }
 
           // Handle default sections
+          // Check section visibility for default sections
+          if (vendor.sectionVisibility && vendor.sectionVisibility[sectionId] === false) {
+            return null;
+          }
+
           switch (sectionId) {
             case 'hero':
               return (
