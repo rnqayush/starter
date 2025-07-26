@@ -1449,12 +1449,13 @@ const VendorDashboard = () => {
                 <FormLabel>Business Description</FormLabel>
                 <FormTextarea
                   value={aboutUsData.description}
-                  onChange={e =>
+                  onChange={e => {
                     setAboutUsData(prev => ({
                       ...prev,
                       description: e.target.value,
-                    }))
-                  }
+                    }));
+                    trackSectionChange('about-us');
+                  }}
                   placeholder="Tell your clients about your business..."
                   rows={6}
                 />
