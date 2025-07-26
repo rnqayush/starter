@@ -726,7 +726,8 @@ const VendorDashboard = () => {
   const handleDiscardChanges = () => {
     if (!originalVendor) return;
 
-    // Reset all local form data to original values
+    try {
+      // Reset all local form data to original values
     setHeroData({
       name: originalVendor.name || '',
       tagline: originalVendor.tagline || '',
@@ -790,9 +791,13 @@ const VendorDashboard = () => {
     }));
     setCustomSections(originalCustomSectionsWithIds);
 
-    // Discard changes in Redux
-    dispatch(discardChanges());
-    alert('All changes discarded. Form reset to original values.');
+      // Discard changes in Redux
+      dispatch(discardChanges());
+      alert('All changes discarded. Form reset to original values.');
+    } catch (error) {
+      console.error('Error discarding changes:', error);
+      alert('Error discarding changes. Please try again.');
+    }
   };
 
   const closeMobileSidebar = () => setMobileSidebarOpen(false);
