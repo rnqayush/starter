@@ -6,6 +6,7 @@ import * as BusinessData from './business';
 import * as EcommerceData from './ecommerce';
 import * as HotelData from './hotels';
 import * as WeddingData from './weddings';
+import * as PlatformData from './platform';
 
 // Export data arrays/objects
 export const { automobileCategories, automobileVehicles, automobileVendors } =
@@ -23,6 +24,18 @@ export const {
 export const { hotels, hotelBookings, ownerHotels, amenitiesList } = HotelData;
 
 export const { weddingVendors } = WeddingData;
+
+export const {
+  storeCategories,
+  platformStats,
+  platformBenefits,
+  platformTestimonials,
+  pricingPlans,
+  pricingFeatures,
+  pricingFAQs,
+  websiteTypes,
+  colorOptions,
+} = PlatformData;
 
 // Export utility functions with prefixed names to avoid conflicts
 // Automobile functions

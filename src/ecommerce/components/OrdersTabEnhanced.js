@@ -16,7 +16,7 @@ import {
 import { theme } from '../../styles/GlobalStyle';
 import Modal from './shared/Modal';
 import FormField from './shared/FormField';
-import Button from './shared/Button';
+import { Button } from '../../components/shared/Button';
 import { sellerDashboardData } from '../../DummyData';
 const { sellerOrders } = sellerDashboardData;
 

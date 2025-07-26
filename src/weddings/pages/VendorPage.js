@@ -1292,6 +1292,19 @@ const VendorPage = () => {
 
             if (!customSection) return null;
 
+            // Check custom section visibility
+            if (
+              vendor.customSectionVisibility &&
+              vendor.customSectionVisibility[customId] === false
+            ) {
+              return null;
+            }
+
+            // Also check the visible field directly on the custom section
+            if (customSection.visible === false) {
+              return null;
+            }
+
             return (
               <Section
                 key={`custom-${customSection.id}`}
@@ -1362,6 +1375,14 @@ const VendorPage = () => {
           }
 
           // Handle default sections
+          // Check section visibility for default sections
+          if (
+            vendor.sectionVisibility &&
+            vendor.sectionVisibility[sectionId] === false
+          ) {
+            return null;
+          }
+
           switch (sectionId) {
             case 'hero':
               return (

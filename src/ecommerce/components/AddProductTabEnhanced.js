@@ -12,7 +12,7 @@ import {
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
 import FormField from './shared/FormField';
-import Button from './shared/Button';
+import { Button } from '../../components/shared/Button';
 import { sellerDashboardData } from '../../DummyData';
 const { productCategories } = sellerDashboardData;
 
