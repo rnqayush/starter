@@ -1570,14 +1570,20 @@ const VendorDashboard = () => {
                 <TabsContainer>
                   <Tab
                     active={aboutUsData.mediaType === 'video'}
-                    onClick={() => setAboutUsData(prev => ({ ...prev, mediaType: 'video' }))}
+                    onClick={() => {
+                      setAboutUsData(prev => ({ ...prev, mediaType: 'video' }));
+                      trackSectionChange('about-us');
+                    }}
                   >
                     <FaVideo />
                     Video
                   </Tab>
                   <Tab
                     active={aboutUsData.mediaType === 'image'}
-                    onClick={() => setAboutUsData(prev => ({ ...prev, mediaType: 'image' }))}
+                    onClick={() => {
+                      setAboutUsData(prev => ({ ...prev, mediaType: 'image' }));
+                      trackSectionChange('about-us');
+                    }}
                   >
                     <FaFileImage />
                     Image
