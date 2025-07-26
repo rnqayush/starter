@@ -2154,50 +2154,52 @@ const BusinessWebsitePage = () => {
       </MobileMenu>
 
       {/* Hero Section */}
-      <HeroSection
-        id="hero"
-        primaryColor={businessData.primaryColor}
-        businessType={businessData.slug}
-      >
-        <HeroContent>
-          <HeroTitle>{content.hero?.title || businessData.name}</HeroTitle>
-          <HeroSubtitle>{content.hero?.subtitle || `Welcome to ${businessData.name}`}</HeroSubtitle>
-          <div
-            style={{
-              display: 'flex',
-              gap: '1rem',
-              justifyContent: 'center',
-              flexWrap: 'wrap',
-              marginTop: '2rem',
-            }}
-          >
-            <HeroCTA primaryColor={businessData.primaryColor}>
-              {businessData.slug === 'restaurant'
-                ? 'Reserve Table'
-                : businessData.slug === 'gym'
-                  ? 'Start Free Trial'
-                  : businessData.slug === 'salon'
-                    ? 'Book Appointment'
-                    : 'Get Started'}
-            </HeroCTA>
-            <button
+      {isSectionVisible('hero') && (
+        <HeroSection
+          id="hero"
+          primaryColor={businessData.primaryColor}
+          businessType={businessData.slug}
+        >
+          <HeroContent>
+            <HeroTitle>{content.hero?.title || businessData.name}</HeroTitle>
+            <HeroSubtitle>{content.hero?.subtitle || `Welcome to ${businessData.name}`}</HeroSubtitle>
+            <div
               style={{
-                padding: '1rem 2rem',
-                fontSize: '1.2rem',
-                fontWeight: '600',
-                background: 'transparent',
-                color: theme.colors.white,
-                border: `2px solid ${theme.colors.white}`,
-                borderRadius: '8px',
-                cursor: 'pointer',
-                transition: 'all 0.3s ease',
+                display: 'flex',
+                gap: '1rem',
+                justifyContent: 'center',
+                flexWrap: 'wrap',
+                marginTop: '2rem',
               }}
             >
-              Learn More
-            </button>
-          </div>
-        </HeroContent>
-      </HeroSection>
+              <HeroCTA primaryColor={businessData.primaryColor}>
+                {businessData.slug === 'restaurant'
+                  ? 'Reserve Table'
+                  : businessData.slug === 'gym'
+                    ? 'Start Free Trial'
+                    : businessData.slug === 'salon'
+                      ? 'Book Appointment'
+                      : 'Get Started'}
+              </HeroCTA>
+              <button
+                style={{
+                  padding: '1rem 2rem',
+                  fontSize: '1.2rem',
+                  fontWeight: '600',
+                  background: 'transparent',
+                  color: theme.colors.white,
+                  border: `2px solid ${theme.colors.white}`,
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease',
+                }}
+              >
+                Learn More
+              </button>
+            </div>
+          </HeroContent>
+        </HeroSection>
+      )}
 
       {/* About Section */}
       <Section id="about" background={theme.colors.gray50}>
