@@ -3183,6 +3183,31 @@ const VendorDashboard = () => {
                             (Custom)
                           </span>
                         )}
+                        {/* Visibility indicator */}
+                        <span
+                          style={{
+                            fontSize: '0.75rem',
+                            color: (() => {
+                              if (isCustom) {
+                                const customId = sectionId.replace('custom-', '');
+                                return customSectionVisibility[customId] ? theme.colors.success : theme.colors.gray400;
+                              }
+                              return sectionVisibility[sectionId] ? theme.colors.success : theme.colors.gray400;
+                            })(),
+                            marginLeft: '8px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '4px',
+                          }}
+                        >
+                          {(() => {
+                            if (isCustom) {
+                              const customId = sectionId.replace('custom-', '');
+                              return customSectionVisibility[customId] ? <FaEye /> : <FaEyeSlash />;
+                            }
+                            return sectionVisibility[sectionId] ? <FaEye /> : <FaEyeSlash />;
+                          })()}
+                        </span>
                       </span>
                       <ActionButton
                         onClick={() => {
