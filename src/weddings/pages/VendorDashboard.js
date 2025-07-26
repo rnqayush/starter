@@ -732,10 +732,98 @@ const VendorDashboard = () => {
 
   const [changedSections, setChangedSections] = useState(new Set());
 
-  // Track changes in a section
+  // Track changes in a section and update Redux editing vendor for real-time preview
   const trackSectionChange = (sectionId) => {
     setChangedSections(prev => new Set([...prev, sectionId]));
     setSaved(false);
+
+    // Immediately update Redux editing vendor for real-time preview
+    updateEditingVendorInRedux();
+  };
+
+  // Helper function to immediately update Redux editing vendor
+  const updateEditingVendorInRedux = () => {
+    if (!editingVendor) return;
+
+    try {
+      // Create updated vendor object with current form data
+      const updatedVendor = {
+        ...editingVendor,
+        name: heroData.name || editingVendor.name || '',
+        tagline: heroData.tagline || editingVendor.tagline || '',
+        image: heroData.image || editingVendor.image || '',
+        description: aboutUsData.description || editingVendor.description || '',
+        aboutUs: {
+          ...(editingVendor.aboutUs || {}),
+          text: aboutUsData.description || editingVendor.aboutUs?.text || '',
+          experience: aboutUsData.experience || editingVendor.aboutUs?.experience || '',
+          completedWeddings: aboutUsData.completedWeddings || editingVendor.aboutUs?.completedWeddings || '',
+          satisfiedCouples: aboutUsData.satisfiedCouples || editingVendor.aboutUs?.satisfiedCouples || '',
+          videoEmbed: aboutUsData.videoEmbed || editingVendor.aboutUs?.videoEmbed || '',
+          aboutImage: aboutUsData.aboutImage || editingVendor.aboutUs?.aboutImage || '',
+          experienceVisible: aboutUsData.experienceVisible,
+          weddingsVisible: aboutUsData.weddingsVisible,
+          couplesVisible: aboutUsData.couplesVisible,
+        },
+        services: servicesData.map(service => ({
+          id: service.id,
+          name: service.name || '',
+          description: service.description || '',
+          price: service.price || '',
+          icon: service.icon || '',
+          image: service.image || '',
+        })),
+        locationPortfolio: recentWorkData.map(work => ({
+          id: work.id,
+          location: work.title || '',
+          city: work.location || '',
+          weddingDate: work.date || '',
+          coupleNames: work.coupleNames || '',
+          description: work.description || '',
+          coverImage: work.image || '',
+          services: Array.isArray(work.services) ? work.services : [],
+          highlights: Array.isArray(work.highlights) ? work.highlights : [],
+          gallery: Array.isArray(work.gallery) ? work.gallery : [],
+        })),
+        testimonials: testimonialsData.map(testimonial => ({
+          id: testimonial.id,
+          name: testimonial.client || '',
+          text: testimonial.text || '',
+          rating: testimonial.rating || 5,
+          wedding: testimonial.wedding || '',
+        })),
+        packages: packagesData.map(pkg => ({
+          id: pkg.id,
+          name: pkg.name || '',
+          description: pkg.description || '',
+          price: pkg.price || '',
+          features: Array.isArray(pkg.features) ? pkg.features : [],
+        })),
+        gallery: (() => {
+          const cleanGallery = {};
+          Object.keys(galleryData.categories || {}).forEach(key => {
+            cleanGallery[key] = {
+              title: galleryData.categories[key]?.title || key,
+              images: Array.isArray(galleryData.categories[key]?.images)
+                ? galleryData.categories[key].images.filter(img => typeof img === 'string')
+                : [],
+            };
+          });
+          return cleanGallery;
+        })(),
+      };
+
+      // Update Redux with the current form data for real-time preview
+      Object.keys(updatedVendor).forEach(key => {
+        if (key !== 'id' && JSON.stringify(updatedVendor[key]) !== JSON.stringify(editingVendor[key])) {
+          dispatch({ type: 'vendorManagement/updateVendorField', payload: { field: key, value: updatedVendor[key] } });
+        }
+      });
+
+      console.log('Real-time preview: Updated editing vendor in Redux', updatedVendor);
+    } catch (error) {
+      console.error('Error updating editing vendor for real-time preview:', error);
+    }
   };
 
   const navigationItems = [
