@@ -43,6 +43,7 @@ import { getWeddingVendorById as getVendorById } from '../../DummyData';
 import { useAuth } from '../../context/AuthContext';
 import {
   setEditingVendor,
+  initializeVendor,
   updateVendorField,
   updateVendorImage,
   updateServices,
