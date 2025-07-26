@@ -1431,6 +1431,8 @@ const VendorDashboard = () => {
     setRecentWorkData(prev =>
       prev.map(work => (work.id === id ? { ...work, [field]: value } : work))
     );
+    // Automatically trigger real-time updates
+    setTimeout(() => updateEditingVendorInRedux(), 100);
   };
 
   const deleteRecentWork = id => {
