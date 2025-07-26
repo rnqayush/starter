@@ -1962,7 +1962,7 @@ const VendorDashboard = () => {
                         delete newCategories[key];
                         return { ...prev, categories: newCategories };
                       });
-                      autoSaveForPreview();
+                      trackSectionChange('gallery');
                     }}
                   >
                     <FaTrash />
