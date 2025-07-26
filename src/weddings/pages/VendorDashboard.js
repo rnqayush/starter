@@ -675,21 +675,6 @@ const VendorDashboard = () => {
   const [activeSection, setActiveSection] = useState('hero');
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [saved, setSaved] = useState(false);
-  const [autoSaveTimeout, setAutoSaveTimeout] = useState(null);
-
-  // Auto-save function for real-time preview updates
-  const autoSaveForPreview = () => {
-    trackSectionChange(activeSection);
-    if (autoSaveTimeout) {
-      clearTimeout(autoSaveTimeout);
-    }
-
-    const timeout = setTimeout(() => {
-      handleSaveChanges();
-    }, 1000); // Auto-save after 1 second of no changes
-
-    setAutoSaveTimeout(timeout);
-  };
 
   // Local form states - these hold temporary changes
   const [heroData, setHeroData] = useState({
