@@ -865,16 +865,33 @@ const VendorDashboard = () => {
       );
       setRecentWorkData(recentWorkWithIds);
 
-      // Pre-fill gallery data
+      // Pre-fill gallery data - convert old format to new format
+      const galleryCategories = {};
+      if (vendorData.gallery) {
+        Object.keys(vendorData.gallery).forEach(key => {
+          if (Array.isArray(vendorData.gallery[key])) {
+            galleryCategories[key] = {
+              title: key.charAt(0).toUpperCase() + key.slice(1),
+              images: vendorData.gallery[key],
+            };
+          } else if (vendorData.gallery[key]?.images) {
+            galleryCategories[key] = vendorData.gallery[key];
+          }
+        });
+      }
+
+      // Add default categories if none exist
+      if (Object.keys(galleryCategories).length === 0) {
+        galleryCategories.decor = { title: 'Decor', images: [] };
+        galleryCategories.venues = { title: 'Venues', images: [] };
+        galleryCategories.photography = { title: 'Photography', images: [] };
+        galleryCategories.catering = { title: 'Catering', images: [] };
+      }
+
       setGalleryData({
         subtitle: 'Browse through our portfolio of beautiful weddings and events',
-        activeTab: 'decor',
-        categories: vendorData.gallery || {
-          decor: { title: 'Decor', images: [] },
-          venues: { title: 'Venues', images: [] },
-          photography: { title: 'Photography', images: [] },
-          catering: { title: 'Catering', images: [] },
-        },
+        activeTab: Object.keys(galleryCategories)[0] || 'decor',
+        categories: galleryCategories,
       });
 
       // Pre-fill testimonials data with unique IDs
