@@ -1480,10 +1480,13 @@ const VendorDashboard = () => {
                 <FormLabel style={{ justifyContent: 'space-between' }}>
                   Years of Experience
                   <ToggleSwitch>
-                    <input 
-                      type="checkbox" 
+                    <input
+                      type="checkbox"
                       checked={aboutUsData.experienceVisible}
-                      onChange={e => setAboutUsData(prev => ({ ...prev, experienceVisible: e.target.checked }))}
+                      onChange={e => {
+                        setAboutUsData(prev => ({ ...prev, experienceVisible: e.target.checked }));
+                        trackSectionChange('about-us');
+                      }}
                     />
                     <span></span>
                   </ToggleSwitch>
