@@ -89,9 +89,10 @@ function App() {
 
   return (
     <ErrorBoundary>
-      <AuthProvider>
-        <NotificationProvider>
-          <AppContext.Provider value={contextValue}>
+      <Provider store={store}>
+        <AuthProvider>
+          <NotificationProvider>
+            <AppContext.Provider value={contextValue}>
             <Router>
               <AppContainer>
                 <GlobalStyle />
@@ -178,9 +179,10 @@ function App() {
                 </Routes>
               </AppContainer>
             </Router>
-          </AppContext.Provider>
-        </NotificationProvider>
-      </AuthProvider>
+            </AppContext.Provider>
+          </NotificationProvider>
+        </AuthProvider>
+      </Provider>
     </ErrorBoundary>
   );
 }
