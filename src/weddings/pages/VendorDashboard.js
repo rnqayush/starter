@@ -3127,6 +3127,7 @@ const VendorDashboard = () => {
               </select>
             </FormGroup>
 
+            {/* Content Input Fields Based on Type */}
             {customSectionForm.type === 'text' && (
               <FormGroup style={{ marginBottom: theme.spacing.md }}>
                 <FormLabel>Content</FormLabel>
@@ -3136,6 +3137,167 @@ const VendorDashboard = () => {
                   placeholder="Enter your content here..."
                   rows={6}
                 />
+              </FormGroup>
+            )}
+
+            {customSectionForm.type === 'gallery' && (
+              <FormGroup style={{ marginBottom: theme.spacing.md }}>
+                <FormLabel>Gallery Images</FormLabel>
+                <FileUploadContainer>
+                  <FileUploadBox>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      onChange={e => {
+                        Array.from(e.target.files).forEach(file => {
+                          const reader = new FileReader();
+                          reader.onload = event => {
+                            addCustomSectionImage(event.target.result);
+                          };
+                          reader.readAsDataURL(file);
+                        });
+                      }}
+                    />
+                    <FaUpload size={24} color={theme.colors.gray400} />
+                    <span style={{ fontSize: '0.8rem', textAlign: 'center' }}>Upload Images</span>
+                  </FileUploadBox>
+                  <FormGroup style={{ flex: 1 }}>
+                    <FormLabel>Or paste image URLs (one per line)</FormLabel>
+                    <FormTextarea
+                      placeholder="https://example.com/image1.jpg
+https://example.com/image2.jpg"
+                      rows={3}
+                      onBlur={e => {
+                        const urls = e.target.value.split('\n').filter(url => url.trim());
+                        if (urls.length > 0) {
+                          urls.forEach(url => addCustomSectionImage(url));
+                          e.target.value = '';
+                        }
+                      }}
+                    />
+                  </FormGroup>
+                </FileUploadContainer>
+
+                {/* Gallery Preview */}
+                {customSectionForm.images && customSectionForm.images.length > 0 && (
+                  <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))',
+                    gap: theme.spacing.sm,
+                    marginTop: theme.spacing.md
+                  }}>
+                    {customSectionForm.images.map((image, index) => (
+                      <ImagePreview key={index} style={{ width: '120px', height: '80px' }}>
+                        <img src={image} alt={`Gallery ${index}`} />
+                        <ImageOverlay>
+                          <RemoveImageButton
+                            onClick={() => removeCustomSectionImage(index)}
+                          >
+                            <FaTrash />
+                          </RemoveImageButton>
+                        </ImageOverlay>
+                      </ImagePreview>
+                    ))}
+                  </div>
+                )}
+              </FormGroup>
+            )}
+
+            {customSectionForm.type === 'cards' && (
+              <FormGroup style={{ marginBottom: theme.spacing.md }}>
+                <FormLabel>Cards Content</FormLabel>
+
+                {/* Existing Cards */}
+                {customSectionForm.cards.map((card, index) => (
+                  <div key={index} style={{
+                    border: `1px solid ${theme.colors.gray200}`,
+                    borderRadius: theme.borderRadius.md,
+                    padding: theme.spacing.md,
+                    marginBottom: theme.spacing.md,
+                    backgroundColor: theme.colors.gray50
+                  }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: theme.spacing.sm }}>
+                      <h4 style={{ margin: 0, fontSize: '1rem', fontWeight: 600 }}>Card {index + 1}</h4>
+                      <button
+                        type="button"
+                        onClick={() => removeCustomSectionCard(index)}
+                        style={{
+                          background: theme.colors.error,
+                          color: 'white',
+                          border: 'none',
+                          borderRadius: '50%',
+                          width: '24px',
+                          height: '24px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          cursor: 'pointer',
+                          fontSize: '0.8rem'
+                        }}
+                      >
+                        ×
+                      </button>
+                    </div>
+
+                    <FormGrid style={{ gap: theme.spacing.sm }}>
+                      <FormGroup>
+                        <FormLabel>Title</FormLabel>
+                        <FormInput
+                          value={card.title}
+                          onChange={e => updateCustomSectionCard(index, 'title', e.target.value)}
+                          placeholder="Card title"
+                        />
+                      </FormGroup>
+                      <FormGroup>
+                        <FormLabel>Icon (Emoji)</FormLabel>
+                        <FormInput
+                          value={card.icon}
+                          onChange={e => updateCustomSectionCard(index, 'icon', e.target.value)}
+                          placeholder="💼"
+                        />
+                      </FormGroup>
+                      <FormGroup style={{ gridColumn: '1 / -1' }}>
+                        <FormLabel>Description</FormLabel>
+                        <FormTextarea
+                          value={card.description}
+                          onChange={e => updateCustomSectionCard(index, 'description', e.target.value)}
+                          placeholder="Card description..."
+                          rows={3}
+                        />
+                      </FormGroup>
+                      <FormGroup style={{ gridColumn: '1 / -1' }}>
+                        <FormLabel>Image URL (Optional)</FormLabel>
+                        <FormInput
+                          value={card.image}
+                          onChange={e => updateCustomSectionCard(index, 'image', e.target.value)}
+                          placeholder="https://example.com/image.jpg"
+                        />
+                      </FormGroup>
+                    </FormGrid>
+                  </div>
+                ))}
+
+                {/* Add New Card Button */}
+                <button
+                  type="button"
+                  onClick={addCustomSectionCard}
+                  style={{
+                    background: theme.colors.primary,
+                    color: 'white',
+                    border: 'none',
+                    padding: `${theme.spacing.sm} ${theme.spacing.md}`,
+                    borderRadius: theme.borderRadius.md,
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: theme.spacing.xs,
+                    fontSize: '0.9rem',
+                    fontWeight: 600
+                  }}
+                >
+                  <FaPlus /> Add Card
+                </button>
               </FormGroup>
             )}
 
