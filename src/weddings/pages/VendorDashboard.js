@@ -1498,6 +1498,91 @@ const VendorDashboard = () => {
     setPackagesData(prev => prev.filter(pkg => pkg.id !== id));
   };
 
+  // Custom section helpers
+  const openCustomSectionModal = (section = null) => {
+    if (section) {
+      setEditingCustomSection(section);
+      setCustomSectionForm({
+        title: section.title || '',
+        subtitle: section.subtitle || '',
+        type: section.type || 'text',
+        content: section.content || '',
+        images: section.images || [],
+        cards: section.cards || []
+      });
+    } else {
+      setEditingCustomSection(null);
+      setCustomSectionForm({
+        title: '',
+        subtitle: '',
+        type: 'text',
+        content: '',
+        images: [],
+        cards: []
+      });
+    }
+    setShowCustomSectionModal(true);
+  };
+
+  const saveCustomSection = () => {
+    const sectionData = {
+      id: editingCustomSection?.id || `custom-${Date.now()}`,
+      ...customSectionForm,
+    };
+
+    if (editingCustomSection) {
+      // Update existing section
+      setCustomSections(prev =>
+        prev.map(section =>
+          section.id === editingCustomSection.id ? sectionData : section
+        )
+      );
+    } else {
+      // Add new section
+      setCustomSections(prev => [...prev, sectionData]);
+    }
+
+    setShowCustomSectionModal(false);
+    trackSectionChange('custom-sections');
+  };
+
+  const addCustomSectionCard = () => {
+    setCustomSectionForm(prev => ({
+      ...prev,
+      cards: [...prev.cards, { title: '', description: '', image: '', icon: '' }]
+    }));
+  };
+
+  const updateCustomSectionCard = (index, field, value) => {
+    setCustomSectionForm(prev => ({
+      ...prev,
+      cards: prev.cards.map((card, i) =>
+        i === index ? { ...card, [field]: value } : card
+      )
+    }));
+  };
+
+  const removeCustomSectionCard = (index) => {
+    setCustomSectionForm(prev => ({
+      ...prev,
+      cards: prev.cards.filter((_, i) => i !== index)
+    }));
+  };
+
+  const addCustomSectionImage = (imageUrl) => {
+    setCustomSectionForm(prev => ({
+      ...prev,
+      images: [...prev.images, imageUrl]
+    }));
+  };
+
+  const removeCustomSectionImage = (index) => {
+    setCustomSectionForm(prev => ({
+      ...prev,
+      images: prev.images.filter((_, i) => i !== index)
+    }));
+  };
+
   // Gallery helpers
   const addGalleryImage = (category, imageUrl) => {
     setGalleryData(prev => ({
