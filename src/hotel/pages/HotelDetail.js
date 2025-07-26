@@ -990,7 +990,9 @@ const HotelDetail = () => {
       </HeroBanner>
 
       {/* Render sections in custom order - only if visible */}
-      {(hotel.sectionOrder || ['about', 'features', 'gallery', 'amenities', 'contact'])
+      {(hotel.sectionOrder || ['about', 'features', 'gallery', 'amenities', 'contact'].concat(
+        (hotel.customSections || []).map(cs => cs.id)
+      ))
         .filter(sectionId => {
           // Check if section is visible (from Redux state or default to true)
           const sectionVisibility = hotel.sectionVisibility || {
@@ -1189,6 +1191,86 @@ const HotelDetail = () => {
             );
 
           default:
+            // Handle custom sections
+            const customSection = hotel.customSections?.find(cs => cs.id === sectionId);
+            if (customSection && customSection.isVisible) {
+              return (
+                <ContentSection key={sectionId} className={isAlt ? 'alt' : ''}>
+                  <Container>
+                    <SectionHeader>
+                      <SectionTitle>{customSection.title}</SectionTitle>
+                    </SectionHeader>
+                    {customSection.type === 'text' && (
+                      <div>
+                        {customSection.content?.map((item, idx) => (
+                          <Description key={idx} style={{ textAlign: 'center', maxWidth: '800px', margin: '0 auto' }}>
+                            {item.content}
+                          </Description>
+                        ))}
+                      </div>
+                    )}
+                    {customSection.type === 'cards' && (
+                      <FeaturesGrid>
+                        {customSection.content?.map((card, idx) => (
+                          <FeatureCard key={idx}>
+                            {card.image && (
+                              <img
+                                src={card.image}
+                                alt={card.title}
+                                style={{
+                                  width: '100%',
+                                  height: '200px',
+                                  objectFit: 'cover',
+                                  borderRadius: '8px',
+                                  marginBottom: '1rem'
+                                }}
+                              />
+                            )}
+                            <FeatureTitle>{card.title}</FeatureTitle>
+                            <FeatureDescription>{card.description}</FeatureDescription>
+                            {card.link && (
+                              <a
+                                href={card.link}
+                                style={{
+                                  color: theme.colors.primary,
+                                  textDecoration: 'none',
+                                  fontWeight: '600',
+                                  marginTop: '1rem',
+                                  display: 'inline-block'
+                                }}
+                              >
+                                Learn More →
+                              </a>
+                            )}
+                          </FeatureCard>
+                        ))}
+                      </FeaturesGrid>
+                    )}
+                    {customSection.type === 'gallery' && (
+                      <GallerySection>
+                        <GalleryGrid>
+                          {customSection.content?.slice(0, 5).map((item, idx) => (
+                            <GalleryItem key={idx} image={item.image}>
+                              <GalleryOverlay>{item.title}</GalleryOverlay>
+                            </GalleryItem>
+                          ))}
+                        </GalleryGrid>
+                      </GallerySection>
+                    )}
+                    {customSection.type === 'list' && (
+                      <AmenityList style={{ maxWidth: '600px', margin: '0 auto' }}>
+                        {customSection.content?.map((item, idx) => (
+                          <AmenityItem key={idx}>
+                            <FaCheckCircle className="icon" />
+                            {item.text}
+                          </AmenityItem>
+                        ))}
+                      </AmenityList>
+                    )}
+                  </Container>
+                </ContentSection>
+              );
+            }
             return null;
         }
       })}

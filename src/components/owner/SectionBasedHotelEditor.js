@@ -16,7 +16,7 @@ import {
   FaTrash,
   FaList,
   FaTextHeight,
-  FaGrip,
+  FaGripHorizontal,
   FaQuoteLeft,
   FaVideo,
   FaTable,
@@ -777,6 +777,17 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
       return;
     }
 
+    // Check if this is a custom section being edited
+    const customSection = customSections.find(cs => cs.id === sectionType);
+    if (customSection) {
+      setNewSectionData({
+        title: customSection.title,
+        type: customSection.type,
+        content: customSection.content || [],
+      });
+      return;
+    }
+
     // Initialize temp data with current hotel data - exactly as it appears on hotel detail page
     if (editingHotel) {
       setTempData({
@@ -1102,6 +1113,14 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
       })
     );
 
+    // Update section order in Redux store
+    dispatch(
+      updateHotelField({
+        field: 'sectionOrder',
+        value: [...sectionOrder, sectionId],
+      })
+    );
+
     // Close modal
     closeModal();
     alert(
@@ -1111,6 +1130,28 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
 
   const updateNewSectionData = (field, value) => {
     setNewSectionData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const updateCustomSection = () => {
+    const customSectionId = activeModal;
+    const updatedSections = customSections.map(section =>
+      section.id === customSectionId
+        ? { ...section, ...newSectionData }
+        : section
+    );
+
+    setCustomSections(updatedSections);
+
+    // Update in Redux store
+    dispatch(
+      updateHotelField({
+        field: 'customSections',
+        value: updatedSections,
+      })
+    );
+
+    closeModal();
+    alert('Custom section updated! Remember to "Save & Go Live" to publish changes.');
   };
 
   const addContentItem = () => {
@@ -1185,7 +1226,7 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
     {
       id: 'cards',
       name: 'Info Cards',
-      icon: FaGrip,
+      icon: FaGripHorizontal,
       description: 'Card-based content',
     },
     {
@@ -1497,7 +1538,7 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
               <SectionInfo>
                 <SectionIcon>
                   {section.type === 'gallery' && <FaCamera />}
-                  {section.type === 'cards' && <FaGrip />}
+                  {section.type === 'cards' && <FaGripHorizontal />}
                   {section.type === 'text' && <FaTextHeight />}
                   {section.type === 'list' && <FaList />}
                   {section.type === 'testimonials' && <FaQuoteLeft />}
@@ -2232,6 +2273,225 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
                   )}
                 </>
               )}
+
+              {/* Custom section editing - reuse add-section content */}
+              {customSections.find(cs => cs.id === activeModal) && (
+                <>
+                  <FormField>
+                    <Label>Section Title</Label>
+                    <Input
+                      value={newSectionData.title}
+                      onChange={e =>
+                        updateNewSectionData('title', e.target.value)
+                      }
+                      placeholder="Enter section title (e.g., Our Awards, Special Offers)"
+                    />
+                  </FormField>
+
+                  <FormField>
+                    <Label>Section Type</Label>
+                    <p
+                      style={{
+                        color: theme.colors.gray600,
+                        marginBottom: theme.spacing.md,
+                      }}
+                    >
+                      Choose the type of content for this section.
+                    </p>
+                    <SectionTypeGrid>
+                      {sectionTypes.map(type => (
+                        <SectionTypeCard
+                          key={type.id}
+                          selected={newSectionData.type === type.id}
+                          onClick={() => updateNewSectionData('type', type.id)}
+                        >
+                          <SectionTypeIcon
+                            selected={newSectionData.type === type.id}
+                          >
+                            <type.icon />
+                          </SectionTypeIcon>
+                          <h4
+                            style={{
+                              margin: 0,
+                              marginBottom: theme.spacing.xs,
+                              fontSize: '0.9rem',
+                            }}
+                          >
+                            {type.name}
+                          </h4>
+                          <p
+                            style={{
+                              margin: 0,
+                              fontSize: '0.8rem',
+                              color: theme.colors.gray600,
+                            }}
+                          >
+                            {type.description}
+                          </p>
+                        </SectionTypeCard>
+                      ))}
+                    </SectionTypeGrid>
+                  </FormField>
+
+                  {newSectionData.type && (
+                    <FormField>
+                      <Label>Content Items</Label>
+                      <p
+                        style={{
+                          color: theme.colors.gray600,
+                          marginBottom: theme.spacing.md,
+                        }}
+                      >
+                        Add content items for your {newSectionData.type}{' '}
+                        section.
+                      </p>
+
+                      <ContentForm>
+                        {newSectionData.content.map((item, index) => (
+                          <ContentItem key={index}>
+                            <div style={{ flex: 1 }}>
+                              {newSectionData.type === 'text' && (
+                                <TextArea
+                                  value={item.content || ''}
+                                  onChange={e =>
+                                    updateContentItem(
+                                      index,
+                                      'content',
+                                      e.target.value
+                                    )
+                                  }
+                                  placeholder="Enter your text content here..."
+                                  rows={4}
+                                />
+                              )}
+
+                              {newSectionData.type === 'gallery' && (
+                                <>
+                                  <Input
+                                    value={item.title || ''}
+                                    onChange={e =>
+                                      updateContentItem(
+                                        index,
+                                        'title',
+                                        e.target.value
+                                      )
+                                    }
+                                    placeholder="Image title"
+                                    style={{ marginBottom: theme.spacing.sm }}
+                                  />
+                                  <Input
+                                    value={item.image || ''}
+                                    onChange={e =>
+                                      updateContentItem(
+                                        index,
+                                        'image',
+                                        e.target.value
+                                      )
+                                    }
+                                    placeholder="Image URL"
+                                    style={{ marginBottom: theme.spacing.sm }}
+                                  />
+                                  <TextArea
+                                    value={item.description || ''}
+                                    onChange={e =>
+                                      updateContentItem(
+                                        index,
+                                        'description',
+                                        e.target.value
+                                      )
+                                    }
+                                    placeholder="Image description (optional)"
+                                    rows={2}
+                                  />
+                                </>
+                              )}
+
+                              {newSectionData.type === 'cards' && (
+                                <CardContentForm>
+                                  <div>
+                                    <Input
+                                      value={item.title || ''}
+                                      onChange={e =>
+                                        updateContentItem(
+                                          index,
+                                          'title',
+                                          e.target.value
+                                        )
+                                      }
+                                      placeholder="Card title"
+                                      style={{ marginBottom: theme.spacing.sm }}
+                                    />
+                                    <TextArea
+                                      value={item.description || ''}
+                                      onChange={e =>
+                                        updateContentItem(
+                                          index,
+                                          'description',
+                                          e.target.value
+                                        )
+                                      }
+                                      placeholder="Card description"
+                                      rows={3}
+                                    />
+                                  </div>
+                                  <div>
+                                    <Input
+                                      value={item.image || ''}
+                                      onChange={e =>
+                                        updateContentItem(
+                                          index,
+                                          'image',
+                                          e.target.value
+                                        )
+                                      }
+                                      placeholder="Card image URL (optional)"
+                                      style={{ marginBottom: theme.spacing.sm }}
+                                    />
+                                    <Input
+                                      value={item.link || ''}
+                                      onChange={e =>
+                                        updateContentItem(
+                                          index,
+                                          'link',
+                                          e.target.value
+                                        )
+                                      }
+                                      placeholder="Card link URL (optional)"
+                                    />
+                                  </div>
+                                </CardContentForm>
+                              )}
+
+                              {newSectionData.type === 'list' && (
+                                <Input
+                                  value={item.text || ''}
+                                  onChange={e =>
+                                    updateContentItem(
+                                      index,
+                                      'text',
+                                      e.target.value
+                                    )
+                                  }
+                                  placeholder="List item text"
+                                />
+                              )}
+                            </div>
+                            <RemoveButton
+                              onClick={() => removeContentItem(index)}
+                            >
+                              <FaTrash />
+                            </RemoveButton>
+                          </ContentItem>
+                        ))}
+
+                        <AddButton onClick={addContentItem}>
+                          <FaPlus /> Add {newSectionData.type} Item
+                        </AddButton>
+                      </ContentForm>
+                    </FormField>
+                  )}
+                </>
+              )}
             </ModalContent>
 
             <ModalFooter>
@@ -2241,6 +2501,10 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
               {activeModal === 'add-section' ? (
                 <Button onClick={addCustomSection}>
                   <FaPlus /> Add Section
+                </Button>
+              ) : customSections.find(cs => cs.id === activeModal) ? (
+                <Button onClick={updateCustomSection}>
+                  <FaSave /> Update Section
                 </Button>
               ) : (
                 <Button onClick={saveSection}>
