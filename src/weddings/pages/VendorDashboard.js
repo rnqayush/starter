@@ -51,6 +51,7 @@ import {
   initializeVendor,
   updateVendorField,
   updateVendorImage,
+  updateVendorGallery,
   updateServices,
   updateTestimonials,
   updatePackages,
