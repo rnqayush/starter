@@ -1233,7 +1233,17 @@ const VendorDashboard = () => {
   const handleImageUpload = (file, setter, field) => {
     const reader = new FileReader();
     reader.onload = e => {
-      setter(prev => ({ ...prev, [field]: e.target.result, [`${field}File`]: file }));
+      if (setter === setAboutUsData) {
+        setter(prev => ({
+          ...prev,
+          [field]: e.target.result,
+          [`${field}File`]: file,
+          mediaType: 'image' // Set media type to image when uploading image
+        }));
+        trackSectionChange('about-us');
+      } else {
+        setter(prev => ({ ...prev, [field]: e.target.result, [`${field}File`]: file }));
+      }
     };
     reader.readAsDataURL(file);
   };
