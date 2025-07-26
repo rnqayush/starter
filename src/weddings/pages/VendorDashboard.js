@@ -210,26 +210,34 @@ const SaveActionsContainer = styled.div`
 `;
 
 const SaveButton = styled.button.withConfig({
-  shouldForwardProp: prop => !['variant', 'disabled'].includes(prop),
+  shouldForwardProp: prop => !['variant', 'disabled', 'saved'].includes(prop),
 })`
-  background: ${props =>
-    props.variant === 'primary'
-      ? `linear-gradient(135deg, ${theme.colors.success}, ${theme.colors.successDark})`
+  background: ${props => {
+    if (props.disabled) {
+      return props.saved ? theme.colors.success : theme.colors.gray300;
+    }
+    return props.variant === 'primary'
+      ? `linear-gradient(135deg, ${theme.colors.primary}, ${theme.colors.primaryDark})`
       : props.variant === 'secondary'
         ? theme.colors.gray300
-        : theme.colors.white};
-  color: ${props =>
-    props.variant === 'primary'
+        : theme.colors.white;
+  }};
+  color: ${props => {
+    if (props.disabled) {
+      return props.saved ? 'white' : theme.colors.gray500;
+    }
+    return props.variant === 'primary'
       ? 'white'
       : props.variant === 'secondary'
         ? theme.colors.gray700
-        : theme.colors.gray700};
+        : theme.colors.gray700;
+  }};
   border: ${props =>
-    props.variant === 'primary' ? 'none' : `2px solid ${theme.colors.gray300}`};
+    props.variant === 'primary' ? 'none' : `2px solid ${props.disabled && props.saved ? theme.colors.success : theme.colors.gray300}`};
   padding: ${theme.spacing.md} ${theme.spacing.lg};
   border-radius: ${theme.borderRadius.md};
   font-weight: 600;
-  cursor: pointer;
+  cursor: ${props => (props.disabled ? 'not-allowed' : 'pointer')};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -240,14 +248,8 @@ const SaveButton = styled.button.withConfig({
   width: 100%;
 
   &:hover {
-    transform: translateY(-1px);
-    box-shadow: ${theme.shadows.md};
-  }
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    transform: none;
+    transform: ${props => (props.disabled ? 'none' : 'translateY(-1px)')};
+    box-shadow: ${props => (props.disabled ? 'none' : theme.shadows.md)};
   }
 `;
 
