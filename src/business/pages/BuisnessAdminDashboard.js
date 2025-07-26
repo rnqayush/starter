@@ -207,12 +207,19 @@ const NavItem = styled.button.withConfig({
 `;
 
 const SidebarFooter = styled.div`
-  padding: ${theme.spacing.lg};
   border-top: 1px solid ${theme.colors.gray200};
   background: ${theme.colors.gray50};
   flex-shrink: 0;
-  max-height: 300px;
+  max-height: 350px;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+`;
+
+const SidebarFooterContent = styled.div`
+  padding: ${theme.spacing.lg};
+  flex: 1;
+  min-height: 0;
 `;
 
 const SaveActionsContainer = styled.div`
