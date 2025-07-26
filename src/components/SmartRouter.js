@@ -26,11 +26,11 @@ const SmartRouter = () => {
     const hotel = getHotelBySlug(slug);
     if (hotel) return 'hotel';
 
-    const vendor = getVendorBySlug(slug);
-    if (vendor) return 'ecommerce';
-
     const automobileDealer = getAutomobileVendorBySlug(slug);
     if (automobileDealer) return 'automobile';
+
+    const vendor = getVendorBySlug(slug);
+    if (vendor) return 'ecommerce';
 
     const weddingVendor = getVendorById(slug);
     if (weddingVendor) return 'wedding';
