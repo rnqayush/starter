@@ -25,10 +25,21 @@ const vendorManagementSlice = createSlice({
   initialState,
   reducers: {
     setEditingVendor: (state, action) => {
-      const vendor = state.vendors.find(v => v.id === action.payload);
-      state.editingVendor = vendor ? { ...vendor } : null;
-      state.originalVendor = vendor ? { ...vendor } : null;
-      state.activeVendorId = action.payload;
+      const vendorId = action.payload;
+      let vendor = state.vendors.find(v => v.id === vendorId);
+
+      // If vendor is not found in Redux state, we'll initialize with null
+      // and let the component handle fetching from the dummy data
+      if (!vendor) {
+        console.warn(`Vendor with id ${vendorId} not found in Redux state`);
+        state.editingVendor = null;
+        state.originalVendor = null;
+      } else {
+        state.editingVendor = { ...vendor };
+        state.originalVendor = { ...vendor };
+      }
+
+      state.activeVendorId = vendorId;
       state.changes = {};
       state.hasUnsavedChanges = false;
     },
