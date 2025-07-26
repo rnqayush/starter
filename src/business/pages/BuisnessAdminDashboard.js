@@ -2711,6 +2711,152 @@ const BuisnessAdminDashboard = () => {
           </ContentSection>
         );
 
+      case 'custom-sections':
+        return (
+          <ContentSection>
+            <SectionHeader>
+              <SectionTitle>
+                <FaPlus />
+                Custom Sections
+              </SectionTitle>
+            </SectionHeader>
+
+            <AddButton onClick={addCustomSection}>
+              <FaPlus />
+              Add Custom Section
+            </AddButton>
+
+            <ListContainer>
+              {customSectionsData.map(section => (
+                <ListItem key={section.id}>
+                  <div className="item-info">
+                    <FormGrid>
+                      <FormGroup>
+                        <FormLabel>Section Title</FormLabel>
+                        <FormInput
+                          value={section.title}
+                          onChange={e => updateCustomSection(section.id, 'title', e.target.value)}
+                          placeholder="Section title"
+                        />
+                      </FormGroup>
+                      <FormGroup>
+                        <FormLabel>Section Type</FormLabel>
+                        <select
+                          value={section.type}
+                          onChange={e => updateCustomSection(section.id, 'type', e.target.value)}
+                          style={{
+                            padding: '10px',
+                            border: '2px solid #e2e8f0',
+                            borderRadius: '6px',
+                            fontSize: '1rem',
+                            width: '100%',
+                          }}
+                        >
+                          <option value="text">Text Content</option>
+                          <option value="list">List Items</option>
+                          <option value="card">Card Layout</option>
+                          <option value="image">Image Gallery</option>
+                        </select>
+                      </FormGroup>
+                      <FormGroup>
+                        <FormLabel>
+                          <input
+                            type="checkbox"
+                            checked={section.visible || false}
+                            onChange={e => updateCustomSection(section.id, 'visible', e.target.checked)}
+                            style={{ marginRight: '8px' }}
+                          />
+                          Visible
+                        </FormLabel>
+                      </FormGroup>
+                      <FormGroup style={{ gridColumn: '1 / -1' }}>
+                        <FormLabel>Content (JSON format for advanced users)</FormLabel>
+                        <FormTextarea
+                          value={JSON.stringify(section.content, null, 2)}
+                          onChange={e => {
+                            try {
+                              const content = JSON.parse(e.target.value);
+                              updateCustomSection(section.id, 'content', content);
+                            } catch (error) {
+                              // Invalid JSON, but still update to show user's input
+                              updateCustomSection(section.id, 'content', { raw: e.target.value });
+                            }
+                          }}
+                          placeholder='{"title": "Custom Content", "description": "Your content here"}'
+                          rows={6}
+                        />
+                      </FormGroup>
+                    </FormGrid>
+                  </div>
+                  <div className="item-actions">
+                    <ItemButton
+                      variant="danger"
+                      onClick={() => deleteCustomSection(section.id)}
+                    >
+                      <FaTrash />
+                      Delete
+                    </ItemButton>
+                  </div>
+                </ListItem>
+              ))}
+            </ListContainer>
+          </ContentSection>
+        );
+
+      case 'section-order':
+        return (
+          <ContentSection>
+            <SectionHeader>
+              <SectionTitle>
+                <FaList />
+                Section Order Management
+              </SectionTitle>
+            </SectionHeader>
+
+            <p style={{ marginBottom: '20px', color: '#6b7280' }}>
+              Drag and drop sections to reorder them on your website
+            </p>
+
+            <ListContainer>
+              {sectionOrderData.map((sectionId, index) => (
+                <ListItem key={sectionId} style={{ cursor: 'move' }}>
+                  <div className="item-info" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <FaGripHorizontal style={{ color: '#9ca3af' }} />
+                    <span style={{ fontWeight: '600', textTransform: 'capitalize' }}>
+                      {sectionId.replace(/-/g, ' ')}
+                    </span>
+                    <span style={{ color: '#6b7280', fontSize: '0.9rem' }}>
+                      Position: {index + 1}
+                    </span>
+                  </div>
+                  <div className="item-actions">
+                    <ItemButton
+                      onClick={() => {
+                        if (index > 0) {
+                          reorderSections(index, index - 1);
+                        }
+                      }}
+                      disabled={index === 0}
+                    >
+                      ↑ Move Up
+                    </ItemButton>
+                    <ItemButton
+                      onClick={() => {
+                        if (index < sectionOrderData.length - 1) {
+                          reorderSections(index, index + 1);
+                        }
+                      }}
+                      disabled={index === sectionOrderData.length - 1}
+                    >
+                      ↓ Move Down
+                    </ItemButton>
+                  </div>
+                </ListItem>
+              ))}
+            </ListContainer>
+          </ContentSection>
+        );
+
       default:
         return (
           <ContentSection>
@@ -2719,7 +2865,7 @@ const BuisnessAdminDashboard = () => {
               {activeSection.charAt(0).toUpperCase() + activeSection.slice(1).replace(/-/g, ' ')} Management
             </SectionTitle>
             <p>This section is under development. Please select another section to edit.</p>
-            <p>Available sections: Hero, About Us, Services, Team, Contact</p>
+            <p>Available sections: Hero, About Us, Services, Team, Portfolio, Skills, Experience, Gallery, Packages, Testimonials, Reviews, FAQ, Business Hours, Contact</p>
           </ContentSection>
         );
     }
