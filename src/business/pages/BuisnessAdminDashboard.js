@@ -1518,12 +1518,55 @@ const BuisnessAdminDashboard = () => {
   };
 
   // Custom sections management
-  const addCustomSection = () => {
+  const addCustomSection = (type = 'text') => {
+    const templates = {
+      text: {
+        title: 'Text Section',
+        content: {
+          heading: 'Section Heading',
+          description: 'Add your content here...',
+          backgroundColor: '#ffffff',
+          textColor: '#333333'
+        }
+      },
+      list: {
+        title: 'List Section',
+        content: {
+          heading: 'List Heading',
+          items: ['Item 1', 'Item 2', 'Item 3'],
+          style: 'bullets', // bullets, numbers, icons
+          backgroundColor: '#f8f9fa'
+        }
+      },
+      card: {
+        title: 'Card Section',
+        content: {
+          heading: 'Card Section',
+          cards: [
+            { title: 'Card 1', description: 'Description 1', icon: '🎯' },
+            { title: 'Card 2', description: 'Description 2', icon: '⚡' },
+            { title: 'Card 3', description: 'Description 3', icon: '🚀' }
+          ],
+          layout: 'grid' // grid, horizontal, vertical
+        }
+      },
+      image: {
+        title: 'Image Gallery',
+        content: {
+          heading: 'Image Gallery',
+          images: [],
+          layout: 'grid', // grid, masonry, carousel
+          columns: 3
+        }
+      }
+    };
+
+    const template = templates[type] || templates.text;
     const newSection = {
       id: Date.now(),
-      type: 'text', // text, list, card, image
-      title: 'Custom Section',
-      content: {},
+      type,
+      title: template.title,
+      content: template.content,
       order: customSectionsData.length,
       visible: true,
     };
