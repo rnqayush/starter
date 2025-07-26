@@ -886,6 +886,7 @@ const VendorDashboard = () => {
         })(),
         sectionOrder: completeSectionOrder.length > 0 ? completeSectionOrder : sectionOrder,
         customSections: customSections,
+        sectionVisibility: sectionVisibility,
       };
 
       // Update Redux with the current form data for real-time preview
