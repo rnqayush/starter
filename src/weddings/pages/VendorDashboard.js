@@ -825,14 +825,14 @@ const VendorDashboard = () => {
       });
 
       setAboutUsData({
-        description: vendorData.description || vendorData.aboutUs?.text || '',
+        description: vendorData.aboutUs?.text || vendorData.description || '',
         mission: vendorData.mission || '',
         experience: vendorData.aboutUs?.experience || '0+',
         completedWeddings: vendorData.aboutUs?.completedWeddings || '0+',
         satisfiedCouples: vendorData.aboutUs?.satisfiedCouples || '0+',
         videoEmbed: vendorData.aboutUs?.videoEmbed || '',
         aboutImage: vendorData.aboutUs?.aboutImage || '',
-        mediaType: vendorData.aboutUs?.videoEmbed ? 'video' : 'image',
+        mediaType: vendorData.aboutUs?.videoEmbed && !vendorData.aboutUs?.aboutImage ? 'video' : 'image',
         videoFile: null,
         imageFile: null,
         experienceVisible: vendorData.aboutUs?.experienceVisible !== false,
