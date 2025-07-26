@@ -667,8 +667,12 @@ const VendorDashboard = () => {
       }));
       setPackagesData(packagesWithIds);
       
-      // Initialize Custom Sections
-      setCustomSections(vendorData.customSections || []);
+      // Initialize Custom Sections with unique IDs
+      const customSectionsWithIds = (vendorData.customSections || []).map((section, index) => ({
+        ...section,
+        id: section.id || `custom-section-${Date.now()}-${index}`
+      }));
+      setCustomSections(customSectionsWithIds);
       
       // Initialize Profile Settings
       setProfileSettings({
