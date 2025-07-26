@@ -11,6 +11,11 @@ export const store = configureStore({
     getDefaultMiddleware({
       serializableCheck: {
         ignoredActions: ['persist/PERSIST'],
+        ignoredActionsPaths: ['payload'],
+        ignoredPaths: [
+          'vendorManagement.editingVendor',
+          'vendorManagement.originalVendor',
+        ],
       },
     }),
 });

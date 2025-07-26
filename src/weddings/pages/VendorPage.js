@@ -67,14 +67,22 @@ const BackToTopButton = styled.button.withConfig({
 `;
 
 // Hero Section
-const HeroSection = styled.section`
+const HeroSection = styled.section.withConfig({
+  shouldForwardProp: prop => !['backgroundImage'].includes(prop),
+})`
   position: relative;
   height: 100vh;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4));
+  background: ${props =>
+    props.backgroundImage
+      ? `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(${props.backgroundImage})`
+      : 'linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4))'};
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     height: 100vh;
@@ -1026,14 +1034,30 @@ const VendorPage = () => {
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    // Check if this vendor is being edited and use editing data for real-time updates
+    let vendorData = null;
+
+    // Priority 1: Use editing vendor data for real-time updates during editing
     if (editingVendor && editingVendor.id === vendorId) {
-      setVendor(editingVendor);
-    } else {
-      // Otherwise, use data from vendors array (includes saved changes)
-      const vendorData =
-        vendors.find(v => v.id === vendorId) || getVendorById(vendorId);
+      vendorData = editingVendor;
+      console.log(
+        'Using editing vendor data for real-time updates:',
+        editingVendor
+      );
+    }
+    // Priority 2: Use saved vendor data from Redux vendors array
+    else if (vendors && vendors.length > 0) {
+      vendorData = vendors.find(v => v.id === vendorId);
+      console.log('Using saved vendor data from Redux:', vendorData);
+    }
+    // Priority 3: Fallback to dummy data
+    if (!vendorData) {
+      vendorData = getVendorById(vendorId);
+      console.log('Using fallback dummy data:', vendorData);
+    }
+
+    if (vendorData) {
       setVendor(vendorData);
+      console.log('VendorPage: Updated vendor data', vendorData);
     }
     setLoading(false);
 
@@ -1231,303 +1255,499 @@ const VendorPage = () => {
         </NavContent>
       </NavBar>
 
-      {/* Hero Section */}
-      <HeroSection id="hero">
-        <HeroMedia>
-          {vendor.heroVideo ? (
-            <HeroVideo
-              src={vendor.heroVideo}
-              allow="autoplay; fullscreen; picture-in-picture"
-              allowFullScreen
-            />
-          ) : (
-            <HeroImage src={vendor.image} alt={vendor.name} />
-          )}
-        </HeroMedia>
-        <HeroOverlay />
-        <HeroContent>
-          <HeroTitle>{vendor.name}</HeroTitle>
-          <HeroTagline>{vendor.tagline}</HeroTagline>
-          <HeroButton
-            primaryColor={primaryColor}
-            onClick={() => scrollToSection('contact')}
-          >
-            <FaCalendarAlt />
-            Enquire Now
-          </HeroButton>
-        </HeroContent>
-      </HeroSection>
+      {/* Dynamic Sections Based on Order */}
+      {(() => {
+        const defaultOrder = [
+          'hero',
+          'about-us',
+          'services-offered',
+          'recent-work',
+          'gallery',
+          'packages-pricing',
+          'testimonials',
+        ];
 
-      {/* About Us Section */}
-      <Section id="about" backgroundColor={vendor.theme?.backgroundColor}>
-        <Container>
-          <SectionTitle>About Us</SectionTitle>
-          <AboutGrid>
-            <AboutContent>
-              <AboutText>{vendor.aboutUs?.text}</AboutText>
-              <AboutStats>
-                <StatCard>
-                  <StatNumber primaryColor={primaryColor}>
-                    {vendor.aboutUs?.experience}
-                  </StatNumber>
-                  <StatLabel>Experience</StatLabel>
-                </StatCard>
-                <StatCard>
-                  <StatNumber primaryColor={primaryColor}>
-                    {vendor.aboutUs?.completedWeddings}
-                  </StatNumber>
-                  <StatLabel>Weddings</StatLabel>
-                </StatCard>
-                <StatCard>
-                  <StatNumber primaryColor={primaryColor}>
-                    {vendor.aboutUs?.satisfiedCouples}
-                  </StatNumber>
-                  <StatLabel>Happy Couples</StatLabel>
-                </StatCard>
-              </AboutStats>
-            </AboutContent>
-            {vendor.aboutUs?.videoEmbed && (
-              <VideoContainer>
-                <VideoEmbed
-                  src={vendor.aboutUs.videoEmbed}
-                  allow="autoplay; fullscreen; picture-in-picture"
-                  allowFullScreen
-                />
-              </VideoContainer>
-            )}
-          </AboutGrid>
-        </Container>
-      </Section>
+        const sectionOrder = vendor.sectionOrder || defaultOrder;
 
-      {/* Services Section */}
-      <Section id="services">
-        <Container>
-          <SectionTitle>Services Offered</SectionTitle>
-          <SectionSubtitle>
-            We provide comprehensive wedding services to make your special day
-            perfect
-          </SectionSubtitle>
-          <ServicesGrid>
-            {vendor.services?.map((service, index) => (
-              <ServiceCard key={index}>
-                <ServiceImage src={service.image} alt={service.name} />
-                <ServiceContent>
-                  <ServiceIcon>{service.icon}</ServiceIcon>
-                  <ServiceName>{service.name}</ServiceName>
-                  <ServiceDescription>{service.description}</ServiceDescription>
-                </ServiceContent>
-              </ServiceCard>
-            ))}
-          </ServicesGrid>
-        </Container>
-      </Section>
+        // Combine default sections with custom sections
+        const allSections = [...sectionOrder];
 
-      {/* Portfolio Preview Section */}
-      {vendor.locationPortfolio && vendor.locationPortfolio.length > 0 && (
-        <Section id="portfolio">
-          <Container>
-            <SectionTitle>Our Recent Work</SectionTitle>
-            <SectionSubtitle>
-              Explore some of our beautiful weddings across different venues and
-              locations
-            </SectionSubtitle>
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-                gap: theme.spacing.xl,
-                marginBottom: theme.spacing.xl,
-              }}
-            >
-              {vendor.locationPortfolio.slice(0, 3).map(portfolio => (
-                <div
-                  key={portfolio.id}
-                  style={{
-                    background: theme.colors.white,
-                    borderRadius: theme.borderRadius.lg,
-                    overflow: 'hidden',
-                    boxShadow: theme.shadows.md,
-                    transition: 'all 0.3s ease',
-                    cursor: 'pointer',
-                  }}
-                  onClick={() => navigate(`/${vendorId}/portfolio`)}
-                >
-                  <img
-                    src={portfolio.coverImage}
-                    alt={portfolio.location}
-                    style={{
-                      width: '100%',
-                      height: '200px',
-                      objectFit: 'cover',
-                    }}
-                  />
-                  <div style={{ padding: theme.spacing.lg }}>
-                    <h4
+        // Add custom sections to the end if not already included
+        if (vendor.customSections) {
+          vendor.customSections.forEach(customSection => {
+            const customId = `custom-${customSection.id}`;
+            if (!allSections.includes(customId)) {
+              allSections.push(customId);
+            }
+          });
+        }
+
+        return allSections.map(sectionId => {
+          // Check if this is a custom section
+          if (sectionId.startsWith('custom-')) {
+            const customId = sectionId.replace('custom-', '');
+            const customSection = vendor.customSections?.find(
+              cs => cs.id === customId
+            );
+
+            if (!customSection) return null;
+
+            return (
+              <Section
+                key={`custom-${customSection.id}`}
+                id={`custom-${customSection.id}`}
+              >
+                <Container>
+                  <SectionTitle>{customSection.title}</SectionTitle>
+                  {customSection.subtitle && (
+                    <SectionSubtitle>{customSection.subtitle}</SectionSubtitle>
+                  )}
+
+                  {/* Render custom section content based on type */}
+                  {customSection.type === 'text' && customSection.content && (
+                    <div
                       style={{
-                        margin: `0 0 ${theme.spacing.sm} 0`,
-                        fontSize: '1.2rem',
-                        fontWeight: 600,
-                        color: theme.colors.gray900,
-                      }}
-                    >
-                      {portfolio.location}
-                    </h4>
-                    <p
-                      style={{
-                        margin: `0 0 ${theme.spacing.sm} 0`,
-                        color: theme.colors.gray600,
-                        fontSize: '0.9rem',
-                      }}
-                    >
-                      {portfolio.city}, {portfolio.state} •{' '}
-                      {portfolio.weddingDate}
-                    </p>
-                    <p
-                      style={{
-                        margin: 0,
+                        fontSize: '1.1rem',
+                        lineHeight: 1.7,
                         color: theme.colors.gray700,
-                        fontSize: '0.9rem',
-                        lineHeight: 1.5,
+                        textAlign: 'center',
+                        maxWidth: '800px',
+                        margin: '0 auto',
+                        whiteSpace: 'pre-line',
                       }}
                     >
-                      {portfolio.description.substring(0, 120)}...
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <div style={{ textAlign: 'center' }}>
-              <button
-                onClick={() => navigate(`/${vendorId}/portfolio`)}
-                style={{
-                  background: primaryColor,
-                  color: 'white',
-                  border: 'none',
-                  padding: `${theme.spacing.md} ${theme.spacing.xl}`,
-                  borderRadius: theme.borderRadius.md,
-                  fontSize: '1.1rem',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  transition: 'all 0.3s ease',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: theme.spacing.sm,
-                  margin: '0 auto',
-                }}
-                onMouseOver={e =>
-                  (e.target.style.transform = 'translateY(-2px)')
-                }
-                onMouseOut={e => (e.target.style.transform = 'translateY(0)')}
-              >
-                <FaImages />
-                View Complete Portfolio
-              </button>
-            </div>
-          </Container>
-        </Section>
-      )}
+                      {customSection.content}
+                    </div>
+                  )}
 
-      {/* Gallery Section */}
-      <Section id="gallery" backgroundColor={theme.colors.gray50}>
-        <Container>
-          <SectionTitle>Gallery</SectionTitle>
-          <SectionSubtitle>
-            Browse through our portfolio of beautiful weddings and events
-          </SectionSubtitle>
-          <GalleryTabs>
-            {Object.keys(vendor.gallery || {}).map(category => (
-              <GalleryTab
-                key={category}
-                active={activeGalleryTab === category}
-                primaryColor={primaryColor}
-                onClick={() => setActiveGalleryTab(category)}
-              >
-                <FaImages />
-                {category.charAt(0).toUpperCase() + category.slice(1)}
-              </GalleryTab>
-            ))}
-          </GalleryTabs>
-          <GalleryGrid>
-            {vendor.gallery?.[activeGalleryTab]?.map((image, index) => (
-              <GalleryItem
-                key={index}
-                src={image}
-                alt={`${vendor.name} ${activeGalleryTab} ${index + 1}`}
-              />
-            ))}
-          </GalleryGrid>
-        </Container>
-      </Section>
+                  {customSection.type === 'gallery' &&
+                    customSection.images &&
+                    customSection.images.length > 0 && (
+                      <GalleryGrid>
+                        {customSection.images.map((image, idx) => (
+                          <GalleryItem
+                            key={idx}
+                            src={image}
+                            alt={`${customSection.title} ${idx + 1}`}
+                          />
+                        ))}
+                      </GalleryGrid>
+                    )}
 
-      {/* Packages Section */}
-      {vendor.packages && (
-        <Section id="packages">
-          <Container>
-            <SectionTitle>Packages & Pricing</SectionTitle>
-            <SectionSubtitle>
-              Choose the perfect package for your wedding celebration
-            </SectionSubtitle>
-            <PackagesGrid>
-              {vendor.packages.map((pkg, index) => (
-                <PackageCard key={index} primaryColor={primaryColor}>
-                  <PackageName>{pkg.name}</PackageName>
-                  <PackagePrice primaryColor={primaryColor}>
-                    {pkg.price}
-                  </PackagePrice>
-                  <PackageDescription>{pkg.description}</PackageDescription>
-                  <PackageFeatures>
-                    {pkg.features.map((feature, featureIndex) => (
-                      <PackageFeature
-                        key={featureIndex}
-                        primaryColor={primaryColor}
+                  {customSection.type === 'cards' &&
+                    customSection.cards &&
+                    customSection.cards.length > 0 && (
+                      <ServicesGrid>
+                        {customSection.cards.map((card, idx) => (
+                          <ServiceCard key={idx}>
+                            {card.image && (
+                              <ServiceImage src={card.image} alt={card.title} />
+                            )}
+                            <ServiceContent>
+                              {card.icon && (
+                                <ServiceIcon>{card.icon}</ServiceIcon>
+                              )}
+                              <ServiceName>{card.title}</ServiceName>
+                              <ServiceDescription>
+                                {card.description}
+                              </ServiceDescription>
+                            </ServiceContent>
+                          </ServiceCard>
+                        ))}
+                      </ServicesGrid>
+                    )}
+                </Container>
+              </Section>
+            );
+          }
+
+          // Handle default sections
+          switch (sectionId) {
+            case 'hero':
+              return (
+                <HeroSection
+                  key="hero"
+                  id="hero"
+                  backgroundImage={vendor.image}
+                >
+                  {vendor.heroVideo && (
+                    <HeroMedia>
+                      <HeroVideo
+                        src={vendor.heroVideo}
+                        allow="autoplay; fullscreen; picture-in-picture"
+                        allowFullScreen
+                      />
+                    </HeroMedia>
+                  )}
+                  <HeroOverlay />
+                  <HeroContent>
+                    <HeroTitle>{vendor.name}</HeroTitle>
+                    <HeroTagline>{vendor.tagline}</HeroTagline>
+                    <HeroButton
+                      primaryColor={primaryColor}
+                      onClick={() => scrollToSection('contact')}
+                    >
+                      <FaCalendarAlt />
+                      Enquire Now
+                    </HeroButton>
+                  </HeroContent>
+                </HeroSection>
+              );
+
+            case 'about-us':
+              return (
+                <Section
+                  key="about"
+                  id="about"
+                  backgroundColor={vendor.theme?.backgroundColor}
+                >
+                  <Container>
+                    <SectionTitle>About Us</SectionTitle>
+                    <AboutGrid>
+                      <AboutContent>
+                        <AboutText>
+                          {vendor.aboutUs?.text || vendor.description}
+                        </AboutText>
+                        <AboutStats>
+                          {vendor.aboutUs?.experienceVisible !== false &&
+                            vendor.aboutUs?.experience && (
+                              <StatCard>
+                                <StatNumber primaryColor={primaryColor}>
+                                  {vendor.aboutUs.experience}
+                                </StatNumber>
+                                <StatLabel>Experience</StatLabel>
+                              </StatCard>
+                            )}
+                          {vendor.aboutUs?.weddingsVisible !== false &&
+                            vendor.aboutUs?.completedWeddings && (
+                              <StatCard>
+                                <StatNumber primaryColor={primaryColor}>
+                                  {vendor.aboutUs.completedWeddings}
+                                </StatNumber>
+                                <StatLabel>Weddings</StatLabel>
+                              </StatCard>
+                            )}
+                          {vendor.aboutUs?.couplesVisible !== false &&
+                            vendor.aboutUs?.satisfiedCouples && (
+                              <StatCard>
+                                <StatNumber primaryColor={primaryColor}>
+                                  {vendor.aboutUs.satisfiedCouples}
+                                </StatNumber>
+                                <StatLabel>Happy Couples</StatLabel>
+                              </StatCard>
+                            )}
+                        </AboutStats>
+                      </AboutContent>
+                      {(vendor.aboutUs?.aboutImage ||
+                        vendor.aboutUs?.videoEmbed) && (
+                        <VideoContainer>
+                          {vendor.aboutUs?.aboutImage ? (
+                            <img
+                              src={vendor.aboutUs.aboutImage}
+                              alt="About us"
+                              style={{
+                                width: '100%',
+                                height: '100%',
+                                objectFit: 'cover',
+                                borderRadius: '8px',
+                              }}
+                            />
+                          ) : vendor.aboutUs?.videoEmbed ? (
+                            <VideoEmbed
+                              src={vendor.aboutUs.videoEmbed}
+                              allow="autoplay; fullscreen; picture-in-picture"
+                              allowFullScreen
+                            />
+                          ) : null}
+                        </VideoContainer>
+                      )}
+                    </AboutGrid>
+                  </Container>
+                </Section>
+              );
+
+            case 'services-offered':
+              return (
+                <Section key="services" id="services">
+                  <Container>
+                    <SectionTitle>Services Offered</SectionTitle>
+                    <SectionSubtitle>
+                      We provide comprehensive wedding services to make your
+                      special day perfect
+                    </SectionSubtitle>
+                    <ServicesGrid>
+                      {vendor.services?.map((service, index) => (
+                        <ServiceCard key={index}>
+                          <ServiceImage
+                            src={service.image}
+                            alt={service.name}
+                          />
+                          <ServiceContent>
+                            <ServiceIcon>{service.icon}</ServiceIcon>
+                            <ServiceName>{service.name}</ServiceName>
+                            <ServiceDescription>
+                              {service.description}
+                            </ServiceDescription>
+                          </ServiceContent>
+                        </ServiceCard>
+                      ))}
+                    </ServicesGrid>
+                  </Container>
+                </Section>
+              );
+
+            case 'recent-work':
+              return vendor.locationPortfolio &&
+                vendor.locationPortfolio.length > 0 ? (
+                <Section key="portfolio" id="portfolio">
+                  <Container>
+                    <SectionTitle>Our Recent Work</SectionTitle>
+                    <SectionSubtitle>
+                      Explore some of our beautiful weddings across different
+                      venues and locations
+                    </SectionSubtitle>
+                    <div
+                      style={{
+                        display: 'grid',
+                        gridTemplateColumns:
+                          'repeat(auto-fit, minmax(300px, 1fr))',
+                        gap: theme.spacing.xl,
+                        marginBottom: theme.spacing.xl,
+                      }}
+                    >
+                      {vendor.locationPortfolio.slice(0, 3).map(portfolio => (
+                        <div
+                          key={portfolio.id}
+                          style={{
+                            background: theme.colors.white,
+                            borderRadius: theme.borderRadius.lg,
+                            overflow: 'hidden',
+                            boxShadow: theme.shadows.md,
+                            transition: 'all 0.3s ease',
+                            cursor: 'pointer',
+                          }}
+                          onClick={() => navigate(`/${vendorId}/portfolio`)}
+                        >
+                          <img
+                            src={portfolio.coverImage}
+                            alt={portfolio.location}
+                            style={{
+                              width: '100%',
+                              height: '200px',
+                              objectFit: 'cover',
+                            }}
+                          />
+                          <div style={{ padding: theme.spacing.lg }}>
+                            <h4
+                              style={{
+                                margin: `0 0 ${theme.spacing.sm} 0`,
+                                fontSize: '1.2rem',
+                                fontWeight: 600,
+                                color: theme.colors.gray900,
+                              }}
+                            >
+                              {portfolio.location}
+                            </h4>
+                            <p
+                              style={{
+                                margin: `0 0 ${theme.spacing.sm} 0`,
+                                color: theme.colors.gray600,
+                                fontSize: '0.9rem',
+                              }}
+                            >
+                              {portfolio.city}, {portfolio.state} •{' '}
+                              {portfolio.weddingDate}
+                            </p>
+                            <p
+                              style={{
+                                margin: 0,
+                                color: theme.colors.gray700,
+                                fontSize: '0.9rem',
+                                lineHeight: 1.5,
+                              }}
+                            >
+                              {portfolio.description.substring(0, 120)}...
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    <div style={{ textAlign: 'center' }}>
+                      <button
+                        onClick={() => navigate(`/${vendorId}/portfolio`)}
+                        style={{
+                          background: primaryColor,
+                          color: 'white',
+                          border: 'none',
+                          padding: `${theme.spacing.md} ${theme.spacing.xl}`,
+                          borderRadius: theme.borderRadius.md,
+                          fontSize: '1.1rem',
+                          fontWeight: 600,
+                          cursor: 'pointer',
+                          transition: 'all 0.3s ease',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: theme.spacing.sm,
+                          margin: '0 auto',
+                        }}
+                        onMouseOver={e =>
+                          (e.target.style.transform = 'translateY(-2px)')
+                        }
+                        onMouseOut={e =>
+                          (e.target.style.transform = 'translateY(0)')
+                        }
                       >
-                        {feature}
-                      </PackageFeature>
-                    ))}
-                  </PackageFeatures>
-                  <PackageButton
-                    primaryColor={primaryColor}
-                    onClick={() => scrollToSection('contact')}
-                  >
-                    Get a Quote
-                  </PackageButton>
-                </PackageCard>
-              ))}
-            </PackagesGrid>
-          </Container>
-        </Section>
-      )}
+                        <FaImages />
+                        View Complete Portfolio
+                      </button>
+                    </div>
+                  </Container>
+                </Section>
+              ) : null;
 
-      {/* Testimonials Section */}
-      <Section
-        id="testimonials"
-        backgroundColor={vendor.theme?.backgroundColor}
-      >
-        <Container>
-          <SectionTitle>What Our Couples Say</SectionTitle>
-          <SectionSubtitle>
-            Real testimonials from couples whose special day we helped create
-          </SectionSubtitle>
-          <TestimonialsGrid>
-            {vendor.testimonials?.map((testimonial, index) => (
-              <TestimonialCard key={index} primaryColor={primaryColor}>
-                <TestimonialText>{testimonial.text}</TestimonialText>
-                <TestimonialAuthor>
-                  <AuthorInfo>
-                    <AuthorName>{testimonial.name}</AuthorName>
-                    <AuthorWedding>{testimonial.wedding}</AuthorWedding>
-                  </AuthorInfo>
-                  <TestimonialRating>
-                    {Array.from({ length: testimonial.rating }, (_, i) => (
-                      <FaStar key={i} />
-                    ))}
-                  </TestimonialRating>
-                </TestimonialAuthor>
-              </TestimonialCard>
-            ))}
-          </TestimonialsGrid>
-        </Container>
-      </Section>
+            case 'gallery':
+              return (
+                <Section
+                  key="gallery"
+                  id="gallery"
+                  backgroundColor={theme.colors.gray50}
+                >
+                  <Container>
+                    <SectionTitle>Gallery</SectionTitle>
+                    <SectionSubtitle>
+                      Browse through our portfolio of beautiful weddings and
+                      events
+                    </SectionSubtitle>
+                    <GalleryTabs>
+                      {Object.keys(vendor.gallery || {}).map(category => {
+                        const categoryData = vendor.gallery[category];
+                        const categoryTitle =
+                          categoryData?.title ||
+                          category.charAt(0).toUpperCase() + category.slice(1);
+
+                        return (
+                          <GalleryTab
+                            key={category}
+                            active={activeGalleryTab === category}
+                            primaryColor={primaryColor}
+                            onClick={() => setActiveGalleryTab(category)}
+                          >
+                            <FaImages />
+                            {categoryTitle}
+                          </GalleryTab>
+                        );
+                      })}
+                    </GalleryTabs>
+                    <GalleryGrid>
+                      {(() => {
+                        const activeCategory =
+                          vendor.gallery?.[activeGalleryTab];
+                        const images = Array.isArray(activeCategory)
+                          ? activeCategory
+                          : activeCategory?.images || [];
+
+                        return images.map((image, index) => (
+                          <GalleryItem
+                            key={index}
+                            src={image}
+                            alt={`${vendor.name} ${activeGalleryTab} ${index + 1}`}
+                          />
+                        ));
+                      })()}
+                    </GalleryGrid>
+                  </Container>
+                </Section>
+              );
+
+            case 'packages-pricing':
+              return vendor.packages ? (
+                <Section key="packages" id="packages">
+                  <Container>
+                    <SectionTitle>Packages & Pricing</SectionTitle>
+                    <SectionSubtitle>
+                      Choose the perfect package for your wedding celebration
+                    </SectionSubtitle>
+                    <PackagesGrid>
+                      {vendor.packages.map((pkg, index) => (
+                        <PackageCard key={index} primaryColor={primaryColor}>
+                          <PackageName>{pkg.name}</PackageName>
+                          <PackagePrice primaryColor={primaryColor}>
+                            {pkg.price}
+                          </PackagePrice>
+                          <PackageDescription>
+                            {pkg.description}
+                          </PackageDescription>
+                          <PackageFeatures>
+                            {pkg.features.map((feature, featureIndex) => (
+                              <PackageFeature
+                                key={featureIndex}
+                                primaryColor={primaryColor}
+                              >
+                                {feature}
+                              </PackageFeature>
+                            ))}
+                          </PackageFeatures>
+                          <PackageButton
+                            primaryColor={primaryColor}
+                            onClick={() => scrollToSection('contact')}
+                          >
+                            Get a Quote
+                          </PackageButton>
+                        </PackageCard>
+                      ))}
+                    </PackagesGrid>
+                  </Container>
+                </Section>
+              ) : null;
+
+            case 'testimonials':
+              return (
+                <Section
+                  key="testimonials"
+                  id="testimonials"
+                  backgroundColor={vendor.theme?.backgroundColor}
+                >
+                  <Container>
+                    <SectionTitle>What Our Couples Say</SectionTitle>
+                    <SectionSubtitle>
+                      Real testimonials from couples whose special day we helped
+                      create
+                    </SectionSubtitle>
+                    <TestimonialsGrid>
+                      {vendor.testimonials?.map((testimonial, index) => (
+                        <TestimonialCard
+                          key={index}
+                          primaryColor={primaryColor}
+                        >
+                          <TestimonialText>{testimonial.text}</TestimonialText>
+                          <TestimonialAuthor>
+                            <AuthorInfo>
+                              <AuthorName>{testimonial.name}</AuthorName>
+                              <AuthorWedding>
+                                {testimonial.wedding}
+                              </AuthorWedding>
+                            </AuthorInfo>
+                            <TestimonialRating>
+                              {Array.from(
+                                { length: testimonial.rating },
+                                (_, i) => (
+                                  <FaStar key={i} />
+                                )
+                              )}
+                            </TestimonialRating>
+                          </TestimonialAuthor>
+                        </TestimonialCard>
+                      ))}
+                    </TestimonialsGrid>
+                  </Container>
+                </Section>
+              );
+
+            default:
+              return null;
+          }
+        });
+      })()}
 
       {/* FAQ Section */}
       <Section id="faq">
@@ -1789,7 +2009,7 @@ const VendorPage = () => {
         primaryColor={primaryColor}
         onClick={scrollToTop}
       >
-        ↑
+        ���
       </BackToTopButton>
     </PageContainer>
   );

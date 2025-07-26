@@ -37,6 +37,11 @@ import {
   FaQuoteLeft,
   FaUndo,
   FaCheckCircle,
+  FaVideo,
+  FaEyeSlash,
+  FaFileImage,
+  FaLink,
+  FaCopy,
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
 import { getWeddingVendorById as getVendorById } from '../../DummyData';
@@ -46,6 +51,7 @@ import {
   initializeVendor,
   updateVendorField,
   updateVendorImage,
+  updateVendorGallery,
   updateServices,
   updateTestimonials,
   updatePackages,
@@ -99,6 +105,8 @@ const Sidebar = styled.div.withConfig({
   height: 100vh;
   overflow-y: auto;
   z-index: 100;
+  display: flex;
+  flex-direction: column;
 
   @media (max-width: ${theme.breakpoints.tablet}) {
     width: 260px;
@@ -139,6 +147,8 @@ const VendorRole = styled.p`
 
 const SidebarNav = styled.nav`
   padding: ${theme.spacing.lg} 0;
+  flex: 1;
+  overflow-y: auto;
 `;
 
 const NavSection = styled.div`
@@ -184,6 +194,76 @@ const NavItem = styled.button.withConfig({
   svg {
     font-size: 1rem;
   }
+`;
+
+const SidebarFooter = styled.div`
+  padding: ${theme.spacing.lg};
+  border-top: 1px solid ${theme.colors.gray200};
+  background: ${theme.colors.gray50};
+  margin-top: auto;
+`;
+
+const SaveActionsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${theme.spacing.md};
+`;
+
+const SaveButton = styled.button.withConfig({
+  shouldForwardProp: prop => !['variant', 'disabled', 'saved'].includes(prop),
+})`
+  background: ${props => {
+    if (props.disabled) {
+      return props.saved ? theme.colors.success : theme.colors.gray300;
+    }
+    return props.variant === 'primary'
+      ? `linear-gradient(135deg, ${theme.colors.primary}, ${theme.colors.primaryDark})`
+      : props.variant === 'secondary'
+        ? theme.colors.gray300
+        : theme.colors.white;
+  }};
+  color: ${props => {
+    if (props.disabled) {
+      return props.saved ? 'white' : theme.colors.gray500;
+    }
+    return props.variant === 'primary'
+      ? 'white'
+      : props.variant === 'secondary'
+        ? theme.colors.gray700
+        : theme.colors.gray700;
+  }};
+  border: ${props =>
+    props.variant === 'primary'
+      ? 'none'
+      : `2px solid ${props.disabled && props.saved ? theme.colors.success : theme.colors.gray300}`};
+  padding: ${theme.spacing.md} ${theme.spacing.lg};
+  border-radius: ${theme.borderRadius.md};
+  font-weight: 600;
+  cursor: ${props => (props.disabled ? 'not-allowed' : 'pointer')};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: ${theme.spacing.sm};
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  width: 100%;
+
+  &:hover {
+    transform: ${props => (props.disabled ? 'none' : 'translateY(-1px)')};
+    box-shadow: ${props => (props.disabled ? 'none' : theme.shadows.md)};
+  }
+`;
+
+const ChangesIndicator = styled.div`
+  color: ${theme.colors.warning};
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.xs};
+  font-size: 0.85rem;
+  margin-bottom: ${theme.spacing.sm};
+  justify-content: center;
 `;
 
 const MobileMenuButton = styled.button`
@@ -241,7 +321,6 @@ const MainContent = styled.div`
   margin-left: 280px;
   padding: ${theme.spacing.xl};
   min-height: 100vh;
-  padding-bottom: 120px; /* Space for save bar */
 
   @media (max-width: ${theme.breakpoints.tablet}) {
     margin-left: 260px;
@@ -251,8 +330,7 @@ const MainContent = styled.div`
   @media (max-width: ${theme.breakpoints.mobile}) {
     margin-left: 0;
     padding: ${theme.spacing.md};
-    padding-top: 4rem; /* Account for mobile menu button */
-    padding-bottom: 140px; /* More space for mobile save bar */
+    padding-top: 4rem;
   }
 `;
 
@@ -397,6 +475,9 @@ const FormLabel = styled.label`
   font-weight: 600;
   color: ${theme.colors.gray900};
   font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.xs};
 `;
 
 const FormInput = styled.input`
@@ -429,88 +510,151 @@ const FormTextarea = styled.textarea`
   }
 `;
 
-const SaveActionsBar = styled.div`
-  position: fixed;
-  bottom: ${theme.spacing.xl};
-  right: ${theme.spacing.xl};
-  background: ${theme.colors.white};
-  padding: ${theme.spacing.lg};
-  border-radius: ${theme.borderRadius.lg};
-  box-shadow: ${theme.shadows.xl};
+const FileUploadContainer = styled.div`
   display: flex;
-  align-items: center;
   gap: ${theme.spacing.md};
-  z-index: 100;
-  border: 1px solid ${theme.colors.gray200};
-  min-width: 400px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+`;
 
-  @media (max-width: ${theme.breakpoints.mobile}) {
-    bottom: ${theme.spacing.md};
-    right: ${theme.spacing.md};
-    left: ${theme.spacing.md};
-    min-width: auto;
-    flex-direction: column;
-    gap: ${theme.spacing.sm};
+const FileUploadBox = styled.label`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  height: 120px;
+  border: 2px dashed ${theme.colors.gray300};
+  border-radius: ${theme.borderRadius.md};
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: ${theme.colors.gray50};
+
+  &:hover {
+    border-color: ${theme.colors.primary};
+    background: ${theme.colors.primary}10;
+  }
+
+  input {
+    display: none;
   }
 `;
 
-const SaveButton = styled.button.withConfig({
-  shouldForwardProp: prop => !['variant'].includes(prop),
+const ImagePreview = styled.div`
+  position: relative;
+  width: 120px;
+  height: 120px;
+  border-radius: ${theme.borderRadius.md};
+  overflow: hidden;
+  box-shadow: ${theme.shadows.sm};
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+`;
+
+const ImageOverlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    opacity: 1;
+  }
+`;
+
+const RemoveImageButton = styled.button`
+  background: ${theme.colors.error};
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+`;
+
+const ToggleSwitch = styled.label`
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+  margin-left: auto;
+
+  input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  span {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: ${theme.colors.gray300};
+    transition: 0.4s;
+    border-radius: 24px;
+
+    &:before {
+      position: absolute;
+      content: '';
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: 0.4s;
+      border-radius: 50%;
+    }
+  }
+
+  input:checked + span {
+    background-color: ${theme.colors.primary};
+  }
+
+  input:checked + span:before {
+    transform: translateX(26px);
+  }
+`;
+
+const TabsContainer = styled.div`
+  display: flex;
+  gap: ${theme.spacing.sm};
+  margin-bottom: ${theme.spacing.lg};
+  flex-wrap: wrap;
+`;
+
+const Tab = styled.button.withConfig({
+  shouldForwardProp: prop => !['active'].includes(prop),
 })`
   background: ${props =>
-    props.variant === 'primary'
-      ? `linear-gradient(135deg, ${theme.colors.success}, ${theme.colors.successDark})`
-      : props.variant === 'secondary'
-        ? theme.colors.gray300
-        : theme.colors.white};
-  color: ${props =>
-    props.variant === 'primary'
-      ? 'white'
-      : props.variant === 'secondary'
-        ? theme.colors.gray700
-        : theme.colors.gray700};
-  border: ${props =>
-    props.variant === 'primary' ? 'none' : `2px solid ${theme.colors.gray300}`};
-  padding: ${theme.spacing.md} ${theme.spacing.xl};
+    props.active ? theme.colors.primary : theme.colors.gray100};
+  color: ${props => (props.active ? 'white' : theme.colors.gray700)};
+  border: none;
+  padding: ${theme.spacing.sm} ${theme.spacing.md};
   border-radius: ${theme.borderRadius.md};
   font-weight: 600;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: ${theme.spacing.sm};
-  transition: all 0.3s ease;
-  font-size: 1rem;
-  white-space: nowrap;
+  transition: all 0.2s ease;
 
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: ${theme.shadows.lg};
-  }
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    transform: none;
-  }
-
-  @media (max-width: ${theme.breakpoints.mobile}) {
-    width: 100%;
-    justify-content: center;
-  }
-`;
-
-const ChangesIndicator = styled.div`
-  color: ${theme.colors.warning};
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: ${theme.spacing.xs};
-  font-size: 0.9rem;
-
-  @media (max-width: ${theme.breakpoints.mobile}) {
-    order: -1;
-    width: 100%;
-    justify-content: center;
+    background: ${props =>
+      props.active ? theme.colors.primaryDark : theme.colors.gray200};
   }
 `;
 
@@ -525,13 +669,6 @@ const VendorDashboard = () => {
     state => state.vendorManagement
   );
 
-  // Debug: Check if action creators are properly imported
-  console.log('Action creators:', {
-    updateVendorField,
-    updateServices,
-    saveChanges,
-  });
-
   // Get vendor ID from URL path
   const currentPath = window.location.pathname;
   const pathSegments = currentPath.split('/').filter(Boolean);
@@ -541,32 +678,192 @@ const VendorDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [activeSection, setActiveSection] = useState('hero');
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+  const [saved, setSaved] = useState(false);
 
   // Local form states - these hold temporary changes
   const [heroData, setHeroData] = useState({
     name: '',
     tagline: '',
     image: '',
+    imageFile: null,
   });
 
   const [aboutUsData, setAboutUsData] = useState({
     description: '',
     mission: '',
     experience: '',
-    specialization: '',
+    completedWeddings: '',
+    satisfiedCouples: '',
+    videoEmbed: '',
+    aboutImage: '',
+    mediaType: 'video', // 'video' or 'image'
+    videoFile: null,
+    imageFile: null,
+    experienceVisible: true,
+    weddingsVisible: true,
+    couplesVisible: true,
   });
 
   const [servicesData, setServicesData] = useState([]);
   const [recentWorkData, setRecentWorkData] = useState([]);
-  const [photosMediaData, setPhotosMediaData] = useState({
-    profileImage: '',
-    bannerImage: '',
-    gallery: {},
+
+  const [galleryData, setGalleryData] = useState({
+    subtitle: '',
+    activeTab: 'decor',
+    categories: {
+      decor: { title: 'Decor', images: [] },
+      venues: { title: 'Venues', images: [] },
+      photography: { title: 'Photography', images: [] },
+      catering: { title: 'Catering', images: [] },
+    },
   });
 
   const [testimonialsData, setTestimonialsData] = useState([]);
   const [packagesData, setPackagesData] = useState([]);
   const [customSections, setCustomSections] = useState([]);
+
+  const [sectionOrder, setSectionOrder] = useState([
+    'hero',
+    'about-us',
+    'services-offered',
+    'recent-work',
+    'gallery',
+    'packages-pricing',
+    'testimonials',
+  ]);
+
+  const [changedSections, setChangedSections] = useState(new Set());
+  const [showCustomSectionModal, setShowCustomSectionModal] = useState(false);
+  const [editingCustomSection, setEditingCustomSection] = useState(null);
+  const [customSectionForm, setCustomSectionForm] = useState({
+    title: '',
+    subtitle: '',
+    type: 'text',
+    content: '',
+    images: [],
+    cards: [],
+  });
+  const [showDeleteAccountModal, setShowDeleteAccountModal] = useState(false);
+
+  // Track changes in a section and update Redux editing vendor for real-time preview
+  const trackSectionChange = sectionId => {
+    setChangedSections(prev => new Set([...prev, sectionId]));
+    setSaved(false);
+
+    // Immediately update Redux editing vendor for real-time preview
+    updateEditingVendorInRedux();
+  };
+
+  // Helper function to immediately update Redux editing vendor
+  const updateEditingVendorInRedux = () => {
+    if (!editingVendor) return;
+
+    try {
+      // Create updated vendor object with current form data
+      const updatedVendor = {
+        ...editingVendor,
+        name: heroData.name || editingVendor.name || '',
+        tagline: heroData.tagline || editingVendor.tagline || '',
+        image: heroData.image || editingVendor.image || '',
+        description: aboutUsData.description || editingVendor.description || '',
+        aboutUs: {
+          ...(editingVendor.aboutUs || {}),
+          text: aboutUsData.description || editingVendor.aboutUs?.text || '',
+          experience:
+            aboutUsData.experience || editingVendor.aboutUs?.experience || '',
+          completedWeddings:
+            aboutUsData.completedWeddings ||
+            editingVendor.aboutUs?.completedWeddings ||
+            '',
+          satisfiedCouples:
+            aboutUsData.satisfiedCouples ||
+            editingVendor.aboutUs?.satisfiedCouples ||
+            '',
+          videoEmbed:
+            aboutUsData.videoEmbed || editingVendor.aboutUs?.videoEmbed || '',
+          aboutImage:
+            aboutUsData.aboutImage || editingVendor.aboutUs?.aboutImage || '',
+          experienceVisible: aboutUsData.experienceVisible,
+          weddingsVisible: aboutUsData.weddingsVisible,
+          couplesVisible: aboutUsData.couplesVisible,
+        },
+        services: servicesData.map(service => ({
+          id: service.id,
+          name: service.name || '',
+          description: service.description || '',
+          price: service.price || '',
+          icon: service.icon || '',
+          image: service.image || '',
+        })),
+        locationPortfolio: recentWorkData.map(work => ({
+          id: work.id,
+          location: work.title || '',
+          city: work.location || '',
+          weddingDate: work.date || '',
+          coupleNames: work.coupleNames || '',
+          description: work.description || '',
+          coverImage: work.image || '',
+          services: Array.isArray(work.services) ? work.services : [],
+          highlights: Array.isArray(work.highlights) ? work.highlights : [],
+          gallery: Array.isArray(work.gallery) ? work.gallery : [],
+        })),
+        testimonials: testimonialsData.map(testimonial => ({
+          id: testimonial.id,
+          name: testimonial.client || '',
+          text: testimonial.text || '',
+          rating: testimonial.rating || 5,
+          wedding: testimonial.wedding || '',
+        })),
+        packages: packagesData.map(pkg => ({
+          id: pkg.id,
+          name: pkg.name || '',
+          description: pkg.description || '',
+          price: pkg.price || '',
+          features: Array.isArray(pkg.features) ? pkg.features : [],
+        })),
+        gallery: (() => {
+          const cleanGallery = {};
+          Object.keys(galleryData.categories || {}).forEach(key => {
+            cleanGallery[key] = {
+              title: galleryData.categories[key]?.title || key,
+              images: Array.isArray(galleryData.categories[key]?.images)
+                ? galleryData.categories[key].images.filter(
+                    img => typeof img === 'string'
+                  )
+                : [],
+            };
+          });
+          return cleanGallery;
+        })(),
+        sectionOrder: sectionOrder,
+        customSections: customSections,
+      };
+
+      // Update Redux with the current form data for real-time preview
+      Object.keys(updatedVendor).forEach(key => {
+        if (
+          key !== 'id' &&
+          JSON.stringify(updatedVendor[key]) !==
+            JSON.stringify(editingVendor[key])
+        ) {
+          dispatch({
+            type: 'vendorManagement/updateVendorField',
+            payload: { field: key, value: updatedVendor[key] },
+          });
+        }
+      });
+
+      console.log(
+        'Real-time preview: Updated editing vendor in Redux',
+        updatedVendor
+      );
+    } catch (error) {
+      console.error(
+        'Error updating editing vendor for real-time preview:',
+        error
+      );
+    }
+  };
 
   const navigationItems = [
     {
@@ -594,8 +891,8 @@ const VendorDashboard = () => {
       section: 'Content Management',
     },
     {
-      id: 'photos-media',
-      label: 'Photos & Media',
+      id: 'gallery',
+      label: 'Gallery',
       icon: FaImages,
       section: 'Content Management',
     },
@@ -618,6 +915,12 @@ const VendorDashboard = () => {
       section: 'Content Management',
     },
     {
+      id: 'section-order',
+      label: 'Section Order',
+      icon: FaList,
+      section: 'Content Management',
+    },
+    {
       id: 'settings',
       label: 'Settings',
       icon: FaCog,
@@ -632,7 +935,9 @@ const VendorDashboard = () => {
 
       // Initialize vendor in Redux state if it doesn't exist, then set as editing
       try {
-        dispatch(initializeVendor(vendorData));
+        // Create a sanitized version for Redux
+        const sanitizedVendor = JSON.parse(JSON.stringify(vendorData));
+        dispatch(initializeVendor(sanitizedVendor));
         dispatch(setEditingVendor(vendorId));
       } catch (error) {
         console.error('Error setting editing vendor:', error);
@@ -643,13 +948,26 @@ const VendorDashboard = () => {
         name: vendorData.name || '',
         tagline: vendorData.tagline || '',
         image: vendorData.image || '',
+        imageFile: null,
       });
 
       setAboutUsData({
-        description: vendorData.description || vendorData.aboutUs?.text || '',
+        description: vendorData.aboutUs?.text || vendorData.description || '',
         mission: vendorData.mission || '',
-        experience: vendorData.aboutUs?.experience || '',
-        specialization: vendorData.specialties?.join(', ') || '',
+        experience: vendorData.aboutUs?.experience || '0+',
+        completedWeddings: vendorData.aboutUs?.completedWeddings || '0+',
+        satisfiedCouples: vendorData.aboutUs?.satisfiedCouples || '0+',
+        videoEmbed: vendorData.aboutUs?.videoEmbed || '',
+        aboutImage: vendorData.aboutUs?.aboutImage || '',
+        mediaType:
+          vendorData.aboutUs?.videoEmbed && !vendorData.aboutUs?.aboutImage
+            ? 'video'
+            : 'image',
+        videoFile: null,
+        imageFile: null,
+        experienceVisible: vendorData.aboutUs?.experienceVisible !== false,
+        weddingsVisible: vendorData.aboutUs?.weddingsVisible !== false,
+        couplesVisible: vendorData.aboutUs?.couplesVisible !== false,
       });
 
       // Pre-fill services with unique IDs
@@ -658,11 +976,12 @@ const VendorDashboard = () => {
           ...service,
           id: service.id || `service-${Date.now()}-${index}`,
           price: service.price || '$0',
+          imageFile: null,
         })
       );
       setServicesData(servicesWithIds);
 
-      // Pre-fill recent work data with unique IDs
+      // Pre-fill recent work data with unique IDs and full portfolio details
       const recentWorkWithIds = (vendorData.locationPortfolio || []).map(
         (work, index) => ({
           ...work,
@@ -671,15 +990,44 @@ const VendorDashboard = () => {
           location: work.city || '',
           date: work.weddingDate || '',
           image: work.coverImage || '',
+          coupleNames: work.coupleNames || '',
+          description: work.description || '',
+          services: work.services || [],
+          highlights: work.highlights || [],
+          gallery: work.gallery || [],
+          imageFile: null,
         })
       );
       setRecentWorkData(recentWorkWithIds);
 
-      // Pre-fill photos & media data
-      setPhotosMediaData({
-        profileImage: vendorData.logo || '',
-        bannerImage: vendorData.image || '',
-        gallery: vendorData.gallery || {},
+      // Pre-fill gallery data - convert old format to new format
+      const galleryCategories = {};
+      if (vendorData.gallery) {
+        Object.keys(vendorData.gallery).forEach(key => {
+          if (Array.isArray(vendorData.gallery[key])) {
+            galleryCategories[key] = {
+              title: key.charAt(0).toUpperCase() + key.slice(1),
+              images: vendorData.gallery[key],
+            };
+          } else if (vendorData.gallery[key]?.images) {
+            galleryCategories[key] = vendorData.gallery[key];
+          }
+        });
+      }
+
+      // Add default categories if none exist
+      if (Object.keys(galleryCategories).length === 0) {
+        galleryCategories.decor = { title: 'Decor', images: [] };
+        galleryCategories.venues = { title: 'Venues', images: [] };
+        galleryCategories.photography = { title: 'Photography', images: [] };
+        galleryCategories.catering = { title: 'Catering', images: [] };
+      }
+
+      setGalleryData({
+        subtitle:
+          'Browse through our portfolio of beautiful weddings and events',
+        activeTab: Object.keys(galleryCategories)[0] || 'decor',
+        categories: galleryCategories,
       });
 
       // Pre-fill testimonials data with unique IDs
@@ -698,6 +1046,7 @@ const VendorDashboard = () => {
       const packagesWithIds = (vendorData.packages || []).map((pkg, index) => ({
         ...pkg,
         id: pkg.id || `package-${Date.now()}-${index}`,
+        features: pkg.features || [],
       }));
       setPackagesData(packagesWithIds);
 
@@ -713,10 +1062,111 @@ const VendorDashboard = () => {
     setLoading(false);
   }, [vendorId, dispatch]);
 
+  // Handle Save Changes - saves to editing state for real-time preview
+  const handleSaveChanges = () => {
+    console.log('handleSaveChanges called');
+
+    try {
+      // Update editing vendor with current form data for real-time preview
+      const updatedVendor = {
+        ...editingVendor,
+        name: heroData.name || '',
+        tagline: heroData.tagline || '',
+        image: heroData.image || '',
+        description: aboutUsData.description || '',
+        aboutUs: {
+          text: aboutUsData.description || '',
+          experience: aboutUsData.experience || '',
+          completedWeddings: aboutUsData.completedWeddings || '',
+          satisfiedCouples: aboutUsData.satisfiedCouples || '',
+          videoEmbed: aboutUsData.videoEmbed || '',
+          aboutImage: aboutUsData.aboutImage || '',
+          experienceVisible: aboutUsData.experienceVisible,
+          weddingsVisible: aboutUsData.weddingsVisible,
+          couplesVisible: aboutUsData.couplesVisible,
+        },
+        services: servicesData.map(service => ({
+          id: service.id,
+          name: service.name || '',
+          description: service.description || '',
+          price: service.price || '',
+          icon: service.icon || '',
+          image: service.image || '',
+        })),
+        locationPortfolio: recentWorkData.map(work => ({
+          id: work.id,
+          location: work.title || '',
+          city: work.location || '',
+          weddingDate: work.date || '',
+          coupleNames: work.coupleNames || '',
+          description: work.description || '',
+          coverImage: work.image || '',
+          services: Array.isArray(work.services) ? work.services : [],
+          highlights: Array.isArray(work.highlights) ? work.highlights : [],
+          gallery: Array.isArray(work.gallery) ? work.gallery : [],
+        })),
+        testimonials: testimonialsData.map(testimonial => ({
+          id: testimonial.id,
+          name: testimonial.client || '',
+          text: testimonial.text || '',
+          rating: testimonial.rating || 5,
+          wedding: testimonial.wedding || '',
+        })),
+        packages: packagesData.map(pkg => ({
+          id: pkg.id,
+          name: pkg.name || '',
+          description: pkg.description || '',
+          price: pkg.price || '',
+          features: Array.isArray(pkg.features) ? pkg.features : [],
+        })),
+        gallery: (() => {
+          const cleanGallery = {};
+          Object.keys(galleryData.categories || {}).forEach(key => {
+            cleanGallery[key] = {
+              title: galleryData.categories[key]?.title || key,
+              images: Array.isArray(galleryData.categories[key]?.images)
+                ? galleryData.categories[key].images.filter(
+                    img => typeof img === 'string'
+                  )
+                : [],
+            };
+          });
+          return cleanGallery;
+        })(),
+      };
+
+      // Update the editing vendor in Redux for real-time preview
+      dispatch({
+        type: 'vendorManagement/setEditingVendor',
+        payload: updatedVendor.id,
+      });
+      Object.keys(updatedVendor).forEach(key => {
+        if (key !== 'id') {
+          dispatch({
+            type: 'vendorManagement/updateVendorField',
+            payload: { field: key, value: updatedVendor[key] },
+          });
+        }
+      });
+
+      setSaved(true);
+      setChangedSections(new Set());
+      alert(
+        'Changes saved! You can preview them in the vendor page. Click "Save & Go Live" to publish permanently.'
+      );
+      console.log(
+        'Updated editing vendor for real-time preview:',
+        updatedVendor
+      );
+    } catch (error) {
+      console.error('Error saving changes for preview:', error);
+      alert('Error saving changes for preview. Please try again.');
+    }
+  };
+
   // Handle Save & Go Live - publishes changes to global state
   const handleSaveAndGoLive = () => {
     console.log('handleSaveAndGoLive called');
-    console.log('editingVendor:', editingVendor);
 
     if (!editingVendor) {
       alert('No vendor is being edited. Please try refreshing the page.');
@@ -724,41 +1174,131 @@ const VendorDashboard = () => {
     }
 
     try {
-      // Sanitize data to ensure it's serializable
-      const sanitizeData = data => {
-        return JSON.parse(JSON.stringify(data));
+      // Create clean, serializable objects without File references
+      const cleanServices = servicesData.map(service => ({
+        id: service.id,
+        name: service.name || '',
+        description: service.description || '',
+        price: service.price || '',
+        icon: service.icon || '',
+        image: service.image || '',
+      }));
+
+      const cleanRecentWork = recentWorkData.map(work => ({
+        id: work.id,
+        location: work.title || '',
+        city: work.location || '',
+        weddingDate: work.date || '',
+        coupleNames: work.coupleNames || '',
+        description: work.description || '',
+        coverImage: work.image || '',
+        services: Array.isArray(work.services) ? work.services : [],
+        highlights: Array.isArray(work.highlights) ? work.highlights : [],
+        gallery: Array.isArray(work.gallery) ? work.gallery : [],
+      }));
+
+      const cleanTestimonials = testimonialsData.map(testimonial => ({
+        id: testimonial.id,
+        client: testimonial.client || '',
+        name: testimonial.client || '', // Map client to name for compatibility
+        text: testimonial.text || '',
+        rating: testimonial.rating || 5,
+        wedding: testimonial.wedding || '',
+      }));
+
+      const cleanPackages = packagesData.map(pkg => ({
+        id: pkg.id,
+        name: pkg.name || '',
+        description: pkg.description || '',
+        price: pkg.price || '',
+        features: Array.isArray(pkg.features) ? pkg.features : [],
+      }));
+
+      const cleanGallery = {};
+      Object.keys(galleryData.categories || {}).forEach(key => {
+        cleanGallery[key] = {
+          title: galleryData.categories[key]?.title || key,
+          images: Array.isArray(galleryData.categories[key]?.images)
+            ? galleryData.categories[key].images.filter(
+                img => typeof img === 'string'
+              )
+            : [],
+        };
+      });
+
+      const cleanAboutUs = {
+        text: aboutUsData.description || '',
+        experience: aboutUsData.experience || '',
+        completedWeddings: aboutUsData.completedWeddings || '',
+        satisfiedCouples: aboutUsData.satisfiedCouples || '',
+        videoEmbed: aboutUsData.videoEmbed || '',
+        aboutImage: aboutUsData.aboutImage || '',
+        experienceVisible: aboutUsData.experienceVisible,
+        weddingsVisible: aboutUsData.weddingsVisible,
+        couplesVisible: aboutUsData.couplesVisible,
       };
 
-      console.log('Dispatching vendor field updates...');
-      // Update vendor data in Redux with all local changes - test one at a time
-      console.log('Dispatching name update:', heroData.name);
-      dispatch(updateVendorField({ field: 'name', value: heroData.name }));
+      console.log('Dispatching basic field updates...');
+      // Update basic fields one by one
+      dispatch({
+        type: 'vendorManagement/updateVendorField',
+        payload: { field: 'name', value: heroData.name || '' },
+      });
+      dispatch({
+        type: 'vendorManagement/updateVendorField',
+        payload: { field: 'tagline', value: heroData.tagline || '' },
+      });
+      dispatch({
+        type: 'vendorManagement/updateVendorField',
+        payload: { field: 'image', value: heroData.image || '' },
+      });
+      dispatch({
+        type: 'vendorManagement/updateVendorField',
+        payload: { field: 'description', value: aboutUsData.description || '' },
+      });
+      dispatch({
+        type: 'vendorManagement/updateVendorField',
+        payload: { field: 'aboutUs', value: cleanAboutUs },
+      });
 
-      console.log('Dispatching tagline update:', heroData.tagline);
-      dispatch(
-        updateVendorField({ field: 'tagline', value: heroData.tagline })
-      );
-
-      console.log('Dispatching image update:', heroData.image);
-      dispatch(updateVendorField({ field: 'image', value: heroData.image }));
-
-      console.log('Dispatching description update:', aboutUsData.description);
-      dispatch(
-        updateVendorField({
-          field: 'description',
-          value: aboutUsData.description,
-        })
-      );
-
-      console.log('Dispatching services update...');
-      const sanitizedServices = sanitizeData(servicesData);
-      console.log('Sanitized services:', sanitizedServices);
-      dispatch(updateServices(sanitizedServices));
+      console.log('Dispatching array updates...');
+      dispatch({
+        type: 'vendorManagement/updateServices',
+        payload: cleanServices,
+      });
+      dispatch({
+        type: 'vendorManagement/updateRecentWork',
+        payload: cleanRecentWork,
+      });
+      dispatch({
+        type: 'vendorManagement/updateTestimonials',
+        payload: cleanTestimonials,
+      });
+      dispatch({
+        type: 'vendorManagement/updatePackages',
+        payload: cleanPackages,
+      });
+      dispatch({
+        type: 'vendorManagement/updateVendorGallery',
+        payload: cleanGallery,
+      });
+      dispatch({
+        type: 'vendorManagement/updateVendorField',
+        payload: { field: 'sectionOrder', value: sectionOrder },
+      });
+      dispatch({
+        type: 'vendorManagement/updateVendorField',
+        payload: { field: 'customSections', value: customSections },
+      });
 
       console.log('Saving changes...');
-      // Save all changes to global state
-      dispatch(saveChanges());
+      dispatch({ type: 'vendorManagement/saveChanges' });
+
+      setSaved(false);
       alert('All changes published to live vendor page successfully!');
+
+      // Navigate back to vendor page
+      navigate(`/${vendorId}`);
     } catch (error) {
       console.error('Error saving changes:', error);
       alert('Error saving changes. Please try again.');
@@ -775,14 +1315,28 @@ const VendorDashboard = () => {
         name: originalVendor.name || '',
         tagline: originalVendor.tagline || '',
         image: originalVendor.image || '',
+        imageFile: null,
       });
 
       setAboutUsData({
         description:
-          originalVendor.description || originalVendor.aboutUs?.text || '',
+          originalVendor.aboutUs?.text || originalVendor.description || '',
         mission: originalVendor.mission || '',
-        experience: originalVendor.aboutUs?.experience || '',
-        specialization: originalVendor.specialties?.join(', ') || '',
+        experience: originalVendor.aboutUs?.experience || '0+',
+        completedWeddings: originalVendor.aboutUs?.completedWeddings || '0+',
+        satisfiedCouples: originalVendor.aboutUs?.satisfiedCouples || '0+',
+        videoEmbed: originalVendor.aboutUs?.videoEmbed || '',
+        aboutImage: originalVendor.aboutUs?.aboutImage || '',
+        mediaType:
+          originalVendor.aboutUs?.videoEmbed &&
+          !originalVendor.aboutUs?.aboutImage
+            ? 'video'
+            : 'image',
+        videoFile: null,
+        imageFile: null,
+        experienceVisible: originalVendor.aboutUs?.experienceVisible !== false,
+        weddingsVisible: originalVendor.aboutUs?.weddingsVisible !== false,
+        couplesVisible: originalVendor.aboutUs?.couplesVisible !== false,
       });
 
       // Reset services
@@ -791,11 +1345,12 @@ const VendorDashboard = () => {
           ...service,
           id: service.id || `service-${Date.now()}-${index}`,
           price: service.price || '$0',
+          imageFile: null,
         })
       );
       setServicesData(originalServicesWithIds);
 
-      // Reset recent work
+      // Reset recent work with full portfolio details
       const originalRecentWorkWithIds = (
         originalVendor.locationPortfolio || []
       ).map((work, index) => ({
@@ -805,14 +1360,45 @@ const VendorDashboard = () => {
         location: work.city || '',
         date: work.weddingDate || '',
         image: work.coverImage || '',
+        coupleNames: work.coupleNames || '',
+        description: work.description || '',
+        services: work.services || [],
+        highlights: work.highlights || [],
+        gallery: work.gallery || [],
+        imageFile: null,
       }));
       setRecentWorkData(originalRecentWorkWithIds);
 
-      // Reset photos & media
-      setPhotosMediaData({
-        profileImage: originalVendor.logo || '',
-        bannerImage: originalVendor.image || '',
-        gallery: originalVendor.gallery || {},
+      // Reset gallery - convert old format to new format
+      const originalGalleryCategories = {};
+      if (originalVendor.gallery) {
+        Object.keys(originalVendor.gallery).forEach(key => {
+          if (Array.isArray(originalVendor.gallery[key])) {
+            originalGalleryCategories[key] = {
+              title: key.charAt(0).toUpperCase() + key.slice(1),
+              images: originalVendor.gallery[key],
+            };
+          } else if (originalVendor.gallery[key]?.images) {
+            originalGalleryCategories[key] = originalVendor.gallery[key];
+          }
+        });
+      }
+
+      if (Object.keys(originalGalleryCategories).length === 0) {
+        originalGalleryCategories.decor = { title: 'Decor', images: [] };
+        originalGalleryCategories.venues = { title: 'Venues', images: [] };
+        originalGalleryCategories.photography = {
+          title: 'Photography',
+          images: [],
+        };
+        originalGalleryCategories.catering = { title: 'Catering', images: [] };
+      }
+
+      setGalleryData({
+        subtitle:
+          'Browse through our portfolio of beautiful weddings and events',
+        activeTab: Object.keys(originalGalleryCategories)[0] || 'decor',
+        categories: originalGalleryCategories,
       });
 
       // Reset testimonials
@@ -832,6 +1418,7 @@ const VendorDashboard = () => {
         (pkg, index) => ({
           ...pkg,
           id: pkg.id || `package-${Date.now()}-${index}`,
+          features: pkg.features || [],
         })
       );
       setPackagesData(originalPackagesWithIds);
@@ -847,6 +1434,8 @@ const VendorDashboard = () => {
 
       // Discard changes in Redux
       dispatch(discardChanges());
+      setSaved(false);
+      setChangedSections(new Set());
       alert('All changes discarded. Form reset to original values.');
     } catch (error) {
       console.error('Error discarding changes:', error);
@@ -881,6 +1470,31 @@ const VendorDashboard = () => {
     };
   }, [mobileSidebarOpen]);
 
+  // File upload handlers
+  const handleImageUpload = (file, setter, field) => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      if (setter === setAboutUsData) {
+        setter(prev => ({
+          ...prev,
+          [field]: e.target.result,
+          [`${field}File`]: file,
+          mediaType: 'image', // Set media type to image when uploading image
+        }));
+        trackSectionChange('about-us');
+      } else {
+        setter(prev => ({
+          ...prev,
+          [field]: e.target.result,
+          [`${field}File`]: file,
+        }));
+        // Trigger real-time updates for other image uploads
+        setTimeout(() => updateEditingVendorInRedux(), 100);
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
   // Helper functions for managing dynamic lists
   const addService = () => {
     const newService = {
@@ -890,6 +1504,7 @@ const VendorDashboard = () => {
       price: '$0',
       icon: '💍',
       image: '',
+      imageFile: null,
     };
     setServicesData(prev => [...prev, newService]);
   };
@@ -900,6 +1515,8 @@ const VendorDashboard = () => {
         service.id === id ? { ...service, [field]: value } : service
       )
     );
+    // Automatically trigger real-time updates
+    setTimeout(() => updateEditingVendorInRedux(), 100);
   };
 
   const deleteService = id => {
@@ -913,6 +1530,12 @@ const VendorDashboard = () => {
       location: 'Location',
       date: 'Date',
       image: '',
+      coupleNames: '',
+      description: '',
+      services: [],
+      highlights: [],
+      gallery: [],
+      imageFile: null,
     };
     setRecentWorkData(prev => [...prev, newWork]);
   };
@@ -921,6 +1544,8 @@ const VendorDashboard = () => {
     setRecentWorkData(prev =>
       prev.map(work => (work.id === id ? { ...work, [field]: value } : work))
     );
+    // Automatically trigger real-time updates
+    setTimeout(() => updateEditingVendorInRedux(), 100);
   };
 
   const deleteRecentWork = id => {
@@ -972,6 +1597,149 @@ const VendorDashboard = () => {
     setPackagesData(prev => prev.filter(pkg => pkg.id !== id));
   };
 
+  // Custom section helpers
+  const openCustomSectionModal = (section = null) => {
+    if (section) {
+      setEditingCustomSection(section);
+      setCustomSectionForm({
+        title: section.title || '',
+        subtitle: section.subtitle || '',
+        type: section.type || 'text',
+        content: section.content || '',
+        images: Array.isArray(section.images) ? [...section.images] : [],
+        cards: Array.isArray(section.cards) ? [...section.cards] : [],
+      });
+    } else {
+      setEditingCustomSection(null);
+      setCustomSectionForm({
+        title: '',
+        subtitle: '',
+        type: 'text',
+        content: '',
+        images: [],
+        cards: [],
+      });
+    }
+    setShowCustomSectionModal(true);
+  };
+
+  const saveCustomSection = () => {
+    if (!customSectionForm.title.trim()) {
+      alert('Please enter a section title');
+      return;
+    }
+
+    const sectionData = {
+      id: editingCustomSection?.id || `custom-${Date.now()}`,
+      title: customSectionForm.title.trim(),
+      subtitle: customSectionForm.subtitle.trim(),
+      type: customSectionForm.type,
+      content: customSectionForm.content.trim(),
+      images: customSectionForm.images || [],
+      cards: customSectionForm.cards || [],
+    };
+
+    if (editingCustomSection) {
+      // Update existing section
+      setCustomSections(prev =>
+        prev.map(section =>
+          section.id === editingCustomSection.id ? sectionData : section
+        )
+      );
+    } else {
+      // Add new section
+      setCustomSections(prev => [...prev, sectionData]);
+    }
+
+    setShowCustomSectionModal(false);
+    setEditingCustomSection(null);
+    setCustomSectionForm({
+      title: '',
+      subtitle: '',
+      type: 'text',
+      content: '',
+      images: [],
+      cards: [],
+    });
+    trackSectionChange('custom-sections');
+
+    // Automatically trigger real-time updates
+    setTimeout(() => updateEditingVendorInRedux(), 100);
+  };
+
+  const addCustomSectionCard = () => {
+    setCustomSectionForm(prev => ({
+      ...prev,
+      cards: [
+        ...prev.cards,
+        { title: '', description: '', image: '', icon: '' },
+      ],
+    }));
+  };
+
+  const updateCustomSectionCard = (index, field, value) => {
+    setCustomSectionForm(prev => ({
+      ...prev,
+      cards: prev.cards.map((card, i) =>
+        i === index ? { ...card, [field]: value } : card
+      ),
+    }));
+  };
+
+  const removeCustomSectionCard = index => {
+    setCustomSectionForm(prev => ({
+      ...prev,
+      cards: prev.cards.filter((_, i) => i !== index),
+    }));
+  };
+
+  const addCustomSectionImage = imageUrl => {
+    setCustomSectionForm(prev => ({
+      ...prev,
+      images: [...prev.images, imageUrl],
+    }));
+  };
+
+  const removeCustomSectionImage = index => {
+    setCustomSectionForm(prev => ({
+      ...prev,
+      images: prev.images.filter((_, i) => i !== index),
+    }));
+  };
+
+  // Gallery helpers
+  const addGalleryImage = (category, imageUrl) => {
+    setGalleryData(prev => ({
+      ...prev,
+      categories: {
+        ...prev.categories,
+        [category]: {
+          ...prev.categories[category],
+          images: [...(prev.categories[category]?.images || []), imageUrl],
+        },
+      },
+    }));
+    // Automatically trigger real-time updates
+    setTimeout(() => updateEditingVendorInRedux(), 100);
+  };
+
+  const removeGalleryImage = (category, imageIndex) => {
+    setGalleryData(prev => ({
+      ...prev,
+      categories: {
+        ...prev.categories,
+        [category]: {
+          ...prev.categories[category],
+          images: prev.categories[category].images.filter(
+            (_, index) => index !== imageIndex
+          ),
+        },
+      },
+    }));
+    // Automatically trigger real-time updates
+    setTimeout(() => updateEditingVendorInRedux(), 100);
+  };
+
   const renderContent = () => {
     switch (activeSection) {
       case 'hero':
@@ -986,9 +1754,10 @@ const VendorDashboard = () => {
                 <FormLabel>Business Name</FormLabel>
                 <FormInput
                   value={heroData.name}
-                  onChange={e =>
-                    setHeroData(prev => ({ ...prev, name: e.target.value }))
-                  }
+                  onChange={e => {
+                    setHeroData(prev => ({ ...prev, name: e.target.value }));
+                    trackSectionChange('hero');
+                  }}
                   placeholder="Enter your business name"
                 />
               </FormGroup>
@@ -996,22 +1765,72 @@ const VendorDashboard = () => {
                 <FormLabel>Tagline</FormLabel>
                 <FormTextarea
                   value={heroData.tagline}
-                  onChange={e =>
-                    setHeroData(prev => ({ ...prev, tagline: e.target.value }))
-                  }
+                  onChange={e => {
+                    setHeroData(prev => ({ ...prev, tagline: e.target.value }));
+                    trackSectionChange('hero');
+                  }}
                   placeholder="Enter your business tagline..."
                   rows={3}
                 />
               </FormGroup>
               <FormGroup style={{ gridColumn: '1 / -1' }}>
-                <FormLabel>Hero Background Image URL</FormLabel>
-                <FormInput
-                  value={heroData.image}
-                  onChange={e =>
-                    setHeroData(prev => ({ ...prev, image: e.target.value }))
-                  }
-                  placeholder="Enter background image URL"
-                />
+                <FormLabel>
+                  <FaCamera />
+                  Hero Background Image
+                </FormLabel>
+                <FileUploadContainer>
+                  {heroData.image && (
+                    <ImagePreview>
+                      <img src={heroData.image} alt="Hero background" />
+                      <ImageOverlay>
+                        <RemoveImageButton
+                          onClick={() =>
+                            setHeroData(prev => ({
+                              ...prev,
+                              image: '',
+                              imageFile: null,
+                            }))
+                          }
+                        >
+                          <FaTrash />
+                        </RemoveImageButton>
+                      </ImageOverlay>
+                    </ImagePreview>
+                  )}
+                  <FileUploadBox>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={e =>
+                        handleImageUpload(
+                          e.target.files[0],
+                          setHeroData,
+                          'image'
+                        )
+                      }
+                    />
+                    <FaUpload size={24} color={theme.colors.gray400} />
+                    <span style={{ fontSize: '0.8rem', textAlign: 'center' }}>
+                      Upload Image
+                    </span>
+                  </FileUploadBox>
+                  <FormGroup style={{ flex: 1 }}>
+                    <FormLabel>
+                      <FaLink />
+                      Or paste image URL
+                    </FormLabel>
+                    <FormInput
+                      value={heroData.image}
+                      onChange={e =>
+                        setHeroData(prev => ({
+                          ...prev,
+                          image: e.target.value,
+                        }))
+                      }
+                      placeholder="https://example.com/image.jpg"
+                    />
+                  </FormGroup>
+                </FileUploadContainer>
               </FormGroup>
             </FormGrid>
           </ContentSection>
@@ -1029,12 +1848,13 @@ const VendorDashboard = () => {
                 <FormLabel>Business Description</FormLabel>
                 <FormTextarea
                   value={aboutUsData.description}
-                  onChange={e =>
+                  onChange={e => {
                     setAboutUsData(prev => ({
                       ...prev,
                       description: e.target.value,
-                    }))
-                  }
+                    }));
+                    trackSectionChange('about-us');
+                  }}
                   placeholder="Tell your clients about your business..."
                   rows={6}
                 />
@@ -1053,31 +1873,218 @@ const VendorDashboard = () => {
                   rows={4}
                 />
               </FormGroup>
+
+              {/* Statistics Section */}
               <FormGroup>
-                <FormLabel>Years of Experience</FormLabel>
+                <FormLabel style={{ justifyContent: 'space-between' }}>
+                  Years of Experience
+                  <ToggleSwitch>
+                    <input
+                      type="checkbox"
+                      checked={aboutUsData.experienceVisible}
+                      onChange={e => {
+                        setAboutUsData(prev => ({
+                          ...prev,
+                          experienceVisible: e.target.checked,
+                        }));
+                        trackSectionChange('about-us');
+                      }}
+                    />
+                    <span></span>
+                  </ToggleSwitch>
+                </FormLabel>
                 <FormInput
                   value={aboutUsData.experience}
-                  onChange={e =>
+                  onChange={e => {
                     setAboutUsData(prev => ({
                       ...prev,
                       experience: e.target.value,
-                    }))
-                  }
-                  placeholder="e.g., 10+ years in wedding planning"
+                    }));
+                    trackSectionChange('about-us');
+                  }}
+                  placeholder="e.g., 10+"
+                  disabled={!aboutUsData.experienceVisible}
                 />
               </FormGroup>
+
               <FormGroup>
-                <FormLabel>Specialization</FormLabel>
+                <FormLabel style={{ justifyContent: 'space-between' }}>
+                  Completed Weddings
+                  <ToggleSwitch>
+                    <input
+                      type="checkbox"
+                      checked={aboutUsData.weddingsVisible}
+                      onChange={e =>
+                        setAboutUsData(prev => ({
+                          ...prev,
+                          weddingsVisible: e.target.checked,
+                        }))
+                      }
+                    />
+                    <span></span>
+                  </ToggleSwitch>
+                </FormLabel>
                 <FormInput
-                  value={aboutUsData.specialization}
+                  value={aboutUsData.completedWeddings}
                   onChange={e =>
                     setAboutUsData(prev => ({
                       ...prev,
-                      specialization: e.target.value,
+                      completedWeddings: e.target.value,
                     }))
                   }
-                  placeholder="e.g., Luxury weddings, Destination weddings"
+                  placeholder="e.g., 250+"
+                  disabled={!aboutUsData.weddingsVisible}
                 />
+              </FormGroup>
+
+              <FormGroup>
+                <FormLabel style={{ justifyContent: 'space-between' }}>
+                  Happy Couples
+                  <ToggleSwitch>
+                    <input
+                      type="checkbox"
+                      checked={aboutUsData.couplesVisible}
+                      onChange={e =>
+                        setAboutUsData(prev => ({
+                          ...prev,
+                          couplesVisible: e.target.checked,
+                        }))
+                      }
+                    />
+                    <span></span>
+                  </ToggleSwitch>
+                </FormLabel>
+                <FormInput
+                  value={aboutUsData.satisfiedCouples}
+                  onChange={e =>
+                    setAboutUsData(prev => ({
+                      ...prev,
+                      satisfiedCouples: e.target.value,
+                    }))
+                  }
+                  placeholder="e.g., 500+"
+                  disabled={!aboutUsData.couplesVisible}
+                />
+              </FormGroup>
+
+              <FormGroup style={{ gridColumn: '1 / -1' }}>
+                <FormLabel>About Us Media</FormLabel>
+                <TabsContainer>
+                  <Tab
+                    active={aboutUsData.mediaType === 'video'}
+                    onClick={() => {
+                      setAboutUsData(prev => ({ ...prev, mediaType: 'video' }));
+                      trackSectionChange('about-us');
+                    }}
+                  >
+                    <FaVideo />
+                    Video
+                  </Tab>
+                  <Tab
+                    active={aboutUsData.mediaType === 'image'}
+                    onClick={() => {
+                      setAboutUsData(prev => ({ ...prev, mediaType: 'image' }));
+                      trackSectionChange('about-us');
+                    }}
+                  >
+                    <FaFileImage />
+                    Image
+                  </Tab>
+                </TabsContainer>
+
+                {aboutUsData.mediaType === 'video' ? (
+                  <FileUploadContainer>
+                    <FileUploadBox>
+                      <input
+                        type="file"
+                        accept="video/*"
+                        onChange={e => {
+                          const file = e.target.files[0];
+                          setAboutUsData(prev => ({
+                            ...prev,
+                            videoFile: file,
+                          }));
+                        }}
+                      />
+                      <FaVideo size={24} color={theme.colors.gray400} />
+                      <span style={{ fontSize: '0.8rem', textAlign: 'center' }}>
+                        Upload Video
+                      </span>
+                    </FileUploadBox>
+                    <FormGroup style={{ flex: 1 }}>
+                      <FormLabel>
+                        <FaLink />
+                        Or paste video embed URL
+                      </FormLabel>
+                      <FormInput
+                        value={aboutUsData.videoEmbed}
+                        onChange={e => {
+                          setAboutUsData(prev => ({
+                            ...prev,
+                            videoEmbed: e.target.value,
+                          }));
+                          trackSectionChange('about-us');
+                        }}
+                        placeholder="https://www.youtube.com/embed/..."
+                      />
+                    </FormGroup>
+                  </FileUploadContainer>
+                ) : (
+                  <FileUploadContainer>
+                    {aboutUsData.aboutImage && (
+                      <ImagePreview>
+                        <img src={aboutUsData.aboutImage} alt="About us" />
+                        <ImageOverlay>
+                          <RemoveImageButton
+                            onClick={() =>
+                              setAboutUsData(prev => ({
+                                ...prev,
+                                aboutImage: '',
+                                imageFile: null,
+                              }))
+                            }
+                          >
+                            <FaTrash />
+                          </RemoveImageButton>
+                        </ImageOverlay>
+                      </ImagePreview>
+                    )}
+                    <FileUploadBox>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={e =>
+                          handleImageUpload(
+                            e.target.files[0],
+                            setAboutUsData,
+                            'aboutImage'
+                          )
+                        }
+                      />
+                      <FaUpload size={24} color={theme.colors.gray400} />
+                      <span style={{ fontSize: '0.8rem', textAlign: 'center' }}>
+                        Upload Image
+                      </span>
+                    </FileUploadBox>
+                    <FormGroup style={{ flex: 1 }}>
+                      <FormLabel>
+                        <FaLink />
+                        Or paste image URL
+                      </FormLabel>
+                      <FormInput
+                        value={aboutUsData.aboutImage}
+                        onChange={e => {
+                          setAboutUsData(prev => ({
+                            ...prev,
+                            aboutImage: e.target.value,
+                          }));
+                          trackSectionChange('about-us');
+                        }}
+                        placeholder="https://example.com/image.jpg"
+                      />
+                    </FormGroup>
+                  </FileUploadContainer>
+                )}
               </FormGroup>
             </FormGrid>
           </ContentSection>
@@ -1132,14 +2139,50 @@ const VendorDashboard = () => {
                     />
                   </FormGroup>
                   <FormGroup>
-                    <FormLabel>Service Image URL</FormLabel>
-                    <FormInput
-                      value={service.image}
-                      onChange={e =>
-                        updateService(service.id, 'image', e.target.value)
-                      }
-                      placeholder="https://example.com/image.jpg"
-                    />
+                    <FormLabel>
+                      <FaFileImage />
+                      Service Image
+                    </FormLabel>
+                    <FileUploadContainer>
+                      {service.image && (
+                        <ImagePreview>
+                          <img src={service.image} alt="Service" />
+                          <ImageOverlay>
+                            <RemoveImageButton
+                              onClick={() =>
+                                updateService(service.id, 'image', '')
+                              }
+                            >
+                              <FaTrash />
+                            </RemoveImageButton>
+                          </ImageOverlay>
+                        </ImagePreview>
+                      )}
+                      <FileUploadBox>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={e => {
+                            const file = e.target.files[0];
+                            const reader = new FileReader();
+                            reader.onload = event => {
+                              updateService(
+                                service.id,
+                                'image',
+                                event.target.result
+                              );
+                            };
+                            reader.readAsDataURL(file);
+                          }}
+                        />
+                        <FaUpload size={20} color={theme.colors.gray400} />
+                        <span
+                          style={{ fontSize: '0.7rem', textAlign: 'center' }}
+                        >
+                          Upload
+                        </span>
+                      </FileUploadBox>
+                    </FileUploadContainer>
                   </FormGroup>
                   <FormGroup style={{ gridColumn: '1 / -1' }}>
                     <FormLabel>Service Description</FormLabel>
@@ -1176,11 +2219,342 @@ const VendorDashboard = () => {
           <ContentSection>
             <SectionTitle>
               <FaBriefcase />
-              Recent Work
+              Portfolio & Recent Work
             </SectionTitle>
             {recentWorkData.map(work => (
               <div
                 key={work.id}
+                style={{
+                  border: `1px solid ${theme.colors.gray200}`,
+                  borderRadius: theme.borderRadius.md,
+                  padding: theme.spacing.lg,
+                  marginBottom: theme.spacing.xl,
+                  backgroundColor: theme.colors.gray50,
+                }}
+              >
+                <h3
+                  style={{
+                    marginBottom: theme.spacing.lg,
+                    color: theme.colors.primary,
+                  }}
+                >
+                  {work.title || 'New Project'}
+                </h3>
+
+                {/* Basic Information */}
+                <FormGrid>
+                  <FormGroup>
+                    <FormLabel>Venue/Location Name</FormLabel>
+                    <FormInput
+                      value={work.title}
+                      onChange={e => {
+                        updateRecentWork(work.id, 'title', e.target.value);
+                        trackSectionChange('recent-work');
+                      }}
+                      placeholder="Napa Valley Vineyard"
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <FormLabel>City</FormLabel>
+                    <FormInput
+                      value={work.location}
+                      onChange={e => {
+                        updateRecentWork(work.id, 'location', e.target.value);
+                        trackSectionChange('recent-work');
+                      }}
+                      placeholder="Napa Valley"
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <FormLabel>Wedding Date</FormLabel>
+                    <FormInput
+                      value={work.date}
+                      onChange={e => {
+                        updateRecentWork(work.id, 'date', e.target.value);
+                        trackSectionChange('recent-work');
+                      }}
+                      placeholder="September 2023"
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <FormLabel>Couple Names</FormLabel>
+                    <FormInput
+                      value={work.coupleNames}
+                      onChange={e => {
+                        updateRecentWork(
+                          work.id,
+                          'coupleNames',
+                          e.target.value
+                        );
+                        trackSectionChange('recent-work');
+                      }}
+                      placeholder="Sarah & Michael"
+                    />
+                  </FormGroup>
+                </FormGrid>
+
+                {/* Description */}
+                <FormGroup style={{ marginTop: theme.spacing.md }}>
+                  <FormLabel>Project Description</FormLabel>
+                  <FormTextarea
+                    value={work.description}
+                    onChange={e => {
+                      updateRecentWork(work.id, 'description', e.target.value);
+                      trackSectionChange('recent-work');
+                    }}
+                    placeholder="An enchanting vineyard wedding with rustic elegance and breathtaking sunset views..."
+                    rows={4}
+                  />
+                </FormGroup>
+
+                {/* Cover Image */}
+                <FormGroup style={{ marginTop: theme.spacing.md }}>
+                  <FormLabel>
+                    <FaFileImage />
+                    Cover Image
+                  </FormLabel>
+                  <FileUploadContainer>
+                    {work.image && (
+                      <ImagePreview>
+                        <img src={work.image} alt="Work cover" />
+                        <ImageOverlay>
+                          <RemoveImageButton
+                            onClick={() => {
+                              updateRecentWork(work.id, 'image', '');
+                              trackSectionChange('recent-work');
+                            }}
+                          >
+                            <FaTrash />
+                          </RemoveImageButton>
+                        </ImageOverlay>
+                      </ImagePreview>
+                    )}
+                    <FileUploadBox>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={e => {
+                          const file = e.target.files[0];
+                          const reader = new FileReader();
+                          reader.onload = event => {
+                            updateRecentWork(
+                              work.id,
+                              'image',
+                              event.target.result
+                            );
+                            trackSectionChange('recent-work');
+                          };
+                          reader.readAsDataURL(file);
+                        }}
+                      />
+                      <FaUpload size={20} color={theme.colors.gray400} />
+                      <span style={{ fontSize: '0.7rem', textAlign: 'center' }}>
+                        Upload Cover
+                      </span>
+                    </FileUploadBox>
+                    <FormGroup style={{ flex: 1 }}>
+                      <FormInput
+                        value={work.image}
+                        onChange={e => {
+                          updateRecentWork(work.id, 'image', e.target.value);
+                          trackSectionChange('recent-work');
+                        }}
+                        placeholder="Or paste image URL..."
+                      />
+                    </FormGroup>
+                  </FileUploadContainer>
+                </FormGroup>
+
+                {/* Services Provided */}
+                <FormGroup style={{ marginTop: theme.spacing.md }}>
+                  <FormLabel>Services Provided (one per line)</FormLabel>
+                  <FormTextarea
+                    value={
+                      Array.isArray(work.services)
+                        ? work.services.join('\n')
+                        : ''
+                    }
+                    onChange={e => {
+                      const services = e.target.value
+                        .split('\n')
+                        .filter(s => s.trim());
+                      updateRecentWork(work.id, 'services', services);
+                      trackSectionChange('recent-work');
+                    }}
+                    placeholder="Full Wedding Planning&#10;Floral Design&#10;Venue Decoration&#10;Day-of Coordination"
+                    rows={4}
+                  />
+                </FormGroup>
+
+                {/* Project Highlights */}
+                <FormGroup style={{ marginTop: theme.spacing.md }}>
+                  <FormLabel>Project Highlights (one per line)</FormLabel>
+                  <FormTextarea
+                    value={
+                      Array.isArray(work.highlights)
+                        ? work.highlights.join('\n')
+                        : ''
+                    }
+                    onChange={e => {
+                      const highlights = e.target.value
+                        .split('\n')
+                        .filter(h => h.trim());
+                      updateRecentWork(work.id, 'highlights', highlights);
+                      trackSectionChange('recent-work');
+                    }}
+                    placeholder="Custom vineyard ceremony setup&#10;Rustic chic reception decor&#10;Farm-to-table catering coordination&#10;Sunset photography session"
+                    rows={4}
+                  />
+                </FormGroup>
+
+                {/* Gallery Images */}
+                <FormGroup style={{ marginTop: theme.spacing.md }}>
+                  <FormLabel>
+                    <FaImages />
+                    Portfolio Gallery Images
+                  </FormLabel>
+                  <FileUploadContainer>
+                    <FileUploadBox>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        onChange={e => {
+                          Array.from(e.target.files).forEach(file => {
+                            const reader = new FileReader();
+                            reader.onload = event => {
+                              const currentGallery = work.gallery || [];
+                              updateRecentWork(work.id, 'gallery', [
+                                ...currentGallery,
+                                event.target.result,
+                              ]);
+                              trackSectionChange('recent-work');
+                            };
+                            reader.readAsDataURL(file);
+                          });
+                        }}
+                      />
+                      <FaUpload size={20} color={theme.colors.gray400} />
+                      <span style={{ fontSize: '0.7rem', textAlign: 'center' }}>
+                        Add Gallery Images
+                      </span>
+                    </FileUploadBox>
+                    <FormGroup style={{ flex: 1 }}>
+                      <FormTextarea
+                        placeholder="Or paste image URLs (one per line)&#10;https://example.com/image1.jpg&#10;https://example.com/image2.jpg"
+                        rows={3}
+                        onBlur={e => {
+                          const urls = e.target.value
+                            .split('\n')
+                            .filter(url => url.trim());
+                          if (urls.length > 0) {
+                            const currentGallery = work.gallery || [];
+                            updateRecentWork(work.id, 'gallery', [
+                              ...currentGallery,
+                              ...urls,
+                            ]);
+                            trackSectionChange('recent-work');
+                            e.target.value = '';
+                          }
+                        }}
+                      />
+                    </FormGroup>
+                  </FileUploadContainer>
+
+                  {/* Gallery Preview */}
+                  {work.gallery && work.gallery.length > 0 && (
+                    <div
+                      style={{
+                        display: 'grid',
+                        gridTemplateColumns:
+                          'repeat(auto-fill, minmax(120px, 1fr))',
+                        gap: theme.spacing.sm,
+                        marginTop: theme.spacing.md,
+                      }}
+                    >
+                      {work.gallery.map((image, index) => (
+                        <ImagePreview
+                          key={index}
+                          style={{ width: '120px', height: '80px' }}
+                        >
+                          <img src={image} alt={`Gallery ${index}`} />
+                          <ImageOverlay>
+                            <RemoveImageButton
+                              onClick={() => {
+                                const newGallery = work.gallery.filter(
+                                  (_, i) => i !== index
+                                );
+                                updateRecentWork(
+                                  work.id,
+                                  'gallery',
+                                  newGallery
+                                );
+                                trackSectionChange('recent-work');
+                              }}
+                            >
+                              <FaTrash />
+                            </RemoveImageButton>
+                          </ImageOverlay>
+                        </ImagePreview>
+                      ))}
+                    </div>
+                  )}
+                </FormGroup>
+
+                <div
+                  style={{
+                    textAlign: 'right',
+                    marginTop: theme.spacing.lg,
+                    paddingTop: theme.spacing.md,
+                    borderTop: `1px solid ${theme.colors.gray200}`,
+                  }}
+                >
+                  <ActionButton
+                    variant="danger"
+                    onClick={() => {
+                      deleteRecentWork(work.id);
+                      trackSectionChange('recent-work');
+                    }}
+                  >
+                    <FaTrash />
+                    Remove This Project
+                  </ActionButton>
+                </div>
+              </div>
+            ))}
+            <ActionButton onClick={addRecentWork}>
+              <FaPlus />
+              Add New Portfolio Project
+            </ActionButton>
+          </ContentSection>
+        );
+
+      case 'gallery':
+        return (
+          <ContentSection>
+            <SectionTitle>
+              <FaImages />
+              Gallery
+            </SectionTitle>
+            <FormGroup style={{ marginBottom: theme.spacing.lg }}>
+              <FormLabel>Gallery Subtitle</FormLabel>
+              <FormInput
+                value={galleryData.subtitle}
+                onChange={e => {
+                  setGalleryData(prev => ({
+                    ...prev,
+                    subtitle: e.target.value,
+                  }));
+                  trackSectionChange('gallery');
+                }}
+                placeholder="Browse through our portfolio of beautiful weddings and events"
+              />
+            </FormGroup>
+
+            {/* Existing Categories */}
+            {Object.entries(galleryData.categories).map(([key, category]) => (
+              <div
+                key={key}
                 style={{
                   border: `1px solid ${theme.colors.gray200}`,
                   borderRadius: theme.borderRadius.md,
@@ -1190,99 +2564,125 @@ const VendorDashboard = () => {
               >
                 <FormGrid>
                   <FormGroup>
-                    <FormLabel>Project Title</FormLabel>
+                    <FormLabel>Category Title</FormLabel>
                     <FormInput
-                      value={work.title}
-                      onChange={e =>
-                        updateRecentWork(work.id, 'title', e.target.value)
-                      }
-                      placeholder="Sarah & Michael Wedding"
+                      value={category.title || key}
+                      onChange={e => {
+                        setGalleryData(prev => ({
+                          ...prev,
+                          categories: {
+                            ...prev.categories,
+                            [key]: {
+                              ...prev.categories[key],
+                              title: e.target.value,
+                            },
+                          },
+                        }));
+                        trackSectionChange('gallery');
+                      }}
+                      placeholder="Category name"
                     />
                   </FormGroup>
                   <FormGroup>
-                    <FormLabel>Location</FormLabel>
-                    <FormInput
-                      value={work.location}
-                      onChange={e =>
-                        updateRecentWork(work.id, 'location', e.target.value)
-                      }
-                      placeholder="Napa Valley"
-                    />
+                    <FormLabel>Add Images</FormLabel>
+                    <FileUploadContainer>
+                      <FileUploadBox>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          multiple
+                          onChange={e => {
+                            Array.from(e.target.files).forEach(file => {
+                              const reader = new FileReader();
+                              reader.onload = event => {
+                                addGalleryImage(key, event.target.result);
+                                trackSectionChange('gallery');
+                              };
+                              reader.readAsDataURL(file);
+                            });
+                          }}
+                        />
+                        <FaUpload size={20} color={theme.colors.gray400} />
+                        <span
+                          style={{ fontSize: '0.7rem', textAlign: 'center' }}
+                        >
+                          Upload
+                        </span>
+                      </FileUploadBox>
+                    </FileUploadContainer>
                   </FormGroup>
-                  <FormGroup>
-                    <FormLabel>Date</FormLabel>
-                    <FormInput
-                      value={work.date}
-                      onChange={e =>
-                        updateRecentWork(work.id, 'date', e.target.value)
-                      }
-                      placeholder="September 2023"
-                    />
-                  </FormGroup>
-                  <FormGroup>
-                    <FormLabel>Featured Image URL</FormLabel>
-                    <FormInput
-                      value={work.image}
-                      onChange={e =>
-                        updateRecentWork(work.id, 'image', e.target.value)
-                      }
-                      placeholder="https://example.com/image.jpg"
-                    />
-                  </FormGroup>
-                  <div style={{ gridColumn: '1 / -1', textAlign: 'right' }}>
-                    <ActionButton
-                      variant="danger"
-                      onClick={() => deleteRecentWork(work.id)}
-                    >
-                      <FaTrash />
-                      Remove Project
-                    </ActionButton>
-                  </div>
                 </FormGrid>
+
+                {/* Category Images */}
+                <div
+                  style={{
+                    display: 'grid',
+                    gridTemplateColumns:
+                      'repeat(auto-fill, minmax(120px, 1fr))',
+                    gap: theme.spacing.sm,
+                    marginTop: theme.spacing.md,
+                  }}
+                >
+                  {category.images?.map((image, index) => (
+                    <ImagePreview
+                      key={index}
+                      style={{ width: '120px', height: '80px' }}
+                    >
+                      <img src={image} alt={`${category.title} ${index}`} />
+                      <ImageOverlay>
+                        <RemoveImageButton
+                          onClick={() => {
+                            removeGalleryImage(key, index);
+                            trackSectionChange('gallery');
+                          }}
+                        >
+                          <FaTrash />
+                        </RemoveImageButton>
+                      </ImageOverlay>
+                    </ImagePreview>
+                  ))}
+                </div>
+
+                <div
+                  style={{ textAlign: 'right', marginTop: theme.spacing.md }}
+                >
+                  <ActionButton
+                    variant="danger"
+                    onClick={() => {
+                      setGalleryData(prev => {
+                        const newCategories = { ...prev.categories };
+                        delete newCategories[key];
+                        return { ...prev, categories: newCategories };
+                      });
+                      trackSectionChange('gallery');
+                    }}
+                  >
+                    <FaTrash />
+                    Remove Category
+                  </ActionButton>
+                </div>
               </div>
             ))}
-            <ActionButton onClick={addRecentWork}>
-              <FaPlus />
-              Add New Project
-            </ActionButton>
-          </ContentSection>
-        );
 
-      case 'photos-media':
-        return (
-          <ContentSection>
-            <SectionTitle>
-              <FaImages />
-              Photos & Media
-            </SectionTitle>
-            <FormGrid>
-              <FormGroup>
-                <FormLabel>Profile Image URL</FormLabel>
-                <FormInput
-                  value={photosMediaData.profileImage}
-                  onChange={e =>
-                    setPhotosMediaData(prev => ({
-                      ...prev,
-                      profileImage: e.target.value,
-                    }))
-                  }
-                  placeholder="https://example.com/profile.jpg"
-                />
-              </FormGroup>
-              <FormGroup>
-                <FormLabel>Banner Image URL</FormLabel>
-                <FormInput
-                  value={photosMediaData.bannerImage}
-                  onChange={e =>
-                    setPhotosMediaData(prev => ({
-                      ...prev,
-                      bannerImage: e.target.value,
-                    }))
-                  }
-                  placeholder="https://example.com/banner.jpg"
-                />
-              </FormGroup>
-            </FormGrid>
+            {/* Add New Category Button */}
+            <ActionButton
+              onClick={() => {
+                const newCategoryKey = `category_${Date.now()}`;
+                setGalleryData(prev => ({
+                  ...prev,
+                  categories: {
+                    ...prev.categories,
+                    [newCategoryKey]: {
+                      title: 'New Category',
+                      images: [],
+                    },
+                  },
+                }));
+              }}
+            >
+              <FaPlus />
+              Add New Category
+            </ActionButton>
           </ContentSection>
         );
 
@@ -1417,6 +2817,21 @@ const VendorDashboard = () => {
                       rows={3}
                     />
                   </FormGroup>
+                  <FormGroup style={{ gridColumn: '1 / -1' }}>
+                    <FormLabel>Features (one per line)</FormLabel>
+                    <FormTextarea
+                      value={pkg.features?.join('\n') || ''}
+                      onChange={e =>
+                        updatePackage(
+                          pkg.id,
+                          'features',
+                          e.target.value.split('\n').filter(f => f.trim())
+                        )
+                      }
+                      placeholder="Feature 1&#10;Feature 2&#10;Feature 3"
+                      rows={4}
+                    />
+                  </FormGroup>
                   <div style={{ gridColumn: '1 / -1', textAlign: 'right' }}>
                     <ActionButton
                       variant="danger"
@@ -1436,6 +2851,160 @@ const VendorDashboard = () => {
           </ContentSection>
         );
 
+      case 'section-order':
+        return (
+          <ContentSection>
+            <SectionTitle>
+              <FaList />
+              Section Order
+            </SectionTitle>
+            <p
+              style={{
+                color: theme.colors.gray600,
+                marginBottom: theme.spacing.lg,
+              }}
+            >
+              Drag and drop to reorder sections as they appear on your vendor
+              page. Custom sections are automatically included.
+            </p>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: theme.spacing.sm,
+              }}
+            >
+              {(() => {
+                // Create a combined list of default sections and custom sections
+                const allSections = [...sectionOrder];
+
+                // Add custom sections to the order if not already present
+                customSections.forEach(customSection => {
+                  const customId = `custom-${customSection.id}`;
+                  if (!allSections.includes(customId)) {
+                    allSections.push(customId);
+                  }
+                });
+
+                return allSections.map((sectionId, index) => {
+                  let section,
+                    isCustom = false;
+
+                  if (sectionId.startsWith('custom-')) {
+                    // This is a custom section
+                    const customId = sectionId.replace('custom-', '');
+                    const customSection = customSections.find(
+                      cs => cs.id === customId
+                    );
+                    if (customSection) {
+                      section = {
+                        id: sectionId,
+                        label: customSection.title,
+                        icon: FaPlus,
+                      };
+                      isCustom = true;
+                    }
+                  } else {
+                    // This is a default section
+                    section = navigationItems.find(
+                      item => item.id === sectionId
+                    );
+                  }
+
+                  if (!section) return null;
+
+                  return (
+                    <div
+                      key={sectionId}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: theme.spacing.md,
+                        padding: theme.spacing.md,
+                        border: `1px solid ${isCustom ? theme.colors.primary : theme.colors.gray200}`,
+                        borderRadius: theme.borderRadius.md,
+                        background: isCustom
+                          ? theme.colors.primary + '10'
+                          : theme.colors.white,
+                      }}
+                    >
+                      <FaGripHorizontal
+                        style={{ color: theme.colors.gray400, cursor: 'grab' }}
+                      />
+                      <section.icon style={{ color: theme.colors.primary }} />
+                      <span style={{ flex: 1, fontWeight: 600 }}>
+                        {section.label}
+                        {isCustom && (
+                          <span
+                            style={{
+                              fontSize: '0.8rem',
+                              color: theme.colors.primary,
+                              marginLeft: '8px',
+                            }}
+                          >
+                            (Custom)
+                          </span>
+                        )}
+                      </span>
+                      <ActionButton
+                        onClick={() => {
+                          if (index > 0) {
+                            const newOrder = [...allSections];
+                            [newOrder[index], newOrder[index - 1]] = [
+                              newOrder[index - 1],
+                              newOrder[index],
+                            ];
+                            setSectionOrder(
+                              newOrder.filter(id => !id.startsWith('custom-'))
+                            );
+                            trackSectionChange('section-order');
+                          }
+                        }}
+                        disabled={index === 0}
+                      >
+                        ↑
+                      </ActionButton>
+                      <ActionButton
+                        onClick={() => {
+                          if (index < allSections.length - 1) {
+                            const newOrder = [...allSections];
+                            [newOrder[index], newOrder[index + 1]] = [
+                              newOrder[index + 1],
+                              newOrder[index],
+                            ];
+                            setSectionOrder(
+                              newOrder.filter(id => !id.startsWith('custom-'))
+                            );
+                            trackSectionChange('section-order');
+                          }
+                        }}
+                        disabled={index === allSections.length - 1}
+                      >
+                        ↓
+                      </ActionButton>
+                      {isCustom && (
+                        <ActionButton
+                          variant="danger"
+                          onClick={() => {
+                            const customId = sectionId.replace('custom-', '');
+                            const updatedSections = customSections.filter(
+                              cs => cs.id !== customId
+                            );
+                            setCustomSections(updatedSections);
+                            trackSectionChange('section-order');
+                          }}
+                        >
+                          <FaTrash />
+                        </ActionButton>
+                      )}
+                    </div>
+                  );
+                });
+              })()}
+            </div>
+          </ContentSection>
+        );
+
       case 'custom-sections':
         return (
           <ContentSection>
@@ -1449,8 +3018,80 @@ const VendorDashboard = () => {
                 marginBottom: theme.spacing.lg,
               }}
             >
-              Custom sections functionality will be implemented here.
+              Create custom sections for your vendor page with different content
+              types like text, galleries, or cards.
             </p>
+
+            {/* Existing Custom Sections */}
+            {customSections.map(section => (
+              <div
+                key={section.id}
+                style={{
+                  border: `1px solid ${theme.colors.gray200}`,
+                  borderRadius: theme.borderRadius.md,
+                  padding: theme.spacing.lg,
+                  marginBottom: theme.spacing.lg,
+                  backgroundColor: theme.colors.gray50,
+                }}
+              >
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    marginBottom: theme.spacing.md,
+                  }}
+                >
+                  <h3 style={{ margin: 0, color: theme.colors.primary }}>
+                    {section.title}
+                  </h3>
+                  <div style={{ display: 'flex', gap: theme.spacing.sm }}>
+                    <ActionButton
+                      onClick={() => openCustomSectionModal(section)}
+                    >
+                      <FaEdit />
+                      Edit
+                    </ActionButton>
+                    <ActionButton
+                      variant="danger"
+                      onClick={() => {
+                        const updatedSections = customSections.filter(
+                          s => s.id !== section.id
+                        );
+                        setCustomSections(updatedSections);
+                        trackSectionChange('custom-sections');
+                      }}
+                    >
+                      <FaTrash />
+                      Delete
+                    </ActionButton>
+                  </div>
+                </div>
+                <p style={{ color: theme.colors.gray600, margin: 0 }}>
+                  {section.subtitle}
+                </p>
+                <p
+                  style={{
+                    color: theme.colors.gray500,
+                    fontSize: '0.9rem',
+                    margin: '8px 0 0 0',
+                  }}
+                >
+                  Type:{' '}
+                  {section.type === 'text'
+                    ? 'Text Content'
+                    : section.type === 'gallery'
+                      ? 'Image Gallery'
+                      : 'Card Layout'}
+                </p>
+              </div>
+            ))}
+
+            {/* Add New Custom Section Button */}
+            <ActionButton onClick={() => openCustomSectionModal()}>
+              <FaPlus />
+              Add Custom Section
+            </ActionButton>
           </ContentSection>
         );
 
@@ -1461,14 +3102,158 @@ const VendorDashboard = () => {
               <FaCog />
               Settings
             </SectionTitle>
-            <p
-              style={{
-                color: theme.colors.gray600,
-                marginBottom: theme.spacing.lg,
-              }}
-            >
-              Profile settings functionality will be implemented here.
-            </p>
+
+            {/* Basic Details */}
+            <div style={{ marginBottom: theme.spacing.xxl }}>
+              <h3
+                style={{
+                  fontSize: '1.3rem',
+                  fontWeight: 600,
+                  marginBottom: theme.spacing.lg,
+                  color: theme.colors.gray900,
+                }}
+              >
+                Basic Details
+              </h3>
+              <FormGrid>
+                <FormGroup>
+                  <FormLabel>Business Name</FormLabel>
+                  <FormInput
+                    value={heroData.name}
+                    onChange={e => {
+                      setHeroData(prev => ({ ...prev, name: e.target.value }));
+                      trackSectionChange('settings');
+                    }}
+                    placeholder="Enter business name"
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <FormLabel>Email Address</FormLabel>
+                  <FormInput
+                    type="email"
+                    value={vendor?.email || ''}
+                    onChange={e => trackSectionChange('settings')}
+                    placeholder="business@example.com"
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <FormLabel>Phone Number</FormLabel>
+                  <FormInput
+                    type="tel"
+                    value={vendor?.phone || ''}
+                    onChange={e => trackSectionChange('settings')}
+                    placeholder="+1 (555) 123-4567"
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <FormLabel>Website URL</FormLabel>
+                  <FormInput
+                    type="url"
+                    value={vendor?.website || ''}
+                    onChange={e => trackSectionChange('settings')}
+                    placeholder="https://example.com"
+                  />
+                </FormGroup>
+                <FormGroup style={{ gridColumn: '1 / -1' }}>
+                  <FormLabel>Business Address</FormLabel>
+                  <FormTextarea
+                    value={vendor?.address || ''}
+                    onChange={e => trackSectionChange('settings')}
+                    placeholder="Enter your complete business address..."
+                    rows={3}
+                  />
+                </FormGroup>
+              </FormGrid>
+            </div>
+
+            {/* Password Update */}
+            <div style={{ marginBottom: theme.spacing.xxl }}>
+              <h3
+                style={{
+                  fontSize: '1.3rem',
+                  fontWeight: 600,
+                  marginBottom: theme.spacing.lg,
+                  color: theme.colors.gray900,
+                }}
+              >
+                Update Password
+              </h3>
+              <FormGrid>
+                <FormGroup>
+                  <FormLabel>Current Password</FormLabel>
+                  <FormInput
+                    type="password"
+                    placeholder="Enter current password"
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <FormLabel>New Password</FormLabel>
+                  <FormInput type="password" placeholder="Enter new password" />
+                </FormGroup>
+                <FormGroup style={{ gridColumn: '1 / -1' }}>
+                  <FormLabel>Confirm New Password</FormLabel>
+                  <FormInput
+                    type="password"
+                    placeholder="Confirm new password"
+                  />
+                </FormGroup>
+              </FormGrid>
+              <div style={{ marginTop: theme.spacing.lg }}>
+                <ActionButton
+                  onClick={() =>
+                    alert(
+                      'Password update functionality will be implemented with backend integration'
+                    )
+                  }
+                >
+                  <FaLock />
+                  Update Password
+                </ActionButton>
+              </div>
+            </div>
+
+            {/* Account Actions */}
+            <div>
+              <h3
+                style={{
+                  fontSize: '1.3rem',
+                  fontWeight: 600,
+                  marginBottom: theme.spacing.lg,
+                  color: theme.colors.gray900,
+                }}
+              >
+                Account Actions
+              </h3>
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: theme.spacing.md,
+                  maxWidth: '300px',
+                }}
+              >
+                <ActionButton
+                  onClick={() => {
+                    if (window.confirm('Are you sure you want to logout?')) {
+                      // Handle logout
+                      alert(
+                        'Logout functionality will be implemented with auth integration'
+                      );
+                    }
+                  }}
+                >
+                  <FaArrowLeft />
+                  Logout
+                </ActionButton>
+                <ActionButton
+                  variant="danger"
+                  onClick={() => setShowDeleteAccountModal(true)}
+                >
+                  <FaTrash />
+                  Delete Account
+                </ActionButton>
+              </div>
+            </div>
           </ContentSection>
         );
 
@@ -1574,6 +3359,91 @@ const VendorDashboard = () => {
               ))}
             </NavSection>
           ))}
+
+          {/* Save Actions Section - Now part of scrollable content */}
+          <NavSection>
+            <NavSectionTitle>Changes</NavSectionTitle>
+            {changedSections.size > 0 && (
+              <div
+                style={{
+                  padding: `0 ${theme.spacing.lg}`,
+                  marginBottom: theme.spacing.md,
+                }}
+              >
+                <p
+                  style={{
+                    fontSize: '0.85rem',
+                    color: theme.colors.gray600,
+                    margin: '0 0 8px 0',
+                  }}
+                >
+                  Modified sections:
+                </p>
+                {Array.from(changedSections).map(sectionId => {
+                  const section = navigationItems.find(
+                    item => item.id === sectionId
+                  );
+                  return (
+                    <div
+                      key={sectionId}
+                      style={{
+                        fontSize: '0.8rem',
+                        color: theme.colors.warning,
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '4px',
+                        marginBottom: '4px',
+                      }}
+                    >
+                      <FaEdit size={10} />
+                      {section?.label || sectionId}
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </NavSection>
+
+          <NavSection>
+            <NavSectionTitle>Actions</NavSectionTitle>
+            <SidebarFooter>
+              <SaveActionsContainer>
+                {changedSections.size > 0 && !saved && (
+                  <ChangesIndicator>
+                    <FaEdit />
+                    {changedSections.size} section
+                    {changedSections.size > 1 ? 's' : ''} modified
+                  </ChangesIndicator>
+                )}
+                {saved && (
+                  <ChangesIndicator style={{ color: theme.colors.success }}>
+                    <FaCheckCircle />
+                    Changes saved - Ready to publish
+                  </ChangesIndicator>
+                )}
+                <SaveButton variant="secondary" onClick={handleDiscardChanges}>
+                  <FaUndo />
+                  Discard
+                </SaveButton>
+                <SaveButton
+                  onClick={handleSaveChanges}
+                  disabled={changedSections.size === 0 || saved}
+                  saved={saved}
+                >
+                  <FaSave />
+                  {saved ? 'Saved' : 'Save Changes'}
+                </SaveButton>
+                <SaveButton
+                  variant="primary"
+                  onClick={handleSaveAndGoLive}
+                  disabled={!saved}
+                >
+                  <FaCheckCircle />
+                  Save & Go Live
+                </SaveButton>
+              </SaveActionsContainer>
+            </SidebarFooter>
+          </NavSection>
         </SidebarNav>
       </Sidebar>
 
@@ -1610,21 +3480,551 @@ const VendorDashboard = () => {
         {renderContent()}
       </MainContent>
 
-      {/* Save & Go Live Action Bar */}
-      <SaveActionsBar>
-        <ChangesIndicator>
-          <FaEdit />
-          You have unsaved changes
-        </ChangesIndicator>
-        <SaveButton variant="secondary" onClick={handleDiscardChanges}>
-          <FaUndo />
-          Discard
-        </SaveButton>
-        <SaveButton variant="primary" onClick={handleSaveAndGoLive}>
-          <FaCheckCircle />
-          Save & Go Live
-        </SaveButton>
-      </SaveActionsBar>
+      {/* Custom Section Modal */}
+      {showCustomSectionModal && (
+        <div
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            background: 'rgba(0, 0, 0, 0.5)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 2000,
+            padding: theme.spacing.lg,
+          }}
+        >
+          <div
+            style={{
+              background: theme.colors.white,
+              borderRadius: theme.borderRadius.lg,
+              padding: theme.spacing.xl,
+              maxWidth: '600px',
+              width: '100%',
+              maxHeight: '80vh',
+              overflowY: 'auto',
+            }}
+          >
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginBottom: theme.spacing.lg,
+              }}
+            >
+              <h2 style={{ margin: 0, fontSize: '1.5rem', fontWeight: 600 }}>
+                {editingCustomSection
+                  ? 'Edit Custom Section'
+                  : 'Add Custom Section'}
+              </h2>
+              <button
+                onClick={() => setShowCustomSectionModal(false)}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  fontSize: '1.5rem',
+                  cursor: 'pointer',
+                }}
+              >
+                <FaTimes />
+              </button>
+            </div>
+
+            <FormGroup style={{ marginBottom: theme.spacing.md }}>
+              <FormLabel>Section Title</FormLabel>
+              <FormInput
+                value={customSectionForm.title}
+                onChange={e =>
+                  setCustomSectionForm(prev => ({
+                    ...prev,
+                    title: e.target.value,
+                  }))
+                }
+                placeholder="Enter section title"
+              />
+            </FormGroup>
+
+            <FormGroup style={{ marginBottom: theme.spacing.md }}>
+              <FormLabel>Section Subtitle (Optional)</FormLabel>
+              <FormInput
+                value={customSectionForm.subtitle}
+                onChange={e =>
+                  setCustomSectionForm(prev => ({
+                    ...prev,
+                    subtitle: e.target.value,
+                  }))
+                }
+                placeholder="Enter section subtitle"
+              />
+            </FormGroup>
+
+            <FormGroup style={{ marginBottom: theme.spacing.md }}>
+              <FormLabel>Content Type</FormLabel>
+              <select
+                value={customSectionForm.type}
+                onChange={e =>
+                  setCustomSectionForm(prev => ({
+                    ...prev,
+                    type: e.target.value,
+                  }))
+                }
+                style={{
+                  padding: theme.spacing.md,
+                  border: `2px solid ${theme.colors.gray200}`,
+                  borderRadius: theme.borderRadius.md,
+                  fontSize: '1rem',
+                  width: '100%',
+                }}
+              >
+                <option value="text">Text Content</option>
+                <option value="gallery">Image Gallery</option>
+                <option value="cards">Card Layout</option>
+              </select>
+            </FormGroup>
+
+            {/* Content Input Fields Based on Type */}
+            {customSectionForm.type === 'text' && (
+              <FormGroup style={{ marginBottom: theme.spacing.md }}>
+                <FormLabel>Content</FormLabel>
+                <FormTextarea
+                  value={customSectionForm.content}
+                  onChange={e =>
+                    setCustomSectionForm(prev => ({
+                      ...prev,
+                      content: e.target.value,
+                    }))
+                  }
+                  placeholder="Enter your content here..."
+                  rows={6}
+                />
+              </FormGroup>
+            )}
+
+            {customSectionForm.type === 'gallery' && (
+              <FormGroup style={{ marginBottom: theme.spacing.md }}>
+                <FormLabel>Gallery Images</FormLabel>
+                <FileUploadContainer>
+                  <FileUploadBox>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      onChange={e => {
+                        Array.from(e.target.files).forEach(file => {
+                          const reader = new FileReader();
+                          reader.onload = event => {
+                            addCustomSectionImage(event.target.result);
+                          };
+                          reader.readAsDataURL(file);
+                        });
+                      }}
+                    />
+                    <FaUpload size={24} color={theme.colors.gray400} />
+                    <span style={{ fontSize: '0.8rem', textAlign: 'center' }}>
+                      Upload Images
+                    </span>
+                  </FileUploadBox>
+                  <FormGroup style={{ flex: 1 }}>
+                    <FormLabel>Or paste image URLs (one per line)</FormLabel>
+                    <FormTextarea
+                      placeholder="https://example.com/image1.jpg
+https://example.com/image2.jpg"
+                      rows={3}
+                      onBlur={e => {
+                        const urls = e.target.value
+                          .split('\n')
+                          .filter(url => url.trim());
+                        if (urls.length > 0) {
+                          urls.forEach(url => addCustomSectionImage(url));
+                          e.target.value = '';
+                        }
+                      }}
+                    />
+                  </FormGroup>
+                </FileUploadContainer>
+
+                {/* Gallery Preview */}
+                {customSectionForm.images &&
+                  customSectionForm.images.length > 0 && (
+                    <div
+                      style={{
+                        display: 'grid',
+                        gridTemplateColumns:
+                          'repeat(auto-fill, minmax(120px, 1fr))',
+                        gap: theme.spacing.sm,
+                        marginTop: theme.spacing.md,
+                      }}
+                    >
+                      {customSectionForm.images.map((image, index) => (
+                        <ImagePreview
+                          key={index}
+                          style={{ width: '120px', height: '80px' }}
+                        >
+                          <img src={image} alt={`Gallery ${index}`} />
+                          <ImageOverlay>
+                            <RemoveImageButton
+                              onClick={() => removeCustomSectionImage(index)}
+                            >
+                              <FaTrash />
+                            </RemoveImageButton>
+                          </ImageOverlay>
+                        </ImagePreview>
+                      ))}
+                    </div>
+                  )}
+              </FormGroup>
+            )}
+
+            {customSectionForm.type === 'cards' && (
+              <FormGroup style={{ marginBottom: theme.spacing.md }}>
+                <FormLabel>Cards Content</FormLabel>
+
+                {/* Existing Cards */}
+                {customSectionForm.cards.map((card, index) => (
+                  <div
+                    key={index}
+                    style={{
+                      border: `1px solid ${theme.colors.gray200}`,
+                      borderRadius: theme.borderRadius.md,
+                      padding: theme.spacing.md,
+                      marginBottom: theme.spacing.md,
+                      backgroundColor: theme.colors.gray50,
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        marginBottom: theme.spacing.sm,
+                      }}
+                    >
+                      <h4
+                        style={{ margin: 0, fontSize: '1rem', fontWeight: 600 }}
+                      >
+                        Card {index + 1}
+                      </h4>
+                      <button
+                        type="button"
+                        onClick={() => removeCustomSectionCard(index)}
+                        style={{
+                          background: theme.colors.error,
+                          color: 'white',
+                          border: 'none',
+                          borderRadius: '50%',
+                          width: '24px',
+                          height: '24px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          cursor: 'pointer',
+                          fontSize: '0.8rem',
+                        }}
+                      >
+                        ×
+                      </button>
+                    </div>
+
+                    <FormGrid style={{ gap: theme.spacing.sm }}>
+                      <FormGroup>
+                        <FormLabel>Title</FormLabel>
+                        <FormInput
+                          value={card.title}
+                          onChange={e =>
+                            updateCustomSectionCard(
+                              index,
+                              'title',
+                              e.target.value
+                            )
+                          }
+                          placeholder="Card title"
+                        />
+                      </FormGroup>
+                      <FormGroup>
+                        <FormLabel>Icon (Emoji)</FormLabel>
+                        <FormInput
+                          value={card.icon}
+                          onChange={e =>
+                            updateCustomSectionCard(
+                              index,
+                              'icon',
+                              e.target.value
+                            )
+                          }
+                          placeholder="💼"
+                        />
+                      </FormGroup>
+                      <FormGroup style={{ gridColumn: '1 / -1' }}>
+                        <FormLabel>Description</FormLabel>
+                        <FormTextarea
+                          value={card.description}
+                          onChange={e =>
+                            updateCustomSectionCard(
+                              index,
+                              'description',
+                              e.target.value
+                            )
+                          }
+                          placeholder="Card description..."
+                          rows={3}
+                        />
+                      </FormGroup>
+                      <FormGroup style={{ gridColumn: '1 / -1' }}>
+                        <FormLabel>Card Image (Optional)</FormLabel>
+                        <FileUploadContainer>
+                          {card.image && (
+                            <ImagePreview
+                              style={{ width: '120px', height: '80px' }}
+                            >
+                              <img src={card.image} alt={`Card ${index + 1}`} />
+                              <ImageOverlay>
+                                <RemoveImageButton
+                                  onClick={() =>
+                                    updateCustomSectionCard(index, 'image', '')
+                                  }
+                                >
+                                  <FaTrash />
+                                </RemoveImageButton>
+                              </ImageOverlay>
+                            </ImagePreview>
+                          )}
+                          <FileUploadBox>
+                            <input
+                              type="file"
+                              accept="image/*"
+                              onChange={e => {
+                                const file = e.target.files[0];
+                                if (file) {
+                                  const reader = new FileReader();
+                                  reader.onload = event => {
+                                    updateCustomSectionCard(
+                                      index,
+                                      'image',
+                                      event.target.result
+                                    );
+                                  };
+                                  reader.readAsDataURL(file);
+                                }
+                              }}
+                            />
+                            <FaUpload size={20} color={theme.colors.gray400} />
+                            <span
+                              style={{
+                                fontSize: '0.7rem',
+                                textAlign: 'center',
+                              }}
+                            >
+                              Upload
+                            </span>
+                          </FileUploadBox>
+                          <FormGroup style={{ flex: 1 }}>
+                            <FormLabel>Or paste image URL</FormLabel>
+                            <FormInput
+                              value={card.image}
+                              onChange={e =>
+                                updateCustomSectionCard(
+                                  index,
+                                  'image',
+                                  e.target.value
+                                )
+                              }
+                              placeholder="https://example.com/image.jpg"
+                            />
+                          </FormGroup>
+                        </FileUploadContainer>
+                      </FormGroup>
+                    </FormGrid>
+                  </div>
+                ))}
+
+                {/* Add New Card Button */}
+                <button
+                  type="button"
+                  onClick={addCustomSectionCard}
+                  style={{
+                    background: theme.colors.primary,
+                    color: 'white',
+                    border: 'none',
+                    padding: `${theme.spacing.sm} ${theme.spacing.md}`,
+                    borderRadius: theme.borderRadius.md,
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: theme.spacing.xs,
+                    fontSize: '0.9rem',
+                    fontWeight: 600,
+                  }}
+                >
+                  <FaPlus /> Add Card
+                </button>
+              </FormGroup>
+            )}
+
+            <div
+              style={{
+                display: 'flex',
+                gap: theme.spacing.md,
+                justifyContent: 'flex-end',
+                marginTop: theme.spacing.xl,
+              }}
+            >
+              <button
+                onClick={() => setShowCustomSectionModal(false)}
+                style={{
+                  background: theme.colors.gray300,
+                  color: theme.colors.gray700,
+                  border: 'none',
+                  padding: `${theme.spacing.md} ${theme.spacing.lg}`,
+                  borderRadius: theme.borderRadius.md,
+                  cursor: 'pointer',
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={saveCustomSection}
+                style={{
+                  background: theme.colors.primary,
+                  color: 'white',
+                  border: 'none',
+                  padding: `${theme.spacing.md} ${theme.spacing.lg}`,
+                  borderRadius: theme.borderRadius.md,
+                  cursor: 'pointer',
+                }}
+              >
+                {editingCustomSection ? 'Update Section' : 'Add Section'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Account Modal */}
+      {showDeleteAccountModal && (
+        <div
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            background: 'rgba(0, 0, 0, 0.5)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 2000,
+            padding: theme.spacing.lg,
+          }}
+        >
+          <div
+            style={{
+              background: theme.colors.white,
+              borderRadius: theme.borderRadius.lg,
+              padding: theme.spacing.xl,
+              maxWidth: '500px',
+              width: '100%',
+              textAlign: 'center',
+              border: `3px solid ${theme.colors.error}`,
+            }}
+          >
+            <div
+              style={{
+                fontSize: '3rem',
+                color: theme.colors.error,
+                marginBottom: theme.spacing.lg,
+              }}
+            >
+              ⚠️
+            </div>
+            <h2
+              style={{
+                margin: `0 0 ${theme.spacing.md} 0`,
+                fontSize: '1.5rem',
+                fontWeight: 700,
+                color: theme.colors.error,
+              }}
+            >
+              Delete Account
+            </h2>
+            <p
+              style={{
+                marginBottom: theme.spacing.lg,
+                color: theme.colors.gray700,
+                lineHeight: 1.6,
+              }}
+            >
+              <strong>Warning:</strong> This action cannot be undone. Deleting
+              your account will permanently remove:
+            </p>
+            <ul
+              style={{
+                textAlign: 'left',
+                marginBottom: theme.spacing.xl,
+                color: theme.colors.gray600,
+              }}
+            >
+              <li>Your vendor profile and all content</li>
+              <li>All portfolio images and work history</li>
+              <li>Customer reviews and testimonials</li>
+              <li>All account data and settings</li>
+            </ul>
+            <p
+              style={{
+                marginBottom: theme.spacing.xl,
+                fontWeight: 600,
+                color: theme.colors.error,
+              }}
+            >
+              This action cannot be recovered. Are you absolutely sure?
+            </p>
+            <div
+              style={{
+                display: 'flex',
+                gap: theme.spacing.md,
+                justifyContent: 'center',
+              }}
+            >
+              <button
+                onClick={() => setShowDeleteAccountModal(false)}
+                style={{
+                  background: theme.colors.gray300,
+                  color: theme.colors.gray700,
+                  border: 'none',
+                  padding: `${theme.spacing.md} ${theme.spacing.lg}`,
+                  borderRadius: theme.borderRadius.md,
+                  cursor: 'pointer',
+                  fontWeight: 600,
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  alert(
+                    'Delete account functionality will be implemented with backend integration'
+                  );
+                  setShowDeleteAccountModal(false);
+                }}
+                style={{
+                  background: theme.colors.error,
+                  color: 'white',
+                  border: 'none',
+                  padding: `${theme.spacing.md} ${theme.spacing.lg}`,
+                  borderRadius: theme.borderRadius.md,
+                  cursor: 'pointer',
+                  fontWeight: 600,
+                }}
+              >
+                Yes, Delete Account
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </DashboardContainer>
   );
 };
