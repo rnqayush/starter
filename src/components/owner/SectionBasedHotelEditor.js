@@ -1102,6 +1102,14 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
       })
     );
 
+    // Update section order in Redux store
+    dispatch(
+      updateHotelField({
+        field: 'sectionOrder',
+        value: [...sectionOrder, sectionId],
+      })
+    );
+
     // Close modal
     closeModal();
     alert(
