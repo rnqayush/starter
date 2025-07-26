@@ -1677,6 +1677,14 @@ const VendorDashboard = () => {
     } else {
       // Add new section
       setCustomSections(prev => [...prev, sectionData]);
+      // Add to complete section order
+      const customId = `custom-${sectionData.id}`;
+      setCompleteSectionOrder(prev => {
+        if (!prev.includes(customId)) {
+          return [...prev, customId];
+        }
+        return prev;
+      });
     }
 
     setShowCustomSectionModal(false);
