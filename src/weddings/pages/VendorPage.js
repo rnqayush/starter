@@ -79,8 +79,7 @@ const HeroSection = styled.section.withConfig({
   background: ${props =>
     props.backgroundImage
       ? `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(${props.backgroundImage})`
-      : 'linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4))'
-  };
+      : 'linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4))'};
   background-size: 100% 100%;
   background-position: center;
   background-repeat: no-repeat;
@@ -1040,7 +1039,10 @@ const VendorPage = () => {
     // Priority 1: Use editing vendor data for real-time updates during editing
     if (editingVendor && editingVendor.id === vendorId) {
       vendorData = editingVendor;
-      console.log('Using editing vendor data for real-time updates:', editingVendor);
+      console.log(
+        'Using editing vendor data for real-time updates:',
+        editingVendor
+      );
     }
     // Priority 2: Use saved vendor data from Redux vendors array
     else if (vendors && vendors.length > 0) {
@@ -1262,7 +1264,7 @@ const VendorPage = () => {
           'recent-work',
           'gallery',
           'packages-pricing',
-          'testimonials'
+          'testimonials',
         ];
 
         const sectionOrder = vendor.sectionOrder || defaultOrder;
@@ -1284,53 +1286,76 @@ const VendorPage = () => {
           // Check if this is a custom section
           if (sectionId.startsWith('custom-')) {
             const customId = sectionId.replace('custom-', '');
-            const customSection = vendor.customSections?.find(cs => cs.id === customId);
+            const customSection = vendor.customSections?.find(
+              cs => cs.id === customId
+            );
 
             if (!customSection) return null;
 
             return (
-              <Section key={`custom-${customSection.id}`} id={`custom-${customSection.id}`}>
+              <Section
+                key={`custom-${customSection.id}`}
+                id={`custom-${customSection.id}`}
+              >
                 <Container>
                   <SectionTitle>{customSection.title}</SectionTitle>
-                  {customSection.subtitle && <SectionSubtitle>{customSection.subtitle}</SectionSubtitle>}
+                  {customSection.subtitle && (
+                    <SectionSubtitle>{customSection.subtitle}</SectionSubtitle>
+                  )}
 
                   {/* Render custom section content based on type */}
                   {customSection.type === 'text' && customSection.content && (
-                    <div style={{
-                      fontSize: '1.1rem',
-                      lineHeight: 1.7,
-                      color: theme.colors.gray700,
-                      textAlign: 'center',
-                      maxWidth: '800px',
-                      margin: '0 auto',
-                      whiteSpace: 'pre-line'
-                    }}>
+                    <div
+                      style={{
+                        fontSize: '1.1rem',
+                        lineHeight: 1.7,
+                        color: theme.colors.gray700,
+                        textAlign: 'center',
+                        maxWidth: '800px',
+                        margin: '0 auto',
+                        whiteSpace: 'pre-line',
+                      }}
+                    >
                       {customSection.content}
                     </div>
                   )}
 
-                  {customSection.type === 'gallery' && customSection.images && customSection.images.length > 0 && (
-                    <GalleryGrid>
-                      {customSection.images.map((image, idx) => (
-                        <GalleryItem key={idx} src={image} alt={`${customSection.title} ${idx + 1}`} />
-                      ))}
-                    </GalleryGrid>
-                  )}
+                  {customSection.type === 'gallery' &&
+                    customSection.images &&
+                    customSection.images.length > 0 && (
+                      <GalleryGrid>
+                        {customSection.images.map((image, idx) => (
+                          <GalleryItem
+                            key={idx}
+                            src={image}
+                            alt={`${customSection.title} ${idx + 1}`}
+                          />
+                        ))}
+                      </GalleryGrid>
+                    )}
 
-                  {customSection.type === 'cards' && customSection.cards && customSection.cards.length > 0 && (
-                    <ServicesGrid>
-                      {customSection.cards.map((card, idx) => (
-                        <ServiceCard key={idx}>
-                          {card.image && <ServiceImage src={card.image} alt={card.title} />}
-                          <ServiceContent>
-                            {card.icon && <ServiceIcon>{card.icon}</ServiceIcon>}
-                            <ServiceName>{card.title}</ServiceName>
-                            <ServiceDescription>{card.description}</ServiceDescription>
-                          </ServiceContent>
-                        </ServiceCard>
-                      ))}
-                    </ServicesGrid>
-                  )}
+                  {customSection.type === 'cards' &&
+                    customSection.cards &&
+                    customSection.cards.length > 0 && (
+                      <ServicesGrid>
+                        {customSection.cards.map((card, idx) => (
+                          <ServiceCard key={idx}>
+                            {card.image && (
+                              <ServiceImage src={card.image} alt={card.title} />
+                            )}
+                            <ServiceContent>
+                              {card.icon && (
+                                <ServiceIcon>{card.icon}</ServiceIcon>
+                              )}
+                              <ServiceName>{card.title}</ServiceName>
+                              <ServiceDescription>
+                                {card.description}
+                              </ServiceDescription>
+                            </ServiceContent>
+                          </ServiceCard>
+                        ))}
+                      </ServicesGrid>
+                    )}
                 </Container>
               </Section>
             );
@@ -1340,7 +1365,11 @@ const VendorPage = () => {
           switch (sectionId) {
             case 'hero':
               return (
-                <HeroSection key="hero" id="hero" backgroundImage={vendor.image}>
+                <HeroSection
+                  key="hero"
+                  id="hero"
+                  backgroundImage={vendor.image}
+                >
                   {vendor.heroVideo && (
                     <HeroMedia>
                       <HeroVideo
@@ -1367,46 +1396,61 @@ const VendorPage = () => {
 
             case 'about-us':
               return (
-                <Section key="about" id="about" backgroundColor={vendor.theme?.backgroundColor}>
+                <Section
+                  key="about"
+                  id="about"
+                  backgroundColor={vendor.theme?.backgroundColor}
+                >
                   <Container>
                     <SectionTitle>About Us</SectionTitle>
                     <AboutGrid>
                       <AboutContent>
-                        <AboutText>{vendor.aboutUs?.text || vendor.description}</AboutText>
+                        <AboutText>
+                          {vendor.aboutUs?.text || vendor.description}
+                        </AboutText>
                         <AboutStats>
-                          {vendor.aboutUs?.experienceVisible !== false && vendor.aboutUs?.experience && (
-                            <StatCard>
-                              <StatNumber primaryColor={primaryColor}>
-                                {vendor.aboutUs.experience}
-                              </StatNumber>
-                              <StatLabel>Experience</StatLabel>
-                            </StatCard>
-                          )}
-                          {vendor.aboutUs?.weddingsVisible !== false && vendor.aboutUs?.completedWeddings && (
-                            <StatCard>
-                              <StatNumber primaryColor={primaryColor}>
-                                {vendor.aboutUs.completedWeddings}
-                              </StatNumber>
-                              <StatLabel>Weddings</StatLabel>
-                            </StatCard>
-                          )}
-                          {vendor.aboutUs?.couplesVisible !== false && vendor.aboutUs?.satisfiedCouples && (
-                            <StatCard>
-                              <StatNumber primaryColor={primaryColor}>
-                                {vendor.aboutUs.satisfiedCouples}
-                              </StatNumber>
-                              <StatLabel>Happy Couples</StatLabel>
-                            </StatCard>
-                          )}
+                          {vendor.aboutUs?.experienceVisible !== false &&
+                            vendor.aboutUs?.experience && (
+                              <StatCard>
+                                <StatNumber primaryColor={primaryColor}>
+                                  {vendor.aboutUs.experience}
+                                </StatNumber>
+                                <StatLabel>Experience</StatLabel>
+                              </StatCard>
+                            )}
+                          {vendor.aboutUs?.weddingsVisible !== false &&
+                            vendor.aboutUs?.completedWeddings && (
+                              <StatCard>
+                                <StatNumber primaryColor={primaryColor}>
+                                  {vendor.aboutUs.completedWeddings}
+                                </StatNumber>
+                                <StatLabel>Weddings</StatLabel>
+                              </StatCard>
+                            )}
+                          {vendor.aboutUs?.couplesVisible !== false &&
+                            vendor.aboutUs?.satisfiedCouples && (
+                              <StatCard>
+                                <StatNumber primaryColor={primaryColor}>
+                                  {vendor.aboutUs.satisfiedCouples}
+                                </StatNumber>
+                                <StatLabel>Happy Couples</StatLabel>
+                              </StatCard>
+                            )}
                         </AboutStats>
                       </AboutContent>
-                      {(vendor.aboutUs?.aboutImage || vendor.aboutUs?.videoEmbed) && (
+                      {(vendor.aboutUs?.aboutImage ||
+                        vendor.aboutUs?.videoEmbed) && (
                         <VideoContainer>
                           {vendor.aboutUs?.aboutImage ? (
                             <img
                               src={vendor.aboutUs.aboutImage}
                               alt="About us"
-                              style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '8px' }}
+                              style={{
+                                width: '100%',
+                                height: '100%',
+                                objectFit: 'cover',
+                                borderRadius: '8px',
+                              }}
                             />
                           ) : vendor.aboutUs?.videoEmbed ? (
                             <VideoEmbed
@@ -1428,16 +1472,22 @@ const VendorPage = () => {
                   <Container>
                     <SectionTitle>Services Offered</SectionTitle>
                     <SectionSubtitle>
-                      We provide comprehensive wedding services to make your special day perfect
+                      We provide comprehensive wedding services to make your
+                      special day perfect
                     </SectionSubtitle>
                     <ServicesGrid>
                       {vendor.services?.map((service, index) => (
                         <ServiceCard key={index}>
-                          <ServiceImage src={service.image} alt={service.name} />
+                          <ServiceImage
+                            src={service.image}
+                            alt={service.name}
+                          />
                           <ServiceContent>
                             <ServiceIcon>{service.icon}</ServiceIcon>
                             <ServiceName>{service.name}</ServiceName>
-                            <ServiceDescription>{service.description}</ServiceDescription>
+                            <ServiceDescription>
+                              {service.description}
+                            </ServiceDescription>
                           </ServiceContent>
                         </ServiceCard>
                       ))}
@@ -1447,17 +1497,20 @@ const VendorPage = () => {
               );
 
             case 'recent-work':
-              return vendor.locationPortfolio && vendor.locationPortfolio.length > 0 ? (
+              return vendor.locationPortfolio &&
+                vendor.locationPortfolio.length > 0 ? (
                 <Section key="portfolio" id="portfolio">
                   <Container>
                     <SectionTitle>Our Recent Work</SectionTitle>
                     <SectionSubtitle>
-                      Explore some of our beautiful weddings across different venues and locations
+                      Explore some of our beautiful weddings across different
+                      venues and locations
                     </SectionSubtitle>
                     <div
                       style={{
                         display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+                        gridTemplateColumns:
+                          'repeat(auto-fit, minmax(300px, 1fr))',
                         gap: theme.spacing.xl,
                         marginBottom: theme.spacing.xl,
                       }}
@@ -1502,7 +1555,8 @@ const VendorPage = () => {
                                 fontSize: '0.9rem',
                               }}
                             >
-                              {portfolio.city}, {portfolio.state} • {portfolio.weddingDate}
+                              {portfolio.city}, {portfolio.state} •{' '}
+                              {portfolio.weddingDate}
                             </p>
                             <p
                               style={{
@@ -1536,8 +1590,12 @@ const VendorPage = () => {
                           gap: theme.spacing.sm,
                           margin: '0 auto',
                         }}
-                        onMouseOver={e => (e.target.style.transform = 'translateY(-2px)')}
-                        onMouseOut={e => (e.target.style.transform = 'translateY(0)')}
+                        onMouseOver={e =>
+                          (e.target.style.transform = 'translateY(-2px)')
+                        }
+                        onMouseOut={e =>
+                          (e.target.style.transform = 'translateY(0)')
+                        }
                       >
                         <FaImages />
                         View Complete Portfolio
@@ -1549,16 +1607,23 @@ const VendorPage = () => {
 
             case 'gallery':
               return (
-                <Section key="gallery" id="gallery" backgroundColor={theme.colors.gray50}>
+                <Section
+                  key="gallery"
+                  id="gallery"
+                  backgroundColor={theme.colors.gray50}
+                >
                   <Container>
                     <SectionTitle>Gallery</SectionTitle>
                     <SectionSubtitle>
-                      Browse through our portfolio of beautiful weddings and events
+                      Browse through our portfolio of beautiful weddings and
+                      events
                     </SectionSubtitle>
                     <GalleryTabs>
                       {Object.keys(vendor.gallery || {}).map(category => {
                         const categoryData = vendor.gallery[category];
-                        const categoryTitle = categoryData?.title || category.charAt(0).toUpperCase() + category.slice(1);
+                        const categoryTitle =
+                          categoryData?.title ||
+                          category.charAt(0).toUpperCase() + category.slice(1);
 
                         return (
                           <GalleryTab
@@ -1575,7 +1640,8 @@ const VendorPage = () => {
                     </GalleryTabs>
                     <GalleryGrid>
                       {(() => {
-                        const activeCategory = vendor.gallery?.[activeGalleryTab];
+                        const activeCategory =
+                          vendor.gallery?.[activeGalleryTab];
                         const images = Array.isArray(activeCategory)
                           ? activeCategory
                           : activeCategory?.images || [];
@@ -1608,7 +1674,9 @@ const VendorPage = () => {
                           <PackagePrice primaryColor={primaryColor}>
                             {pkg.price}
                           </PackagePrice>
-                          <PackageDescription>{pkg.description}</PackageDescription>
+                          <PackageDescription>
+                            {pkg.description}
+                          </PackageDescription>
                           <PackageFeatures>
                             {pkg.features.map((feature, featureIndex) => (
                               <PackageFeature
@@ -1642,21 +1710,30 @@ const VendorPage = () => {
                   <Container>
                     <SectionTitle>What Our Couples Say</SectionTitle>
                     <SectionSubtitle>
-                      Real testimonials from couples whose special day we helped create
+                      Real testimonials from couples whose special day we helped
+                      create
                     </SectionSubtitle>
                     <TestimonialsGrid>
                       {vendor.testimonials?.map((testimonial, index) => (
-                        <TestimonialCard key={index} primaryColor={primaryColor}>
+                        <TestimonialCard
+                          key={index}
+                          primaryColor={primaryColor}
+                        >
                           <TestimonialText>{testimonial.text}</TestimonialText>
                           <TestimonialAuthor>
                             <AuthorInfo>
                               <AuthorName>{testimonial.name}</AuthorName>
-                              <AuthorWedding>{testimonial.wedding}</AuthorWedding>
+                              <AuthorWedding>
+                                {testimonial.wedding}
+                              </AuthorWedding>
                             </AuthorInfo>
                             <TestimonialRating>
-                              {Array.from({ length: testimonial.rating }, (_, i) => (
-                                <FaStar key={i} />
-                              ))}
+                              {Array.from(
+                                { length: testimonial.rating },
+                                (_, i) => (
+                                  <FaStar key={i} />
+                                )
+                              )}
                             </TestimonialRating>
                           </TestimonialAuthor>
                         </TestimonialCard>
@@ -1671,8 +1748,6 @@ const VendorPage = () => {
           }
         });
       })()}
-
-
 
       {/* FAQ Section */}
       <Section id="faq">

@@ -477,12 +477,18 @@ const VendorPortfolio = () => {
     // Priority 1: Use editing vendor data for real-time updates during editing
     if (editingVendor && editingVendor.id === vendorId) {
       vendorData = editingVendor;
-      console.log('VendorPortfolio: Using editing vendor data for real-time updates:', editingVendor);
+      console.log(
+        'VendorPortfolio: Using editing vendor data for real-time updates:',
+        editingVendor
+      );
     }
     // Priority 2: Use saved vendor data from Redux vendors array
     else if (vendors && vendors.length > 0) {
       vendorData = vendors.find(v => v.id === vendorId);
-      console.log('VendorPortfolio: Using saved vendor data from Redux:', vendorData);
+      console.log(
+        'VendorPortfolio: Using saved vendor data from Redux:',
+        vendorData
+      );
     }
     // Priority 3: Fallback to dummy data
     if (!vendorData) {
@@ -492,7 +498,10 @@ const VendorPortfolio = () => {
 
     if (vendorData) {
       setVendor(vendorData);
-      console.log('VendorPortfolio: Updated vendor data with locationPortfolio:', vendorData.locationPortfolio);
+      console.log(
+        'VendorPortfolio: Updated vendor data with locationPortfolio:',
+        vendorData.locationPortfolio
+      );
     }
     setLoading(false);
   }, [vendorId, vendors, editingVendor]);

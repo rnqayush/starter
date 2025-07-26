@@ -12,7 +12,10 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: ['persist/PERSIST'],
         ignoredActionsPaths: ['payload'],
-        ignoredPaths: ['vendorManagement.editingVendor', 'vendorManagement.originalVendor'],
+        ignoredPaths: [
+          'vendorManagement.editingVendor',
+          'vendorManagement.originalVendor',
+        ],
       },
     }),
 });
