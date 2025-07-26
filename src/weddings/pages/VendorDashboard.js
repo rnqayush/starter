@@ -783,6 +783,7 @@ const VendorDashboard = () => {
     content: '',
     images: [],
     cards: [],
+    visible: true,
   });
   const [showDeleteAccountModal, setShowDeleteAccountModal] = useState(false);
 
