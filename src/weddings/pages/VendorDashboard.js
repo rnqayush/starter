@@ -3292,7 +3292,18 @@ const VendorDashboard = () => {
                   <h3 style={{ margin: 0, color: theme.colors.primary }}>
                     {section.title}
                   </h3>
-                  <div style={{ display: 'flex', gap: theme.spacing.sm }}>
+                  <div style={{ display: 'flex', gap: theme.spacing.sm, alignItems: 'center' }}>
+                    <VisibilityToggleContainer>
+                      <span>{customSectionVisibility[section.id] ? 'Visible' : 'Hidden'}</span>
+                      <ToggleSwitch>
+                        <input
+                          type="checkbox"
+                          checked={customSectionVisibility[section.id] || false}
+                          onChange={() => toggleSectionVisibility(`custom-${section.id}`)}
+                        />
+                        <span></span>
+                      </ToggleSwitch>
+                    </VisibilityToggleContainer>
                     <ActionButton
                       onClick={() => openCustomSectionModal(section)}
                     >
@@ -3306,6 +3317,12 @@ const VendorDashboard = () => {
                           s => s.id !== section.id
                         );
                         setCustomSections(updatedSections);
+                        // Remove from visibility state
+                        setCustomSectionVisibility(prev => {
+                          const newVisibility = { ...prev };
+                          delete newVisibility[section.id];
+                          return newVisibility;
+                        });
                         trackSectionChange('custom-sections');
                       }}
                     >
