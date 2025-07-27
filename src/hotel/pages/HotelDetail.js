@@ -63,7 +63,6 @@ const HeroBanner = styled.section.withConfig({
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     height: 100vh;
-    padding-top: 60px;
     background-attachment: scroll;
     background-position: center center;
 
