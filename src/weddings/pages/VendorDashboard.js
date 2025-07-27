@@ -1419,7 +1419,7 @@ const VendorDashboard = () => {
       });
 
       console.log('Saving changes...');
-      dispatch({ type: 'vendorManagement/saveChanges' });
+      dispatch(saveVendorChanges());
 
       setSaved(false);
       alert('All changes published to live vendor page successfully!');
