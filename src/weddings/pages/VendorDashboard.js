@@ -1583,7 +1583,7 @@ const VendorDashboard = () => {
       setCustomSectionVisibility(originalCustomVisibility);
 
       // Discard changes in Redux
-      dispatch(discardChanges());
+      dispatch(discardVendorChanges());
       setSaved(false);
       setChangedSections(new Set());
       alert('All changes discarded. Form reset to original values.');
