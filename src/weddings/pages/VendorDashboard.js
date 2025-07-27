@@ -3019,7 +3019,7 @@ const VendorDashboard = () => {
                   <input
                     type="checkbox"
                     checked={sectionVisibility['testimonials']}
-                    onChange={() => toggleSectionVisibility('testimonials')}
+                    onChange={() => handleSectionVisibilityToggle('testimonials')}
                   />
                   <span></span>
                 </ToggleSwitch>
