@@ -2860,6 +2860,48 @@ const BuisnessAdminDashboard = () => {
               </VisibilityToggleContainer>
             </SectionHeader>
 
+            {/* Section UI Content Editing */}
+            <div style={{ marginBottom: theme.spacing.xl, padding: theme.spacing.lg, background: theme.colors.gray50, borderRadius: theme.borderRadius.md }}>
+              <h3 style={{ marginBottom: theme.spacing.md, color: theme.colors.gray800 }}>Section Text & Labels</h3>
+              <FormGrid>
+                <FormGroup>
+                  <FormLabel>Section Title</FormLabel>
+                  <FormInput
+                    value={uiContentData.sections?.testimonials?.title || ''}
+                    onChange={e => {
+                      setUiContentData(prev => ({
+                        ...prev,
+                        sections: {
+                          ...prev.sections,
+                          testimonials: { ...prev.sections?.testimonials, title: e.target.value }
+                        }
+                      }));
+                      trackSectionChange('testimonials');
+                    }}
+                    placeholder="What Our Clients Say"
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <FormLabel>Section Subtitle</FormLabel>
+                  <FormTextarea
+                    value={uiContentData.sections?.testimonials?.subtitle || ''}
+                    onChange={e => {
+                      setUiContentData(prev => ({
+                        ...prev,
+                        sections: {
+                          ...prev.sections,
+                          testimonials: { ...prev.sections?.testimonials, subtitle: e.target.value }
+                        }
+                      }));
+                      trackSectionChange('testimonials');
+                    }}
+                    placeholder="Don't just take our word for it..."
+                    rows={3}
+                  />
+                </FormGroup>
+              </FormGrid>
+            </div>
+
             <AddButton onClick={addTestimonial}>
               <FaPlus />
               Add Testimonial
