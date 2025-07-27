@@ -1284,7 +1284,7 @@ const VendorDashboard = () => {
       setSectionVisibility(initialVisibility);
     }
     setLoading(false);
-  }, [vendorId, dispatch]);
+  }, [vendorId, dispatch, vendors]);
 
   // Handle Save Changes - saves to editing state for real-time preview
   const handleSaveChanges = () => {
