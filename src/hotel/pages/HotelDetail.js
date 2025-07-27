@@ -778,11 +778,11 @@ const AmenitiesSection = styled.div`
 const AmenitiesGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: ${theme.spacing.xl};
+  gap: calc(${theme.spacing.xl} * 1.5);
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     grid-template-columns: 1fr;
-    gap: ${theme.spacing.xl};
+    gap: calc(${theme.spacing.xl} * 1.3);
   }
 `;
 
