@@ -2096,18 +2096,31 @@ const BusinessWebsitePage = () => {
       {/* Contact Section */}
       <Section id="contact" background={theme.colors.gray50}>
         <SectionContainer>
-          <SectionTitle>Get In Touch</SectionTitle>
+          <SectionTitle>{content.contact?.title || 'Get In Touch'}</SectionTitle>
           <SectionSubtitle>
-            Ready to get started? Contact us today to schedule a consultation or
-            learn more about our services.
+            {content.contact?.description || 'Ready to get started? Contact us today to schedule a consultation or learn more about our services.'}
           </SectionSubtitle>
           <ContactGrid>
             <ContactForm primaryColor={businessData.primaryColor}>
-              <input type="text" placeholder="Your Name" required />
-              <input type="email" placeholder="Your Email" required />
-              <input type="tel" placeholder="Your Phone" />
-              <textarea placeholder="Your Message" required></textarea>
-              <button type="submit">Send Message</button>
+              <input
+                type="text"
+                placeholder={content.ui?.contactForm?.placeholders?.name || 'Your Name'}
+                required
+              />
+              <input
+                type="email"
+                placeholder={content.ui?.contactForm?.placeholders?.email || 'Your Email'}
+                required
+              />
+              <input
+                type="tel"
+                placeholder={content.ui?.contactForm?.placeholders?.phone || 'Your Phone'}
+              />
+              <textarea
+                placeholder={content.ui?.contactForm?.placeholders?.message || 'Your Message'}
+                required
+              ></textarea>
+              <button type="submit">{content.ui?.buttons?.sendMessage || 'Send Message'}</button>
             </ContactForm>
 
             <ContactInfo primaryColor={businessData.primaryColor}>
