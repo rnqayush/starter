@@ -1689,6 +1689,8 @@ const VendorDashboard = () => {
       imageFile: null,
     };
     setServicesData(prev => [...prev, newService]);
+    // Track section change to enable save button
+    trackSectionChange('services-offered');
   };
 
   const updateService = (id, field, value) => {
