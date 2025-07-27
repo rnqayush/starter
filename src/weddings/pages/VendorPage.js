@@ -1886,9 +1886,10 @@ const VendorPage = () => {
                   key="about"
                   id="about"
                   backgroundColor={vendor.theme?.backgroundColor}
+                  animated
                 >
                   <Container>
-                    <SectionTitle>About Us</SectionTitle>
+                    <SectionTitle className="animate-on-scroll">About Us</SectionTitle>
                     <AboutGrid>
                       <AboutContent>
                         <AboutText>
@@ -1954,16 +1955,16 @@ const VendorPage = () => {
 
             case 'services-offered':
               return (
-                <Section key="services" id="services">
+                <Section key="services" id="services" animated>
                   <Container>
-                    <SectionTitle>Services Offered</SectionTitle>
+                    <SectionTitle className="animate-on-scroll">Services Offered</SectionTitle>
                     <SectionSubtitle>
                       We provide comprehensive wedding services to make your
                       special day perfect
                     </SectionSubtitle>
                     <ServicesGrid>
                       {vendor.services?.map((service, index) => (
-                        <ServiceCard key={index}>
+                        <ServiceCard key={index} className="stagger-child animate-on-scroll">
                           <ServiceImage
                             src={service.image}
                             alt={service.name}
@@ -2137,6 +2138,7 @@ const VendorPage = () => {
                             key={index}
                             src={image}
                             alt={`${vendor.name} ${activeGalleryTab} ${index + 1}`}
+                            className="stagger-child animate-on-scroll"
                           />
                         ));
                       })()}
@@ -2147,15 +2149,15 @@ const VendorPage = () => {
 
             case 'packages-pricing':
               return vendor.packages ? (
-                <Section key="packages" id="packages">
+                <Section key="packages" id="packages" animated>
                   <Container>
-                    <SectionTitle>Packages & Pricing</SectionTitle>
+                    <SectionTitle className="animate-on-scroll">Packages & Pricing</SectionTitle>
                     <SectionSubtitle>
                       Choose the perfect package for your wedding celebration
                     </SectionSubtitle>
                     <PackagesGrid>
                       {vendor.packages.map((pkg, index) => (
-                        <PackageCard key={index} primaryColor={primaryColor}>
+                        <PackageCard key={index} primaryColor={primaryColor} className="stagger-child animate-on-scroll">
                           <PackageName>{pkg.name}</PackageName>
                           <PackagePrice primaryColor={primaryColor}>
                             {pkg.price}
@@ -2192,9 +2194,10 @@ const VendorPage = () => {
                   key="testimonials"
                   id="testimonials"
                   backgroundColor={vendor.theme?.backgroundColor}
+                  animated
                 >
                   <Container>
-                    <SectionTitle>What Our Couples Say</SectionTitle>
+                    <SectionTitle className="animate-on-scroll">What Our Couples Say</SectionTitle>
                     <SectionSubtitle>
                       Real testimonials from couples whose special day we helped
                       create
@@ -2204,6 +2207,7 @@ const VendorPage = () => {
                         <TestimonialCard
                           key={index}
                           primaryColor={primaryColor}
+                          className="stagger-child animate-on-scroll"
                         >
                           <TestimonialText>{testimonial.text}</TestimonialText>
                           <TestimonialAuthor>
@@ -2236,15 +2240,15 @@ const VendorPage = () => {
       })()}
 
       {/* FAQ Section */}
-      <Section id="faq">
+      <Section id="faq" animated>
         <Container>
-          <SectionTitle>Frequently Asked Questions</SectionTitle>
+          <SectionTitle className="animate-on-scroll">Frequently Asked Questions</SectionTitle>
           <SectionSubtitle>
             Find answers to common questions about our services
           </SectionSubtitle>
           <FaqContainer>
             {vendor.faq?.map((item, index) => (
-              <FaqItem key={index}>
+              <FaqItem key={index} className="stagger-child animate-on-scroll">
                 <FaqQuestion onClick={() => toggleFaq(index)}>
                   {item.question}
                   {openFaq === index ? <FaChevronUp /> : <FaChevronDown />}
@@ -2257,14 +2261,14 @@ const VendorPage = () => {
       </Section>
 
       {/* Contact Section */}
-      <Section id="contact" backgroundColor={theme.colors.gray50}>
+      <Section id="contact" backgroundColor={theme.colors.gray50} animated>
         <Container>
-          <SectionTitle>Get In Touch</SectionTitle>
+          <SectionTitle className="animate-on-scroll">Get In Touch</SectionTitle>
           <SectionSubtitle>
             Ready to start planning your dream wedding? Send us a message!
           </SectionSubtitle>
           <ContactGrid>
-            <ContactForm onSubmit={handleContactSubmit}>
+            <ContactForm onSubmit={handleContactSubmit} className="animate-on-scroll">
               <FormGroup>
                 <FormLabel>Name *</FormLabel>
                 <FormInput
@@ -2322,7 +2326,7 @@ const VendorPage = () => {
               </SubmitButton>
             </ContactForm>
 
-            <ContactInfo>
+            <ContactInfo className="animate-on-scroll">
               <ContactItem>
                 <ContactIcon primaryColor={primaryColor}>
                   <FaPhoneAlt />
