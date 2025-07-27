@@ -1881,6 +1881,83 @@ const BuisnessAdminDashboard = () => {
                   </div>
                 )}
               </FormGroup>
+
+              {/* Statistics Section within About Us */}
+              <FormGroup style={{ gridColumn: '1 / -1', marginTop: theme.spacing.xl }}>
+                <h3 style={{ marginBottom: theme.spacing.lg, color: theme.colors.gray800, borderTop: `1px solid ${theme.colors.gray200}`, paddingTop: theme.spacing.lg }}>Statistics</h3>
+                <p style={{ marginBottom: theme.spacing.md, color: theme.colors.gray600 }}>
+                  Edit the statistics displayed in the about section of your website.
+                </p>
+
+                <AddButton
+                  onClick={() => {
+                    const newStat = {
+                      number: '0',
+                      label: 'New Stat',
+                      id: Date.now()
+                    };
+                    setStatisticsData(prev => [...prev, newStat]);
+                    trackSectionChange('about-us');
+                  }}
+                  style={{ marginBottom: theme.spacing.lg }}
+                >
+                  <FaPlus />
+                  Add Statistic
+                </AddButton>
+
+                <ListContainer>
+                  {statisticsData.map((stat, index) => (
+                    <ListItem key={stat.id || index}>
+                      <div className="item-info">
+                        <FormGrid>
+                          <FormGroup>
+                            <FormLabel>Number/Value</FormLabel>
+                            <FormInput
+                              value={stat.number}
+                              onChange={e => {
+                                setStatisticsData(prev =>
+                                  prev.map((s, i) =>
+                                    i === index ? { ...s, number: e.target.value } : s
+                                  )
+                                );
+                                trackSectionChange('about-us');
+                              }}
+                              placeholder="100+"
+                            />
+                          </FormGroup>
+                          <FormGroup>
+                            <FormLabel>Label</FormLabel>
+                            <FormInput
+                              value={stat.label}
+                              onChange={e => {
+                                setStatisticsData(prev =>
+                                  prev.map((s, i) =>
+                                    i === index ? { ...s, label: e.target.value } : s
+                                  )
+                                );
+                                trackSectionChange('about-us');
+                              }}
+                              placeholder="Happy Clients"
+                            />
+                          </FormGroup>
+                        </FormGrid>
+                      </div>
+                      <div className="item-actions">
+                        <ItemButton
+                          variant="danger"
+                          onClick={() => {
+                            setStatisticsData(prev => prev.filter((_, i) => i !== index));
+                            trackSectionChange('about-us');
+                          }}
+                        >
+                          <FaTrash />
+                          Delete
+                        </ItemButton>
+                      </div>
+                    </ListItem>
+                  ))}
+                </ListContainer>
+              </FormGroup>
             </FormGrid>
           </ContentSection>
         );
