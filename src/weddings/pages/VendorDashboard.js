@@ -1382,6 +1382,17 @@ const VendorDashboard = () => {
           });
           return cleanGallery;
         })(),
+        sectionOrder: completeSectionOrder.length > 0 ? completeSectionOrder : sectionOrder,
+        customSections: customSections,
+        sectionVisibility: sectionVisibility,
+        customSectionVisibility: customSectionVisibility,
+        // Footer data
+        footerColumns: footerData.columns,
+        footerCopyright: footerData.copyrightText,
+        footerBackgroundColor: footerData.backgroundColor,
+        footerTextColor: footerData.textColor,
+        footerDescription: footerData.description,
+        socialLinks: footerData.socialLinks,
       };
 
       // Update the editing vendor in Redux for real-time preview
