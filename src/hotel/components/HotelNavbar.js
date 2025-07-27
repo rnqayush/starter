@@ -14,12 +14,60 @@ import {
 import { theme, media } from '../../styles/GlobalStyle';
 import { getHotelByIdOrSlug } from '../../DummyData';
 
-const NavbarContainer = styled.nav`
-  background: ${theme.colors.white};
-  box-shadow: ${theme.shadows.md};
-  position: sticky;
+const NavbarContainer = styled.nav.withConfig({
+  shouldForwardProp: prop => prop !== 'isScrolled',
+})`
+  background: ${props => props.isScrolled
+    ? 'rgba(255, 255, 255, 0.95)'
+    : 'rgba(255, 255, 255, 0.1)'};
+  backdrop-filter: blur(12px);
+  border-bottom: ${props => props.isScrolled
+    ? '1px solid rgba(0, 0, 0, 0.1)'
+    : '1px solid rgba(255, 255, 255, 0.2)'};
+  box-shadow: ${props => props.isScrolled
+    ? '0 2px 20px rgba(0, 0, 0, 0.1)'
+    : 'none'};
+  position: fixed;
   top: 0;
-  z-index: 100;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+
+  /* Ensure text is readable on both backgrounds */
+  ${props => !props.isScrolled && `
+    .nav-text {
+      color: ${theme.colors.white};
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    }
+
+    .nav-link {
+      color: ${theme.colors.white};
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+
+      &:hover {
+        color: rgba(255, 255, 255, 0.8);
+        background: rgba(255, 255, 255, 0.1);
+      }
+    }
+  `}
+
+  ${props => props.isScrolled && `
+    .nav-text {
+      color: ${theme.colors.gray900};
+      text-shadow: none;
+    }
+
+    .nav-link {
+      color: ${theme.colors.gray700};
+      text-shadow: none;
+
+      &:hover {
+        color: ${theme.colors.primary};
+        background: ${theme.colors.gray50};
+      }
+    }
+  `}
 `;
 
 const NavbarContent = styled.div`
