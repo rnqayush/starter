@@ -2120,6 +2120,48 @@ const BuisnessAdminDashboard = () => {
               </VisibilityToggleContainer>
             </SectionHeader>
 
+            {/* Section UI Content Editing */}
+            <div style={{ marginBottom: theme.spacing.xl, padding: theme.spacing.lg, background: theme.colors.gray50, borderRadius: theme.borderRadius.md }}>
+              <h3 style={{ marginBottom: theme.spacing.md, color: theme.colors.gray800 }}>Section Text & Labels</h3>
+              <FormGrid>
+                <FormGroup>
+                  <FormLabel>Section Title</FormLabel>
+                  <FormInput
+                    value={uiContentData.sections?.team?.title || ''}
+                    onChange={e => {
+                      setUiContentData(prev => ({
+                        ...prev,
+                        sections: {
+                          ...prev.sections,
+                          team: { ...prev.sections?.team, title: e.target.value }
+                        }
+                      }));
+                      trackSectionChange('team');
+                    }}
+                    placeholder="Meet Our Team"
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <FormLabel>Section Subtitle</FormLabel>
+                  <FormTextarea
+                    value={uiContentData.sections?.team?.subtitle || ''}
+                    onChange={e => {
+                      setUiContentData(prev => ({
+                        ...prev,
+                        sections: {
+                          ...prev.sections,
+                          team: { ...prev.sections?.team, subtitle: e.target.value }
+                        }
+                      }));
+                      trackSectionChange('team');
+                    }}
+                    placeholder="Our experienced professionals..."
+                    rows={3}
+                  />
+                </FormGroup>
+              </FormGrid>
+            </div>
+
             <AddButton onClick={addTeamMember}>
               <FaPlus />
               Add Team Member
@@ -3907,7 +3949,7 @@ const BuisnessAdminDashboard = () => {
                     testimonials: '💬',
                     reviews: '⭐',
                     faq: '❓',
-                    'business-hours': '����',
+                    'business-hours': '🕐',
                     contact: '📞',
                   }[sectionId] || '📋';
 
