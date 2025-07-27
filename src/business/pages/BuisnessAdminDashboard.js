@@ -792,6 +792,13 @@ const BuisnessAdminDashboard = () => {
   });
   const [customSectionsData, setCustomSectionsData] = useState([]);
   const [sectionOrderData, setSectionOrderData] = useState([]);
+  const [uiContentData, setUiContentData] = useState({
+    sections: {},
+    buttons: {},
+    contactForm: { placeholders: {} },
+    businessHours: {}
+  });
+  const [statisticsData, setStatisticsData] = useState([]);
 
   // Section visibility state
   const [sectionVisibility, setSectionVisibility] = useState({
