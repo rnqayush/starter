@@ -53,11 +53,11 @@ export const fetchHotels = async (filters = {}) => {
 export const fetchHotelById = async identifier => {
   await delay(400);
 
-  const hotel = hotelData.hotels.find(
-    h => h.id === parseInt(identifier) || h.slug === identifier
-  );
+  // With single hotel object, check if it matches
+  const hotel = hotelData.data.hotel;
+  const matches = hotel.id === parseInt(identifier) || hotel.slug === identifier;
 
-  if (!hotel) {
+  if (!matches) {
     return createApiResponse(null, false, 'Hotel not found');
   }
 
@@ -68,9 +68,8 @@ export const fetchHotelById = async identifier => {
 export const fetchHotelSections = async hotelId => {
   await delay(200);
 
-  const hotel = hotelData.hotels.find(h => h.id === parseInt(hotelId));
-
-  if (!hotel) {
+  const hotel = hotelData.data.hotel;
+  if (hotel.id !== parseInt(hotelId)) {
     return createApiResponse(null, false, 'Hotel not found');
   }
 
@@ -85,9 +84,9 @@ export const fetchHotelSections = async hotelId => {
 export const fetchOwnerHotels = async ownerId => {
   await delay(300);
 
-  const ownerHotels = hotelData.hotels.filter(
-    hotel => hotel.ownerId === ownerId
-  );
+  // With single hotel object, check if owner matches
+  const hotel = hotelData.data.hotel;
+  const ownerHotels = hotel.ownerId === ownerId ? [hotel] : [];
 
   return createApiResponse(ownerHotels);
 };
@@ -96,9 +95,8 @@ export const fetchOwnerHotels = async ownerId => {
 export const fetchHotelRooms = async hotelId => {
   await delay(250);
 
-  const hotel = hotelData.hotels.find(h => h.id === parseInt(hotelId));
-
-  if (!hotel) {
+  const hotel = hotelData.data.hotel;
+  if (hotel.id !== parseInt(hotelId)) {
     return createApiResponse(null, false, 'Hotel not found');
   }
 
@@ -109,9 +107,8 @@ export const fetchHotelRooms = async hotelId => {
 export const fetchRoomById = async (hotelId, roomId) => {
   await delay(200);
 
-  const hotel = hotelData.hotels.find(h => h.id === parseInt(hotelId));
-
-  if (!hotel) {
+  const hotel = hotelData.data.hotel;
+  if (hotel.id !== parseInt(hotelId)) {
     return createApiResponse(null, false, 'Hotel not found');
   }
 
