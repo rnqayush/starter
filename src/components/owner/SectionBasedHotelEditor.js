@@ -1421,6 +1421,22 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
       preview: `${editingHotel.contactFields?.length || 4} contact fields`,
       isVisible: sectionVisibility.contact,
     },
+    testimonials: {
+      id: 'testimonials',
+      title: 'Guest Reviews',
+      description: 'Manage customer reviews and testimonials',
+      icon: FaQuoteLeft,
+      preview: `${editingHotel.sections?.testimonials?.reviews?.length || 2} reviews`,
+      isVisible: sectionVisibility.testimonials,
+    },
+    footer: {
+      id: 'footer',
+      title: 'Footer Information',
+      description: 'Update support contact and social media links',
+      icon: FaMapMarkerAlt,
+      preview: `Support contact & ${editingHotel.sections?.footer?.socialLinks?.length || 4} social links`,
+      isVisible: sectionVisibility.footer,
+    },
   };
 
   // Create ordered sections array based on sectionOrder (excluding hero as it's handled separately)
