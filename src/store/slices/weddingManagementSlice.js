@@ -561,6 +561,7 @@ export const {
   discardVendorChanges,
   initializeVendor,
   clearEditingVendor,
+  loadVendorFromJson,
 
   // Section visibility
   toggleSectionVisibility,
