@@ -5,7 +5,7 @@ import HotelNavbar from '../components/HotelNavbar';
 import HotelFooter from '../components/HotelFooter';
 import HotelCard from '../components/HotelCard';
 import SearchForm from '../components/SearchForm';
-import { hotels } from '../../DummyData/hotels';
+import { hotels } from '../../DummyData';
 
 const PageContainer = styled.div`
   min-height: 100vh;
