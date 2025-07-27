@@ -714,7 +714,7 @@ const WeddingHome = () => {
 
   const loadVendorsForLocation = useCallback(location => {
     const vendorsWithDistance = updateVendorsWithDistance(
-      weddingVendors,
+      getStaticWeddingVendors(),
       location
     );
     setVendors(vendorsWithDistance);
