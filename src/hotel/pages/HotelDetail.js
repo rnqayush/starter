@@ -582,13 +582,13 @@ const Description = styled.p`
 const FeaturesGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: ${theme.spacing.xl};
-  margin: ${theme.spacing.xxl} 0;
+  gap: calc(${theme.spacing.xl} * 1.5);
+  margin: calc(${theme.spacing.xxl} * 1.5) 0;
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     grid-template-columns: 1fr;
-    gap: ${theme.spacing.lg};
-    margin: ${theme.spacing.xl} 0;
+    gap: calc(${theme.spacing.lg} * 1.3);
+    margin: calc(${theme.spacing.xl} * 1.3) 0;
   }
 `;
 
