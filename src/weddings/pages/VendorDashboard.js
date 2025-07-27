@@ -1351,18 +1351,9 @@ const VendorDashboard = () => {
       dispatch(updateVendorField({ field: 'aboutUs', value: cleanAboutUs }));
 
       console.log('Dispatching array updates...');
-      dispatch({
-        type: 'vendorManagement/updateServices',
-        payload: cleanServices,
-      });
-      dispatch({
-        type: 'vendorManagement/updateRecentWork',
-        payload: cleanRecentWork,
-      });
-      dispatch({
-        type: 'vendorManagement/updateTestimonials',
-        payload: cleanTestimonials,
-      });
+      dispatch(updateServices(cleanServices));
+      dispatch(updateRecentWork(cleanRecentWork));
+      dispatch(updateTestimonials(cleanTestimonials));
       dispatch({
         type: 'vendorManagement/updatePackages',
         payload: cleanPackages,
