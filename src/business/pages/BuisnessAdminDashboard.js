@@ -974,6 +974,18 @@ const BuisnessAdminDashboard = () => {
       section: 'Content Management',
     },
     {
+      id: 'ui-content',
+      label: 'UI Text & Labels',
+      icon: FaTextHeight,
+      section: 'Content Management',
+    },
+    {
+      id: 'statistics',
+      label: 'Statistics',
+      icon: FaChartBar,
+      section: 'Content Management',
+    },
+    {
       id: 'custom-sections',
       label: 'Custom Sections',
       icon: FaPlus,
