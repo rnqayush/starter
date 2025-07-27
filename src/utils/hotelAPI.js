@@ -234,7 +234,8 @@ export const getStaticAmenitiesData = () => hotelData.data.amenitiesList;
 
 // For owner dashboard - get hotels by owner ID
 export const getOwnerHotels = ownerId => {
-  return hotelData.hotels.filter(hotel => hotel.ownerId === ownerId);
+  const hotel = hotelData.data.hotel;
+  return hotel.ownerId === ownerId ? [hotel] : [];
 };
 
 // Default export
