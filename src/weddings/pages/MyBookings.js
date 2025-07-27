@@ -504,7 +504,7 @@ const MyBookings = () => {
   }, [bookings, searchTerm, statusFilter, sortBy]);
 
   const getVendorDetails = vendorId => {
-    return weddingVendors.find(vendor => vendor.id === vendorId);
+    return getStaticWeddingVendors().find(vendor => vendor.id === vendorId);
   };
 
   const getStatusIcon = status => {
