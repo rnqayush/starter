@@ -858,10 +858,7 @@ const HotelDetail = () => {
   useEffect(() => {
     if (hotelsFromStore && hotel) {
       const updatedHotel = hotelsFromStore.find(h => h.id === hotel.id);
-      if (
-        updatedHotel &&
-        JSON.stringify(updatedHotel) !== JSON.stringify(hotel)
-      ) {
+      if (updatedHotel) {
         setHotel(updatedHotel);
       }
     }
