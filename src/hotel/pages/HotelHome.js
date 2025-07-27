@@ -172,7 +172,9 @@ const ClearButton = styled.button`
 
 const HotelHome = () => {
   // Get live hotel data from Redux, fallback to static data
-  const liveHotels = useSelector(state => state.hotelManagement?.liveHotels || fallbackHotels);
+  const liveHotels = useSelector(
+    state => state.hotelManagement?.liveHotels || fallbackHotels
+  );
 
   const [filteredHotels, setFilteredHotels] = useState(liveHotels);
   const [searchCriteria, setSearchCriteria] = useState(null);

@@ -841,7 +841,10 @@ const HotelDetail = () => {
           const hotelData = hotelJsonData.data.hotel;
 
           // Check if this is the hotel we're looking for
-          if (hotelData.slug === slugParam || hotelData.id === parseInt(slugParam)) {
+          if (
+            hotelData.slug === slugParam ||
+            hotelData.id === parseInt(slugParam)
+          ) {
             foundHotel = hotelData;
 
             // Dispatch to Redux to store the hotel data
@@ -851,7 +854,12 @@ const HotelDetail = () => {
         }
 
         if (foundHotel) {
-          console.log('Setting hotel:', foundHotel.name, 'Sections:', Object.keys(foundHotel.sections || {}));
+          console.log(
+            'Setting hotel:',
+            foundHotel.name,
+            'Sections:',
+            Object.keys(foundHotel.sections || {})
+          );
         }
         setHotel(foundHotel);
       } catch (error) {
@@ -869,12 +877,18 @@ const HotelDetail = () => {
   useEffect(() => {
     console.log('Redux state changed, checking for hotel updates...');
     if (hotelsFromStore && hotelsFromStore.length > 0) {
-      const updatedHotel = hotelsFromStore.find(h =>
-        h.slug === slugParam || h.id === parseInt(slugParam)
+      const updatedHotel = hotelsFromStore.find(
+        h => h.slug === slugParam || h.id === parseInt(slugParam)
       );
       if (updatedHotel) {
-        console.log('Found updated hotel in Redux, updating display:', updatedHotel.name);
-        console.log('Updated hotel sections:', Object.keys(updatedHotel.sections || {}));
+        console.log(
+          'Found updated hotel in Redux, updating display:',
+          updatedHotel.name
+        );
+        console.log(
+          'Updated hotel sections:',
+          Object.keys(updatedHotel.sections || {})
+        );
         setHotel(updatedHotel);
       }
     }
@@ -1204,7 +1218,8 @@ const HotelDetail = () => {
                         <div
                           style={{
                             display: 'grid',
-                            gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
+                            gridTemplateColumns:
+                              'repeat(auto-fit, minmax(350px, 1fr))',
                             gap: theme.spacing.xl,
                             marginBottom: theme.spacing.xl,
                           }}

@@ -495,7 +495,9 @@ const RoomDetail = () => {
 
         // Try to get hotel from Redux store first
         if (hotels && hotels.length > 0) {
-          foundHotel = hotels.find(h => h.slug === slug || h.id === parseInt(slug));
+          foundHotel = hotels.find(
+            h => h.slug === slug || h.id === parseInt(slug)
+          );
         }
 
         // Fallback to API if not found in Redux
@@ -508,7 +510,9 @@ const RoomDetail = () => {
 
         if (foundHotel) {
           // Find room in hotel data
-          const foundRoom = foundHotel.rooms?.find(r => r.id === parseInt(roomId));
+          const foundRoom = foundHotel.rooms?.find(
+            r => r.id === parseInt(roomId)
+          );
 
           if (foundRoom) {
             setRoom(foundRoom);

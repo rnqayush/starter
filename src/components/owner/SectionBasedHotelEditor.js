@@ -714,7 +714,7 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
     pendingChanges,
     lastSaveTime,
     lastPublishTime,
-    liveHotels
+    liveHotels,
   } = useSelector(state => state.hotelManagement);
 
   const hasPendingChanges = useSelector(state =>
@@ -747,7 +747,9 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
   useEffect(() => {
     if (slug && !editingHotel) {
       // First try to find hotel in Redux state
-      let hotelData = liveHotels?.find(h => h.slug === slug || h.id === parseInt(slug));
+      let hotelData = liveHotels?.find(
+        h => h.slug === slug || h.id === parseInt(slug)
+      );
 
       // Fallback to static data if not found in Redux
       if (!hotelData) {
@@ -813,36 +815,71 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
     if (editingHotel) {
       setTempData({
         name: editingHotel.name || '',
-        heroSubtitle: editingHotel.sections?.hero?.subtitle || editingHotel.heroSubtitle || editingHotel.sections?.hero?.subtitle || `Experience luxury hospitality in the heart of ${editingHotel.city || 'your city'}`,
-        description: editingHotel.sections?.about?.content || editingHotel.description || '',
-        image: editingHotel.sections?.hero?.backgroundImage || editingHotel.image || '',
-        gallery: editingHotel.sections?.gallery?.images || editingHotel.gallery || (editingHotel.images ? editingHotel.images.map((img, index) => ({
-          title: ['Hotel Exterior', 'Luxury Rooms', 'Dining Experience'][index] || `Image ${index + 1}`,
-          image: img
-        })) : []),
+        heroSubtitle:
+          editingHotel.sections?.hero?.subtitle ||
+          editingHotel.heroSubtitle ||
+          editingHotel.sections?.hero?.subtitle ||
+          `Experience luxury hospitality in the heart of ${editingHotel.city || 'your city'}`,
+        description:
+          editingHotel.sections?.about?.content ||
+          editingHotel.description ||
+          '',
+        image:
+          editingHotel.sections?.hero?.backgroundImage ||
+          editingHotel.image ||
+          '',
+        gallery:
+          editingHotel.sections?.gallery?.images ||
+          editingHotel.gallery ||
+          (editingHotel.images
+            ? editingHotel.images.map((img, index) => ({
+                title:
+                  ['Hotel Exterior', 'Luxury Rooms', 'Dining Experience'][
+                    index
+                  ] || `Image ${index + 1}`,
+                image: img,
+              }))
+            : []),
         amenities: editingHotel.amenities || [],
         address: editingHotel.address || '',
         phone: editingHotel.phone || '',
         email: editingHotel.email || '',
         checkInTime: editingHotel.checkInTime || '3:00 PM',
         checkOutTime: editingHotel.checkOutTime || '11:00 AM',
-        features: editingHotel.sections?.features?.items || editingHotel.features || [],
-        amenityCategories: editingHotel.sections?.amenities?.categories || editingHotel.amenityCategories || [],
-        contactFields: editingHotel.sections?.contact?.info || editingHotel.contactFields || [
-          { label: 'Address', value: editingHotel.address || '', icon: 'FaMapMarkerAlt' },
-          { label: 'Phone', value: editingHotel.phone || '', icon: 'FaPhone' },
-          { label: 'Email', value: editingHotel.email || '', icon: 'FaEnvelope' },
-          {
-            label: 'Check-in / Check-out',
-            value: `${editingHotel.checkInTime || '3:00 PM'} / ${editingHotel.checkOutTime || '11:00 AM'}`,
-            icon: 'FaClock'
-          },
-        ],
+        features:
+          editingHotel.sections?.features?.items || editingHotel.features || [],
+        amenityCategories:
+          editingHotel.sections?.amenities?.categories ||
+          editingHotel.amenityCategories ||
+          [],
+        contactFields: editingHotel.sections?.contact?.info ||
+          editingHotel.contactFields || [
+            {
+              label: 'Address',
+              value: editingHotel.address || '',
+              icon: 'FaMapMarkerAlt',
+            },
+            {
+              label: 'Phone',
+              value: editingHotel.phone || '',
+              icon: 'FaPhone',
+            },
+            {
+              label: 'Email',
+              value: editingHotel.email || '',
+              icon: 'FaEnvelope',
+            },
+            {
+              label: 'Check-in / Check-out',
+              value: `${editingHotel.checkInTime || '3:00 PM'} / ${editingHotel.checkOutTime || '11:00 AM'}`,
+              icon: 'FaClock',
+            },
+          ],
         testimonials: editingHotel.sections?.testimonials?.reviews || [],
         footerSupportContact: editingHotel.sections?.footer?.supportContact || {
           phone: '',
           email: '',
-          address: ''
+          address: '',
         },
         footerSocialLinks: editingHotel.sections?.footer?.socialLinks || [],
       });
@@ -868,74 +905,94 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
             dispatch(updateHotelField({ field: 'name', value: tempData[key] }));
             break;
           case 'heroSubtitle':
-            dispatch(updateHotelField({
-              field: 'subtitle',
-              value: tempData[key],
-              section: 'hero'
-            }));
+            dispatch(
+              updateHotelField({
+                field: 'subtitle',
+                value: tempData[key],
+                section: 'hero',
+              })
+            );
             break;
           case 'image':
-            dispatch(updateHotelField({
-              field: 'backgroundImage',
-              value: tempData[key],
-              section: 'hero'
-            }));
+            dispatch(
+              updateHotelField({
+                field: 'backgroundImage',
+                value: tempData[key],
+                section: 'hero',
+              })
+            );
             break;
           case 'description':
-            dispatch(updateHotelField({
-              field: 'content',
-              value: tempData[key],
-              section: 'about'
-            }));
+            dispatch(
+              updateHotelField({
+                field: 'content',
+                value: tempData[key],
+                section: 'about',
+              })
+            );
             break;
           case 'gallery':
-            dispatch(updateHotelField({
-              field: 'images',
-              value: tempData[key],
-              section: 'gallery'
-            }));
+            dispatch(
+              updateHotelField({
+                field: 'images',
+                value: tempData[key],
+                section: 'gallery',
+              })
+            );
             break;
           case 'features':
-            dispatch(updateHotelField({
-              field: 'items',
-              value: tempData[key],
-              section: 'features'
-            }));
+            dispatch(
+              updateHotelField({
+                field: 'items',
+                value: tempData[key],
+                section: 'features',
+              })
+            );
             break;
           case 'amenityCategories':
-            dispatch(updateHotelField({
-              field: 'categories',
-              value: tempData[key],
-              section: 'amenities'
-            }));
+            dispatch(
+              updateHotelField({
+                field: 'categories',
+                value: tempData[key],
+                section: 'amenities',
+              })
+            );
             break;
           case 'contactFields':
-            dispatch(updateHotelField({
-              field: 'info',
-              value: tempData[key],
-              section: 'contact'
-            }));
+            dispatch(
+              updateHotelField({
+                field: 'info',
+                value: tempData[key],
+                section: 'contact',
+              })
+            );
             break;
           case 'testimonials':
-            dispatch(updateHotelField({
-              field: 'reviews',
-              value: tempData[key],
-              section: 'testimonials'
-            }));
+            dispatch(
+              updateHotelField({
+                field: 'reviews',
+                value: tempData[key],
+                section: 'testimonials',
+              })
+            );
             break;
           case 'footerSupportContact':
-            dispatch(updateHotelField({
-              field: 'supportContact',
-              value: tempData[key],
-              section: 'footer'
-            }));
+            dispatch(
+              updateHotelField({
+                field: 'supportContact',
+                value: tempData[key],
+                section: 'footer',
+              })
+            );
             break;
           case 'footerSocialLinks':
-            dispatch(updateHotelField({
-              field: 'socialLinks',
-              value: tempData[key],
-              section: 'footer'
-            }));
+            dispatch(
+              updateHotelField({
+                field: 'socialLinks',
+                value: tempData[key],
+                section: 'footer',
+              })
+            );
             break;
           default:
             dispatch(updateHotelField({ field: key, value: tempData[key] }));
@@ -1109,13 +1166,13 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
       rating: 5,
       comment: '',
       verified: true,
-      date: new Date().toISOString().split('T')[0]
+      date: new Date().toISOString().split('T')[0],
     };
     const newTestimonials = [...(tempData.testimonials || []), newTestimonial];
     updateTempData('testimonials', newTestimonials);
   };
 
-  const removeTestimonial = (index) => {
+  const removeTestimonial = index => {
     const newTestimonials = tempData.testimonials.filter((_, i) => i !== index);
     updateTempData('testimonials', newTestimonials);
   };
@@ -1135,14 +1192,16 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
     const newLink = {
       platform: '',
       url: '',
-      icon: 'FaGlobe'
+      icon: 'FaGlobe',
     };
     const newSocialLinks = [...(tempData.footerSocialLinks || []), newLink];
     updateTempData('footerSocialLinks', newSocialLinks);
   };
 
-  const removeSocialLink = (index) => {
-    const newSocialLinks = tempData.footerSocialLinks.filter((_, i) => i !== index);
+  const removeSocialLink = index => {
+    const newSocialLinks = tempData.footerSocialLinks.filter(
+      (_, i) => i !== index
+    );
     updateTempData('footerSocialLinks', newSocialLinks);
   };
 
@@ -2090,7 +2149,8 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
                       marginBottom: theme.spacing.md,
                     }}
                   >
-                    Manage customer reviews and testimonials displayed on your hotel page.
+                    Manage customer reviews and testimonials displayed on your
+                    hotel page.
                   </p>
                   {tempData.testimonials?.map((review, index) => (
                     <div
@@ -2112,13 +2172,25 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
                         <div style={{ flex: 1 }}>
                           <Input
                             value={review.guestName || ''}
-                            onChange={e => updateTestimonial(index, 'guestName', e.target.value)}
+                            onChange={e =>
+                              updateTestimonial(
+                                index,
+                                'guestName',
+                                e.target.value
+                              )
+                            }
                             placeholder="Guest name"
                             style={{ marginBottom: theme.spacing.sm }}
                           />
                           <Input
                             value={review.location || ''}
-                            onChange={e => updateTestimonial(index, 'location', e.target.value)}
+                            onChange={e =>
+                              updateTestimonial(
+                                index,
+                                'location',
+                                e.target.value
+                              )
+                            }
                             placeholder="Guest location"
                             style={{ marginBottom: theme.spacing.sm }}
                           />
@@ -2127,13 +2199,25 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
                             min="1"
                             max="5"
                             value={review.rating || 5}
-                            onChange={e => updateTestimonial(index, 'rating', parseInt(e.target.value))}
+                            onChange={e =>
+                              updateTestimonial(
+                                index,
+                                'rating',
+                                parseInt(e.target.value)
+                              )
+                            }
                             placeholder="Rating (1-5)"
                             style={{ marginBottom: theme.spacing.sm }}
                           />
                           <TextArea
                             value={review.comment || ''}
-                            onChange={e => updateTestimonial(index, 'comment', e.target.value)}
+                            onChange={e =>
+                              updateTestimonial(
+                                index,
+                                'comment',
+                                e.target.value
+                              )
+                            }
                             placeholder="Review comment"
                             rows={3}
                           />
@@ -2167,7 +2251,7 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
                       onChange={e =>
                         updateTempData('footerSupportContact', {
                           ...tempData.footerSupportContact,
-                          phone: e.target.value
+                          phone: e.target.value,
                         })
                       }
                       placeholder="Support phone number"
@@ -2178,7 +2262,7 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
                       onChange={e =>
                         updateTempData('footerSupportContact', {
                           ...tempData.footerSupportContact,
-                          email: e.target.value
+                          email: e.target.value,
                         })
                       }
                       placeholder="Support email address"
@@ -2189,7 +2273,7 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
                       onChange={e =>
                         updateTempData('footerSupportContact', {
                           ...tempData.footerSupportContact,
-                          address: e.target.value
+                          address: e.target.value,
                         })
                       }
                       placeholder="Support address"
@@ -2224,9 +2308,12 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
                           <Input
                             value={link.platform || ''}
                             onChange={e =>
-                              updateTempData('footerSocialLinks',
+                              updateTempData(
+                                'footerSocialLinks',
                                 tempData.footerSocialLinks.map((l, i) =>
-                                  i === index ? { ...l, platform: e.target.value } : l
+                                  i === index
+                                    ? { ...l, platform: e.target.value }
+                                    : l
                                 )
                               )
                             }
@@ -2236,34 +2323,44 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
                           <Input
                             value={link.url || ''}
                             onChange={e =>
-                              updateTempData('footerSocialLinks',
+                              updateTempData(
+                                'footerSocialLinks',
                                 tempData.footerSocialLinks.map((l, i) =>
-                                  i === index ? { ...l, url: e.target.value } : l
+                                  i === index
+                                    ? { ...l, url: e.target.value }
+                                    : l
                                 )
                               )
                             }
                             placeholder="Social media URL"
                           />
                         </div>
-                        <RemoveButton onClick={() =>
-                          updateTempData('footerSocialLinks',
-                            tempData.footerSocialLinks.filter((_, i) => i !== index)
-                          )
-                        }>
+                        <RemoveButton
+                          onClick={() =>
+                            updateTempData(
+                              'footerSocialLinks',
+                              tempData.footerSocialLinks.filter(
+                                (_, i) => i !== index
+                              )
+                            )
+                          }
+                        >
                           <FaTrash />
                         </RemoveButton>
                       </div>
                     ))}
-                    <AddButton onClick={() =>
-                      updateTempData('footerSocialLinks', [
-                        ...(tempData.footerSocialLinks || []),
-                        {
-                          platform: '',
-                          url: '',
-                          icon: 'FaGlobe'
-                        }
-                      ])
-                    }>
+                    <AddButton
+                      onClick={() =>
+                        updateTempData('footerSocialLinks', [
+                          ...(tempData.footerSocialLinks || []),
+                          {
+                            platform: '',
+                            url: '',
+                            icon: 'FaGlobe',
+                          },
+                        ])
+                      }
+                    >
                       <FaPlus /> Add Social Link
                     </AddButton>
                   </FormField>
@@ -2823,8 +2920,6 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
           </Modal>
         </Overlay>
       )}
-
-
     </EditorContainer>
   );
 };

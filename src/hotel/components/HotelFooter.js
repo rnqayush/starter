@@ -108,12 +108,12 @@ const HotelFooter = () => {
   // Get footer data from Redux (live hotel data)
   const hotels = useSelector(state => state.hotelManagement?.liveHotels || []);
   const hotel = hotels.length > 0 ? hotels[0] : null;
-  
+
   const footerData = hotel?.sections?.footer;
   const supportContact = footerData?.supportContact || {};
   const socialLinks = footerData?.socialLinks || [];
 
-  const getSocialIcon = (iconName) => {
+  const getSocialIcon = iconName => {
     const icons = {
       FaFacebook: FaFacebook,
       FaTwitter: FaTwitter,

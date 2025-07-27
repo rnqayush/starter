@@ -3,7 +3,9 @@ import { hotels } from '../../DummyData';
 import hotelJsonData from '../../DummyData/hotels.json';
 
 // Initialize with hotel from JSON and fallback to dummy data
-const initialHotels = hotelJsonData?.data?.hotel ? [hotelJsonData.data.hotel] : hotels;
+const initialHotels = hotelJsonData?.data?.hotel
+  ? [hotelJsonData.data.hotel]
+  : hotels;
 
 const initialState = {
   // Live hotel data (what users see on public pages)
@@ -41,8 +43,12 @@ const hotelManagementSlice = createSlice({
       console.log('Loading hotel data into Redux:', hotelData.name);
 
       // Check if hotel already exists in state
-      const existingLiveIndex = state.liveHotels.findIndex(h => h.id === hotelData.id);
-      const existingDraftIndex = state.draftHotels.findIndex(h => h.id === hotelData.id);
+      const existingLiveIndex = state.liveHotels.findIndex(
+        h => h.id === hotelData.id
+      );
+      const existingDraftIndex = state.draftHotels.findIndex(
+        h => h.id === hotelData.id
+      );
 
       if (existingLiveIndex !== -1) {
         // Update existing hotel in live data
@@ -64,7 +70,12 @@ const hotelManagementSlice = createSlice({
         console.log('Added new hotel to draft data');
       }
 
-      console.log('Redux state updated - Live hotels:', state.liveHotels.length, 'Draft hotels:', state.draftHotels.length);
+      console.log(
+        'Redux state updated - Live hotels:',
+        state.liveHotels.length,
+        'Draft hotels:',
+        state.draftHotels.length
+      );
     },
 
     setEditingHotel: (state, action) => {
@@ -276,7 +287,10 @@ const hotelManagementSlice = createSlice({
         if (liveHotelIndex !== -1) {
           // Copy the current editing hotel (with all changes) to live hotels
           state.liveHotels[liveHotelIndex] = { ...state.editingHotel };
-          console.log('Updated live hotel:', state.liveHotels[liveHotelIndex].name);
+          console.log(
+            'Updated live hotel:',
+            state.liveHotels[liveHotelIndex].name
+          );
 
           // Also update the draft hotel to match
           const draftHotelIndex = state.draftHotels.findIndex(
@@ -459,8 +473,10 @@ export const {
 
 // Selectors
 export const selectHasPendingChanges = (state, hotelId) => {
-  return state.hotelManagement.pendingChanges[hotelId] &&
-         Object.keys(state.hotelManagement.pendingChanges[hotelId]).length > 0;
+  return (
+    state.hotelManagement.pendingChanges[hotelId] &&
+    Object.keys(state.hotelManagement.pendingChanges[hotelId]).length > 0
+  );
 };
 
 export const selectDraftHotel = (state, hotelId) => {
@@ -472,7 +488,9 @@ export const selectLiveHotel = (state, hotelId) => {
 };
 
 export const selectHotelBySlug = (state, slug) => {
-  return state.hotelManagement.liveHotels.find(h => h.slug === slug || h.id === parseInt(slug));
+  return state.hotelManagement.liveHotels.find(
+    h => h.slug === slug || h.id === parseInt(slug)
+  );
 };
 
 export default hotelManagementSlice.reducer;

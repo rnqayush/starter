@@ -55,7 +55,8 @@ export const fetchHotelById = async identifier => {
 
   // With single hotel object, check if it matches
   const hotel = hotelData.data.hotel;
-  const matches = hotel.id === parseInt(identifier) || hotel.slug === identifier;
+  const matches =
+    hotel.id === parseInt(identifier) || hotel.slug === identifier;
 
   if (!matches) {
     return createApiResponse(null, false, 'Hotel not found');
@@ -167,10 +168,11 @@ export const searchHotels = async searchTerm => {
   }
 
   const term = searchTerm.toLowerCase();
-  const matches = hotel.name.toLowerCase().includes(term) ||
-      hotel.city.toLowerCase().includes(term) ||
-      hotel.location.toLowerCase().includes(term) ||
-      hotel.description.toLowerCase().includes(term);
+  const matches =
+    hotel.name.toLowerCase().includes(term) ||
+    hotel.city.toLowerCase().includes(term) ||
+    hotel.location.toLowerCase().includes(term) ||
+    hotel.description.toLowerCase().includes(term);
 
   const hotels = matches ? [hotel] : [];
 
@@ -209,7 +211,9 @@ export const fetchFeaturedHotels = async (limit = 4) => {
 // Helper functions for backward compatibility
 export const getHotelByIdOrSlug = identifier => {
   const hotel = hotelData.data.hotel;
-  return (hotel.id === parseInt(identifier) || hotel.slug === identifier) ? hotel : null;
+  return hotel.id === parseInt(identifier) || hotel.slug === identifier
+    ? hotel
+    : null;
 };
 
 export const getHotelById = id => {

@@ -64,8 +64,12 @@ function App() {
   const [userType, setUserType] = useState('customer'); // 'customer' or 'owner'
 
   // Get live hotel data from Redux, fallback to static data
-  const liveHotels = useSelector(state => state.hotelManagement?.liveHotels || hotelModuleData);
-  const draftHotels = useSelector(state => state.hotelManagement?.draftHotels || hotelModuleData);
+  const liveHotels = useSelector(
+    state => state.hotelManagement?.liveHotels || hotelModuleData
+  );
+  const draftHotels = useSelector(
+    state => state.hotelManagement?.draftHotels || hotelModuleData
+  );
 
   // For backwards compatibility, provide both live and static data
   const [hotels, setHotels] = useState(hotelModuleData);
