@@ -1296,6 +1296,7 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
     if (!editingHotel) return;
 
     console.log('Publishing changes for hotel:', editingHotel.name);
+    console.log('Footer data:', editingHotel.sections?.footer);
 
     // Save section order along with other changes
     dispatch(updateHotelField({ field: 'sectionOrder', value: sectionOrder }));
