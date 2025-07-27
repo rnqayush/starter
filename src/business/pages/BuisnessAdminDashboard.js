@@ -53,6 +53,7 @@ import {
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
 import { getBusinessTemplate } from '../../DummyData';
+import { fetchBusinessData } from '../../utils/businessAPI';
 import { useAuth } from '../../context/AuthContext';
 import {
   setEditingBusiness,
@@ -725,6 +726,8 @@ const BuisnessAdminDashboard = () => {
 
   const [business, setBusiness] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [apiLoading, setApiLoading] = useState(false);
+  const [apiError, setApiError] = useState(null);
   const [activeSection, setActiveSection] = useState('hero');
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [saved, setSaved] = useState(false);
@@ -789,6 +792,13 @@ const BuisnessAdminDashboard = () => {
   });
   const [customSectionsData, setCustomSectionsData] = useState([]);
   const [sectionOrderData, setSectionOrderData] = useState([]);
+  const [uiContentData, setUiContentData] = useState({
+    sections: {},
+    buttons: {},
+    contactForm: { placeholders: {} },
+    businessHours: {},
+  });
+  const [statisticsData, setStatisticsData] = useState([]);
 
   // Section visibility state
   const [sectionVisibility, setSectionVisibility] = useState({
@@ -835,7 +845,10 @@ const BuisnessAdminDashboard = () => {
       const updatedBusiness = {
         ...editingBusiness,
         hero: heroData,
-        about: aboutData,
+        about: {
+          ...aboutData,
+          stats: statisticsData,
+        },
         services: servicesData,
         team: teamData,
         portfolio: portfolioData,
@@ -851,6 +864,7 @@ const BuisnessAdminDashboard = () => {
         customSections: customSectionsData,
         sectionOrder: sectionOrderData,
         sectionVisibility: sectionVisibility,
+        ui: uiContentData,
       };
 
       // Update Redux with the current form data for real-time preview
@@ -878,340 +892,19 @@ const BuisnessAdminDashboard = () => {
     }
   };
 
-  // Get sample content based on business type
-  const getSampleContent = businessType => {
-    const baseContent = {
-      salon: {
-        services: [
-          {
-            id: 1,
-            icon: '✂️',
-            title: 'Hair Styling',
-            description:
-              'Professional cuts, colors, and treatments for all hair types',
-            price: 'From $45',
-          },
-          {
-            id: 2,
-            icon: '💅',
-            title: 'Nail Care',
-            description:
-              'Manicures, pedicures, and nail art by certified technicians',
-            price: 'From $25',
-          },
-          {
-            id: 3,
-            icon: '🧴',
-            title: 'Spa Treatments',
-            description: 'Relaxing facials, massages, and body treatments',
-            price: 'From $65',
-          },
-        ],
-        team: [
-          {
-            id: 1,
-            name: 'Sarah Johnson',
-            role: 'Senior Stylist',
-            bio: '15+ years experience in color and cutting',
-            photo: '',
-            specialties: ['Color Specialist', 'Bridal Hair'],
-          },
-          {
-            id: 2,
-            name: 'Maria Garcia',
-            role: 'Nail Specialist',
-            bio: 'Expert in nail art and luxury manicures',
-            photo: '',
-            specialties: ['Nail Art', 'Gel Manicures'],
-          },
-        ],
-        packages: [
-          {
-            id: 1,
-            name: 'Bridal Package',
-            description:
-              'Complete bridal beauty package including hair, makeup, and nails',
-            price: '$299',
-            duration: '4 hours',
-          },
-          {
-            id: 2,
-            name: 'Spa Day',
-            description:
-              'Full day relaxation with massage, facial, and beauty treatments',
-            price: '$199',
-            duration: '6 hours',
-          },
-        ],
-        gallery: [
-          {
-            id: 1,
-            category: 'Hair Styling',
-            images: 8,
-            description: 'Latest hair styling work',
-          },
-          {
-            id: 2,
-            category: 'Nail Art',
-            images: 6,
-            description: 'Creative nail designs',
-          },
-          {
-            id: 3,
-            category: 'Spa Treatments',
-            images: 5,
-            description: 'Relaxing spa services',
-          },
-        ],
-        testimonials: [
-          {
-            id: 1,
-            name: 'Emma Wilson',
-            company: 'Marketing Pro',
-            role: 'Manager',
-            review:
-              'Amazing service! The team is professional and the results are outstanding.',
-            rating: 5,
-            image: '',
-          },
-          {
-            id: 2,
-            name: 'Jessica Brown',
-            company: 'Tech Solutions',
-            role: 'CEO',
-            review:
-              'Highly recommend! Great experience and excellent customer service.',
-            rating: 5,
-            image: '',
-          },
-        ],
-        reviews: [
-          {
-            id: 1,
-            name: 'Sarah K.',
-            date: '2023-12-15',
-            rating: 5,
-            review: 'Fantastic experience! Will definitely come back.',
-            avatar: '',
-          },
-          {
-            id: 2,
-            name: 'Mike R.',
-            date: '2023-12-10',
-            rating: 4,
-            review: 'Great service and friendly staff.',
-            avatar: '',
-          },
-        ],
-        faq: [
-          {
-            id: 1,
-            question: 'What are your hours?',
-            answer: 'We are open Monday through Saturday from 9 AM to 6 PM.',
-          },
-          {
-            id: 2,
-            question: 'Do you accept walk-ins?',
-            answer:
-              'We accept walk-ins based on availability, but appointments are recommended.',
-          },
-          {
-            id: 3,
-            question: 'What payment methods do you accept?',
-            answer: 'We accept cash, credit cards, and mobile payments.',
-          },
-        ],
-      },
-      freelancer: {
-        services: [
-          {
-            id: 1,
-            icon: '🎨',
-            title: 'Web Design',
-            description:
-              'Custom website design tailored to your brand and business goals',
-            price: 'From $1,200',
-          },
-          {
-            id: 2,
-            icon: '📱',
-            title: 'UI/UX Design',
-            description: 'User-centered design for web and mobile applications',
-            price: 'From $800',
-          },
-          {
-            id: 3,
-            icon: '💻',
-            title: 'Frontend Development',
-            description:
-              'Modern, responsive websites built with latest technologies',
-            price: 'From $1,500',
-          },
-        ],
-        portfolio: [
-          {
-            id: 1,
-            title: 'E-commerce Platform',
-            category: 'Web Development',
-            description:
-              'Modern e-commerce platform with custom design and seamless user experience',
-            technologies: ['React', 'Node.js', 'MongoDB'],
-          },
-          {
-            id: 2,
-            title: 'Brand Identity Design',
-            category: 'Branding',
-            description:
-              'Complete brand identity including logo, color palette, and brand guidelines',
-            technologies: ['Illustrator', 'Photoshop', 'Figma'],
-          },
-        ],
-        skills: [
-          { id: 1, name: 'Web Design', level: 95, icon: '🎨' },
-          { id: 2, name: 'UI/UX Design', level: 90, icon: '📱' },
-          { id: 3, name: 'Frontend Development', level: 88, icon: '💻' },
-        ],
-        experience: [
-          {
-            id: 1,
-            company: 'Digital Agency Inc.',
-            role: 'Senior Creative Designer',
-            period: '2020 - Present',
-            description:
-              'Lead designer for major client projects, specializing in web design and branding solutions.',
-          },
-          {
-            id: 2,
-            company: 'Freelance',
-            role: 'Independent Designer & Developer',
-            period: '2018 - Present',
-            description:
-              'Providing creative solutions for startups and established businesses across various industries.',
-          },
-        ],
-        gallery: [
-          {
-            id: 1,
-            category: 'Web Design',
-            images: 10,
-            description: 'Modern web design projects',
-          },
-          {
-            id: 2,
-            category: 'Branding',
-            images: 8,
-            description: 'Brand identity designs',
-          },
-          {
-            id: 3,
-            category: 'Mobile Apps',
-            images: 6,
-            description: 'Mobile app UI designs',
-          },
-        ],
-        packages: [
-          {
-            id: 1,
-            name: 'Basic Package',
-            description: 'Perfect for small projects',
-            price: '$499',
-            duration: '1 week',
-            features: ['Logo Design', 'Basic Website', 'Mobile Responsive'],
-            featured: false,
-          },
-          {
-            id: 2,
-            name: 'Professional Package',
-            description: 'Complete business solution',
-            price: '$1299',
-            duration: '2-3 weeks',
-            features: [
-              'Custom Design',
-              'Full Website',
-              'SEO Optimization',
-              'Analytics',
-            ],
-            featured: true,
-          },
-          {
-            id: 3,
-            name: 'Enterprise Package',
-            description: 'Large scale projects',
-            price: '$2999',
-            duration: '4-6 weeks',
-            features: [
-              'Complex Website',
-              'E-commerce',
-              'CMS',
-              'Training',
-              'Support',
-            ],
-            featured: false,
-          },
-        ],
-        testimonials: [
-          {
-            id: 1,
-            name: 'John Smith',
-            company: 'Tech Startup',
-            role: 'Founder',
-            review:
-              'Exceptional work! Delivered exactly what we needed and more.',
-            rating: 5,
-            image: '',
-          },
-          {
-            id: 2,
-            name: 'Lisa Chen',
-            company: 'Design Agency',
-            role: 'Creative Director',
-            review: 'Professional, creative, and reliable. Highly recommend!',
-            rating: 5,
-            image: '',
-          },
-        ],
-        reviews: [
-          {
-            id: 1,
-            name: 'Alex M.',
-            date: '2023-12-20',
-            rating: 5,
-            review: 'Outstanding creativity and attention to detail.',
-            avatar: '',
-          },
-          {
-            id: 2,
-            name: 'Rachel T.',
-            date: '2023-12-18',
-            rating: 5,
-            review: 'Perfect communication and excellent results.',
-            avatar: '',
-          },
-        ],
-        faq: [
-          {
-            id: 1,
-            question: 'What is your typical project timeline?',
-            answer:
-              'Project timelines vary based on scope, typically 1-6 weeks for most projects.',
-          },
-          {
-            id: 2,
-            question: 'Do you provide ongoing support?',
-            answer:
-              'Yes, we offer ongoing support and maintenance packages for all projects.',
-          },
-          {
-            id: 3,
-            question: 'What are your payment terms?',
-            answer: 'We typically require 50% upfront and 50% upon completion.',
-          },
-        ],
-      },
-    };
+  // Auto-update Redux when UI content changes for real-time preview
+  useEffect(() => {
+    if (editingBusiness && uiContentData) {
+      updateEditingBusinessInRedux();
+    }
+  }, [uiContentData]);
 
-    return baseContent[businessType] || baseContent.salon;
-  };
+  // Auto-update Redux when statistics data changes for real-time preview
+  useEffect(() => {
+    if (editingBusiness && statisticsData) {
+      updateEditingBusinessInRedux();
+    }
+  }, [statisticsData]);
 
   const navigationItems = [
     {
@@ -1303,6 +996,7 @@ const BuisnessAdminDashboard = () => {
       icon: FaPhone,
       section: 'Content Management',
     },
+
     {
       id: 'custom-sections',
       label: 'Custom Sections',
@@ -1324,107 +1018,185 @@ const BuisnessAdminDashboard = () => {
   ];
 
   useEffect(() => {
-    const businessData = getBusinessTemplate(businessId);
-    if (businessData) {
-      setBusiness(businessData);
-
-      // Initialize business in Redux state if it doesn't exist, then set as editing
+    const fetchBusinessDataForAdmin = async () => {
       try {
-        // Create a sanitized version for Redux
-        const sanitizedBusiness = JSON.parse(JSON.stringify(businessData));
-        dispatch(initializeBusiness(sanitizedBusiness));
-        dispatch(setEditingBusiness(businessId));
+        setApiLoading(true);
+        setApiError(null);
+
+        console.log(
+          `[AdminDashboard] Making API call for business: ${businessId}`
+        );
+        const response = await fetchBusinessData(businessId);
+
+        let businessData;
+
+        if (response.success && response.data) {
+          console.log('[AdminDashboard] API call successful:', response.data);
+          businessData = response.data;
+        } else {
+          console.log(
+            '[AdminDashboard] API call failed, using template fallback'
+          );
+          businessData = getBusinessTemplate(businessId);
+          if (!businessData) {
+            setApiError('Business not found');
+            setLoading(false);
+            setApiLoading(false);
+            return;
+          }
+        }
+
+        setBusiness(businessData);
+
+        // Initialize business in Redux state if it doesn't exist, then set as editing
+        try {
+          // Create a sanitized version for Redux
+          const sanitizedBusiness = JSON.parse(JSON.stringify(businessData));
+          dispatch(initializeBusiness(sanitizedBusiness));
+          dispatch(setEditingBusiness(businessId));
+        } catch (error) {
+          console.error('Error setting editing business:', error);
+        }
+
+        // Pre-fill all form data from business data (using API data structure)
+        setHeroData({
+          title: businessData.hero?.title || `${businessData.name}`,
+          subtitle:
+            businessData.hero?.subtitle || `Welcome to ${businessData.name}`,
+          backgroundImage:
+            businessData.hero?.backgroundImage || businessData.image || '',
+        });
+
+        setAboutData({
+          title: businessData.about?.title || 'About Us',
+          description:
+            businessData.about?.description ||
+            `Learn more about ${businessData.name}`,
+          profileImage: businessData.about?.profileImage || '',
+        });
+
+        // Use API data directly instead of getSampleContent
+        setServicesData(businessData.services || []);
+        setTeamData(businessData.team || []);
+        setPortfolioData(businessData.portfolio || []);
+        setSkillsData(businessData.skills || []);
+        setExperienceData(businessData.experience || []);
+        setGalleryData(businessData.gallery || []);
+        setPackagesData(businessData.packages || []);
+        setTestimonialsData(businessData.testimonials || []);
+        setReviewsData(businessData.reviews || []);
+        setFaqData(businessData.faq || []);
+
+        // Initialize business hours from API data
+        setBusinessHoursData(
+          businessData.businessHours || {
+            title: 'Business Hours',
+            hours: {
+              monday: '9:00 AM - 6:00 PM',
+              tuesday: '9:00 AM - 6:00 PM',
+              wednesday: '9:00 AM - 6:00 PM',
+              thursday: '9:00 AM - 6:00 PM',
+              friday: '9:00 AM - 6:00 PM',
+              saturday: '10:00 AM - 4:00 PM',
+              sunday: 'Closed',
+            },
+          }
+        );
+
+        // Initialize section order
+        setSectionOrderData([
+          'hero',
+          'about-us',
+          'services-offered',
+          'portfolio',
+          'skills',
+          'experience',
+          'team',
+          'gallery',
+          'packages',
+          'testimonials',
+          'reviews',
+          'faq',
+          'business-hours',
+          'contact',
+        ]);
+
+        // Initialize contact data from API data
+        setContactData(
+          businessData.contact || {
+            title: 'Get In Touch',
+            description: `Contact us to learn more about ${businessData.name}`,
+            email: `hello@${businessData.slug}.com`,
+            phone: '+1 (555) 123-4567',
+            address: '123 Business Street, City, State 12345',
+            hours: {
+              monday: '9:00 AM - 6:00 PM',
+              tuesday: '9:00 AM - 6:00 PM',
+              wednesday: '9:00 AM - 6:00 PM',
+              thursday: '9:00 AM - 6:00 PM',
+              friday: '9:00 AM - 6:00 PM',
+              saturday: '10:00 AM - 4:00 PM',
+              sunday: 'Closed',
+            },
+            socialMedia: {
+              facebook: '',
+              twitter: '',
+              instagram: '',
+              linkedin: '',
+            },
+          }
+        );
+
+        // Initialize UI content data from API data
+        setUiContentData(
+          businessData.ui || {
+            sections: businessData.sections || {},
+            buttons: {
+              bookNow: 'Book Now',
+              learnMore: 'Learn More',
+              sendMessage: 'Send Message',
+              contactUs: 'Contact Us',
+            },
+            contactForm: {
+              placeholders: {
+                name: 'Your Name',
+                email: 'Your Email',
+                phone: 'Your Phone',
+                message: 'Your Message',
+              },
+            },
+            businessHours: {
+              title: 'Business Hours',
+              contactInfoTitle: 'Contact Information',
+            },
+          }
+        );
+
+        // Initialize statistics data from API data
+        setStatisticsData(
+          businessData.about?.stats || [
+            { number: '100+', label: 'Services' },
+            { number: '5+', label: 'Years Experience' },
+            { number: '4.9', label: '★ Average Rating' },
+            { number: '200+', label: 'Happy Clients' },
+          ]
+        );
       } catch (error) {
-        console.error('Error setting editing business:', error);
+        console.error('[AdminDashboard] Error fetching business data:', error);
+        setApiError(error.message);
+
+        // Fallback to template data on error
+        const businessData = getBusinessTemplate(businessId);
+        if (businessData) {
+          setBusiness(businessData);
+        }
+      } finally {
+        setLoading(false);
+        setApiLoading(false);
       }
+    };
 
-      // Pre-fill all form data from business data
-      setHeroData({
-        title: businessData.hero?.title || `${businessData.name}`,
-        subtitle:
-          businessData.hero?.subtitle || `Welcome to ${businessData.name}`,
-        backgroundImage:
-          businessData.hero?.backgroundImage || businessData.image || '',
-      });
-
-      setAboutData({
-        title: businessData.about?.title || 'About Us',
-        description:
-          businessData.about?.description ||
-          `Learn more about ${businessData.name}`,
-        profileImage: businessData.about?.profileImage || '',
-      });
-
-      // Initialize sample content based on business type
-      const sampleContent = getSampleContent(businessData.slug);
-      setServicesData(sampleContent.services || []);
-      setTeamData(sampleContent.team || []);
-      setPortfolioData(sampleContent.portfolio || []);
-      setSkillsData(sampleContent.skills || []);
-      setExperienceData(sampleContent.experience || []);
-      setGalleryData(sampleContent.gallery || []);
-      setPackagesData(sampleContent.packages || []);
-      setTestimonialsData(sampleContent.testimonials || []);
-      setReviewsData(sampleContent.reviews || []);
-      setFaqData(sampleContent.faq || []);
-
-      // Initialize business hours
-      setBusinessHoursData({
-        title: 'Business Hours',
-        hours: {
-          monday: '9:00 AM - 6:00 PM',
-          tuesday: '9:00 AM - 6:00 PM',
-          wednesday: '9:00 AM - 6:00 PM',
-          thursday: '9:00 AM - 6:00 PM',
-          friday: '9:00 AM - 6:00 PM',
-          saturday: '10:00 AM - 4:00 PM',
-          sunday: 'Closed',
-        },
-      });
-
-      // Initialize section order
-      setSectionOrderData([
-        'hero',
-        'about-us',
-        'services-offered',
-        'portfolio',
-        'skills',
-        'experience',
-        'team',
-        'gallery',
-        'packages',
-        'testimonials',
-        'reviews',
-        'faq',
-        'business-hours',
-        'contact',
-      ]);
-
-      // Initialize contact data
-      setContactData({
-        title: 'Get In Touch',
-        description: `Contact us to learn more about ${businessData.name}`,
-        email: `hello@${businessData.slug}.com`,
-        phone: '+1 (555) 123-4567',
-        address: '123 Business Street, City, State 12345',
-        hours: {
-          monday: '9:00 AM - 6:00 PM',
-          tuesday: '9:00 AM - 6:00 PM',
-          wednesday: '9:00 AM - 6:00 PM',
-          thursday: '9:00 AM - 6:00 PM',
-          friday: '9:00 AM - 6:00 PM',
-          saturday: '10:00 AM - 4:00 PM',
-          sunday: 'Closed',
-        },
-        socialMedia: {
-          facebook: '',
-          twitter: '',
-          instagram: '',
-          linkedin: '',
-        },
-      });
-    }
-    setLoading(false);
+    fetchBusinessDataForAdmin();
   }, [businessId, dispatch]);
 
   // Handle Save Changes - saves to editing state for real-time preview
@@ -2134,6 +1906,106 @@ const BuisnessAdminDashboard = () => {
                   </div>
                 )}
               </FormGroup>
+
+              {/* Statistics Section within About Us */}
+              <FormGroup
+                style={{ gridColumn: '1 / -1', marginTop: theme.spacing.xl }}
+              >
+                <h3
+                  style={{
+                    marginBottom: theme.spacing.lg,
+                    color: theme.colors.gray800,
+                    borderTop: `1px solid ${theme.colors.gray200}`,
+                    paddingTop: theme.spacing.lg,
+                  }}
+                >
+                  Statistics
+                </h3>
+                <p
+                  style={{
+                    marginBottom: theme.spacing.md,
+                    color: theme.colors.gray600,
+                  }}
+                >
+                  Edit the statistics displayed in the about section of your
+                  website.
+                </p>
+
+                <AddButton
+                  onClick={() => {
+                    const newStat = {
+                      number: '0',
+                      label: 'New Stat',
+                      id: Date.now(),
+                    };
+                    setStatisticsData(prev => [...prev, newStat]);
+                    trackSectionChange('about-us');
+                  }}
+                  style={{ marginBottom: theme.spacing.lg }}
+                >
+                  <FaPlus />
+                  Add Statistic
+                </AddButton>
+
+                <ListContainer>
+                  {statisticsData.map((stat, index) => (
+                    <ListItem key={stat.id || index}>
+                      <div className="item-info">
+                        <FormGrid>
+                          <FormGroup>
+                            <FormLabel>Number/Value</FormLabel>
+                            <FormInput
+                              value={stat.number}
+                              onChange={e => {
+                                setStatisticsData(prev =>
+                                  prev.map((s, i) =>
+                                    i === index
+                                      ? { ...s, number: e.target.value }
+                                      : s
+                                  )
+                                );
+                                trackSectionChange('about-us');
+                              }}
+                              placeholder="100+"
+                            />
+                          </FormGroup>
+                          <FormGroup>
+                            <FormLabel>Label</FormLabel>
+                            <FormInput
+                              value={stat.label}
+                              onChange={e => {
+                                setStatisticsData(prev =>
+                                  prev.map((s, i) =>
+                                    i === index
+                                      ? { ...s, label: e.target.value }
+                                      : s
+                                  )
+                                );
+                                trackSectionChange('about-us');
+                              }}
+                              placeholder="Happy Clients"
+                            />
+                          </FormGroup>
+                        </FormGrid>
+                      </div>
+                      <div className="item-actions">
+                        <ItemButton
+                          variant="danger"
+                          onClick={() => {
+                            setStatisticsData(prev =>
+                              prev.filter((_, i) => i !== index)
+                            );
+                            trackSectionChange('about-us');
+                          }}
+                        >
+                          <FaTrash />
+                          Delete
+                        </ItemButton>
+                      </div>
+                    </ListItem>
+                  ))}
+                </ListContainer>
+              </FormGroup>
             </FormGrid>
           </ContentSection>
         );
@@ -2160,6 +2032,80 @@ const BuisnessAdminDashboard = () => {
                 </ToggleSwitch>
               </VisibilityToggleContainer>
             </SectionHeader>
+
+            {/* Section UI Content Editing */}
+            <div
+              style={{
+                marginBottom: theme.spacing.xl,
+                padding: theme.spacing.lg,
+                background: theme.colors.gray50,
+                borderRadius: theme.borderRadius.md,
+              }}
+            >
+              <h3
+                style={{
+                  marginBottom: theme.spacing.md,
+                  color: theme.colors.gray800,
+                }}
+              >
+                Section Text & Labels
+              </h3>
+              <FormGrid>
+                <FormGroup>
+                  <FormLabel>Section Title</FormLabel>
+                  <FormInput
+                    value={
+                      uiContentData.sections?.services?.title ||
+                      (business?.slug === 'freelancer'
+                        ? 'My Services'
+                        : 'Our Services')
+                    }
+                    onChange={e => {
+                      setUiContentData(prev => ({
+                        ...prev,
+                        sections: {
+                          ...prev.sections,
+                          services: {
+                            ...prev.sections?.services,
+                            title: e.target.value,
+                          },
+                        },
+                      }));
+                      trackSectionChange('services-offered');
+                    }}
+                    placeholder={
+                      business?.slug === 'freelancer'
+                        ? 'My Services'
+                        : 'Our Services'
+                    }
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <FormLabel>Section Subtitle</FormLabel>
+                  <FormTextarea
+                    value={
+                      uiContentData.sections?.services?.subtitle ||
+                      'We offer a comprehensive range of professional services designed to meet your needs and exceed your expectations.'
+                    }
+                    onChange={e => {
+                      setUiContentData(prev => ({
+                        ...prev,
+                        sections: {
+                          ...prev.sections,
+                          services: {
+                            ...prev.sections?.services,
+                            subtitle: e.target.value,
+                          },
+                        },
+                      }));
+                      trackSectionChange('services-offered');
+                    }}
+                    placeholder="We offer a comprehensive range of professional services designed to meet your needs and exceed your expectations."
+                    rows={3}
+                  />
+                </FormGroup>
+              </FormGrid>
+            </div>
 
             <AddButton onClick={addService}>
               <FaPlus />
@@ -2253,6 +2199,73 @@ const BuisnessAdminDashboard = () => {
                 </ToggleSwitch>
               </VisibilityToggleContainer>
             </SectionHeader>
+
+            {/* Section UI Content Editing */}
+            <div
+              style={{
+                marginBottom: theme.spacing.xl,
+                padding: theme.spacing.lg,
+                background: theme.colors.gray50,
+                borderRadius: theme.borderRadius.md,
+              }}
+            >
+              <h3
+                style={{
+                  marginBottom: theme.spacing.md,
+                  color: theme.colors.gray800,
+                }}
+              >
+                Section Text & Labels
+              </h3>
+              <FormGrid>
+                <FormGroup>
+                  <FormLabel>Section Title</FormLabel>
+                  <FormInput
+                    value={
+                      uiContentData.sections?.team?.title || 'Meet Our Team'
+                    }
+                    onChange={e => {
+                      setUiContentData(prev => ({
+                        ...prev,
+                        sections: {
+                          ...prev.sections,
+                          team: {
+                            ...prev.sections?.team,
+                            title: e.target.value,
+                          },
+                        },
+                      }));
+                      trackSectionChange('team');
+                    }}
+                    placeholder="Meet Our Team"
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <FormLabel>Section Subtitle</FormLabel>
+                  <FormTextarea
+                    value={
+                      uiContentData.sections?.team?.subtitle ||
+                      'Our experienced professionals are passionate about delivering exceptional service and results.'
+                    }
+                    onChange={e => {
+                      setUiContentData(prev => ({
+                        ...prev,
+                        sections: {
+                          ...prev.sections,
+                          team: {
+                            ...prev.sections?.team,
+                            subtitle: e.target.value,
+                          },
+                        },
+                      }));
+                      trackSectionChange('team');
+                    }}
+                    placeholder="Our experienced professionals are passionate about delivering exceptional service and results."
+                    rows={3}
+                  />
+                </FormGroup>
+              </FormGrid>
+            </div>
 
             <AddButton onClick={addTeamMember}>
               <FaPlus />
@@ -2952,6 +2965,74 @@ const BuisnessAdminDashboard = () => {
               </VisibilityToggleContainer>
             </SectionHeader>
 
+            {/* Section UI Content Editing */}
+            <div
+              style={{
+                marginBottom: theme.spacing.xl,
+                padding: theme.spacing.lg,
+                background: theme.colors.gray50,
+                borderRadius: theme.borderRadius.md,
+              }}
+            >
+              <h3
+                style={{
+                  marginBottom: theme.spacing.md,
+                  color: theme.colors.gray800,
+                }}
+              >
+                Section Text & Labels
+              </h3>
+              <FormGrid>
+                <FormGroup>
+                  <FormLabel>Section Title</FormLabel>
+                  <FormInput
+                    value={
+                      uiContentData.sections?.testimonials?.title ||
+                      'What Our Clients Say'
+                    }
+                    onChange={e => {
+                      setUiContentData(prev => ({
+                        ...prev,
+                        sections: {
+                          ...prev.sections,
+                          testimonials: {
+                            ...prev.sections?.testimonials,
+                            title: e.target.value,
+                          },
+                        },
+                      }));
+                      trackSectionChange('testimonials');
+                    }}
+                    placeholder="What Our Clients Say"
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <FormLabel>Section Subtitle</FormLabel>
+                  <FormTextarea
+                    value={
+                      uiContentData.sections?.testimonials?.subtitle ||
+                      "Don't just take our word for it - hear from our satisfied customers about their experiences."
+                    }
+                    onChange={e => {
+                      setUiContentData(prev => ({
+                        ...prev,
+                        sections: {
+                          ...prev.sections,
+                          testimonials: {
+                            ...prev.sections?.testimonials,
+                            subtitle: e.target.value,
+                          },
+                        },
+                      }));
+                      trackSectionChange('testimonials');
+                    }}
+                    placeholder="Don't just take our word for it - hear from our satisfied customers about their experiences."
+                    rows={3}
+                  />
+                </FormGroup>
+              </FormGrid>
+            </div>
+
             <AddButton onClick={addTestimonial}>
               <FaPlus />
               Add Testimonial
@@ -3515,6 +3596,198 @@ const BuisnessAdminDashboard = () => {
                         trackSectionChange('contact');
                       }}
                       placeholder="LinkedIn URL"
+                    />
+                  </FormGroup>
+                </FormGrid>
+              </FormGroup>
+
+              {/* Button Labels & Contact Form UI */}
+              <FormGroup
+                style={{ gridColumn: '1 / -1', marginTop: theme.spacing.xl }}
+              >
+                <h3
+                  style={{
+                    marginBottom: theme.spacing.lg,
+                    color: theme.colors.gray800,
+                    borderTop: `1px solid ${theme.colors.gray200}`,
+                    paddingTop: theme.spacing.lg,
+                  }}
+                >
+                  Button Labels
+                </h3>
+                <FormGrid>
+                  <FormGroup>
+                    <FormLabel>Primary Action Button</FormLabel>
+                    <FormInput
+                      value={uiContentData.buttons?.bookNow || 'Book Now'}
+                      onChange={e => {
+                        setUiContentData(prev => ({
+                          ...prev,
+                          buttons: { ...prev.buttons, bookNow: e.target.value },
+                        }));
+                        trackSectionChange('contact');
+                      }}
+                      placeholder="Book Now"
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <FormLabel>Send Message Button</FormLabel>
+                    <FormInput
+                      value={
+                        uiContentData.buttons?.sendMessage || 'Send Message'
+                      }
+                      onChange={e => {
+                        setUiContentData(prev => ({
+                          ...prev,
+                          buttons: {
+                            ...prev.buttons,
+                            sendMessage: e.target.value,
+                          },
+                        }));
+                        trackSectionChange('contact');
+                      }}
+                      placeholder="Send Message"
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <FormLabel>Contact Us Button</FormLabel>
+                    <FormInput
+                      value={uiContentData.buttons?.contactUs || 'Contact Us'}
+                      onChange={e => {
+                        setUiContentData(prev => ({
+                          ...prev,
+                          buttons: {
+                            ...prev.buttons,
+                            contactUs: e.target.value,
+                          },
+                        }));
+                        trackSectionChange('contact');
+                      }}
+                      placeholder="Contact Us"
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <FormLabel>Learn More Button</FormLabel>
+                    <FormInput
+                      value={uiContentData.buttons?.learnMore || 'Learn More'}
+                      onChange={e => {
+                        setUiContentData(prev => ({
+                          ...prev,
+                          buttons: {
+                            ...prev.buttons,
+                            learnMore: e.target.value,
+                          },
+                        }));
+                        trackSectionChange('contact');
+                      }}
+                      placeholder="Learn More"
+                    />
+                  </FormGroup>
+                </FormGrid>
+              </FormGroup>
+
+              <FormGroup
+                style={{ gridColumn: '1 / -1', marginTop: theme.spacing.lg }}
+              >
+                <h3
+                  style={{
+                    marginBottom: theme.spacing.lg,
+                    color: theme.colors.gray800,
+                  }}
+                >
+                  Contact Form Placeholders
+                </h3>
+                <FormGrid>
+                  <FormGroup>
+                    <FormLabel>Name Field Placeholder</FormLabel>
+                    <FormInput
+                      value={
+                        uiContentData.contactForm?.placeholders?.name ||
+                        'Your Name'
+                      }
+                      onChange={e => {
+                        setUiContentData(prev => ({
+                          ...prev,
+                          contactForm: {
+                            ...prev.contactForm,
+                            placeholders: {
+                              ...prev.contactForm?.placeholders,
+                              name: e.target.value,
+                            },
+                          },
+                        }));
+                        trackSectionChange('contact');
+                      }}
+                      placeholder="Your Name"
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <FormLabel>Email Field Placeholder</FormLabel>
+                    <FormInput
+                      value={
+                        uiContentData.contactForm?.placeholders?.email ||
+                        'Your Email'
+                      }
+                      onChange={e => {
+                        setUiContentData(prev => ({
+                          ...prev,
+                          contactForm: {
+                            ...prev.contactForm,
+                            placeholders: {
+                              ...prev.contactForm?.placeholders,
+                              email: e.target.value,
+                            },
+                          },
+                        }));
+                        trackSectionChange('contact');
+                      }}
+                      placeholder="Your Email"
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <FormLabel>Phone Field Placeholder</FormLabel>
+                    <FormInput
+                      value={
+                        uiContentData.contactForm?.placeholders?.phone ||
+                        'Your Phone'
+                      }
+                      onChange={e => {
+                        setUiContentData(prev => ({
+                          ...prev,
+                          contactForm: {
+                            ...prev.contactForm,
+                            placeholders: {
+                              ...prev.contactForm?.placeholders,
+                              phone: e.target.value,
+                            },
+                          },
+                        }));
+                        trackSectionChange('contact');
+                      }}
+                      placeholder="Your Phone"
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <FormLabel>Message Field Placeholder</FormLabel>
+                    <FormInput
+                      value={
+                        uiContentData.contactForm?.placeholders?.message ||
+                        'Your Message'
+                      }
+                      onChange={e => {
+                        setUiContentData(prev => ({
+                          ...prev,
+                          contactForm: {
+                            ...prev.contactForm,
+                            placeholders: {
+                              ...prev.contactForm?.placeholders,
+                              message: e.target.value,
+                            },
+                          },
+                        }));
+                        trackSectionChange('contact');
+                      }}
+                      placeholder="Your Message"
                     />
                   </FormGroup>
                 </FormGrid>

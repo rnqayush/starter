@@ -19,6 +19,7 @@ import {
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
 import { getBusinessTemplate } from '../../DummyData';
+import { fetchBusinessData } from '../../utils/businessAPI';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -1382,6 +1383,8 @@ const BusinessWebsitePage = () => {
   const navigate = useNavigate();
   const [businessData, setBusinessData] = useState(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   // Support both businessSlug (legacy routes) and slug (new optimized routes)
   const actualSlug = businessSlug || slug;
@@ -1392,50 +1395,110 @@ const BusinessWebsitePage = () => {
   );
 
   useEffect(() => {
-    // Extract slug from URL - either from params or from pathname
-    let extractedSlug = actualSlug;
-    if (!extractedSlug) {
-      // For direct slug access like "/salon", extract from pathname
-      const pathSegments = location.pathname.split('/').filter(Boolean);
-      extractedSlug = pathSegments[0];
-    }
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
 
-    let businessTemplate = null;
+        // Extract slug from URL - either from params or from pathname
+        let extractedSlug = actualSlug;
+        if (!extractedSlug) {
+          // For direct slug access like "/salon", extract from pathname
+          const pathSegments = location.pathname.split('/').filter(Boolean);
+          extractedSlug = pathSegments[0];
+        }
 
-    // Priority 1: Use editing business data for real-time updates during editing
-    if (editingBusiness && editingBusiness.slug === extractedSlug) {
-      businessTemplate = editingBusiness;
-      console.log(
-        'Using editing business data for real-time updates:',
-        editingBusiness
-      );
-    }
-    // Priority 2: Use saved business data from Redux businesses array
-    else if (businesses && businesses.length > 0) {
-      businessTemplate = businesses.find(b => b.slug === extractedSlug);
-      console.log('Using saved business data from Redux:', businessTemplate);
-    }
-    // Priority 3: Fallback to template data
-    if (!businessTemplate) {
-      businessTemplate = getBusinessTemplate(extractedSlug);
-      console.log('Using fallback template data:', businessTemplate);
-    }
+        let businessTemplate = null;
 
-    if (businessTemplate) {
-      setBusinessData(businessTemplate);
-      console.log(
-        'BusinessWebsitePage: Updated business data',
-        businessTemplate
-      );
-    }
+        // Priority 1: Use editing business data for real-time updates during editing
+        if (editingBusiness && editingBusiness.slug === extractedSlug) {
+          businessTemplate = editingBusiness;
+          console.log(
+            'Using editing business data for real-time updates:',
+            editingBusiness
+          );
+          setBusinessData(businessTemplate);
+          setLoading(false);
+          return;
+        }
+
+        // Priority 2: Use saved business data from Redux businesses array
+        if (businesses && businesses.length > 0) {
+          businessTemplate = businesses.find(b => b.slug === extractedSlug);
+          if (businessTemplate) {
+            console.log(
+              'Using saved business data from Redux:',
+              businessTemplate
+            );
+            setBusinessData(businessTemplate);
+            setLoading(false);
+            return;
+          }
+        }
+
+        // Priority 3: Make fake API call to get business data
+        console.log(
+          `[BusinessWebsitePage] Making API call for business: ${extractedSlug}`
+        );
+        const response = await fetchBusinessData(extractedSlug);
+
+        if (response.success && response.data) {
+          console.log(
+            '[BusinessWebsitePage] API call successful:',
+            response.data
+          );
+          setBusinessData(response.data);
+        } else {
+          // Priority 4: Fallback to template data if API fails
+          console.log(
+            '[BusinessWebsitePage] API call failed, using template fallback'
+          );
+          businessTemplate = getBusinessTemplate(extractedSlug);
+          if (businessTemplate) {
+            setBusinessData(businessTemplate);
+          } else {
+            setError('Business not found');
+          }
+        }
+      } catch (err) {
+        console.error(
+          '[BusinessWebsitePage] Error fetching business data:',
+          err
+        );
+        setError(err.message);
+
+        // Fallback to template data on error
+        const businessTemplate = getBusinessTemplate(actualSlug);
+        if (businessTemplate) {
+          setBusinessData(businessTemplate);
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
   }, [actualSlug, location.pathname, businesses, editingBusiness]);
 
-  if (!businessData) {
+  if (loading) {
+    return (
+      <PageContainer>
+        <div style={{ padding: '4rem', textAlign: 'center' }}>
+          <h2>Loading...</h2>
+          <p>Fetching business website data...</p>
+        </div>
+      </PageContainer>
+    );
+  }
+
+  if (error || !businessData) {
     return (
       <PageContainer>
         <div style={{ padding: '4rem', textAlign: 'center' }}>
           <h2>Business Website Not Found</h2>
-          <p>The business website you're looking for doesn't exist.</p>
+          <p>
+            {error || "The business website you're looking for doesn't exist."}
+          </p>
         </div>
       </PageContainer>
     );
@@ -1457,575 +1520,11 @@ const BusinessWebsitePage = () => {
     setIsMobileMenuOpen(false);
   };
 
-  // Sample data based on business type
-  const getBusinessContent = businessType => {
-    const baseContent = {
-      salon: {
-        hero: {
-          title: 'Luxury Beauty Salon & Spa',
-          subtitle:
-            'Transform your look with our expert stylists and premium beauty treatments in a relaxing atmosphere.',
-        },
-        about: {
-          title: 'About Our Salon',
-          description:
-            'With over 15 years of experience, our luxury salon combines traditional techniques with modern innovation to deliver exceptional beauty services.',
-        },
-        services: [
-          {
-            icon: '✂️',
-            title: 'Hair Styling',
-            description:
-              'Professional cuts, colors, and treatments for all hair types',
-            price: 'From $45',
-          },
-          {
-            icon: '💅',
-            title: 'Nail Care',
-            description:
-              'Manicures, pedicures, and nail art by certified technicians',
-            price: 'From $25',
-          },
-          {
-            icon: '🧴',
-            title: 'Spa Treatments',
-            description: 'Relaxing facials, massages, and body treatments',
-            price: 'From $65',
-          },
-          {
-            icon: '💄',
-            title: 'Makeup Services',
-            description: 'Professional makeup for special occasions and events',
-            price: 'From $50',
-          },
-          {
-            icon: '🎨',
-            title: 'Hair Coloring',
-            description:
-              'Expert color services including highlights and balayage',
-            price: 'From $80',
-          },
-          {
-            icon: '🌿',
-            title: 'Organic Treatments',
-            description:
-              'Natural and organic beauty treatments for sensitive skin',
-            price: 'From $55',
-          },
-        ],
-        team: [
-          {
-            name: 'Sarah Johnson',
-            role: 'Senior Stylist',
-            bio: '15+ years experience in color and cutting',
-            specialties: ['Color Specialist', 'Bridal Hair'],
-          },
-          {
-            name: 'Maria Garcia',
-            role: 'Nail Specialist',
-            bio: 'Expert in nail art and luxury manicures',
-            specialties: ['Nail Art', 'Gel Manicures'],
-          },
-          {
-            name: 'Emily Chen',
-            role: 'Spa Therapist',
-            bio: 'Licensed massage therapist and esthetician',
-            specialties: ['Deep Tissue', 'Facials'],
-          },
-          {
-            name: 'Jessica Miller',
-            role: 'Makeup Artist',
-            bio: 'Professional makeup artist specializing in bridal looks',
-            specialties: ['Bridal Makeup', 'Special Events'],
-          },
-        ],
-        gallery: [
-          { category: 'Hair Styling', images: 8 },
-          { category: 'Nail Art', images: 6 },
-          { category: 'Spa Treatments', images: 5 },
-          { category: 'Salon Interior', images: 4 },
-        ],
-        packages: [
-          {
-            name: 'Bridal Package',
-            description:
-              'Complete bridal beauty package including hair, makeup, and nails',
-            price: '$299',
-            duration: '4 hours',
-          },
-          {
-            name: 'Spa Day',
-            description:
-              'Full day relaxation with massage, facial, and beauty treatments',
-            price: '$199',
-            duration: '6 hours',
-          },
-          {
-            name: 'Makeover Package',
-            description: 'Complete transformation with cut, color, and styling',
-            price: '$149',
-            duration: '3 hours',
-          },
-        ],
-      },
-      gym: {
-        hero: {
-          title: 'Elite Fitness Center',
-          subtitle:
-            'Achieve your fitness goals with state-of-the-art equipment, expert trainers, and motivating group classes.',
-        },
-        about: {
-          title: 'About Our Gym',
-          description:
-            "We're committed to helping you reach your fitness potential with personalized training programs and a supportive community.",
-        },
-        services: [
-          {
-            icon: '🏋️',
-            title: 'Personal Training',
-            description:
-              'One-on-one sessions with certified fitness professionals',
-            price: 'From $65/session',
-          },
-          {
-            icon: '���',
-            title: 'Group Classes',
-            description: 'High-energy classes including HIIT, yoga, and spin',
-            price: '$20/class',
-          },
-          {
-            icon: '💪',
-            title: 'Strength Training',
-            description: 'Complete weight room with modern equipment',
-            price: 'Included',
-          },
-          {
-            icon: '🧘',
-            title: 'Yoga & Pilates',
-            description: 'Mind-body classes for flexibility and core strength',
-            price: '$18/class',
-          },
-          {
-            icon: '🏊',
-            title: 'Swimming Pool',
-            description:
-              'Olympic-size pool for lap swimming and water aerobics',
-            price: 'Included',
-          },
-          {
-            icon: '🥊',
-            title: 'Boxing Classes',
-            description: 'High-intensity boxing and kickboxing training',
-            price: '$25/class',
-          },
-        ],
-        team: [
-          {
-            name: 'Mike Thompson',
-            role: 'Head Trainer',
-            bio: 'Former athlete with 10+ years training experience',
-            specialties: ['Strength Training', 'Athletic Performance'],
-          },
-          {
-            name: 'Lisa Park',
-            role: 'Yoga Instructor',
-            bio: 'Certified in multiple yoga disciplines',
-            specialties: ['Vinyasa Yoga', 'Meditation'],
-          },
-          {
-            name: 'David Wilson',
-            role: 'Nutritionist',
-            bio: 'Sports nutrition specialist and wellness coach',
-            specialties: ['Meal Planning', 'Weight Management'],
-          },
-          {
-            name: 'Sarah Adams',
-            role: 'Group Fitness',
-            bio: 'High-energy instructor specializing in HIIT and cardio',
-            specialties: ['HIIT', 'Cardio Classes'],
-          },
-        ],
-        gallery: [
-          { category: 'Gym Equipment', images: 12 },
-          { category: 'Group Classes', images: 8 },
-          { category: 'Swimming Pool', images: 5 },
-          { category: 'Facilities', images: 6 },
-        ],
-        packages: [
-          {
-            name: 'Premium Membership',
-            description: 'Full access to all facilities and unlimited classes',
-            price: '$89/month',
-            duration: 'Monthly',
-          },
-          {
-            name: 'Basic Membership',
-            description: 'Gym access with limited class participation',
-            price: '$49/month',
-            duration: 'Monthly',
-          },
-          {
-            name: 'Personal Training Package',
-            description: '8 personal training sessions with meal plan',
-            price: '$399',
-            duration: '1 Month',
-          },
-        ],
-      },
-      restaurant: {
-        hero: {
-          title: 'Bella Vista Restaurant',
-          subtitle:
-            'Experience authentic Italian cuisine crafted with fresh ingredients and traditional recipes in an elegant setting.',
-        },
-        about: {
-          title: 'Our Story',
-          description:
-            'Family-owned for three generations, we bring authentic Italian flavors to your table using recipes passed down through our family.',
-        },
-        services: [
-          {
-            icon: '🍝',
-            title: 'Fine Dining',
-            description:
-              'Authentic Italian dishes made with imported ingredients',
-            price: '$25-45',
-          },
-          {
-            icon: '🍷',
-            title: 'Wine Selection',
-            description:
-              'Curated collection of Italian and international wines',
-            price: '$8-25/glass',
-          },
-          {
-            icon: '🎉',
-            title: 'Private Events',
-            description: 'Special occasions and corporate events catering',
-            price: 'Custom pricing',
-          },
-          {
-            icon: '🍕',
-            title: 'Wood-Fired Pizza',
-            description:
-              'Traditional Neapolitan pizzas from our wood-fired oven',
-            price: '$18-28',
-          },
-          {
-            icon: '🥗',
-            title: 'Fresh Salads',
-            description:
-              'Garden-fresh salads with imported Italian ingredients',
-            price: '$12-18',
-          },
-          {
-            icon: '🍰',
-            title: 'Desserts',
-            description: 'Homemade Italian desserts and pastries',
-            price: '$8-12',
-          },
-        ],
-        team: [
-          {
-            name: 'Chef Antonio',
-            role: 'Executive Chef',
-            bio: 'Third-generation chef from Tuscany',
-            specialties: ['Pasta Making', 'Traditional Recipes'],
-          },
-          {
-            name: 'Isabella Rosa',
-            role: 'Sommelier',
-            bio: 'Wine expert with 12+ years experience',
-            specialties: ['Italian Wines', 'Food Pairing'],
-          },
-          {
-            name: 'Marco Bianchi',
-            role: 'Pastry Chef',
-            bio: 'Specializes in traditional Italian desserts',
-            specialties: ['Tiramisu', 'Cannoli'],
-          },
-          {
-            name: 'Giuseppe Rossi',
-            role: 'Sous Chef',
-            bio: 'Expert in regional Italian cuisines',
-            specialties: ['Risotto', 'Seafood'],
-          },
-        ],
-        gallery: [
-          { category: 'Signature Dishes', images: 15 },
-          { category: 'Restaurant Interior', images: 8 },
-          { category: 'Wine Collection', images: 6 },
-          { category: 'Kitchen', images: 4 },
-        ],
-        packages: [
-          {
-            name: "Chef's Tasting Menu",
-            description: '7-course tasting menu with wine pairings',
-            price: '$95/person',
-            duration: '2.5 hours',
-          },
-          {
-            name: 'Family Style Dinner',
-            description: 'Traditional family-style Italian dinner for groups',
-            price: '$45/person',
-            duration: '2 hours',
-          },
-          {
-            name: 'Wine Dinner',
-            description: '5-course dinner with premium wine selections',
-            price: '$75/person',
-            duration: '3 hours',
-          },
-        ],
-      },
-    };
-
-    // Special handling for freelancer portfolio
-    if (businessType === 'freelancer') {
-      return {
-        hero: {
-          title: 'Creative Freelancer Portfolio',
-          subtitle:
-            'Transforming ideas into stunning visual experiences. Specialized in design, development, and creative solutions for modern businesses.',
-        },
-        about: {
-          title: 'About Me',
-          description:
-            "I'm a passionate creative professional with 8+ years of experience helping businesses and individuals bring their visions to life through innovative design and development.",
-        },
-        skills: [
-          { name: 'Web Design', level: 95, icon: '🎨' },
-          { name: 'UI/UX Design', level: 90, icon: '📱' },
-          { name: 'Frontend Development', level: 88, icon: '💻' },
-          { name: 'Graphic Design', level: 92, icon: '🖼️' },
-          { name: 'Branding', level: 85, icon: '🏷️' },
-          { name: 'Motion Graphics', level: 80, icon: '🎬' },
-        ],
-        portfolio: [
-          {
-            title: 'E-commerce Platform',
-            category: 'Web Development',
-            description:
-              'Modern e-commerce platform with custom design and seamless user experience',
-            image: 'project1',
-            technologies: ['React', 'Node.js', 'MongoDB'],
-          },
-          {
-            title: 'Brand Identity Design',
-            category: 'Branding',
-            description:
-              'Complete brand identity including logo, color palette, and brand guidelines',
-            image: 'project2',
-            technologies: ['Illustrator', 'Photoshop', 'Figma'],
-          },
-          {
-            title: 'Mobile App UI',
-            category: 'UI/UX Design',
-            description:
-              'Clean and intuitive mobile app interface for fitness tracking application',
-            image: 'project3',
-            technologies: ['Figma', 'Principle', 'Sketch'],
-          },
-          {
-            title: 'Corporate Website',
-            category: 'Web Design',
-            description:
-              'Professional corporate website with custom animations and responsive design',
-            image: 'project4',
-            technologies: ['HTML/CSS', 'JavaScript', 'GSAP'],
-          },
-          {
-            title: 'Digital Marketing Campaign',
-            category: 'Graphic Design',
-            description:
-              'Social media graphics and digital assets for marketing campaign',
-            image: 'project5',
-            technologies: ['Photoshop', 'After Effects', 'Illustrator'],
-          },
-          {
-            title: 'SaaS Dashboard',
-            category: 'UI/UX Design',
-            description:
-              'Complex dashboard interface for SaaS application with data visualization',
-            image: 'project6',
-            technologies: ['Figma', 'React', 'D3.js'],
-          },
-        ],
-        services: [
-          {
-            icon: '🎨',
-            title: 'Web Design',
-            description:
-              'Custom website design tailored to your brand and business goals',
-            price: 'From $1,200',
-          },
-          {
-            icon: '📱',
-            title: 'UI/UX Design',
-            description: 'User-centered design for web and mobile applications',
-            price: 'From $800',
-          },
-          {
-            icon: '💻',
-            title: 'Frontend Development',
-            description:
-              'Modern, responsive websites built with latest technologies',
-            price: 'From $1,500',
-          },
-          {
-            icon: '🏷️',
-            title: 'Branding & Identity',
-            description:
-              'Complete brand identity design including logo and guidelines',
-            price: 'From $900',
-          },
-          {
-            icon: '🖼️',
-            title: 'Graphic Design',
-            description:
-              'Print and digital graphics for marketing and business materials',
-            price: 'From $300',
-          },
-          {
-            icon: '🎬',
-            title: 'Motion Graphics',
-            description:
-              'Animated graphics and video content for digital marketing',
-            price: 'From $600',
-          },
-        ],
-        experience: [
-          {
-            company: 'Digital Agency Inc.',
-            role: 'Senior Creative Designer',
-            period: '2020 - Present',
-            description:
-              'Lead designer for major client projects, specializing in web design and branding solutions.',
-          },
-          {
-            company: 'Freelance',
-            role: 'Independent Designer & Developer',
-            period: '2018 - Present',
-            description:
-              'Providing creative solutions for startups and established businesses across various industries.',
-          },
-          {
-            company: 'Tech Startup Co.',
-            role: 'UI/UX Designer',
-            period: '2018 - 2020',
-            description:
-              'Designed user interfaces for mobile and web applications, improving user engagement by 40%.',
-          },
-        ],
-        testimonials: [
-          {
-            name: 'Sarah Johnson',
-            company: 'Tech Innovations LLC',
-            role: 'CEO',
-            review:
-              'Outstanding work! The website design exceeded our expectations and perfectly captured our brand vision.',
-            rating: 5,
-          },
-          {
-            name: 'Michael Chen',
-            company: 'Creative Solutions',
-            role: 'Marketing Director',
-            review:
-              'Professional, creative, and delivers on time. The branding work has significantly improved our market presence.',
-            rating: 5,
-          },
-          {
-            name: 'Emily Rodriguez',
-            company: 'Startup Hub',
-            role: 'Founder',
-            review:
-              'Incredible attention to detail and excellent communication throughout the project. Highly recommended!',
-            rating: 5,
-          },
-        ],
-        packages: [
-          {
-            name: 'Starter Package',
-            description: 'Perfect for small businesses getting started online',
-            price: '$1,499',
-            duration: '2-3 weeks',
-            includes: [
-              'Custom Web Design',
-              'Responsive Layout',
-              'Basic SEO',
-              'Contact Forms',
-            ],
-          },
-          {
-            name: 'Professional Package',
-            description: 'Comprehensive solution for growing businesses',
-            price: '$2,999',
-            duration: '4-6 weeks',
-            includes: [
-              'Custom Design & Development',
-              'CMS Integration',
-              'Advanced SEO',
-              'Analytics Setup',
-              'Social Media Integration',
-            ],
-          },
-          {
-            name: 'Enterprise Package',
-            description: 'Full-scale solution for established companies',
-            price: '$4,999',
-            duration: '6-8 weeks',
-            includes: [
-              'Complete Brand Identity',
-              'Custom Web Application',
-              'E-commerce Integration',
-              'Performance Optimization',
-              'Ongoing Support',
-            ],
-          },
-        ],
-      };
-    }
-
-    const defaultContent = baseContent[businessType] || baseContent.salon;
-
-    // Ensure all required properties exist with fallbacks
-    return {
-      hero: defaultContent.hero || {
-        title: 'Business',
-        subtitle: 'Welcome to our business',
-      },
-      about: defaultContent.about || {
-        title: 'About Us',
-        description: 'Learn more about our business',
-      },
-      services: defaultContent.services || [],
-      team: defaultContent.team || [],
-      gallery: defaultContent.gallery || [],
-      packages: defaultContent.packages || [],
-      portfolio: defaultContent.portfolio || [],
-      skills: defaultContent.skills || [],
-      experience: defaultContent.experience || [],
-      testimonials: defaultContent.testimonials || [],
-    };
-  };
-
-  // Get content from editing business if available, otherwise use sample content
+  // Use business data directly from API (editing business takes priority for real-time updates)
   const content =
     editingBusiness && editingBusiness.slug === businessData.slug
       ? editingBusiness
-      : getBusinessContent(businessData.slug);
-
-  // Safety check to ensure content is loaded
-  if (!content) {
-    return (
-      <PageContainer>
-        <div style={{ padding: '4rem', textAlign: 'center' }}>
-          <h2>Loading...</h2>
-          <p>Please wait while we load the content.</p>
-        </div>
-      </PageContainer>
-    );
-  }
+      : businessData;
 
   return (
     <PageContainer>
@@ -2036,27 +1535,39 @@ const BusinessWebsitePage = () => {
             <FaArrowLeft />
           </BackToListButton>
           <Logo primaryColor={businessData.primaryColor}>
-            {businessData.name}
+            {businessData.navigation?.logo || businessData.name}
           </Logo>
           <NavLinks primaryColor={businessData.primaryColor}>
-            <a href="#home">Home</a>
-            <a href="#about">About</a>
-            {businessData.slug === 'freelancer' && (
-              <a href="#portfolio">Portfolio</a>
+            {businessData.navigation?.menuItems ? (
+              businessData.navigation.menuItems.map((item, index) => (
+                <a key={index} href={item.href}>
+                  {item.name}
+                </a>
+              ))
+            ) : (
+              <>
+                <a href="#home">Home</a>
+                <a href="#about">About</a>
+                {businessData.slug === 'freelancer' && (
+                  <a href="#portfolio">Portfolio</a>
+                )}
+                {businessData.slug === 'freelancer' && (
+                  <a href="#skills">Skills</a>
+                )}
+                <a href="#services">Services</a>
+                {businessData.slug !== 'freelancer' && <a href="#team">Team</a>}
+                {businessData.slug === 'freelancer' && (
+                  <a href="#experience">Experience</a>
+                )}
+                {businessData.slug !== 'freelancer' && (
+                  <a href="#gallery">Gallery</a>
+                )}
+                {businessData.slug !== 'freelancer' && (
+                  <a href="#packages">Packages</a>
+                )}
+                <a href="#contact">Contact</a>
+              </>
             )}
-            {businessData.slug === 'freelancer' && <a href="#skills">Skills</a>}
-            <a href="#services">Services</a>
-            {businessData.slug !== 'freelancer' && <a href="#team">Team</a>}
-            {businessData.slug === 'freelancer' && (
-              <a href="#experience">Experience</a>
-            )}
-            {businessData.slug !== 'freelancer' && (
-              <a href="#gallery">Gallery</a>
-            )}
-            {businessData.slug !== 'freelancer' && (
-              <a href="#packages">Packages</a>
-            )}
-            <a href="#contact">Contact</a>
           </NavLinks>
           <MobileMenuButton
             primaryColor={businessData.primaryColor}
@@ -2066,7 +1577,7 @@ const BusinessWebsitePage = () => {
           </MobileMenuButton>
           <OwnerLink onClick={handleOwnerClick}>
             <FaEdit />
-            Owner Dashboard
+            {businessData.navigation?.ownerLinkText || 'Owner Dashboard'}
           </OwnerLink>
         </NavContainer>
       </Navbar>
@@ -2208,15 +1719,13 @@ const BusinessWebsitePage = () => {
                   `Learn more about ${businessData.name}`}
               </p>
               <p>
-                We pride ourselves on delivering exceptional service and
-                creating memorable experiences for all our clients. Our
-                commitment to excellence has made us a trusted choice in the
-                community.
+                {content.about?.extendedDescription ||
+                  'We pride ourselves on delivering exceptional service and creating memorable experiences for all our clients.'}
               </p>
             </AboutContent>
             <AboutImage primaryColor={businessData.primaryColor}>
               {businessData.slug === 'salon' && '💇‍♀️'}
-              {businessData.slug === 'gym' && '��️‍♂️'}
+              {businessData.slug === 'gym' && '��️‍♂��'}
               {businessData.slug === 'restaurant' && '👨‍🍳'}
               {!['salon', 'gym', 'restaurant'].includes(businessData.slug) &&
                 '🏢'}
@@ -2226,58 +1735,34 @@ const BusinessWebsitePage = () => {
           <StatsGrid>
             <StatCard primaryColor={businessData.primaryColor}>
               <div className="number">
-                {businessData.slug === 'restaurant'
-                  ? '2,500+'
-                  : businessData.slug === 'gym'
-                    ? '1,200+'
-                    : businessData.slug === 'salon'
-                      ? '850+'
-                      : '500+'}
+                {content.about?.stats?.[0]?.number || '100+'}
               </div>
               <div className="label">
-                {businessData.slug === 'restaurant'
-                  ? 'Meals Served'
-                  : businessData.slug === 'gym'
-                    ? 'Active Members'
-                    : businessData.slug === 'salon'
-                      ? 'Services Completed'
-                      : 'Happy Clients'}
+                {content.about?.stats?.[0]?.label || 'Services'}
               </div>
             </StatCard>
             <StatCard primaryColor={businessData.primaryColor}>
               <div className="number">
-                {businessData.slug === 'restaurant'
-                  ? '15+'
-                  : businessData.slug === 'gym'
-                    ? '8+'
-                    : businessData.slug === 'salon'
-                      ? '12+'
-                      : '5+'}
+                {content.about?.stats?.[1]?.number || '5+'}
               </div>
-              <div className="label">Years Experience</div>
-            </StatCard>
-            <StatCard primaryColor={businessData.primaryColor}>
-              <div className="number">4.9</div>
-              <div className="label">★ Average Rating</div>
+              <div className="label">
+                {content.about?.stats?.[1]?.label || 'Years Experience'}
+              </div>
             </StatCard>
             <StatCard primaryColor={businessData.primaryColor}>
               <div className="number">
-                {businessData.slug === 'restaurant'
-                  ? '7 Days'
-                  : businessData.slug === 'gym'
-                    ? '6AM-11PM'
-                    : businessData.slug === 'salon'
-                      ? 'Mon-Sat'
-                      : '24/7'}
+                {content.about?.stats?.[2]?.number || '4.9'}
               </div>
               <div className="label">
-                {businessData.slug === 'restaurant'
-                  ? 'Weekly Service'
-                  : businessData.slug === 'gym'
-                    ? 'Operating Hours'
-                    : businessData.slug === 'salon'
-                      ? 'Open Days'
-                      : 'Support'}
+                {content.about?.stats?.[2]?.label || '★ Average Rating'}
+              </div>
+            </StatCard>
+            <StatCard primaryColor={businessData.primaryColor}>
+              <div className="number">
+                {content.about?.stats?.[3]?.number || '100+'}
+              </div>
+              <div className="label">
+                {content.about?.stats?.[3]?.label || 'Happy Clients'}
               </div>
             </StatCard>
           </StatsGrid>
@@ -2288,10 +1773,12 @@ const BusinessWebsitePage = () => {
       {businessData.slug === 'freelancer' && content.portfolio ? (
         <Section id="portfolio">
           <SectionContainer>
-            <SectionTitle>My Portfolio</SectionTitle>
+            <SectionTitle>
+              {content.sections?.portfolio?.title || 'My Portfolio'}
+            </SectionTitle>
             <SectionSubtitle>
-              A showcase of my recent work and creative projects across various
-              industries and technologies.
+              {content.sections?.portfolio?.subtitle ||
+                'A showcase of my recent work and creative projects across various industries and technologies.'}
             </SectionSubtitle>
             <PortfolioGrid>
               {(content.portfolio || []).map((project, index) => (
@@ -2325,10 +1812,12 @@ const BusinessWebsitePage = () => {
       {businessData.slug === 'freelancer' && content.skills ? (
         <Section id="skills" background={theme.colors.gray50}>
           <SectionContainer>
-            <SectionTitle>My Skills</SectionTitle>
+            <SectionTitle>
+              {content.sections?.skills?.title || 'My Skills'}
+            </SectionTitle>
             <SectionSubtitle>
-              Technical expertise and creative skills developed through years of
-              professional experience.
+              {content.sections?.skills?.subtitle ||
+                'Technical expertise and creative skills developed through years of professional experience.'}
             </SectionSubtitle>
             <SkillsGrid>
               {(content.skills || []).map((skill, index) => (
@@ -2364,14 +1853,14 @@ const BusinessWebsitePage = () => {
       >
         <SectionContainer>
           <SectionTitle>
-            {businessData.slug === 'freelancer'
-              ? 'My Services'
-              : 'Our Services'}
+            {content.sections?.services?.title ||
+              (businessData.slug === 'freelancer'
+                ? 'My Services'
+                : 'Our Services')}
           </SectionTitle>
           <SectionSubtitle>
-            {businessData.slug === 'freelancer'
-              ? 'Professional services tailored to help your business succeed in the digital landscape.'
-              : 'We offer a comprehensive range of professional services designed to meet your needs and exceed your expectations.'}
+            {content.sections?.services?.subtitle ||
+              'We offer a comprehensive range of professional services designed to meet your needs and exceed your expectations.'}
           </SectionSubtitle>
           <ServicesGrid>
             {(content.services || []).map((service, index) => (
@@ -2403,10 +1892,12 @@ const BusinessWebsitePage = () => {
       {/* Team Section */}
       <Section id="team" background={theme.colors.gray50}>
         <SectionContainer>
-          <SectionTitle>Meet Our Team</SectionTitle>
+          <SectionTitle>
+            {content.sections?.team?.title || 'Meet Our Team'}
+          </SectionTitle>
           <SectionSubtitle>
-            Our experienced professionals are passionate about delivering
-            exceptional service and results.
+            {content.sections?.team?.subtitle ||
+              'Our experienced professionals are passionate about delivering exceptional service and results.'}
           </SectionSubtitle>
           <TeamGrid>
             {(content.team || []).map((member, index) => (
@@ -2441,10 +1932,12 @@ const BusinessWebsitePage = () => {
       {businessData.slug === 'freelancer' && content.experience ? (
         <Section id="experience">
           <SectionContainer>
-            <SectionTitle>Professional Experience</SectionTitle>
+            <SectionTitle>
+              {content.sections?.experience?.title || 'Professional Experience'}
+            </SectionTitle>
             <SectionSubtitle>
-              My journey in the creative industry, working with diverse clients
-              and challenging projects.
+              {content.sections?.experience?.subtitle ||
+                'My journey in the creative industry, working with diverse clients and challenging projects.'}
             </SectionSubtitle>
             <ExperienceTimeline>
               {(content.experience || []).map((exp, index) => (
@@ -2469,10 +1962,12 @@ const BusinessWebsitePage = () => {
       {/* Testimonials Section */}
       <Section id="testimonials">
         <SectionContainer>
-          <SectionTitle>What Our Clients Say</SectionTitle>
+          <SectionTitle>
+            {content.sections?.testimonials?.title || 'What Our Clients Say'}
+          </SectionTitle>
           <SectionSubtitle>
-            Don't just take our word for it - hear from our satisfied customers
-            about their experiences.
+            {content.sections?.testimonials?.subtitle ||
+              "Don't just take our word for it - hear from our satisfied customers about their experiences."}
           </SectionSubtitle>
           <TestimonialsGrid>
             {[1, 2, 3].map((_, index) => (
@@ -2484,14 +1979,21 @@ const BusinessWebsitePage = () => {
                   <FaQuoteLeft />
                 </div>
                 <div className="text">
-                  "Outstanding service and professional staff. I couldn't be
-                  happier with the results. Highly recommend to anyone looking
-                  for quality and excellence."
+                  "
+                  {content.sections?.testimonials?.sampleTestimonial?.text ||
+                    "Outstanding service and professional staff. I couldn't be happier with the results!"}
+                  "
                 </div>
                 <div className="author">
                   <div className="info">
-                    <h4>Client Name</h4>
-                    <p>Satisfied Customer</p>
+                    <h4>
+                      {content.sections?.testimonials?.sampleTestimonial
+                        ?.author || 'Client Name'}
+                    </h4>
+                    <p>
+                      {content.sections?.testimonials?.sampleTestimonial
+                        ?.role || 'Satisfied Customer'}
+                    </p>
                   </div>
                   <div className="rating">
                     {[...Array(5)].map((_, i) => (
@@ -2508,10 +2010,12 @@ const BusinessWebsitePage = () => {
       {/* Gallery Section */}
       <Section id="gallery">
         <SectionContainer>
-          <SectionTitle>Our Gallery</SectionTitle>
+          <SectionTitle>
+            {content.sections?.gallery?.title || 'Our Gallery'}
+          </SectionTitle>
           <SectionSubtitle>
-            Take a look at our work, facilities, and the experiences we create
-            for our clients.
+            {content.sections?.gallery?.subtitle ||
+              'Take a look at our work, facilities, and the experiences we create for our clients.'}
           </SectionSubtitle>
           <GalleryGrid>
             {content.gallery?.map((category, index) => (
@@ -2533,10 +2037,12 @@ const BusinessWebsitePage = () => {
       {content.packages && (
         <Section id="packages" background={theme.colors.gray50}>
           <SectionContainer>
-            <SectionTitle>Our Packages</SectionTitle>
+            <SectionTitle>
+              {content.sections?.packages?.title || 'Our Packages'}
+            </SectionTitle>
             <SectionSubtitle>
-              Choose from our specially curated packages designed to give you
-              the best value and experience.
+              {content.sections?.packages?.subtitle ||
+                'Choose from our specially curated packages designed to give you the best value and experience.'}
             </SectionSubtitle>
             <PackagesGrid>
               {(content.packages || []).map((pkg, index) => (
@@ -2549,7 +2055,9 @@ const BusinessWebsitePage = () => {
                   <div className="package-price">{pkg.price}</div>
                   <div className="package-duration">{pkg.duration}</div>
                   <div className="package-description">{pkg.description}</div>
-                  <button className="package-button">Book Now</button>
+                  <button className="package-button">
+                    {content.ui?.buttons?.bookNow || 'Book Now'}
+                  </button>
                 </PackageCard>
               ))}
             </PackagesGrid>
@@ -2560,39 +2068,15 @@ const BusinessWebsitePage = () => {
       {/* FAQ Section */}
       <Section id="faq">
         <SectionContainer>
-          <SectionTitle>Frequently Asked Questions</SectionTitle>
+          <SectionTitle>
+            {content.sections?.faq?.title || 'Frequently Asked Questions'}
+          </SectionTitle>
           <SectionSubtitle>
-            Find answers to common questions about our services, booking, and
-            policies.
+            {content.sections?.faq?.subtitle ||
+              'Find answers to common questions about our services, booking, and policies.'}
           </SectionSubtitle>
           <FAQContainer>
-            {[
-              {
-                question: 'How far in advance should I book?',
-                answer:
-                  'We recommend booking at least 1-2 weeks in advance, especially for weekends and special occasions. However, we also accept same-day appointments based on availability.',
-              },
-              {
-                question: 'What is your cancellation policy?',
-                answer:
-                  'We require at least 24 hours notice for cancellations. Cancellations made less than 24 hours in advance may be subject to a fee.',
-              },
-              {
-                question: 'Do you offer group discounts?',
-                answer:
-                  'Yes! We offer special group rates for parties of 3 or more. Contact us for custom group pricing and package options.',
-              },
-              {
-                question: 'What payment methods do you accept?',
-                answer:
-                  'We accept all major credit cards, cash, and digital payments including Apple Pay and Google Pay. We also offer financing options for larger packages.',
-              },
-              {
-                question: 'Are your products organic/natural?',
-                answer:
-                  "We use a carefully curated selection of premium products, including many organic and natural options. We're happy to discuss specific product ingredients and alternatives for sensitive skin.",
-              },
-            ].map((faq, index) => (
+            {(content.faq || []).map((faq, index) => (
               <FAQItem key={index}>
                 <FAQQuestion primaryColor={businessData.primaryColor}>
                   {faq.question}
@@ -2608,56 +2092,15 @@ const BusinessWebsitePage = () => {
       {/* Reviews Section */}
       <Section id="reviews" background={theme.colors.gray50}>
         <SectionContainer>
-          <SectionTitle>Recent Reviews</SectionTitle>
+          <SectionTitle>
+            {content.sections?.reviews?.title || 'Recent Reviews'}
+          </SectionTitle>
           <SectionSubtitle>
-            See what our recent customers are saying about their experiences
-            with us.
+            {content.sections?.reviews?.subtitle ||
+              'See what our recent customers are saying about their experiences with us.'}
           </SectionSubtitle>
           <ReviewsGrid>
-            {[
-              {
-                name: 'Emma Thompson',
-                date: '2 weeks ago',
-                rating: 5,
-                review:
-                  "Absolutely amazing experience! The staff was professional, the atmosphere was relaxing, and the results exceeded my expectations. I'll definitely be coming back!",
-              },
-              {
-                name: 'Michael Chen',
-                date: '1 month ago',
-                rating: 5,
-                review:
-                  'Top-notch service and quality. The attention to detail and customer care is outstanding. Highly recommend to anyone looking for excellence.',
-              },
-              {
-                name: 'Sarah Williams',
-                date: '3 weeks ago',
-                rating: 5,
-                review:
-                  'Best decision I made! The team is knowledgeable, friendly, and really listens to what you want. The facility is clean and modern too.',
-              },
-              {
-                name: 'David Rodriguez',
-                date: '1 week ago',
-                rating: 5,
-                review:
-                  'Fantastic value for money. The package I chose was perfect and included everything I needed. Will be booking again soon!',
-              },
-              {
-                name: 'Lisa Park',
-                date: '2 months ago',
-                rating: 5,
-                review:
-                  "I've been a customer for over a year now and they never disappoint. Consistent quality and service every single time.",
-              },
-              {
-                name: 'James Wilson',
-                date: '3 days ago',
-                rating: 5,
-                review:
-                  'Exceeded all expectations! From booking to completion, everything was seamless. The results speak for themselves.',
-              },
-            ].map((review, index) => (
+            {(content.reviews || []).map((review, index) => (
               <ReviewCard key={index} primaryColor={businessData.primaryColor}>
                 <div className="review-header">
                   <div className="avatar">
@@ -2686,64 +2129,54 @@ const BusinessWebsitePage = () => {
       {/* Business Hours Section */}
       <Section id="hours">
         <SectionContainer>
-          <SectionTitle>Business Hours & Location</SectionTitle>
+          <SectionTitle>
+            {content.ui?.businessHours?.title || 'Business Hours & Location'}
+          </SectionTitle>
           <SectionSubtitle>
             Visit us during our business hours or contact us anytime for
             appointments and inquiries.
           </SectionSubtitle>
           <HoursGrid>
             <HoursCard primaryColor={businessData.primaryColor}>
-              <h4>Operating Hours</h4>
+              <h4>{content.ui?.businessHours?.title || 'Operating Hours'}</h4>
               <div className="hours-list">
-                <div className="hours-item">
-                  <span className="day">Monday</span>
-                  <span className="time">9:00 AM - 7:00 PM</span>
-                </div>
-                <div className="hours-item">
-                  <span className="day">Tuesday</span>
-                  <span className="time">9:00 AM - 7:00 PM</span>
-                </div>
-                <div className="hours-item">
-                  <span className="day">Wednesday</span>
-                  <span className="time">9:00 AM - 7:00 PM</span>
-                </div>
-                <div className="hours-item">
-                  <span className="day">Thursday</span>
-                  <span className="time">9:00 AM - 8:00 PM</span>
-                </div>
-                <div className="hours-item">
-                  <span className="day">Friday</span>
-                  <span className="time">9:00 AM - 8:00 PM</span>
-                </div>
-                <div className="hours-item">
-                  <span className="day">Saturday</span>
-                  <span className="time">8:00 AM - 6:00 PM</span>
-                </div>
-                <div className="hours-item">
-                  <span className="day">Sunday</span>
-                  <span className="time">10:00 AM - 5:00 PM</span>
-                </div>
+                {Object.entries(content.businessHours?.hours || {}).map(
+                  ([day, time]) => (
+                    <div key={day} className="hours-item">
+                      <span className="day">
+                        {day.charAt(0).toUpperCase() + day.slice(1)}
+                      </span>
+                      <span className="time">{time}</span>
+                    </div>
+                  )
+                )}
               </div>
             </HoursCard>
 
             <HoursCard primaryColor={businessData.primaryColor}>
-              <h4>Contact Information</h4>
+              <h4>
+                {content.ui?.businessHours?.contactInfoTitle ||
+                  'Contact Information'}
+              </h4>
               <div className="hours-list">
                 <div className="hours-item">
                   <span className="day">Phone</span>
-                  <span className="time">+1 (555) 123-4567</span>
+                  <span className="time">
+                    {content.contact?.phone || '+1 (555) 123-4567'}
+                  </span>
                 </div>
                 <div className="hours-item">
                   <span className="day">Email</span>
-                  <span className="time">info@{businessData.slug}.com</span>
+                  <span className="time">
+                    {content.contact?.email || `info@${businessData.slug}.com`}
+                  </span>
                 </div>
                 <div className="hours-item">
                   <span className="day">Address</span>
-                  <span className="time">123 Business St</span>
-                </div>
-                <div className="hours-item">
-                  <span className="day">City</span>
-                  <span className="time">Your City, ST 12345</span>
+                  <span className="time">
+                    {content.contact?.address ||
+                      '123 Business Street, City, State 12345'}
+                  </span>
                 </div>
               </div>
             </HoursCard>
@@ -2754,18 +2187,45 @@ const BusinessWebsitePage = () => {
       {/* Contact Section */}
       <Section id="contact" background={theme.colors.gray50}>
         <SectionContainer>
-          <SectionTitle>Get In Touch</SectionTitle>
+          <SectionTitle>
+            {content.contact?.title || 'Get In Touch'}
+          </SectionTitle>
           <SectionSubtitle>
-            Ready to get started? Contact us today to schedule a consultation or
-            learn more about our services.
+            {content.contact?.description ||
+              'Ready to get started? Contact us today to schedule a consultation or learn more about our services.'}
           </SectionSubtitle>
           <ContactGrid>
             <ContactForm primaryColor={businessData.primaryColor}>
-              <input type="text" placeholder="Your Name" required />
-              <input type="email" placeholder="Your Email" required />
-              <input type="tel" placeholder="Your Phone" />
-              <textarea placeholder="Your Message" required></textarea>
-              <button type="submit">Send Message</button>
+              <input
+                type="text"
+                placeholder={
+                  content.ui?.contactForm?.placeholders?.name || 'Your Name'
+                }
+                required
+              />
+              <input
+                type="email"
+                placeholder={
+                  content.ui?.contactForm?.placeholders?.email || 'Your Email'
+                }
+                required
+              />
+              <input
+                type="tel"
+                placeholder={
+                  content.ui?.contactForm?.placeholders?.phone || 'Your Phone'
+                }
+              />
+              <textarea
+                placeholder={
+                  content.ui?.contactForm?.placeholders?.message ||
+                  'Your Message'
+                }
+                required
+              ></textarea>
+              <button type="submit">
+                {content.ui?.buttons?.sendMessage || 'Send Message'}
+              </button>
             </ContactForm>
 
             <ContactInfo primaryColor={businessData.primaryColor}>
