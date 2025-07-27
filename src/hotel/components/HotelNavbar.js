@@ -19,11 +19,11 @@ const NavbarContainer = styled.nav.withConfig({
 })`
   background: ${props => props.isScrolled
     ? 'rgba(255, 255, 255, 0.95)'
-    : 'rgba(255, 255, 255, 0.1)'};
-  backdrop-filter: blur(12px);
+    : 'transparent'};
+  backdrop-filter: ${props => props.isScrolled ? 'blur(12px)' : 'none'};
   border-bottom: ${props => props.isScrolled
     ? '1px solid rgba(0, 0, 0, 0.1)'
-    : '1px solid rgba(255, 255, 255, 0.2)'};
+    : 'none'};
   box-shadow: ${props => props.isScrolled
     ? '0 2px 20px rgba(0, 0, 0, 0.1)'
     : 'none'};
@@ -38,16 +38,19 @@ const NavbarContainer = styled.nav.withConfig({
   ${props => !props.isScrolled && `
     .nav-text {
       color: ${theme.colors.white};
-      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+      font-weight: 600;
     }
 
     .nav-link {
       color: ${theme.colors.white};
-      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+      font-weight: 500;
 
       &:hover {
-        color: rgba(255, 255, 255, 0.8);
+        color: rgba(255, 255, 255, 0.9);
         background: rgba(255, 255, 255, 0.1);
+        border-radius: ${theme.borderRadius.md};
       }
     }
   `}
@@ -56,15 +59,18 @@ const NavbarContainer = styled.nav.withConfig({
     .nav-text {
       color: ${theme.colors.gray900};
       text-shadow: none;
+      font-weight: 600;
     }
 
     .nav-link {
       color: ${theme.colors.gray700};
       text-shadow: none;
+      font-weight: 500;
 
       &:hover {
         color: ${theme.colors.primary};
         background: ${theme.colors.gray50};
+        border-radius: ${theme.borderRadius.md};
       }
     }
   `}
