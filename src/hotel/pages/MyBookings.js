@@ -285,7 +285,8 @@ const MyBookings = () => {
         setLoading(true);
         // Simulate API call to fetch user bookings
         const mockUserId = 'user123'; // In real app, this would come from auth context
-        const bookingsData = await fetchHotelBookings(mockUserId);
+        const response = await fetchBookings({ userId: mockUserId });
+        const bookingsData = response.success ? response.data : [];
         setUserBookings(bookingsData);
       } catch (error) {
         console.error('Error fetching bookings:', error);
