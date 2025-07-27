@@ -15,12 +15,83 @@ export const businessWebsiteData = {
     about: {
       title: 'About Our Salon',
       description: 'With over 15 years of experience, our luxury salon combines traditional techniques with modern innovation to deliver exceptional beauty services.',
+      extendedDescription: 'We pride ourselves on delivering exceptional service and creating memorable experiences for all our clients. Our commitment to excellence has made us a trusted choice in the community.',
       stats: [
-        { number: '15+', label: 'Years Experience' },
-        { number: '1000+', label: 'Happy Clients' },
-        { number: '50+', label: 'Services' },
-        { number: '8', label: 'Expert Staff' }
+        { number: '850+', label: 'Services Completed' },
+        { number: '12+', label: 'Years Experience' },
+        { number: '4.9', label: '★ Average Rating' },
+        { number: '500+', label: 'Happy Clients' }
       ]
+    },
+    sections: {
+      services: {
+        title: 'Our Services',
+        subtitle: 'We offer a comprehensive range of professional services designed to meet your needs and exceed your expectations.'
+      },
+      team: {
+        title: 'Meet Our Team',
+        subtitle: 'Our experienced professionals are passionate about delivering exceptional results and making you feel your absolute best.'
+      },
+      testimonials: {
+        title: 'What Our Clients Say',
+        subtitle: "Don't just take our word for it - hear from our satisfied customers about their experiences.",
+        sampleTestimonial: {
+          text: "Outstanding service and professional staff. I couldn't be happier with the results!",
+          author: "Client Name",
+          role: "Satisfied Customer"
+        }
+      },
+      gallery: {
+        title: 'Our Gallery',
+        subtitle: 'Take a look at our work, facilities, and the beautiful transformations we create for our clients.'
+      },
+      packages: {
+        title: 'Our Packages',
+        subtitle: 'Choose from our specially curated packages designed to give you the complete experience you deserve.'
+      },
+      faq: {
+        title: 'Frequently Asked Questions',
+        subtitle: 'Find answers to common questions about our services, policies, and booking process.'
+      },
+      reviews: {
+        title: 'Client Reviews',
+        subtitle: 'Read what our valued clients have to say about their experiences with us.'
+      },
+      portfolio: {
+        title: 'My Portfolio',
+        subtitle: 'Explore my latest projects and creative work across various industries and platforms.'
+      },
+      skills: {
+        title: 'My Skills',
+        subtitle: 'Technical expertise and creative abilities that I bring to every project.'
+      },
+      experience: {
+        title: 'Experience',
+        subtitle: 'Professional journey and key roles that have shaped my expertise.'
+      }
+    },
+    ui: {
+      buttons: {
+        bookNow: 'Book Now',
+        bookAppointment: 'Book Appointment',
+        learnMore: 'Learn More',
+        sendMessage: 'Send Message',
+        getStarted: 'Get Started',
+        viewPortfolio: 'View Portfolio',
+        contactUs: 'Contact Us'
+      },
+      contactForm: {
+        placeholders: {
+          name: 'Your Name',
+          email: 'Your Email',
+          phone: 'Your Phone',
+          message: 'Your Message'
+        }
+      },
+      businessHours: {
+        title: 'Business Hours',
+        contactInfoTitle: 'Contact Information'
+      }
     },
     services: [
       {
