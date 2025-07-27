@@ -344,56 +344,25 @@ const CTAButton = styled.button`
 `;
 
 const QuickInfoCard = styled.div`
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: ${theme.borderRadius.xl};
-  padding: ${theme.spacing.lg};
+  background: transparent;
+  border: none;
+  padding: 0;
   color: ${theme.colors.white};
   display: flex;
   align-items: center;
   gap: ${theme.spacing.md};
-  min-width: 220px;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  overflow: hidden;
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(255, 255, 255, 0.1),
-      transparent
-    );
-    transition: left 0.6s;
-  }
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.2);
-    transform: translateY(-5px) scale(1.02);
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
-    border-color: rgba(255, 255, 255, 0.5);
-    
-    &::before {
-      left: 100%;
-    }
-  }
+  min-width: auto;
+  transition: all 0.3s ease;
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     min-width: auto;
-    padding: ${theme.spacing.md} ${theme.spacing.lg};
-    background: rgba(255, 255, 255, 0.15);
-    border-radius: ${theme.borderRadius.lg};
-    backdrop-filter: blur(15px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    padding: 0;
+    background: transparent;
+    border: none;
+    backdrop-filter: none;
+    box-shadow: none;
     width: auto;
-    max-width: 150px;
+    max-width: none;
     justify-content: center;
     gap: ${theme.spacing.sm};
   }
