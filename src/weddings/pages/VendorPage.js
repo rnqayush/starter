@@ -316,6 +316,12 @@ const HeroContent = styled.div`
   max-width: 800px;
   padding: ${theme.spacing.xl} ${theme.spacing.md};
   animation: ${fadeInUp} 1s ease-out;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
 
   &::before {
     content: '';
