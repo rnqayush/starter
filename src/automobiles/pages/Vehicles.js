@@ -2,7 +2,14 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { FaFilter, FaSort, FaTh, FaList, FaHome, FaSpinner } from 'react-icons/fa';
+import {
+  FaFilter,
+  FaSort,
+  FaTh,
+  FaList,
+  FaHome,
+  FaSpinner,
+} from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -48,8 +55,12 @@ const LoadingSpinner = styled.div`
   animation: spin 1s linear infinite;
 
   @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
   }
 `;
 
@@ -387,22 +398,23 @@ const Vehicles = () => {
       },
       sortBy: searchParams.get('sort') || 'featured',
     };
-    
+
     dispatch(setFilters(urlFilters));
   }, [location.pathname, navigate, dispatch, vendor, searchParams]);
 
   const handleFilterChange = (key, value) => {
     let newFilters = { ...filters };
-    
+
     if (key === 'minPrice' || key === 'maxPrice') {
       newFilters.priceRange = {
         ...newFilters.priceRange,
-        [key === 'minPrice' ? 'min' : 'max']: parseInt(value) || (key === 'minPrice' ? 0 : 500000)
+        [key === 'minPrice' ? 'min' : 'max']:
+          parseInt(value) || (key === 'minPrice' ? 0 : 500000),
       };
     } else {
       newFilters[key] = value;
     }
-    
+
     dispatch(setFilters(newFilters));
 
     // Update URL params
@@ -410,10 +422,13 @@ const Vehicles = () => {
     if (newFilters.category) newParams.set('category', newFilters.category);
     if (newFilters.make) newParams.set('make', newFilters.make);
     if (newFilters.condition) newParams.set('condition', newFilters.condition);
-    if (newFilters.priceRange.min > 0) newParams.set('minPrice', newFilters.priceRange.min.toString());
-    if (newFilters.priceRange.max < 500000) newParams.set('maxPrice', newFilters.priceRange.max.toString());
-    if (newFilters.sortBy !== 'featured') newParams.set('sort', newFilters.sortBy);
-    
+    if (newFilters.priceRange.min > 0)
+      newParams.set('minPrice', newFilters.priceRange.min.toString());
+    if (newFilters.priceRange.max < 500000)
+      newParams.set('maxPrice', newFilters.priceRange.max.toString());
+    if (newFilters.sortBy !== 'featured')
+      newParams.set('sort', newFilters.sortBy);
+
     setSearchParams(newParams);
   };
 
@@ -478,9 +493,13 @@ const Vehicles = () => {
   }
 
   const dealerTheme = vendor.theme || {};
-  const hasActiveFilters = filters.category || filters.make || filters.condition || 
-                          filters.priceRange.min > 0 || filters.priceRange.max < 500000 ||
-                          filters.sortBy !== 'featured';
+  const hasActiveFilters =
+    filters.category ||
+    filters.make ||
+    filters.condition ||
+    filters.priceRange.min > 0 ||
+    filters.priceRange.max < 500000 ||
+    filters.sortBy !== 'featured';
 
   return (
     <PageContainer>
@@ -587,7 +606,11 @@ const Vehicles = () => {
                 <PriceInput
                   type="number"
                   placeholder="Max"
-                  value={filters.priceRange?.max === 500000 ? '' : filters.priceRange?.max || ''}
+                  value={
+                    filters.priceRange?.max === 500000
+                      ? ''
+                      : filters.priceRange?.max || ''
+                  }
                   onChange={e => handleFilterChange('maxPrice', e.target.value)}
                 />
               </PriceRangeContainer>
@@ -647,11 +670,7 @@ const Vehicles = () => {
         )}
       </Container>
 
-      <Footer
-        dealerSlug={vendor.slug}
-        dealer={vendor}
-        theme={dealerTheme}
-      />
+      <Footer dealerSlug={vendor.slug} dealer={vendor} theme={dealerTheme} />
       <BackToTop />
     </PageContainer>
   );

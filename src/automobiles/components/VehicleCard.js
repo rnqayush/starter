@@ -437,13 +437,10 @@ const StockIndicator = styled.div.withConfig({
   }
 `;
 
-const VehicleCard = ({
-  vehicle,
-  dealerSlug = '',
-}) => {
+const VehicleCard = ({ vehicle, dealerSlug = '' }) => {
   const dispatch = useDispatch();
   const [isEnquiryModalOpen, setIsEnquiryModalOpen] = useState(false);
-  
+
   // Redux selectors
   const isInWishlist = useSelector(selectIsInWishlist(vehicle.id));
 
@@ -492,11 +489,17 @@ const VehicleCard = ({
     return new Intl.NumberFormat('en-US').format(mileage) + ' miles';
   };
 
-  const getAvailabilityStatus = (vehicle) => {
+  const getAvailabilityStatus = vehicle => {
     if (!vehicle) return 'unknown';
-    if (vehicle.availability?.status === 'out_of_stock' || vehicle.availability?.quantity === 0) {
+    if (
+      vehicle.availability?.status === 'out_of_stock' ||
+      vehicle.availability?.quantity === 0
+    ) {
       return 'out_of_stock';
-    } else if (vehicle.availability?.status === 'limited_stock' || vehicle.availability?.quantity <= 5) {
+    } else if (
+      vehicle.availability?.status === 'limited_stock' ||
+      vehicle.availability?.quantity <= 5
+    ) {
       return 'limited_stock';
     } else if (vehicle.availability?.status === 'pre_order') {
       return 'pre_order';
@@ -505,7 +508,7 @@ const VehicleCard = ({
     }
   };
 
-  const getAvailabilityLabel = (availability) => {
+  const getAvailabilityLabel = availability => {
     switch (availability) {
       case 'in_stock':
         return 'In Stock';
@@ -520,7 +523,7 @@ const VehicleCard = ({
     }
   };
 
-  const getAvailabilityColor = (availability) => {
+  const getAvailabilityColor = availability => {
     switch (availability) {
       case 'in_stock':
         return '#10b981';
@@ -541,7 +544,8 @@ const VehicleCard = ({
 
   // Handle different data structures (new JSON vs old JS)
   const vehiclePrice = vehicle.pricing?.price || vehicle.price;
-  const vehicleOriginalPrice = vehicle.pricing?.originalPrice || vehicle.originalPrice;
+  const vehicleOriginalPrice =
+    vehicle.pricing?.originalPrice || vehicle.originalPrice;
   const vehicleRating = vehicle.reviews?.rating || vehicle.rating;
   const vehicleReviewCount = vehicle.reviews?.totalReviews || vehicle.reviews;
   const vehicleStock = vehicle.availability?.quantity || vehicle.stock;
@@ -599,14 +603,18 @@ const VehicleCard = ({
           <VehicleSpecs>
             <SpecItem>
               <FaCar className="icon" />
-              <span>{vehicleSpecs?.engine?.type || vehicleSpecs?.engine || 'N/A'}</span>
+              <span>
+                {vehicleSpecs?.engine?.type || vehicleSpecs?.engine || 'N/A'}
+              </span>
             </SpecItem>
             <SpecItem>
               <FaGasPump className="icon" />
               <span>
-                {vehicleSpecs?.efficiency?.mpgCombined ? `${vehicleSpecs.efficiency.mpgCombined} MPG` :
-                 vehicleSpecs?.efficiency?.range ? `${vehicleSpecs.efficiency.range} range` :
-                 vehicleSpecs?.fuelEconomy || vehicleSpecs?.range || 'N/A'}
+                {vehicleSpecs?.efficiency?.mpgCombined
+                  ? `${vehicleSpecs.efficiency.mpgCombined} MPG`
+                  : vehicleSpecs?.efficiency?.range
+                    ? `${vehicleSpecs.efficiency.range} range`
+                    : vehicleSpecs?.fuelEconomy || vehicleSpecs?.range || 'N/A'}
               </span>
             </SpecItem>
             <SpecItem>

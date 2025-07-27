@@ -65,8 +65,12 @@ const LoadingSpinner = styled.div`
   animation: spin 1s linear infinite;
 
   @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
   }
 `;
 
@@ -497,7 +501,7 @@ const VehicleDetail = () => {
   const { vehicleId } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  
+
   // Redux selectors
   const vendor = useSelector(selectVendor);
   const selectedVehicle = useSelector(selectSelectedVehicle);
@@ -529,8 +533,10 @@ const VehicleDetail = () => {
     }
 
     // Fetch vehicle details
-    dispatch(fetchVehicleDetails({ vehicleId: parseInt(vehicleId), vendorSlug: slug }));
-    
+    dispatch(
+      fetchVehicleDetails({ vehicleId: parseInt(vehicleId), vendorSlug: slug })
+    );
+
     // Add to recently viewed
     dispatch(addToRecentlyViewed(parseInt(vehicleId)));
   }, [vehicleId, dispatch, navigate, vendor]);
@@ -573,15 +579,23 @@ const VehicleDetail = () => {
     if (vendorSlug) {
       dispatch(clearError());
       dispatch(fetchAutomobileData(vendorSlug));
-      dispatch(fetchVehicleDetails({ vehicleId: parseInt(vehicleId), vendorSlug }));
+      dispatch(
+        fetchVehicleDetails({ vehicleId: parseInt(vehicleId), vendorSlug })
+      );
     }
   };
 
-  const getAvailabilityStatus = (vehicle) => {
+  const getAvailabilityStatus = vehicle => {
     if (!vehicle) return 'unknown';
-    if (vehicle.availability?.status === 'out_of_stock' || vehicle.availability?.quantity === 0) {
+    if (
+      vehicle.availability?.status === 'out_of_stock' ||
+      vehicle.availability?.quantity === 0
+    ) {
       return 'out_of_stock';
-    } else if (vehicle.availability?.status === 'limited_stock' || vehicle.availability?.quantity <= 5) {
+    } else if (
+      vehicle.availability?.status === 'limited_stock' ||
+      vehicle.availability?.quantity <= 5
+    ) {
       return 'limited_stock';
     } else if (vehicle.availability?.status === 'pre_order') {
       return 'pre_order';
@@ -590,7 +604,7 @@ const VehicleDetail = () => {
     }
   };
 
-  const getAvailabilityLabel = (availability) => {
+  const getAvailabilityLabel = availability => {
     switch (availability) {
       case 'in_stock':
         return 'In Stock';
@@ -605,7 +619,7 @@ const VehicleDetail = () => {
     }
   };
 
-  const getAvailabilityColor = (availability) => {
+  const getAvailabilityColor = availability => {
     switch (availability) {
       case 'in_stock':
         return '#10b981';
@@ -667,14 +681,20 @@ const VehicleDetail = () => {
 
   // Handle different data structures (new JSON vs old JS)
   const vehiclePrice = selectedVehicle.pricing?.price || selectedVehicle.price;
-  const vehicleOriginalPrice = selectedVehicle.pricing?.originalPrice || selectedVehicle.originalPrice;
+  const vehicleOriginalPrice =
+    selectedVehicle.pricing?.originalPrice || selectedVehicle.originalPrice;
   const vehicleImages = selectedVehicle.media?.images || selectedVehicle.images;
-  const vehicleMainImage = selectedVehicle.media?.mainImage || selectedVehicle.image;
-  const vehicleFeatures = selectedVehicle.keyFeatures || selectedVehicle.features;
+  const vehicleMainImage =
+    selectedVehicle.media?.mainImage || selectedVehicle.image;
+  const vehicleFeatures =
+    selectedVehicle.keyFeatures || selectedVehicle.features;
   const vehicleSpecs = selectedVehicle.specifications || {};
-  const vehicleStock = selectedVehicle.availability?.quantity || selectedVehicle.stock;
+  const vehicleStock =
+    selectedVehicle.availability?.quantity || selectedVehicle.stock;
 
-  const relatedVehicles = featuredVehicles.filter(v => v.id !== selectedVehicle.id).slice(0, 3);
+  const relatedVehicles = featuredVehicles
+    .filter(v => v.id !== selectedVehicle.id)
+    .slice(0, 3);
 
   return (
     <PageContainer>
@@ -692,7 +712,8 @@ const VehicleDetail = () => {
           <Link to={`/${vendor.slug}/vehicles`}>Vehicles</Link>
           <span className="separator">›</span>
           <span className="current">
-            {selectedVehicle.year} {selectedVehicle.make} {selectedVehicle.model}
+            {selectedVehicle.year} {selectedVehicle.make}{' '}
+            {selectedVehicle.model}
           </span>
         </Breadcrumb>
 
@@ -702,7 +723,8 @@ const VehicleDetail = () => {
               <MainImageContainer
                 src={
                   vehicleImages && vehicleImages.length > 0
-                    ? (vehicleImages[currentImageIndex]?.url || vehicleImages[currentImageIndex])
+                    ? vehicleImages[currentImageIndex]?.url ||
+                      vehicleImages[currentImageIndex]
                     : vehicleMainImage
                 }
                 alt={selectedVehicle.name}
@@ -727,10 +749,12 @@ const VehicleDetail = () => {
           <VehicleInfo>
             <VehicleHeader>
               <VehicleTitle>
-                {selectedVehicle.year} {selectedVehicle.make} {selectedVehicle.model}
+                {selectedVehicle.year} {selectedVehicle.make}{' '}
+                {selectedVehicle.model}
               </VehicleTitle>
               <VehicleSubtitle>
-                {selectedVehicle.trim} • {selectedVehicle.condition === 'new' ? 'New' : 'Used'}
+                {selectedVehicle.trim} •{' '}
+                {selectedVehicle.condition === 'new' ? 'New' : 'Used'}
               </VehicleSubtitle>
             </VehicleHeader>
 
@@ -742,7 +766,10 @@ const VehicleDetail = () => {
                     {formatPrice(vehicleOriginalPrice)}
                   </OriginalPrice>
                   <Savings>
-                    Save {formatPrice(calculateSavings(vehicleOriginalPrice, vehiclePrice))}
+                    Save{' '}
+                    {formatPrice(
+                      calculateSavings(vehicleOriginalPrice, vehiclePrice)
+                    )}
                   </Savings>
                 </>
               )}
@@ -780,7 +807,9 @@ const VehicleDetail = () => {
                 <div>
                   <div className="label">Engine</div>
                   <div className="value">
-                    {vehicleSpecs?.engine?.type || vehicleSpecs?.engine || 'N/A'}
+                    {vehicleSpecs?.engine?.type ||
+                      vehicleSpecs?.engine ||
+                      'N/A'}
                   </div>
                 </div>
               </SpecItem>
@@ -789,9 +818,13 @@ const VehicleDetail = () => {
                 <div>
                   <div className="label">Fuel Economy</div>
                   <div className="value">
-                    {vehicleSpecs?.efficiency?.mpgCombined ? `${vehicleSpecs.efficiency.mpgCombined} MPG` :
-                     vehicleSpecs?.efficiency?.range ? `${vehicleSpecs.efficiency.range} range` :
-                     vehicleSpecs?.fuelEconomy || vehicleSpecs?.range || 'N/A'}
+                    {vehicleSpecs?.efficiency?.mpgCombined
+                      ? `${vehicleSpecs.efficiency.mpgCombined} MPG`
+                      : vehicleSpecs?.efficiency?.range
+                        ? `${vehicleSpecs.efficiency.range} range`
+                        : vehicleSpecs?.fuelEconomy ||
+                          vehicleSpecs?.range ||
+                          'N/A'}
                   </div>
                 </div>
               </SpecItem>
@@ -876,7 +909,8 @@ const VehicleDetail = () => {
                     return Object.entries(value).map(([subKey, subValue]) => (
                       <SpecRow key={`${key}-${subKey}`}>
                         <SpecLabel>
-                          {subKey.charAt(0).toUpperCase() + subKey.slice(1).replace(/([A-Z])/g, ' $1')}
+                          {subKey.charAt(0).toUpperCase() +
+                            subKey.slice(1).replace(/([A-Z])/g, ' $1')}
                         </SpecLabel>
                         <SpecValue>{subValue}</SpecValue>
                       </SpecRow>
@@ -885,7 +919,8 @@ const VehicleDetail = () => {
                   return (
                     <SpecRow key={key}>
                       <SpecLabel>
-                        {key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1')}
+                        {key.charAt(0).toUpperCase() +
+                          key.slice(1).replace(/([A-Z])/g, ' $1')}
                       </SpecLabel>
                       <SpecValue>{value}</SpecValue>
                     </SpecRow>
@@ -915,11 +950,7 @@ const VehicleDetail = () => {
         )}
       </Container>
 
-      <Footer
-        dealerSlug={vendor.slug}
-        dealer={vendor}
-        theme={dealerTheme}
-      />
+      <Footer dealerSlug={vendor.slug} dealer={vendor} theme={dealerTheme} />
       <BackToTop />
 
       <EnquiryModal

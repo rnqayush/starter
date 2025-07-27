@@ -70,7 +70,7 @@
       },
       "specialties": [
         "Luxury Cars",
-        "Sports Cars", 
+        "Sports Cars",
         "Electric Vehicles",
         "Custom Modifications"
       ],
@@ -107,7 +107,13 @@
         "warranty": true,
         "language": "en",
         "currency": "USD",
-        "paymentMethods": ["cash", "financing", "lease", "credit_card", "bank_transfer"]
+        "paymentMethods": [
+          "cash",
+          "financing",
+          "lease",
+          "credit_card",
+          "bank_transfer"
+        ]
       },
       "inventory": {
         "totalVehicles": 120,
@@ -341,13 +347,17 @@
           "roadside": "4 years unlimited miles",
           "extended": {
             "available": true,
-            "options": [
-              "6 years / 75,000 miles",
-              "8 years / 100,000 miles"
-            ]
+            "options": ["6 years / 75,000 miles", "8 years / 100,000 miles"]
           }
         },
-        "tags": ["luxury", "sedan", "new", "featured", "on-sale", "financing-available"],
+        "tags": [
+          "luxury",
+          "sedan",
+          "new",
+          "featured",
+          "on-sale",
+          "financing-available"
+        ],
         "featured": true,
         "createdAt": "2024-01-10T09:00:00.000Z",
         "updatedAt": "2024-01-15T10:30:00.000Z"
@@ -598,7 +608,14 @@
           "battery": "8 years / 150,000 miles",
           "drivetrain": "8 years / 150,000 miles"
         },
-        "tags": ["electric", "sedan", "new", "featured", "performance", "luxury"],
+        "tags": [
+          "electric",
+          "sedan",
+          "new",
+          "featured",
+          "performance",
+          "luxury"
+        ],
         "featured": true,
         "createdAt": "2024-01-05T11:15:00.000Z",
         "updatedAt": "2024-01-15T10:30:00.000Z"
@@ -704,12 +721,24 @@
       "itemsPerPage": 50
     },
     "filters": {
-      "availableCategories": ["luxury-cars", "electric-vehicles", "suvs-trucks", "classic-cars"],
+      "availableCategories": [
+        "luxury-cars",
+        "electric-vehicles",
+        "suvs-trucks",
+        "classic-cars"
+      ],
       "priceRange": {
         "min": 35000,
         "max": 300000
       },
-      "availableMakes": ["Mercedes-Benz", "BMW", "Tesla", "Ford", "Jeep", "Chevrolet"],
+      "availableMakes": [
+        "Mercedes-Benz",
+        "BMW",
+        "Tesla",
+        "Ford",
+        "Jeep",
+        "Chevrolet"
+      ],
       "availableYears": [2024, 2023, 2022, 1969, 1967],
       "availableConditions": ["new", "used", "certified", "restored"]
     },

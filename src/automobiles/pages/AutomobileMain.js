@@ -17,7 +17,7 @@ import {
   selectOnSaleVehicles,
   selectLoading,
   selectError,
-  clearError
+  clearError,
 } from '../../store/slices/automobileManagementSlice';
 
 // Dynamic theme styles that override global styles
@@ -58,8 +58,12 @@ const LoadingSpinner = styled.div`
   animation: spin 1s linear infinite;
 
   @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
   }
 `;
 
@@ -475,8 +479,7 @@ const AutomobileMain = () => {
 
   const [vendorSlug, setVendorSlug] = useState(null);
 
-  const getBaseUrl = () =>
-    vendor ? `/${vendor.slug}` : '/automobiles';
+  const getBaseUrl = () => (vendor ? `/${vendor.slug}` : '/automobiles');
 
   useEffect(() => {
     // Get vendor slug from URL
@@ -652,8 +655,8 @@ const AutomobileMain = () => {
                 Featured Vehicles
               </SectionTitle>
               <SectionSubtitle>
-                Handpicked vehicles from {vendor.name} that customers
-                love the most
+                Handpicked vehicles from {vendor.name} that customers love the
+                most
               </SectionSubtitle>
             </SectionHeader>
             <Grid>
@@ -676,8 +679,7 @@ const AutomobileMain = () => {
                   🔥 Special Offers
                 </SectionTitle>
                 <SectionSubtitle>
-                  Limited time deals from {vendor.name} you don't want
-                  to miss
+                  Limited time deals from {vendor.name} you don't want to miss
                 </SectionSubtitle>
               </SectionHeader>
               <Grid>
@@ -693,11 +695,7 @@ const AutomobileMain = () => {
           </Section>
         )}
 
-        <Footer
-          dealerSlug={vendor.slug}
-          dealer={vendor}
-          theme={dealerTheme}
-        />
+        <Footer dealerSlug={vendor.slug} dealer={vendor} theme={dealerTheme} />
         <BackToTop />
       </PageContainer>
     </>
