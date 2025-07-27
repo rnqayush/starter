@@ -178,7 +178,7 @@ const HotelHome = () => {
   const [searchCriteria, setSearchCriteria] = useState(null);
 
   // Update filtered hotels when live data changes
-  React.useEffect(() => {
+  useEffect(() => {
     setFilteredHotels(liveHotels);
   }, [liveHotels]);
 
