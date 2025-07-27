@@ -504,19 +504,33 @@ const RoomList = () => {
   const [filterBy, setFilterBy] = useState('all');
 
   useEffect(() => {
-    // First check if we have updated hotel data in Redux state
-    const updatedHotel = hotels.find(h => h.slug === slug);
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        // First check if we have updated hotel data in Redux state
+        const updatedHotel = hotels.find(h => h.slug === slug);
 
-    if (updatedHotel) {
-      // Use updated hotel data from Redux (includes admin changes)
-      setHotel(updatedHotel);
-    } else {
-      // Fallback to original dummy data
-      const foundHotel = getHotelByIdOrSlug(slug);
-      setHotel(foundHotel);
-    }
+        if (updatedHotel) {
+          // Use updated hotel data from Redux (includes admin changes)
+          setHotel(updatedHotel);
+        } else {
+          // Fetch from API
+          const response = await fetchHotelById(slug);
+          if (response.success) {
+            setHotel(response.data);
+          } else {
+            setHotel(null);
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching hotel data:', error);
+        setHotel(null);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    setLoading(false);
+    fetchData();
   }, [slug, hotels]);
 
   const handleSearchChange = e => {
