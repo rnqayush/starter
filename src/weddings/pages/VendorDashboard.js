@@ -851,6 +851,8 @@ const VendorDashboard = () => {
 
   // Handle section visibility toggle
   const handleSectionVisibilityToggle = sectionId => {
+    console.log('Toggling section visibility for:', sectionId);
+
     if (sectionId.startsWith('custom-')) {
       const customId = sectionId.replace('custom-', '');
       setCustomSectionVisibility(prev => {
@@ -858,6 +860,8 @@ const VendorDashboard = () => {
           ...prev,
           [customId]: !prev[customId],
         };
+
+        console.log('Custom section visibility updated:', newVisibility);
 
         // Immediately update Redux for real-time preview
         if (editingVendor) {
@@ -875,6 +879,8 @@ const VendorDashboard = () => {
           ...prev,
           [sectionId]: !prev[sectionId],
         };
+
+        console.log('Section visibility updated:', newVisibility);
 
         // Immediately update Redux for real-time preview
         if (editingVendor) {
