@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import styled from 'styled-components';
+import { useSelector, useDispatch } from 'react-redux';
+import styled, { keyframes, css } from 'styled-components';
 import {
   FaStar,
   FaMapMarkerAlt,
@@ -30,12 +30,168 @@ import {
   FaTimes,
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
-import { getWeddingVendorById as getVendorById } from '../../DummyData';
+import { getVendorById } from '../../utils/weddingAPI';
 import { useAuth } from '../../context/AuthContext';
+import {
+  initializeVendor,
+  setEditingVendor,
+  loadVendorFromJson,
+} from '../../store/slices/weddingManagementSlice';
+
+// Keyframe animations
+const fadeInUp = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
+
+const fadeInLeft = keyframes`
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+`;
+
+const fadeInRight = keyframes`
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+`;
+
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
+
+const scaleIn = keyframes`
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+`;
+
+const float = keyframes`
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+`;
+
+const pulse = keyframes`
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+`;
+
+const slideInDown = keyframes`
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+`;
+
+const shimmer = keyframes`
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: calc(200px + 100%) 0;
+  }
+`;
+
+const spin = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+`;
+
+const glow = keyframes`
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.6);
+  }
+`;
 
 const PageContainer = styled.div`
   min-height: 100vh;
   background: ${theme.colors.gray50};
+  position: relative;
+  overflow-x: hidden;
+  animation: ${fadeIn} 0.8s ease-out;
+
+  &::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      45deg,
+      rgba(59, 130, 246, 0.03) 0%,
+      rgba(147, 51, 234, 0.03) 100%
+    );
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  &::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+      radial-gradient(
+        circle at 20% 80%,
+        rgba(59, 130, 246, 0.05) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 80% 20%,
+        rgba(147, 51, 234, 0.05) 0%,
+        transparent 50%
+      );
+    pointer-events: none;
+    z-index: -1;
+  }
 `;
 
 const BackToTopButton = styled.button.withConfig({
@@ -48,21 +204,50 @@ const BackToTopButton = styled.button.withConfig({
   color: white;
   border: none;
   border-radius: 50%;
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   box-shadow: ${theme.shadows.lg};
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 1000;
   opacity: ${props => (props.visible ? 1 : 0)};
   visibility: ${props => (props.visible ? 'visible' : 'hidden')};
+  transform: ${props =>
+    props.visible ? 'translateY(0) scale(1)' : 'translateY(20px) scale(0.8)'};
+  backdrop-filter: blur(10px);
+  background: ${props =>
+    `linear-gradient(135deg, ${props.primaryColor || theme.colors.primary}, ${props.primaryColor || theme.colors.primary}dd)`};
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: linear-gradient(
+      45deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
 
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: ${theme.shadows.xl};
+    transform: translateY(-4px) scale(1.1);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    animation: ${pulse} 1.5s infinite;
+
+    &::before {
+      opacity: 1;
+    }
+  }
+
+  &:active {
+    transform: translateY(-2px) scale(1.05);
   }
 `;
 
@@ -79,13 +264,46 @@ const HeroSection = styled.section.withConfig({
   background: ${props =>
     props.backgroundImage
       ? `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(${props.backgroundImage})`
-      : 'linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4))'};
-  background-size: 100% 100%;
+      : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'};
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  background-attachment: fixed;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      45deg,
+      rgba(59, 130, 246, 0.1) 0%,
+      rgba(147, 51, 234, 0.1) 50%,
+      rgba(236, 72, 153, 0.1) 100%
+    );
+    z-index: 1;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(
+      circle at center,
+      transparent 0%,
+      rgba(0, 0, 0, 0.3) 100%
+    );
+    z-index: 1;
+  }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     height: 100vh;
+    background-attachment: scroll;
   }
 `;
 
@@ -126,6 +344,31 @@ const HeroContent = styled.div`
   z-index: 2;
   max-width: 800px;
   padding: ${theme.spacing.xl} ${theme.spacing.md};
+  animation: ${fadeInUp} 1s ease-out;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 150%;
+    height: 150%;
+    background: radial-gradient(
+      circle,
+      rgba(255, 255, 255, 0.1) 0%,
+      transparent 70%
+    );
+    border-radius: 50%;
+    z-index: -1;
+    animation: ${pulse} 3s ease-in-out infinite;
+  }
 `;
 
 const HeroTitle = styled.h1`
@@ -133,6 +376,30 @@ const HeroTitle = styled.h1`
   font-weight: 700;
   margin-bottom: ${theme.spacing.md};
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  background: linear-gradient(135deg, #fff 0%, #f8f9fa 50%, #fff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: ${fadeInUp} 1.2s ease-out 0.3s both;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 3px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.8),
+      transparent
+    );
+    border-radius: 2px;
+    animation: ${fadeIn} 1.5s ease-out 1s both;
+  }
 
   @media (max-width: ${theme.breakpoints.tablet}) {
     font-size: 3rem;
@@ -147,6 +414,11 @@ const HeroTagline = styled.p`
   font-size: 1.5rem;
   margin-bottom: ${theme.spacing.xl};
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  animation: ${fadeInUp} 1.2s ease-out 0.6s both;
+  font-weight: 300;
+  letter-spacing: 1px;
+  opacity: 0.95;
+  line-height: 1.6;
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     font-size: 1.2rem;
@@ -156,24 +428,69 @@ const HeroTagline = styled.p`
 const HeroButton = styled.button.withConfig({
   shouldForwardProp: prop => !['primaryColor'].includes(prop),
 })`
-  background: ${props => props.primaryColor || theme.colors.primary};
+  background: linear-gradient(
+    135deg,
+    ${props => props.primaryColor || theme.colors.primary},
+    ${props =>
+      props.primaryColor
+        ? `${props.primaryColor}dd`
+        : `${theme.colors.primary}dd`}
+  );
   color: white;
   border: none;
   padding: ${theme.spacing.lg} ${theme.spacing.xxl};
-  border-radius: ${theme.borderRadius.lg};
+  border-radius: 50px;
   font-size: 1.2rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   text-transform: uppercase;
   letter-spacing: 1px;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: ${theme.spacing.sm};
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  animation: ${fadeInUp} 1.2s ease-out 0.9s both;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
+    transition: left 0.5s ease;
+  }
 
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: ${theme.shadows.xl};
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4);
+
+    &::before {
+      left: 100%;
+    }
+  }
+
+  &:active {
+    transform: translateY(-1px) scale(1.01);
+    transition: all 0.1s ease;
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.3),
+      0 0 0 3px rgba(255, 255, 255, 0.3);
   }
 `;
 
@@ -186,12 +503,27 @@ const NavBar = styled.nav.withConfig({
   width: 100%;
   background: ${props =>
     props.scrolled ? 'rgba(255,255,255,0.95)' : 'transparent'};
-  backdrop-filter: ${props => (props.scrolled ? 'blur(10px)' : 'none')};
+  backdrop-filter: ${props => (props.scrolled ? 'blur(20px)' : 'none')};
   padding: ${theme.spacing.md} 0;
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 1000;
   border-bottom: ${props =>
     props.scrolled ? `1px solid ${theme.colors.gray200}` : 'none'};
+  animation: ${slideInDown} 0.8s ease-out;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: ${props =>
+      props.scrolled
+        ? 'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%)'
+        : 'transparent'};
+    z-index: -1;
+  }
 `;
 
 const NavContent = styled.div`
@@ -253,13 +585,14 @@ const MobileMenuOverlay = styled.div.withConfig({
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(8px);
     z-index: 1001;
     opacity: ${props => (props.isOpen ? '1' : '0')};
     visibility: ${props => (props.isOpen ? 'visible' : 'hidden')};
     transition:
-      opacity 0.3s ease,
-      visibility 0.3s ease;
+      opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+      visibility 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
 `;
 
@@ -274,18 +607,39 @@ const NavActions = styled.div.withConfig({
   @media (max-width: ${theme.breakpoints.mobile}) {
     position: fixed;
     top: 0;
-    left: 0;
     right: 0;
     bottom: 0;
-    background: ${theme.colors.white};
+    width: 320px;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.95),
+      rgba(248, 250, 252, 0.95)
+    );
+    backdrop-filter: blur(20px);
     flex-direction: column;
     justify-content: center;
     gap: ${theme.spacing.lg};
     z-index: 1002;
     transform: translateX(${props => (props.isOpen ? '0' : '100%')});
-    transition: transform 0.3s ease;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     padding: ${theme.spacing.xl};
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.1);
+    border-left: 1px solid rgba(59, 130, 246, 0.1);
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(
+        45deg,
+        rgba(59, 130, 246, 0.02) 0%,
+        rgba(147, 51, 234, 0.02) 100%
+      );
+      z-index: -1;
+    }
   }
 `;
 
@@ -321,7 +675,9 @@ const NavButton = styled.button.withConfig({
     !['primary', 'primaryColor', 'scrolled'].includes(prop),
 })`
   background: ${props =>
-    props.primary ? props.primaryColor || theme.colors.primary : 'transparent'};
+    props.primary
+      ? `linear-gradient(135deg, ${props.primaryColor || theme.colors.primary}, ${props.primaryColor ? `${props.primaryColor}dd` : `${theme.colors.primary}dd`})`
+      : 'transparent'};
   color: ${props =>
     props.primary ? 'white' : props.scrolled ? theme.colors.gray700 : 'white'};
   border: ${props =>
@@ -329,16 +685,45 @@ const NavButton = styled.button.withConfig({
       ? 'none'
       : `2px solid ${props.scrolled ? theme.colors.gray300 : 'white'}`};
   padding: ${theme.spacing.sm} ${theme.spacing.md};
-  border-radius: ${theme.borderRadius.md};
+  border-radius: ${props => (props.primary ? '25px' : theme.borderRadius.md)};
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   align-items: center;
   gap: ${theme.spacing.xs};
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: ${props => (props.primary ? 'blur(10px)' : 'none')};
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
+    transition: left 0.5s ease;
+  }
 
   &:hover {
-    transform: translateY(-1px);
+    transform: translateY(-2px);
+    box-shadow: ${props =>
+      props.primary ? '0 8px 25px rgba(0,0,0,0.2)' : 'none'};
+
+    &::before {
+      left: 100%;
+    }
+  }
+
+  &:active {
+    transform: translateY(0);
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
@@ -350,13 +735,13 @@ const NavButton = styled.button.withConfig({
     border-color: ${props => (props.primary ? 'none' : theme.colors.gray300)};
     background: ${props =>
       props.primary
-        ? props.primaryColor || theme.colors.primary
+        ? `linear-gradient(135deg, ${props.primaryColor || theme.colors.primary}, ${props.primaryColor ? `${props.primaryColor}dd` : `${theme.colors.primary}dd`})`
         : theme.colors.white};
 
     &:hover {
       background: ${props =>
         props.primary
-          ? props.primaryColor || theme.colors.primary
+          ? `linear-gradient(135deg, ${props.primaryColor || theme.colors.primary}, ${props.primaryColor ? `${props.primaryColor}dd` : `${theme.colors.primary}dd`})`
           : theme.colors.gray50};
       transform: none;
     }
@@ -365,10 +750,51 @@ const NavButton = styled.button.withConfig({
 
 // Section Components
 const Section = styled.section.withConfig({
-  shouldForwardProp: prop => !['backgroundColor'].includes(prop),
+  shouldForwardProp: prop => !['backgroundColor', 'animated'].includes(prop),
 })`
   padding: ${theme.spacing.xxl} ${theme.spacing.md};
+  margin-bottom: ${theme.spacing.xxl};
   background: ${props => props.backgroundColor || 'white'};
+  position: relative;
+  overflow: hidden;
+  opacity: 1;
+  transform: translateY(0);
+
+  ${props =>
+    props.animated &&
+    css`
+      &:not(.animate-in) {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+
+      &.animate-in {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    `}
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(0, 0, 0, 0.1),
+      transparent
+    );
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    margin-bottom: ${theme.spacing.xl};
+    padding: ${theme.spacing.xl} ${theme.spacing.sm};
+  }
 `;
 
 const Container = styled.div`
@@ -387,9 +813,48 @@ const SectionTitle = styled.h2`
   text-align: center;
   margin-bottom: ${theme.spacing.xl};
   color: ${theme.colors.gray900};
+  position: relative;
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
+  z-index: 2;
+
+  &:not(.animate-in) {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  &.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      ${theme.colors.primary},
+      transparent
+    );
+    border-radius: 2px;
+    opacity: 0;
+    transition: opacity 0.6s ease 0.8s;
+  }
+
+  &.animate-in::after {
+    opacity: 1;
+  }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     font-size: 2rem;
+    margin-bottom: ${theme.spacing.lg};
   }
 `;
 
@@ -571,10 +1036,26 @@ const GalleryItem = styled.img`
   object-fit: cover;
   border-radius: ${theme.borderRadius.md};
   cursor: pointer;
-  transition: transform 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  opacity: 0;
+  transform: scale(0.9);
+  filter: brightness(0.9);
+
+  &.animate-in {
+    opacity: 1;
+    transform: scale(1);
+  }
 
   &:hover {
-    transform: scale(1.05);
+    transform: scale(1.08);
+    filter: brightness(1.1);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    border-radius: ${theme.borderRadius.lg};
+  }
+
+  &:active {
+    transform: scale(1.02);
   }
 `;
 
@@ -737,6 +1218,21 @@ const FaqItem = styled.div`
   border-radius: ${theme.borderRadius.md};
   margin-bottom: ${theme.spacing.md};
   box-shadow: ${theme.shadows.sm};
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0;
+  transform: translateY(20px);
+  border: 1px solid transparent;
+
+  &.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  &:hover {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    border-color: rgba(59, 130, 246, 0.1);
+    transform: translateY(-2px);
+  }
 `;
 
 const FaqQuestion = styled.button`
@@ -752,6 +1248,23 @@ const FaqQuestion = styled.button`
   font-weight: 600;
   color: ${theme.colors.gray900};
   font-size: 1.1rem;
+  transition: all 0.2s ease;
+  position: relative;
+
+  &:hover {
+    color: ${theme.colors.primary};
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(59, 130, 246, 0.05),
+      transparent
+    );
+  }
+
+  &:focus {
+    outline: none;
+    background: rgba(59, 130, 246, 0.1);
+  }
 `;
 
 const FaqAnswer = styled.div`
@@ -777,6 +1290,14 @@ const ContactForm = styled.form`
   display: flex;
   flex-direction: column;
   gap: ${theme.spacing.lg};
+  opacity: 0;
+  transform: translateX(-30px);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
+
+  &.animate-in {
+    opacity: 1;
+    transform: translateX(0);
+  }
 `;
 
 const FormGroup = styled.div`
@@ -797,12 +1318,29 @@ const FormInput = styled.input.withConfig({
   border: 2px solid ${theme.colors.gray200};
   border-radius: ${theme.borderRadius.md};
   font-size: 1rem;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: ${theme.colors.white};
+  position: relative;
+
+  &::placeholder {
+    color: ${theme.colors.gray400};
+    transition: all 0.3s ease;
+  }
 
   &:focus {
     outline: none;
     border-color: ${props => props.primaryColor || theme.colors.primary};
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    transform: translateY(-1px);
+
+    &::placeholder {
+      color: transparent;
+    }
+  }
+
+  &:hover {
+    border-color: ${theme.colors.gray300};
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   }
 `;
 
@@ -815,43 +1353,104 @@ const FormTextarea = styled.textarea.withConfig({
   font-size: 1rem;
   min-height: 120px;
   resize: vertical;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: inherit;
+
+  &::placeholder {
+    color: ${theme.colors.gray400};
+    transition: all 0.3s ease;
+  }
 
   &:focus {
     outline: none;
     border-color: ${props => props.primaryColor || theme.colors.primary};
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    transform: translateY(-1px);
+
+    &::placeholder {
+      color: transparent;
+    }
+  }
+
+  &:hover {
+    border-color: ${theme.colors.gray300};
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   }
 `;
 
 const SubmitButton = styled.button.withConfig({
   shouldForwardProp: prop => !['primaryColor'].includes(prop),
 })`
-  background: ${props => props.primaryColor || theme.colors.primary};
+  background: linear-gradient(
+    135deg,
+    ${props => props.primaryColor || theme.colors.primary},
+    ${props =>
+      props.primaryColor
+        ? `${props.primaryColor}dd`
+        : `${theme.colors.primary}dd`}
+  );
   color: white;
   border: none;
   padding: ${theme.spacing.md} ${theme.spacing.xl};
-  border-radius: ${theme.borderRadius.md};
+  border-radius: 30px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   align-items: center;
   justify-content: center;
   gap: ${theme.spacing.sm};
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
 
-  &:hover {
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
+    transition: left 0.6s ease;
+  }
+
+  &:hover:not(:disabled) {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+
+    &::before {
+      left: 100%;
+    }
+  }
+
+  &:active:not(:disabled) {
     transform: translateY(-1px);
-    box-shadow: ${theme.shadows.md};
   }
 
   &:disabled {
     opacity: 0.6;
     cursor: not-allowed;
+    transform: none;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
   }
 `;
 
-const ContactInfo = styled.div``;
+const ContactInfo = styled.div`
+  opacity: 0;
+  transform: translateX(30px);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.4s;
+
+  &.animate-in {
+    opacity: 1;
+    transform: translateX(0);
+  }
+`;
 
 const ContactItem = styled.div`
   display: flex;
@@ -862,6 +1461,36 @@ const ContactItem = styled.div`
   background: white;
   border-radius: ${theme.borderRadius.md};
   box-shadow: ${theme.shadows.sm};
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid transparent;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.4),
+      transparent
+    );
+    transition: left 0.6s ease;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    border-color: rgba(59, 130, 246, 0.2);
+
+    &::before {
+      left: 100%;
+    }
+  }
 `;
 
 const ContactIcon = styled.div.withConfig({
@@ -1007,6 +1636,9 @@ const VendorPage = () => {
   const { vendorSlug } = useParams();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const dispatch = useDispatch();
+  const sectionRefs = useRef([]);
+  const observerRef = useRef(null);
 
   // Get vendor ID from URL path if not available in params
   const currentPath = window.location.pathname;
@@ -1032,34 +1664,58 @@ const VendorPage = () => {
     message: '',
   });
   const [submitting, setSubmitting] = useState(false);
+  const [animatedSections, setAnimatedSections] = useState(new Set());
 
   useEffect(() => {
-    let vendorData = null;
+    const loadVendorData = async () => {
+      setLoading(true);
+      let vendorData = null;
 
-    // Priority 1: Use editing vendor data for real-time updates during editing
-    if (editingVendor && editingVendor.id === vendorId) {
-      vendorData = editingVendor;
-      console.log(
-        'Using editing vendor data for real-time updates:',
-        editingVendor
-      );
-    }
-    // Priority 2: Use saved vendor data from Redux vendors array
-    else if (vendors && vendors.length > 0) {
-      vendorData = vendors.find(v => v.id === vendorId);
-      console.log('Using saved vendor data from Redux:', vendorData);
-    }
-    // Priority 3: Fallback to dummy data
-    if (!vendorData) {
-      vendorData = getVendorById(vendorId);
-      console.log('Using fallback dummy data:', vendorData);
-    }
+      // Priority 1: Use editing vendor data for real-time updates during editing
+      if (editingVendor && editingVendor.id === vendorId) {
+        vendorData = editingVendor;
+        console.log(
+          'VendorPage: Using editing vendor data for real-time updates:',
+          editingVendor
+        );
+      }
+      // Priority 2: Use saved vendor data from Redux vendors array
+      else if (vendors && vendors.length > 0) {
+        vendorData = vendors.find(v => v.id === vendorId);
+        console.log(
+          'VendorPage: Using saved vendor data from Redux:',
+          vendorData
+        );
+      }
 
-    if (vendorData) {
-      setVendor(vendorData);
-      console.log('VendorPage: Updated vendor data', vendorData);
-    }
-    setLoading(false);
+      // Priority 3: Load from wedding.json and initialize Redux
+      if (!vendorData) {
+        try {
+          // Load vendor from JSON into Redux state
+          dispatch(loadVendorFromJson(vendorId));
+
+          // Try to get the vendor data after loading into Redux
+          vendorData = getVendorById(vendorId);
+          console.log(
+            'VendorPage: Loaded vendor data from wedding.json:',
+            vendorData
+          );
+        } catch (error) {
+          console.error('VendorPage: Error loading vendor data:', error);
+        }
+      }
+
+      if (vendorData) {
+        setVendor(vendorData);
+        console.log('VendorPage: Set vendor data successfully:', vendorData);
+      } else {
+        console.warn('VendorPage: No vendor data found for ID:', vendorId);
+      }
+
+      setLoading(false);
+    };
+
+    loadVendorData();
 
     // Pre-fill form if user is logged in
     if (user) {
@@ -1069,7 +1725,7 @@ const VendorPage = () => {
         email: user.email || '',
       }));
     }
-  }, [vendorId, user, vendors, editingVendor]);
+  }, [vendorId, user, vendors, editingVendor, dispatch]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -1081,6 +1737,51 @@ const VendorPage = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Intersection Observer for scroll animations
+  useEffect(() => {
+    // Add smooth scrolling to the document
+    document.documentElement.style.scrollBehavior = 'smooth';
+
+    observerRef.current = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const element = entry.target;
+            element.classList.add('animate-in');
+
+            // Animate child elements with stagger
+            const children = element.querySelectorAll('.stagger-child');
+            children.forEach((child, index) => {
+              setTimeout(() => {
+                child.classList.add('animate-in');
+              }, index * 100);
+            });
+
+            setAnimatedSections(prev => new Set([...prev, element.id]));
+            observerRef.current?.unobserve(element);
+          }
+        });
+      },
+      {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px',
+      }
+    );
+
+    // Observe all sections
+    const sections = document.querySelectorAll(
+      'section[id], .animate-on-scroll'
+    );
+    sections.forEach(section => {
+      observerRef.current?.observe(section);
+    });
+
+    return () => {
+      observerRef.current?.disconnect();
+      document.documentElement.style.scrollBehavior = 'auto';
+    };
+  }, [vendor]);
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1180,38 +1881,30 @@ const VendorPage = () => {
             </MobileCloseButton>
             <NavButton
               onClick={() => {
-                navigate('/weddings');
+                scrollToSection('about');
                 closeMobileMenu();
               }}
               scrolled={scrolled}
             >
-              <FaArrowLeft />
-              Back
+              About Us
             </NavButton>
             <NavButton
               onClick={() => {
-                alert('Vendor saved to your favorites!');
+                scrollToSection('services');
                 closeMobileMenu();
               }}
               scrolled={scrolled}
             >
-              <FaHeart />
-              Save
+              Services
             </NavButton>
             <NavButton
               onClick={() => {
-                navigator.share
-                  ? navigator.share({
-                      title: vendor.name,
-                      url: window.location.href,
-                    })
-                  : alert('Share: ' + window.location.href);
+                scrollToSection('packages');
                 closeMobileMenu();
               }}
               scrolled={scrolled}
             >
-              <FaShare />
-              Share
+              Pricing
             </NavButton>
             <NavButton
               onClick={() => {
@@ -1421,9 +2114,12 @@ const VendorPage = () => {
                   key="about"
                   id="about"
                   backgroundColor={vendor.theme?.backgroundColor}
+                  animated
                 >
                   <Container>
-                    <SectionTitle>About Us</SectionTitle>
+                    <SectionTitle className="animate-on-scroll">
+                      About Us
+                    </SectionTitle>
                     <AboutGrid>
                       <AboutContent>
                         <AboutText>
@@ -1489,16 +2185,21 @@ const VendorPage = () => {
 
             case 'services-offered':
               return (
-                <Section key="services" id="services">
+                <Section key="services" id="services" animated>
                   <Container>
-                    <SectionTitle>Services Offered</SectionTitle>
+                    <SectionTitle className="animate-on-scroll">
+                      Services Offered
+                    </SectionTitle>
                     <SectionSubtitle>
                       We provide comprehensive wedding services to make your
                       special day perfect
                     </SectionSubtitle>
                     <ServicesGrid>
                       {vendor.services?.map((service, index) => (
-                        <ServiceCard key={index}>
+                        <ServiceCard
+                          key={index}
+                          className="stagger-child animate-on-scroll"
+                        >
                           <ServiceImage
                             src={service.image}
                             alt={service.name}
@@ -1520,9 +2221,11 @@ const VendorPage = () => {
             case 'recent-work':
               return vendor.locationPortfolio &&
                 vendor.locationPortfolio.length > 0 ? (
-                <Section key="portfolio" id="portfolio">
+                <Section key="portfolio" id="portfolio" animated>
                   <Container>
-                    <SectionTitle>Our Recent Work</SectionTitle>
+                    <SectionTitle className="animate-on-scroll">
+                      Our Recent Work
+                    </SectionTitle>
                     <SectionSubtitle>
                       Explore some of our beautiful weddings across different
                       venues and locations
@@ -1632,9 +2335,12 @@ const VendorPage = () => {
                   key="gallery"
                   id="gallery"
                   backgroundColor={theme.colors.gray50}
+                  animated
                 >
                   <Container>
-                    <SectionTitle>Gallery</SectionTitle>
+                    <SectionTitle className="animate-on-scroll">
+                      Gallery
+                    </SectionTitle>
                     <SectionSubtitle>
                       Browse through our portfolio of beautiful weddings and
                       events
@@ -1672,6 +2378,7 @@ const VendorPage = () => {
                             key={index}
                             src={image}
                             alt={`${vendor.name} ${activeGalleryTab} ${index + 1}`}
+                            className="stagger-child animate-on-scroll"
                           />
                         ));
                       })()}
@@ -1682,15 +2389,21 @@ const VendorPage = () => {
 
             case 'packages-pricing':
               return vendor.packages ? (
-                <Section key="packages" id="packages">
+                <Section key="packages" id="packages" animated>
                   <Container>
-                    <SectionTitle>Packages & Pricing</SectionTitle>
+                    <SectionTitle className="animate-on-scroll">
+                      Packages & Pricing
+                    </SectionTitle>
                     <SectionSubtitle>
                       Choose the perfect package for your wedding celebration
                     </SectionSubtitle>
                     <PackagesGrid>
                       {vendor.packages.map((pkg, index) => (
-                        <PackageCard key={index} primaryColor={primaryColor}>
+                        <PackageCard
+                          key={index}
+                          primaryColor={primaryColor}
+                          className="stagger-child animate-on-scroll"
+                        >
                           <PackageName>{pkg.name}</PackageName>
                           <PackagePrice primaryColor={primaryColor}>
                             {pkg.price}
@@ -1727,9 +2440,12 @@ const VendorPage = () => {
                   key="testimonials"
                   id="testimonials"
                   backgroundColor={vendor.theme?.backgroundColor}
+                  animated
                 >
                   <Container>
-                    <SectionTitle>What Our Couples Say</SectionTitle>
+                    <SectionTitle className="animate-on-scroll">
+                      What Our Couples Say
+                    </SectionTitle>
                     <SectionSubtitle>
                       Real testimonials from couples whose special day we helped
                       create
@@ -1739,6 +2455,7 @@ const VendorPage = () => {
                         <TestimonialCard
                           key={index}
                           primaryColor={primaryColor}
+                          className="stagger-child animate-on-scroll"
                         >
                           <TestimonialText>{testimonial.text}</TestimonialText>
                           <TestimonialAuthor>
@@ -1771,15 +2488,17 @@ const VendorPage = () => {
       })()}
 
       {/* FAQ Section */}
-      <Section id="faq">
+      <Section id="faq" animated>
         <Container>
-          <SectionTitle>Frequently Asked Questions</SectionTitle>
+          <SectionTitle className="animate-on-scroll">
+            Frequently Asked Questions
+          </SectionTitle>
           <SectionSubtitle>
             Find answers to common questions about our services
           </SectionSubtitle>
           <FaqContainer>
             {vendor.faq?.map((item, index) => (
-              <FaqItem key={index}>
+              <FaqItem key={index} className="stagger-child animate-on-scroll">
                 <FaqQuestion onClick={() => toggleFaq(index)}>
                   {item.question}
                   {openFaq === index ? <FaChevronUp /> : <FaChevronDown />}
@@ -1792,14 +2511,19 @@ const VendorPage = () => {
       </Section>
 
       {/* Contact Section */}
-      <Section id="contact" backgroundColor={theme.colors.gray50}>
+      <Section id="contact" backgroundColor={theme.colors.gray50} animated>
         <Container>
-          <SectionTitle>Get In Touch</SectionTitle>
+          <SectionTitle className="animate-on-scroll">
+            Get In Touch
+          </SectionTitle>
           <SectionSubtitle>
             Ready to start planning your dream wedding? Send us a message!
           </SectionSubtitle>
           <ContactGrid>
-            <ContactForm onSubmit={handleContactSubmit}>
+            <ContactForm
+              onSubmit={handleContactSubmit}
+              className="animate-on-scroll"
+            >
               <FormGroup>
                 <FormLabel>Name *</FormLabel>
                 <FormInput
@@ -1857,7 +2581,7 @@ const VendorPage = () => {
               </SubmitButton>
             </ContactForm>
 
-            <ContactInfo>
+            <ContactInfo className="animate-on-scroll">
               <ContactItem>
                 <ContactIcon primaryColor={primaryColor}>
                   <FaPhoneAlt />

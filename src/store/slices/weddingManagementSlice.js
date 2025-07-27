@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import {
   getStaticWeddingVendors,
   getStaticWeddingBookings,
+  getVendorById,
 } from '../../utils/weddingAPI';
 
 const initialState = {
@@ -515,6 +516,27 @@ const weddingManagementSlice = createSlice({
       };
     },
 
+    // Load vendor from JSON and add to Redux if not exists
+    loadVendorFromJson: (state, action) => {
+      const vendorId = action.payload;
+      const existingVendor = state.vendors.find(v => v.id === vendorId);
+
+      if (!existingVendor) {
+        try {
+          const vendorData = getVendorById(vendorId);
+          if (vendorData) {
+            state.vendors.push(vendorData);
+            console.log(
+              'Redux: Loaded vendor from JSON and added to state:',
+              vendorData
+            );
+          }
+        } catch (error) {
+          console.error('Redux: Error loading vendor from JSON:', error);
+        }
+      }
+    },
+
     // Data refresh
     refreshVendors: state => {
       state.vendors = getStaticWeddingVendors();
@@ -542,6 +564,7 @@ export const {
   discardVendorChanges,
   initializeVendor,
   clearEditingVendor,
+  loadVendorFromJson,
 
   // Section visibility
   toggleSectionVisibility,

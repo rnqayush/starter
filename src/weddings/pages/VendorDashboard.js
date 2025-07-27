@@ -60,7 +60,6 @@ import {
   updateFooterData,
   saveVendorChanges,
   discardVendorChanges,
-  toggleSectionVisibility,
   toggleRealTimeUpdates,
 } from '../../store/slices/weddingManagementSlice';
 
@@ -694,6 +693,7 @@ const VendorDashboard = () => {
 
   // Redux state
   const {
+    vendors,
     editingVendor,
     hasUnsavedVendorChanges,
     originalVendor,
@@ -850,20 +850,61 @@ const VendorDashboard = () => {
   };
 
   // Handle section visibility toggle
-  const toggleSectionVisibility = sectionId => {
+  const handleSectionVisibilityToggle = sectionId => {
+    console.log('Toggling section visibility for:', sectionId);
+
+    // Track section change first
+    setChangedSections(prev => new Set([...prev, sectionId]));
+    setSaved(false);
+
     if (sectionId.startsWith('custom-')) {
       const customId = sectionId.replace('custom-', '');
-      setCustomSectionVisibility(prev => ({
-        ...prev,
-        [customId]: !prev[customId],
-      }));
+      setCustomSectionVisibility(prev => {
+        const newVisibility = {
+          ...prev,
+          [customId]: !prev[customId],
+        };
+
+        console.log('Custom section visibility updated:', newVisibility);
+
+        // Immediately update Redux for real-time preview
+        if (editingVendor) {
+          setTimeout(() => {
+            dispatch(
+              updateVendorField({
+                field: 'customSectionVisibility',
+                value: newVisibility,
+              })
+            );
+          }, 0);
+        }
+
+        return newVisibility;
+      });
     } else {
-      setSectionVisibility(prev => ({
-        ...prev,
-        [sectionId]: !prev[sectionId],
-      }));
+      setSectionVisibility(prev => {
+        const newVisibility = {
+          ...prev,
+          [sectionId]: !prev[sectionId],
+        };
+
+        console.log('Section visibility updated:', newVisibility);
+
+        // Immediately update Redux for real-time preview
+        if (editingVendor) {
+          setTimeout(() => {
+            dispatch(
+              updateVendorField({
+                field: 'sectionVisibility',
+                value: newVisibility,
+              })
+            );
+          }, 0);
+        }
+
+        return newVisibility;
+      });
     }
-    trackSectionChange(sectionId);
   };
 
   // Helper function to immediately update Redux editing vendor
@@ -1056,15 +1097,24 @@ const VendorDashboard = () => {
   ];
 
   useEffect(() => {
-    const vendorData = getVendorById(vendorId);
+    // Priority 1: Check if vendor exists in Redux state first
+    let vendorData = vendors.find(v => v.id === vendorId);
+
+    // Priority 2: If not in Redux, fetch from JSON and add to Redux
+    if (!vendorData) {
+      vendorData = getVendorById(vendorId);
+      if (vendorData) {
+        // Initialize vendor in Redux state
+        const sanitizedVendor = JSON.parse(JSON.stringify(vendorData));
+        dispatch(initializeVendor(sanitizedVendor));
+      }
+    }
+
     if (vendorData) {
       setVendor(vendorData);
 
-      // Initialize vendor in Redux state if it doesn't exist, then set as editing
+      // Set as editing vendor in Redux
       try {
-        // Create a sanitized version for Redux
-        const sanitizedVendor = JSON.parse(JSON.stringify(vendorData));
-        dispatch(initializeVendor(sanitizedVendor));
         dispatch(setEditingVendor(vendorId));
       } catch (error) {
         console.error('Error setting editing vendor:', error);
@@ -1275,7 +1325,7 @@ const VendorDashboard = () => {
       setSectionVisibility(initialVisibility);
     }
     setLoading(false);
-  }, [vendorId, dispatch]);
+  }, [vendorId, dispatch, vendors]);
 
   // Handle Save Changes - saves to editing state for real-time preview
   const handleSaveChanges = () => {
@@ -1348,6 +1398,18 @@ const VendorDashboard = () => {
           });
           return cleanGallery;
         })(),
+        sectionOrder:
+          completeSectionOrder.length > 0 ? completeSectionOrder : sectionOrder,
+        customSections: customSections,
+        sectionVisibility: sectionVisibility,
+        customSectionVisibility: customSectionVisibility,
+        // Footer data
+        footerColumns: footerData.columns,
+        footerCopyright: footerData.copyrightText,
+        footerBackgroundColor: footerData.backgroundColor,
+        footerTextColor: footerData.textColor,
+        footerDescription: footerData.description,
+        socialLinks: footerData.socialLinks,
       };
 
       // Update the editing vendor in Redux for real-time preview
@@ -1689,6 +1751,8 @@ const VendorDashboard = () => {
       imageFile: null,
     };
     setServicesData(prev => [...prev, newService]);
+    // Track section change to enable save button
+    trackSectionChange('services-offered');
   };
 
   const updateService = (id, field, value) => {
@@ -1697,12 +1761,16 @@ const VendorDashboard = () => {
         service.id === id ? { ...service, [field]: value } : service
       )
     );
+    // Track section change to enable save button
+    trackSectionChange('services-offered');
     // Automatically trigger real-time updates
     setTimeout(() => updateEditingVendorInRedux(), 100);
   };
 
   const deleteService = id => {
     setServicesData(prev => prev.filter(service => service.id !== id));
+    // Track section change to enable save button
+    trackSectionChange('services-offered');
   };
 
   const addRecentWork = () => {
@@ -1960,7 +2028,7 @@ const VendorDashboard = () => {
                   <input
                     type="checkbox"
                     checked={sectionVisibility['hero']}
-                    onChange={() => toggleSectionVisibility('hero')}
+                    onChange={() => handleSectionVisibilityToggle('hero')}
                   />
                   <span></span>
                 </ToggleSwitch>
@@ -2069,7 +2137,7 @@ const VendorDashboard = () => {
                   <input
                     type="checkbox"
                     checked={sectionVisibility['about-us']}
-                    onChange={() => toggleSectionVisibility('about-us')}
+                    onChange={() => handleSectionVisibilityToggle('about-us')}
                   />
                   <span></span>
                 </ToggleSwitch>
@@ -2338,7 +2406,9 @@ const VendorDashboard = () => {
                   <input
                     type="checkbox"
                     checked={sectionVisibility['services-offered']}
-                    onChange={() => toggleSectionVisibility('services-offered')}
+                    onChange={() =>
+                      handleSectionVisibilityToggle('services-offered')
+                    }
                   />
                   <span></span>
                 </ToggleSwitch>
@@ -2477,7 +2547,9 @@ const VendorDashboard = () => {
                   <input
                     type="checkbox"
                     checked={sectionVisibility['recent-work']}
-                    onChange={() => toggleSectionVisibility('recent-work')}
+                    onChange={() =>
+                      handleSectionVisibilityToggle('recent-work')
+                    }
                   />
                   <span></span>
                 </ToggleSwitch>
@@ -2807,7 +2879,7 @@ const VendorDashboard = () => {
                   <input
                     type="checkbox"
                     checked={sectionVisibility['gallery']}
-                    onChange={() => toggleSectionVisibility('gallery')}
+                    onChange={() => handleSectionVisibilityToggle('gallery')}
                   />
                   <span></span>
                 </ToggleSwitch>
@@ -2979,7 +3051,9 @@ const VendorDashboard = () => {
                   <input
                     type="checkbox"
                     checked={sectionVisibility['testimonials']}
-                    onChange={() => toggleSectionVisibility('testimonials')}
+                    onChange={() =>
+                      handleSectionVisibilityToggle('testimonials')
+                    }
                   />
                   <span></span>
                 </ToggleSwitch>
@@ -3077,7 +3151,9 @@ const VendorDashboard = () => {
                   <input
                     type="checkbox"
                     checked={sectionVisibility['packages-pricing']}
-                    onChange={() => toggleSectionVisibility('packages-pricing')}
+                    onChange={() =>
+                      handleSectionVisibilityToggle('packages-pricing')
+                    }
                   />
                   <span></span>
                 </ToggleSwitch>
@@ -3428,7 +3504,9 @@ const VendorDashboard = () => {
                           type="checkbox"
                           checked={customSectionVisibility[section.id] || false}
                           onChange={() =>
-                            toggleSectionVisibility(`custom-${section.id}`)
+                            handleSectionVisibilityToggle(
+                              `custom-${section.id}`
+                            )
                           }
                         />
                         <span></span>
@@ -3667,7 +3745,7 @@ const VendorDashboard = () => {
                   <input
                     type="checkbox"
                     checked={sectionVisibility['footer']}
-                    onChange={() => toggleSectionVisibility('footer')}
+                    onChange={() => handleSectionVisibilityToggle('footer')}
                   />
                   <span></span>
                 </ToggleSwitch>
