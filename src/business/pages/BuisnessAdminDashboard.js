@@ -3469,6 +3469,155 @@ const BuisnessAdminDashboard = () => {
                   </FormGroup>
                 </FormGrid>
               </FormGroup>
+
+              {/* Button Labels & Contact Form UI */}
+              <FormGroup style={{ gridColumn: '1 / -1', marginTop: theme.spacing.xl }}>
+                <h3 style={{ marginBottom: theme.spacing.lg, color: theme.colors.gray800, borderTop: `1px solid ${theme.colors.gray200}`, paddingTop: theme.spacing.lg }}>Button Labels</h3>
+                <FormGrid>
+                  <FormGroup>
+                    <FormLabel>Primary Action Button</FormLabel>
+                    <FormInput
+                      value={uiContentData.buttons?.bookNow || ''}
+                      onChange={e => {
+                        setUiContentData(prev => ({
+                          ...prev,
+                          buttons: { ...prev.buttons, bookNow: e.target.value }
+                        }));
+                        trackSectionChange('contact');
+                      }}
+                      placeholder="Book Now"
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <FormLabel>Send Message Button</FormLabel>
+                    <FormInput
+                      value={uiContentData.buttons?.sendMessage || ''}
+                      onChange={e => {
+                        setUiContentData(prev => ({
+                          ...prev,
+                          buttons: { ...prev.buttons, sendMessage: e.target.value }
+                        }));
+                        trackSectionChange('contact');
+                      }}
+                      placeholder="Send Message"
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <FormLabel>Contact Us Button</FormLabel>
+                    <FormInput
+                      value={uiContentData.buttons?.contactUs || ''}
+                      onChange={e => {
+                        setUiContentData(prev => ({
+                          ...prev,
+                          buttons: { ...prev.buttons, contactUs: e.target.value }
+                        }));
+                        trackSectionChange('contact');
+                      }}
+                      placeholder="Contact Us"
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <FormLabel>Learn More Button</FormLabel>
+                    <FormInput
+                      value={uiContentData.buttons?.learnMore || ''}
+                      onChange={e => {
+                        setUiContentData(prev => ({
+                          ...prev,
+                          buttons: { ...prev.buttons, learnMore: e.target.value }
+                        }));
+                        trackSectionChange('contact');
+                      }}
+                      placeholder="Learn More"
+                    />
+                  </FormGroup>
+                </FormGrid>
+              </FormGroup>
+
+              <FormGroup style={{ gridColumn: '1 / -1', marginTop: theme.spacing.lg }}>
+                <h3 style={{ marginBottom: theme.spacing.lg, color: theme.colors.gray800 }}>Contact Form Placeholders</h3>
+                <FormGrid>
+                  <FormGroup>
+                    <FormLabel>Name Field Placeholder</FormLabel>
+                    <FormInput
+                      value={uiContentData.contactForm?.placeholders?.name || ''}
+                      onChange={e => {
+                        setUiContentData(prev => ({
+                          ...prev,
+                          contactForm: {
+                            ...prev.contactForm,
+                            placeholders: {
+                              ...prev.contactForm?.placeholders,
+                              name: e.target.value
+                            }
+                          }
+                        }));
+                        trackSectionChange('contact');
+                      }}
+                      placeholder="Your Name"
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <FormLabel>Email Field Placeholder</FormLabel>
+                    <FormInput
+                      value={uiContentData.contactForm?.placeholders?.email || ''}
+                      onChange={e => {
+                        setUiContentData(prev => ({
+                          ...prev,
+                          contactForm: {
+                            ...prev.contactForm,
+                            placeholders: {
+                              ...prev.contactForm?.placeholders,
+                              email: e.target.value
+                            }
+                          }
+                        }));
+                        trackSectionChange('contact');
+                      }}
+                      placeholder="Your Email"
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <FormLabel>Phone Field Placeholder</FormLabel>
+                    <FormInput
+                      value={uiContentData.contactForm?.placeholders?.phone || ''}
+                      onChange={e => {
+                        setUiContentData(prev => ({
+                          ...prev,
+                          contactForm: {
+                            ...prev.contactForm,
+                            placeholders: {
+                              ...prev.contactForm?.placeholders,
+                              phone: e.target.value
+                            }
+                          }
+                        }));
+                        trackSectionChange('contact');
+                      }}
+                      placeholder="Your Phone"
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <FormLabel>Message Field Placeholder</FormLabel>
+                    <FormInput
+                      value={uiContentData.contactForm?.placeholders?.message || ''}
+                      onChange={e => {
+                        setUiContentData(prev => ({
+                          ...prev,
+                          contactForm: {
+                            ...prev.contactForm,
+                            placeholders: {
+                              ...prev.contactForm?.placeholders,
+                              message: e.target.value
+                            }
+                          }
+                        }));
+                        trackSectionChange('contact');
+                      }}
+                      placeholder="Your Message"
+                    />
+                  </FormGroup>
+                </FormGrid>
+              </FormGroup>
             </FormGrid>
           </ContentSection>
         );
