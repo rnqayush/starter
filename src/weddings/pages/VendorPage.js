@@ -34,7 +34,8 @@ import { getVendorById } from '../../utils/weddingAPI';
 import { useAuth } from '../../context/AuthContext';
 import {
   initializeVendor,
-  setEditingVendor
+  setEditingVendor,
+  loadVendorFromJson
 } from '../../store/slices/weddingManagementSlice';
 
 // Keyframe animations
