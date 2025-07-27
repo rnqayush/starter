@@ -657,12 +657,71 @@ export const businessWebsiteData = {
     about: {
       title: 'Our Story',
       description: 'Family-owned for three generations, we bring authentic Italian flavors to your table using recipes passed down through our family.',
+      extendedDescription: 'We pride ourselves on delivering exceptional service and creating memorable experiences for all our clients. Our commitment to excellence has made us a trusted choice in the community.',
       stats: [
-        { number: '25+', label: 'Years Serving' },
-        { number: '10k+', label: 'Happy Customers' },
-        { number: '150+', label: 'Menu Items' },
-        { number: '5', label: 'Star Rating' }
+        { number: '2500+', label: 'Meals Served' },
+        { number: '25+', label: 'Years Experience' },
+        { number: '4.9', label: '★ Average Rating' },
+        { number: '150+', label: 'Menu Items' }
       ]
+    },
+    sections: {
+      services: {
+        title: 'Our Menu',
+        subtitle: 'We offer a comprehensive range of authentic Italian dishes crafted with fresh ingredients and traditional recipes.'
+      },
+      team: {
+        title: 'Meet Our Chefs',
+        subtitle: 'Our experienced culinary team brings passion and expertise to every dish we create.'
+      },
+      testimonials: {
+        title: 'What Our Guests Say',
+        subtitle: "Don't just take our word for it - hear from our satisfied diners about their culinary experiences.",
+        sampleTestimonial: {
+          text: "Outstanding service and professional staff. I couldn't be happier with the results!",
+          author: "Guest Name",
+          role: "Food Enthusiast"
+        }
+      },
+      gallery: {
+        title: 'Our Restaurant',
+        subtitle: 'Take a look at our elegant dining spaces, signature dishes, and the warm atmosphere we create.'
+      },
+      packages: {
+        title: 'Special Menus',
+        subtitle: 'Choose from our specially curated dining experiences designed for memorable occasions.'
+      },
+      faq: {
+        title: 'Frequently Asked Questions',
+        subtitle: 'Find answers to common questions about reservations, menu options, and dining policies.'
+      },
+      reviews: {
+        title: 'Guest Reviews',
+        subtitle: 'Read what our valued guests have to say about their dining experiences with us.'
+      }
+    },
+    ui: {
+      buttons: {
+        bookNow: 'Make Reservation',
+        bookAppointment: 'Reserve Table',
+        learnMore: 'View Menu',
+        sendMessage: 'Send Message',
+        getStarted: 'Make Reservation',
+        viewPortfolio: 'View Gallery',
+        contactUs: 'Contact Us'
+      },
+      contactForm: {
+        placeholders: {
+          name: 'Your Name',
+          email: 'Your Email',
+          phone: 'Your Phone',
+          message: 'Special Requests or Message'
+        }
+      },
+      businessHours: {
+        title: 'Restaurant Hours',
+        contactInfoTitle: 'Contact Information'
+      }
     },
     services: [
       {
