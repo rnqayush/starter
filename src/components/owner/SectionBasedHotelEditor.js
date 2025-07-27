@@ -1272,8 +1272,12 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
       updateHotelField({ field: 'customSections', value: customSections })
     );
 
-    // Save all changes to global state (this will update the live hotel page)
+    // First save changes to draft
     dispatch(saveChanges());
+
+    // Then publish draft changes to live data
+    dispatch(publishChanges());
+
     alert('All changes published to live hotel page successfully!');
   };
 
