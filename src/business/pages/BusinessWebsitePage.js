@@ -1974,10 +1974,9 @@ const BusinessWebsitePage = () => {
       {content.packages && (
         <Section id="packages" background={theme.colors.gray50}>
           <SectionContainer>
-            <SectionTitle>Our Packages</SectionTitle>
+            <SectionTitle>{content.sections?.packages?.title || 'Our Packages'}</SectionTitle>
             <SectionSubtitle>
-              Choose from our specially curated packages designed to give you
-              the best value and experience.
+              {content.sections?.packages?.subtitle || 'Choose from our specially curated packages designed to give you the best value and experience.'}
             </SectionSubtitle>
             <PackagesGrid>
               {(content.packages || []).map((pkg, index) => (
