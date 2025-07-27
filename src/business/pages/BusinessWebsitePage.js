@@ -1884,10 +1884,9 @@ const BusinessWebsitePage = () => {
       {businessData.slug === 'freelancer' && content.experience ? (
         <Section id="experience">
           <SectionContainer>
-            <SectionTitle>Professional Experience</SectionTitle>
+            <SectionTitle>{content.sections?.experience?.title || 'Professional Experience'}</SectionTitle>
             <SectionSubtitle>
-              My journey in the creative industry, working with diverse clients
-              and challenging projects.
+              {content.sections?.experience?.subtitle || 'My journey in the creative industry, working with diverse clients and challenging projects.'}
             </SectionSubtitle>
             <ExperienceTimeline>
               {(content.experience || []).map((exp, index) => (
