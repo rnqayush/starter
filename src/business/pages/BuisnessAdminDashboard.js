@@ -1985,6 +1985,48 @@ const BuisnessAdminDashboard = () => {
               </VisibilityToggleContainer>
             </SectionHeader>
 
+            {/* Section UI Content Editing */}
+            <div style={{ marginBottom: theme.spacing.xl, padding: theme.spacing.lg, background: theme.colors.gray50, borderRadius: theme.borderRadius.md }}>
+              <h3 style={{ marginBottom: theme.spacing.md, color: theme.colors.gray800 }}>Section Text & Labels</h3>
+              <FormGrid>
+                <FormGroup>
+                  <FormLabel>Section Title</FormLabel>
+                  <FormInput
+                    value={uiContentData.sections?.services?.title || ''}
+                    onChange={e => {
+                      setUiContentData(prev => ({
+                        ...prev,
+                        sections: {
+                          ...prev.sections,
+                          services: { ...prev.sections?.services, title: e.target.value }
+                        }
+                      }));
+                      trackSectionChange('services-offered');
+                    }}
+                    placeholder="Our Services"
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <FormLabel>Section Subtitle</FormLabel>
+                  <FormTextarea
+                    value={uiContentData.sections?.services?.subtitle || ''}
+                    onChange={e => {
+                      setUiContentData(prev => ({
+                        ...prev,
+                        sections: {
+                          ...prev.sections,
+                          services: { ...prev.sections?.services, subtitle: e.target.value }
+                        }
+                      }));
+                      trackSectionChange('services-offered');
+                    }}
+                    placeholder="We offer comprehensive services..."
+                    rows={3}
+                  />
+                </FormGroup>
+              </FormGrid>
+            </div>
+
             <AddButton onClick={addService}>
               <FaPlus />
               Add New Service
@@ -3865,7 +3907,7 @@ const BuisnessAdminDashboard = () => {
                     testimonials: '💬',
                     reviews: '⭐',
                     faq: '❓',
-                    'business-hours': '🕐',
+                    'business-hours': '����',
                     contact: '📞',
                   }[sectionId] || '📋';
 
