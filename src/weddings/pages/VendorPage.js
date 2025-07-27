@@ -628,10 +628,33 @@ const NavButton = styled.button.withConfig({
 
 // Section Components
 const Section = styled.section.withConfig({
-  shouldForwardProp: prop => !['backgroundColor'].includes(prop),
+  shouldForwardProp: prop => !['backgroundColor', 'animated'].includes(prop),
 })`
   padding: ${theme.spacing.xxl} ${theme.spacing.md};
   background: ${props => props.backgroundColor || 'white'};
+  position: relative;
+  overflow: hidden;
+
+  ${props => props.animated && css`
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+
+    &.animate-in {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  `}
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0,0,0,0.1), transparent);
+  }
 `;
 
 const Container = styled.div`
@@ -650,6 +673,33 @@ const SectionTitle = styled.h2`
   text-align: center;
   margin-bottom: ${theme.spacing.xl};
   color: ${theme.colors.gray900};
+  position: relative;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
+
+  &.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, ${theme.colors.primary}, transparent);
+    border-radius: 2px;
+    opacity: 0;
+    transition: opacity 0.6s ease 0.8s;
+  }
+
+  &.animate-in::after {
+    opacity: 1;
+  }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     font-size: 2rem;
