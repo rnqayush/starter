@@ -97,12 +97,14 @@ export const { getHotelById, getHotelBySlug, getHotelByIdOrSlug, getRoomById } =
 
 // These need to be async now, but for compatibility we'll export sync versions
 export const getHotelsByCity = city => {
+  if (!Array.isArray(hotels)) return [];
   return hotels.filter(hotel =>
     hotel.city.toLowerCase().includes(city.toLowerCase())
   );
 };
 
 export const searchHotels = searchTerm => {
+  if (!Array.isArray(hotels)) return [];
   const term = searchTerm.toLowerCase();
   return hotels.filter(
     hotel =>
