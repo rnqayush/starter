@@ -1928,14 +1928,12 @@ const BusinessWebsitePage = () => {
                   <FaQuoteLeft />
                 </div>
                 <div className="text">
-                  "Outstanding service and professional staff. I couldn't be
-                  happier with the results. Highly recommend to anyone looking
-                  for quality and excellence."
+                  "{content.sections?.testimonials?.sampleTestimonial?.text || 'Outstanding service and professional staff. I couldn\'t be happier with the results!'}"
                 </div>
                 <div className="author">
                   <div className="info">
-                    <h4>Client Name</h4>
-                    <p>Satisfied Customer</p>
+                    <h4>{content.sections?.testimonials?.sampleTestimonial?.author || 'Client Name'}</h4>
+                    <p>{content.sections?.testimonials?.sampleTestimonial?.role || 'Satisfied Customer'}</p>
                   </div>
                   <div className="rating">
                     {[...Array(5)].map((_, i) => (
