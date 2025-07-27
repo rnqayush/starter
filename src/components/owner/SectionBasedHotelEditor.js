@@ -713,7 +713,8 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
     sectionVisibility,
     pendingChanges,
     lastSaveTime,
-    lastPublishTime
+    lastPublishTime,
+    liveHotels
   } = useSelector(state => state.hotelManagement);
 
   const hasPendingChanges = useSelector(state =>
