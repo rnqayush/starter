@@ -1718,24 +1718,8 @@ const BusinessWebsitePage = () => {
 
           <StatsGrid>
             <StatCard primaryColor={businessData.primaryColor}>
-              <div className="number">
-                {businessData.slug === 'restaurant'
-                  ? '2,500+'
-                  : businessData.slug === 'gym'
-                    ? '1,200+'
-                    : businessData.slug === 'salon'
-                      ? '850+'
-                      : '500+'}
-              </div>
-              <div className="label">
-                {businessData.slug === 'restaurant'
-                  ? 'Meals Served'
-                  : businessData.slug === 'gym'
-                    ? 'Active Members'
-                    : businessData.slug === 'salon'
-                      ? 'Services Completed'
-                      : 'Happy Clients'}
-              </div>
+              <div className="number">{content.about?.stats?.[0]?.number || '100+'}</div>
+              <div className="label">{content.about?.stats?.[0]?.label || 'Services'}</div>
             </StatCard>
             <StatCard primaryColor={businessData.primaryColor}>
               <div className="number">
