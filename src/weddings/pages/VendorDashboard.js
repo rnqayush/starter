@@ -1365,6 +1365,8 @@ const VendorDashboard = () => {
       }));
 
       console.log('Saving changes...');
+      console.log('saveVendorChanges function:', saveVendorChanges);
+      console.log('saveVendorChanges():', saveVendorChanges());
       dispatch(saveVendorChanges());
 
       setSaved(false);
