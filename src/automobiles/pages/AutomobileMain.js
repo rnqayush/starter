@@ -14,6 +14,7 @@ import {
   getOnSaleVehicles,
   getAutomobileVendorByIdOrSlug as getVendorByIdOrSlug,
 } from '../../DummyData';
+import { automobileAPI } from '../../utils/api';
 
 // Dynamic theme styles that override global styles
 const DynamicGlobalStyle = createGlobalStyle`
@@ -461,9 +462,27 @@ const AutomobileMain = () => {
       return;
     }
 
-    // Load vehicles (these would be filtered by dealer in a real app)
-    setFeaturedVehicles(getFeaturedVehicles());
-    setSaleVehicles(getOnSaleVehicles());
+    // Load vehicles from API (filtered by dealer in a real app)
+    const loadVehicles = async () => {
+      try {
+        const response = await automobileAPI.getAllVehicles();
+        if (response.success && response.data) {
+          // For now, use all vehicles as featured and on sale
+          // In a real app, you'd filter by dealer and status
+          setFeaturedVehicles(response.data.slice(0, 6)); // First 6 as featured
+          setSaleVehicles(response.data.filter(v => v.onSale || v.discount)); // Filter on sale items
+        } else {
+          throw new Error('Failed to fetch vehicles');
+        }
+      } catch (error) {
+        console.error('Error fetching vehicles:', error);
+        // Fallback to dummy data
+        setFeaturedVehicles(getFeaturedVehicles());
+        setSaleVehicles(getOnSaleVehicles());
+      }
+    };
+
+    loadVehicles();
   }, [location.pathname, location.state, navigate]);
 
   const handleBackToDealers = () => {

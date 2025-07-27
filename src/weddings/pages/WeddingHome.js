@@ -23,7 +23,8 @@ import {
   FaTimes,
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
-import { weddingVendors } from '../data/vendors';
+import { weddingVendors } from '../../DummyData/weddings';
+import { weddingAPI } from '../../utils/api';
 import {
   getCurrentLocation,
   getLocationFromZip,
@@ -712,14 +713,38 @@ const WeddingHome = () => {
     { name: 'Jewelry', icon: FaGem, count: 8, filter: 'jewelry' },
   ];
 
-  const loadVendorsForLocation = useCallback(location => {
-    const vendorsWithDistance = updateVendorsWithDistance(
-      weddingVendors,
-      location
-    );
-    setVendors(vendorsWithDistance);
-    setFilteredVendors(vendorsWithDistance);
-    setLoading(false);
+  const loadVendorsForLocation = useCallback(async location => {
+    try {
+      setLoading(true);
+      
+      // Try to fetch vendors from API
+      const response = await weddingAPI.getAllWeddingServices();
+      let vendorsData = weddingVendors; // fallback
+      
+      if (response.success && response.data) {
+        vendorsData = response.data;
+      } else {
+        console.error('Failed to fetch wedding vendors, using fallback data');
+      }
+      
+      const vendorsWithDistance = updateVendorsWithDistance(
+        vendorsData,
+        location
+      );
+      setVendors(vendorsWithDistance);
+      setFilteredVendors(vendorsWithDistance);
+    } catch (error) {
+      console.error('Error fetching wedding vendors:', error);
+      // Fallback to dummy data
+      const vendorsWithDistance = updateVendorsWithDistance(
+        weddingVendors,
+        location
+      );
+      setVendors(vendorsWithDistance);
+      setFilteredVendors(vendorsWithDistance);
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   const initializeLocation = useCallback(async () => {

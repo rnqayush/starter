@@ -21,6 +21,7 @@ import HotelNavbar from '../components/HotelNavbar';
 import HotelFooter from '../components/HotelFooter';
 
 import { getHotelByIdOrSlug } from '../../DummyData';
+import { hotelAPI } from '../../utils/api';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -810,22 +811,47 @@ const HotelDetail = () => {
   const hotelsFromStore = useSelector(state => state.hotelManagement?.hotels);
 
   useEffect(() => {
-    let foundHotel;
+    const fetchHotel = async () => {
+      try {
+        setLoading(true);
+        let foundHotel;
 
-    // Try to get hotel from Redux store first (for updated data)
-    if (hotelsFromStore && hotelsFromStore.length > 0) {
-      foundHotel = hotelsFromStore.find(
-        h => h.slug === slugParam || h.id === parseInt(slugParam)
-      );
-    }
+        // Try to get hotel from Redux store first (for updated data)
+        if (hotelsFromStore && hotelsFromStore.length > 0) {
+          foundHotel = hotelsFromStore.find(
+            h => h.slug === slugParam || h.id === parseInt(slugParam)
+          );
+        }
 
-    // Fallback to original data if not found in store
-    if (!foundHotel) {
-      foundHotel = getHotelByIdOrSlug(slugParam);
-    }
+        // If not found in store, try API
+        if (!foundHotel) {
+          try {
+            const response = await hotelAPI.getHotelById(slugParam);
+            if (response.success && response.data) {
+              foundHotel = response.data;
+            }
+          } catch (apiError) {
+            console.error('API fetch failed, using fallback data:', apiError);
+          }
+        }
 
-    setHotel(foundHotel);
-    setLoading(false);
+        // Final fallback to original data
+        if (!foundHotel) {
+          foundHotel = getHotelByIdOrSlug(slugParam);
+        }
+
+        setHotel(foundHotel);
+      } catch (error) {
+        console.error('Error fetching hotel:', error);
+        // Fallback to dummy data
+        const fallbackHotel = getHotelByIdOrSlug(slugParam);
+        setHotel(fallbackHotel);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchHotel();
   }, [slugParam, hotelsFromStore]);
 
   // Re-render when Redux store updates (for live preview)

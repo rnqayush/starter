@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { theme, media } from '../../styles/GlobalStyle';
 import HotelNavbar from '../components/HotelNavbar';
 import HotelFooter from '../components/HotelFooter';
 import HotelCard from '../components/HotelCard';
 import SearchForm from '../components/SearchForm';
-import { hotels } from '../data/hotels';
+import { hotelAPI } from '../../utils/api';
+import { hotels as fallbackHotels } from '../../DummyData/hotels';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -169,9 +170,82 @@ const ClearButton = styled.button`
   }
 `;
 
+const LoadingSpinner = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: ${theme.spacing.xxl};
+  
+  &::after {
+    content: '';
+    width: 40px;
+    height: 40px;
+    border: 4px solid ${theme.colors.gray300};
+    border-top: 4px solid ${theme.colors.primary};
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+`;
+
+const ErrorMessage = styled.div`
+  text-align: center;
+  padding: ${theme.spacing.xxl};
+  color: ${theme.colors.error};
+  background: ${theme.colors.errorLight};
+  border-radius: ${theme.borderRadius.md};
+  margin: ${theme.spacing.lg} 0;
+  
+  h3 {
+    font-size: 1.5rem;
+    margin-bottom: ${theme.spacing.md};
+    color: ${theme.colors.error};
+  }
+  
+  p {
+    margin-bottom: ${theme.spacing.lg};
+  }
+`;
+
 const HotelHome = () => {
-  const [filteredHotels, setFilteredHotels] = useState(hotels);
+  const [hotels, setHotels] = useState([]);
+  const [filteredHotels, setFilteredHotels] = useState([]);
   const [searchCriteria, setSearchCriteria] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Fetch hotels from API on component mount
+  useEffect(() => {
+    const fetchHotels = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        
+        const response = await hotelAPI.getAllHotels();
+        
+        if (response.success && response.data) {
+          setHotels(response.data);
+          setFilteredHotels(response.data);
+        } else {
+          throw new Error(response.message || 'Failed to fetch hotels');
+        }
+      } catch (err) {
+        console.error('Error fetching hotels:', err);
+        setError(err.message);
+        // Fallback to dummy data if API fails
+        setHotels(fallbackHotels);
+        setFilteredHotels(fallbackHotels);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchHotels();
+  }, []);
 
   const handleSearch = searchData => {
     const { destination } = searchData;
@@ -221,13 +295,23 @@ const HotelHome = () => {
             {searchCriteria ? 'Search Results' : 'Popular Hotels'}
           </SectionTitle>
 
-          {filteredHotels.length > 0 ? (
+          {loading ? (
+            <LoadingSpinner />
+          ) : error ? (
+            <ErrorMessage>
+              <h3>Error Loading Hotels</h3>
+              <p>{error}</p>
+              <p>Showing fallback data instead.</p>
+            </ErrorMessage>
+          ) : null}
+
+          {!loading && filteredHotels.length > 0 ? (
             <HotelsGrid>
               {filteredHotels.map(hotel => (
                 <HotelCard key={hotel.id} hotel={hotel} />
               ))}
             </HotelsGrid>
-          ) : (
+          ) : !loading && filteredHotels.length === 0 ? (
             <EmptyState>
               <h3>No hotels found</h3>
               <p>
@@ -236,7 +320,7 @@ const HotelHome = () => {
               </p>
               <ClearButton onClick={clearSearch}>View All Hotels</ClearButton>
             </EmptyState>
-          )}
+          ) : null}
         </Container>
       </HotelsSection>
 

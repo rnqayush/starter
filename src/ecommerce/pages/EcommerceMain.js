@@ -14,6 +14,7 @@ import {
   getOnSaleProducts,
   getEcommerceVendorByIdOrSlug as getVendorByIdOrSlug,
 } from '../../DummyData';
+import { ecommerceAPI } from '../../utils/api';
 
 // Dynamic theme styles that override global styles
 const DynamicGlobalStyle = createGlobalStyle`
@@ -444,9 +445,27 @@ const EcommerceMain = () => {
       setSelectedVendor(vendor);
     }
 
-    // Load products (these would be filtered by vendor in a real app)
-    setFeaturedProducts(getFeaturedProducts());
-    setSaleProducts(getOnSaleProducts());
+    // Load products from API (filtered by vendor in a real app)
+    const loadProducts = async () => {
+      try {
+        const response = await ecommerceAPI.getAllProducts();
+        if (response.success && response.data) {
+          // For now, use all products as featured and on sale
+          // In a real app, you'd filter by vendor and status
+          setFeaturedProducts(response.data.slice(0, 8)); // First 8 as featured
+          setSaleProducts(response.data.filter(p => p.onSale || p.discount > 0)); // Filter on sale items
+        } else {
+          throw new Error('Failed to fetch products');
+        }
+      } catch (error) {
+        console.error('Error fetching products:', error);
+        // Fallback to dummy data
+        setFeaturedProducts(getFeaturedProducts());
+        setSaleProducts(getOnSaleProducts());
+      }
+    };
+
+    loadProducts();
   }, [location.pathname, location.state, navigate, slug]);
 
   const handleBackToStores = () => {
