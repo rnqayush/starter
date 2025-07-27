@@ -57,6 +57,7 @@ import {
   updatePackages,
   updateRecentWork,
   updateCustomSections,
+  updateFooterData,
   saveVendorChanges,
   discardVendorChanges,
   toggleSectionVisibility,
