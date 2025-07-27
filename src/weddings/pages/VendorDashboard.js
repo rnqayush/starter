@@ -2517,7 +2517,7 @@ const VendorDashboard = () => {
                   <input
                     type="checkbox"
                     checked={sectionVisibility['recent-work']}
-                    onChange={() => toggleSectionVisibility('recent-work')}
+                    onChange={() => handleSectionVisibilityToggle('recent-work')}
                   />
                   <span></span>
                 </ToggleSwitch>
