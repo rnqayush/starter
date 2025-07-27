@@ -501,7 +501,7 @@ const Container = styled.div`
 
 const SectionHeader = styled.div`
   text-align: center;
-  margin-bottom: ${theme.spacing.xxl};
+  margin-bottom: calc(${theme.spacing.xxl} * 1.5);
   position: relative;
 
   &::after {
@@ -517,7 +517,7 @@ const SectionHeader = styled.div`
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    margin-bottom: ${theme.spacing.xl};
+    margin-bottom: calc(${theme.spacing.xl} * 1.3);
   }
 `;
 
