@@ -1990,7 +1990,7 @@ const BuisnessAdminDashboard = () => {
                 <FormGroup>
                   <FormLabel>Section Title</FormLabel>
                   <FormInput
-                    value={uiContentData.sections?.services?.title || ''}
+                    value={uiContentData.sections?.services?.title || (business?.slug === 'freelancer' ? 'My Services' : 'Our Services')}
                     onChange={e => {
                       setUiContentData(prev => ({
                         ...prev,
@@ -2001,13 +2001,13 @@ const BuisnessAdminDashboard = () => {
                       }));
                       trackSectionChange('services-offered');
                     }}
-                    placeholder="Our Services"
+                    placeholder={business?.slug === 'freelancer' ? 'My Services' : 'Our Services'}
                   />
                 </FormGroup>
                 <FormGroup>
                   <FormLabel>Section Subtitle</FormLabel>
                   <FormTextarea
-                    value={uiContentData.sections?.services?.subtitle || ''}
+                    value={uiContentData.sections?.services?.subtitle || 'We offer a comprehensive range of professional services designed to meet your needs and exceed your expectations.'}
                     onChange={e => {
                       setUiContentData(prev => ({
                         ...prev,
@@ -2018,7 +2018,7 @@ const BuisnessAdminDashboard = () => {
                       }));
                       trackSectionChange('services-offered');
                     }}
-                    placeholder="We offer comprehensive services..."
+                    placeholder="We offer a comprehensive range of professional services designed to meet your needs and exceed your expectations."
                     rows={3}
                   />
                 </FormGroup>
