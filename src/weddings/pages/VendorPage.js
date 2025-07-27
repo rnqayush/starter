@@ -1347,6 +1347,7 @@ const VendorPage = () => {
     message: '',
   });
   const [submitting, setSubmitting] = useState(false);
+  const [animatedSections, setAnimatedSections] = useState(new Set());
 
   useEffect(() => {
     let vendorData = null;
