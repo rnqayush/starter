@@ -1701,10 +1701,7 @@ const BusinessWebsitePage = () => {
                   `Learn more about ${businessData.name}`}
               </p>
               <p>
-                We pride ourselves on delivering exceptional service and
-                creating memorable experiences for all our clients. Our
-                commitment to excellence has made us a trusted choice in the
-                community.
+                {content.about?.extendedDescription || 'We pride ourselves on delivering exceptional service and creating memorable experiences for all our clients.'}
               </p>
             </AboutContent>
             <AboutImage primaryColor={businessData.primaryColor}>
