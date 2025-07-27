@@ -31,12 +31,20 @@ const hotelManagementSlice = createSlice({
   initialState,
   reducers: {
     setEditingHotel: (state, action) => {
-      const hotel = state.hotels.find(h => h.id === action.payload);
+      // Get hotel from draft data for editing
+      const hotel = state.draftHotels.find(h => h.id === action.payload);
       state.editingHotel = hotel ? { ...hotel } : null;
-      state.originalHotel = hotel ? { ...hotel } : null;
+      // Keep reference to original live version for comparison
+      const originalHotel = state.liveHotels.find(h => h.id === action.payload);
+      state.originalHotel = originalHotel ? { ...originalHotel } : null;
       state.activeHotelId = action.payload;
       state.changes = {};
       state.hasUnsavedChanges = false;
+
+      // Initialize section visibility from hotel data
+      if (hotel && hotel.sectionVisibility) {
+        state.sectionVisibility = { ...hotel.sectionVisibility };
+      }
     },
 
     updateHotelField: (state, action) => {
