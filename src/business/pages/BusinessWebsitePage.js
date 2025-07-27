@@ -2073,23 +2073,19 @@ const BusinessWebsitePage = () => {
             </HoursCard>
 
             <HoursCard primaryColor={businessData.primaryColor}>
-              <h4>Contact Information</h4>
+              <h4>{content.ui?.businessHours?.contactInfoTitle || 'Contact Information'}</h4>
               <div className="hours-list">
                 <div className="hours-item">
                   <span className="day">Phone</span>
-                  <span className="time">+1 (555) 123-4567</span>
+                  <span className="time">{content.contact?.phone || '+1 (555) 123-4567'}</span>
                 </div>
                 <div className="hours-item">
                   <span className="day">Email</span>
-                  <span className="time">info@{businessData.slug}.com</span>
+                  <span className="time">{content.contact?.email || `info@${businessData.slug}.com`}</span>
                 </div>
                 <div className="hours-item">
                   <span className="day">Address</span>
-                  <span className="time">123 Business St</span>
-                </div>
-                <div className="hours-item">
-                  <span className="day">City</span>
-                  <span className="time">Your City, ST 12345</span>
+                  <span className="time">{content.contact?.address || '123 Business Street, City, State 12345'}</span>
                 </div>
               </div>
             </HoursCard>
