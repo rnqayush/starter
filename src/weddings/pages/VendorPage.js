@@ -2093,9 +2093,9 @@ const VendorPage = () => {
             case 'recent-work':
               return vendor.locationPortfolio &&
                 vendor.locationPortfolio.length > 0 ? (
-                <Section key="portfolio" id="portfolio">
+                <Section key="portfolio" id="portfolio" animated>
                   <Container>
-                    <SectionTitle>Our Recent Work</SectionTitle>
+                    <SectionTitle className="animate-on-scroll">Our Recent Work</SectionTitle>
                     <SectionSubtitle>
                       Explore some of our beautiful weddings across different
                       venues and locations
