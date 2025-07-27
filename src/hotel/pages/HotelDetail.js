@@ -1204,6 +1204,7 @@ const HotelDetail = () => {
                         <div
                           style={{
                             display: 'grid',
+                            gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
                             gap: theme.spacing.xl,
                             marginBottom: theme.spacing.xl,
                           }}
