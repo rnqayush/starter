@@ -370,6 +370,32 @@ const HotelNavbar = ({ showBackToMain = true }) => {
     return getHotelByIdOrSlug(hotelSlug);
   }, [hotelSlug, liveHotels]);
 
+  // Professional scroll effect for navbar
+  useEffect(() => {
+    let ticking = false;
+
+    const updateScrollState = () => {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      const threshold = 100; // More responsive threshold
+
+      setIsScrolled(scrollTop > threshold);
+      ticking = false;
+    };
+
+    const handleScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(updateScrollState);
+        ticking = true;
+      }
+    };
+
+    // Set initial state
+    updateScrollState();
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   const closeMobileMenu = () => setMobileMenuOpen(false);
 
   return (
