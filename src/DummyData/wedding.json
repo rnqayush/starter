@@ -337,7 +337,33 @@
           "faq": true,
           "contact": true,
           "footer": true
-        }
+        },
+        "footerColumns": [
+          {
+            "title": "Quick Links",
+            "type": "links",
+            "content": [
+              { "text": "About Us", "url": "#about" },
+              { "text": "Services", "url": "#services" },
+              { "text": "Gallery", "url": "#gallery" },
+              { "text": "Contact", "url": "#contact" }
+            ]
+          },
+          {
+            "title": "Contact Info",
+            "type": "contact",
+            "content": {
+              "showPhone": true,
+              "showEmail": true,
+              "showAddress": true,
+              "showHours": false
+            }
+          }
+        ],
+        "footerCopyright": "© 2024 Elegant Events. All rights reserved.",
+        "footerBackgroundColor": "#1f2937",
+        "footerTextColor": "#ffffff",
+        "footerDescription": "Creating magical moments for your special day. From intimate ceremonies to grand celebrations."
       }
     },
     "sections": {
