@@ -1355,7 +1355,7 @@ const VendorDashboard = () => {
       dispatch(updateVendorGallery(cleanGallery));
       dispatch(updateVendorField({
         field: 'sectionOrder',
-        value: completeSectionOrder.length > 0 ? completeSectionOrder : sectionOrder,
+        value: (completeSectionOrder && completeSectionOrder.length > 0) ? completeSectionOrder : (sectionOrder || []),
       }));
       dispatch(updateVendorField({ field: 'customSections', value: customSections || [] }));
       dispatch(updateVendorField({ field: 'sectionVisibility', value: sectionVisibility || {} }));
