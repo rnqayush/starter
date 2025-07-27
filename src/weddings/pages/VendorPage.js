@@ -1320,6 +1320,8 @@ const VendorPage = () => {
   const { vendorSlug } = useParams();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const sectionRefs = useRef([]);
+  const observerRef = useRef(null);
 
   // Get vendor ID from URL path if not available in params
   const currentPath = window.location.pathname;
