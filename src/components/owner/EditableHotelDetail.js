@@ -30,7 +30,7 @@ import {
   discardChanges,
 } from '../../store/slices/hotelManagementSlice';
 import { useAppContext } from '../../context/AppContext';
-import { getHotelByIdOrSlug, amenitiesList } from '../../DummyData/hotels';
+import { getHotelByIdOrSlug, amenitiesList } from '../../DummyData';
 
 const PageContainer = styled.div`
   min-height: 100vh;
