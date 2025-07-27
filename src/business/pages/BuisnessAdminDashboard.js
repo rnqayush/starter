@@ -1327,107 +1327,139 @@ const BuisnessAdminDashboard = () => {
   ];
 
   useEffect(() => {
-    const businessData = getBusinessTemplate(businessId);
-    if (businessData) {
-      setBusiness(businessData);
-
-      // Initialize business in Redux state if it doesn't exist, then set as editing
+    const fetchBusinessDataForAdmin = async () => {
       try {
-        // Create a sanitized version for Redux
-        const sanitizedBusiness = JSON.parse(JSON.stringify(businessData));
-        dispatch(initializeBusiness(sanitizedBusiness));
-        dispatch(setEditingBusiness(businessId));
+        setApiLoading(true);
+        setApiError(null);
+
+        console.log(`[AdminDashboard] Making API call for business: ${businessId}`);
+        const response = await fetchBusinessData(businessId);
+
+        let businessData;
+
+        if (response.success && response.data) {
+          console.log('[AdminDashboard] API call successful:', response.data);
+          businessData = response.data;
+        } else {
+          console.log('[AdminDashboard] API call failed, using template fallback');
+          businessData = getBusinessTemplate(businessId);
+          if (!businessData) {
+            setApiError('Business not found');
+            setLoading(false);
+            setApiLoading(false);
+            return;
+          }
+        }
+
+        setBusiness(businessData);
+
+        // Initialize business in Redux state if it doesn't exist, then set as editing
+        try {
+          // Create a sanitized version for Redux
+          const sanitizedBusiness = JSON.parse(JSON.stringify(businessData));
+          dispatch(initializeBusiness(sanitizedBusiness));
+          dispatch(setEditingBusiness(businessId));
+        } catch (error) {
+          console.error('Error setting editing business:', error);
+        }
+
+        // Pre-fill all form data from business data (using API data structure)
+        setHeroData({
+          title: businessData.hero?.title || `${businessData.name}`,
+          subtitle: businessData.hero?.subtitle || `Welcome to ${businessData.name}`,
+          backgroundImage: businessData.hero?.backgroundImage || businessData.image || '',
+        });
+
+        setAboutData({
+          title: businessData.about?.title || 'About Us',
+          description: businessData.about?.description || `Learn more about ${businessData.name}`,
+          profileImage: businessData.about?.profileImage || '',
+        });
+
+        // Use API data directly instead of getSampleContent
+        setServicesData(businessData.services || []);
+        setTeamData(businessData.team || []);
+        setPortfolioData(businessData.portfolio || []);
+        setSkillsData(businessData.skills || []);
+        setExperienceData(businessData.experience || []);
+        setGalleryData(businessData.gallery || []);
+        setPackagesData(businessData.packages || []);
+        setTestimonialsData(businessData.testimonials || []);
+        setReviewsData(businessData.reviews || []);
+        setFaqData(businessData.faq || []);
+
+        // Initialize business hours from API data
+        setBusinessHoursData(businessData.businessHours || {
+          title: 'Business Hours',
+          hours: {
+            monday: '9:00 AM - 6:00 PM',
+            tuesday: '9:00 AM - 6:00 PM',
+            wednesday: '9:00 AM - 6:00 PM',
+            thursday: '9:00 AM - 6:00 PM',
+            friday: '9:00 AM - 6:00 PM',
+            saturday: '10:00 AM - 4:00 PM',
+            sunday: 'Closed',
+          },
+        });
+
+        // Initialize section order
+        setSectionOrderData([
+          'hero',
+          'about-us',
+          'services-offered',
+          'portfolio',
+          'skills',
+          'experience',
+          'team',
+          'gallery',
+          'packages',
+          'testimonials',
+          'reviews',
+          'faq',
+          'business-hours',
+          'contact',
+        ]);
+
+        // Initialize contact data from API data
+        setContactData(businessData.contact || {
+          title: 'Get In Touch',
+          description: `Contact us to learn more about ${businessData.name}`,
+          email: `hello@${businessData.slug}.com`,
+          phone: '+1 (555) 123-4567',
+          address: '123 Business Street, City, State 12345',
+          hours: {
+            monday: '9:00 AM - 6:00 PM',
+            tuesday: '9:00 AM - 6:00 PM',
+            wednesday: '9:00 AM - 6:00 PM',
+            thursday: '9:00 AM - 6:00 PM',
+            friday: '9:00 AM - 6:00 PM',
+            saturday: '10:00 AM - 4:00 PM',
+            sunday: 'Closed',
+          },
+          socialMedia: {
+            facebook: '',
+            twitter: '',
+            instagram: '',
+            linkedin: '',
+          },
+        });
+
       } catch (error) {
-        console.error('Error setting editing business:', error);
+        console.error('[AdminDashboard] Error fetching business data:', error);
+        setApiError(error.message);
+
+        // Fallback to template data on error
+        const businessData = getBusinessTemplate(businessId);
+        if (businessData) {
+          setBusiness(businessData);
+        }
+      } finally {
+        setLoading(false);
+        setApiLoading(false);
       }
+    };
 
-      // Pre-fill all form data from business data
-      setHeroData({
-        title: businessData.hero?.title || `${businessData.name}`,
-        subtitle:
-          businessData.hero?.subtitle || `Welcome to ${businessData.name}`,
-        backgroundImage:
-          businessData.hero?.backgroundImage || businessData.image || '',
-      });
-
-      setAboutData({
-        title: businessData.about?.title || 'About Us',
-        description:
-          businessData.about?.description ||
-          `Learn more about ${businessData.name}`,
-        profileImage: businessData.about?.profileImage || '',
-      });
-
-      // Initialize sample content based on business type
-      const sampleContent = getSampleContent(businessData.slug);
-      setServicesData(sampleContent.services || []);
-      setTeamData(sampleContent.team || []);
-      setPortfolioData(sampleContent.portfolio || []);
-      setSkillsData(sampleContent.skills || []);
-      setExperienceData(sampleContent.experience || []);
-      setGalleryData(sampleContent.gallery || []);
-      setPackagesData(sampleContent.packages || []);
-      setTestimonialsData(sampleContent.testimonials || []);
-      setReviewsData(sampleContent.reviews || []);
-      setFaqData(sampleContent.faq || []);
-
-      // Initialize business hours
-      setBusinessHoursData({
-        title: 'Business Hours',
-        hours: {
-          monday: '9:00 AM - 6:00 PM',
-          tuesday: '9:00 AM - 6:00 PM',
-          wednesday: '9:00 AM - 6:00 PM',
-          thursday: '9:00 AM - 6:00 PM',
-          friday: '9:00 AM - 6:00 PM',
-          saturday: '10:00 AM - 4:00 PM',
-          sunday: 'Closed',
-        },
-      });
-
-      // Initialize section order
-      setSectionOrderData([
-        'hero',
-        'about-us',
-        'services-offered',
-        'portfolio',
-        'skills',
-        'experience',
-        'team',
-        'gallery',
-        'packages',
-        'testimonials',
-        'reviews',
-        'faq',
-        'business-hours',
-        'contact',
-      ]);
-
-      // Initialize contact data
-      setContactData({
-        title: 'Get In Touch',
-        description: `Contact us to learn more about ${businessData.name}`,
-        email: `hello@${businessData.slug}.com`,
-        phone: '+1 (555) 123-4567',
-        address: '123 Business Street, City, State 12345',
-        hours: {
-          monday: '9:00 AM - 6:00 PM',
-          tuesday: '9:00 AM - 6:00 PM',
-          wednesday: '9:00 AM - 6:00 PM',
-          thursday: '9:00 AM - 6:00 PM',
-          friday: '9:00 AM - 6:00 PM',
-          saturday: '10:00 AM - 4:00 PM',
-          sunday: 'Closed',
-        },
-        socialMedia: {
-          facebook: '',
-          twitter: '',
-          instagram: '',
-          linkedin: '',
-        },
-      });
-    }
-    setLoading(false);
+    fetchBusinessDataForAdmin();
   }, [businessId, dispatch]);
 
   // Handle Save Changes - saves to editing state for real-time preview
