@@ -19,6 +19,9 @@ export const store = configureStore({
         ignoredPaths: [
           'vendorManagement.editingVendor',
           'vendorManagement.originalVendor',
+          'weddingManagement.editingVendor',
+          'weddingManagement.originalVendor',
+          'weddingManagement.editingBooking',
           'businessManagement.editingBusiness',
           'businessManagement.originalBusiness',
         ],
