@@ -916,6 +916,27 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
               section: 'contact'
             }));
             break;
+          case 'testimonials':
+            dispatch(updateHotelField({
+              field: 'reviews',
+              value: tempData[key],
+              section: 'testimonials'
+            }));
+            break;
+          case 'footerSupportContact':
+            dispatch(updateHotelField({
+              field: 'supportContact',
+              value: tempData[key],
+              section: 'footer'
+            }));
+            break;
+          case 'footerSocialLinks':
+            dispatch(updateHotelField({
+              field: 'socialLinks',
+              value: tempData[key],
+              section: 'footer'
+            }));
+            break;
           default:
             dispatch(updateHotelField({ field: key, value: tempData[key] }));
         }
