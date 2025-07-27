@@ -3701,8 +3701,7 @@ const VendorDashboard = () => {
                   <FormTextarea
                     value={footerData.description}
                     onChange={e => {
-                      setFooterData(prev => ({ ...prev, description: e.target.value }));
-                      trackSectionChange('footer');
+                      handleFooterChange({ ...footerData, description: e.target.value });
                     }}
                     placeholder="Brief description about your business for the footer..."
                     rows={3}
