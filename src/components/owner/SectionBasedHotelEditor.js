@@ -734,6 +734,7 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
     'amenities',
     'testimonials',
     'contact',
+    'footer',
   ]);
   const [customSections, setCustomSections] = useState([]);
   const [newSectionData, setNewSectionData] = useState({
