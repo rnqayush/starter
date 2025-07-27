@@ -2005,33 +2005,7 @@ const BusinessWebsitePage = () => {
             {content.sections?.faq?.subtitle || 'Find answers to common questions about our services, booking, and policies.'}
           </SectionSubtitle>
           <FAQContainer>
-            {[
-              {
-                question: 'How far in advance should I book?',
-                answer:
-                  'We recommend booking at least 1-2 weeks in advance, especially for weekends and special occasions. However, we also accept same-day appointments based on availability.',
-              },
-              {
-                question: 'What is your cancellation policy?',
-                answer:
-                  'We require at least 24 hours notice for cancellations. Cancellations made less than 24 hours in advance may be subject to a fee.',
-              },
-              {
-                question: 'Do you offer group discounts?',
-                answer:
-                  'Yes! We offer special group rates for parties of 3 or more. Contact us for custom group pricing and package options.',
-              },
-              {
-                question: 'What payment methods do you accept?',
-                answer:
-                  'We accept all major credit cards, cash, and digital payments including Apple Pay and Google Pay. We also offer financing options for larger packages.',
-              },
-              {
-                question: 'Are your products organic/natural?',
-                answer:
-                  "We use a carefully curated selection of premium products, including many organic and natural options. We're happy to discuss specific product ingredients and alternatives for sensitive skin.",
-              },
-            ].map((faq, index) => (
+            {(content.faq || []).map((faq, index) => (
               <FAQItem key={index}>
                 <FAQQuestion primaryColor={businessData.primaryColor}>
                   {faq.question}
