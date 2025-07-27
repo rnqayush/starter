@@ -21,7 +21,7 @@ import {
   FaStar,
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
-import { weddingVendors } from '../data/vendors';
+import { getStaticWeddingVendors } from '../../utils/weddingAPI';
 
 const PageContainer = styled.div`
   min-height: 100vh;
