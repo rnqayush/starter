@@ -1730,24 +1730,8 @@ const BusinessWebsitePage = () => {
               <div className="label">{content.about?.stats?.[2]?.label || '★ Average Rating'}</div>
             </StatCard>
             <StatCard primaryColor={businessData.primaryColor}>
-              <div className="number">
-                {businessData.slug === 'restaurant'
-                  ? '7 Days'
-                  : businessData.slug === 'gym'
-                    ? '6AM-11PM'
-                    : businessData.slug === 'salon'
-                      ? 'Mon-Sat'
-                      : '24/7'}
-              </div>
-              <div className="label">
-                {businessData.slug === 'restaurant'
-                  ? 'Weekly Service'
-                  : businessData.slug === 'gym'
-                    ? 'Operating Hours'
-                    : businessData.slug === 'salon'
-                      ? 'Open Days'
-                      : 'Support'}
-              </div>
+              <div className="number">{content.about?.stats?.[3]?.number || '100+'}</div>
+              <div className="label">{content.about?.stats?.[3]?.label || 'Happy Clients'}</div>
             </StatCard>
           </StatsGrid>
         </SectionContainer>
