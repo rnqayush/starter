@@ -30,6 +30,7 @@ import {
   removeHotelImage,
   updateAmenities,
   saveChanges,
+  publishChanges,
   toggleSectionVisibility,
   updateFeatures,
   addFeature,
@@ -38,6 +39,7 @@ import {
   addAmenityCategory,
   addAmenityToCategory,
   removeAmenityFromCategory,
+  selectHasPendingChanges,
 } from '../../store/slices/hotelManagementSlice';
 import { useAppContext } from '../../context/AppContext';
 import { getHotelByIdOrSlug, amenitiesList } from '../../DummyData';
