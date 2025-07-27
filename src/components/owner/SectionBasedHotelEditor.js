@@ -2034,6 +2034,236 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
                 </FormField>
               )}
 
+              {activeModal === 'testimonials' && (
+                <FormField>
+                  <Label>Guest Reviews</Label>
+                  <p
+                    style={{
+                      color: theme.colors.gray600,
+                      marginBottom: theme.spacing.md,
+                    }}
+                  >
+                    Manage customer reviews and testimonials displayed on your hotel page.
+                  </p>
+                  {tempData.testimonials?.map((review, index) => (
+                    <div
+                      key={index}
+                      style={{
+                        marginBottom: theme.spacing.lg,
+                        padding: theme.spacing.md,
+                        border: `1px solid ${theme.colors.gray200}`,
+                        borderRadius: theme.borderRadius.md,
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: 'flex',
+                          gap: theme.spacing.md,
+                          alignItems: 'flex-start',
+                        }}
+                      >
+                        <div style={{ flex: 1 }}>
+                          <Input
+                            value={review.guestName || ''}
+                            onChange={e =>
+                              updateTempData('testimonials',
+                                tempData.testimonials.map((r, i) =>
+                                  i === index ? { ...r, guestName: e.target.value } : r
+                                )
+                              )
+                            }
+                            placeholder="Guest name"
+                            style={{ marginBottom: theme.spacing.sm }}
+                          />
+                          <Input
+                            value={review.location || ''}
+                            onChange={e =>
+                              updateTempData('testimonials',
+                                tempData.testimonials.map((r, i) =>
+                                  i === index ? { ...r, location: e.target.value } : r
+                                )
+                              )
+                            }
+                            placeholder="Guest location"
+                            style={{ marginBottom: theme.spacing.sm }}
+                          />
+                          <Input
+                            type="number"
+                            min="1"
+                            max="5"
+                            value={review.rating || 5}
+                            onChange={e =>
+                              updateTempData('testimonials',
+                                tempData.testimonials.map((r, i) =>
+                                  i === index ? { ...r, rating: parseInt(e.target.value) } : r
+                                )
+                              )
+                            }
+                            placeholder="Rating (1-5)"
+                            style={{ marginBottom: theme.spacing.sm }}
+                          />
+                          <TextArea
+                            value={review.comment || ''}
+                            onChange={e =>
+                              updateTempData('testimonials',
+                                tempData.testimonials.map((r, i) =>
+                                  i === index ? { ...r, comment: e.target.value } : r
+                                )
+                              )
+                            }
+                            placeholder="Review comment"
+                            rows={3}
+                          />
+                        </div>
+                        <RemoveButton onClick={() =>
+                          updateTempData('testimonials',
+                            tempData.testimonials.filter((_, i) => i !== index)
+                          )
+                        }>
+                          <FaTrash />
+                        </RemoveButton>
+                      </div>
+                    </div>
+                  ))}
+                  <AddButton onClick={() =>
+                    updateTempData('testimonials', [
+                      ...(tempData.testimonials || []),
+                      {
+                        id: Date.now(),
+                        guestName: '',
+                        location: '',
+                        rating: 5,
+                        comment: '',
+                        verified: true,
+                        date: new Date().toISOString().split('T')[0]
+                      }
+                    ])
+                  }>
+                    <FaPlus /> Add New Review
+                  </AddButton>
+                </FormField>
+              )}
+
+              {activeModal === 'footer' && (
+                <>
+                  <FormField>
+                    <Label>Support Contact Information</Label>
+                    <p
+                      style={{
+                        color: theme.colors.gray600,
+                        marginBottom: theme.spacing.md,
+                      }}
+                    >
+                      Manage support contact details displayed in the footer.
+                    </p>
+                    <Input
+                      value={tempData.footerSupportContact?.phone || ''}
+                      onChange={e =>
+                        updateTempData('footerSupportContact', {
+                          ...tempData.footerSupportContact,
+                          phone: e.target.value
+                        })
+                      }
+                      placeholder="Support phone number"
+                      style={{ marginBottom: theme.spacing.sm }}
+                    />
+                    <Input
+                      value={tempData.footerSupportContact?.email || ''}
+                      onChange={e =>
+                        updateTempData('footerSupportContact', {
+                          ...tempData.footerSupportContact,
+                          email: e.target.value
+                        })
+                      }
+                      placeholder="Support email address"
+                      style={{ marginBottom: theme.spacing.sm }}
+                    />
+                    <TextArea
+                      value={tempData.footerSupportContact?.address || ''}
+                      onChange={e =>
+                        updateTempData('footerSupportContact', {
+                          ...tempData.footerSupportContact,
+                          address: e.target.value
+                        })
+                      }
+                      placeholder="Support address"
+                      rows={2}
+                    />
+                  </FormField>
+
+                  <FormField>
+                    <Label>Social Media Links</Label>
+                    <p
+                      style={{
+                        color: theme.colors.gray600,
+                        marginBottom: theme.spacing.md,
+                      }}
+                    >
+                      Manage social media links displayed in the footer.
+                    </p>
+                    {tempData.footerSocialLinks?.map((link, index) => (
+                      <div
+                        key={index}
+                        style={{
+                          display: 'flex',
+                          gap: theme.spacing.md,
+                          marginBottom: theme.spacing.md,
+                          padding: theme.spacing.md,
+                          border: `1px solid ${theme.colors.gray200}`,
+                          borderRadius: theme.borderRadius.md,
+                          alignItems: 'flex-start',
+                        }}
+                      >
+                        <div style={{ flex: 1 }}>
+                          <Input
+                            value={link.platform || ''}
+                            onChange={e =>
+                              updateTempData('footerSocialLinks',
+                                tempData.footerSocialLinks.map((l, i) =>
+                                  i === index ? { ...l, platform: e.target.value } : l
+                                )
+                              )
+                            }
+                            placeholder="Platform name (e.g., Facebook)"
+                            style={{ marginBottom: theme.spacing.sm }}
+                          />
+                          <Input
+                            value={link.url || ''}
+                            onChange={e =>
+                              updateTempData('footerSocialLinks',
+                                tempData.footerSocialLinks.map((l, i) =>
+                                  i === index ? { ...l, url: e.target.value } : l
+                                )
+                              )
+                            }
+                            placeholder="Social media URL"
+                          />
+                        </div>
+                        <RemoveButton onClick={() =>
+                          updateTempData('footerSocialLinks',
+                            tempData.footerSocialLinks.filter((_, i) => i !== index)
+                          )
+                        }>
+                          <FaTrash />
+                        </RemoveButton>
+                      </div>
+                    ))}
+                    <AddButton onClick={() =>
+                      updateTempData('footerSocialLinks', [
+                        ...(tempData.footerSocialLinks || []),
+                        {
+                          platform: '',
+                          url: '',
+                          icon: 'FaGlobe'
+                        }
+                      ])
+                    }>
+                      <FaPlus /> Add Social Link
+                    </AddButton>
+                  </FormField>
+                </>
+              )}
+
               {activeModal === 'add-section' && (
                 <>
                   <FormField>
