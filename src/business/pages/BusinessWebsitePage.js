@@ -1774,10 +1774,9 @@ const BusinessWebsitePage = () => {
       {businessData.slug === 'freelancer' && content.skills ? (
         <Section id="skills" background={theme.colors.gray50}>
           <SectionContainer>
-            <SectionTitle>My Skills</SectionTitle>
+            <SectionTitle>{content.sections?.skills?.title || 'My Skills'}</SectionTitle>
             <SectionSubtitle>
-              Technical expertise and creative skills developed through years of
-              professional experience.
+              {content.sections?.skills?.subtitle || 'Technical expertise and creative skills developed through years of professional experience.'}
             </SectionSubtitle>
             <SkillsGrid>
               {(content.skills || []).map((skill, index) => (
