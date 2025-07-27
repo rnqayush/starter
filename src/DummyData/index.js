@@ -15,9 +15,10 @@ import {
 } from '../utils/hotelAPI';
 import hotelAPI from '../utils/hotelAPI';
 
-// Export data arrays/objects
-export const { automobileCategories, automobileVehicles, automobileVendors } =
-  AutomobileData;
+// Export data arrays/objects from JSON
+export const automobileCategories = automobileData.data.categories;
+export const automobileVehicles = automobileData.data.vehicles;
+export const automobileVendors = [automobileData.data.vendor]; // Wrap in array for consistency
 
 export const { businessTemplates } = BusinessData;
 
