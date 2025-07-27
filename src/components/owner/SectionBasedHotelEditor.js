@@ -1793,6 +1793,26 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
                     />
                   </FormField>
                   <FormField>
+                    <Label>Rating</Label>
+                    <Input
+                      type="number"
+                      step="0.1"
+                      min="0"
+                      max="5"
+                      value={tempData.rating || ''}
+                      onChange={e => updateTempData('rating', parseFloat(e.target.value) || '')}
+                      placeholder="Enter hotel rating (e.g., 4.8)"
+                    />
+                  </FormField>
+                  <FormField>
+                    <Label>Location</Label>
+                    <Input
+                      value={tempData.location || ''}
+                      onChange={e => updateTempData('location', e.target.value)}
+                      placeholder="Enter hotel location (e.g., New Delhi)"
+                    />
+                  </FormField>
+                  <FormField>
                     <Label>Background Image</Label>
                     <Input
                       value={tempData.image || ''}
