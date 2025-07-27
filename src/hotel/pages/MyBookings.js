@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import {
@@ -312,13 +312,13 @@ const MyBookings = () => {
   };
 
   const handleContactHotel = booking => {
-    alert(
+    // alert(
       `Contact information for ${booking.hotelName}:\nPhone: +91 1800-HOTELS\nEmail: info@${booking.hotelName.toLowerCase().replace(/\s+/g, '')}.com`
     );
   };
 
   const handleViewDetails = booking => {
-    alert(
+    // alert(
       `Booking Details:\nBooking ID: ${booking.id}\nGuest: ${booking.guestName}\nEmail: ${booking.guestEmail}\nPhone: ${booking.guestPhone}\nSpecial Requests: ${booking.specialRequests || 'None'}`
     );
   };

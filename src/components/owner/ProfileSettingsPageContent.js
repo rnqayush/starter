@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { FaUser, FaLock, FaSave, FaSignOutAlt, FaTrashAlt, FaExclamationTriangle } from 'react-icons/fa';
@@ -174,10 +174,10 @@ const ProfileSettingsPageContent = () => {
         email: profileData.email,
       }));
 
-      alert('Profile updated successfully!');
+    // alert('Profile updated successfully!');
     } catch (error) {
-      console.error('Error updating profile:', error);
-      alert('Error updating profile. Please try again.');
+    // console.error('Error updating profile:', error);
+    // alert('Error updating profile. Please try again.');
     } finally {
       setIsUpdating(false);
     }
@@ -187,7 +187,7 @@ const ProfileSettingsPageContent = () => {
     e.preventDefault();
 
     if (passwordData.newPassword !== passwordData.confirmPassword) {
-      alert('New passwords do not match!');
+    // alert('New passwords do not match!');
       return;
     }
 
@@ -197,15 +197,15 @@ const ProfileSettingsPageContent = () => {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
 
-      alert('Password updated successfully!');
+    // alert('Password updated successfully!');
       setPasswordData({
         currentPassword: '',
         newPassword: '',
         confirmPassword: '',
       });
     } catch (error) {
-      console.error('Error updating password:', error);
-      alert('Error updating password. Please try again.');
+    // console.error('Error updating password:', error);
+    // alert('Error updating password. Please try again.');
     } finally {
       setIsUpdating(false);
     }
@@ -219,12 +219,12 @@ const ProfileSettingsPageContent = () => {
 
   const confirmDeleteAccount = () => {
     if (deleteConfirmation.toLowerCase() === 'delete account') {
-      alert('Account deleted successfully. You will be redirected to the homepage.');
+    // alert('Account deleted successfully. You will be redirected to the homepage.');
       setUser(null);
       setUserType(null);
       navigate('/');
     } else {
-      alert('Please type "DELETE ACCOUNT" exactly to confirm deletion.');
+    // alert('Please type "DELETE ACCOUNT" exactly to confirm deletion.');
     }
   };
 

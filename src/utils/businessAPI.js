@@ -28,7 +28,7 @@ const createAPIResponse = (data, success = true, message = '') => {
  */
 export const fetchBusinessData = async businessSlug => {
   try {
-    console.log(`[FAKE API] Fetching business data for: ${businessSlug}`);
+    // console.log(`[FAKE API] Fetching business data for: ${businessSlug}`);
 
     // Simulate network delay
     await simulateDelay(300);
@@ -39,7 +39,7 @@ export const fetchBusinessData = async businessSlug => {
       throw new Error(`Business with slug "${businessSlug}" not found`);
     }
 
-    console.log(
+    // console.log(
       `[FAKE API] Successfully fetched data for: ${businessSlug}`,
       businessData
     );
@@ -50,7 +50,7 @@ export const fetchBusinessData = async businessSlug => {
       'Business data fetched successfully'
     );
   } catch (error) {
-    console.error(`[FAKE API] Error fetching business data:`, error);
+    // console.error(`[FAKE API] Error fetching business data:`, error);
     return createAPIResponse(null, false, error.message);
   }
 };
@@ -63,7 +63,7 @@ export const fetchBusinessData = async businessSlug => {
  */
 export const updateBusinessData = async (businessSlug, updatedData) => {
   try {
-    console.log(
+    // console.log(
       `[FAKE API] Updating business data for: ${businessSlug}`,
       updatedData
     );
@@ -80,7 +80,7 @@ export const updateBusinessData = async (businessSlug, updatedData) => {
       throw new Error(`Failed to update business with slug "${businessSlug}"`);
     }
 
-    console.log(
+    // console.log(
       `[FAKE API] Successfully updated data for: ${businessSlug}`,
       updatedBusiness
     );
@@ -91,7 +91,7 @@ export const updateBusinessData = async (businessSlug, updatedData) => {
       'Business data updated successfully'
     );
   } catch (error) {
-    console.error(`[FAKE API] Error updating business data:`, error);
+    // console.error(`[FAKE API] Error updating business data:`, error);
     return createAPIResponse(null, false, error.message);
   }
 };
@@ -107,7 +107,7 @@ export const fetchBusinessSection = async (
   sectionName = null
 ) => {
   try {
-    console.log(
+    // console.log(
       `[FAKE API] Fetching section "${sectionName}" for business: ${businessSlug}`
     );
 
@@ -128,7 +128,7 @@ export const fetchBusinessSection = async (
       );
     }
 
-    console.log(`[FAKE API] Successfully fetched section data:`, sectionData);
+    // console.log(`[FAKE API] Successfully fetched section data:`, sectionData);
 
     return createAPIResponse(
       sectionData,
@@ -136,7 +136,7 @@ export const fetchBusinessSection = async (
       `Section data fetched successfully`
     );
   } catch (error) {
-    console.error(`[FAKE API] Error fetching section data:`, error);
+    // console.error(`[FAKE API] Error fetching section data:`, error);
     return createAPIResponse(null, false, error.message);
   }
 };
@@ -154,7 +154,7 @@ export const updateBusinessSection = async (
   sectionData
 ) => {
   try {
-    console.log(
+    // console.log(
       `[FAKE API] Updating section "${sectionName}" for business: ${businessSlug}`,
       sectionData
     );
@@ -172,7 +172,7 @@ export const updateBusinessSection = async (
       );
     }
 
-    console.log(
+    // console.log(
       `[FAKE API] Successfully updated section "${sectionName}":`,
       updatedBusiness[sectionName]
     );
@@ -183,7 +183,7 @@ export const updateBusinessSection = async (
       `Section "${sectionName}" updated successfully`
     );
   } catch (error) {
-    console.error(`[FAKE API] Error updating section data:`, error);
+    // console.error(`[FAKE API] Error updating section data:`, error);
     return createAPIResponse(null, false, error.message);
   }
 };
@@ -195,7 +195,7 @@ export const updateBusinessSection = async (
  */
 export const fetchMultipleBusinessData = async businessSlugs => {
   try {
-    console.log(`[FAKE API] Fetching multiple business data:`, businessSlugs);
+    // console.log(`[FAKE API] Fetching multiple business data:`, businessSlugs);
 
     // Simulate network delay
     await simulateDelay(600);
@@ -205,7 +205,7 @@ export const fetchMultipleBusinessData = async businessSlugs => {
       return data ? { slug, data } : { slug, data: null, error: 'Not found' };
     });
 
-    console.log(
+    // console.log(
       `[FAKE API] Successfully fetched multiple business data:`,
       businessesData
     );
@@ -216,7 +216,7 @@ export const fetchMultipleBusinessData = async businessSlugs => {
       'Multiple business data fetched successfully'
     );
   } catch (error) {
-    console.error(`[FAKE API] Error fetching multiple business data:`, error);
+    // console.error(`[FAKE API] Error fetching multiple business data:`, error);
     return createAPIResponse(null, false, error.message);
   }
 };
@@ -228,7 +228,7 @@ export const fetchMultipleBusinessData = async businessSlugs => {
  */
 export const validateBusinessData = async businessData => {
   try {
-    console.log(`[FAKE API] Validating business data:`, businessData);
+    // console.log(`[FAKE API] Validating business data:`, businessData);
 
     // Simulate network delay
     await simulateDelay(150);
@@ -266,11 +266,11 @@ export const validateBusinessData = async businessData => {
       validatedAt: new Date().toISOString(),
     };
 
-    console.log(`[FAKE API] Validation result:`, validationResult);
+    // console.log(`[FAKE API] Validation result:`, validationResult);
 
     return createAPIResponse(validationResult, true, 'Business data validated');
   } catch (error) {
-    console.error(`[FAKE API] Error validating business data:`, error);
+    // console.error(`[FAKE API] Error validating business data:`, error);
     return createAPIResponse(null, false, error.message);
   }
 };

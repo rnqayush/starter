@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import {
   FaUpload,
@@ -310,7 +310,7 @@ const AddProductTabEnhanced = () => {
   const handleSubmit = e => {
     e.preventDefault();
 
-    alert('Product saved successfully!');
+    // alert('Product saved successfully!');
   };
 
   const generateSKU = () => {

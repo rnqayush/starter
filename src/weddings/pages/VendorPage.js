@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
@@ -1039,7 +1039,7 @@ const VendorPage = () => {
     // Priority 1: Use editing vendor data for real-time updates during editing
     if (editingVendor && editingVendor.id === vendorId) {
       vendorData = editingVendor;
-      console.log(
+    // console.log(
         'Using editing vendor data for real-time updates:',
         editingVendor
       );
@@ -1047,17 +1047,17 @@ const VendorPage = () => {
     // Priority 2: Use saved vendor data from Redux vendors array
     else if (vendors && vendors.length > 0) {
       vendorData = vendors.find(v => v.id === vendorId);
-      console.log('Using saved vendor data from Redux:', vendorData);
+    // console.log('Using saved vendor data from Redux:', vendorData);
     }
     // Priority 3: Fallback to dummy data
     if (!vendorData) {
       vendorData = getVendorById(vendorId);
-      console.log('Using fallback dummy data:', vendorData);
+    // console.log('Using fallback dummy data:', vendorData);
     }
 
     if (vendorData) {
       setVendor(vendorData);
-      console.log('VendorPage: Updated vendor data', vendorData);
+    // console.log('VendorPage: Updated vendor data', vendorData);
     }
     setLoading(false);
 
@@ -1127,7 +1127,7 @@ const VendorPage = () => {
 
     // Simulate API call
     setTimeout(() => {
-      alert('Thank you for your enquiry! We will get back to you soon.');
+    // alert('Thank you for your enquiry! We will get back to you soon.');
       setContactForm({ name: '', email: '', phone: '', message: '' });
       setSubmitting(false);
     }, 1000);
@@ -1190,7 +1190,7 @@ const VendorPage = () => {
             </NavButton>
             <NavButton
               onClick={() => {
-                alert('Vendor saved to your favorites!');
+    // alert('Vendor saved to your favorites!');
                 closeMobileMenu();
               }}
               scrolled={scrolled}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import {
@@ -449,7 +449,7 @@ const Navbar = ({
             Classic Cars
           </MobileNavLink>
           <MobileNavLink
-            to={`${getBaseUrl()}/dealer-dashboard`}
+            to={`${getBaseUrl()}/_dealer-dashboard`}
             onClick={closeMobileMenu}
           >
             <FaTachometerAlt />

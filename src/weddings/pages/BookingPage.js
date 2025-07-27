@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import {
@@ -581,7 +581,7 @@ const BookingPage = () => {
         `/weddings/booking-confirmation?${confirmationParams.toString()}`
       );
     } catch (error) {
-      alert('Failed to submit booking request. Please try again.');
+    // alert('Failed to submit booking request. Please try again.');
     } finally {
       setSubmitting(false);
     }

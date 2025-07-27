@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import {
   FaCar,
@@ -232,7 +232,7 @@ const ChartPlaceholder = styled.div`
   border: 2px dashed ${theme.colors.gray300};
 `;
 
-const DashboardTab = ({ dealer }) => {
+const DashboardTab = ({ _dealer }) => {
   const [stats, setStats] = useState({});
   const [recentActivity, setRecentActivity] = useState([]);
 

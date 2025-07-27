@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { fetchBusinessData } from '../utils/businessAPI';
 import { theme } from '../styles/GlobalStyle';
@@ -81,7 +81,7 @@ const TestDynamicContent = () => {
   const testBusinessContent = async businessType => {
     setLoading(true);
     try {
-      console.log(`🧪 Testing dynamic content for ${businessType}...`);
+    // console.log(`🧪 Testing dynamic content for ${businessType}...`);
       const response = await fetchBusinessData(businessType);
 
       if (response.success && response.data) {

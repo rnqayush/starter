@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { FaUser, FaLock, FaSave, FaSignOutAlt } from 'react-icons/fa';
@@ -127,10 +127,10 @@ const ProfileSettingsPage = () => {
         email: profileData.email,
       }));
 
-      alert('Profile updated successfully!');
+    // alert('Profile updated successfully!');
     } catch (error) {
-      console.error('Error updating profile:', error);
-      alert('Error updating profile. Please try again.');
+    // console.error('Error updating profile:', error);
+    // alert('Error updating profile. Please try again.');
     } finally {
       setIsUpdating(false);
     }
@@ -140,7 +140,7 @@ const ProfileSettingsPage = () => {
     e.preventDefault();
 
     if (passwordData.newPassword !== passwordData.confirmPassword) {
-      alert('New passwords do not match!');
+    // alert('New passwords do not match!');
       return;
     }
 
@@ -150,15 +150,15 @@ const ProfileSettingsPage = () => {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
 
-      alert('Password updated successfully!');
+    // alert('Password updated successfully!');
       setPasswordData({
         currentPassword: '',
         newPassword: '',
         confirmPassword: '',
       });
     } catch (error) {
-      console.error('Error updating password:', error);
-      alert('Error updating password. Please try again.');
+    // console.error('Error updating password:', error);
+    // alert('Error updating password. Please try again.');
     } finally {
       setIsUpdating(false);
     }

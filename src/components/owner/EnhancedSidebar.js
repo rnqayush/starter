@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
@@ -449,7 +449,7 @@ const EnhancedSidebar = ({ activeSection, setActiveSection }) => {
   const handleSaveAndExit = () => {
     if (hasUnsavedChanges) {
       dispatch(saveChanges());
-      alert('Changes saved successfully!');
+    // alert('Changes saved successfully!');
     }
     if (editingHotel && hotelSlug) {
       // Navigate to the hotel detail page with updated data
@@ -459,7 +459,7 @@ const EnhancedSidebar = ({ activeSection, setActiveSection }) => {
 
   const handleSaveChanges = () => {
     dispatch(saveChanges());
-    alert('Changes saved successfully!');
+    // alert('Changes saved successfully!');
   };
 
   const handleDiscardChanges = () => {
@@ -539,7 +539,7 @@ const EnhancedSidebar = ({ activeSection, setActiveSection }) => {
               <FaSave />
               Changes Tracker
             </ChangesPanelHeader>
-            
+
             <ChangesStatus hasChanges={hasUnsavedChanges}>
               {hasUnsavedChanges ? (
                 <>

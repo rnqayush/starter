@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import { FaArrowLeft } from 'react-icons/fa';
 import { Card, CardContent } from '../shared/Card';
@@ -119,7 +119,7 @@ const AddRoomPageContent = ({ setActiveSection }) => {
     e.preventDefault();
 
     if (!selectedHotelId) {
-      alert('Please select a hotel first');
+    // alert('Please select a hotel first');
       return;
     }
 
@@ -163,7 +163,7 @@ const AddRoomPageContent = ({ setActiveSection }) => {
         )
       );
 
-      alert('Room added successfully!');
+    // alert('Room added successfully!');
       setFormData({
         name: '',
         type: 'Standard',
@@ -175,7 +175,7 @@ const AddRoomPageContent = ({ setActiveSection }) => {
         images: [],
       });
     } catch (error) {
-      console.error('Error adding room:', error);
+    // console.error('Error adding room:', error);
     } finally {
       setIsSubmitting(false);
     }

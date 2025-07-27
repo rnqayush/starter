@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { FaFilter, FaSort, FaTh, FaList, FaHome } from 'react-icons/fa';
@@ -276,20 +276,20 @@ const Vehicles = () => {
   const conditions = [...new Set(vehicles.map(v => v.condition))].sort();
 
   useEffect(() => {
-    // Get dealer data from URL
+    // Get _dealer data from URL
     const path = location.pathname;
-    let dealer = null;
+    let _dealer = null;
 
     if (path !== '/automobiles/vehicles') {
       const pathSegments = path.split('/').filter(Boolean);
       const dealerSlug = pathSegments[0];
-      dealer = getVendorByIdOrSlug(dealerSlug);
+      _dealer = getVendorByIdOrSlug(dealerSlug);
     }
 
-    if (dealer) {
-      setSelectedDealer(dealer);
+    if (_dealer) {
+      setSelectedDealer(_dealer);
     } else {
-      // If no dealer found, redirect to dealer listing
+      // If no _dealer found, redirect to _dealer listing
       navigate('/auto-dealers');
       return;
     }
@@ -554,7 +554,7 @@ const Vehicles = () => {
 
       <Footer
         dealerSlug={selectedDealer.slug}
-        dealer={selectedDealer}
+        _dealer={selectedDealer}
         theme={dealerTheme}
       />
       <BackToTop />

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { FaHeart, FaHome, FaTrash } from 'react-icons/fa';
@@ -189,20 +189,20 @@ const Wishlist = () => {
   const [wishlistedVehicles, setWishlistedVehicles] = useState([]);
 
   useEffect(() => {
-    // Get dealer data from URL
+    // Get _dealer data from URL
     const path = location.pathname;
-    let dealer = null;
+    let _dealer = null;
 
     if (path !== '/automobiles/wishlist') {
       const pathSegments = path.split('/').filter(Boolean);
       const dealerSlug = pathSegments[0];
-      dealer = getVendorByIdOrSlug(dealerSlug);
+      _dealer = getVendorByIdOrSlug(dealerSlug);
     }
 
-    if (dealer) {
-      setSelectedDealer(dealer);
+    if (_dealer) {
+      setSelectedDealer(_dealer);
     } else {
-      // If no dealer found, redirect to dealer listing
+      // If no _dealer found, redirect to _dealer listing
       navigate('/auto-dealers');
       return;
     }
@@ -230,7 +230,7 @@ const Wishlist = () => {
     }
   };
 
-  const handleVehicleRemoved = vehicleId => {
+  const handleVehicleRemoved = _vehicleId => {
     // This will be called when a vehicle is removed from wishlist via VehicleCard
     loadWishlist();
   };
@@ -318,7 +318,7 @@ const Wishlist = () => {
 
       <Footer
         dealerSlug={selectedDealer.slug}
-        dealer={selectedDealer}
+        _dealer={selectedDealer}
         theme={dealerTheme}
       />
       <BackToTop />

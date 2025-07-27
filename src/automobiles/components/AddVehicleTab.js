@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import {
   FaCar,
@@ -464,7 +464,7 @@ const Button = styled.button.withConfig({
   }
 `;
 
-const AddVehicleTab = ({ dealer }) => {
+const AddVehicleTab = ({ _dealer }) => {
   const [formData, setFormData] = useState({
     // Basic Information
     vin: '',

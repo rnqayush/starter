@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import {
@@ -301,7 +301,7 @@ const BookingConfirmation = () => {
 
   const handleDownload = () => {
     // Mock download functionality
-    alert('Booking confirmation download would start here');
+    // alert('Booking confirmation download would start here');
   };
 
   const formatDate = dateString => {

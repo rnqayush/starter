@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
@@ -1413,7 +1413,7 @@ const BusinessWebsitePage = () => {
         // Priority 1: Use editing business data for real-time updates during editing
         if (editingBusiness && editingBusiness.slug === extractedSlug) {
           businessTemplate = editingBusiness;
-          console.log(
+    // console.log(
             'Using editing business data for real-time updates:',
             editingBusiness
           );
@@ -1426,7 +1426,7 @@ const BusinessWebsitePage = () => {
         if (businesses && businesses.length > 0) {
           businessTemplate = businesses.find(b => b.slug === extractedSlug);
           if (businessTemplate) {
-            console.log(
+    // console.log(
               'Using saved business data from Redux:',
               businessTemplate
             );
@@ -1437,20 +1437,20 @@ const BusinessWebsitePage = () => {
         }
 
         // Priority 3: Make fake API call to get business data
-        console.log(
+    // console.log(
           `[BusinessWebsitePage] Making API call for business: ${extractedSlug}`
         );
         const response = await fetchBusinessData(extractedSlug);
 
         if (response.success && response.data) {
-          console.log(
+    // console.log(
             '[BusinessWebsitePage] API call successful:',
             response.data
           );
           setBusinessData(response.data);
         } else {
           // Priority 4: Fallback to template data if API fails
-          console.log(
+    // console.log(
             '[BusinessWebsitePage] API call failed, using template fallback'
           );
           businessTemplate = getBusinessTemplate(extractedSlug);
@@ -1461,7 +1461,7 @@ const BusinessWebsitePage = () => {
           }
         }
       } catch (err) {
-        console.error(
+    // console.error(
           '[BusinessWebsitePage] Error fetching business data:',
           err
         );

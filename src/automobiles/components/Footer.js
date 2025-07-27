@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 import {
   FaFacebook,
@@ -91,7 +90,7 @@ const FooterBottom = styled.div`
 
 const Footer = ({
   dealerSlug = '',
-  dealer = null,
+  _dealer = null,
   theme: customTheme = {},
 }) => {
   const currentYear = new Date().getFullYear();
@@ -103,8 +102,8 @@ const Footer = ({
     >
       <FooterContent>
         <FooterSection>
-          <h3>{dealer?.name || 'Auto Dealer'}</h3>
-          <p>{dealer?.description || 'Your trusted automobile dealer.'}</p>
+          <h3>{_dealer?.name || 'Auto Dealer'}</h3>
+          <p>{_dealer?.description || 'Your trusted automobile _dealer.'}</p>
           <SocialLinks>
             <SocialLink href="#" aria-label="Facebook">
               <FaFacebook />
@@ -123,22 +122,22 @@ const Footer = ({
 
         <FooterSection>
           <h3>Contact Info</h3>
-          {dealer?.phone && (
-            <a href={`tel:${dealer.phone}`}>
+          {_dealer?.phone && (
+            <a href={`tel:${_dealer.phone}`}>
               <FaPhone />
-              {dealer.phone}
+              {_dealer.phone}
             </a>
           )}
-          {dealer?.email && (
-            <a href={`mailto:${dealer.email}`}>
+          {_dealer?.email && (
+            <a href={`mailto:${_dealer.email}`}>
               <FaEnvelope />
-              {dealer.email}
+              {_dealer.email}
             </a>
           )}
-          {dealer?.address && (
+          {_dealer?.address && (
             <p>
               <FaMapMarkerAlt />
-              {dealer.address}, {dealer.city}, {dealer.state}
+              {_dealer.address}, {_dealer.city}, {_dealer.state}
             </p>
           )}
         </FooterSection>
@@ -168,7 +167,7 @@ const Footer = ({
 
       <FooterBottom>
         <p>
-          &copy; {currentYear} {dealer?.name || 'Auto Dealer'}. All rights
+          &copy; {currentYear} {_dealer?.name || 'Auto Dealer'}. All rights
           reserved.
         </p>
       </FooterBottom>

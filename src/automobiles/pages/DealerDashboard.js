@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { theme } from '../../styles/GlobalStyle';
@@ -75,11 +75,11 @@ const DealerDashboard = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('dashboard');
-  const [dealer, setDealer] = useState(null);
+  const [_dealer, setDealer] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Get dealer data from URL
+    // Get _dealer data from URL
     const path = location.pathname;
     const pathSegments = path.split('/').filter(Boolean);
     const dealerSlug = pathSegments[0];
@@ -90,7 +90,7 @@ const DealerDashboard = () => {
       setDealer(dealerData);
       setLoading(false);
     } else {
-      // If no dealer found, redirect to dealer listing
+      // If no _dealer found, redirect to _dealer listing
       navigate('/auto-dealers');
     }
   }, [location.pathname, navigate]);
@@ -119,7 +119,7 @@ const DealerDashboard = () => {
         return 'Service Appointments';
       case 'promotions':
         return 'Promotions & Deals';
-      case 'dealer-settings':
+      case '_dealer-settings':
         return 'Dealership Settings';
       case 'analytics':
         return 'Analytics & Reports';
@@ -152,7 +152,7 @@ const DealerDashboard = () => {
         return 'Schedule and manage service appointments';
       case 'promotions':
         return 'Create and manage promotional offers';
-      case 'dealer-settings':
+      case '_dealer-settings':
         return 'Configure your dealership settings and preferences';
       case 'analytics':
         return 'Analyze your business data and sales trends';
@@ -164,33 +164,33 @@ const DealerDashboard = () => {
   const renderContent = () => {
     switch (activeTab) {
       case 'dashboard':
-        return <DashboardTab dealer={dealer} />;
+        return <DashboardTab _dealer={_dealer} />;
       case 'inventory':
-        return <VehicleInventoryTab dealer={dealer} />;
+        return <VehicleInventoryTab _dealer={_dealer} />;
       case 'add-vehicle':
-        return <AddVehicleTab dealer={dealer} />;
+        return <AddVehicleTab _dealer={_dealer} />;
       case 'bulk-import':
-        return <BulkImportTab dealer={dealer} />;
+        return <BulkImportTab _dealer={_dealer} />;
       case 'orders':
-        return <SalesOrdersTab dealer={dealer} />;
+        return <SalesOrdersTab _dealer={_dealer} />;
       case 'enquiries':
-        return <EnquiriesTab dealer={dealer} />;
+        return <EnquiriesTab _dealer={_dealer} />;
       case 'customers':
-        return <CustomersTab dealer={dealer} />;
+        return <CustomersTab _dealer={_dealer} />;
       case 'financing':
-        return <FinancingTab dealer={dealer} />;
+        return <FinancingTab _dealer={_dealer} />;
       case 'trade-ins':
-        return <TradeInsTab dealer={dealer} />;
+        return <TradeInsTab _dealer={_dealer} />;
       case 'service':
-        return <ServiceAppointmentsTab dealer={dealer} />;
+        return <ServiceAppointmentsTab _dealer={_dealer} />;
       case 'promotions':
-        return <PromotionsTab dealer={dealer} />;
-      case 'dealer-settings':
-        return <DealerSettingsTab dealer={dealer} />;
+        return <PromotionsTab _dealer={_dealer} />;
+      case '_dealer-settings':
+        return <DealerSettingsTab _dealer={_dealer} />;
       case 'analytics':
-        return <AnalyticsTab dealer={dealer} />;
+        return <AnalyticsTab _dealer={_dealer} />;
       default:
-        return <DashboardTab dealer={dealer} />;
+        return <DashboardTab _dealer={_dealer} />;
     }
   };
 
@@ -198,7 +198,7 @@ const DealerDashboard = () => {
     return <LoadingContainer>Loading dealership dashboard...</LoadingContainer>;
   }
 
-  if (!dealer) {
+  if (!_dealer) {
     return null; // Will redirect
   }
 
@@ -207,7 +207,7 @@ const DealerDashboard = () => {
       <DealerSidebar
         activeTab={activeTab}
         onTabChange={setActiveTab}
-        dealer={dealer}
+        _dealer={_dealer}
       />
       <MainContent>
         <ContentWrapper>

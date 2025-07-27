@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import { FaCheck, FaStar, FaArrowRight, FaPlus, FaMinus } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';

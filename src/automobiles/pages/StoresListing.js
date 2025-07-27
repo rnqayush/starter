@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import {
@@ -341,7 +341,7 @@ const AutomobileStoresListing = () => {
       setCurrentLocation(location);
       loadStoresForLocation(location);
     } catch (error) {
-      console.error('Failed to get location:', error);
+    // console.error('Failed to get location:', error);
       const defaultLocation = getDefaultLocation();
       setCurrentLocation(defaultLocation);
       loadStoresForLocation(defaultLocation);
@@ -366,7 +366,7 @@ const AutomobileStoresListing = () => {
       loadStoresForLocation(newLocation);
       setSearchTerm('');
     } catch (error) {
-      alert('Location not found. Please try a different city or ZIP code.');
+    // alert('Location not found. Please try a different city or ZIP code.');
     } finally {
       setLocationLoading(false);
     }
@@ -379,9 +379,7 @@ const AutomobileStoresListing = () => {
       setCurrentLocation(location);
       loadStoresForLocation(location);
     } catch (error) {
-      alert(
-        'Unable to get your current location. Please check your browser settings.'
-      );
+      // alert('Unable to get your current location. Please check your browser settings.');
     } finally {
       setLocationLoading(false);
     }
@@ -532,7 +530,7 @@ const AutomobileStoresListing = () => {
 
         <ResultsInfo>
           <span>
-            {filteredStores.length} dealer
+            {filteredStores.length} _dealer
             {filteredStores.length !== 1 ? 's' : ''} found
           </span>
         </ResultsInfo>

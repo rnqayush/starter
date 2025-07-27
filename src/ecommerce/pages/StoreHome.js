@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import {
@@ -445,7 +445,7 @@ const StoreHome = () => {
       }
       return [...prev, { ...product, quantity: 1 }];
     });
-    alert(`${product.name} added to cart!`);
+    // alert(`${product.name} added to cart!`);
   };
 
   const renderStars = rating => {

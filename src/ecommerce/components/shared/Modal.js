@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 import { FaTimes } from 'react-icons/fa';
 import { theme, media } from '../../../styles/GlobalStyle';

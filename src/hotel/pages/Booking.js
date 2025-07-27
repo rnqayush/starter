@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import {
@@ -602,7 +602,7 @@ const Booking = () => {
         state: { booking },
       });
     } catch (error) {
-      alert('Booking failed. Please try again.');
+    // alert('Booking failed. Please try again.');
     } finally {
       setLoading(false);
     }

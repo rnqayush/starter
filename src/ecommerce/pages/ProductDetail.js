@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import {
@@ -531,7 +531,7 @@ const ProductDetail = () => {
       });
     } else {
       navigator.clipboard.writeText(window.location.href);
-      alert('Product link copied to clipboard!');
+    // alert('Product link copied to clipboard!');
     }
   };
 

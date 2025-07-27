@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import {
   FaWrench,
@@ -437,7 +437,7 @@ const EmptyState = styled.div`
   }
 `;
 
-const ServiceAppointmentsTab = ({ dealer }) => {
+const ServiceAppointmentsTab = ({ _dealer }) => {
   const [appointments, setAppointments] = useState([]);
   const [filteredAppointments, setFilteredAppointments] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');

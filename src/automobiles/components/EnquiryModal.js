@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import {
   FaTimes,
@@ -384,7 +384,7 @@ const EnquiryModal = ({ isOpen, onClose, vehicle, userInfo = {} }) => {
       // Here you would typically send the enquiry to your backend
       const enquiryData = {
         ...formData,
-        vehicleId: vehicle.id,
+        _vehicleId: vehicle.id,
         vehicleName: vehicle.name,
         vehiclePrice: vehicle.price,
         vehicleYear: vehicle.year,
@@ -409,8 +409,8 @@ const EnquiryModal = ({ isOpen, onClose, vehicle, userInfo = {} }) => {
 
       setIsSuccess(true);
     } catch (error) {
-      console.error('Error submitting enquiry:', error);
-      alert('Failed to submit enquiry. Please try again.');
+    // console.error('Error submitting enquiry:', error);
+    // alert('Failed to submit enquiry. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -464,7 +464,7 @@ const EnquiryModal = ({ isOpen, onClose, vehicle, userInfo = {} }) => {
               <SuccessTitle>Enquiry Sent Successfully!</SuccessTitle>
               <SuccessText>
                 Thank you for your interest in the {vehicle.year} {vehicle.make}{' '}
-                {vehicle.model}. The dealer will contact you soon via phone or
+                {vehicle.model}. The _dealer will contact you soon via phone or
                 email with pricing details and availability.
               </SuccessText>
               <SubmitButton onClick={handleClose}>
@@ -657,7 +657,7 @@ const EnquiryModal = ({ isOpen, onClose, vehicle, userInfo = {} }) => {
                     onChange={handleInputChange}
                   />
                   <CheckboxLabel htmlFor="agreeToTerms">
-                    I agree to share my contact information with the dealer and
+                    I agree to share my contact information with the _dealer and
                     receive communications about this vehicle. By submitting
                     this enquiry, I consent to the processing of my personal
                     data.

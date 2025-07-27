@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import {
@@ -542,7 +542,7 @@ const RoomCard = ({ room, hotelId, hotelSlug }) => {
       });
     } else {
       navigator.clipboard.writeText(window.location.href);
-      alert('Room link copied to clipboard!');
+    // alert('Room link copied to clipboard!');
     }
   };
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
@@ -915,12 +915,12 @@ const VendorDashboard = () => {
         }
       });
 
-      console.log(
+    // console.log(
         'Real-time preview: Updated editing vendor in Redux',
         updatedVendor
       );
     } catch (error) {
-      console.error(
+    // console.error(
         'Error updating editing vendor for real-time preview:',
         error
       );
@@ -1002,7 +1002,7 @@ const VendorDashboard = () => {
         dispatch(initializeVendor(sanitizedVendor));
         dispatch(setEditingVendor(vendorId));
       } catch (error) {
-        console.error('Error setting editing vendor:', error);
+    // console.error('Error setting editing vendor:', error);
       }
 
       // Pre-fill all form data from vendor data
@@ -1173,7 +1173,7 @@ const VendorDashboard = () => {
 
   // Handle Save Changes - saves to editing state for real-time preview
   const handleSaveChanges = () => {
-    console.log('handleSaveChanges called');
+    // console.log('handleSaveChanges called');
 
     try {
       // Update editing vendor with current form data for real-time preview
@@ -1260,25 +1260,25 @@ const VendorDashboard = () => {
 
       setSaved(true);
       setChangedSections(new Set());
-      alert(
+    // alert(
         'Changes saved! You can preview them in the vendor page. Click "Save & Go Live" to publish permanently.'
       );
-      console.log(
+    // console.log(
         'Updated editing vendor for real-time preview:',
         updatedVendor
       );
     } catch (error) {
-      console.error('Error saving changes for preview:', error);
-      alert('Error saving changes for preview. Please try again.');
+    // console.error('Error saving changes for preview:', error);
+    // alert('Error saving changes for preview. Please try again.');
     }
   };
 
   // Handle Save & Go Live - publishes changes to global state
   const handleSaveAndGoLive = () => {
-    console.log('handleSaveAndGoLive called');
+    // console.log('handleSaveAndGoLive called');
 
     if (!editingVendor) {
-      alert('No vendor is being edited. Please try refreshing the page.');
+    // alert('No vendor is being edited. Please try refreshing the page.');
       return;
     }
 
@@ -1347,7 +1347,7 @@ const VendorDashboard = () => {
         couplesVisible: aboutUsData.couplesVisible,
       };
 
-      console.log('Dispatching basic field updates...');
+    // console.log('Dispatching basic field updates...');
       // Update basic fields one by one
       dispatch({
         type: 'vendorManagement/updateVendorField',
@@ -1370,7 +1370,7 @@ const VendorDashboard = () => {
         payload: { field: 'aboutUs', value: cleanAboutUs },
       });
 
-      console.log('Dispatching array updates...');
+    // console.log('Dispatching array updates...');
       dispatch({
         type: 'vendorManagement/updateServices',
         payload: cleanServices,
@@ -1417,17 +1417,17 @@ const VendorDashboard = () => {
         },
       });
 
-      console.log('Saving changes...');
+    // console.log('Saving changes...');
       dispatch({ type: 'vendorManagement/saveChanges' });
 
       setSaved(false);
-      alert('All changes published to live vendor page successfully!');
+    // alert('All changes published to live vendor page successfully!');
 
       // Navigate back to vendor page
       navigate(`/${vendorId}`);
     } catch (error) {
-      console.error('Error saving changes:', error);
-      alert('Error saving changes. Please try again.');
+    // console.error('Error saving changes:', error);
+    // alert('Error saving changes. Please try again.');
     }
   };
 
@@ -1585,10 +1585,10 @@ const VendorDashboard = () => {
       dispatch(discardChanges());
       setSaved(false);
       setChangedSections(new Set());
-      alert('All changes discarded. Form reset to original values.');
+    // alert('All changes discarded. Form reset to original values.');
     } catch (error) {
-      console.error('Error discarding changes:', error);
-      alert('Error discarding changes. Please try again.');
+    // console.error('Error discarding changes:', error);
+    // alert('Error discarding changes. Please try again.');
     }
   };
 
@@ -1776,7 +1776,7 @@ const VendorDashboard = () => {
 
   const saveCustomSection = () => {
     if (!customSectionForm.title.trim()) {
-      alert('Please enter a section title');
+    // alert('Please enter a section title');
       return;
     }
 
@@ -3562,7 +3562,7 @@ const VendorDashboard = () => {
               <div style={{ marginTop: theme.spacing.lg }}>
                 <ActionButton
                   onClick={() =>
-                    alert(
+    // alert(
                       'Password update functionality will be implemented with backend integration'
                     )
                   }
@@ -3597,7 +3597,7 @@ const VendorDashboard = () => {
                   onClick={() => {
                     if (window.confirm('Are you sure you want to logout?')) {
                       // Handle logout
-                      alert(
+    // alert(
                         'Logout functionality will be implemented with auth integration'
                       );
                     }
@@ -4395,7 +4395,7 @@ https://example.com/image2.jpg"
               </button>
               <button
                 onClick={() => {
-                  alert(
+    // alert(
                     'Delete account functionality will be implemented with backend integration'
                   );
                   setShowDeleteAccountModal(false);

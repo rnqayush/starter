@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import {
   FaStore,
@@ -469,9 +469,9 @@ const ShopSettingsTab = () => {
       localStorage.setItem('shopSettings', JSON.stringify(settings));
 
       setIsEditing(false);
-      alert('Settings saved successfully!');
+    // alert('Settings saved successfully!');
     } catch (error) {
-      alert('Failed to save settings. Please try again.');
+    // alert('Failed to save settings. Please try again.');
     } finally {
       setIsSaving(false);
     }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import {
   FaUsers,
@@ -401,7 +401,7 @@ const PaginationInfo = styled.span`
   font-size: 0.9rem;
 `;
 
-const CustomersTab = ({ dealer }) => {
+const CustomersTab = ({ _dealer }) => {
   const [customers, setCustomers] = useState([]);
   const [filteredCustomers, setFilteredCustomers] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');

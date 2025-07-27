@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import {
@@ -252,7 +251,7 @@ const Footer = ({ storeSlug = '' }) => {
   const handleNewsletterSubmit = e => {
     e.preventDefault();
     // Handle newsletter subscription
-    alert('Thank you for subscribing to our newsletter!');
+    // alert('Thank you for subscribing to our newsletter!');
   };
 
   const features = [

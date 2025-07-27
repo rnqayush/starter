@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -909,7 +909,7 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
 
     // DON'T save to global state here - only save to editing state
     closeModal();
-    alert(
+    // alert(
       'Section updated! Click "Save & Go Live" to publish changes to the live hotel page.'
     );
   };
@@ -1085,7 +1085,7 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
   // Custom section management functions
   const addCustomSection = () => {
     if (!newSectionData.title || !newSectionData.type) {
-      alert('Please provide a section title and select a type.');
+    // alert('Please provide a section title and select a type.');
       return;
     }
 
@@ -1123,7 +1123,7 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
 
     // Close modal
     closeModal();
-    alert(
+    // alert(
       'Custom section added! Remember to "Save & Go Live" to publish changes.'
     );
   };
@@ -1151,7 +1151,7 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
     );
 
     closeModal();
-    alert(
+    // alert(
       'Custom section updated! Remember to "Save & Go Live" to publish changes.'
     );
   };
@@ -1270,7 +1270,7 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
 
     // Save all changes to global state (this will update the live hotel page)
     dispatch(saveChanges());
-    alert('All changes published to live hotel page successfully!');
+    // alert('All changes published to live hotel page successfully!');
   };
 
   // Section reordering functions
@@ -1309,7 +1309,7 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
       };
       reader.readAsDataURL(file);
     } else {
-      alert('Please select a valid image file.');
+    // alert('Please select a valid image file.');
     }
   };
 

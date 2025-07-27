@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import {
   FaCar,
@@ -302,7 +302,7 @@ const EmptyState = styled.div`
   }
 `;
 
-const VehicleInventoryTab = ({ dealer }) => {
+const VehicleInventoryTab = ({ _dealer }) => {
   const [vehicleList, setVehicleList] = useState([]);
   const [filteredVehicles, setFilteredVehicles] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -312,7 +312,7 @@ const VehicleInventoryTab = ({ dealer }) => {
   const [sortDirection, setSortDirection] = useState('asc');
 
   useEffect(() => {
-    // In a real app, this would fetch vehicles for the specific dealer
+    // In a real app, this would fetch vehicles for the specific _dealer
     setVehicleList(vehicles);
     setFilteredVehicles(vehicles);
   }, []);

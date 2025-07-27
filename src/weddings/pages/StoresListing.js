@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import {
@@ -365,7 +365,7 @@ const WeddingStoresListing = () => {
       setCurrentLocation(location);
       loadStoresForLocation(location);
     } catch (error) {
-      console.error('Failed to get location:', error);
+    // console.error('Failed to get location:', error);
       const defaultLocation = getDefaultLocation();
       setCurrentLocation(defaultLocation);
       loadStoresForLocation(defaultLocation);
@@ -390,7 +390,7 @@ const WeddingStoresListing = () => {
       loadStoresForLocation(newLocation);
       setSearchTerm('');
     } catch (error) {
-      alert('Location not found. Please try a different city or ZIP code.');
+    // alert('Location not found. Please try a different city or ZIP code.');
     } finally {
       setLocationLoading(false);
     }
@@ -403,7 +403,7 @@ const WeddingStoresListing = () => {
       setCurrentLocation(location);
       loadStoresForLocation(location);
     } catch (error) {
-      alert(
+    // alert(
         'Unable to get your current location. Please check your browser settings.'
       );
     } finally {

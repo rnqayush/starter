@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
@@ -880,12 +880,12 @@ const BuisnessAdminDashboard = () => {
         }
       });
 
-      console.log(
+    // console.log(
         'Real-time preview: Updated editing business in Redux',
         updatedBusiness
       );
     } catch (error) {
-      console.error(
+    // console.error(
         'Error updating editing business for real-time preview:',
         error
       );
@@ -1023,7 +1023,7 @@ const BuisnessAdminDashboard = () => {
         setApiLoading(true);
         setApiError(null);
 
-        console.log(
+    // console.log(
           `[AdminDashboard] Making API call for business: ${businessId}`
         );
         const response = await fetchBusinessData(businessId);
@@ -1031,10 +1031,10 @@ const BuisnessAdminDashboard = () => {
         let businessData;
 
         if (response.success && response.data) {
-          console.log('[AdminDashboard] API call successful:', response.data);
+    // console.log('[AdminDashboard] API call successful:', response.data);
           businessData = response.data;
         } else {
-          console.log(
+    // console.log(
             '[AdminDashboard] API call failed, using template fallback'
           );
           businessData = getBusinessTemplate(businessId);
@@ -1055,7 +1055,7 @@ const BuisnessAdminDashboard = () => {
           dispatch(initializeBusiness(sanitizedBusiness));
           dispatch(setEditingBusiness(businessId));
         } catch (error) {
-          console.error('Error setting editing business:', error);
+    // console.error('Error setting editing business:', error);
         }
 
         // Pre-fill all form data from business data (using API data structure)
@@ -1182,7 +1182,7 @@ const BuisnessAdminDashboard = () => {
           ]
         );
       } catch (error) {
-        console.error('[AdminDashboard] Error fetching business data:', error);
+    // console.error('[AdminDashboard] Error fetching business data:', error);
         setApiError(error.message);
 
         // Fallback to template data on error
@@ -1201,7 +1201,7 @@ const BuisnessAdminDashboard = () => {
 
   // Handle Save Changes - saves to editing state for real-time preview
   const handleSaveChanges = () => {
-    console.log('handleSaveChanges called');
+    // console.log('handleSaveChanges called');
 
     try {
       // Update editing business with current form data for real-time preview
@@ -1209,37 +1209,37 @@ const BuisnessAdminDashboard = () => {
 
       setSaved(true);
       setChangedSections(new Set());
-      alert(
+    // alert(
         'Changes saved! You can preview them in the business page. Click "Save & Go Live" to publish permanently.'
       );
-      console.log('Updated editing business for real-time preview');
+    // console.log('Updated editing business for real-time preview');
     } catch (error) {
-      console.error('Error saving changes for preview:', error);
-      alert('Error saving changes for preview. Please try again.');
+    // console.error('Error saving changes for preview:', error);
+    // alert('Error saving changes for preview. Please try again.');
     }
   };
 
   // Handle Save & Go Live - publishes changes to global state
   const handleSaveAndGoLive = () => {
-    console.log('handleSaveAndGoLive called');
+    // console.log('handleSaveAndGoLive called');
 
     if (!editingBusiness) {
-      alert('No business is being edited. Please try refreshing the page.');
+    // alert('No business is being edited. Please try refreshing the page.');
       return;
     }
 
     try {
-      console.log('Saving business changes...');
+    // console.log('Saving business changes...');
       dispatch(saveBusinessChanges());
 
       setSaved(false);
-      alert('All changes published to live business page successfully!');
+    // alert('All changes published to live business page successfully!');
 
       // Navigate back to business page
       navigate(`/${businessId}`);
     } catch (error) {
-      console.error('Error saving changes:', error);
-      alert('Error saving changes. Please try again.');
+    // console.error('Error saving changes:', error);
+    // alert('Error saving changes. Please try again.');
     }
   };
 
@@ -1272,10 +1272,10 @@ const BuisnessAdminDashboard = () => {
       dispatch(discardBusinessChanges());
       setSaved(false);
       setChangedSections(new Set());
-      alert('All changes discarded. Form reset to original values.');
+    // alert('All changes discarded. Form reset to original values.');
     } catch (error) {
-      console.error('Error discarding changes:', error);
-      alert('Error discarding changes. Please try again.');
+    // console.error('Error discarding changes:', error);
+    // alert('Error discarding changes. Please try again.');
     }
   };
 

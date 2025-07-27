@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import {
   FaTags,
@@ -398,7 +398,7 @@ const EmptyState = styled.div`
   }
 `;
 
-const PromotionsTab = ({ dealer }) => {
+const PromotionsTab = ({ _dealer }) => {
   const [promotions, setPromotions] = useState([]);
   const [filteredPromotions, setFilteredPromotions] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');

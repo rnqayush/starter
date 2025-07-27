@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import styled from 'styled-components';
 import {
   FaFileImport,
@@ -391,7 +391,7 @@ const FieldItem = styled.div`
   border-radius: ${theme.borderRadius.sm};
 `;
 
-const BulkImportTab = ({ dealer }) => {
+const BulkImportTab = ({ _dealer }) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [isDragOver, setIsDragOver] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -403,7 +403,7 @@ const BulkImportTab = ({ dealer }) => {
       setSelectedFile(file);
       setResults(null);
     } else {
-      alert('Please select a valid CSV file.');
+    // alert('Please select a valid CSV file.');
     }
   };
 

@@ -30,7 +30,7 @@ const hotelManagementSlice = createSlice({
       state.changes = {};
       state.hasUnsavedChanges = false;
     },
-    
+
     updateHotelField: (state, action) => {
       const { field, value } = action.payload;
       if (state.editingHotel) {
@@ -42,7 +42,7 @@ const hotelManagementSlice = createSlice({
         state.hasUnsavedChanges = true;
       }
     },
-    
+
     updateHotelImage: (state, action) => {
       const { index, url } = action.payload;
       if (state.editingHotel) {
@@ -64,7 +64,7 @@ const hotelManagementSlice = createSlice({
         state.hasUnsavedChanges = true;
       }
     },
-    
+
     addHotelImage: (state, action) => {
       if (state.editingHotel) {
         const newImages = [...state.editingHotel.images, action.payload];
@@ -76,7 +76,7 @@ const hotelManagementSlice = createSlice({
         state.hasUnsavedChanges = true;
       }
     },
-    
+
     removeHotelImage: (state, action) => {
       if (state.editingHotel) {
         const newImages = state.editingHotel.images.filter((_, index) => index !== action.payload);
@@ -88,7 +88,7 @@ const hotelManagementSlice = createSlice({
         state.hasUnsavedChanges = true;
       }
     },
-    
+
     updateAmenities: (state, action) => {
       if (state.editingHotel) {
         state.editingHotel.amenities = action.payload;
@@ -99,7 +99,7 @@ const hotelManagementSlice = createSlice({
         state.hasUnsavedChanges = true;
       }
     },
-    
+
     updatePolicies: (state, action) => {
       if (state.editingHotel) {
         state.editingHotel.policies = action.payload;
@@ -110,7 +110,7 @@ const hotelManagementSlice = createSlice({
         state.hasUnsavedChanges = true;
       }
     },
-    
+
     addRoom: (state, action) => {
       if (state.editingHotel) {
         const newRooms = [...state.editingHotel.rooms, action.payload];
@@ -122,7 +122,7 @@ const hotelManagementSlice = createSlice({
         state.hasUnsavedChanges = true;
       }
     },
-    
+
     updateRoom: (state, action) => {
       const { roomId, updates } = action.payload;
       if (state.editingHotel) {
@@ -140,7 +140,7 @@ const hotelManagementSlice = createSlice({
         }
       }
     },
-    
+
     removeRoom: (state, action) => {
       if (state.editingHotel) {
         const newRooms = state.editingHotel.rooms.filter(room => room.id !== action.payload);
@@ -152,7 +152,7 @@ const hotelManagementSlice = createSlice({
         state.hasUnsavedChanges = true;
       }
     },
-    
+
     saveChanges: (state) => {
       if (state.editingHotel && state.hasUnsavedChanges) {
         const hotelIndex = state.hotels.findIndex(h => h.id === state.editingHotel.id);
@@ -164,7 +164,7 @@ const hotelManagementSlice = createSlice({
         state.hasUnsavedChanges = false;
       }
     },
-    
+
     discardChanges: (state) => {
       if (state.originalHotel) {
         state.editingHotel = { ...state.originalHotel };
@@ -172,7 +172,7 @@ const hotelManagementSlice = createSlice({
         state.hasUnsavedChanges = false;
       }
     },
-    
+
     clearEditingHotel: (state) => {
       state.editingHotel = null;
       state.originalHotel = null;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -192,7 +192,7 @@ const AddRoomManager = () => {
       }
     }
   }, [slug, editingHotel, dispatch]);
-  
+
   const [roomData, setRoomData] = useState({
     name: '',
     type: '',
@@ -247,7 +247,7 @@ const AddRoomManager = () => {
 
   const handleSaveRoom = () => {
     if (!roomData.name || !roomData.type || !roomData.price) {
-      alert('Please fill in all required fields (Name, Type, Price)');
+    // alert('Please fill in all required fields (Name, Type, Price)');
       return;
     }
 
@@ -265,7 +265,7 @@ const AddRoomManager = () => {
     };
 
     dispatch(addRoom(newRoom));
-    
+
     // Reset form
     setRoomData({
       name: '',
@@ -279,7 +279,7 @@ const AddRoomManager = () => {
       offer: ''
     });
 
-    alert('Room added successfully!');
+    // alert('Room added successfully!');
   };
 
   const handleReset = () => {

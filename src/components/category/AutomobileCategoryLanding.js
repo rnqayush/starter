@@ -1,4 +1,3 @@
-import React from 'react';
 import CategoryLanding from './CategoryLanding';
 
 const AutomobileCategoryLanding = () => {

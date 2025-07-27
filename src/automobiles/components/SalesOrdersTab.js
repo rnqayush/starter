@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import {
   FaShoppingCart,
@@ -393,7 +393,7 @@ const PaginationInfo = styled.span`
   font-size: 0.9rem;
 `;
 
-const SalesOrdersTab = ({ dealer }) => {
+const SalesOrdersTab = ({ _dealer }) => {
   const [orders, setOrders] = useState([]);
   const [filteredOrders, setFilteredOrders] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -412,7 +412,7 @@ const SalesOrdersTab = ({ dealer }) => {
         customerName: 'John Smith',
         customerEmail: 'john.smith@email.com',
         customerPhone: '(555) 123-4567',
-        vehicleId: 1,
+        _vehicleId: 1,
         vehicleName: '2024 BMW X5 M50i',
         vehicleImage:
           'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=300&h=200&fit=crop',
@@ -432,7 +432,7 @@ const SalesOrdersTab = ({ dealer }) => {
         customerName: 'Sarah Johnson',
         customerEmail: 'sarah.j@email.com',
         customerPhone: '(555) 234-5678',
-        vehicleId: 2,
+        _vehicleId: 2,
         vehicleName: '2023 Tesla Model S Plaid',
         vehicleImage:
           'https://images.unsplash.com/photo-1560958089-b8a1929cea89?w=300&h=200&fit=crop',
@@ -452,7 +452,7 @@ const SalesOrdersTab = ({ dealer }) => {
         customerName: 'Michael Brown',
         customerEmail: 'm.brown@email.com',
         customerPhone: '(555) 345-6789',
-        vehicleId: 3,
+        _vehicleId: 3,
         vehicleName: '2024 Ford F-150 Lightning',
         vehicleImage:
           'https://images.unsplash.com/photo-1593950315186-76a92975b60c?w=300&h=200&fit=crop',
@@ -472,7 +472,7 @@ const SalesOrdersTab = ({ dealer }) => {
         customerName: 'Emily Davis',
         customerEmail: 'emily.davis@email.com',
         customerPhone: '(555) 456-7890',
-        vehicleId: 4,
+        _vehicleId: 4,
         vehicleName: '2023 Honda Civic Type R',
         vehicleImage:
           'https://images.unsplash.com/photo-1606152421802-db97b9c7a11b?w=300&h=200&fit=crop',
@@ -492,7 +492,7 @@ const SalesOrdersTab = ({ dealer }) => {
         customerName: 'Robert Wilson',
         customerEmail: 'r.wilson@email.com',
         customerPhone: '(555) 567-8901',
-        vehicleId: 5,
+        _vehicleId: 5,
         vehicleName: '2024 Porsche 911 Turbo S',
         vehicleImage:
           'https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=300&h=200&fit=crop',
@@ -512,7 +512,7 @@ const SalesOrdersTab = ({ dealer }) => {
         customerName: 'Lisa Anderson',
         customerEmail: 'lisa.anderson@email.com',
         customerPhone: '(555) 678-9012',
-        vehicleId: 6,
+        _vehicleId: 6,
         vehicleName: '2023 Volvo XC90 Recharge',
         vehicleImage:
           'https://images.unsplash.com/photo-1606016872875-84d1177d27bb?w=300&h=200&fit=crop',

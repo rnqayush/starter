@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import {
   FaDollarSign,
@@ -409,7 +409,7 @@ const EmptyState = styled.div`
   }
 `;
 
-const FinancingTab = ({ dealer }) => {
+const FinancingTab = ({ _dealer }) => {
   const [applications, setApplications] = useState([]);
   const [filteredApplications, setFilteredApplications] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -462,7 +462,7 @@ const FinancingTab = ({ dealer }) => {
         customerId: 1,
         customerName: 'John Smith',
         customerEmail: 'john.smith@email.com',
-        vehicleId: 1,
+        _vehicleId: 1,
         vehicleName: '2024 BMW X5 M50i',
         vehiclePrice: 75000,
         downPayment: 15000,
@@ -484,7 +484,7 @@ const FinancingTab = ({ dealer }) => {
         customerId: 2,
         customerName: 'Sarah Johnson',
         customerEmail: 'sarah.j@email.com',
-        vehicleId: 2,
+        _vehicleId: 2,
         vehicleName: '2023 Tesla Model S Plaid',
         vehiclePrice: 120000,
         downPayment: 25000,
@@ -506,7 +506,7 @@ const FinancingTab = ({ dealer }) => {
         customerId: 3,
         customerName: 'Michael Brown',
         customerEmail: 'm.brown@email.com',
-        vehicleId: 3,
+        _vehicleId: 3,
         vehicleName: '2024 Ford F-150 Lightning',
         vehiclePrice: 65000,
         downPayment: 10000,
@@ -528,7 +528,7 @@ const FinancingTab = ({ dealer }) => {
         customerId: 4,
         customerName: 'Emily Davis',
         customerEmail: 'emily.davis@email.com',
-        vehicleId: 4,
+        _vehicleId: 4,
         vehicleName: '2023 Honda Civic Type R',
         vehiclePrice: 42000,
         downPayment: 5000,
@@ -550,7 +550,7 @@ const FinancingTab = ({ dealer }) => {
         customerId: 5,
         customerName: 'Robert Wilson',
         customerEmail: 'r.wilson@email.com',
-        vehicleId: 5,
+        _vehicleId: 5,
         vehicleName: '2024 Porsche 911 Turbo S',
         vehiclePrice: 230000,
         downPayment: 80000,

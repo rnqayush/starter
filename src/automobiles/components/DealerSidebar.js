@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import {
   FaHome,
@@ -287,7 +287,7 @@ const Overlay = styled.div.withConfig({
   }
 `;
 
-const DealerSidebar = ({ activeTab, onTabChange, dealer }) => {
+const DealerSidebar = ({ activeTab, onTabChange, _dealer }) => {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -297,7 +297,7 @@ const DealerSidebar = ({ activeTab, onTabChange, dealer }) => {
   };
 
   const handleBackToDealership = () => {
-    navigate(`/${dealer.slug}`);
+    navigate(`/${_dealer.slug}`);
   };
 
   const navItems = [
@@ -334,7 +334,7 @@ const DealerSidebar = ({ activeTab, onTabChange, dealer }) => {
       section: 'Analytics & Settings',
       items: [
         { id: 'analytics', label: 'Analytics', icon: FaChartLine },
-        { id: 'dealer-settings', label: 'Settings', icon: FaCog },
+        { id: '_dealer-settings', label: 'Settings', icon: FaCog },
       ],
     },
   ];
@@ -350,13 +350,13 @@ const DealerSidebar = ({ activeTab, onTabChange, dealer }) => {
       <SidebarContainer isOpen={isMobileOpen}>
         <SidebarHeader>
           <DealerBranding>
-            {dealer.logo ? (
-              <DealerLogoImage src={dealer.logo} alt={dealer.name} />
+            {_dealer.logo ? (
+              <DealerLogoImage src={_dealer.logo} alt={_dealer.name} />
             ) : (
-              <DealerLogo>{dealer.name.charAt(0)}</DealerLogo>
+              <DealerLogo>{_dealer.name.charAt(0)}</DealerLogo>
             )}
             <DealerInfo>
-              <DealerName>{dealer.name}</DealerName>
+              <DealerName>{_dealer.name}</DealerName>
               <DealerRole>Dealer Dashboard</DealerRole>
             </DealerInfo>
           </DealerBranding>

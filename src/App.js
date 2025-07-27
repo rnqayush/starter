@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import styled from 'styled-components';
@@ -155,7 +155,7 @@ function App() {
                       {/*  automobile website routes */}
                       <Route path="vehicles" element={<Vehicles />} />
                       <Route
-                        path="vehicledetail/:vehicleId"
+                        path="vehicledetail/:_vehicleId"
                         element={<VehicleDetail />}
                       />
                       <Route path="wishlist" element={<Wishlist />} />

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import {
   FaExchangeAlt,
@@ -427,7 +427,7 @@ const EmptyState = styled.div`
   }
 `;
 
-const TradeInsTab = ({ dealer }) => {
+const TradeInsTab = ({ _dealer }) => {
   const [tradeIns, setTradeIns] = useState([]);
   const [filteredTradeIns, setFilteredTradeIns] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');

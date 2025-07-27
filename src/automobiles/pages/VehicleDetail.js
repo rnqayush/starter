@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import {
@@ -412,7 +412,7 @@ const RelatedGrid = styled.div`
 `;
 
 const VehicleDetail = () => {
-  const { vehicleId } = useParams();
+  const { _vehicleId } = useParams();
   const navigate = useNavigate();
   const [vehicle, setVehicle] = useState(null);
   const [selectedDealer, setSelectedDealer] = useState(null);
@@ -423,20 +423,20 @@ const VehicleDetail = () => {
 
   useEffect(() => {
     // Get vehicle data
-    const vehicleData = getVehicleById(parseInt(vehicleId));
+    const vehicleData = getVehicleById(parseInt(_vehicleId));
     if (!vehicleData) {
       navigate('/auto-dealers');
       return;
     }
     setVehicle(vehicleData);
 
-    // Get dealer data from URL
+    // Get _dealer data from URL
     const pathSegments = window.location.pathname.split('/').filter(Boolean);
     const dealerSlug = pathSegments[0];
-    const dealer = getVendorByIdOrSlug(dealerSlug);
+    const _dealer = getVendorByIdOrSlug(dealerSlug);
 
-    if (dealer) {
-      setSelectedDealer(dealer);
+    if (_dealer) {
+      setSelectedDealer(_dealer);
     } else {
       navigate('/auto-dealers');
       return;
@@ -444,7 +444,7 @@ const VehicleDetail = () => {
 
     // Get related vehicles (same category)
     const featured = getFeaturedVehicles().filter(
-      v => v.vehicleId !== vehicleData.vehicleId
+      v => v._vehicleId !== vehicleData._vehicleId
     );
     setRelatedVehicles(featured.slice(0, 3));
 
@@ -452,8 +452,8 @@ const VehicleDetail = () => {
     const wishlist = JSON.parse(
       localStorage.getItem('vehicleWishlist') || '[]'
     );
-    setIsWishlisted(wishlist.includes(vehicleData.vehicleId));
-  }, [vehicleId, navigate]);
+    setIsWishlisted(wishlist.includes(vehicleData._vehicleId));
+  }, [_vehicleId, navigate]);
 
   const formatPrice = price => {
     return new Intl.NumberFormat('en-US', {
@@ -476,10 +476,10 @@ const VehicleDetail = () => {
 
     if (isWishlisted) {
       newWishlist = wishlist.filter(
-        vehicleId => vehicleId !== vehicle.vehicleId
+        _vehicleId => _vehicleId !== vehicle._vehicleId
       );
     } else {
-      newWishlist = [...wishlist, vehicle.vehicleId];
+      newWishlist = [...wishlist, vehicle._vehicleId];
     }
 
     localStorage.setItem('vehicleWishlist', JSON.stringify(newWishlist));
@@ -495,7 +495,7 @@ const VehicleDetail = () => {
       });
     } else {
       navigator.clipboard.writeText(window.location.href);
-      alert('Link copied to clipboard!');
+    // alert('Link copied to clipboard!');
     }
   };
 
@@ -730,7 +730,7 @@ const VehicleDetail = () => {
             <RelatedGrid>
               {relatedVehicles.map(relatedVehicle => (
                 <VehicleCard
-                  key={relatedVehicle.vehicleId}
+                  key={relatedVehicle._vehicleId}
                   vehicle={relatedVehicle}
                   dealerSlug={selectedDealer.slug}
                 />
@@ -742,7 +742,7 @@ const VehicleDetail = () => {
 
       <Footer
         dealerSlug={selectedDealer.slug}
-        dealer={selectedDealer}
+        _dealer={selectedDealer}
         theme={dealerTheme}
       />
       <BackToTop />

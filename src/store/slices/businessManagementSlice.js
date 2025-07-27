@@ -33,7 +33,7 @@ const businessManagementSlice = createSlice({
       // If business is not found in Redux state, we'll initialize with null
       // and let the component handle fetching from the dummy data
       if (!business) {
-        console.warn(`Business with id ${businessId} not found in Redux state`);
+    // console.warn(`Business with id ${businessId} not found in Redux state`);
         state.editingBusiness = null;
         state.originalBusiness = null;
       } else {

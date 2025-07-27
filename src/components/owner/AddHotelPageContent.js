@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { FaUpload, FaCheck } from 'react-icons/fa';
@@ -203,7 +203,7 @@ const AddHotelPageContent = () => {
       setHotels(prev => [...prev, newHotel]);
       setOwnerHotels(prev => [...prev, newOwnerHotel]);
 
-      alert('Hotel added successfully!');
+    // alert('Hotel added successfully!');
       // Reset form or navigate back to dashboard
       setFormData({
         name: '',
@@ -219,7 +219,7 @@ const AddHotelPageContent = () => {
         images: [],
       });
     } catch (error) {
-      console.error('Error adding hotel:', error);
+    // console.error('Error adding hotel:', error);
     } finally {
       setIsSubmitting(false);
     }

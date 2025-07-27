@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import {
@@ -365,7 +365,7 @@ const StoresListing = () => {
       loadStoresForLocation(newLocation);
       setSearchTerm('');
     } catch (error) {
-      alert('Location not found. Please try a different city or ZIP code.');
+    // alert('Location not found. Please try a different city or ZIP code.');
     } finally {
       setLocationLoading(false);
     }
@@ -378,7 +378,7 @@ const StoresListing = () => {
       setCurrentLocation(location);
       loadStoresForLocation(location);
     } catch (error) {
-      alert(
+    // alert(
         'Unable to get your current location. Please check your browser settings.'
       );
     } finally {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -248,7 +248,7 @@ const AllRoomsManager = () => {
       }
     }
   }, [slug, editingHotel, dispatch]);
-  
+
   const [editingRoom, setEditingRoom] = useState(null);
   const [editData, setEditData] = useState({});
 
@@ -261,13 +261,13 @@ const AllRoomsManager = () => {
     dispatch(updateRoom({ roomId: editingRoom, updates: editData }));
     setEditingRoom(null);
     setEditData({});
-    alert('Room updated successfully!');
+    // alert('Room updated successfully!');
   };
 
   const handleDeleteRoom = (roomId) => {
     if (window.confirm('Are you sure you want to delete this room? This action cannot be undone.')) {
       dispatch(removeRoom(roomId));
-      alert('Room deleted successfully!');
+    // alert('Room deleted successfully!');
     }
   };
 
@@ -373,9 +373,9 @@ const AllRoomsManager = () => {
                   <Button size="small" variant="outline" onClick={() => handleEditRoom(room)}>
                     <FaEdit /> Edit
                   </Button>
-                  <Button 
-                    size="small" 
-                    variant="danger" 
+                  <Button
+                    size="small"
+                    variant="danger"
                     onClick={() => handleDeleteRoom(room.id)}
                   >
                     <FaTrash /> Delete

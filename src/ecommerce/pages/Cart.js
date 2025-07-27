@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import {
@@ -440,7 +440,7 @@ const Cart = () => {
       });
       setPromoCode('');
     } else {
-      alert('Invalid promo code');
+    // alert('Invalid promo code');
     }
   };
 

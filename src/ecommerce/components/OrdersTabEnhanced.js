@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import {
   FaSearch,
@@ -447,12 +447,12 @@ const OrdersTabEnhanced = () => {
         )
       );
       setTrackingInfo({ trackingNumber: '', carrier: 'ups', notes: '' });
-      alert('Tracking information added successfully!');
+    // alert('Tracking information added successfully!');
     }
   };
 
   const handlePrintInvoice = order => {
-    alert(`Printing invoice for order ${order.id}`);
+    // alert(`Printing invoice for order ${order.id}`);
   };
 
   const handleExportOrders = () => {

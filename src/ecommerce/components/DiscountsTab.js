@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import {
   FaPlus,
@@ -343,7 +343,7 @@ const DiscountsTab = () => {
 
   const handleCopyCode = code => {
     navigator.clipboard.writeText(code);
-    alert(`Coupon code "${code}" copied to clipboard!`);
+    // alert(`Coupon code "${code}" copied to clipboard!`);
   };
 
   const handleSubmit = e => {

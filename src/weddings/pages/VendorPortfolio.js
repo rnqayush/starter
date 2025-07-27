@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
@@ -477,7 +477,7 @@ const VendorPortfolio = () => {
     // Priority 1: Use editing vendor data for real-time updates during editing
     if (editingVendor && editingVendor.id === vendorId) {
       vendorData = editingVendor;
-      console.log(
+    // console.log(
         'VendorPortfolio: Using editing vendor data for real-time updates:',
         editingVendor
       );
@@ -485,7 +485,7 @@ const VendorPortfolio = () => {
     // Priority 2: Use saved vendor data from Redux vendors array
     else if (vendors && vendors.length > 0) {
       vendorData = vendors.find(v => v.id === vendorId);
-      console.log(
+    // console.log(
         'VendorPortfolio: Using saved vendor data from Redux:',
         vendorData
       );
@@ -493,12 +493,12 @@ const VendorPortfolio = () => {
     // Priority 3: Fallback to dummy data
     if (!vendorData) {
       vendorData = getVendorById(vendorId);
-      console.log('VendorPortfolio: Using fallback dummy data:', vendorData);
+    // console.log('VendorPortfolio: Using fallback dummy data:', vendorData);
     }
 
     if (vendorData) {
       setVendor(vendorData);
-      console.log(
+    // console.log(
         'VendorPortfolio: Updated vendor data with locationPortfolio:',
         vendorData.locationPortfolio
       );

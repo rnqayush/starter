@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 import { FaEdit, FaEye, FaArrowLeft } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';

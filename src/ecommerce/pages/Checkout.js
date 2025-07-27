@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import {
@@ -484,7 +484,7 @@ const Checkout = () => {
         },
       });
     } catch (error) {
-      alert('Payment failed. Please try again.');
+    // alert('Payment failed. Please try again.');
     } finally {
       setLoading(false);
     }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import {
   FaTimes,
@@ -379,7 +379,7 @@ const EnquiryModal = ({ isOpen, onClose, product, userInfo = {} }) => {
 
       setIsSuccess(true);
     } catch (error) {
-      alert('Failed to submit enquiry. Please try again.');
+    // alert('Failed to submit enquiry. Please try again.');
     } finally {
       setIsSubmitting(false);
     }

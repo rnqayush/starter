@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import {
@@ -193,7 +193,7 @@ const HotelFooter = () => {
 
   const handleNewsletterSubmit = e => {
     e.preventDefault();
-    alert('Thank you for subscribing to our newsletter!');
+    // alert('Thank you for subscribing to our newsletter!');
   };
 
   return (

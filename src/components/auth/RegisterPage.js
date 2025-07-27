@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import {
@@ -409,7 +409,7 @@ const RegisterPage = () => {
 
     // Validate passwords match
     if (currentData.password !== currentData.confirmPassword) {
-      alert("Passwords don't match!");
+    // alert("Passwords don't match!");
       setIsLoading(false);
       return;
     }

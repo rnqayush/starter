@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import {
@@ -545,7 +545,7 @@ const EditableHotelDetail = ({ setActiveSection }) => {
   } = useSelector(state => state.hotelManagement);
 
   const [selectedHotelId, setSelectedHotelId] = useState(null);
-  
+
   // If no hotel is being edited, show hotel selection
   useEffect(() => {
     if (!editingHotel && ownerHotels.length > 0) {
@@ -580,18 +580,18 @@ const EditableHotelDetail = ({ setActiveSection }) => {
 
   const toggleAmenity = (categoryItems, amenityName) => {
     if (!editingHotel) return;
-    
+
     const currentAmenities = editingHotel.amenities || [];
     const newAmenities = currentAmenities.includes(amenityName)
       ? currentAmenities.filter(a => a !== amenityName)
       : [...currentAmenities, amenityName];
-    
+
     dispatch(updateAmenities(newAmenities));
   };
 
   const handleSave = () => {
     dispatch(saveChanges());
-    alert('Changes saved successfully! Hotel detail page has been updated.');
+    // alert('Changes saved successfully! Hotel detail page has been updated.');
   };
 
   const handleDiscard = () => {
@@ -607,7 +607,7 @@ const EditableHotelDetail = ({ setActiveSection }) => {
           <h2>Select a hotel to edit:</h2>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: theme.spacing.lg, marginTop: theme.spacing.xl }}>
             {ownerHotels.map(hotel => (
-              <div 
+              <div
                 key={hotel.id}
                 onClick={() => setSelectedHotelId(hotel.id)}
                 style={{

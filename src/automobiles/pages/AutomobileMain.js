@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
 import { FaArrowRight, FaCar, FaHome } from 'react-icons/fa';
@@ -18,10 +18,10 @@ import {
 // Dynamic theme styles that override global styles
 const DynamicGlobalStyle = createGlobalStyle`
   :root {
-    --dealer-primary: ${props => props.primaryColor || theme.colors.primary};
-    --dealer-secondary: ${props => props.secondaryColor || theme.colors.secondary};
-    --dealer-background: ${props => props.backgroundColor || theme.colors.gray50};
-    --dealer-text: ${props => props.textColor || theme.colors.gray900};
+    --_dealer-primary: ${props => props.primaryColor || theme.colors.primary};
+    --_dealer-secondary: ${props => props.secondaryColor || theme.colors.secondary};
+    --_dealer-background: ${props => props.backgroundColor || theme.colors.gray50};
+    --_dealer-text: ${props => props.textColor || theme.colors.gray900};
   }
 `;
 
@@ -437,31 +437,31 @@ const AutomobileMain = () => {
     selectedDealer ? `/${selectedDealer.slug}` : '/automobiles';
 
   useEffect(() => {
-    // Get dealer data from URL slug or navigation state (fallback)
+    // Get _dealer data from URL slug or navigation state (fallback)
     const path = location.pathname;
-    let dealer = null;
+    let _dealer = null;
 
     if (path !== '/automobiles') {
-      // Extract dealer slug from URL like "/luxury-auto-gallery"
+      // Extract _dealer slug from URL like "/luxury-auto-gallery"
       const pathSegments = path.split('/').filter(Boolean);
       const dealerSlug = pathSegments[0];
-      dealer = getVendorByIdOrSlug(dealerSlug);
+      _dealer = getVendorByIdOrSlug(dealerSlug);
     }
 
-    // Fallback to location state if no dealer found by slug
-    if (!dealer) {
-      dealer = location.state?.selectedDealer;
+    // Fallback to location state if no _dealer found by slug
+    if (!_dealer) {
+      _dealer = location.state?.selectedDealer;
     }
 
-    if (dealer) {
-      setSelectedDealer(dealer);
+    if (_dealer) {
+      setSelectedDealer(_dealer);
     } else {
-      // If no dealer found, redirect to dealer listing
+      // If no _dealer found, redirect to _dealer listing
       navigate('/auto-dealers');
       return;
     }
 
-    // Load vehicles (these would be filtered by dealer in a real app)
+    // Load vehicles (these would be filtered by _dealer in a real app)
     setFeaturedVehicles(getFeaturedVehicles());
     setSaleVehicles(getOnSaleVehicles());
   }, [location.pathname, location.state, navigate]);
@@ -470,13 +470,13 @@ const AutomobileMain = () => {
     navigate('/auto-dealers');
   };
 
-  // Show fallback if no dealer is selected
+  // Show fallback if no _dealer is selected
   if (!selectedDealer) {
     return (
       <FallbackContainer>
         <FallbackTitle>Please Select a Dealer</FallbackTitle>
         <FallbackText>
-          You need to select a dealer first to view their vehicles and continue
+          You need to select a _dealer first to view their vehicles and continue
           browsing.
         </FallbackText>
         <FallbackButton onClick={handleBackToDealers}>
@@ -631,7 +631,7 @@ const AutomobileMain = () => {
 
         <Footer
           dealerSlug={selectedDealer.slug}
-          dealer={selectedDealer}
+          _dealer={selectedDealer}
           theme={dealerTheme}
         />
         <BackToTop />

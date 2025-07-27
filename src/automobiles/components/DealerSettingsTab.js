@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 import { FaCog } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import {
@@ -283,7 +283,7 @@ const OrderConfirmation = () => {
 
   const handleDownload = () => {
     // Mock download functionality
-    alert('Order receipt download would start here');
+    // alert('Order receipt download would start here');
   };
 
   const getEstimatedDelivery = () => {
