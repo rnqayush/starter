@@ -148,6 +148,7 @@ const PageContainer = styled.div`
   background: ${theme.colors.gray50};
   position: relative;
   overflow-x: hidden;
+  animation: ${fadeIn} 0.8s ease-out;
 
   &::before {
     content: '';
@@ -157,6 +158,19 @@ const PageContainer = styled.div`
     right: 0;
     bottom: 0;
     background: linear-gradient(45deg, rgba(59, 130, 246, 0.03) 0%, rgba(147, 51, 234, 0.03) 100%);
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  &::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(147, 51, 234, 0.05) 0%, transparent 50%);
     pointer-events: none;
     z-index: -1;
   }
