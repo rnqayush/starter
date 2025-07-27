@@ -21,7 +21,7 @@ import {
   FaStar,
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
-import { weddingVendors } from '../data/vendors';
+import { getStaticWeddingVendors } from '../../utils/weddingAPI';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -504,7 +504,7 @@ const MyBookings = () => {
   }, [bookings, searchTerm, statusFilter, sortBy]);
 
   const getVendorDetails = vendorId => {
-    return weddingVendors.find(vendor => vendor.id === vendorId);
+    return getStaticWeddingVendors().find(vendor => vendor.id === vendorId);
   };
 
   const getStatusIcon = status => {

@@ -57,10 +57,12 @@ import {
   updatePackages,
   updateRecentWork,
   updateCustomSections,
-  saveChanges,
-  discardChanges,
+  updateFooterData,
+  saveVendorChanges,
+  discardVendorChanges,
   toggleSectionVisibility,
-} from '../../store/slices/vendorManagementSlice';
+  toggleRealTimeUpdates,
+} from '../../store/slices/weddingManagementSlice';
 
 const DashboardContainer = styled.div`
   min-height: 100vh;
@@ -691,9 +693,12 @@ const VendorDashboard = () => {
   const dispatch = useDispatch();
 
   // Redux state
-  const { editingVendor, hasUnsavedChanges, originalVendor } = useSelector(
-    state => state.vendorManagement
-  );
+  const {
+    editingVendor,
+    hasUnsavedVendorChanges,
+    originalVendor,
+    realTimeUpdates,
+  } = useSelector(state => state.weddingManagement);
 
   // Get vendor ID from URL path
   const currentPath = window.location.pathname;
@@ -771,6 +776,7 @@ const VendorDashboard = () => {
     gallery: true,
     testimonials: true,
     'packages-pricing': true,
+    footer: true,
   });
 
   const [changedSections, setChangedSections] = useState(new Set());
@@ -785,6 +791,44 @@ const VendorDashboard = () => {
     cards: [],
     visible: true,
   });
+
+  // Footer data state
+  const [footerData, setFooterData] = useState({
+    companyName: '',
+    description: '',
+    columns: [
+      {
+        title: 'Quick Links',
+        type: 'links',
+        content: [
+          { text: 'About Us', url: '#about' },
+          { text: 'Services', url: '#services' },
+          { text: 'Gallery', url: '#gallery' },
+          { text: 'Contact', url: '#contact' },
+        ],
+      },
+      {
+        title: 'Contact Info',
+        type: 'contact',
+        content: {
+          showPhone: true,
+          showEmail: true,
+          showAddress: true,
+          showHours: false,
+        },
+      },
+    ],
+    socialLinks: {
+      instagram: '',
+      facebook: '',
+      pinterest: '',
+      twitter: '',
+      linkedin: '',
+    },
+    copyrightText: '',
+    backgroundColor: '#1f2937',
+    textColor: '#ffffff',
+  });
   const [showDeleteAccountModal, setShowDeleteAccountModal] = useState(false);
 
   // Track changes in a section and update Redux editing vendor for real-time preview
@@ -794,6 +838,15 @@ const VendorDashboard = () => {
 
     // Immediately update Redux editing vendor for real-time preview
     updateEditingVendorInRedux();
+  };
+
+  // Handle footer data changes
+  const handleFooterChange = updatedFooterData => {
+    setFooterData(updatedFooterData);
+    trackSectionChange('footer');
+
+    // Dispatch footer update to Redux
+    dispatch(updateFooterData({ footerData: updatedFooterData }));
   };
 
   // Handle section visibility toggle
@@ -899,6 +952,13 @@ const VendorDashboard = () => {
         customSections: customSections,
         sectionVisibility: sectionVisibility,
         customSectionVisibility: customSectionVisibility,
+        // Footer data
+        footerColumns: footerData.columns,
+        footerCopyright: footerData.copyrightText,
+        footerBackgroundColor: footerData.backgroundColor,
+        footerTextColor: footerData.textColor,
+        footerDescription: footerData.description,
+        socialLinks: footerData.socialLinks,
       };
 
       // Update Redux with the current form data for real-time preview
@@ -908,10 +968,9 @@ const VendorDashboard = () => {
           JSON.stringify(updatedVendor[key]) !==
             JSON.stringify(editingVendor[key])
         ) {
-          dispatch({
-            type: 'vendorManagement/updateVendorField',
-            payload: { field: key, value: updatedVendor[key] },
-          });
+          dispatch(
+            updateVendorField({ field: key, value: updatedVendor[key] })
+          );
         }
       });
 
@@ -974,6 +1033,12 @@ const VendorDashboard = () => {
       id: 'custom-sections',
       label: 'Custom Sections',
       icon: FaPlus,
+      section: 'Content Management',
+    },
+    {
+      id: 'footer',
+      label: 'Footer',
+      icon: FaAddressCard,
       section: 'Content Management',
     },
     {
@@ -1121,6 +1186,46 @@ const VendorDashboard = () => {
       );
       setCustomSections(customSectionsWithIds);
 
+      // Pre-fill footer data
+      setFooterData({
+        companyName: vendorData.name || '',
+        description: vendorData.description || '',
+        columns: vendorData.footerColumns || [
+          {
+            title: 'Quick Links',
+            type: 'links',
+            content: [
+              { text: 'About Us', url: '#about' },
+              { text: 'Services', url: '#services' },
+              { text: 'Gallery', url: '#gallery' },
+              { text: 'Contact', url: '#contact' },
+            ],
+          },
+          {
+            title: 'Contact Info',
+            type: 'contact',
+            content: {
+              showPhone: true,
+              showEmail: true,
+              showAddress: true,
+              showHours: false,
+            },
+          },
+        ],
+        socialLinks: vendorData.socialLinks || {
+          instagram: '',
+          facebook: '',
+          pinterest: '',
+          twitter: '',
+          linkedin: '',
+        },
+        copyrightText:
+          vendorData.footerCopyright ||
+          `© 2024 ${vendorData.name}. All rights reserved.`,
+        backgroundColor: vendorData.footerBackgroundColor || '#1f2937',
+        textColor: vendorData.footerTextColor || '#ffffff',
+      });
+
       // Initialize custom section visibility
       const customVisibility = {};
       customSectionsWithIds.forEach(section => {
@@ -1165,6 +1270,7 @@ const VendorDashboard = () => {
         testimonials: vendorData.sectionVisibility?.testimonials !== false,
         'packages-pricing':
           vendorData.sectionVisibility?.['packages-pricing'] !== false,
+        footer: vendorData.sectionVisibility?.footer !== false,
       };
       setSectionVisibility(initialVisibility);
     }
@@ -1245,16 +1351,12 @@ const VendorDashboard = () => {
       };
 
       // Update the editing vendor in Redux for real-time preview
-      dispatch({
-        type: 'vendorManagement/setEditingVendor',
-        payload: updatedVendor.id,
-      });
+      dispatch(setEditingVendor(updatedVendor.id));
       Object.keys(updatedVendor).forEach(key => {
         if (key !== 'id') {
-          dispatch({
-            type: 'vendorManagement/updateVendorField',
-            payload: { field: key, value: updatedVendor[key] },
-          });
+          dispatch(
+            updateVendorField({ field: key, value: updatedVendor[key] })
+          );
         }
       });
 
@@ -1347,78 +1449,9 @@ const VendorDashboard = () => {
         couplesVisible: aboutUsData.couplesVisible,
       };
 
-      console.log('Dispatching basic field updates...');
-      // Update basic fields one by one
-      dispatch({
-        type: 'vendorManagement/updateVendorField',
-        payload: { field: 'name', value: heroData.name || '' },
-      });
-      dispatch({
-        type: 'vendorManagement/updateVendorField',
-        payload: { field: 'tagline', value: heroData.tagline || '' },
-      });
-      dispatch({
-        type: 'vendorManagement/updateVendorField',
-        payload: { field: 'image', value: heroData.image || '' },
-      });
-      dispatch({
-        type: 'vendorManagement/updateVendorField',
-        payload: { field: 'description', value: aboutUsData.description || '' },
-      });
-      dispatch({
-        type: 'vendorManagement/updateVendorField',
-        payload: { field: 'aboutUs', value: cleanAboutUs },
-      });
-
-      console.log('Dispatching array updates...');
-      dispatch({
-        type: 'vendorManagement/updateServices',
-        payload: cleanServices,
-      });
-      dispatch({
-        type: 'vendorManagement/updateRecentWork',
-        payload: cleanRecentWork,
-      });
-      dispatch({
-        type: 'vendorManagement/updateTestimonials',
-        payload: cleanTestimonials,
-      });
-      dispatch({
-        type: 'vendorManagement/updatePackages',
-        payload: cleanPackages,
-      });
-      dispatch({
-        type: 'vendorManagement/updateVendorGallery',
-        payload: cleanGallery,
-      });
-      dispatch({
-        type: 'vendorManagement/updateVendorField',
-        payload: {
-          field: 'sectionOrder',
-          value:
-            completeSectionOrder.length > 0
-              ? completeSectionOrder
-              : sectionOrder,
-        },
-      });
-      dispatch({
-        type: 'vendorManagement/updateVendorField',
-        payload: { field: 'customSections', value: customSections },
-      });
-      dispatch({
-        type: 'vendorManagement/updateVendorField',
-        payload: { field: 'sectionVisibility', value: sectionVisibility },
-      });
-      dispatch({
-        type: 'vendorManagement/updateVendorField',
-        payload: {
-          field: 'customSectionVisibility',
-          value: customSectionVisibility,
-        },
-      });
-
-      console.log('Saving changes...');
-      dispatch({ type: 'vendorManagement/saveChanges' });
+      console.log('Saving changes directly...');
+      // Simply save the changes that are already in the editing vendor state
+      dispatch(saveVendorChanges());
 
       setSaved(false);
       alert('All changes published to live vendor page successfully!');
@@ -1582,7 +1615,7 @@ const VendorDashboard = () => {
       setCustomSectionVisibility(originalCustomVisibility);
 
       // Discard changes in Redux
-      dispatch(discardChanges());
+      dispatch(discardVendorChanges());
       setSaved(false);
       setChangedSections(new Set());
       alert('All changes discarded. Form reset to original values.');
@@ -3614,6 +3647,576 @@ const VendorDashboard = () => {
                   Delete Account
                 </ActionButton>
               </div>
+            </div>
+          </ContentSection>
+        );
+
+      case 'footer':
+        return (
+          <ContentSection>
+            <SectionHeader>
+              <SectionTitle>
+                <FaAddressCard />
+                Footer
+              </SectionTitle>
+              <VisibilityToggleContainer>
+                <span>
+                  {sectionVisibility['footer'] ? 'Visible' : 'Hidden'}
+                </span>
+                <ToggleSwitch>
+                  <input
+                    type="checkbox"
+                    checked={sectionVisibility['footer']}
+                    onChange={() => toggleSectionVisibility('footer')}
+                  />
+                  <span></span>
+                </ToggleSwitch>
+              </VisibilityToggleContainer>
+            </SectionHeader>
+
+            {/* Basic Footer Information */}
+            <div style={{ marginBottom: theme.spacing.xxl }}>
+              <h3
+                style={{
+                  fontSize: '1.3rem',
+                  fontWeight: 600,
+                  marginBottom: theme.spacing.lg,
+                  color: theme.colors.gray900,
+                }}
+              >
+                Basic Information
+              </h3>
+              <FormGrid>
+                <FormGroup>
+                  <FormLabel>Company Name</FormLabel>
+                  <FormInput
+                    value={footerData.companyName}
+                    onChange={e => {
+                      handleFooterChange({
+                        ...footerData,
+                        companyName: e.target.value,
+                      });
+                    }}
+                    placeholder="Your Company Name"
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <FormLabel>Copyright Text</FormLabel>
+                  <FormInput
+                    value={footerData.copyrightText}
+                    onChange={e => {
+                      handleFooterChange({
+                        ...footerData,
+                        copyrightText: e.target.value,
+                      });
+                    }}
+                    placeholder="© 2024 Your Company. All rights reserved."
+                  />
+                </FormGroup>
+                <FormGroup style={{ gridColumn: '1 / -1' }}>
+                  <FormLabel>Footer Description</FormLabel>
+                  <FormTextarea
+                    value={footerData.description}
+                    onChange={e => {
+                      handleFooterChange({
+                        ...footerData,
+                        description: e.target.value,
+                      });
+                    }}
+                    placeholder="Brief description about your business for the footer..."
+                    rows={3}
+                  />
+                </FormGroup>
+              </FormGrid>
+            </div>
+
+            {/* Footer Styling */}
+            <div style={{ marginBottom: theme.spacing.xxl }}>
+              <h3
+                style={{
+                  fontSize: '1.3rem',
+                  fontWeight: 600,
+                  marginBottom: theme.spacing.lg,
+                  color: theme.colors.gray900,
+                }}
+              >
+                Footer Styling
+              </h3>
+              <FormGrid>
+                <FormGroup>
+                  <FormLabel>Background Color</FormLabel>
+                  <FormInput
+                    type="color"
+                    value={footerData.backgroundColor}
+                    onChange={e => {
+                      setFooterData(prev => ({
+                        ...prev,
+                        backgroundColor: e.target.value,
+                      }));
+                      trackSectionChange('footer');
+                    }}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <FormLabel>Text Color</FormLabel>
+                  <FormInput
+                    type="color"
+                    value={footerData.textColor}
+                    onChange={e => {
+                      setFooterData(prev => ({
+                        ...prev,
+                        textColor: e.target.value,
+                      }));
+                      trackSectionChange('footer');
+                    }}
+                  />
+                </FormGroup>
+              </FormGrid>
+            </div>
+
+            {/* Social Media Links */}
+            <div style={{ marginBottom: theme.spacing.xxl }}>
+              <h3
+                style={{
+                  fontSize: '1.3rem',
+                  fontWeight: 600,
+                  marginBottom: theme.spacing.lg,
+                  color: theme.colors.gray900,
+                }}
+              >
+                Social Media Links
+              </h3>
+              <FormGrid>
+                <FormGroup>
+                  <FormLabel>Instagram URL</FormLabel>
+                  <FormInput
+                    value={footerData.socialLinks.instagram}
+                    onChange={e => {
+                      setFooterData(prev => ({
+                        ...prev,
+                        socialLinks: {
+                          ...prev.socialLinks,
+                          instagram: e.target.value,
+                        },
+                      }));
+                      trackSectionChange('footer');
+                    }}
+                    placeholder="https://instagram.com/yourhandle"
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <FormLabel>Facebook URL</FormLabel>
+                  <FormInput
+                    value={footerData.socialLinks.facebook}
+                    onChange={e => {
+                      setFooterData(prev => ({
+                        ...prev,
+                        socialLinks: {
+                          ...prev.socialLinks,
+                          facebook: e.target.value,
+                        },
+                      }));
+                      trackSectionChange('footer');
+                    }}
+                    placeholder="https://facebook.com/yourpage"
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <FormLabel>Pinterest URL</FormLabel>
+                  <FormInput
+                    value={footerData.socialLinks.pinterest}
+                    onChange={e => {
+                      setFooterData(prev => ({
+                        ...prev,
+                        socialLinks: {
+                          ...prev.socialLinks,
+                          pinterest: e.target.value,
+                        },
+                      }));
+                      trackSectionChange('footer');
+                    }}
+                    placeholder="https://pinterest.com/yourhandle"
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <FormLabel>Twitter URL</FormLabel>
+                  <FormInput
+                    value={footerData.socialLinks.twitter}
+                    onChange={e => {
+                      setFooterData(prev => ({
+                        ...prev,
+                        socialLinks: {
+                          ...prev.socialLinks,
+                          twitter: e.target.value,
+                        },
+                      }));
+                      trackSectionChange('footer');
+                    }}
+                    placeholder="https://twitter.com/yourhandle"
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <FormLabel>LinkedIn URL</FormLabel>
+                  <FormInput
+                    value={footerData.socialLinks.linkedin}
+                    onChange={e => {
+                      setFooterData(prev => ({
+                        ...prev,
+                        socialLinks: {
+                          ...prev.socialLinks,
+                          linkedin: e.target.value,
+                        },
+                      }));
+                      trackSectionChange('footer');
+                    }}
+                    placeholder="https://linkedin.com/company/yourcompany"
+                  />
+                </FormGroup>
+              </FormGrid>
+            </div>
+
+            {/* Footer Columns */}
+            <div style={{ marginBottom: theme.spacing.xxl }}>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  marginBottom: theme.spacing.lg,
+                }}
+              >
+                <h3
+                  style={{
+                    fontSize: '1.3rem',
+                    fontWeight: 600,
+                    color: theme.colors.gray900,
+                    margin: 0,
+                  }}
+                >
+                  Footer Columns
+                </h3>
+                <ActionButton
+                  onClick={() => {
+                    setFooterData(prev => ({
+                      ...prev,
+                      columns: [
+                        ...prev.columns,
+                        {
+                          title: 'New Column',
+                          type: 'links',
+                          content: [{ text: 'Link 1', url: '#' }],
+                        },
+                      ],
+                    }));
+                    trackSectionChange('footer');
+                  }}
+                >
+                  <FaPlus />
+                  Add Column
+                </ActionButton>
+              </div>
+
+              {footerData.columns.map((column, columnIndex) => (
+                <div
+                  key={columnIndex}
+                  style={{
+                    background: theme.colors.gray50,
+                    padding: theme.spacing.lg,
+                    borderRadius: theme.borderRadius.md,
+                    marginBottom: theme.spacing.md,
+                  }}
+                >
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      marginBottom: theme.spacing.md,
+                    }}
+                  >
+                    <h4
+                      style={{
+                        margin: 0,
+                        fontSize: '1.1rem',
+                        fontWeight: 600,
+                        color: theme.colors.gray900,
+                      }}
+                    >
+                      Column {columnIndex + 1}
+                    </h4>
+                    <ActionButton
+                      variant="danger"
+                      onClick={() => {
+                        setFooterData(prev => ({
+                          ...prev,
+                          columns: prev.columns.filter(
+                            (_, i) => i !== columnIndex
+                          ),
+                        }));
+                        trackSectionChange('footer');
+                      }}
+                    >
+                      <FaTrash />
+                    </ActionButton>
+                  </div>
+
+                  <FormGrid>
+                    <FormGroup>
+                      <FormLabel>Column Title</FormLabel>
+                      <FormInput
+                        value={column.title}
+                        onChange={e => {
+                          setFooterData(prev => ({
+                            ...prev,
+                            columns: prev.columns.map((col, i) =>
+                              i === columnIndex
+                                ? { ...col, title: e.target.value }
+                                : col
+                            ),
+                          }));
+                          trackSectionChange('footer');
+                        }}
+                        placeholder="Column Title"
+                      />
+                    </FormGroup>
+                    <FormGroup>
+                      <FormLabel>Column Type</FormLabel>
+                      <select
+                        value={column.type}
+                        onChange={e => {
+                          const newType = e.target.value;
+                          let newContent;
+                          if (newType === 'links') {
+                            newContent = [{ text: 'Link 1', url: '#' }];
+                          } else if (newType === 'contact') {
+                            newContent = {
+                              showPhone: true,
+                              showEmail: true,
+                              showAddress: true,
+                              showHours: false,
+                            };
+                          } else {
+                            newContent = 'Text content';
+                          }
+
+                          setFooterData(prev => ({
+                            ...prev,
+                            columns: prev.columns.map((col, i) =>
+                              i === columnIndex
+                                ? { ...col, type: newType, content: newContent }
+                                : col
+                            ),
+                          }));
+                          trackSectionChange('footer');
+                        }}
+                        style={{
+                          padding: theme.spacing.md,
+                          border: `2px solid ${theme.colors.gray200}`,
+                          borderRadius: theme.borderRadius.md,
+                          fontSize: '1rem',
+                        }}
+                      >
+                        <option value="links">Links</option>
+                        <option value="contact">Contact Info</option>
+                        <option value="text">Text</option>
+                      </select>
+                    </FormGroup>
+                  </FormGrid>
+
+                  {/* Column Content Based on Type */}
+                  <div style={{ marginTop: theme.spacing.md }}>
+                    {column.type === 'links' &&
+                      Array.isArray(column.content) && (
+                        <div>
+                          <FormLabel>Links</FormLabel>
+                          {column.content.map((link, linkIndex) => (
+                            <div
+                              key={linkIndex}
+                              style={{
+                                display: 'flex',
+                                gap: theme.spacing.sm,
+                                marginBottom: theme.spacing.sm,
+                                alignItems: 'center',
+                              }}
+                            >
+                              <FormInput
+                                value={link.text}
+                                onChange={e => {
+                                  setFooterData(prev => ({
+                                    ...prev,
+                                    columns: prev.columns.map((col, i) =>
+                                      i === columnIndex
+                                        ? {
+                                            ...col,
+                                            content: col.content.map((l, j) =>
+                                              j === linkIndex
+                                                ? { ...l, text: e.target.value }
+                                                : l
+                                            ),
+                                          }
+                                        : col
+                                    ),
+                                  }));
+                                  trackSectionChange('footer');
+                                }}
+                                placeholder="Link Text"
+                                style={{ flex: 1 }}
+                              />
+                              <FormInput
+                                value={link.url}
+                                onChange={e => {
+                                  setFooterData(prev => ({
+                                    ...prev,
+                                    columns: prev.columns.map((col, i) =>
+                                      i === columnIndex
+                                        ? {
+                                            ...col,
+                                            content: col.content.map((l, j) =>
+                                              j === linkIndex
+                                                ? { ...l, url: e.target.value }
+                                                : l
+                                            ),
+                                          }
+                                        : col
+                                    ),
+                                  }));
+                                  trackSectionChange('footer');
+                                }}
+                                placeholder="Link URL"
+                                style={{ flex: 1 }}
+                              />
+                              <ActionButton
+                                variant="danger"
+                                onClick={() => {
+                                  setFooterData(prev => ({
+                                    ...prev,
+                                    columns: prev.columns.map((col, i) =>
+                                      i === columnIndex
+                                        ? {
+                                            ...col,
+                                            content: col.content.filter(
+                                              (_, j) => j !== linkIndex
+                                            ),
+                                          }
+                                        : col
+                                    ),
+                                  }));
+                                  trackSectionChange('footer');
+                                }}
+                              >
+                                <FaTrash />
+                              </ActionButton>
+                            </div>
+                          ))}
+                          <ActionButton
+                            onClick={() => {
+                              setFooterData(prev => ({
+                                ...prev,
+                                columns: prev.columns.map((col, i) =>
+                                  i === columnIndex
+                                    ? {
+                                        ...col,
+                                        content: [
+                                          ...col.content,
+                                          { text: 'New Link', url: '#' },
+                                        ],
+                                      }
+                                    : col
+                                ),
+                              }));
+                              trackSectionChange('footer');
+                            }}
+                          >
+                            <FaPlus />
+                            Add Link
+                          </ActionButton>
+                        </div>
+                      )}
+
+                    {column.type === 'contact' &&
+                      typeof column.content === 'object' &&
+                      !Array.isArray(column.content) && (
+                        <div>
+                          <FormLabel>Contact Information to Show</FormLabel>
+                          <div
+                            style={{
+                              display: 'flex',
+                              flexDirection: 'column',
+                              gap: theme.spacing.sm,
+                            }}
+                          >
+                            {Object.entries(column.content).map(
+                              ([key, value]) => (
+                                <label
+                                  key={key}
+                                  style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: theme.spacing.sm,
+                                    cursor: 'pointer',
+                                  }}
+                                >
+                                  <input
+                                    type="checkbox"
+                                    checked={value}
+                                    onChange={e => {
+                                      setFooterData(prev => ({
+                                        ...prev,
+                                        columns: prev.columns.map((col, i) =>
+                                          i === columnIndex
+                                            ? {
+                                                ...col,
+                                                content: {
+                                                  ...col.content,
+                                                  [key]: e.target.checked,
+                                                },
+                                              }
+                                            : col
+                                        ),
+                                      }));
+                                      trackSectionChange('footer');
+                                    }}
+                                  />
+                                  <span style={{ textTransform: 'capitalize' }}>
+                                    {key
+                                      .replace(/([A-Z])/g, ' $1')
+                                      .replace(/^./, str => str.toUpperCase())}
+                                  </span>
+                                </label>
+                              )
+                            )}
+                          </div>
+                        </div>
+                      )}
+
+                    {column.type === 'text' && (
+                      <div>
+                        <FormLabel>Text Content</FormLabel>
+                        <FormTextarea
+                          value={
+                            typeof column.content === 'string'
+                              ? column.content
+                              : ''
+                          }
+                          onChange={e => {
+                            setFooterData(prev => ({
+                              ...prev,
+                              columns: prev.columns.map((col, i) =>
+                                i === columnIndex
+                                  ? { ...col, content: e.target.value }
+                                  : col
+                              ),
+                            }));
+                            trackSectionChange('footer');
+                          }}
+                          placeholder="Enter text content for this column..."
+                          rows={4}
+                        />
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
             </div>
           </ContentSection>
         );

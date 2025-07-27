@@ -1,0 +1,951 @@
+{
+  "status": "success",
+  "statusCode": 200,
+  "message": "Wedding vendor data retrieved successfully",
+  "timestamp": "2024-01-20T12:00:00Z",
+  "data": {
+    "vendors": {
+      "elegant-events": {
+        "id": "elegant-events",
+        "name": "Elegant Events",
+        "category": "weddings",
+        "logo": "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=200&q=80",
+        "image": "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=800&q=80",
+        "heroVideo": "https://player.vimeo.com/video/123456789",
+        "tagline": "Creating magical moments that last a lifetime",
+        "rating": 4.9,
+        "reviewCount": 342,
+        "address": "567 Romance Lane, Wedding District",
+        "city": "San Francisco",
+        "state": "CA",
+        "zipCode": "94104",
+        "coordinates": { "lat": 37.7749, "lng": -122.4194 },
+        "distance": 0.5,
+        "description": "Creating magical moments for your special day. From intimate ceremonies to grand celebrations.",
+        "aboutUs": {
+          "text": "With over 10 years of experience in creating unforgettable weddings, Elegant Events has established itself as San Francisco's premier wedding planning company. Our team of dedicated professionals works tirelessly to ensure that your special day exceeds all expectations. We believe that every love story is unique, and we take pride in crafting personalized experiences that reflect your individual style and vision.",
+          "videoEmbed": "https://player.vimeo.com/video/123456789",
+          "experience": "10+ years",
+          "completedWeddings": "500+",
+          "satisfiedCouples": "498",
+          "experienceVisible": true,
+          "weddingsVisible": true,
+          "couplesVisible": true
+        },
+        "services": [
+          {
+            "id": "wedding-planning",
+            "name": "Wedding Planning",
+            "description": "Complete wedding planning from start to finish",
+            "icon": "💍",
+            "image": "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=300&q=80",
+            "price": "Starting at $2,500"
+          },
+          {
+            "id": "venue-decoration",
+            "name": "Venue Decoration",
+            "description": "Beautiful decorations to transform your venue",
+            "icon": "🌸",
+            "image": "https://images.unsplash.com/photo-1465495976277-4387d4b0e4a6?w=300&q=80",
+            "price": "Starting at $1,500"
+          },
+          {
+            "id": "floral-arrangements",
+            "name": "Floral Arrangements",
+            "description": "Custom bouquets and centerpieces",
+            "icon": "🌹",
+            "image": "https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=300&q=80",
+            "price": "Starting at $800"
+          },
+          {
+            "id": "catering",
+            "name": "Catering",
+            "description": "Exquisite dining experiences for your guests",
+            "icon": "🍽️",
+            "image": "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=300&q=80",
+            "price": "Starting at $50 per person"
+          }
+        ],
+        "specialties": [
+          "Wedding Planning",
+          "Venue Decoration",
+          "Floral Arrangements",
+          "Catering"
+        ],
+        "gallery": {
+          "decor": {
+            "title": "Decor",
+            "images": [
+              "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=400&q=80",
+              "https://images.unsplash.com/photo-1465495976277-4387d4b0e4a6?w=400&q=80",
+              "https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=400&q=80",
+              "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=400&q=80"
+            ]
+          },
+          "venues": {
+            "title": "Venues",
+            "images": [
+              "https://images.unsplash.com/photo-1464207687429-7505649dae38?w=400&q=80",
+              "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=400&q=80"
+            ]
+          },
+          "ceremonies": {
+            "title": "Ceremonies",
+            "images": [
+              "https://images.unsplash.com/photo-1606800052052-a08af7148866?w=400&q=80",
+              "https://images.unsplash.com/photo-1594736797933-d0411ba3da6a?w=400&q=80"
+            ]
+          }
+        },
+        "packages": [
+          {
+            "id": "intimate-package",
+            "name": "Intimate Package",
+            "price": "Starting at $2,500",
+            "description": "Perfect for intimate ceremonies up to 50 guests",
+            "features": [
+              "Event coordination",
+              "Floral arrangements",
+              "Basic decor",
+              "Day-of coordination"
+            ]
+          },
+          {
+            "id": "classic-package",
+            "name": "Classic Package",
+            "price": "Starting at $5,000",
+            "description": "Comprehensive planning for weddings up to 150 guests",
+            "features": [
+              "Full planning service",
+              "Venue decoration",
+              "Floral design",
+              "Vendor coordination",
+              "Day-of management"
+            ]
+          },
+          {
+            "id": "luxury-package",
+            "name": "Luxury Package",
+            "price": "Starting at $10,000",
+            "description": "Premium experience for grand celebrations",
+            "features": [
+              "Complete wedding design",
+              "Premium florals",
+              "Luxury decor",
+              "Full vendor management",
+              "Personal wedding coordinator"
+            ]
+          }
+        ],
+        "testimonials": [
+          {
+            "id": "testimonial-1",
+            "name": "Sarah & Michael Johnson",
+            "text": "Elegant Events made our dream wedding come true! Every detail was perfect, from the stunning floral arrangements to the seamless coordination. We couldn't have asked for a better team.",
+            "rating": 5,
+            "date": "2024-01-15",
+            "wedding": "San Francisco Garden Wedding"
+          },
+          {
+            "id": "testimonial-2",
+            "name": "Emily & David Chen",
+            "text": "Working with Elegant Events was the best decision we made for our wedding. They transformed our vision into reality and handled everything with such professionalism.",
+            "rating": 5,
+            "date": "2023-12-08",
+            "wedding": "Napa Valley Vineyard Wedding"
+          },
+          {
+            "id": "testimonial-3",
+            "name": "Jennifer & Mark Rodriguez",
+            "text": "From our first meeting to the last dance, Elegant Events exceeded our expectations. Their attention to detail and creative vision made our wedding absolutely magical.",
+            "rating": 5,
+            "date": "2023-11-20",
+            "wedding": "Oceanfront Ceremony"
+          }
+        ],
+        "faq": [
+          {
+            "id": "faq-1",
+            "question": "How far in advance should we book your services?",
+            "answer": "We recommend booking our services 12-18 months in advance, especially for peak wedding season (May-October). However, we can accommodate shorter timelines based on availability."
+          },
+          {
+            "id": "faq-2",
+            "question": "Do you offer day-of coordination services?",
+            "answer": "Yes! We offer day-of coordination as a standalone service for couples who have planned their own wedding but want professional support on their special day."
+          },
+          {
+            "id": "faq-3",
+            "question": "Can you work with our budget?",
+            "answer": "Absolutely! We offer packages at various price points and can customize our services to fit your budget while maximizing value and impact."
+          },
+          {
+            "id": "faq-4",
+            "question": "Do you provide vendors or do we need to find our own?",
+            "answer": "We have an extensive network of trusted vendors including photographers, musicians, caterers, and more. We can recommend and coordinate with vendors or work with your chosen suppliers."
+          }
+        ],
+        "locationPortfolio": [
+          {
+            "id": "napa-valley-vineyard",
+            "location": "Napa Valley Vineyard",
+            "city": "Napa Valley",
+            "state": "CA",
+            "weddingDate": "September 2023",
+            "coupleNames": "Sarah & Michael",
+            "description": "An enchanting vineyard wedding with rustic elegance and breathtaking sunset views.",
+            "coverImage": "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=800&q=80",
+            "gallery": [
+              "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=600&q=80",
+              "https://images.unsplash.com/photo-1465495976277-4387d4b0e4a6?w=600&q=80",
+              "https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=600&q=80",
+              "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=600&q=80",
+              "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=600&q=80",
+              "https://images.unsplash.com/photo-1464207687429-7505649dae38?w=600&q=80",
+              "https://images.unsplash.com/photo-1606800052052-a08af7148866?w=600&q=80",
+              "https://images.unsplash.com/photo-1594736797933-d0411ba3da6a?w=600&q=80"
+            ],
+            "services": [
+              "Full Wedding Planning",
+              "Floral Design",
+              "Venue Decoration",
+              "Day-of Coordination"
+            ],
+            "highlights": [
+              "Custom vineyard ceremony setup",
+              "Rustic chic reception decor",
+              "Farm-to-table catering coordination",
+              "Sunset photography session"
+            ]
+          },
+          {
+            "id": "golden-gate-park",
+            "location": "Golden Gate Park Pavilion",
+            "city": "San Francisco",
+            "state": "CA",
+            "weddingDate": "June 2023",
+            "coupleNames": "Emma & David",
+            "description": "A romantic garden party wedding in the heart of San Francisco with lush greenery and elegant details.",
+            "coverImage": "https://images.unsplash.com/photo-1464207687429-7505649dae38?w=800&q=80",
+            "gallery": [
+              "https://images.unsplash.com/photo-1464207687429-7505649dae38?w=600&q=80",
+              "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=600&q=80",
+              "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=600&q=80",
+              "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?w=600&q=80",
+              "https://images.unsplash.com/photo-1594736797933-d0411ba3da6a?w=600&q=80",
+              "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600&q=80"
+            ],
+            "services": [
+              "Event Planning",
+              "Garden Ceremony Setup",
+              "Reception Coordination"
+            ],
+            "highlights": [
+              "Botanical garden ceremony",
+              "Outdoor reception pavilion",
+              "City skyline backdrop",
+              "Eco-friendly decor elements"
+            ]
+          },
+          {
+            "id": "monterey-bay-resort",
+            "location": "Monterey Bay Resort",
+            "city": "Monterey",
+            "state": "CA",
+            "weddingDate": "August 2023",
+            "coupleNames": "Jennifer & Mark",
+            "description": "A stunning oceanfront wedding with coastal elegance and breathtaking Pacific Ocean views.",
+            "coverImage": "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=800&q=80",
+            "gallery": [
+              "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=600&q=80",
+              "https://images.unsplash.com/photo-1464207687429-7505649dae38?w=600&q=80",
+              "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=600&q=80",
+              "https://images.unsplash.com/photo-1606800052052-a08af7148866?w=600&q=80",
+              "https://images.unsplash.com/photo-1594736797933-d0411ba3da6a?w=600&q=80"
+            ],
+            "services": [
+              "Beachfront Ceremony",
+              "Resort Coordination",
+              "Coastal Decor",
+              "Vendor Management"
+            ],
+            "highlights": [
+              "Oceanfront ceremony arch",
+              "Sunset cocktail hour",
+              "Seaside reception setup",
+              "Marine-themed centerpieces"
+            ]
+          }
+        ],
+        "socialLinks": {
+          "instagram": "https://instagram.com/elegantevents",
+          "facebook": "https://facebook.com/elegantevents",
+          "pinterest": "https://pinterest.com/elegantevents"
+        },
+        "phone": "+1 (555) 567-LOVE",
+        "email": "info@elegantevents.com",
+        "website": "www.elegantevents.com",
+        "citiesCovered": [
+          "San Francisco",
+          "Oakland",
+          "San Jose",
+          "Napa Valley",
+          "Sonoma"
+        ],
+        "mapEmbed": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.019302046524!2d-122.41941548468146!3d37.77492927975951!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80858064b8c2da05%3A0x2e8c8a3b1e4c4e8f!2sSan%20Francisco%2C%20CA!5e0!3m2!1sen!2sus!4v1629825199000!5m2!1sen!2sus",
+        "hours": {
+          "monday": "9:00 AM - 6:00 PM",
+          "tuesday": "9:00 AM - 6:00 PM",
+          "wednesday": "9:00 AM - 6:00 PM",
+          "thursday": "9:00 AM - 6:00 PM",
+          "friday": "9:00 AM - 7:00 PM",
+          "saturday": "10:00 AM - 8:00 PM",
+          "sunday": "By Appointment"
+        },
+        "theme": {
+          "primaryColor": "#db2777",
+          "secondaryColor": "#f472b6",
+          "backgroundColor": "#fdf2f8",
+          "textColor": "#1f2937"
+        },
+        "featured": true,
+        "portfolioImages": [
+          "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=400&q=80",
+          "https://images.unsplash.com/photo-1465495976277-4387d4b0e4a6?w=400&q=80",
+          "https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=400&q=80"
+        ],
+        "sectionOrder": [
+          "hero",
+          "about-us",
+          "services-offered",
+          "recent-work",
+          "gallery",
+          "packages-pricing",
+          "testimonials",
+          "faq",
+          "contact",
+          "footer"
+        ],
+        "sectionVisibility": {
+          "hero": true,
+          "about-us": true,
+          "services-offered": true,
+          "recent-work": true,
+          "gallery": true,
+          "testimonials": true,
+          "packages-pricing": true,
+          "faq": true,
+          "contact": true,
+          "footer": true
+        },
+        "footerColumns": [
+          {
+            "title": "Quick Links",
+            "type": "links",
+            "content": [
+              { "text": "About Us", "url": "#about" },
+              { "text": "Services", "url": "#services" },
+              { "text": "Gallery", "url": "#gallery" },
+              { "text": "Contact", "url": "#contact" }
+            ]
+          },
+          {
+            "title": "Contact Info",
+            "type": "contact",
+            "content": {
+              "showPhone": true,
+              "showEmail": true,
+              "showAddress": true,
+              "showHours": false
+            }
+          }
+        ],
+        "footerCopyright": "© 2024 Elegant Events. All rights reserved.",
+        "footerBackgroundColor": "#1f2937",
+        "footerTextColor": "#ffffff",
+        "footerDescription": "Creating magical moments for your special day. From intimate ceremonies to grand celebrations."
+      }
+    },
+    "sections": {
+      "hero": {
+        "title": "Hero Section",
+        "description": "Main banner section with vendor name, tagline, and call-to-action",
+        "editable": true,
+        "required": true,
+        "fields": {
+          "name": {
+            "type": "text",
+            "label": "Business Name",
+            "required": true
+          },
+          "tagline": {
+            "type": "textarea",
+            "label": "Tagline",
+            "required": true
+          },
+          "backgroundImage": {
+            "type": "image",
+            "label": "Background Image",
+            "required": false
+          },
+          "heroVideo": {
+            "type": "video",
+            "label": "Background Video",
+            "required": false
+          },
+          "ctaText": {
+            "type": "text",
+            "label": "Call to Action Text",
+            "default": "Enquire Now"
+          }
+        }
+      },
+      "about-us": {
+        "title": "About Us",
+        "description": "Company description, mission, and statistics",
+        "editable": true,
+        "required": false,
+        "fields": {
+          "description": {
+            "type": "textarea",
+            "label": "Business Description",
+            "required": true
+          },
+          "mission": {
+            "type": "textarea",
+            "label": "Mission & Values",
+            "required": false
+          },
+          "experience": {
+            "type": "text",
+            "label": "Years of Experience",
+            "default": "10+ years"
+          },
+          "completedWeddings": {
+            "type": "text",
+            "label": "Completed Weddings",
+            "default": "500+"
+          },
+          "satisfiedCouples": {
+            "type": "text",
+            "label": "Satisfied Couples",
+            "default": "498"
+          },
+          "aboutImage": {
+            "type": "image",
+            "label": "About Section Image",
+            "required": false
+          },
+          "videoEmbed": {
+            "type": "video",
+            "label": "About Section Video",
+            "required": false
+          },
+          "statsVisibility": {
+            "type": "object",
+            "label": "Statistics Visibility",
+            "fields": {
+              "experienceVisible": { "type": "boolean", "default": true },
+              "weddingsVisible": { "type": "boolean", "default": true },
+              "couplesVisible": { "type": "boolean", "default": true }
+            }
+          }
+        }
+      },
+      "services-offered": {
+        "title": "Services Offered",
+        "description": "List of services provided by the vendor",
+        "editable": true,
+        "required": false,
+        "fields": {
+          "subtitle": {
+            "type": "text",
+            "label": "Section Subtitle",
+            "default": "We provide comprehensive wedding services to make your special day perfect"
+          },
+          "services": {
+            "type": "array",
+            "label": "Services",
+            "itemType": "object",
+            "fields": {
+              "name": {
+                "type": "text",
+                "label": "Service Name",
+                "required": true
+              },
+              "description": {
+                "type": "textarea",
+                "label": "Service Description",
+                "required": true
+              },
+              "price": {
+                "type": "text",
+                "label": "Starting Price",
+                "required": false
+              },
+              "icon": {
+                "type": "text",
+                "label": "Service Icon (emoji)",
+                "required": false
+              },
+              "image": {
+                "type": "image",
+                "label": "Service Image",
+                "required": false
+              }
+            }
+          }
+        }
+      },
+      "recent-work": {
+        "title": "Recent Work",
+        "description": "Portfolio of recent wedding projects",
+        "editable": true,
+        "required": false,
+        "fields": {
+          "subtitle": {
+            "type": "text",
+            "label": "Section Subtitle",
+            "default": "Explore some of our beautiful weddings across different venues and locations"
+          },
+          "portfolioLimit": {
+            "type": "number",
+            "label": "Number of Projects to Show",
+            "default": 3
+          },
+          "showViewMoreButton": {
+            "type": "boolean",
+            "label": "Show View Portfolio Button",
+            "default": true
+          }
+        }
+      },
+      "gallery": {
+        "title": "Gallery",
+        "description": "Image gallery organized by categories",
+        "editable": true,
+        "required": false,
+        "fields": {
+          "subtitle": {
+            "type": "text",
+            "label": "Section Subtitle",
+            "default": "Browse through our portfolio of beautiful weddings and events"
+          },
+          "categories": {
+            "type": "object",
+            "label": "Gallery Categories",
+            "dynamic": true,
+            "fields": {
+              "title": {
+                "type": "text",
+                "label": "Category Title",
+                "required": true
+              },
+              "images": {
+                "type": "array",
+                "itemType": "image",
+                "label": "Category Images"
+              }
+            }
+          }
+        }
+      },
+      "packages-pricing": {
+        "title": "Packages & Pricing",
+        "description": "Wedding packages and pricing information",
+        "editable": true,
+        "required": false,
+        "fields": {
+          "subtitle": {
+            "type": "text",
+            "label": "Section Subtitle",
+            "default": "Choose the perfect package for your wedding celebration"
+          },
+          "packages": {
+            "type": "array",
+            "label": "Packages",
+            "itemType": "object",
+            "fields": {
+              "name": {
+                "type": "text",
+                "label": "Package Name",
+                "required": true
+              },
+              "description": {
+                "type": "textarea",
+                "label": "Package Description",
+                "required": true
+              },
+              "price": {
+                "type": "text",
+                "label": "Package Price",
+                "required": true
+              },
+              "features": {
+                "type": "array",
+                "itemType": "text",
+                "label": "Package Features"
+              }
+            }
+          }
+        }
+      },
+      "testimonials": {
+        "title": "Testimonials",
+        "description": "Customer reviews and testimonials",
+        "editable": true,
+        "required": false,
+        "fields": {
+          "subtitle": {
+            "type": "text",
+            "label": "Section Subtitle",
+            "default": "Real testimonials from couples whose special day we helped create"
+          },
+          "testimonials": {
+            "type": "array",
+            "label": "Testimonials",
+            "itemType": "object",
+            "fields": {
+              "name": {
+                "type": "text",
+                "label": "Client Name",
+                "required": true
+              },
+              "text": {
+                "type": "textarea",
+                "label": "Testimonial Text",
+                "required": true
+              },
+              "rating": {
+                "type": "number",
+                "label": "Rating (1-5)",
+                "min": 1,
+                "max": 5,
+                "default": 5
+              },
+              "wedding": {
+                "type": "text",
+                "label": "Wedding Type/Location",
+                "required": false
+              },
+              "date": {
+                "type": "date",
+                "label": "Wedding Date",
+                "required": false
+              }
+            }
+          }
+        }
+      },
+      "faq": {
+        "title": "FAQ",
+        "description": "Frequently asked questions section",
+        "editable": true,
+        "required": false,
+        "fields": {
+          "subtitle": {
+            "type": "text",
+            "label": "Section Subtitle",
+            "default": "Find answers to common questions about our services"
+          },
+          "faqs": {
+            "type": "array",
+            "label": "FAQs",
+            "itemType": "object",
+            "fields": {
+              "question": {
+                "type": "text",
+                "label": "Question",
+                "required": true
+              },
+              "answer": {
+                "type": "textarea",
+                "label": "Answer",
+                "required": true
+              }
+            }
+          }
+        }
+      },
+      "contact": {
+        "title": "Contact",
+        "description": "Contact information and enquiry form",
+        "editable": true,
+        "required": true,
+        "fields": {
+          "subtitle": {
+            "type": "text",
+            "label": "Section Subtitle",
+            "default": "Ready to start planning your dream wedding? Send us a message!"
+          },
+          "phone": {
+            "type": "text",
+            "label": "Phone Number",
+            "required": true
+          },
+          "email": {
+            "type": "email",
+            "label": "Email Address",
+            "required": true
+          },
+          "address": {
+            "type": "text",
+            "label": "Business Address",
+            "required": true
+          },
+          "website": {
+            "type": "text",
+            "label": "Website URL",
+            "required": false
+          },
+          "hours": {
+            "type": "object",
+            "label": "Business Hours",
+            "fields": {
+              "monday": { "type": "text", "default": "9:00 AM - 6:00 PM" },
+              "tuesday": { "type": "text", "default": "9:00 AM - 6:00 PM" },
+              "wednesday": { "type": "text", "default": "9:00 AM - 6:00 PM" },
+              "thursday": { "type": "text", "default": "9:00 AM - 6:00 PM" },
+              "friday": { "type": "text", "default": "9:00 AM - 7:00 PM" },
+              "saturday": { "type": "text", "default": "10:00 AM - 8:00 PM" },
+              "sunday": { "type": "text", "default": "By Appointment" }
+            }
+          },
+          "citiesCovered": {
+            "type": "array",
+            "itemType": "text",
+            "label": "Cities Covered"
+          },
+          "mapEmbed": {
+            "type": "text",
+            "label": "Google Maps Embed URL",
+            "required": false
+          },
+          "socialLinks": {
+            "type": "object",
+            "label": "Social Media Links",
+            "fields": {
+              "instagram": { "type": "text", "label": "Instagram URL" },
+              "facebook": { "type": "text", "label": "Facebook URL" },
+              "pinterest": { "type": "text", "label": "Pinterest URL" },
+              "twitter": { "type": "text", "label": "Twitter URL" },
+              "linkedin": { "type": "text", "label": "LinkedIn URL" }
+            }
+          }
+        }
+      },
+      "footer": {
+        "title": "Footer",
+        "description": "Website footer with links and information",
+        "editable": true,
+        "required": true,
+        "fields": {
+          "companyName": {
+            "type": "text",
+            "label": "Company Name",
+            "required": true
+          },
+          "description": {
+            "type": "textarea",
+            "label": "Footer Description",
+            "required": false
+          },
+          "columns": {
+            "type": "array",
+            "label": "Footer Columns",
+            "itemType": "object",
+            "fields": {
+              "title": {
+                "type": "text",
+                "label": "Column Title",
+                "required": true
+              },
+              "type": {
+                "type": "select",
+                "options": ["links", "contact", "text"],
+                "default": "links"
+              },
+              "content": {
+                "type": "dynamic",
+                "label": "Column Content",
+                "description": "Content varies based on column type"
+              }
+            },
+            "default": [
+              {
+                "title": "Quick Links",
+                "type": "links",
+                "content": [
+                  { "text": "About Us", "url": "#about" },
+                  { "text": "Services", "url": "#services" },
+                  { "text": "Gallery", "url": "#gallery" },
+                  { "text": "Contact", "url": "#contact" }
+                ]
+              },
+              {
+                "title": "Contact Info",
+                "type": "contact",
+                "content": {
+                  "showPhone": true,
+                  "showEmail": true,
+                  "showAddress": true,
+                  "showHours": false
+                }
+              }
+            ]
+          },
+          "socialLinks": {
+            "type": "object",
+            "label": "Footer Social Links",
+            "fields": {
+              "instagram": { "type": "text", "label": "Instagram URL" },
+              "facebook": { "type": "text", "label": "Facebook URL" },
+              "pinterest": { "type": "text", "label": "Pinterest URL" },
+              "twitter": { "type": "text", "label": "Twitter URL" },
+              "linkedin": { "type": "text", "label": "LinkedIn URL" }
+            }
+          },
+          "copyrightText": {
+            "type": "text",
+            "label": "Copyright Text",
+            "default": "© 2024 {companyName}. All rights reserved."
+          },
+          "backgroundColor": {
+            "type": "color",
+            "label": "Footer Background Color",
+            "default": "#1f2937"
+          },
+          "textColor": {
+            "type": "color",
+            "label": "Footer Text Color",
+            "default": "#ffffff"
+          }
+        }
+      }
+    },
+    "defaultSectionOrder": [
+      "hero",
+      "about-us",
+      "services-offered",
+      "recent-work",
+      "gallery",
+      "packages-pricing",
+      "testimonials",
+      "faq",
+      "contact",
+      "footer"
+    ],
+    "defaultSectionVisibility": {
+      "hero": true,
+      "about-us": true,
+      "services-offered": true,
+      "recent-work": true,
+      "gallery": true,
+      "packages-pricing": true,
+      "testimonials": true,
+      "faq": true,
+      "contact": true,
+      "footer": true
+    },
+    "websiteTemplates": {
+      "default": {
+        "name": "Classic Wedding Vendor",
+        "description": "Clean and elegant design perfect for wedding vendors",
+        "sections": [
+          "hero",
+          "about-us",
+          "services-offered",
+          "recent-work",
+          "gallery",
+          "packages-pricing",
+          "testimonials",
+          "faq",
+          "contact",
+          "footer"
+        ],
+        "theme": {
+          "primaryColor": "#db2777",
+          "secondaryColor": "#f472b6",
+          "backgroundColor": "#fdf2f8",
+          "textColor": "#1f2937"
+        }
+      },
+      "modern": {
+        "name": "Modern Minimalist",
+        "description": "Clean, modern design with focus on photography",
+        "sections": [
+          "hero",
+          "about-us",
+          "gallery",
+          "services-offered",
+          "testimonials",
+          "contact",
+          "footer"
+        ],
+        "theme": {
+          "primaryColor": "#059669",
+          "secondaryColor": "#10b981",
+          "backgroundColor": "#f0fdf4",
+          "textColor": "#1f2937"
+        }
+      },
+      "luxury": {
+        "name": "Luxury Premium",
+        "description": "Elegant and sophisticated design for premium vendors",
+        "sections": [
+          "hero",
+          "about-us",
+          "services-offered",
+          "recent-work",
+          "packages-pricing",
+          "gallery",
+          "testimonials",
+          "faq",
+          "contact",
+          "footer"
+        ],
+        "theme": {
+          "primaryColor": "#7c3aed",
+          "secondaryColor": "#a855f7",
+          "backgroundColor": "#faf5ff",
+          "textColor": "#1f2937"
+        }
+      }
+    },
+    "bookings": [
+      {
+        "id": "booking-1",
+        "vendorId": "elegant-events",
+        "userId": "user123",
+        "vendorName": "Elegant Events",
+        "packageId": "classic-package",
+        "packageName": "Classic Package",
+        "eventDate": "2024-06-15",
+        "eventTime": "4:00 PM",
+        "venue": "Golden Gate Park Pavilion",
+        "guestCount": 120,
+        "totalPrice": 7500,
+        "status": "confirmed",
+        "bookingDate": "2024-01-20",
+        "clientName": "Emily & David Chen",
+        "clientEmail": "emily.chen@example.com",
+        "clientPhone": "+1 (555) 123-4567",
+        "specialRequests": "Eco-friendly decorations preferred",
+        "services": [
+          "Full planning service",
+          "Venue decoration",
+          "Floral design",
+          "Vendor coordination",
+          "Day-of management"
+        ]
+      }
+    ]
+  },
+  "meta": {
+    "totalVendors": 1,
+    "totalBookings": 1,
+    "requestId": "req_wedding_12345",
+    "version": "2.0",
+    "responseTime": "95ms"
+  }
+}

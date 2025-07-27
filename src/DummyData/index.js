@@ -4,7 +4,7 @@
 import * as AutomobileData from './automobiles';
 import * as BusinessData from './business';
 import * as EcommerceData from './ecommerce';
-import * as WeddingData from './weddings';
+import * as WeddingData from '../utils/weddingAPI';
 import * as PlatformData from './platform';
 // Hotel data now comes from hotels.json via hotelAPI
 import {
@@ -33,7 +33,8 @@ export const hotelBookings = getStaticBookingsData();
 export const ownerHotels = getOwnerHotels('owner123'); // Default owner for compatibility
 export const amenitiesList = getStaticAmenitiesData();
 
-export const { weddingVendors } = WeddingData;
+export const weddingVendors = WeddingData.getStaticWeddingVendors();
+export const weddingBookings = WeddingData.getStaticWeddingBookings();
 
 export const {
   storeCategories,
@@ -114,12 +115,14 @@ export const searchHotels = searchTerm => {
   );
 };
 
-// Wedding functions
+// Wedding functions - now from weddingAPI
 export const {
   getVendorsByLocation: getWeddingVendorsByLocation,
   getVendorById: getWeddingVendorById,
   getFeaturedVendors: getWeddingFeaturedVendors,
   searchVendors: searchWeddingVendors,
+  getBookingsByVendorId: getWeddingBookingsByVendorId,
+  getBookingsByUserId: getWeddingBookingsByUserId,
 } = WeddingData;
 
 // Legacy compatibility exports (maintain the exact same names for backward compatibility)

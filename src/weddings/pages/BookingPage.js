@@ -16,7 +16,7 @@ import {
   FaComment,
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
-import { getVendorById } from '../data/vendors';
+import { getVendorById } from '../../utils/weddingAPI';
 
 const PageContainer = styled.div`
   min-height: 100vh;

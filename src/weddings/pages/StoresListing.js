@@ -10,7 +10,7 @@ import {
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
 import StoreCard from '../../components/shared/StoreCard';
-import { weddingVendors } from '../data/vendors';
+import { getStaticWeddingVendors } from '../../utils/weddingAPI';
 import {
   getCurrentLocation,
   getLocationFromZip,
@@ -350,7 +350,7 @@ const WeddingStoresListing = () => {
 
   const loadStoresForLocation = useCallback(location => {
     const vendorsWithDistance = updateVendorsWithDistance(
-      weddingVendors,
+      getStaticWeddingVendors(),
       location
     );
     setStores(vendorsWithDistance);

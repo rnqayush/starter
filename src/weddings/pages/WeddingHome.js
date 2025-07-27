@@ -23,7 +23,7 @@ import {
   FaTimes,
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
-import { weddingVendors } from '../data/vendors';
+import { getStaticWeddingVendors } from '../../utils/weddingAPI';
 import {
   getCurrentLocation,
   getLocationFromZip,
@@ -714,7 +714,7 @@ const WeddingHome = () => {
 
   const loadVendorsForLocation = useCallback(location => {
     const vendorsWithDistance = updateVendorsWithDistance(
-      weddingVendors,
+      getStaticWeddingVendors(),
       location
     );
     setVendors(vendorsWithDistance);
