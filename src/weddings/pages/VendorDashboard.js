@@ -57,10 +57,11 @@ import {
   updatePackages,
   updateRecentWork,
   updateCustomSections,
-  saveChanges,
-  discardChanges,
+  saveVendorChanges,
+  discardVendorChanges,
   toggleSectionVisibility,
-} from '../../store/slices/vendorManagementSlice';
+  toggleRealTimeUpdates,
+} from '../../store/slices/weddingManagementSlice';
 
 const DashboardContainer = styled.div`
   min-height: 100vh;
