@@ -1263,6 +1263,8 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
   const handleSaveAndGoLive = () => {
     if (!editingHotel) return;
 
+    console.log('Publishing changes for hotel:', editingHotel.name);
+
     // Save section order along with other changes
     dispatch(updateHotelField({ field: 'sectionOrder', value: sectionOrder }));
 
@@ -1277,6 +1279,7 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
     // Then publish draft changes to live data
     dispatch(publishChanges());
 
+    console.log('Changes published to live data');
     alert('All changes published to live hotel page successfully!');
   };
 
