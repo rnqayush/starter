@@ -1,0 +1,720 @@
+{
+  "success": true,
+  "timestamp": "2024-01-15T10:30:00.000Z",
+  "data": {
+    "vendor": {
+      "id": "luxury-auto-gallery",
+      "name": "Luxury Auto Gallery",
+      "slug": "luxury-auto-gallery",
+      "category": "automobiles",
+      "owner": {
+        "id": "owner_001",
+        "name": "Michael Rodriguez",
+        "email": "michael@luxuryautogallery.com",
+        "phone": "+1 (555) 123-LUXURY",
+        "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&q=80",
+        "businessLicense": "DEALER-LIC-2024-001",
+        "joinedDate": "2019-03-15",
+        "verified": true
+      },
+      "businessInfo": {
+        "logo": "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=200&q=80",
+        "coverImage": "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800&q=80",
+        "description": "Premium luxury vehicles from world-renowned brands. Experience excellence in automotive craftsmanship with our curated selection of luxury cars, sports cars, and electric vehicles.",
+        "establishedYear": 2019,
+        "licenseNumber": "DEALER-2024-SF-001",
+        "taxId": "TAX-ID-001-SF",
+        "website": "www.luxuryautogallery.com",
+        "socialMedia": {
+          "facebook": "https://facebook.com/luxuryautogallery",
+          "instagram": "https://instagram.com/luxuryautogallery",
+          "twitter": "https://twitter.com/luxuryautogallery",
+          "youtube": "https://youtube.com/luxuryautogallery"
+        }
+      },
+      "contact": {
+        "email": "sales@luxuryautogallery.com",
+        "phone": "+1 (555) 123-LUXURY",
+        "address": {
+          "street": "123 Auto Mile",
+          "city": "San Francisco",
+          "state": "CA",
+          "zipCode": "94110",
+          "country": "USA",
+          "coordinates": {
+            "lat": 37.7749,
+            "lng": -122.4194
+          }
+        },
+        "hours": {
+          "monday": { "open": "09:00", "close": "19:00", "isOpen": true },
+          "tuesday": { "open": "09:00", "close": "19:00", "isOpen": true },
+          "wednesday": { "open": "09:00", "close": "19:00", "isOpen": true },
+          "thursday": { "open": "09:00", "close": "19:00", "isOpen": true },
+          "friday": { "open": "09:00", "close": "20:00", "isOpen": true },
+          "saturday": { "open": "10:00", "close": "20:00", "isOpen": true },
+          "sunday": { "open": "12:00", "close": "18:00", "isOpen": true }
+        },
+        "timezone": "America/Los_Angeles"
+      },
+      "rating": {
+        "average": 4.8,
+        "totalReviews": 523,
+        "breakdown": {
+          "5": 412,
+          "4": 89,
+          "3": 15,
+          "2": 5,
+          "1": 2
+        }
+      },
+      "specialties": [
+        "Luxury Cars",
+        "Sports Cars", 
+        "Electric Vehicles",
+        "Custom Modifications"
+      ],
+      "certifications": [
+        "BMW Authorized Dealer",
+        "Mercedes-Benz Certified",
+        "Tesla Approved Service Center",
+        "ASE Certified Technicians"
+      ],
+      "services": [
+        "Vehicle Sales",
+        "Financing & Leasing",
+        "Trade-In Appraisal",
+        "Service & Maintenance",
+        "Parts & Accessories",
+        "Extended Warranties",
+        "Insurance Services",
+        "Vehicle Delivery"
+      ],
+      "theme": {
+        "primaryColor": "#1f2937",
+        "secondaryColor": "#374151",
+        "backgroundColor": "#f9fafb",
+        "textColor": "#1f2937",
+        "accentColor": "#3b82f6",
+        "fontFamily": "Inter, system-ui, sans-serif"
+      },
+      "settings": {
+        "featured": true,
+        "acceptsOnlineOrders": true,
+        "deliveryAvailable": true,
+        "financingAvailable": true,
+        "tradeInAccepted": true,
+        "warranty": true,
+        "language": "en",
+        "currency": "USD",
+        "paymentMethods": ["cash", "financing", "lease", "credit_card", "bank_transfer"]
+      },
+      "inventory": {
+        "totalVehicles": 120,
+        "categories": [
+          { "type": "Luxury Sedans", "count": 45, "value": 4500000 },
+          { "type": "Sports Cars", "count": 28, "value": 3200000 },
+          { "type": "SUVs", "count": 32, "value": 2800000 },
+          { "type": "Electric Vehicles", "count": 15, "value": 1900000 }
+        ],
+        "totalValue": 12400000,
+        "lastUpdated": "2024-01-15T10:00:00.000Z"
+      },
+      "analytics": {
+        "totalSales": 156,
+        "totalRevenue": 18750000,
+        "averageSalePrice": 120192,
+        "conversionRate": 0.68,
+        "customerSatisfaction": 4.8,
+        "yearlyGrowth": 0.23
+      }
+    },
+    "categories": [
+      {
+        "id": 1,
+        "name": "Luxury Cars",
+        "slug": "luxury-cars",
+        "image": "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=500&q=80",
+        "description": "Premium luxury vehicles and supercars",
+        "vehicleCount": 45,
+        "priceRange": {
+          "min": 65000,
+          "max": 250000
+        },
+        "featured": true,
+        "tags": ["premium", "comfort", "performance", "technology"]
+      },
+      {
+        "id": 2,
+        "name": "Electric Vehicles",
+        "slug": "electric-vehicles",
+        "image": "https://images.unsplash.com/photo-1593941707882-a5bac6861d75?w=500&q=80",
+        "description": "Eco-friendly electric and hybrid vehicles",
+        "vehicleCount": 28,
+        "priceRange": {
+          "min": 45000,
+          "max": 180000
+        },
+        "featured": true,
+        "tags": ["eco-friendly", "sustainable", "technology", "efficient"]
+      },
+      {
+        "id": 3,
+        "name": "SUVs & Trucks",
+        "slug": "suvs-trucks",
+        "image": "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=500&q=80",
+        "description": "Family SUVs, pickup trucks, and off-road vehicles",
+        "vehicleCount": 32,
+        "priceRange": {
+          "min": 35000,
+          "max": 120000
+        },
+        "featured": true,
+        "tags": ["family", "utility", "off-road", "spacious"]
+      },
+      {
+        "id": 4,
+        "name": "Classic Cars",
+        "slug": "classic-cars",
+        "image": "https://images.unsplash.com/photo-1502877338535-766e1452684a?w=500&q=80",
+        "description": "Vintage and classic automobiles",
+        "vehicleCount": 15,
+        "priceRange": {
+          "min": 55000,
+          "max": 300000
+        },
+        "featured": false,
+        "tags": ["vintage", "collector", "investment", "rare"]
+      }
+    ],
+    "vehicles": [
+      {
+        "id": 1,
+        "name": "2024 Mercedes-Benz S-Class",
+        "slug": "2024-mercedes-benz-s-class",
+        "sku": "MB-S500-2024-001",
+        "category": {
+          "id": 1,
+          "name": "Luxury Cars",
+          "slug": "luxury-cars"
+        },
+        "make": "Mercedes-Benz",
+        "model": "S-Class",
+        "year": 2024,
+        "trim": "S 500 4MATIC",
+        "condition": "new",
+        "mileage": 0,
+        "vin": "WDDUG8CB8PA123456",
+        "stockNumber": "STOCK-001-2024",
+        "pricing": {
+          "price": 109899,
+          "originalPrice": 119899,
+          "msrp": 119899,
+          "savings": 10000,
+          "currency": "USD",
+          "onSale": true,
+          "saleEndDate": "2024-02-15T23:59:59.000Z",
+          "financing": {
+            "available": true,
+            "downPayment": 21980,
+            "monthlyPayment": 1456,
+            "term": 60,
+            "apr": 3.9
+          },
+          "lease": {
+            "available": true,
+            "monthlyPayment": 899,
+            "downPayment": 5000,
+            "term": 36,
+            "annualMileage": 12000
+          }
+        },
+        "media": {
+          "mainImage": "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=500&q=80",
+          "images": [
+            {
+              "url": "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=800&q=80",
+              "alt": "2024 Mercedes-Benz S-Class exterior front view",
+              "type": "exterior"
+            },
+            {
+              "url": "https://images.unsplash.com/photo-1563720223185-11003d516935?w=800&q=80",
+              "alt": "2024 Mercedes-Benz S-Class interior dashboard",
+              "type": "interior"
+            },
+            {
+              "url": "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=800&q=80",
+              "alt": "2024 Mercedes-Benz S-Class side profile",
+              "type": "exterior"
+            }
+          ],
+          "video": "https://example.com/videos/mercedes-s-class-2024.mp4"
+        },
+        "description": "Experience ultimate luxury with the latest Mercedes-Benz S-Class featuring cutting-edge technology and unparalleled comfort. This flagship sedan represents the pinnacle of automotive engineering with its sophisticated design, advanced safety features, and premium materials throughout.",
+        "keyFeatures": [
+          "MBUX Hyperscreen with AI assistance",
+          "Executive rear seating package with massage",
+          "Air suspension with adaptive damping",
+          "Burmester 4D surround sound system",
+          "Level 3 autonomous driving capability"
+        ],
+        "specifications": {
+          "engine": {
+            "type": "3.0L Twin-Turbo V6 with EQBoost",
+            "horsepower": 429,
+            "torque": "384 lb-ft",
+            "fuelType": "Premium Gasoline"
+          },
+          "performance": {
+            "acceleration": "0-60 mph in 4.9 seconds",
+            "topSpeed": "130 mph (electronically limited)",
+            "transmission": "9-Speed Automatic (9G-TRONIC)",
+            "drivetrain": "All-Wheel Drive (4MATIC)"
+          },
+          "efficiency": {
+            "mpgCity": 23,
+            "mpgHighway": 32,
+            "mpgCombined": 27,
+            "fuelTankCapacity": "21.1 gallons",
+            "emissionsRating": "ULEV30"
+          },
+          "dimensions": {
+            "length": "206.5 inches",
+            "width": "74.8 inches",
+            "height": "58.9 inches",
+            "wheelbase": "124.6 inches",
+            "curbWeight": "4,630 lbs",
+            "seatingCapacity": 5,
+            "cargoCapacity": "12.8 cubic feet"
+          },
+          "exterior": {
+            "colors": ["Black", "White", "Silver", "Blue", "Red"],
+            "wheels": "20-inch AMG multi-spoke alloy wheels",
+            "lighting": "MULTIBEAM LED headlights with Adaptive Highbeam Assist",
+            "roof": "Panoramic sunroof"
+          },
+          "interior": {
+            "upholstery": "Nappa leather with diamond quilting",
+            "trim": "Open-pore wood trim",
+            "climate": "4-zone automatic climate control",
+            "seats": "Heated, ventilated, and massaging front and rear seats"
+          },
+          "technology": {
+            "infotainment": "MBUX with 12.8-inch OLED display",
+            "connectivity": "Mercedes me connect services",
+            "audio": "Burmester High-End 4D Surround Sound",
+            "navigation": "MBUX Navigation Premium"
+          },
+          "safety": {
+            "rating": "5-Star NHTSA",
+            "features": [
+              "Active Brake Assist",
+              "Blind Spot Assist",
+              "Lane Keeping Assist",
+              "Pre-Safe System",
+              "9 airbags including knee airbags"
+            ]
+          }
+        },
+        "availability": {
+          "status": "in_stock",
+          "quantity": 8,
+          "location": "San Francisco Showroom",
+          "estimatedDelivery": "1-3 business days",
+          "reservationRequired": false
+        },
+        "reviews": {
+          "rating": 4.9,
+          "totalReviews": 127,
+          "breakdown": {
+            "5": 108,
+            "4": 15,
+            "3": 3,
+            "2": 1,
+            "1": 0
+          }
+        },
+        "warranty": {
+          "basic": "4 years / 50,000 miles",
+          "powertrain": "4 years / 50,000 miles",
+          "corrosion": "4 years unlimited miles",
+          "roadside": "4 years unlimited miles",
+          "extended": {
+            "available": true,
+            "options": [
+              "6 years / 75,000 miles",
+              "8 years / 100,000 miles"
+            ]
+          }
+        },
+        "tags": ["luxury", "sedan", "new", "featured", "on-sale", "financing-available"],
+        "featured": true,
+        "createdAt": "2024-01-10T09:00:00.000Z",
+        "updatedAt": "2024-01-15T10:30:00.000Z"
+      },
+      {
+        "id": 2,
+        "name": "2024 BMW X5 M50i",
+        "slug": "2024-bmw-x5-m50i",
+        "sku": "BMW-X5-2024-002",
+        "category": {
+          "id": 1,
+          "name": "Luxury Cars",
+          "slug": "luxury-cars"
+        },
+        "make": "BMW",
+        "model": "X5",
+        "year": 2024,
+        "trim": "M50i",
+        "condition": "new",
+        "mileage": 0,
+        "vin": "5UXCR6C04P9A12345",
+        "stockNumber": "STOCK-002-2024",
+        "pricing": {
+          "price": 73900,
+          "originalPrice": null,
+          "msrp": 73900,
+          "savings": 0,
+          "currency": "USD",
+          "onSale": false,
+          "financing": {
+            "available": true,
+            "downPayment": 14780,
+            "monthlyPayment": 989,
+            "term": 60,
+            "apr": 4.2
+          },
+          "lease": {
+            "available": true,
+            "monthlyPayment": 699,
+            "downPayment": 4000,
+            "term": 36,
+            "annualMileage": 12000
+          }
+        },
+        "media": {
+          "mainImage": "https://images.unsplash.com/photo-1555215695-3004980ad54e?w=500&q=80",
+          "images": [
+            {
+              "url": "https://images.unsplash.com/photo-1555215695-3004980ad54e?w=800&q=80",
+              "alt": "2024 BMW X5 M50i exterior",
+              "type": "exterior"
+            },
+            {
+              "url": "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=800&q=80",
+              "alt": "2024 BMW X5 M50i interior",
+              "type": "interior"
+            },
+            {
+              "url": "https://images.unsplash.com/photo-1570294752112-27ac5df09ba9?w=800&q=80",
+              "alt": "2024 BMW X5 M50i rear view",
+              "type": "exterior"
+            }
+          ]
+        },
+        "description": "The ultimate luxury SUV combining performance, comfort, and cutting-edge technology for the modern driver. The BMW X5 M50i delivers exceptional driving dynamics with its powerful engine and advanced chassis systems.",
+        "keyFeatures": [
+          "M Performance TwinPower Turbo engine",
+          "xDrive intelligent all-wheel drive",
+          "Panoramic moonroof",
+          "Harman Kardon surround sound",
+          "Wireless Apple CarPlay & Android Auto"
+        ],
+        "specifications": {
+          "engine": {
+            "type": "4.4L Twin-Turbo V8",
+            "horsepower": 523,
+            "torque": "553 lb-ft",
+            "fuelType": "Premium Gasoline"
+          },
+          "performance": {
+            "acceleration": "0-60 mph in 4.1 seconds",
+            "topSpeed": "155 mph (electronically limited)",
+            "transmission": "8-Speed Automatic with Steptronic",
+            "drivetrain": "All-Wheel Drive (xDrive)"
+          },
+          "efficiency": {
+            "mpgCity": 17,
+            "mpgHighway": 22,
+            "mpgCombined": 19,
+            "fuelTankCapacity": "21.9 gallons"
+          },
+          "dimensions": {
+            "length": "194.3 inches",
+            "width": "78.9 inches",
+            "height": "69.4 inches",
+            "wheelbase": "117.1 inches",
+            "curbWeight": "5,072 lbs",
+            "seatingCapacity": 7,
+            "cargoCapacity": "33.9 cubic feet"
+          }
+        },
+        "availability": {
+          "status": "in_stock",
+          "quantity": 12,
+          "location": "San Francisco Showroom",
+          "estimatedDelivery": "1-3 business days",
+          "reservationRequired": false
+        },
+        "reviews": {
+          "rating": 4.7,
+          "totalReviews": 89,
+          "breakdown": {
+            "5": 68,
+            "4": 16,
+            "3": 4,
+            "2": 1,
+            "1": 0
+          }
+        },
+        "warranty": {
+          "basic": "4 years / 50,000 miles",
+          "powertrain": "4 years / 50,000 miles",
+          "corrosion": "12 years unlimited miles",
+          "roadside": "4 years unlimited miles"
+        },
+        "tags": ["luxury", "suv", "new", "featured", "performance"],
+        "featured": true,
+        "createdAt": "2024-01-08T14:30:00.000Z",
+        "updatedAt": "2024-01-15T10:30:00.000Z"
+      },
+      {
+        "id": 3,
+        "name": "2024 Tesla Model S Plaid",
+        "slug": "2024-tesla-model-s-plaid",
+        "sku": "TSL-MS-2024-003",
+        "category": {
+          "id": 2,
+          "name": "Electric Vehicles",
+          "slug": "electric-vehicles"
+        },
+        "make": "Tesla",
+        "model": "Model S",
+        "year": 2024,
+        "trim": "Plaid",
+        "condition": "new",
+        "mileage": 0,
+        "vin": "5YJ3E1EA4PF123456",
+        "stockNumber": "STOCK-003-2024",
+        "pricing": {
+          "price": 129990,
+          "originalPrice": null,
+          "msrp": 129990,
+          "savings": 0,
+          "currency": "USD",
+          "onSale": false,
+          "financing": {
+            "available": true,
+            "downPayment": 25998,
+            "monthlyPayment": 1734,
+            "term": 60,
+            "apr": 3.5
+          },
+          "lease": {
+            "available": true,
+            "monthlyPayment": 1299,
+            "downPayment": 7500,
+            "term": 36,
+            "annualMileage": 12000
+          }
+        },
+        "media": {
+          "mainImage": "https://images.unsplash.com/photo-1617788138017-80ad40651399?w=500&q=80",
+          "images": [
+            {
+              "url": "https://images.unsplash.com/photo-1617788138017-80ad40651399?w=800&q=80",
+              "alt": "2024 Tesla Model S Plaid exterior",
+              "type": "exterior"
+            },
+            {
+              "url": "https://images.unsplash.com/photo-1571068316344-75bc76f77890?w=800&q=80",
+              "alt": "2024 Tesla Model S Plaid interior",
+              "type": "interior"
+            },
+            {
+              "url": "https://images.unsplash.com/photo-1560958089-b8a1929cea89?w=800&q=80",
+              "alt": "2024 Tesla Model S Plaid charging",
+              "type": "lifestyle"
+            }
+          ]
+        },
+        "description": "The fastest production sedan ever built with tri-motor all-wheel drive and revolutionary technology. The Model S Plaid represents the pinnacle of electric vehicle performance and innovation.",
+        "keyFeatures": [
+          "Tri-motor all-wheel drive",
+          "17-inch cinematic display",
+          "Full self-driving capability (optional)",
+          "Over-the-air software updates",
+          "Carbon fiber interior trim"
+        ],
+        "specifications": {
+          "engine": {
+            "type": "Electric Tri-Motor",
+            "horsepower": 1020,
+            "torque": "1047 lb-ft",
+            "fuelType": "Electric"
+          },
+          "performance": {
+            "acceleration": "0-60 mph in 1.99 seconds",
+            "topSpeed": "200 mph",
+            "transmission": "Single-Speed",
+            "drivetrain": "All-Wheel Drive"
+          },
+          "efficiency": {
+            "range": "396 miles EPA estimated",
+            "efficiency": "120 MPGe combined",
+            "chargingSpeed": "200 miles in 15 minutes (Supercharger V3)",
+            "batteryCapacity": "100 kWh"
+          },
+          "dimensions": {
+            "length": "196.0 inches",
+            "width": "77.3 inches",
+            "height": "56.9 inches",
+            "wheelbase": "116.5 inches",
+            "curbWeight": "4,766 lbs",
+            "seatingCapacity": 5,
+            "cargoCapacity": "28.0 cubic feet"
+          }
+        },
+        "availability": {
+          "status": "limited_stock",
+          "quantity": 6,
+          "location": "San Francisco Showroom",
+          "estimatedDelivery": "2-4 weeks",
+          "reservationRequired": true
+        },
+        "reviews": {
+          "rating": 4.8,
+          "totalReviews": 203,
+          "breakdown": {
+            "5": 168,
+            "4": 28,
+            "3": 5,
+            "2": 2,
+            "1": 0
+          }
+        },
+        "warranty": {
+          "basic": "4 years / 50,000 miles",
+          "battery": "8 years / 150,000 miles",
+          "drivetrain": "8 years / 150,000 miles"
+        },
+        "tags": ["electric", "sedan", "new", "featured", "performance", "luxury"],
+        "featured": true,
+        "createdAt": "2024-01-05T11:15:00.000Z",
+        "updatedAt": "2024-01-15T10:30:00.000Z"
+      }
+    ],
+    "promotions": [
+      {
+        "id": "promo_001",
+        "title": "New Year Special - Save $10,000",
+        "description": "Save up to $10,000 on select luxury vehicles. Limited time offer until February 29th.",
+        "discount": {
+          "type": "fixed",
+          "amount": 10000,
+          "currency": "USD"
+        },
+        "validFrom": "2024-01-01T00:00:00.000Z",
+        "validUntil": "2024-02-29T23:59:59.000Z",
+        "applicableVehicles": [1],
+        "terms": "Cannot be combined with other offers. Valid on select vehicles only.",
+        "active": true
+      },
+      {
+        "id": "promo_002",
+        "title": "0% APR Financing Available",
+        "description": "Qualified buyers can get 0% APR financing for up to 60 months on select models.",
+        "discount": {
+          "type": "financing",
+          "apr": 0,
+          "term": 60
+        },
+        "validFrom": "2024-01-01T00:00:00.000Z",
+        "validUntil": "2024-03-31T23:59:59.000Z",
+        "applicableVehicles": [2, 3],
+        "terms": "Subject to credit approval. Select models only.",
+        "active": true
+      }
+    ],
+    "customerReviews": [
+      {
+        "id": "review_001",
+        "vehicleId": 1,
+        "customer": {
+          "name": "Sarah Johnson",
+          "initial": "S.J.",
+          "verified": true,
+          "purchaseDate": "2024-01-10"
+        },
+        "rating": 5,
+        "title": "Exceptional Experience",
+        "review": "Absolutely love my new S-Class! The buying experience was seamless and the car exceeds all expectations. The technology is incredible and the comfort is unmatched.",
+        "helpful": 15,
+        "date": "2024-01-12T16:30:00.000Z"
+      },
+      {
+        "id": "review_002",
+        "vehicleId": 2,
+        "customer": {
+          "name": "Michael Chen",
+          "initial": "M.C.",
+          "verified": true,
+          "purchaseDate": "2024-01-08"
+        },
+        "rating": 5,
+        "title": "Perfect Family SUV",
+        "review": "The X5 M50i is the perfect blend of luxury and performance. Great for daily driving and weekend adventures. Highly recommend!",
+        "helpful": 12,
+        "date": "2024-01-11T14:45:00.000Z"
+      }
+    ],
+    "financing": {
+      "partners": [
+        {
+          "name": "BMW Financial Services",
+          "logo": "https://example.com/logos/bmw-financial.png",
+          "minCreditScore": 650,
+          "maxLoanAmount": 200000,
+          "minAPR": 3.5,
+          "maxTerm": 84
+        },
+        {
+          "name": "Mercedes-Benz Financial",
+          "logo": "https://example.com/logos/mb-financial.png",
+          "minCreditScore": 680,
+          "maxLoanAmount": 250000,
+          "minAPR": 3.2,
+          "maxTerm": 72
+        }
+      ],
+      "leaseOptions": {
+        "available": true,
+        "minTerm": 24,
+        "maxTerm": 48,
+        "maxAnnualMileage": 15000,
+        "excessMileageCharge": 0.25
+      }
+    }
+  },
+  "meta": {
+    "pagination": {
+      "currentPage": 1,
+      "totalPages": 1,
+      "totalItems": 3,
+      "itemsPerPage": 50
+    },
+    "filters": {
+      "availableCategories": ["luxury-cars", "electric-vehicles", "suvs-trucks", "classic-cars"],
+      "priceRange": {
+        "min": 35000,
+        "max": 300000
+      },
+      "availableMakes": ["Mercedes-Benz", "BMW", "Tesla", "Ford", "Jeep", "Chevrolet"],
+      "availableYears": [2024, 2023, 2022, 1969, 1967],
+      "availableConditions": ["new", "used", "certified", "restored"]
+    },
+    "searchQuery": null,
+    "sortBy": "featured",
+    "sortOrder": "desc"
+  }
+}
