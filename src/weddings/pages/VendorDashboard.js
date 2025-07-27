@@ -837,6 +837,15 @@ const VendorDashboard = () => {
     updateEditingVendorInRedux();
   };
 
+  // Handle footer data changes
+  const handleFooterChange = (updatedFooterData) => {
+    setFooterData(updatedFooterData);
+    trackSectionChange('footer');
+
+    // Dispatch footer update to Redux
+    dispatch(updateFooterData({ footerData: updatedFooterData }));
+  };
+
   // Handle section visibility toggle
   const toggleSectionVisibility = sectionId => {
     if (sectionId.startsWith('custom-')) {
