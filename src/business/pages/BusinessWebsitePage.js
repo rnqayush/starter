@@ -1706,7 +1706,7 @@ const BusinessWebsitePage = () => {
             </AboutContent>
             <AboutImage primaryColor={businessData.primaryColor}>
               {businessData.slug === 'salon' && '💇‍♀️'}
-              {businessData.slug === 'gym' && '��️‍♂️'}
+              {businessData.slug === 'gym' && '��️‍♂��'}
               {businessData.slug === 'restaurant' && '👨‍🍳'}
               {!['salon', 'gym', 'restaurant'].includes(businessData.slug) &&
                 '🏢'}
@@ -2055,14 +2055,13 @@ const BusinessWebsitePage = () => {
       {/* Business Hours Section */}
       <Section id="hours">
         <SectionContainer>
-          <SectionTitle>Business Hours & Location</SectionTitle>
+          <SectionTitle>{content.ui?.businessHours?.title || 'Business Hours & Location'}</SectionTitle>
           <SectionSubtitle>
-            Visit us during our business hours or contact us anytime for
-            appointments and inquiries.
+            Visit us during our business hours or contact us anytime for appointments and inquiries.
           </SectionSubtitle>
           <HoursGrid>
             <HoursCard primaryColor={businessData.primaryColor}>
-              <h4>Operating Hours</h4>
+              <h4>{content.ui?.businessHours?.title || 'Operating Hours'}</h4>
               <div className="hours-list">
                 <div className="hours-item">
                   <span className="day">Monday</span>
