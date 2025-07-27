@@ -403,7 +403,7 @@ const HeroButton = styled.button.withConfig({
   font-size: 1.2rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   text-transform: uppercase;
   letter-spacing: 1px;
   display: flex;
@@ -414,7 +414,7 @@ const HeroButton = styled.button.withConfig({
   overflow: hidden;
   backdrop-filter: blur(10px);
   box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-  animation: ${fadeInUp} 1.2s ease-out 0.9s both, ${float} 6s ease-in-out 2s infinite;
+  animation: ${fadeInUp} 1.2s ease-out 0.9s both;
 
   &::before {
     content: '';
@@ -424,24 +424,12 @@ const HeroButton = styled.button.withConfig({
     width: 100%;
     height: 100%;
     background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-    transition: left 0.6s ease;
-  }
-
-  &::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: 50px;
-    padding: 2px;
-    background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent, rgba(255,255,255,0.2));
-    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    mask-composite: exclude;
+    transition: left 0.5s ease;
   }
 
   &:hover {
-    transform: translateY(-4px) scale(1.05);
-    box-shadow: 0 15px 40px rgba(0,0,0,0.4);
-    animation: ${float} 6s ease-in-out infinite, ${glow} 2s ease-in-out infinite;
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 12px 35px rgba(0,0,0,0.4);
 
     &::before {
       left: 100%;
@@ -449,7 +437,13 @@ const HeroButton = styled.button.withConfig({
   }
 
   &:active {
-    transform: translateY(-2px) scale(1.02);
+    transform: translateY(-1px) scale(1.01);
+    transition: all 0.1s ease;
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3), 0 0 0 3px rgba(255,255,255,0.3);
   }
 `;
 
