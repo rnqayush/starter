@@ -810,22 +810,44 @@ const HotelDetail = () => {
   const hotelsFromStore = useSelector(state => state.hotelManagement?.hotels);
 
   useEffect(() => {
-    let foundHotel;
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        let foundHotel;
 
-    // Try to get hotel from Redux store first (for updated data)
-    if (hotelsFromStore && hotelsFromStore.length > 0) {
-      foundHotel = hotelsFromStore.find(
-        h => h.slug === slugParam || h.id === parseInt(slugParam)
-      );
-    }
+        // Try to get hotel from Redux store first (for updated data)
+        if (hotelsFromStore && hotelsFromStore.length > 0) {
+          foundHotel = hotelsFromStore.find(
+            h => h.slug === slugParam || h.id === parseInt(slugParam)
+          );
+        }
 
-    // Fallback to original data if not found in store
-    if (!foundHotel) {
-      foundHotel = getHotelByIdOrSlug(slugParam);
-    }
+        // Simulate API call if not found in store
+        if (!foundHotel) {
+          // First try to get by slug/id to get hotel ID for API call
+          const tempHotel = getHotelByIdOrSlug(slugParam);
+          if (tempHotel) {
+            // Simulate API call to fetch hotel data
+            foundHotel = await fetchHotelData(tempHotel.id);
 
-    setHotel(foundHotel);
-    setLoading(false);
+            // Fetch additional data like reviews
+            if (foundHotel) {
+              const reviews = await fetchHotelReviews(foundHotel.id);
+              foundHotel.reviews = reviews;
+            }
+          }
+        }
+
+        setHotel(foundHotel);
+      } catch (error) {
+        console.error('Error fetching hotel data:', error);
+        setHotel(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
   }, [slugParam, hotelsFromStore]);
 
   // Re-render when Redux store updates (for live preview)
