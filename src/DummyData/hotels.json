@@ -1,6 +1,10 @@
 {
-  "hotels": [
-    {
+  "status": "success",
+  "statusCode": 200,
+  "message": "Hotel data retrieved successfully",
+  "timestamp": "2024-01-20T12:00:00Z",
+  "data": {
+    "hotel": {
       "id": 4,
       "name": "Taj Palace",
       "slug": "taj-palace",
@@ -255,97 +259,103 @@
           "available": true
         }
       ]
-    }
-  ],
-  "bookings": [
-    {
-      "id": 1,
-      "userId": "user123",
-      "hotelId": 1,
-      "roomId": 101,
-      "hotelName": "Grand Luxury Resort",
-      "roomName": "Deluxe Ocean View",
-      "checkIn": "2024-02-15",
-      "checkOut": "2024-02-18",
-      "guests": 2,
-      "totalPrice": 25500,
-      "status": "confirmed",
-      "bookingDate": "2024-01-20",
-      "guestName": "John Doe",
-      "guestEmail": "john@example.com",
-      "guestPhone": "+91 9876543210",
-      "specialRequests": "Late check-in requested"
     },
-    {
-      "id": 2,
-      "userId": "user123",
-      "hotelId": 2,
-      "roomId": 201,
-      "hotelName": "Mountain View Lodge",
-      "roomName": "Mountain View Double",
-      "checkIn": "2024-03-10",
-      "checkOut": "2024-03-12",
-      "guests": 2,
-      "totalPrice": 7000,
-      "status": "pending",
-      "bookingDate": "2024-01-25",
-      "guestName": "Jane Smith",
-      "guestEmail": "jane@example.com",
-      "guestPhone": "+91 9876543211",
-      "specialRequests": ""
-    },
-    {
-      "id": 3,
-      "userId": "user456",
-      "hotelId": 3,
-      "roomId": 301,
-      "hotelName": "Heritage Palace Hotel",
-      "roomName": "Royal Heritage Room",
-      "checkIn": "2024-03-20",
-      "checkOut": "2024-03-23",
-      "guests": 2,
-      "totalPrice": 19500,
-      "status": "confirmed",
-      "bookingDate": "2024-01-28",
-      "guestName": "Kavya Mehta",
-      "guestEmail": "kavya@example.com",
-      "guestPhone": "+91 9876543212",
-      "specialRequests": "Anniversary celebration"
-    },
-    {
-      "id": 4,
-      "userId": "user789",
-      "hotelId": 4,
-      "roomId": 402,
-      "hotelName": "Taj Palace",
-      "roomName": "Presidential Suite",
-      "checkIn": "2024-04-05",
-      "checkOut": "2024-04-08",
-      "guests": 4,
-      "totalPrice": 75000,
-      "status": "confirmed",
-      "bookingDate": "2024-02-01",
-      "guestName": "Jennifer Brown",
-      "guestEmail": "jennifer@example.com",
-      "guestPhone": "+91 9876543213",
-      "specialRequests": "Butler service required"
-    }
-  ],
-  "amenitiesList": [
-    { "id": "wifi", "name": "WiFi", "icon": "📶" },
-    { "id": "ac", "name": "Air Conditioning", "icon": "❄️" },
-    { "id": "pool", "name": "Swimming Pool", "icon": "🏊" },
-    { "id": "spa", "name": "Spa", "icon": "🧖" },
-    { "id": "gym", "name": "Fitness Center", "icon": "💪" },
-    { "id": "restaurant", "name": "Restaurant", "icon": "🍽️" },
-    { "id": "parking", "name": "Parking", "icon": "🚗" },
-    { "id": "pet", "name": "Pet Friendly", "icon": "🐕" },
-    { "id": "breakfast", "name": "Breakfast", "icon": "🥐" },
-    { "id": "room-service", "name": "Room Service", "icon": "🛎️" },
-    { "id": "tv", "name": "Television", "icon": "📺" },
-    { "id": "minibar", "name": "Mini Bar", "icon": "🍷" },
-    { "id": "balcony", "name": "Balcony", "icon": "🏔️" },
-    { "id": "garden", "name": "Garden", "icon": "🌿" },
-    { "id": "heater", "name": "Heater", "icon": "🔥" }
-  ]
+    "bookings": [
+      {
+        "id": 1,
+        "userId": "user123",
+        "hotelId": 1,
+        "roomId": 101,
+        "hotelName": "Grand Luxury Resort",
+        "roomName": "Deluxe Ocean View",
+        "checkIn": "2024-02-15",
+        "checkOut": "2024-02-18",
+        "guests": 2,
+        "totalPrice": 25500,
+        "status": "confirmed",
+        "bookingDate": "2024-01-20",
+        "guestName": "John Doe",
+        "guestEmail": "john@example.com",
+        "guestPhone": "+91 9876543210",
+        "specialRequests": "Late check-in requested"
+      },
+      {
+        "id": 2,
+        "userId": "user123",
+        "hotelId": 2,
+        "roomId": 201,
+        "hotelName": "Mountain View Lodge",
+        "roomName": "Mountain View Double",
+        "checkIn": "2024-03-10",
+        "checkOut": "2024-03-12",
+        "guests": 2,
+        "totalPrice": 7000,
+        "status": "pending",
+        "bookingDate": "2024-01-25",
+        "guestName": "Jane Smith",
+        "guestEmail": "jane@example.com",
+        "guestPhone": "+91 9876543211",
+        "specialRequests": ""
+      },
+      {
+        "id": 3,
+        "userId": "user456",
+        "hotelId": 3,
+        "roomId": 301,
+        "hotelName": "Heritage Palace Hotel",
+        "roomName": "Royal Heritage Room",
+        "checkIn": "2024-03-20",
+        "checkOut": "2024-03-23",
+        "guests": 2,
+        "totalPrice": 19500,
+        "status": "confirmed",
+        "bookingDate": "2024-01-28",
+        "guestName": "Kavya Mehta",
+        "guestEmail": "kavya@example.com",
+        "guestPhone": "+91 9876543212",
+        "specialRequests": "Anniversary celebration"
+      },
+      {
+        "id": 4,
+        "userId": "user789",
+        "hotelId": 4,
+        "roomId": 402,
+        "hotelName": "Taj Palace",
+        "roomName": "Presidential Suite",
+        "checkIn": "2024-04-05",
+        "checkOut": "2024-04-08",
+        "guests": 4,
+        "totalPrice": 75000,
+        "status": "confirmed",
+        "bookingDate": "2024-02-01",
+        "guestName": "Jennifer Brown",
+        "guestEmail": "jennifer@example.com",
+        "guestPhone": "+91 9876543213",
+        "specialRequests": "Butler service required"
+      }
+    ],
+    "amenitiesList": [
+      { "id": "wifi", "name": "WiFi", "icon": "📶" },
+      { "id": "ac", "name": "Air Conditioning", "icon": "❄️" },
+      { "id": "pool", "name": "Swimming Pool", "icon": "🏊" },
+      { "id": "spa", "name": "Spa", "icon": "🧖" },
+      { "id": "gym", "name": "Fitness Center", "icon": "💪" },
+      { "id": "restaurant", "name": "Restaurant", "icon": "🍽️" },
+      { "id": "parking", "name": "Parking", "icon": "🚗" },
+      { "id": "pet", "name": "Pet Friendly", "icon": "🐕" },
+      { "id": "breakfast", "name": "Breakfast", "icon": "🥐" },
+      { "id": "room-service", "name": "Room Service", "icon": "🛎️" },
+      { "id": "tv", "name": "Television", "icon": "📺" },
+      { "id": "minibar", "name": "Mini Bar", "icon": "🍷" },
+      { "id": "balcony", "name": "Balcony", "icon": "🏔️" },
+      { "id": "garden", "name": "Garden", "icon": "🌿" },
+      { "id": "heater", "name": "Heater", "icon": "🔥" }
+    ]
+  },
+  "meta": {
+    "totalRecords": 1,
+    "requestId": "req_12345",
+    "version": "1.0",
+    "responseTime": "120ms"
+  }
 }
