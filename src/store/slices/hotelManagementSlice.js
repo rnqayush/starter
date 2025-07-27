@@ -1,11 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { hotels } from '../../DummyData';
+import hotelJsonData from '../../DummyData/hotels.json';
+
+// Initialize with hotel from JSON and fallback to dummy data
+const initialHotels = hotelJsonData?.data?.hotel ? [hotelJsonData.data.hotel] : hotels;
 
 const initialState = {
   // Live hotel data (what users see on public pages)
-  liveHotels: hotels,
+  liveHotels: initialHotels,
   // Draft hotel data (admin changes before going live)
-  draftHotels: hotels.map(hotel => ({ ...hotel })),
+  draftHotels: initialHotels.map(hotel => ({ ...hotel })),
   editingHotel: null,
   originalHotel: null,
   changes: {},
