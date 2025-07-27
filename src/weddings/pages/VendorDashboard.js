@@ -3117,7 +3117,7 @@ const VendorDashboard = () => {
                   <input
                     type="checkbox"
                     checked={sectionVisibility['packages-pricing']}
-                    onChange={() => toggleSectionVisibility('packages-pricing')}
+                    onChange={() => handleSectionVisibilityToggle('packages-pricing')}
                   />
                   <span></span>
                 </ToggleSwitch>
