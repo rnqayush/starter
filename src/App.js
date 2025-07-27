@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import styled from 'styled-components';
 import { GlobalStyle } from './styles/GlobalStyle';
@@ -61,6 +62,16 @@ const AppContainer = styled.div`
 function App() {
   const [user, setUser] = useState(null);
   const [userType, setUserType] = useState('customer'); // 'customer' or 'owner'
+
+  // Get live hotel data from Redux, fallback to static data
+  const liveHotels = useSelector(
+    state => state.hotelManagement?.liveHotels || hotelModuleData
+  );
+  const draftHotels = useSelector(
+    state => state.hotelManagement?.draftHotels || hotelModuleData
+  );
+
+  // For backwards compatibility, provide both live and static data
   const [hotels, setHotels] = useState(hotelModuleData);
   const [bookings, setBookings] = useState(hotelBookings);
   const [ownerHotels, setOwnerHotels] = useState(hotelOwnerData || []);
@@ -70,12 +81,15 @@ function App() {
     setUser,
     userType,
     setUserType,
-    hotels,
+    hotels: liveHotels, // Use live data from Redux for public pages
     setHotels,
     bookings,
     setBookings,
-    ownerHotels,
+    ownerHotels: liveHotels, // Admin should also see current live data for selection
     setOwnerHotels,
+    // Expose both live and draft data for components that need to distinguish
+    liveHotels,
+    draftHotels,
   };
 
   return (

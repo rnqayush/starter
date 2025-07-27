@@ -30,6 +30,7 @@ import {
   removeHotelImage,
   updateAmenities,
   saveChanges,
+  publishChanges,
   toggleSectionVisibility,
   updateFeatures,
   addFeature,
@@ -38,6 +39,7 @@ import {
   addAmenityCategory,
   addAmenityToCategory,
   removeAmenityFromCategory,
+  selectHasPendingChanges,
 } from '../../store/slices/hotelManagementSlice';
 import { useAppContext } from '../../context/AppContext';
 import { getHotelByIdOrSlug, amenitiesList } from '../../DummyData';
@@ -704,8 +706,20 @@ const AddAmenityForm = styled.div`
 const SectionBasedHotelEditor = ({ setActiveSection }) => {
   const dispatch = useDispatch();
   const { ownerHotels } = useAppContext();
-  const { editingHotel, hasUnsavedChanges, changes, sectionVisibility } =
-    useSelector(state => state.hotelManagement);
+  const {
+    editingHotel,
+    hasUnsavedChanges,
+    changes,
+    sectionVisibility,
+    pendingChanges,
+    lastSaveTime,
+    lastPublishTime,
+    liveHotels,
+  } = useSelector(state => state.hotelManagement);
+
+  const hasPendingChanges = useSelector(state =>
+    editingHotel ? selectHasPendingChanges(state, editingHotel.id) : false
+  );
 
   const { slug } = useParams(); // Get slug from URL
   const [selectedHotelId, setSelectedHotelId] = useState(null);
@@ -713,11 +727,14 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
   const [tempData, setTempData] = useState({});
   const [newAmenityInputs, setNewAmenityInputs] = useState({});
   const [sectionOrder, setSectionOrder] = useState([
+    'hero',
     'about',
     'features',
     'gallery',
     'amenities',
+    'testimonials',
     'contact',
+    'footer',
   ]);
   const [customSections, setCustomSections] = useState([]);
   const [newSectionData, setNewSectionData] = useState({
@@ -729,8 +746,16 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
   // Auto-select hotel based on URL slug and initialize section order
   useEffect(() => {
     if (slug && !editingHotel) {
-      // Find hotel by slug from URL
-      const hotelData = getHotelByIdOrSlug(slug);
+      // First try to find hotel in Redux state
+      let hotelData = liveHotels?.find(
+        h => h.slug === slug || h.id === parseInt(slug)
+      );
+
+      // Fallback to static data if not found in Redux
+      if (!hotelData) {
+        hotelData = getHotelByIdOrSlug(slug);
+      }
+
       if (hotelData) {
         dispatch(setEditingHotel(hotelData.id));
         setSelectedHotelId(hotelData.id);
@@ -739,19 +764,17 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
           setSectionOrder(hotelData.sectionOrder);
         }
       }
-    } else if (!editingHotel && ownerHotels.length > 0 && !slug) {
+    } else if (!editingHotel && liveHotels && liveHotels.length > 0 && !slug) {
       // Fallback to first hotel if no slug
-      setSelectedHotelId(ownerHotels[0].id);
-      const hotelData = getHotelByIdOrSlug(ownerHotels[0].id);
-      if (hotelData) {
-        dispatch(setEditingHotel(ownerHotels[0].id));
-        // Initialize section order from hotel data
-        if (hotelData.sectionOrder) {
-          setSectionOrder(hotelData.sectionOrder);
-        }
+      const firstHotel = liveHotels[0];
+      setSelectedHotelId(firstHotel.id);
+      dispatch(setEditingHotel(firstHotel.id));
+      // Initialize section order from hotel data
+      if (firstHotel.sectionOrder) {
+        setSectionOrder(firstHotel.sectionOrder);
       }
     }
-  }, [slug, editingHotel, ownerHotels, dispatch]);
+  }, [slug, editingHotel, liveHotels, dispatch]);
 
   // Update section order when editingHotel changes
   useEffect(() => {
@@ -793,87 +816,72 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
       setTempData({
         name: editingHotel.name || '',
         heroSubtitle:
+          editingHotel.sections?.hero?.subtitle ||
           editingHotel.heroSubtitle ||
+          editingHotel.sections?.hero?.subtitle ||
           `Experience luxury hospitality in the heart of ${editingHotel.city || 'your city'}`,
-        description: editingHotel.description || '',
-        image: editingHotel.image || '',
-        gallery: editingHotel.gallery || [
-          { title: 'Hotel Exterior', image: editingHotel.images?.[0] || '' },
-          { title: 'Luxury Rooms', image: editingHotel.images?.[1] || '' },
-          { title: 'Dining Experience', image: editingHotel.images?.[2] || '' },
-          {
-            title: 'Swimming Pool',
-            image:
-              'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3',
-          },
-          {
-            title: 'Spa & Wellness',
-            image:
-              'https://images.unsplash.com/photo-1578645510447-e20b4311e3ce?ixlib=rb-4.0.3',
-          },
-        ],
+        description:
+          editingHotel.sections?.about?.content ||
+          editingHotel.description ||
+          '',
+        image:
+          editingHotel.sections?.hero?.backgroundImage ||
+          editingHotel.image ||
+          '',
+        gallery:
+          editingHotel.sections?.gallery?.images ||
+          editingHotel.gallery ||
+          (editingHotel.images
+            ? editingHotel.images.map((img, index) => ({
+                title:
+                  ['Hotel Exterior', 'Luxury Rooms', 'Dining Experience'][
+                    index
+                  ] || `Image ${index + 1}`,
+                image: img,
+              }))
+            : []),
         amenities: editingHotel.amenities || [],
         address: editingHotel.address || '',
-        phone: editingHotel.phone || '+91 22 6601 1825',
-        email:
-          editingHotel.email ||
-          `reservations@${editingHotel.slug || 'hotel'}.com`,
+        phone: editingHotel.phone || '',
+        email: editingHotel.email || '',
         checkInTime: editingHotel.checkInTime || '3:00 PM',
         checkOutTime: editingHotel.checkOutTime || '11:00 AM',
-        features: editingHotel.features || [
-          {
-            title: '24/7 Concierge',
-            description:
-              'Our dedicated concierge team is available round-the-clock to assist with all your needs.',
-          },
-          {
-            title: 'Luxury Amenities',
-            description:
-              'Enjoy world-class facilities including spa, pool, and fine dining restaurants.',
-          },
-          {
-            title: 'Business Center',
-            description:
-              'Fully equipped business facilities for meetings and corporate events.',
-          },
-          {
-            title: 'Airport Transfer',
-            description:
-              'Complimentary airport shuttle service for all our guests.',
-          },
-        ],
-        amenityCategories: editingHotel.amenityCategories || [
-          {
-            title: 'Recreation',
-            items: ['Swimming Pool', 'Fitness Center', 'Spa & Wellness'],
-          },
-          {
-            title: 'Dining',
-            items: ['Fine Dining Restaurant', 'Rooftop Bar', 'Room Service'],
-          },
-          {
-            title: 'Business',
-            items: ['Business Center', 'Meeting Rooms', 'Free WiFi'],
-          },
-          {
-            title: 'Services',
-            items: ['24/7 Concierge', 'Valet Parking', 'Airport Transfer'],
-          },
-        ],
-        contactFields: editingHotel.contactFields || [
-          { label: 'Address', value: editingHotel.address || '' },
-          { label: 'Phone', value: editingHotel.phone || '+91 22 6601 1825' },
-          {
-            label: 'Email',
-            value:
-              editingHotel.email ||
-              `reservations@${editingHotel.slug || 'hotel'}.com`,
-          },
-          {
-            label: 'Check-in / Check-out',
-            value: `${editingHotel.checkInTime || '3:00 PM'} / ${editingHotel.checkOutTime || '11:00 AM'}`,
-          },
-        ],
+        features:
+          editingHotel.sections?.features?.items || editingHotel.features || [],
+        amenityCategories:
+          editingHotel.sections?.amenities?.categories ||
+          editingHotel.amenityCategories ||
+          [],
+        contactFields: editingHotel.sections?.contact?.info ||
+          editingHotel.contactFields || [
+            {
+              label: 'Address',
+              value: editingHotel.address || '',
+              icon: 'FaMapMarkerAlt',
+            },
+            {
+              label: 'Phone',
+              value: editingHotel.phone || '',
+              icon: 'FaPhone',
+            },
+            {
+              label: 'Email',
+              value: editingHotel.email || '',
+              icon: 'FaEnvelope',
+            },
+            {
+              label: 'Check-in / Check-out',
+              value: `${editingHotel.checkInTime || '3:00 PM'} / ${editingHotel.checkOutTime || '11:00 AM'}`,
+              icon: 'FaClock',
+            },
+          ],
+        testimonials: editingHotel.sections?.testimonials?.reviews || [],
+        footerSupportContact: editingHotel.sections?.footer?.supportContact || {
+          phone: '',
+          email: '',
+          address: '',
+        },
+        footerSocialLinks: editingHotel.sections?.footer?.socialLinks || [],
       });
     }
   };
@@ -886,28 +894,112 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
   const saveSection = () => {
     if (!editingHotel) return;
 
-    // Only update the local editing hotel state, NOT the global live data
+    console.log('Saving section data:', tempData);
+    console.log('Active modal:', activeModal);
+
+    // Map tempData to proper section structure for the hotel
     Object.keys(tempData).forEach(key => {
       if (tempData[key] !== undefined) {
-        if (key === 'features') {
-          dispatch(updateFeatures(tempData[key]));
-        } else if (key === 'amenityCategories') {
-          dispatch(updateAmenityCategories(tempData[key]));
-        } else if (key === 'gallery') {
-          dispatch(
-            updateHotelField({ field: 'gallery', value: tempData[key] })
-          );
-        } else if (key === 'contactFields') {
-          dispatch(
-            updateHotelField({ field: 'contactFields', value: tempData[key] })
-          );
-        } else {
-          dispatch(updateHotelField({ field: key, value: tempData[key] }));
+        switch (key) {
+          case 'name':
+            dispatch(updateHotelField({ field: 'name', value: tempData[key] }));
+            break;
+          case 'heroSubtitle':
+            dispatch(
+              updateHotelField({
+                field: 'subtitle',
+                value: tempData[key],
+                section: 'hero',
+              })
+            );
+            break;
+          case 'image':
+            dispatch(
+              updateHotelField({
+                field: 'backgroundImage',
+                value: tempData[key],
+                section: 'hero',
+              })
+            );
+            break;
+          case 'description':
+            dispatch(
+              updateHotelField({
+                field: 'content',
+                value: tempData[key],
+                section: 'about',
+              })
+            );
+            break;
+          case 'gallery':
+            dispatch(
+              updateHotelField({
+                field: 'images',
+                value: tempData[key],
+                section: 'gallery',
+              })
+            );
+            break;
+          case 'features':
+            dispatch(
+              updateHotelField({
+                field: 'items',
+                value: tempData[key],
+                section: 'features',
+              })
+            );
+            break;
+          case 'amenityCategories':
+            dispatch(
+              updateHotelField({
+                field: 'categories',
+                value: tempData[key],
+                section: 'amenities',
+              })
+            );
+            break;
+          case 'contactFields':
+            dispatch(
+              updateHotelField({
+                field: 'info',
+                value: tempData[key],
+                section: 'contact',
+              })
+            );
+            break;
+          case 'testimonials':
+            dispatch(
+              updateHotelField({
+                field: 'reviews',
+                value: tempData[key],
+                section: 'testimonials',
+              })
+            );
+            break;
+          case 'footerSupportContact':
+            dispatch(
+              updateHotelField({
+                field: 'supportContact',
+                value: tempData[key],
+                section: 'footer',
+              })
+            );
+            break;
+          case 'footerSocialLinks':
+            dispatch(
+              updateHotelField({
+                field: 'socialLinks',
+                value: tempData[key],
+                section: 'footer',
+              })
+            );
+            break;
+          default:
+            dispatch(updateHotelField({ field: key, value: tempData[key] }));
         }
       }
     });
 
-    // DON'T save to global state here - only save to editing state
     closeModal();
     alert(
       'Section updated! Click "Save & Go Live" to publish changes to the live hotel page.'
@@ -1063,6 +1155,54 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
       { label: '', value: '' },
     ];
     updateTempData('contactFields', newContactFields);
+  };
+
+  // Testimonials management
+  const addTestimonial = () => {
+    const newTestimonial = {
+      id: Date.now(),
+      guestName: '',
+      location: '',
+      rating: 5,
+      comment: '',
+      verified: true,
+      date: new Date().toISOString().split('T')[0],
+    };
+    const newTestimonials = [...(tempData.testimonials || []), newTestimonial];
+    updateTempData('testimonials', newTestimonials);
+  };
+
+  const removeTestimonial = index => {
+    const newTestimonials = tempData.testimonials.filter((_, i) => i !== index);
+    updateTempData('testimonials', newTestimonials);
+  };
+
+  const updateTestimonial = (index, field, value) => {
+    const newTestimonials = tempData.testimonials.map((testimonial, i) => {
+      if (i === index) {
+        return { ...testimonial, [field]: value };
+      }
+      return testimonial;
+    });
+    updateTempData('testimonials', newTestimonials);
+  };
+
+  // Footer social links management
+  const addSocialLink = () => {
+    const newLink = {
+      platform: '',
+      url: '',
+      icon: 'FaGlobe',
+    };
+    const newSocialLinks = [...(tempData.footerSocialLinks || []), newLink];
+    updateTempData('footerSocialLinks', newSocialLinks);
+  };
+
+  const removeSocialLink = index => {
+    const newSocialLinks = tempData.footerSocialLinks.filter(
+      (_, i) => i !== index
+    );
+    updateTempData('footerSocialLinks', newSocialLinks);
   };
 
   const removeContactField = index => {
@@ -1260,6 +1400,9 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
   const handleSaveAndGoLive = () => {
     if (!editingHotel) return;
 
+    console.log('Publishing changes for hotel:', editingHotel.name);
+    console.log('Footer data:', editingHotel.sections?.footer);
+
     // Save section order along with other changes
     dispatch(updateHotelField({ field: 'sectionOrder', value: sectionOrder }));
 
@@ -1268,8 +1411,13 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
       updateHotelField({ field: 'customSections', value: customSections })
     );
 
-    // Save all changes to global state (this will update the live hotel page)
+    // First save changes to draft
     dispatch(saveChanges());
+
+    // Then publish draft changes to live data
+    dispatch(publishChanges());
+
+    console.log('Changes published to live data');
     alert('All changes published to live hotel page successfully!');
   };
 
@@ -1323,10 +1471,13 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
 
         <HotelSelector>
           <HotelGrid>
-            {ownerHotels.map(hotel => (
+            {(liveHotels || ownerHotels).map(hotel => (
               <HotelSelectCard
                 key={hotel.id}
-                onClick={() => setSelectedHotelId(hotel.id)}
+                onClick={() => {
+                  setSelectedHotelId(hotel.id);
+                  dispatch(setEditingHotel(hotel.id));
+                }}
                 selected={selectedHotelId === hotel.id}
               >
                 <img
@@ -1405,10 +1556,27 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
       preview: `${editingHotel.contactFields?.length || 4} contact fields`,
       isVisible: sectionVisibility.contact,
     },
+    testimonials: {
+      id: 'testimonials',
+      title: 'Guest Reviews',
+      description: 'Manage customer reviews and testimonials',
+      icon: FaQuoteLeft,
+      preview: `${editingHotel.sections?.testimonials?.reviews?.length || 2} reviews`,
+      isVisible: sectionVisibility.testimonials,
+    },
+    footer: {
+      id: 'footer',
+      title: 'Footer Information',
+      description: 'Update support contact and social media links',
+      icon: FaMapMarkerAlt,
+      preview: `Support contact & ${editingHotel.sections?.footer?.socialLinks?.length || 4} social links`,
+      isVisible: sectionVisibility.footer,
+    },
   };
 
-  // Create ordered sections array based on sectionOrder
+  // Create ordered sections array based on sectionOrder (excluding hero as it's handled separately)
   const sections = sectionOrder
+    .filter(sectionId => sectionId !== 'hero')
     .map(sectionId => allSections[sectionId])
     .filter(Boolean);
 
@@ -1464,67 +1632,75 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
       </SectionReorderContainer>
 
       <SectionsGrid>
-        {/* Always show Hero section first */}
-        <SectionCard
-          key="hero"
-          isVisible={allSections.hero.isVisible}
-          onClick={e => {
-            if (e.target.closest('.toggle-switch')) return;
-            openModal('hero');
-          }}
-        >
-          <SectionHeader>
-            <SectionInfo>
-              <SectionIcon>
-                <allSections.hero.icon />
-              </SectionIcon>
-              <SectionTitle>{allSections.hero.title}</SectionTitle>
-              <SectionDescription>
-                {allSections.hero.description}
-              </SectionDescription>
-            </SectionInfo>
-            <ToggleSwitch
-              className="toggle-switch"
-              active={allSections.hero.isVisible}
-              onClick={e => {
-                e.stopPropagation();
-                handleSectionToggle('hero');
-              }}
-            />
-          </SectionHeader>
-          <SectionPreview>{allSections.hero.preview}</SectionPreview>
-        </SectionCard>
+        {/* Show all sections in order including hero */}
+        {sectionOrder.map(sectionId => {
+          const section = allSections[sectionId];
+          if (!section) return null;
 
-        {/* Show other sections in custom order */}
-        {sections.map(section => (
-          <SectionCard
-            key={section.id}
-            isVisible={section.isVisible}
-            onClick={e => {
-              if (e.target.closest('.toggle-switch')) return;
-              openModal(section.id);
-            }}
-          >
-            <SectionHeader>
-              <SectionInfo>
-                <SectionIcon>
-                  <section.icon />
-                </SectionIcon>
-                <SectionTitle>{section.title}</SectionTitle>
-                <SectionDescription>{section.description}</SectionDescription>
-              </SectionInfo>
-              <ToggleSwitch
-                className="toggle-switch"
-                active={section.isVisible}
-                onClick={e => {
-                  e.stopPropagation();
-                  handleSectionToggle(section.id);
-                }}
-              />
-            </SectionHeader>
-            <SectionPreview>{section.preview}</SectionPreview>
-          </SectionCard>
-        ))}
+          return (
+            <SectionCard
+              key={section.id}
+              isVisible={section.isVisible}
+              onClick={e => {
+                if (e.target.closest('.toggle-switch')) return;
+                openModal(section.id);
+              }}
+            >
+              <SectionHeader>
+                <SectionInfo>
+                  <SectionIcon>
+                    <section.icon />
+                  </SectionIcon>
+                  <SectionTitle>{section.title}</SectionTitle>
+                  <SectionDescription>{section.description}</SectionDescription>
+                </SectionInfo>
+                <ToggleSwitch
+                  className="toggle-switch"
+                  active={section.isVisible}
+                  onClick={e => {
+                    e.stopPropagation();
+                    handleSectionToggle(section.id);
+                  }}
+                />
+              </SectionHeader>
+              <SectionPreview>{section.preview}</SectionPreview>
+            </SectionCard>
+          );
+        })}
+
+        {/* Show additional sections not in main order */}
+        {/* Additional sections that might not be in main order */}
+        {Object.values(allSections)
+          .filter(section => !sectionOrder.includes(section.id))
+          .map(section => (
+            <SectionCard
+              key={section.id}
+              isVisible={section.isVisible}
+              onClick={e => {
+                if (e.target.closest('.toggle-switch')) return;
+                openModal(section.id);
+              }}
+            >
+              <SectionHeader>
+                <SectionInfo>
+                  <SectionIcon>
+                    <section.icon />
+                  </SectionIcon>
+                  <SectionTitle>{section.title}</SectionTitle>
+                  <SectionDescription>{section.description}</SectionDescription>
+                </SectionInfo>
+                <ToggleSwitch
+                  className="toggle-switch"
+                  active={section.isVisible}
+                  onClick={e => {
+                    e.stopPropagation();
+                    handleSectionToggle(section.id);
+                  }}
+                />
+              </SectionHeader>
+              <SectionPreview>{section.preview}</SectionPreview>
+            </SectionCard>
+          ))}
 
         {/* Show custom sections */}
         {customSections.map(section => (
@@ -1962,6 +2138,233 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
                     <FaPlus /> Add More Feature
                   </AddButton>
                 </FormField>
+              )}
+
+              {activeModal === 'testimonials' && (
+                <FormField>
+                  <Label>Guest Reviews</Label>
+                  <p
+                    style={{
+                      color: theme.colors.gray600,
+                      marginBottom: theme.spacing.md,
+                    }}
+                  >
+                    Manage customer reviews and testimonials displayed on your
+                    hotel page.
+                  </p>
+                  {tempData.testimonials?.map((review, index) => (
+                    <div
+                      key={index}
+                      style={{
+                        marginBottom: theme.spacing.lg,
+                        padding: theme.spacing.md,
+                        border: `1px solid ${theme.colors.gray200}`,
+                        borderRadius: theme.borderRadius.md,
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: 'flex',
+                          gap: theme.spacing.md,
+                          alignItems: 'flex-start',
+                        }}
+                      >
+                        <div style={{ flex: 1 }}>
+                          <Input
+                            value={review.guestName || ''}
+                            onChange={e =>
+                              updateTestimonial(
+                                index,
+                                'guestName',
+                                e.target.value
+                              )
+                            }
+                            placeholder="Guest name"
+                            style={{ marginBottom: theme.spacing.sm }}
+                          />
+                          <Input
+                            value={review.location || ''}
+                            onChange={e =>
+                              updateTestimonial(
+                                index,
+                                'location',
+                                e.target.value
+                              )
+                            }
+                            placeholder="Guest location"
+                            style={{ marginBottom: theme.spacing.sm }}
+                          />
+                          <Input
+                            type="number"
+                            min="1"
+                            max="5"
+                            value={review.rating || 5}
+                            onChange={e =>
+                              updateTestimonial(
+                                index,
+                                'rating',
+                                parseInt(e.target.value)
+                              )
+                            }
+                            placeholder="Rating (1-5)"
+                            style={{ marginBottom: theme.spacing.sm }}
+                          />
+                          <TextArea
+                            value={review.comment || ''}
+                            onChange={e =>
+                              updateTestimonial(
+                                index,
+                                'comment',
+                                e.target.value
+                              )
+                            }
+                            placeholder="Review comment"
+                            rows={3}
+                          />
+                        </div>
+                        <RemoveButton onClick={() => removeTestimonial(index)}>
+                          <FaTrash />
+                        </RemoveButton>
+                      </div>
+                    </div>
+                  ))}
+                  <AddButton onClick={addTestimonial}>
+                    <FaPlus /> Add New Review
+                  </AddButton>
+                </FormField>
+              )}
+
+              {activeModal === 'footer' && (
+                <>
+                  <FormField>
+                    <Label>Support Contact Information</Label>
+                    <p
+                      style={{
+                        color: theme.colors.gray600,
+                        marginBottom: theme.spacing.md,
+                      }}
+                    >
+                      Manage support contact details displayed in the footer.
+                    </p>
+                    <Input
+                      value={tempData.footerSupportContact?.phone || ''}
+                      onChange={e =>
+                        updateTempData('footerSupportContact', {
+                          ...tempData.footerSupportContact,
+                          phone: e.target.value,
+                        })
+                      }
+                      placeholder="Support phone number"
+                      style={{ marginBottom: theme.spacing.sm }}
+                    />
+                    <Input
+                      value={tempData.footerSupportContact?.email || ''}
+                      onChange={e =>
+                        updateTempData('footerSupportContact', {
+                          ...tempData.footerSupportContact,
+                          email: e.target.value,
+                        })
+                      }
+                      placeholder="Support email address"
+                      style={{ marginBottom: theme.spacing.sm }}
+                    />
+                    <TextArea
+                      value={tempData.footerSupportContact?.address || ''}
+                      onChange={e =>
+                        updateTempData('footerSupportContact', {
+                          ...tempData.footerSupportContact,
+                          address: e.target.value,
+                        })
+                      }
+                      placeholder="Support address"
+                      rows={2}
+                    />
+                  </FormField>
+
+                  <FormField>
+                    <Label>Social Media Links</Label>
+                    <p
+                      style={{
+                        color: theme.colors.gray600,
+                        marginBottom: theme.spacing.md,
+                      }}
+                    >
+                      Manage social media links displayed in the footer.
+                    </p>
+                    {tempData.footerSocialLinks?.map((link, index) => (
+                      <div
+                        key={index}
+                        style={{
+                          display: 'flex',
+                          gap: theme.spacing.md,
+                          marginBottom: theme.spacing.md,
+                          padding: theme.spacing.md,
+                          border: `1px solid ${theme.colors.gray200}`,
+                          borderRadius: theme.borderRadius.md,
+                          alignItems: 'flex-start',
+                        }}
+                      >
+                        <div style={{ flex: 1 }}>
+                          <Input
+                            value={link.platform || ''}
+                            onChange={e =>
+                              updateTempData(
+                                'footerSocialLinks',
+                                tempData.footerSocialLinks.map((l, i) =>
+                                  i === index
+                                    ? { ...l, platform: e.target.value }
+                                    : l
+                                )
+                              )
+                            }
+                            placeholder="Platform name (e.g., Facebook)"
+                            style={{ marginBottom: theme.spacing.sm }}
+                          />
+                          <Input
+                            value={link.url || ''}
+                            onChange={e =>
+                              updateTempData(
+                                'footerSocialLinks',
+                                tempData.footerSocialLinks.map((l, i) =>
+                                  i === index
+                                    ? { ...l, url: e.target.value }
+                                    : l
+                                )
+                              )
+                            }
+                            placeholder="Social media URL"
+                          />
+                        </div>
+                        <RemoveButton
+                          onClick={() =>
+                            updateTempData(
+                              'footerSocialLinks',
+                              tempData.footerSocialLinks.filter(
+                                (_, i) => i !== index
+                              )
+                            )
+                          }
+                        >
+                          <FaTrash />
+                        </RemoveButton>
+                      </div>
+                    ))}
+                    <AddButton
+                      onClick={() =>
+                        updateTempData('footerSocialLinks', [
+                          ...(tempData.footerSocialLinks || []),
+                          {
+                            platform: '',
+                            url: '',
+                            icon: 'FaGlobe',
+                          },
+                        ])
+                      }
+                    >
+                      <FaPlus /> Add Social Link
+                    </AddButton>
+                  </FormField>
+                </>
               )}
 
               {activeModal === 'add-section' && (
@@ -2516,24 +2919,6 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
             </ModalFooter>
           </Modal>
         </Overlay>
-      )}
-
-      {/* Save & Go Live Bar - appears when there are unsaved changes */}
-      {hasUnsavedChanges && (
-        <SaveGoLiveBar>
-          <ChangesIndicator>
-            <FaEdit />
-            {Object.keys(hasUnsavedChanges ? changes : {}).length} unsaved
-            changes
-          </ChangesIndicator>
-          <SaveGoLiveButton
-            onClick={handleSaveAndGoLive}
-            disabled={!hasUnsavedChanges}
-          >
-            <FaSave />
-            Save & Go Live
-          </SaveGoLiveButton>
-        </SaveGoLiveBar>
       )}
     </EditorContainer>
   );

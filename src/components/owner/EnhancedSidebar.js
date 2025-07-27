@@ -18,7 +18,12 @@ import {
   FaExclamationTriangle,
   FaCheckCircle,
 } from 'react-icons/fa';
-import { saveChanges, discardChanges, clearEditingHotel } from '../../store/slices/hotelManagementSlice';
+import {
+  saveChanges,
+  publishChanges,
+  discardChanges,
+  clearEditingHotel,
+} from '../../store/slices/hotelManagementSlice';
 import { theme, media } from '../../styles/GlobalStyle';
 import { Button } from '../shared/Button';
 
@@ -245,7 +250,8 @@ const ChangesStatus = styled.div.withConfig({
   shouldForwardProp: prop => prop !== 'hasChanges',
 })`
   font-size: 0.8rem;
-  color: ${props => props.hasChanges ? theme.colors.warning : theme.colors.success};
+  color: ${props =>
+    props.hasChanges ? theme.colors.warning : theme.colors.success};
   margin-bottom: ${theme.spacing.md};
   display: flex;
   align-items: center;
@@ -263,7 +269,7 @@ const ChangeItem = styled.div`
   padding: ${theme.spacing.xs} 0;
   color: ${theme.colors.gray600};
   border-bottom: 1px solid ${theme.colors.gray200};
-  
+
   &:last-child {
     border-bottom: none;
   }
@@ -448,9 +454,16 @@ const EnhancedSidebar = ({ activeSection, setActiveSection }) => {
 
   const handleSaveAndExit = () => {
     if (hasUnsavedChanges) {
+      // Save changes to draft first
       dispatch(saveChanges());
-      alert('Changes saved successfully!');
     }
+
+    // Always publish changes to live data when "Save & Go Live" is clicked
+    dispatch(publishChanges());
+    console.log('Published changes to live data from sidebar');
+
+    alert('Changes published to live hotel page successfully!');
+
     if (editingHotel && hotelSlug) {
       // Navigate to the hotel detail page with updated data
       navigate(`/${editingHotel.slug || hotelSlug}`);
@@ -479,7 +492,13 @@ const EnhancedSidebar = ({ activeSection, setActiveSection }) => {
     return Object.entries(changes).map(([field, change]) => (
       <ChangeItem key={field}>
         <span className="field">{field}:</span>
-        <div style={{ fontSize: '0.7rem', color: theme.colors.gray500, marginTop: '2px' }}>
+        <div
+          style={{
+            fontSize: '0.7rem',
+            color: theme.colors.gray500,
+            marginTop: '2px',
+          }}
+        >
           {typeof change.new === 'string' && change.new.length > 30
             ? `${change.new.substring(0, 30)}...`
             : String(change.new)}
@@ -539,7 +558,7 @@ const EnhancedSidebar = ({ activeSection, setActiveSection }) => {
               <FaSave />
               Changes Tracker
             </ChangesPanelHeader>
-            
+
             <ChangesStatus hasChanges={hasUnsavedChanges}>
               {hasUnsavedChanges ? (
                 <>
@@ -555,9 +574,7 @@ const EnhancedSidebar = ({ activeSection, setActiveSection }) => {
             </ChangesStatus>
 
             {hasUnsavedChanges && Object.keys(changes).length > 0 && (
-              <ChangesList>
-                {renderChangesList()}
-              </ChangesList>
+              <ChangesList>{renderChangesList()}</ChangesList>
             )}
 
             <ActionsContainer>

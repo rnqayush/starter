@@ -1,8 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { hotels } from '../../DummyData';
+import hotelJsonData from '../../DummyData/hotels.json';
+
+// Initialize with hotel from JSON and fallback to dummy data
+const initialHotels = hotelJsonData?.data?.hotel
+  ? [hotelJsonData.data.hotel]
+  : hotels;
 
 const initialState = {
-  hotels: hotels,
+  // Live hotel data (what users see on public pages)
+  liveHotels: initialHotels,
+  // Draft hotel data (admin changes before going live)
+  draftHotels: initialHotels.map(hotel => ({ ...hotel })),
   editingHotel: null,
   originalHotel: null,
   changes: {},
@@ -15,31 +24,117 @@ const initialState = {
     gallery: true,
     amenities: true,
     contact: true,
+    testimonials: true,
+    footer: true,
   },
+  // Track which changes are pending publication
+  pendingChanges: {},
+  lastSaveTime: null,
+  lastPublishTime: null,
 };
 
 const hotelManagementSlice = createSlice({
   name: 'hotelManagement',
   initialState,
   reducers: {
+    // Action to fetch and store hotel data from API/JSON
+    loadHotelData: (state, action) => {
+      const hotelData = action.payload;
+      console.log('Loading hotel data into Redux:', hotelData.name);
+
+      // Check if hotel already exists in state
+      const existingLiveIndex = state.liveHotels.findIndex(
+        h => h.id === hotelData.id
+      );
+      const existingDraftIndex = state.draftHotels.findIndex(
+        h => h.id === hotelData.id
+      );
+
+      if (existingLiveIndex !== -1) {
+        // Update existing hotel in live data
+        state.liveHotels[existingLiveIndex] = { ...hotelData };
+        console.log('Updated existing live hotel');
+      } else {
+        // Add new hotel to live data
+        state.liveHotels.push({ ...hotelData });
+        console.log('Added new hotel to live data');
+      }
+
+      if (existingDraftIndex !== -1) {
+        // Update existing hotel in draft data
+        state.draftHotels[existingDraftIndex] = { ...hotelData };
+        console.log('Updated existing draft hotel');
+      } else {
+        // Add new hotel to draft data
+        state.draftHotels.push({ ...hotelData });
+        console.log('Added new hotel to draft data');
+      }
+
+      console.log(
+        'Redux state updated - Live hotels:',
+        state.liveHotels.length,
+        'Draft hotels:',
+        state.draftHotels.length
+      );
+    },
+
     setEditingHotel: (state, action) => {
-      const hotel = state.hotels.find(h => h.id === action.payload);
+      // Get hotel from draft data for editing
+      let hotel = state.draftHotels.find(h => h.id === action.payload);
+
+      // If not found in draft, get from live data
+      if (!hotel) {
+        const liveHotel = state.liveHotels.find(h => h.id === action.payload);
+        if (liveHotel) {
+          // Copy live hotel to draft for editing
+          hotel = { ...liveHotel };
+          state.draftHotels.push(hotel);
+        }
+      }
+
       state.editingHotel = hotel ? { ...hotel } : null;
-      state.originalHotel = hotel ? { ...hotel } : null;
+      // Keep reference to original live version for comparison
+      const originalHotel = state.liveHotels.find(h => h.id === action.payload);
+      state.originalHotel = originalHotel ? { ...originalHotel } : null;
       state.activeHotelId = action.payload;
       state.changes = {};
       state.hasUnsavedChanges = false;
+
+      // Initialize section visibility from hotel data
+      if (hotel && hotel.sectionVisibility) {
+        state.sectionVisibility = { ...hotel.sectionVisibility };
+      }
     },
 
     updateHotelField: (state, action) => {
-      const { field, value } = action.payload;
+      const { field, value, section } = action.payload;
       if (state.editingHotel) {
-        state.editingHotel[field] = value;
-        state.changes[field] = {
-          old: state.originalHotel[field],
-          new: value,
-        };
+        if (section) {
+          // Update nested section field
+          if (!state.editingHotel.sections) {
+            state.editingHotel.sections = {};
+          }
+          if (!state.editingHotel.sections[section]) {
+            state.editingHotel.sections[section] = {};
+          }
+          state.editingHotel.sections[section][field] = value;
+
+          // Track changes for nested sections
+          const changeKey = `sections.${section}.${field}`;
+          state.changes[changeKey] = {
+            old: state.originalHotel?.sections?.[section]?.[field],
+            new: value,
+          };
+        } else {
+          // Update top-level field
+          state.editingHotel[field] = value;
+          state.changes[field] = {
+            old: state.originalHotel?.[field],
+            new: value,
+          };
+        }
         state.hasUnsavedChanges = true;
+        state.lastSaveTime = new Date().toISOString();
       }
     },
 
@@ -160,16 +255,61 @@ const hotelManagementSlice = createSlice({
     },
 
     saveChanges: state => {
+      // Save changes to draft only (for admin preview)
       if (state.editingHotel && state.hasUnsavedChanges) {
-        const hotelIndex = state.hotels.findIndex(
+        const hotelIndex = state.draftHotels.findIndex(
           h => h.id === state.editingHotel.id
         );
         if (hotelIndex !== -1) {
-          state.hotels[hotelIndex] = { ...state.editingHotel };
+          state.draftHotels[hotelIndex] = { ...state.editingHotel };
         }
-        state.originalHotel = { ...state.editingHotel };
+
+        // Store pending changes for publication
+        state.pendingChanges[state.editingHotel.id] = { ...state.changes };
         state.changes = {};
         state.hasUnsavedChanges = false;
+        state.lastSaveTime = new Date().toISOString();
+      }
+    },
+
+    publishChanges: state => {
+      // Publish draft changes to live data (what users see)
+      if (state.editingHotel) {
+        console.log('Publishing changes for hotel:', state.editingHotel.name);
+        console.log('Current live hotels count:', state.liveHotels.length);
+
+        const liveHotelIndex = state.liveHotels.findIndex(
+          h => h.id === state.editingHotel.id
+        );
+
+        console.log('Live hotel index found:', liveHotelIndex);
+
+        if (liveHotelIndex !== -1) {
+          // Copy the current editing hotel (with all changes) to live hotels
+          state.liveHotels[liveHotelIndex] = { ...state.editingHotel };
+          console.log(
+            'Updated live hotel:',
+            state.liveHotels[liveHotelIndex].name
+          );
+
+          // Also update the draft hotel to match
+          const draftHotelIndex = state.draftHotels.findIndex(
+            h => h.id === state.editingHotel.id
+          );
+          if (draftHotelIndex !== -1) {
+            state.draftHotels[draftHotelIndex] = { ...state.editingHotel };
+          }
+
+          state.originalHotel = { ...state.editingHotel };
+
+          // Clear pending changes for this hotel
+          delete state.pendingChanges[state.editingHotel.id];
+          state.lastPublishTime = new Date().toISOString();
+
+          console.log('Published successfully at:', state.lastPublishTime);
+        } else {
+          console.log('ERROR: Live hotel not found for publishing!');
+        }
       }
     },
 
@@ -306,6 +446,7 @@ const hotelManagementSlice = createSlice({
 });
 
 export const {
+  loadHotelData,
   setEditingHotel,
   updateHotelField,
   updateHotelImage,
@@ -317,6 +458,7 @@ export const {
   updateRoom,
   removeRoom,
   saveChanges,
+  publishChanges,
   discardChanges,
   clearEditingHotel,
   toggleSectionVisibility,
@@ -328,5 +470,27 @@ export const {
   addAmenityToCategory,
   removeAmenityFromCategory,
 } = hotelManagementSlice.actions;
+
+// Selectors
+export const selectHasPendingChanges = (state, hotelId) => {
+  return (
+    state.hotelManagement.pendingChanges[hotelId] &&
+    Object.keys(state.hotelManagement.pendingChanges[hotelId]).length > 0
+  );
+};
+
+export const selectDraftHotel = (state, hotelId) => {
+  return state.hotelManagement.draftHotels.find(h => h.id === hotelId);
+};
+
+export const selectLiveHotel = (state, hotelId) => {
+  return state.hotelManagement.liveHotels.find(h => h.id === hotelId);
+};
+
+export const selectHotelBySlug = (state, slug) => {
+  return state.hotelManagement.liveHotels.find(
+    h => h.slug === slug || h.id === parseInt(slug)
+  );
+};
 
 export default hotelManagementSlice.reducer;

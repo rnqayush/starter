@@ -16,7 +16,8 @@ const createApiResponse = (data, success = true, message = '') => ({
 export const fetchHotels = async (filters = {}) => {
   await delay(300);
 
-  let hotels = [...hotelData.hotels];
+  // Since we now have a single hotel object, create array for compatibility
+  let hotels = [hotelData.data.hotel];
 
   // Apply filters
   if (filters.city) {
@@ -52,11 +53,12 @@ export const fetchHotels = async (filters = {}) => {
 export const fetchHotelById = async identifier => {
   await delay(400);
 
-  const hotel = hotelData.hotels.find(
-    h => h.id === parseInt(identifier) || h.slug === identifier
-  );
+  // With single hotel object, check if it matches
+  const hotel = hotelData.data.hotel;
+  const matches =
+    hotel.id === parseInt(identifier) || hotel.slug === identifier;
 
-  if (!hotel) {
+  if (!matches) {
     return createApiResponse(null, false, 'Hotel not found');
   }
 
@@ -67,9 +69,8 @@ export const fetchHotelById = async identifier => {
 export const fetchHotelSections = async hotelId => {
   await delay(200);
 
-  const hotel = hotelData.hotels.find(h => h.id === parseInt(hotelId));
-
-  if (!hotel) {
+  const hotel = hotelData.data.hotel;
+  if (hotel.id !== parseInt(hotelId)) {
     return createApiResponse(null, false, 'Hotel not found');
   }
 
@@ -84,9 +85,9 @@ export const fetchHotelSections = async hotelId => {
 export const fetchOwnerHotels = async ownerId => {
   await delay(300);
 
-  const ownerHotels = hotelData.hotels.filter(
-    hotel => hotel.ownerId === ownerId
-  );
+  // With single hotel object, check if owner matches
+  const hotel = hotelData.data.hotel;
+  const ownerHotels = hotel.ownerId === ownerId ? [hotel] : [];
 
   return createApiResponse(ownerHotels);
 };
@@ -95,9 +96,8 @@ export const fetchOwnerHotels = async ownerId => {
 export const fetchHotelRooms = async hotelId => {
   await delay(250);
 
-  const hotel = hotelData.hotels.find(h => h.id === parseInt(hotelId));
-
-  if (!hotel) {
+  const hotel = hotelData.data.hotel;
+  if (hotel.id !== parseInt(hotelId)) {
     return createApiResponse(null, false, 'Hotel not found');
   }
 
@@ -108,9 +108,8 @@ export const fetchHotelRooms = async hotelId => {
 export const fetchRoomById = async (hotelId, roomId) => {
   await delay(200);
 
-  const hotel = hotelData.hotels.find(h => h.id === parseInt(hotelId));
-
-  if (!hotel) {
+  const hotel = hotelData.data.hotel;
+  if (hotel.id !== parseInt(hotelId)) {
     return createApiResponse(null, false, 'Hotel not found');
   }
 
@@ -127,7 +126,7 @@ export const fetchRoomById = async (hotelId, roomId) => {
 export const fetchBookings = async (filters = {}) => {
   await delay(300);
 
-  let bookings = [...hotelData.bookings];
+  let bookings = [...hotelData.data.bookings];
 
   if (filters.userId) {
     bookings = bookings.filter(booking => booking.userId === filters.userId);
@@ -150,9 +149,8 @@ export const fetchBookings = async (filters = {}) => {
 export const fetchHotelReviews = async hotelId => {
   await delay(200);
 
-  const hotel = hotelData.hotels.find(h => h.id === parseInt(hotelId));
-
-  if (!hotel || !hotel.sections.testimonials) {
+  const hotel = hotelData.data.hotel;
+  if (hotel.id !== parseInt(hotelId) || !hotel.sections.testimonials) {
     return createApiResponse([]);
   }
 
@@ -163,18 +161,20 @@ export const fetchHotelReviews = async hotelId => {
 export const searchHotels = async searchTerm => {
   await delay(400);
 
+  const hotel = hotelData.data.hotel;
+
   if (!searchTerm || searchTerm.trim() === '') {
-    return createApiResponse(hotelData.hotels);
+    return createApiResponse([hotel]);
   }
 
   const term = searchTerm.toLowerCase();
-  const hotels = hotelData.hotels.filter(
-    hotel =>
-      hotel.name.toLowerCase().includes(term) ||
-      hotel.city.toLowerCase().includes(term) ||
-      hotel.location.toLowerCase().includes(term) ||
-      hotel.description.toLowerCase().includes(term)
-  );
+  const matches =
+    hotel.name.toLowerCase().includes(term) ||
+    hotel.city.toLowerCase().includes(term) ||
+    hotel.location.toLowerCase().includes(term) ||
+    hotel.description.toLowerCase().includes(term);
+
+  const hotels = matches ? [hotel] : [];
 
   return createApiResponse(hotels);
 };
@@ -183,16 +183,16 @@ export const searchHotels = async searchTerm => {
 export const fetchAmenitiesList = async () => {
   await delay(100);
 
-  return createApiResponse(hotelData.amenitiesList);
+  return createApiResponse(hotelData.data.amenitiesList);
 };
 
 // Get hotels by city
 export const fetchHotelsByCity = async city => {
   await delay(300);
 
-  const hotels = hotelData.hotels.filter(hotel =>
-    hotel.city.toLowerCase().includes(city.toLowerCase())
-  );
+  const hotel = hotelData.data.hotel;
+  const matches = hotel.city.toLowerCase().includes(city.toLowerCase());
+  const hotels = matches ? [hotel] : [];
 
   return createApiResponse(hotels);
 };
@@ -201,26 +201,29 @@ export const fetchHotelsByCity = async city => {
 export const fetchFeaturedHotels = async (limit = 4) => {
   await delay(250);
 
-  const featuredHotels = hotelData.hotels
-    .sort((a, b) => b.rating - a.rating)
-    .slice(0, limit);
+  // With single hotel, return it if it qualifies as featured
+  const hotel = hotelData.data.hotel;
+  const featuredHotels = [hotel].slice(0, limit);
 
   return createApiResponse(featuredHotels);
 };
 
 // Helper functions for backward compatibility
 export const getHotelByIdOrSlug = identifier => {
-  return hotelData.hotels.find(
-    h => h.id === parseInt(identifier) || h.slug === identifier
-  );
+  const hotel = hotelData.data.hotel;
+  return hotel.id === parseInt(identifier) || hotel.slug === identifier
+    ? hotel
+    : null;
 };
 
 export const getHotelById = id => {
-  return hotelData.hotels.find(h => h.id === parseInt(id));
+  const hotel = hotelData.data.hotel;
+  return hotel.id === parseInt(id) ? hotel : null;
 };
 
 export const getHotelBySlug = slug => {
-  return hotelData.hotels.find(h => h.slug === slug);
+  const hotel = hotelData.data.hotel;
+  return hotel.slug === slug ? hotel : null;
 };
 
 export const getRoomById = (hotelId, roomId) => {
@@ -229,13 +232,14 @@ export const getRoomById = (hotelId, roomId) => {
 };
 
 // Export the data for components that need immediate access
-export const getStaticHotelData = () => hotelData.hotels;
-export const getStaticBookingsData = () => hotelData.bookings;
-export const getStaticAmenitiesData = () => hotelData.amenitiesList;
+export const getStaticHotelData = () => [hotelData.data.hotel]; // Return as array for compatibility
+export const getStaticBookingsData = () => hotelData.data.bookings;
+export const getStaticAmenitiesData = () => hotelData.data.amenitiesList;
 
 // For owner dashboard - get hotels by owner ID
 export const getOwnerHotels = ownerId => {
-  return hotelData.hotels.filter(hotel => hotel.ownerId === ownerId);
+  const hotel = hotelData.data.hotel;
+  return hotel.ownerId === ownerId ? [hotel] : [];
 };
 
 // Default export

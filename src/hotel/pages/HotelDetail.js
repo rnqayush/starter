@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import {
   FaMapMarkerAlt,
@@ -25,6 +25,8 @@ import {
   fetchHotelSections,
   fetchHotelReviews,
 } from '../../utils/hotelAPI';
+import { loadHotelData } from '../../store/slices/hotelManagementSlice';
+import hotelJsonData from '../../DummyData/hotels.json';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -807,11 +809,17 @@ const HotelDetail = () => {
   const { hotelSlug, slug } = useParams();
   const slugParam = hotelSlug || slug;
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [hotel, setHotel] = useState(null);
   const [loading, setLoading] = useState(true);
 
   // Get hotels from Redux store (includes any admin updates)
-  const hotelsFromStore = useSelector(state => state.hotelManagement?.hotels);
+  const hotelsFromStore = useSelector(state => {
+    console.log('Full Redux state:', state);
+    console.log('hotelManagement state:', state.hotelManagement);
+    console.log('liveHotels:', state.hotelManagement?.liveHotels);
+    return state.hotelManagement?.liveHotels || [];
+  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -824,16 +832,35 @@ const HotelDetail = () => {
           foundHotel = hotelsFromStore.find(
             h => h.slug === slugParam || h.id === parseInt(slugParam)
           );
+          console.log('Found hotel in Redux:', foundHotel?.name);
         }
 
-        // Fetch from API if not found in store
+        // If not found in Redux, fetch from hotels.json and dispatch to Redux
         if (!foundHotel) {
-          const response = await fetchHotelById(slugParam);
-          if (response.success) {
-            foundHotel = response.data;
+          console.log('Hotel not found in Redux, loading from JSON...');
+          const hotelData = hotelJsonData.data.hotel;
+
+          // Check if this is the hotel we're looking for
+          if (
+            hotelData.slug === slugParam ||
+            hotelData.id === parseInt(slugParam)
+          ) {
+            foundHotel = hotelData;
+
+            // Dispatch to Redux to store the hotel data
+            console.log('Dispatching hotel data to Redux:', hotelData.name);
+            dispatch(loadHotelData(hotelData));
           }
         }
 
+        if (foundHotel) {
+          console.log(
+            'Setting hotel:',
+            foundHotel.name,
+            'Sections:',
+            Object.keys(foundHotel.sections || {})
+          );
+        }
         setHotel(foundHotel);
       } catch (error) {
         console.error('Error fetching hotel data:', error);
@@ -844,20 +871,28 @@ const HotelDetail = () => {
     };
 
     fetchData();
-  }, [slugParam, hotelsFromStore]);
+  }, [slugParam, hotelsFromStore, dispatch]);
 
   // Re-render when Redux store updates (for live preview)
   useEffect(() => {
-    if (hotelsFromStore && hotel) {
-      const updatedHotel = hotelsFromStore.find(h => h.id === hotel.id);
-      if (
-        updatedHotel &&
-        JSON.stringify(updatedHotel) !== JSON.stringify(hotel)
-      ) {
+    console.log('Redux state changed, checking for hotel updates...');
+    if (hotelsFromStore && hotelsFromStore.length > 0) {
+      const updatedHotel = hotelsFromStore.find(
+        h => h.slug === slugParam || h.id === parseInt(slugParam)
+      );
+      if (updatedHotel) {
+        console.log(
+          'Found updated hotel in Redux, updating display:',
+          updatedHotel.name
+        );
+        console.log(
+          'Updated hotel sections:',
+          Object.keys(updatedHotel.sections || {})
+        );
         setHotel(updatedHotel);
       }
     }
-  }, [hotelsFromStore, hotel]);
+  }, [hotelsFromStore, slugParam]);
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1183,6 +1218,8 @@ const HotelDetail = () => {
                         <div
                           style={{
                             display: 'grid',
+                            gridTemplateColumns:
+                              'repeat(auto-fit, minmax(350px, 1fr))',
                             gap: theme.spacing.xl,
                             marginBottom: theme.spacing.xl,
                           }}
@@ -1315,6 +1352,10 @@ const HotelDetail = () => {
                   </Container>
                 </ContentSection>
               );
+
+            case 'footer':
+              // Footer is handled separately at the bottom of the page
+              return null;
 
             default:
               // Handle custom sections

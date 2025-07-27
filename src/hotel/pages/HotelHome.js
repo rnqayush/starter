@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { theme, media } from '../../styles/GlobalStyle';
 import HotelNavbar from '../components/HotelNavbar';
 import HotelFooter from '../components/HotelFooter';
 import HotelCard from '../components/HotelCard';
 import SearchForm from '../components/SearchForm';
-import { hotels } from '../../DummyData';
+import { hotels as fallbackHotels } from '../../DummyData';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -170,19 +171,29 @@ const ClearButton = styled.button`
 `;
 
 const HotelHome = () => {
-  const [filteredHotels, setFilteredHotels] = useState(hotels);
+  // Get live hotel data from Redux, fallback to static data
+  const liveHotels = useSelector(
+    state => state.hotelManagement?.liveHotels || fallbackHotels
+  );
+
+  const [filteredHotels, setFilteredHotels] = useState(liveHotels);
   const [searchCriteria, setSearchCriteria] = useState(null);
+
+  // Update filtered hotels when live data changes
+  useEffect(() => {
+    setFilteredHotels(liveHotels);
+  }, [liveHotels]);
 
   const handleSearch = searchData => {
     const { destination } = searchData;
 
     if (!destination.trim()) {
-      setFilteredHotels(hotels);
+      setFilteredHotels(liveHotels);
       setSearchCriteria(null);
       return;
     }
 
-    const filtered = hotels.filter(
+    const filtered = liveHotels.filter(
       hotel =>
         hotel.name.toLowerCase().includes(destination.toLowerCase()) ||
         hotel.location.toLowerCase().includes(destination.toLowerCase()) ||
@@ -194,7 +205,7 @@ const HotelHome = () => {
   };
 
   const clearSearch = () => {
-    setFilteredHotels(hotels);
+    setFilteredHotels(liveHotels);
     setSearchCriteria(null);
   };
 
