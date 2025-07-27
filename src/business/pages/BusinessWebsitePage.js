@@ -2063,34 +2063,12 @@ const BusinessWebsitePage = () => {
             <HoursCard primaryColor={businessData.primaryColor}>
               <h4>{content.ui?.businessHours?.title || 'Operating Hours'}</h4>
               <div className="hours-list">
-                <div className="hours-item">
-                  <span className="day">Monday</span>
-                  <span className="time">9:00 AM - 7:00 PM</span>
-                </div>
-                <div className="hours-item">
-                  <span className="day">Tuesday</span>
-                  <span className="time">9:00 AM - 7:00 PM</span>
-                </div>
-                <div className="hours-item">
-                  <span className="day">Wednesday</span>
-                  <span className="time">9:00 AM - 7:00 PM</span>
-                </div>
-                <div className="hours-item">
-                  <span className="day">Thursday</span>
-                  <span className="time">9:00 AM - 8:00 PM</span>
-                </div>
-                <div className="hours-item">
-                  <span className="day">Friday</span>
-                  <span className="time">9:00 AM - 8:00 PM</span>
-                </div>
-                <div className="hours-item">
-                  <span className="day">Saturday</span>
-                  <span className="time">8:00 AM - 6:00 PM</span>
-                </div>
-                <div className="hours-item">
-                  <span className="day">Sunday</span>
-                  <span className="time">10:00 AM - 5:00 PM</span>
-                </div>
+                {Object.entries(content.businessHours?.hours || {}).map(([day, time]) => (
+                  <div key={day} className="hours-item">
+                    <span className="day">{day.charAt(0).toUpperCase() + day.slice(1)}</span>
+                    <span className="time">{time}</span>
+                  </div>
+                ))}
               </div>
             </HoursCard>
 
