@@ -713,10 +713,12 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
   const [tempData, setTempData] = useState({});
   const [newAmenityInputs, setNewAmenityInputs] = useState({});
   const [sectionOrder, setSectionOrder] = useState([
+    'hero',
     'about',
     'features',
     'gallery',
     'amenities',
+    'testimonials',
     'contact',
   ]);
   const [customSections, setCustomSections] = useState([]);
@@ -1407,8 +1409,9 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
     },
   };
 
-  // Create ordered sections array based on sectionOrder
+  // Create ordered sections array based on sectionOrder (excluding hero as it's handled separately)
   const sections = sectionOrder
+    .filter(sectionId => sectionId !== 'hero')
     .map(sectionId => allSections[sectionId])
     .filter(Boolean);
 
@@ -1464,67 +1467,75 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
       </SectionReorderContainer>
 
       <SectionsGrid>
-        {/* Always show Hero section first */}
-        <SectionCard
-          key="hero"
-          isVisible={allSections.hero.isVisible}
-          onClick={e => {
-            if (e.target.closest('.toggle-switch')) return;
-            openModal('hero');
-          }}
-        >
-          <SectionHeader>
-            <SectionInfo>
-              <SectionIcon>
-                <allSections.hero.icon />
-              </SectionIcon>
-              <SectionTitle>{allSections.hero.title}</SectionTitle>
-              <SectionDescription>
-                {allSections.hero.description}
-              </SectionDescription>
-            </SectionInfo>
-            <ToggleSwitch
-              className="toggle-switch"
-              active={allSections.hero.isVisible}
-              onClick={e => {
-                e.stopPropagation();
-                handleSectionToggle('hero');
-              }}
-            />
-          </SectionHeader>
-          <SectionPreview>{allSections.hero.preview}</SectionPreview>
-        </SectionCard>
+        {/* Show all sections in order including hero */}
+        {sectionOrder.map(sectionId => {
+          const section = allSections[sectionId];
+          if (!section) return null;
 
-        {/* Show other sections in custom order */}
-        {sections.map(section => (
-          <SectionCard
-            key={section.id}
-            isVisible={section.isVisible}
-            onClick={e => {
-              if (e.target.closest('.toggle-switch')) return;
-              openModal(section.id);
-            }}
-          >
-            <SectionHeader>
-              <SectionInfo>
-                <SectionIcon>
-                  <section.icon />
-                </SectionIcon>
-                <SectionTitle>{section.title}</SectionTitle>
-                <SectionDescription>{section.description}</SectionDescription>
-              </SectionInfo>
-              <ToggleSwitch
-                className="toggle-switch"
-                active={section.isVisible}
-                onClick={e => {
-                  e.stopPropagation();
-                  handleSectionToggle(section.id);
-                }}
-              />
-            </SectionHeader>
-            <SectionPreview>{section.preview}</SectionPreview>
-          </SectionCard>
-        ))}
+          return (
+            <SectionCard
+              key={section.id}
+              isVisible={section.isVisible}
+              onClick={e => {
+                if (e.target.closest('.toggle-switch')) return;
+                openModal(section.id);
+              }}
+            >
+              <SectionHeader>
+                <SectionInfo>
+                  <SectionIcon>
+                    <section.icon />
+                  </SectionIcon>
+                  <SectionTitle>{section.title}</SectionTitle>
+                  <SectionDescription>{section.description}</SectionDescription>
+                </SectionInfo>
+                <ToggleSwitch
+                  className="toggle-switch"
+                  active={section.isVisible}
+                  onClick={e => {
+                    e.stopPropagation();
+                    handleSectionToggle(section.id);
+                  }}
+                />
+              </SectionHeader>
+              <SectionPreview>{section.preview}</SectionPreview>
+            </SectionCard>
+          );
+        })}
+
+        {/* Show additional sections not in main order */}
+        {/* Additional sections that might not be in main order */}
+        {Object.values(allSections)
+          .filter(section => !sectionOrder.includes(section.id))
+          .map(section => (
+            <SectionCard
+              key={section.id}
+              isVisible={section.isVisible}
+              onClick={e => {
+                if (e.target.closest('.toggle-switch')) return;
+                openModal(section.id);
+              }}
+            >
+              <SectionHeader>
+                <SectionInfo>
+                  <SectionIcon>
+                    <section.icon />
+                  </SectionIcon>
+                  <SectionTitle>{section.title}</SectionTitle>
+                  <SectionDescription>{section.description}</SectionDescription>
+                </SectionInfo>
+                <ToggleSwitch
+                  className="toggle-switch"
+                  active={section.isVisible}
+                  onClick={e => {
+                    e.stopPropagation();
+                    handleSectionToggle(section.id);
+                  }}
+                />
+              </SectionHeader>
+              <SectionPreview>{section.preview}</SectionPreview>
+            </SectionCard>
+          ))}
 
         {/* Show custom sections */}
         {customSections.map(section => (
