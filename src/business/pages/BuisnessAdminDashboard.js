@@ -865,10 +865,6 @@ const BuisnessAdminDashboard = () => {
         sectionOrder: sectionOrderData,
         sectionVisibility: sectionVisibility,
         ui: uiContentData,
-        about: {
-          ...aboutData,
-          stats: statisticsData
-        },
       };
 
       // Update Redux with the current form data for real-time preview
