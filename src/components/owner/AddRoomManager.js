@@ -16,6 +16,8 @@ import { theme } from '../../styles/GlobalStyle';
 import {
   addRoom,
   setEditingHotel,
+  saveChanges,
+  publishChanges,
 } from '../../store/slices/hotelManagementSlice';
 import { getHotelByIdOrSlug } from '../../DummyData';
 import { Button } from '../shared/Button';
