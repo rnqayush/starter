@@ -23,6 +23,7 @@ const initialState = {
     amenities: true,
     contact: true,
     testimonials: true,
+    footer: true,
   },
   // Track which changes are pending publication
   pendingChanges: {},
