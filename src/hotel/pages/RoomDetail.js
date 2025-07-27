@@ -17,12 +17,7 @@ import {
 import { theme } from '../../styles/GlobalStyle';
 import HotelNavbar from '../components/HotelNavbar';
 import HotelFooter from '../components/HotelFooter';
-import {
-  getHotelByIdOrSlug,
-  getRoomById,
-  fetchHotelData,
-  fetchRoomReviews,
-} from '../../DummyData/hotels';
+import { fetchHotelById, fetchRoomById } from '../../utils/hotelAPI';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -492,26 +487,26 @@ const RoomDetail = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // First get hotel data
-        let foundHotel = getHotelByIdOrSlug(slug);
+        // Fetch hotel data
+        const hotelResponse = await fetchHotelById(slug);
 
-        if (foundHotel) {
-          // Simulate API call to get updated hotel data
-          foundHotel = await fetchHotelData(foundHotel.id);
+        if (hotelResponse.success) {
+          const foundHotel = hotelResponse.data;
 
-          // Get room data
-          const foundRoom = foundHotel
-            ? getRoomById(foundHotel.id, roomId)
-            : null;
+          // Fetch room data
+          const roomResponse = await fetchRoomById(foundHotel.id, roomId);
 
-          if (foundRoom) {
-            // Simulate API call to get room reviews
-            const roomReviews = await fetchRoomReviews(foundHotel.id, roomId);
-            foundRoom.reviews = roomReviews;
+          if (roomResponse.success) {
+            const foundRoom = roomResponse.data;
+            setRoom(foundRoom);
+          } else {
+            setRoom(null);
           }
 
           setHotel(foundHotel);
-          setRoom(foundRoom);
+        } else {
+          setHotel(null);
+          setRoom(null);
         }
       } catch (error) {
         console.error('Error fetching room data:', error);

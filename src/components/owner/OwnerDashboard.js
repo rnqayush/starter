@@ -417,16 +417,21 @@ const PageContent = styled.div`
 `;
 
 const OwnerDashboard = () => {
-  const { ownerHotels, bookings } = useAppContext();
+  const { ownerHotels = [], bookings = [] } = useAppContext();
   const [activeSection, setActiveSection] = useState('dashboard');
 
-  const ownerBookings = bookings.filter(booking =>
-    ownerHotels.some(hotel => hotel.id === booking.hotelId)
-  );
+  const ownerBookings =
+    Array.isArray(bookings) && Array.isArray(ownerHotels)
+      ? bookings.filter(booking =>
+          ownerHotels.some(hotel => hotel.id === booking.hotelId)
+        )
+      : [];
 
   const stats = {
-    totalHotels: ownerHotels.length,
-    totalRooms: ownerHotels.reduce((sum, hotel) => sum + hotel.totalRooms, 0),
+    totalHotels: Array.isArray(ownerHotels) ? ownerHotels.length : 0,
+    totalRooms: Array.isArray(ownerHotels)
+      ? ownerHotels.reduce((sum, hotel) => sum + (hotel.totalRooms || 0), 0)
+      : 0,
     totalBookings: ownerBookings.length,
     pendingBookings: ownerBookings.filter(b => b.status === 'pending').length,
   };
@@ -492,17 +497,11 @@ const OwnerDashboard = () => {
           </PageContent>
         );
       case 'my-hotels':
-        return (
-          <SectionBasedHotelEditor setActiveSection={setActiveSection} />
-        );
+        return <SectionBasedHotelEditor setActiveSection={setActiveSection} />;
       case 'add-room':
-        return (
-          <AddRoomManager setActiveSection={setActiveSection} />
-        );
+        return <AddRoomManager setActiveSection={setActiveSection} />;
       case 'all-rooms':
-        return (
-          <AllRoomsManager setActiveSection={setActiveSection} />
-        );
+        return <AllRoomsManager setActiveSection={setActiveSection} />;
       case 'bookings':
         return (
           <PageContent>

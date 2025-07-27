@@ -1,0 +1,351 @@
+{
+  "hotels": [
+    {
+      "id": 4,
+      "name": "Taj Palace",
+      "slug": "taj-palace",
+      "location": "New Delhi, Delhi",
+      "address": "1, Mansingh Road, New Delhi",
+      "city": "New Delhi",
+      "pincode": "110011",
+      "phone": "+91 11 6651 2233",
+      "email": "reservations@tajpalace.com",
+      "website": "www.tajpalace.com",
+      "description": "Legendary luxury hotel in the heart of New Delhi, offering world-class hospitality and royal elegance with a perfect blend of Indian traditions and contemporary luxury.",
+      "rating": 4.8,
+      "starRating": 5,
+      "image": "https://images.unsplash.com/photo-1571896349842-33c89424de2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1632&q=80",
+      "images": [
+        "https://images.unsplash.com/photo-1571896349842-33c89424de2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1632&q=80",
+        "https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+        "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
+      ],
+      "checkInTime": "3:00 PM",
+      "checkOutTime": "12:00 PM",
+      "policies": [
+        "Valid ID required",
+        "No smoking",
+        "Advance payment required"
+      ],
+      "startingPrice": 12000,
+      "totalRooms": 120,
+      "availableRooms": 85,
+      "ownerId": "owner123",
+      "sections": {
+        "hero": {
+          "title": "Taj Palace",
+          "subtitle": "Experience legendary luxury hospitality in the heart of New Delhi",
+          "backgroundImage": "https://images.unsplash.com/photo-1571896349842-33c89424de2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1632&q=80",
+          "ctaText": "Book Legendary Experience",
+          "quickInfo": [
+            {
+              "icon": "FaStar",
+              "label": "Rating",
+              "value": "4.8/5"
+            },
+            {
+              "icon": "FaMapMarkerAlt",
+              "label": "Location",
+              "value": "New Delhi"
+            }
+          ]
+        },
+        "about": {
+          "title": "About Taj Palace",
+          "subtitle": "A legacy of legendary hospitality and royal elegance",
+          "content": "Legendary luxury hotel in the heart of New Delhi, offering world-class hospitality and royal elegance. The Taj Palace stands as an iconic symbol of Indian hospitality, where traditional Indian warmth meets contemporary luxury to create unforgettable experiences for discerning travelers from around the globe.",
+          "highlights": [
+            "Iconic landmark in the heart of New Delhi",
+            "Award-winning restaurants and bars",
+            "World-renowned Taj hospitality",
+            "Prime location near business districts"
+          ]
+        },
+        "features": {
+          "title": "Why Choose Taj Palace?",
+          "subtitle": "Experience the legendary Taj hospitality and world-class amenities",
+          "items": [
+            {
+              "icon": "FaConciergeBell",
+              "title": "Legendary Service",
+              "description": "Experience the renowned Taj hospitality with personalized service and attention to detail that has made us an icon of luxury."
+            },
+            {
+              "icon": "FaMapMarkerAlt",
+              "title": "Prime Location",
+              "description": "Located in the heart of New Delhi with easy access to business districts, shopping areas, and major attractions."
+            },
+            {
+              "icon": "FaUtensils",
+              "title": "World-Class Dining",
+              "description": "Multiple award-winning restaurants serving global cuisines, signature dishes, and authentic Indian flavors."
+            },
+            {
+              "icon": "FaSpa",
+              "title": "Luxury Spa",
+              "description": "Rejuvenate at our luxury spa with traditional Indian treatments and modern wellness therapies."
+            }
+          ]
+        },
+        "gallery": {
+          "title": "Taj Palace Gallery",
+          "subtitle": "Witness the grandeur and elegance of the legendary Taj experience",
+          "images": [
+            {
+              "title": "Grand Entrance",
+              "image": "https://images.unsplash.com/photo-1571896349842-33c89424de2d?ixlib=rb-4.0.3",
+              "description": "Magnificent entrance with traditional Indian architecture"
+            },
+            {
+              "title": "Luxury Suites",
+              "image": "https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3",
+              "description": "Elegantly appointed suites with contemporary luxury"
+            },
+            {
+              "title": "Fine Dining",
+              "image": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?ixlib=rb-4.0.3",
+              "description": "Award-winning restaurants with exquisite cuisine"
+            }
+          ]
+        },
+        "amenities": {
+          "title": "World-Class Amenities",
+          "subtitle": "Everything you need for a perfect stay at the legendary Taj Palace",
+          "categories": [
+            {
+              "title": "Luxury Services",
+              "icon": "FaConciergeBell",
+              "items": [
+                "24/7 Concierge",
+                "Butler Service",
+                "Limousine Service",
+                "Personal Shopping",
+                "Valet Parking"
+              ]
+            },
+            {
+              "title": "Wellness",
+              "icon": "FaSpa",
+              "items": [
+                "Luxury Spa",
+                "Fitness Center",
+                "Swimming Pool",
+                "Yoga Classes",
+                "Salon Services"
+              ]
+            },
+            {
+              "title": "Business",
+              "icon": "FaBusinessTime",
+              "items": [
+                "Business Center",
+                "Meeting Rooms",
+                "Conference Facilities",
+                "Secretarial Services",
+                "High-Speed Internet"
+              ]
+            },
+            {
+              "title": "Dining",
+              "icon": "FaUtensils",
+              "items": [
+                "Multiple Restaurants",
+                "Room Service",
+                "Private Dining",
+                "Wine Cellar",
+                "Specialty Bars"
+              ]
+            }
+          ]
+        },
+        "contact": {
+          "title": "Location & Contact",
+          "subtitle": "Located in the prestigious heart of New Delhi",
+          "info": [
+            {
+              "label": "Address",
+              "value": "1, Mansingh Road, New Delhi",
+              "icon": "FaMapMarkerAlt"
+            },
+            {
+              "label": "Phone",
+              "value": "+91 11 6651 2233",
+              "icon": "FaPhone"
+            },
+            {
+              "label": "Email",
+              "value": "reservations@tajpalace.com",
+              "icon": "FaEnvelope"
+            },
+            {
+              "label": "Check-in / Check-out",
+              "value": "3:00 PM / 12:00 PM",
+              "icon": "FaClock"
+            }
+          ]
+        },
+        "testimonials": {
+          "title": "Guest Reviews",
+          "subtitle": "Experiences from our valued guests at the legendary Taj Palace",
+          "reviews": [
+            {
+              "id": 1,
+              "guestName": "Vikram Agarwal",
+              "rating": 5,
+              "date": "2024-01-16",
+              "comment": "Exceptional service as always! The Taj never disappoints. Perfect location for business meetings and the spa is world-class.",
+              "roomType": "Luxury Palace Room",
+              "verified": true,
+              "location": "Mumbai"
+            },
+            {
+              "id": 2,
+              "guestName": "Jennifer Brown",
+              "rating": 5,
+              "date": "2024-01-11",
+              "comment": "Absolutely stunning hotel! The presidential suite was beyond our expectations. The staff made our anniversary celebration truly special.",
+              "roomType": "Presidential Suite",
+              "verified": true,
+              "location": "London"
+            }
+          ]
+        }
+      },
+      "sectionOrder": [
+        "hero",
+        "about",
+        "features",
+        "gallery",
+        "amenities",
+        "testimonials",
+        "contact"
+      ],
+      "sectionVisibility": {
+        "hero": true,
+        "about": true,
+        "features": true,
+        "gallery": true,
+        "amenities": true,
+        "testimonials": true,
+        "contact": true
+      },
+      "rooms": [
+        {
+          "id": 401,
+          "name": "Luxury Palace Room",
+          "type": "Luxury",
+          "price": 12000,
+          "maxGuests": 2,
+          "bedType": "King Size",
+          "area": "50 sqm",
+          "description": "Elegantly appointed room with city views and luxury amenities, featuring classic Taj hospitality",
+          "images": [
+            "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+            "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
+          ],
+          "amenities": [
+            "City View",
+            "WiFi",
+            "AC",
+            "TV",
+            "Mini Bar",
+            "Room Service",
+            "Work Desk"
+          ],
+          "available": true
+        }
+      ]
+    }
+  ],
+  "bookings": [
+    {
+      "id": 1,
+      "userId": "user123",
+      "hotelId": 1,
+      "roomId": 101,
+      "hotelName": "Grand Luxury Resort",
+      "roomName": "Deluxe Ocean View",
+      "checkIn": "2024-02-15",
+      "checkOut": "2024-02-18",
+      "guests": 2,
+      "totalPrice": 25500,
+      "status": "confirmed",
+      "bookingDate": "2024-01-20",
+      "guestName": "John Doe",
+      "guestEmail": "john@example.com",
+      "guestPhone": "+91 9876543210",
+      "specialRequests": "Late check-in requested"
+    },
+    {
+      "id": 2,
+      "userId": "user123",
+      "hotelId": 2,
+      "roomId": 201,
+      "hotelName": "Mountain View Lodge",
+      "roomName": "Mountain View Double",
+      "checkIn": "2024-03-10",
+      "checkOut": "2024-03-12",
+      "guests": 2,
+      "totalPrice": 7000,
+      "status": "pending",
+      "bookingDate": "2024-01-25",
+      "guestName": "Jane Smith",
+      "guestEmail": "jane@example.com",
+      "guestPhone": "+91 9876543211",
+      "specialRequests": ""
+    },
+    {
+      "id": 3,
+      "userId": "user456",
+      "hotelId": 3,
+      "roomId": 301,
+      "hotelName": "Heritage Palace Hotel",
+      "roomName": "Royal Heritage Room",
+      "checkIn": "2024-03-20",
+      "checkOut": "2024-03-23",
+      "guests": 2,
+      "totalPrice": 19500,
+      "status": "confirmed",
+      "bookingDate": "2024-01-28",
+      "guestName": "Kavya Mehta",
+      "guestEmail": "kavya@example.com",
+      "guestPhone": "+91 9876543212",
+      "specialRequests": "Anniversary celebration"
+    },
+    {
+      "id": 4,
+      "userId": "user789",
+      "hotelId": 4,
+      "roomId": 402,
+      "hotelName": "Taj Palace",
+      "roomName": "Presidential Suite",
+      "checkIn": "2024-04-05",
+      "checkOut": "2024-04-08",
+      "guests": 4,
+      "totalPrice": 75000,
+      "status": "confirmed",
+      "bookingDate": "2024-02-01",
+      "guestName": "Jennifer Brown",
+      "guestEmail": "jennifer@example.com",
+      "guestPhone": "+91 9876543213",
+      "specialRequests": "Butler service required"
+    }
+  ],
+  "amenitiesList": [
+    { "id": "wifi", "name": "WiFi", "icon": "📶" },
+    { "id": "ac", "name": "Air Conditioning", "icon": "❄️" },
+    { "id": "pool", "name": "Swimming Pool", "icon": "🏊" },
+    { "id": "spa", "name": "Spa", "icon": "🧖" },
+    { "id": "gym", "name": "Fitness Center", "icon": "💪" },
+    { "id": "restaurant", "name": "Restaurant", "icon": "🍽️" },
+    { "id": "parking", "name": "Parking", "icon": "🚗" },
+    { "id": "pet", "name": "Pet Friendly", "icon": "🐕" },
+    { "id": "breakfast", "name": "Breakfast", "icon": "🥐" },
+    { "id": "room-service", "name": "Room Service", "icon": "🛎️" },
+    { "id": "tv", "name": "Television", "icon": "📺" },
+    { "id": "minibar", "name": "Mini Bar", "icon": "🍷" },
+    { "id": "balcony", "name": "Balcony", "icon": "🏔️" },
+    { "id": "garden", "name": "Garden", "icon": "🌿" },
+    { "id": "heater", "name": "Heater", "icon": "🔥" }
+  ]
+}

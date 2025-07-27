@@ -40,7 +40,7 @@ import {
   removeAmenityFromCategory,
 } from '../../store/slices/hotelManagementSlice';
 import { useAppContext } from '../../context/AppContext';
-import { getHotelByIdOrSlug, amenitiesList } from '../../DummyData/hotels';
+import { getHotelByIdOrSlug, amenitiesList } from '../../DummyData';
 import { Button } from '../shared/Button';
 import { Input } from '../shared/Input';
 

@@ -15,8 +15,12 @@ import {
   FaEye,
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
-import { updateRoom, removeRoom, setEditingHotel } from '../../store/slices/hotelManagementSlice';
-import { getHotelByIdOrSlug } from '../../DummyData/hotels';
+import {
+  updateRoom,
+  removeRoom,
+  setEditingHotel,
+} from '../../store/slices/hotelManagementSlice';
+import { getHotelByIdOrSlug } from '../../DummyData';
 import { Button } from '../shared/Button';
 import { Input } from '../shared/Input';
 import { Card, CardContent } from '../shared/Card';
@@ -51,7 +55,7 @@ const RoomsGrid = styled.div`
 
 const RoomCard = styled(Card)`
   transition: all 0.3s ease;
-  
+
   &:hover {
     transform: translateY(-4px);
     box-shadow: ${theme.shadows.xl};
@@ -188,7 +192,7 @@ const CloseButton = styled.button`
   color: ${theme.colors.gray500};
   cursor: pointer;
   padding: ${theme.spacing.sm};
-  
+
   &:hover {
     color: ${theme.colors.gray700};
   }
@@ -220,7 +224,7 @@ const TextArea = styled.textarea`
   line-height: 1.5;
   resize: vertical;
   min-height: 80px;
-  
+
   &:focus {
     outline: none;
     border-color: ${theme.colors.primary};
@@ -248,11 +252,11 @@ const AllRoomsManager = () => {
       }
     }
   }, [slug, editingHotel, dispatch]);
-  
+
   const [editingRoom, setEditingRoom] = useState(null);
   const [editData, setEditData] = useState({});
 
-  const handleEditRoom = (room) => {
+  const handleEditRoom = room => {
     setEditingRoom(room.id);
     setEditData({ ...room });
   };
@@ -264,8 +268,12 @@ const AllRoomsManager = () => {
     alert('Room updated successfully!');
   };
 
-  const handleDeleteRoom = (roomId) => {
-    if (window.confirm('Are you sure you want to delete this room? This action cannot be undone.')) {
+  const handleDeleteRoom = roomId => {
+    if (
+      window.confirm(
+        'Are you sure you want to delete this room? This action cannot be undone.'
+      )
+    ) {
       dispatch(removeRoom(roomId));
       alert('Room deleted successfully!');
     }
@@ -290,7 +298,7 @@ const AllRoomsManager = () => {
     updateEditField('images', [...editData.images, '']);
   };
 
-  const removeEditImage = (index) => {
+  const removeEditImage = index => {
     const newImages = editData.images.filter((_, i) => i !== index);
     updateEditField('images', newImages);
   };
@@ -305,7 +313,7 @@ const AllRoomsManager = () => {
     updateEditField('amenities', [...editData.amenities, '']);
   };
 
-  const removeEditAmenity = (index) => {
+  const removeEditAmenity = index => {
     const newAmenities = editData.amenities.filter((_, i) => i !== index);
     updateEditField('amenities', newAmenities);
   };
@@ -327,12 +335,20 @@ const AllRoomsManager = () => {
     <Container>
       <Header>
         <Title>All Rooms</Title>
-        <Subtitle>Manage rooms for {editingHotel.name} ({rooms.length} rooms)</Subtitle>
+        <Subtitle>
+          Manage rooms for {editingHotel.name} ({rooms.length} rooms)
+        </Subtitle>
       </Header>
 
       {rooms.length === 0 ? (
         <EmptyState>
-          <FaBed style={{ fontSize: '4rem', marginBottom: theme.spacing.lg, opacity: 0.5 }} />
+          <FaBed
+            style={{
+              fontSize: '4rem',
+              marginBottom: theme.spacing.lg,
+              opacity: 0.5,
+            }}
+          />
           <h3>No rooms added yet</h3>
           <p>Start by adding your first room to this hotel.</p>
         </EmptyState>
@@ -340,7 +356,12 @@ const AllRoomsManager = () => {
         <RoomsGrid>
           {rooms.map(room => (
             <RoomCard key={room.id}>
-              <RoomImage src={room.images?.[0] || 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?ixlib=rb-4.0.3'} />
+              <RoomImage
+                src={
+                  room.images?.[0] ||
+                  'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?ixlib=rb-4.0.3'
+                }
+              />
               <RoomInfo>
                 <RoomHeader>
                   <div>
@@ -351,8 +372,12 @@ const AllRoomsManager = () => {
                 </RoomHeader>
 
                 <RoomDetails>
-                  <div><FaUsers /> {room.maxGuests} guests</div>
-                  <div><FaBed /> {room.bedType}</div>
+                  <div>
+                    <FaUsers /> {room.maxGuests} guests
+                  </div>
+                  <div>
+                    <FaBed /> {room.bedType}
+                  </div>
                 </RoomDetails>
 
                 <RoomDescription>{room.description}</RoomDescription>
@@ -370,12 +395,16 @@ const AllRoomsManager = () => {
                 </AmenitiesList>
 
                 <RoomActions>
-                  <Button size="small" variant="outline" onClick={() => handleEditRoom(room)}>
+                  <Button
+                    size="small"
+                    variant="outline"
+                    onClick={() => handleEditRoom(room)}
+                  >
                     <FaEdit /> Edit
                   </Button>
-                  <Button 
-                    size="small" 
-                    variant="danger" 
+                  <Button
+                    size="small"
+                    variant="danger"
                     onClick={() => handleDeleteRoom(room.id)}
                   >
                     <FaTrash /> Delete
@@ -390,7 +419,7 @@ const AllRoomsManager = () => {
       {/* Edit Modal */}
       {editingRoom && (
         <EditModal onClick={handleCloseEdit}>
-          <EditContent onClick={(e) => e.stopPropagation()}>
+          <EditContent onClick={e => e.stopPropagation()}>
             <EditHeader>
               <EditTitle>Edit Room: {editData.name}</EditTitle>
               <CloseButton onClick={handleCloseEdit}>
@@ -403,14 +432,14 @@ const AllRoomsManager = () => {
                 <Label>Room Name</Label>
                 <Input
                   value={editData.name || ''}
-                  onChange={(e) => updateEditField('name', e.target.value)}
+                  onChange={e => updateEditField('name', e.target.value)}
                 />
               </FormField>
               <FormField>
                 <Label>Room Type</Label>
                 <Input
                   value={editData.type || ''}
-                  onChange={(e) => updateEditField('type', e.target.value)}
+                  onChange={e => updateEditField('type', e.target.value)}
                 />
               </FormField>
               <FormField>
@@ -418,7 +447,9 @@ const AllRoomsManager = () => {
                 <Input
                   type="number"
                   value={editData.price || ''}
-                  onChange={(e) => updateEditField('price', parseInt(e.target.value))}
+                  onChange={e =>
+                    updateEditField('price', parseInt(e.target.value))
+                  }
                 />
               </FormField>
               <FormField>
@@ -426,14 +457,16 @@ const AllRoomsManager = () => {
                 <Input
                   type="number"
                   value={editData.maxGuests || ''}
-                  onChange={(e) => updateEditField('maxGuests', parseInt(e.target.value))}
+                  onChange={e =>
+                    updateEditField('maxGuests', parseInt(e.target.value))
+                  }
                 />
               </FormField>
               <FormField>
                 <Label>Bed Type</Label>
                 <Input
                   value={editData.bedType || ''}
-                  onChange={(e) => updateEditField('bedType', e.target.value)}
+                  onChange={e => updateEditField('bedType', e.target.value)}
                 />
               </FormField>
             </FormGrid>
@@ -442,7 +475,7 @@ const AllRoomsManager = () => {
               <Label>Description</Label>
               <TextArea
                 value={editData.description || ''}
-                onChange={(e) => updateEditField('description', e.target.value)}
+                onChange={e => updateEditField('description', e.target.value)}
               />
             </FormField>
 
@@ -450,7 +483,7 @@ const AllRoomsManager = () => {
               <Label>Special Offers</Label>
               <TextArea
                 value={editData.offer || ''}
-                onChange={(e) => updateEditField('offer', e.target.value)}
+                onChange={e => updateEditField('offer', e.target.value)}
                 placeholder="Enter special offers or rewards for this room..."
               />
             </FormField>
@@ -458,14 +491,25 @@ const AllRoomsManager = () => {
             <FormField style={{ marginBottom: theme.spacing.lg }}>
               <Label>Images</Label>
               {editData.images?.map((image, index) => (
-                <div key={index} style={{ display: 'flex', gap: theme.spacing.sm, marginBottom: theme.spacing.sm }}>
+                <div
+                  key={index}
+                  style={{
+                    display: 'flex',
+                    gap: theme.spacing.sm,
+                    marginBottom: theme.spacing.sm,
+                  }}
+                >
                   <Input
                     value={image}
-                    onChange={(e) => updateEditImage(index, e.target.value)}
+                    onChange={e => updateEditImage(index, e.target.value)}
                     placeholder="Image URL"
                     style={{ flex: 1 }}
                   />
-                  <Button size="small" variant="danger" onClick={() => removeEditImage(index)}>
+                  <Button
+                    size="small"
+                    variant="danger"
+                    onClick={() => removeEditImage(index)}
+                  >
                     <FaTrash />
                   </Button>
                 </div>
@@ -478,14 +522,25 @@ const AllRoomsManager = () => {
             <FormField style={{ marginBottom: theme.spacing.lg }}>
               <Label>Amenities</Label>
               {editData.amenities?.map((amenity, index) => (
-                <div key={index} style={{ display: 'flex', gap: theme.spacing.sm, marginBottom: theme.spacing.sm }}>
+                <div
+                  key={index}
+                  style={{
+                    display: 'flex',
+                    gap: theme.spacing.sm,
+                    marginBottom: theme.spacing.sm,
+                  }}
+                >
                   <Input
                     value={amenity}
-                    onChange={(e) => updateEditAmenity(index, e.target.value)}
+                    onChange={e => updateEditAmenity(index, e.target.value)}
                     placeholder="Amenity"
                     style={{ flex: 1 }}
                   />
-                  <Button size="small" variant="danger" onClick={() => removeEditAmenity(index)}>
+                  <Button
+                    size="small"
+                    variant="danger"
+                    onClick={() => removeEditAmenity(index)}
+                  >
                     <FaTrash />
                   </Button>
                 </div>
@@ -495,7 +550,13 @@ const AllRoomsManager = () => {
               </Button>
             </FormField>
 
-            <div style={{ display: 'flex', gap: theme.spacing.md, justifyContent: 'flex-end' }}>
+            <div
+              style={{
+                display: 'flex',
+                gap: theme.spacing.md,
+                justifyContent: 'flex-end',
+              }}
+            >
               <Button variant="outline" onClick={handleCloseEdit}>
                 Cancel
               </Button>

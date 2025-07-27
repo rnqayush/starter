@@ -30,7 +30,7 @@ import {
   discardChanges,
 } from '../../store/slices/hotelManagementSlice';
 import { useAppContext } from '../../context/AppContext';
-import { getHotelByIdOrSlug, amenitiesList } from '../../DummyData/hotels';
+import { getHotelByIdOrSlug, amenitiesList } from '../../DummyData';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -153,7 +153,7 @@ const EditableTitle = styled.input`
   color: ${theme.colors.white};
   width: 100%;
   text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
-  
+
   &:focus {
     outline: none;
     border-color: ${theme.colors.white};
@@ -190,7 +190,7 @@ const EditableSubtitle = styled.textarea`
   opacity: 0.95;
   max-width: 600px;
   min-height: 60px;
-  
+
   &:focus {
     outline: none;
     border-color: ${theme.colors.white};
@@ -259,7 +259,7 @@ const EditableSectionTitle = styled.input`
   border: 2px dashed transparent;
   text-align: center;
   width: 100%;
-  
+
   &:focus {
     outline: none;
     border-color: ${theme.colors.primary};
@@ -288,7 +288,7 @@ const EditableDescription = styled.textarea`
   text-align: center;
   resize: none;
   min-height: 120px;
-  
+
   &:focus {
     outline: none;
     border-color: ${theme.colors.primary};
@@ -455,10 +455,12 @@ const AmenityToggle = styled.div`
   border-radius: ${theme.borderRadius.md};
   cursor: pointer;
   transition: all 0.3s ease;
-  background: ${props => props.selected ? theme.colors.primary : theme.colors.white};
-  color: ${props => props.selected ? theme.colors.white : theme.colors.gray700};
+  background: ${props =>
+    props.selected ? theme.colors.primary : theme.colors.white};
+  color: ${props =>
+    props.selected ? theme.colors.white : theme.colors.gray700};
   font-size: 0.9rem;
-  
+
   &:hover {
     border-color: ${theme.colors.primary};
     transform: translateY(-1px);
@@ -537,15 +539,11 @@ const ActionButton = styled.button`
 const EditableHotelDetail = ({ setActiveSection }) => {
   const dispatch = useDispatch();
   const { ownerHotels } = useAppContext();
-  const {
-    editingHotel,
-    hasUnsavedChanges,
-    changes,
-    activeHotelId
-  } = useSelector(state => state.hotelManagement);
+  const { editingHotel, hasUnsavedChanges, changes, activeHotelId } =
+    useSelector(state => state.hotelManagement);
 
   const [selectedHotelId, setSelectedHotelId] = useState(null);
-  
+
   // If no hotel is being edited, show hotel selection
   useEffect(() => {
     if (!editingHotel && ownerHotels.length > 0) {
@@ -567,7 +565,9 @@ const EditableHotelDetail = ({ setActiveSection }) => {
   };
 
   const handleImageEdit = (index, isMainImage = false) => {
-    const currentUrl = isMainImage ? editingHotel?.image : editingHotel?.images?.[index];
+    const currentUrl = isMainImage
+      ? editingHotel?.image
+      : editingHotel?.images?.[index];
     const newUrl = prompt('Enter new image URL:', currentUrl);
     if (newUrl && newUrl !== currentUrl) {
       if (isMainImage) {
@@ -580,12 +580,12 @@ const EditableHotelDetail = ({ setActiveSection }) => {
 
   const toggleAmenity = (categoryItems, amenityName) => {
     if (!editingHotel) return;
-    
+
     const currentAmenities = editingHotel.amenities || [];
     const newAmenities = currentAmenities.includes(amenityName)
       ? currentAmenities.filter(a => a !== amenityName)
       : [...currentAmenities, amenityName];
-    
+
     dispatch(updateAmenities(newAmenities));
   };
 
@@ -605,9 +605,16 @@ const EditableHotelDetail = ({ setActiveSection }) => {
       <PageContainer>
         <Container style={{ paddingTop: theme.spacing.xxl }}>
           <h2>Select a hotel to edit:</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: theme.spacing.lg, marginTop: theme.spacing.xl }}>
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+              gap: theme.spacing.lg,
+              marginTop: theme.spacing.xl,
+            }}
+          >
             {ownerHotels.map(hotel => (
-              <div 
+              <div
                 key={hotel.id}
                 onClick={() => setSelectedHotelId(hotel.id)}
                 style={{
@@ -615,13 +622,19 @@ const EditableHotelDetail = ({ setActiveSection }) => {
                   border: `2px solid ${selectedHotelId === hotel.id ? theme.colors.primary : theme.colors.gray300}`,
                   borderRadius: theme.borderRadius.lg,
                   overflow: 'hidden',
-                  transition: 'all 0.3s ease'
+                  transition: 'all 0.3s ease',
                 }}
               >
-                <img src={hotel.image} alt={hotel.name} style={{ width: '100%', height: '200px', objectFit: 'cover' }} />
+                <img
+                  src={hotel.image}
+                  alt={hotel.name}
+                  style={{ width: '100%', height: '200px', objectFit: 'cover' }}
+                />
                 <div style={{ padding: theme.spacing.lg }}>
                   <h3>{hotel.name}</h3>
-                  <p style={{ color: theme.colors.gray600 }}>{hotel.location}</p>
+                  <p style={{ color: theme.colors.gray600 }}>
+                    {hotel.location}
+                  </p>
                 </div>
               </div>
             ))}
@@ -635,22 +648,46 @@ const EditableHotelDetail = ({ setActiveSection }) => {
     {
       title: 'Recreation',
       icon: FaSwimmingPool,
-      items: ['Swimming Pool', 'Fitness Center', 'Spa & Wellness', 'Game Room', 'Tennis Court'],
+      items: [
+        'Swimming Pool',
+        'Fitness Center',
+        'Spa & Wellness',
+        'Game Room',
+        'Tennis Court',
+      ],
     },
     {
       title: 'Dining',
       icon: FaUtensils,
-      items: ['Fine Dining Restaurant', 'Rooftop Bar', 'Room Service', 'Breakfast Buffet', 'Coffee Shop'],
+      items: [
+        'Fine Dining Restaurant',
+        'Rooftop Bar',
+        'Room Service',
+        'Breakfast Buffet',
+        'Coffee Shop',
+      ],
     },
     {
       title: 'Business',
       icon: FaBusinessTime,
-      items: ['Business Center', 'Meeting Rooms', 'Conference Hall', 'Free WiFi', 'Printing Services'],
+      items: [
+        'Business Center',
+        'Meeting Rooms',
+        'Conference Hall',
+        'Free WiFi',
+        'Printing Services',
+      ],
     },
     {
       title: 'Services',
       icon: FaConciergeBell,
-      items: ['24/7 Concierge', 'Valet Parking', 'Laundry Service', 'Airport Transfer', 'Tour Desk'],
+      items: [
+        '24/7 Concierge',
+        'Valet Parking',
+        'Laundry Service',
+        'Airport Transfer',
+        'Tour Desk',
+      ],
     },
   ];
 
@@ -669,12 +706,12 @@ const EditableHotelDetail = ({ setActiveSection }) => {
         <HeroContent>
           <EditableTitle
             value={editingHotel.name || ''}
-            onChange={(e) => handleFieldChange('name', e.target.value)}
+            onChange={e => handleFieldChange('name', e.target.value)}
             placeholder="Enter hotel name"
           />
           <EditableSubtitle
             value={`Experience luxury hospitality in the heart of ${editingHotel.city || 'your city'}`}
-            onChange={(e) => handleFieldChange('heroSubtitle', e.target.value)}
+            onChange={e => handleFieldChange('heroSubtitle', e.target.value)}
             placeholder="Enter hero subtitle"
           />
         </HeroContent>
@@ -685,13 +722,13 @@ const EditableHotelDetail = ({ setActiveSection }) => {
           <SectionHeader>
             <EditableSectionTitle
               value={`About ${editingHotel.name}`}
-              onChange={(e) => handleFieldChange('aboutTitle', e.target.value)}
+              onChange={e => handleFieldChange('aboutTitle', e.target.value)}
               placeholder="About section title"
             />
           </SectionHeader>
           <EditableDescription
             value={editingHotel.description || ''}
-            onChange={(e) => handleFieldChange('description', e.target.value)}
+            onChange={e => handleFieldChange('description', e.target.value)}
             placeholder="Enter hotel description..."
           />
         </Container>
