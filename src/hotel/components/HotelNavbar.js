@@ -331,10 +331,13 @@ const HotelNavbar = ({ showBackToMain = true }) => {
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.scrollY;
-      setIsScrolled(scrollTop > 50);
+      setIsScrolled(scrollTop > 20);
     };
 
-    window.addEventListener('scroll', handleScroll);
+    // Check initial scroll position
+    handleScroll();
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
