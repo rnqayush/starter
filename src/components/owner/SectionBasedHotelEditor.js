@@ -925,13 +925,16 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
             );
             break;
           case 'rating':
-            dispatch(updateHotelField({ field: 'rating', value: tempData[key] }));
+            dispatch(
+              updateHotelField({ field: 'rating', value: tempData[key] })
+            );
             // Also update hero quickInfo rating
             if (editingHotel.sections?.hero?.quickInfo) {
-              const updatedQuickInfo = editingHotel.sections.hero.quickInfo.map(info =>
-                info.label === 'Rating'
-                  ? { ...info, value: `${tempData[key]}/5` }
-                  : info
+              const updatedQuickInfo = editingHotel.sections.hero.quickInfo.map(
+                info =>
+                  info.label === 'Rating'
+                    ? { ...info, value: `${tempData[key]}/5` }
+                    : info
               );
               dispatch(
                 updateHotelField({
@@ -943,13 +946,16 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
             }
             break;
           case 'location':
-            dispatch(updateHotelField({ field: 'location', value: tempData[key] }));
+            dispatch(
+              updateHotelField({ field: 'location', value: tempData[key] })
+            );
             // Also update hero quickInfo location
             if (editingHotel.sections?.hero?.quickInfo) {
-              const updatedQuickInfo = editingHotel.sections.hero.quickInfo.map(info =>
-                info.label === 'Location'
-                  ? { ...info, value: tempData[key] }
-                  : info
+              const updatedQuickInfo = editingHotel.sections.hero.quickInfo.map(
+                info =>
+                  info.label === 'Location'
+                    ? { ...info, value: tempData[key] }
+                    : info
               );
               dispatch(
                 updateHotelField({
@@ -1838,7 +1844,12 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
                       min="0"
                       max="5"
                       value={tempData.rating || ''}
-                      onChange={e => updateTempData('rating', parseFloat(e.target.value) || '')}
+                      onChange={e =>
+                        updateTempData(
+                          'rating',
+                          parseFloat(e.target.value) || ''
+                        )
+                      }
                       placeholder="Enter hotel rating (e.g., 4.8)"
                     />
                   </FormField>

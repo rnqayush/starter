@@ -208,7 +208,11 @@ const HeroTitle = styled.h1`
     left: 0;
     width: 100px;
     height: 4px;
-    background: linear-gradient(90deg, ${theme.colors.primary}, ${theme.colors.accent});
+    background: linear-gradient(
+      90deg,
+      ${theme.colors.primary},
+      ${theme.colors.accent}
+    );
     border-radius: 2px;
     animation: ${fadeInLeft} 1s ease-out 0.6s both;
   }
@@ -226,7 +230,7 @@ const HeroTitle = styled.h1`
     background: none;
     -webkit-text-fill-color: unset;
     text-shadow: 2px 2px 12px rgba(0, 0, 0, 0.8);
-    
+
     &::after {
       left: 50%;
       transform: translateX(-50%);
@@ -271,7 +275,11 @@ const HeroActions = styled.div`
 `;
 
 const CTAButton = styled.button`
-  background: linear-gradient(135deg, ${theme.colors.primary}, ${theme.colors.primaryDark});
+  background: linear-gradient(
+    135deg,
+    ${theme.colors.primary},
+    ${theme.colors.primaryDark}
+  );
   color: ${theme.colors.white};
   padding: ${theme.spacing.lg} ${theme.spacing.xxl};
   border: none;
@@ -316,11 +324,11 @@ const CTAButton = styled.button`
     transform: translateY(-3px) scale(1.02);
     box-shadow: 0 15px 40px rgba(59, 130, 246, 0.5);
     animation: ${pulseGlow} 2s infinite;
-    
+
     &::before {
       left: 100%;
     }
-    
+
     &::after {
       opacity: 1;
       right: 15px;
@@ -424,7 +432,7 @@ const ScrollIndicator = styled.div`
   z-index: 2;
   animation: ${floatAnimation} 2s ease-in-out infinite;
   cursor: pointer;
-  
+
   .scroll-text {
     color: ${theme.colors.white};
     font-size: 0.9rem;
@@ -432,7 +440,7 @@ const ScrollIndicator = styled.div`
     text-align: center;
     opacity: 0.8;
   }
-  
+
   .scroll-arrow {
     width: 30px;
     height: 30px;
@@ -443,7 +451,7 @@ const ScrollIndicator = styled.div`
     justify-content: center;
     margin: 0 auto;
     transition: all 0.3s ease;
-    
+
     &:hover {
       background: rgba(255, 255, 255, 0.1);
       transform: scale(1.1);
@@ -452,13 +460,14 @@ const ScrollIndicator = styled.div`
 `;
 
 const ContentSection = styled.section.withConfig({
-  shouldForwardProp: (prop) => prop !== 'alt',
+  shouldForwardProp: prop => prop !== 'alt',
 })`
   padding: calc(${theme.spacing.xxl} * 1.5) 0;
   margin: calc(${theme.spacing.xxl} * 1.5) 0;
-  background: ${props => props.alt ?
-    'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)' :
-    theme.colors.white};
+  background: ${props =>
+    props.alt
+      ? 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)'
+      : theme.colors.white};
   position: relative;
   overflow: hidden;
 
@@ -512,7 +521,11 @@ const SectionHeader = styled.div`
     transform: translateX(-50%);
     width: 80px;
     height: 3px;
-    background: linear-gradient(90deg, ${theme.colors.primary}, ${theme.colors.accent});
+    background: linear-gradient(
+      90deg,
+      ${theme.colors.primary},
+      ${theme.colors.accent}
+    );
     border-radius: 2px;
   }
 
@@ -524,7 +537,11 @@ const SectionHeader = styled.div`
 const SectionTitle = styled.h2`
   font-size: 3rem;
   font-weight: 700;
-  background: linear-gradient(135deg, ${theme.colors.gray900} 0%, ${theme.colors.gray700} 100%);
+  background: linear-gradient(
+    135deg,
+    ${theme.colors.gray900} 0%,
+    ${theme.colors.gray700} 100%
+  );
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -556,10 +573,10 @@ const SectionSubtitle = styled.p`
 `;
 
 const AnimatedSection = styled.div.withConfig({
-  shouldForwardProp: (prop) => !['inView', 'delay'].includes(prop),
+  shouldForwardProp: prop => !['inView', 'delay'].includes(prop),
 })`
-  opacity: ${props => props.inView ? 1 : 0};
-  transform: translateY(${props => props.inView ? '0' : '50px'});
+  opacity: ${props => (props.inView ? 1 : 0)};
+  transform: translateY(${props => (props.inView ? '0' : '50px')});
   transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   transition-delay: ${props => props.delay || '0s'};
 `;
@@ -610,7 +627,11 @@ const FeatureCard = styled.div`
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, ${theme.colors.primary}05, ${theme.colors.accent}05);
+    background: linear-gradient(
+      135deg,
+      ${theme.colors.primary}05,
+      ${theme.colors.accent}05
+    );
     opacity: 0;
     transition: opacity 0.3s ease;
   }
@@ -619,7 +640,7 @@ const FeatureCard = styled.div`
     transform: translateY(-10px) scale(1.02);
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
     border-color: ${theme.colors.primary};
-    
+
     &::before {
       opacity: 1;
     }
@@ -638,14 +659,18 @@ const FeatureCard = styled.div`
 
 const FeatureIcon = styled.div`
   font-size: 4rem;
-  background: linear-gradient(135deg, ${theme.colors.primary}, ${theme.colors.accent});
+  background: linear-gradient(
+    135deg,
+    ${theme.colors.primary},
+    ${theme.colors.accent}
+  );
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   margin-bottom: ${theme.spacing.lg};
   position: relative;
   display: inline-block;
-  
+
   &::after {
     content: '';
     position: absolute;
@@ -654,7 +679,11 @@ const FeatureIcon = styled.div`
     transform: translate(-50%, -50%);
     width: 80px;
     height: 80px;
-    background: linear-gradient(135deg, ${theme.colors.primary}15, ${theme.colors.accent}15);
+    background: linear-gradient(
+      135deg,
+      ${theme.colors.primary}15,
+      ${theme.colors.accent}15
+    );
     border-radius: 50%;
     z-index: -1;
   }
@@ -712,23 +741,23 @@ const GalleryItem = styled.div`
   overflow: hidden;
   cursor: pointer;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  
+
   &:hover {
     transform: scale(1.05);
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
   }
-  
+
   img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     transition: transform 0.4s ease;
   }
-  
+
   &:hover img {
     transform: scale(1.1);
   }
-  
+
   &::after {
     content: '';
     position: absolute;
@@ -744,7 +773,7 @@ const GalleryItem = styled.div`
     opacity: 0;
     transition: opacity 0.3s ease;
   }
-  
+
   &:hover::after {
     opacity: 1;
   }
@@ -765,7 +794,11 @@ const AmenitiesSection = styled.div`
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(90deg, ${theme.colors.primary}, ${theme.colors.accent});
+    background: linear-gradient(
+      90deg,
+      ${theme.colors.primary},
+      ${theme.colors.accent}
+    );
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
@@ -787,12 +820,16 @@ const AmenitiesGrid = styled.div`
 `;
 
 const AmenityCategory = styled.div`
-  background: linear-gradient(135deg, ${theme.colors.gray50} 0%, ${theme.colors.white} 100%);
+  background: linear-gradient(
+    135deg,
+    ${theme.colors.gray50} 0%,
+    ${theme.colors.white} 100%
+  );
   border-radius: ${theme.borderRadius.lg};
   padding: ${theme.spacing.xl};
   border: 1px solid ${theme.colors.gray200};
   transition: all 0.3s ease;
-  
+
   &:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
@@ -807,7 +844,7 @@ const AmenityCategory = styled.div`
     display: flex;
     align-items: center;
     gap: ${theme.spacing.sm};
-    
+
     .icon {
       font-size: 1.5rem;
       color: ${theme.colors.primary};
@@ -844,7 +881,7 @@ const AmenityItem = styled.li`
   color: ${theme.colors.gray700};
   font-size: 1.05rem;
   transition: all 0.2s ease;
-  
+
   &:hover {
     color: ${theme.colors.primary};
     transform: translateX(5px);
@@ -886,12 +923,12 @@ const ReviewCard = styled.div`
   position: relative;
   transition: all 0.3s ease;
   border-left: 4px solid ${theme.colors.primary};
-  
+
   &:hover {
     transform: translateY(-5px);
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
   }
-  
+
   .quote-icon {
     position: absolute;
     top: ${theme.spacing.lg};
@@ -913,12 +950,16 @@ const ReviewAuthor = styled.div`
   display: flex;
   align-items: center;
   gap: ${theme.spacing.md};
-  
+
   .avatar {
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    background: linear-gradient(135deg, ${theme.colors.primary}, ${theme.colors.accent});
+    background: linear-gradient(
+      135deg,
+      ${theme.colors.primary},
+      ${theme.colors.accent}
+    );
     display: flex;
     align-items: center;
     justify-content: center;
@@ -926,25 +967,25 @@ const ReviewAuthor = styled.div`
     font-weight: 700;
     font-size: 1.2rem;
   }
-  
+
   .info {
     .name {
       font-weight: 700;
       color: ${theme.colors.gray900};
       margin-bottom: 2px;
     }
-    
+
     .location {
       color: ${theme.colors.gray600};
       font-size: 0.9rem;
     }
   }
-  
+
   .rating {
     margin-left: auto;
     display: flex;
     gap: 2px;
-    
+
     .star {
       color: #fbbf24;
       font-size: 1.1rem;
@@ -953,7 +994,11 @@ const ReviewAuthor = styled.div`
 `;
 
 const ContactSection = styled.div`
-  background: linear-gradient(135deg, ${theme.colors.primary} 0%, ${theme.colors.primaryDark} 100%);
+  background: linear-gradient(
+    135deg,
+    ${theme.colors.primary} 0%,
+    ${theme.colors.primaryDark} 100%
+  );
   color: ${theme.colors.white};
   border-radius: ${theme.borderRadius.xxl};
   padding: calc(${theme.spacing.xxl} * 1.5);
@@ -1002,25 +1047,25 @@ const ContactItem = styled.div`
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.2);
   transition: all 0.3s ease;
-  
+
   &:hover {
     background: rgba(255, 255, 255, 0.2);
     transform: translateY(-5px);
   }
-  
+
   .icon {
     font-size: 2rem;
     color: ${theme.colors.white};
     filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
   }
-  
+
   .info {
     .label {
       font-size: 0.9rem;
       opacity: 0.9;
       margin-bottom: 4px;
     }
-    
+
     .value {
       font-size: 1.1rem;
       font-weight: 600;
@@ -1081,11 +1126,21 @@ const HotelDetail = () => {
   // Animation refs
   const [heroRef, heroInView] = useIntersectionObserver({ threshold: 0.1 });
   const [aboutRef, aboutInView] = useIntersectionObserver({ threshold: 0.2 });
-  const [featuresRef, featuresInView] = useIntersectionObserver({ threshold: 0.1 });
-  const [galleryRef, galleryInView] = useIntersectionObserver({ threshold: 0.1 });
-  const [amenitiesRef, amenitiesInView] = useIntersectionObserver({ threshold: 0.1 });
-  const [reviewsRef, reviewsInView] = useIntersectionObserver({ threshold: 0.1 });
-  const [contactRef, contactInView] = useIntersectionObserver({ threshold: 0.1 });
+  const [featuresRef, featuresInView] = useIntersectionObserver({
+    threshold: 0.1,
+  });
+  const [galleryRef, galleryInView] = useIntersectionObserver({
+    threshold: 0.1,
+  });
+  const [amenitiesRef, amenitiesInView] = useIntersectionObserver({
+    threshold: 0.1,
+  });
+  const [reviewsRef, reviewsInView] = useIntersectionObserver({
+    threshold: 0.1,
+  });
+  const [contactRef, contactInView] = useIntersectionObserver({
+    threshold: 0.1,
+  });
 
   // Get updated hotel data from Redux if available
   const hotels = useSelector(state => state.hotelManagement?.liveHotels || []);
@@ -1141,14 +1196,16 @@ const HotelDetail = () => {
     return (
       <PageContainer>
         <HotelNavbar />
-        <div style={{ 
-          display: 'flex', 
-          justifyContent: 'center', 
-          alignItems: 'center', 
-          height: '100vh',
-          fontSize: '1.2rem',
-          color: theme.colors.gray600
-        }}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100vh',
+            fontSize: '1.2rem',
+            color: theme.colors.gray600,
+          }}
+        >
           Loading...
         </div>
         <HotelFooter />
@@ -1160,16 +1217,20 @@ const HotelDetail = () => {
     return (
       <PageContainer>
         <HotelNavbar />
-        <div style={{ 
-          display: 'flex', 
-          flexDirection: 'column',
-          justifyContent: 'center', 
-          alignItems: 'center', 
-          height: '100vh',
-          gap: '20px'
-        }}>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100vh',
+            gap: '20px',
+          }}
+        >
           <h2>Hotel not found</h2>
-          <p>The hotel you're looking for doesn't exist or couldn't be loaded.</p>
+          <p>
+            The hotel you're looking for doesn't exist or couldn't be loaded.
+          </p>
         </div>
         <HotelFooter />
       </PageContainer>
@@ -1189,17 +1250,16 @@ const HotelDetail = () => {
       <HotelNavbar />
 
       {/* Hero Section */}
-      <HeroBanner 
+      <HeroBanner
         ref={heroRef}
         image={heroSection.backgroundImage || hotel.image}
       >
         <HeroContent>
-          <HeroTitle>
-            {heroSection.title || hotel.name}
-          </HeroTitle>
-          
+          <HeroTitle>{heroSection.title || hotel.name}</HeroTitle>
+
           <HeroSubtitle>
-            {heroSection.subtitle || `Experience luxury hospitality in the heart of ${hotel.city}`}
+            {heroSection.subtitle ||
+              `Experience luxury hospitality in the heart of ${hotel.city}`}
           </HeroSubtitle>
 
           <MobileQuickInfoContainer>
@@ -1243,7 +1303,8 @@ const HotelDetail = () => {
                 {aboutSection.title || `About ${hotel.name}`}
               </SectionTitle>
               <SectionSubtitle>
-                {aboutSection.subtitle || 'A legacy of legendary hospitality and royal elegance'}
+                {aboutSection.subtitle ||
+                  'A legacy of legendary hospitality and royal elegance'}
               </SectionSubtitle>
             </SectionHeader>
 
@@ -1252,30 +1313,55 @@ const HotelDetail = () => {
             </Description>
 
             {aboutSection.highlights && (
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: theme.spacing.lg, marginTop: theme.spacing.xl }}>
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+                  gap: theme.spacing.lg,
+                  marginTop: theme.spacing.xl,
+                }}
+              >
                 {aboutSection.highlights.map((highlight, index) => (
-                  <AnimatedSection key={index} inView={aboutInView} delay={`${index * 0.1}s`}>
-                    <div style={{ 
-                      display: 'flex', 
-                      alignItems: 'center', 
-                      gap: theme.spacing.md,
-                      padding: theme.spacing.lg,
-                      background: theme.colors.gray50,
-                      borderRadius: theme.borderRadius.lg,
-                      border: `1px solid ${theme.colors.gray200}`,
-                      transition: 'all 0.3s ease'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.target.style.transform = 'translateY(-5px)';
-                      e.target.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.1)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.target.style.transform = 'translateY(0)';
-                      e.target.style.boxShadow = 'none';
-                    }}
+                  <AnimatedSection
+                    key={index}
+                    inView={aboutInView}
+                    delay={`${index * 0.1}s`}
+                  >
+                    <div
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: theme.spacing.md,
+                        padding: theme.spacing.lg,
+                        background: theme.colors.gray50,
+                        borderRadius: theme.borderRadius.lg,
+                        border: `1px solid ${theme.colors.gray200}`,
+                        transition: 'all 0.3s ease',
+                      }}
+                      onMouseEnter={e => {
+                        e.target.style.transform = 'translateY(-5px)';
+                        e.target.style.boxShadow =
+                          '0 10px 30px rgba(0, 0, 0, 0.1)';
+                      }}
+                      onMouseLeave={e => {
+                        e.target.style.transform = 'translateY(0)';
+                        e.target.style.boxShadow = 'none';
+                      }}
                     >
-                      <FaCheckCircle style={{ color: theme.colors.success, fontSize: '1.2rem' }} />
-                      <span style={{ fontSize: '1.1rem', color: theme.colors.gray700 }}>{highlight}</span>
+                      <FaCheckCircle
+                        style={{
+                          color: theme.colors.success,
+                          fontSize: '1.2rem',
+                        }}
+                      />
+                      <span
+                        style={{
+                          fontSize: '1.1rem',
+                          color: theme.colors.gray700,
+                        }}
+                      >
+                        {highlight}
+                      </span>
                     </div>
                   </AnimatedSection>
                 ))}
@@ -1294,21 +1380,29 @@ const HotelDetail = () => {
                 {featuresSection.title || `Why Choose ${hotel.name}?`}
               </SectionTitle>
               <SectionSubtitle>
-                {featuresSection.subtitle || 'Experience the legendary hospitality and world-class amenities'}
+                {featuresSection.subtitle ||
+                  'Experience the legendary hospitality and world-class amenities'}
               </SectionSubtitle>
             </SectionHeader>
 
             <FeaturesGrid>
               {(featuresSection.items || []).map((feature, index) => {
-                const IconComponent = iconComponents[feature.icon] || FaConciergeBell;
+                const IconComponent =
+                  iconComponents[feature.icon] || FaConciergeBell;
                 return (
-                  <AnimatedSection key={index} inView={featuresInView} delay={`${index * 0.2}s`}>
+                  <AnimatedSection
+                    key={index}
+                    inView={featuresInView}
+                    delay={`${index * 0.2}s`}
+                  >
                     <FeatureCard>
                       <FeatureIcon>
                         <IconComponent />
                       </FeatureIcon>
                       <FeatureTitle>{feature.title}</FeatureTitle>
-                      <FeatureDescription>{feature.description}</FeatureDescription>
+                      <FeatureDescription>
+                        {feature.description}
+                      </FeatureDescription>
                     </FeatureCard>
                   </AnimatedSection>
                 );
@@ -1328,14 +1422,19 @@ const HotelDetail = () => {
                   {gallerySection.title || `${hotel.name} Gallery`}
                 </SectionTitle>
                 <SectionSubtitle>
-                  {gallerySection.subtitle || 'Witness the grandeur and elegance'}
+                  {gallerySection.subtitle ||
+                    'Witness the grandeur and elegance'}
                 </SectionSubtitle>
               </SectionHeader>
 
               <GallerySection>
                 <GalleryGrid>
                   {gallerySection.images.map((item, index) => (
-                    <AnimatedSection key={index} inView={galleryInView} delay={`${index * 0.1}s`}>
+                    <AnimatedSection
+                      key={index}
+                      inView={galleryInView}
+                      delay={`${index * 0.1}s`}
+                    >
                       <GalleryItem>
                         <img src={item.image} alt={item.title} />
                       </GalleryItem>
@@ -1355,23 +1454,40 @@ const HotelDetail = () => {
             <SectionHeader>
               <SectionTitle>World-Class Amenities</SectionTitle>
               <SectionSubtitle>
-                Indulge in luxury with our comprehensive range of premium amenities
+                Indulge in luxury with our comprehensive range of premium
+                amenities
               </SectionSubtitle>
             </SectionHeader>
 
             <AmenitiesSection>
               <AmenitiesGrid>
                 {(amenitiesSection.categories || []).map((category, index) => (
-                  <AnimatedSection key={index} inView={amenitiesInView} delay={`${index * 0.15}s`}>
+                  <AnimatedSection
+                    key={index}
+                    inView={amenitiesInView}
+                    delay={`${index * 0.15}s`}
+                  >
                     <AmenityCategory>
                       <h4>
                         <span className="icon">
-                          {category.title.includes('Recreation') && <FaSwimmingPool />}
-                          {category.title.includes('Business') && <FaBusinessTime />}
-                          {category.title.includes('Connectivity') && <FaWifi />}
+                          {category.title.includes('Recreation') && (
+                            <FaSwimmingPool />
+                          )}
+                          {category.title.includes('Business') && (
+                            <FaBusinessTime />
+                          )}
+                          {category.title.includes('Connectivity') && (
+                            <FaWifi />
+                          )}
                           {category.title.includes('Wellness') && <FaSpa />}
-                          {!['Recreation', 'Business', 'Connectivity', 'Wellness'].some(keyword => 
-                            category.title.includes(keyword)) && <FaConciergeBell />}
+                          {![
+                            'Recreation',
+                            'Business',
+                            'Connectivity',
+                            'Wellness',
+                          ].some(keyword =>
+                            category.title.includes(keyword)
+                          ) && <FaConciergeBell />}
                         </span>
                         {category.title}
                       </h4>
@@ -1407,7 +1523,11 @@ const HotelDetail = () => {
               <ReviewsSection>
                 <ReviewsGrid>
                   {reviewsSection.reviews.slice(0, 3).map((review, index) => (
-                    <AnimatedSection key={index} inView={reviewsInView} delay={`${index * 0.2}s`}>
+                    <AnimatedSection
+                      key={index}
+                      inView={reviewsInView}
+                      delay={`${index * 0.2}s`}
+                    >
                       <ReviewCard>
                         <FaQuoteLeft className="quote-icon" />
                         <ReviewText>"{review.comment}"</ReviewText>
@@ -1441,7 +1561,12 @@ const HotelDetail = () => {
           <AnimatedSection ref={contactRef} inView={contactInView}>
             <ContactSection>
               <SectionHeader style={{ color: theme.colors.white }}>
-                <SectionTitle style={{ color: theme.colors.white, WebkitTextFillColor: theme.colors.white }}>
+                <SectionTitle
+                  style={{
+                    color: theme.colors.white,
+                    WebkitTextFillColor: theme.colors.white,
+                  }}
+                >
                   Location & Contact
                 </SectionTitle>
                 <SectionSubtitle style={{ color: 'rgba(255, 255, 255, 0.9)' }}>
@@ -1450,15 +1575,30 @@ const HotelDetail = () => {
               </SectionHeader>
 
               <ContactGrid>
-                {(contactSection.info || [
-                  { label: 'Address', value: hotel.address, icon: 'FaMapMarkerAlt' },
-                  { label: 'Phone', value: hotel.phone, icon: 'FaPhone' },
-                  { label: 'Email', value: hotel.email, icon: 'FaEnvelope' },
-                  { label: 'Check-in / Check-out', value: `${hotel.checkInTime} / ${hotel.checkOutTime}`, icon: 'FaClock' }
-                ]).map((contact, index) => {
-                  const IconComponent = iconComponents[contact.icon] || FaMapMarkerAlt;
+                {(
+                  contactSection.info || [
+                    {
+                      label: 'Address',
+                      value: hotel.address,
+                      icon: 'FaMapMarkerAlt',
+                    },
+                    { label: 'Phone', value: hotel.phone, icon: 'FaPhone' },
+                    { label: 'Email', value: hotel.email, icon: 'FaEnvelope' },
+                    {
+                      label: 'Check-in / Check-out',
+                      value: `${hotel.checkInTime} / ${hotel.checkOutTime}`,
+                      icon: 'FaClock',
+                    },
+                  ]
+                ).map((contact, index) => {
+                  const IconComponent =
+                    iconComponents[contact.icon] || FaMapMarkerAlt;
                   return (
-                    <AnimatedSection key={index} inView={contactInView} delay={`${index * 0.1}s`}>
+                    <AnimatedSection
+                      key={index}
+                      inView={contactInView}
+                      delay={`${index * 0.1}s`}
+                    >
                       <ContactItem>
                         <IconComponent className="icon" />
                         <div className="info">

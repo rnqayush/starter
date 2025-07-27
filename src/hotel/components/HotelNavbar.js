@@ -17,25 +17,24 @@ import { getHotelByIdOrSlug } from '../../DummyData';
 const NavbarContainer = styled.nav.withConfig({
   shouldForwardProp: prop => prop !== 'isScrolled',
 })`
-  background: ${props => props.isScrolled
-    ? 'rgba(255, 255, 255, 0.95)'
-    : 'transparent'};
-  backdrop-filter: ${props => props.isScrolled ? 'blur(12px)' : 'none'};
-  border-bottom: ${props => props.isScrolled
-    ? '1px solid rgba(0, 0, 0, 0.1)'
-    : 'none'};
-  box-shadow: ${props => props.isScrolled
-    ? '0 2px 20px rgba(0, 0, 0, 0.1)'
-    : 'none'};
+  background: ${props =>
+    props.isScrolled ? 'rgba(255, 255, 255, 0.95)' : 'transparent'};
+  backdrop-filter: ${props => (props.isScrolled ? 'blur(12px)' : 'none')};
+  border-bottom: ${props =>
+    props.isScrolled ? '1px solid rgba(0, 0, 0, 0.1)' : 'none'};
+  box-shadow: ${props =>
+    props.isScrolled ? '0 2px 20px rgba(0, 0, 0, 0.1)' : 'none'};
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 1000;
-  transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
   /* Ensure text is readable on both backgrounds */
-  ${props => !props.isScrolled && `
+  ${props =>
+    !props.isScrolled &&
+    `
     .nav-text {
       color: ${theme.colors.white};
       text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
@@ -55,7 +54,9 @@ const NavbarContainer = styled.nav.withConfig({
     }
   `}
 
-  ${props => props.isScrolled && `
+  ${props =>
+    props.isScrolled &&
+    `
     .nav-text {
       color: ${theme.colors.gray900};
       text-shadow: none;
@@ -355,7 +356,9 @@ const HotelNavbar = ({ showBackToMain = true }) => {
   const [isScrolled, setIsScrolled] = useState(false);
 
   // Get live hotel data from Redux
-  const liveHotels = useSelector(state => state.hotelManagement?.liveHotels || []);
+  const liveHotels = useSelector(
+    state => state.hotelManagement?.liveHotels || []
+  );
 
   // Extract hotel slug from URL path like "/taj-palace/rooms/101"
   const hotelSlug = useMemo(() => {
@@ -370,7 +373,9 @@ const HotelNavbar = ({ showBackToMain = true }) => {
   const currentHotel = useMemo(() => {
     if (!hotelSlug) return null;
     // First try to find in live hotels (updated data)
-    const liveHotel = liveHotels.find(h => h.slug === hotelSlug || h.id === parseInt(hotelSlug));
+    const liveHotel = liveHotels.find(
+      h => h.slug === hotelSlug || h.id === parseInt(hotelSlug)
+    );
     if (liveHotel) return liveHotel;
     // Fallback to static data
     return getHotelByIdOrSlug(hotelSlug);
@@ -381,7 +386,8 @@ const HotelNavbar = ({ showBackToMain = true }) => {
     let ticking = false;
 
     const updateScrollState = () => {
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      const scrollTop =
+        window.pageYOffset || document.documentElement.scrollTop;
       const threshold = 50; // Lower threshold for better responsiveness
 
       setIsScrolled(scrollTop > threshold);
@@ -409,13 +415,20 @@ const HotelNavbar = ({ showBackToMain = true }) => {
   return (
     <NavbarContainer isScrolled={isScrolled}>
       <NavbarContent>
-        <Logo to={currentHotel ? `/${currentHotel.slug}` : '/hotels'} className="nav-text">
+        <Logo
+          to={currentHotel ? `/${currentHotel.slug}` : '/hotels'}
+          className="nav-text"
+        >
           <FaHotel />
           {currentHotel ? currentHotel.name : 'HotelBooker'}
         </Logo>
 
         <NavLinks isOpen={mobileMenuOpen}>
-          <NavLink to={'hoteladmin'} onClick={closeMobileMenu} className="nav-link">
+          <NavLink
+            to={'hoteladmin'}
+            onClick={closeMobileMenu}
+            className="nav-link"
+          >
             Admin Panel
           </NavLink>
           <NavLink

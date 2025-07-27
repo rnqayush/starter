@@ -30,11 +30,13 @@ const PageContainer = styled.div`
 const Container = styled.div`
   max-width: 1200px;
   margin: 0 auto;
-  padding: calc(70px + ${theme.spacing.xl}) ${theme.spacing.md} ${theme.spacing.xl};
+  padding: calc(70px + ${theme.spacing.xl}) ${theme.spacing.md}
+    ${theme.spacing.xl};
   flex: 1;
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    padding: calc(60px + ${theme.spacing.lg}) ${theme.spacing.sm} ${theme.spacing.lg};
+    padding: calc(60px + ${theme.spacing.lg}) ${theme.spacing.sm}
+      ${theme.spacing.lg};
   }
 `;
 
