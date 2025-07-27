@@ -1340,7 +1340,8 @@ const VendorDashboard = () => {
       };
 
       console.log('Dispatching basic field updates...');
-      // Update basic fields one by one
+      // Temporarily comment out all dispatches to isolate the issue
+      /*
       dispatch(updateVendorField({ field: 'name', value: heroData.name || '' }));
       dispatch(updateVendorField({ field: 'tagline', value: heroData.tagline || '' }));
       dispatch(updateVendorField({ field: 'image', value: heroData.image || '' }));
@@ -1363,6 +1364,7 @@ const VendorDashboard = () => {
         field: 'customSectionVisibility',
         value: customSectionVisibility,
       }));
+      */
 
       console.log('Saving changes...');
       dispatch(saveVendorChanges());
