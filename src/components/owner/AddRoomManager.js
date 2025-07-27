@@ -14,7 +14,7 @@ import {
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
 import { addRoom, setEditingHotel } from '../../store/slices/hotelManagementSlice';
-import { getHotelByIdOrSlug } from '../../DummyData/hotels';
+import { getHotelByIdOrSlug } from '../../DummyData';
 import { Button } from '../shared/Button';
 import { Input } from '../shared/Input';
 
