@@ -1935,10 +1935,16 @@ const VendorPage = () => {
             <FooterContent>
               {/* Company Info Section */}
               <FooterSection>
-                <FooterTitle style={{ color: vendor.footerTextColor || 'white' }}>
+                <FooterTitle
+                  style={{ color: vendor.footerTextColor || 'white' }}
+                >
                   {vendor.footerCompanyName || vendor.name}
                 </FooterTitle>
-                <FooterText style={{ color: vendor.footerTextColor || theme.colors.gray300 }}>
+                <FooterText
+                  style={{
+                    color: vendor.footerTextColor || theme.colors.gray300,
+                  }}
+                >
                   {vendor.footerDescription || vendor.description}
                 </FooterText>
                 {vendor.socialLinks && (
@@ -1998,71 +2004,116 @@ const VendorPage = () => {
               </FooterSection>
 
               {/* Dynamic Footer Columns */}
-              {vendor.footerColumns && vendor.footerColumns.length > 0 && vendor.footerColumns.map((column, index) => (
-                <FooterSection key={index}>
-                  <FooterTitle style={{ color: vendor.footerTextColor || 'white' }}>
-                    {column.title}
-                  </FooterTitle>
+              {vendor.footerColumns &&
+                vendor.footerColumns.length > 0 &&
+                vendor.footerColumns.map((column, index) => (
+                  <FooterSection key={index}>
+                    <FooterTitle
+                      style={{ color: vendor.footerTextColor || 'white' }}
+                    >
+                      {column.title}
+                    </FooterTitle>
 
-                  {/* Links Column */}
-                  {column.type === 'links' && Array.isArray(column.content) && (
-                    <FooterText style={{ color: vendor.footerTextColor || theme.colors.gray300 }}>
-                      {column.content.map((link, linkIndex) => (
-                        <React.Fragment key={linkIndex}>
-                          <a
-                            href={link.url}
-                            style={{
-                              color: vendor.footerTextColor || theme.colors.gray300,
-                              textDecoration: 'none',
-                            }}
-                            onMouseOver={e => e.target.style.color = primaryColor}
-                            onMouseOut={e => e.target.style.color = vendor.footerTextColor || theme.colors.gray300}
-                          >
-                            {link.text}
-                          </a>
-                          {linkIndex < column.content.length - 1 && <br />}
-                        </React.Fragment>
-                      ))}
-                    </FooterText>
-                  )}
+                    {/* Links Column */}
+                    {column.type === 'links' &&
+                      Array.isArray(column.content) && (
+                        <FooterText
+                          style={{
+                            color:
+                              vendor.footerTextColor || theme.colors.gray300,
+                          }}
+                        >
+                          {column.content.map((link, linkIndex) => (
+                            <React.Fragment key={linkIndex}>
+                              <a
+                                href={link.url}
+                                style={{
+                                  color:
+                                    vendor.footerTextColor ||
+                                    theme.colors.gray300,
+                                  textDecoration: 'none',
+                                }}
+                                onMouseOver={e =>
+                                  (e.target.style.color = primaryColor)
+                                }
+                                onMouseOut={e =>
+                                  (e.target.style.color =
+                                    vendor.footerTextColor ||
+                                    theme.colors.gray300)
+                                }
+                              >
+                                {link.text}
+                              </a>
+                              {linkIndex < column.content.length - 1 && <br />}
+                            </React.Fragment>
+                          ))}
+                        </FooterText>
+                      )}
 
-                  {/* Contact Info Column */}
-                  {column.type === 'contact' && typeof column.content === 'object' && !Array.isArray(column.content) && (
-                    <FooterText style={{ color: vendor.footerTextColor || theme.colors.gray300 }}>
-                      {column.content.showPhone && vendor.phone && (
-                        <>{vendor.phone}<br /></>
+                    {/* Contact Info Column */}
+                    {column.type === 'contact' &&
+                      typeof column.content === 'object' &&
+                      !Array.isArray(column.content) && (
+                        <FooterText
+                          style={{
+                            color:
+                              vendor.footerTextColor || theme.colors.gray300,
+                          }}
+                        >
+                          {column.content.showPhone && vendor.phone && (
+                            <>
+                              {vendor.phone}
+                              <br />
+                            </>
+                          )}
+                          {column.content.showEmail && vendor.email && (
+                            <>
+                              {vendor.email}
+                              <br />
+                            </>
+                          )}
+                          {column.content.showAddress && vendor.address && (
+                            <>
+                              {vendor.address}
+                              <br />
+                            </>
+                          )}
+                          {column.content.showHours && vendor.hours && (
+                            <>
+                              Business Hours:
+                              <br />
+                              Mon-Fri:{' '}
+                              {vendor.hours.monday || '9:00 AM - 6:00 PM'}
+                            </>
+                          )}
+                        </FooterText>
                       )}
-                      {column.content.showEmail && vendor.email && (
-                        <>{vendor.email}<br /></>
-                      )}
-                      {column.content.showAddress && vendor.address && (
-                        <>{vendor.address}<br /></>
-                      )}
-                      {column.content.showHours && vendor.hours && (
-                        <>
-                          Business Hours:<br />
-                          Mon-Fri: {vendor.hours.monday || '9:00 AM - 6:00 PM'}
-                        </>
-                      )}
-                    </FooterText>
-                  )}
 
-                  {/* Text Column */}
-                  {column.type === 'text' && typeof column.content === 'string' && (
-                    <FooterText style={{
-                      color: vendor.footerTextColor || theme.colors.gray300,
-                      whiteSpace: 'pre-line'
-                    }}>
-                      {column.content}
-                    </FooterText>
-                  )}
-                </FooterSection>
-              ))}
+                    {/* Text Column */}
+                    {column.type === 'text' &&
+                      typeof column.content === 'string' && (
+                        <FooterText
+                          style={{
+                            color:
+                              vendor.footerTextColor || theme.colors.gray300,
+                            whiteSpace: 'pre-line',
+                          }}
+                        >
+                          {column.content}
+                        </FooterText>
+                      )}
+                  </FooterSection>
+                ))}
             </FooterContent>
 
             <FooterBottom>
-              <p style={{ color: vendor.footerTextColor || theme.colors.gray400 }}>
-                {vendor.footerCopyright || `© ${new Date().getFullYear()} ${vendor.name}. All rights reserved.`}
+              <p
+                style={{
+                  color: vendor.footerTextColor || theme.colors.gray400,
+                }}
+              >
+                {vendor.footerCopyright ||
+                  `© ${new Date().getFullYear()} ${vendor.name}. All rights reserved.`}
               </p>
             </FooterBottom>
           </Container>

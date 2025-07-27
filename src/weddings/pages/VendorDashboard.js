@@ -693,9 +693,12 @@ const VendorDashboard = () => {
   const dispatch = useDispatch();
 
   // Redux state
-  const { editingVendor, hasUnsavedVendorChanges, originalVendor, realTimeUpdates } = useSelector(
-    state => state.weddingManagement
-  );
+  const {
+    editingVendor,
+    hasUnsavedVendorChanges,
+    originalVendor,
+    realTimeUpdates,
+  } = useSelector(state => state.weddingManagement);
 
   // Get vendor ID from URL path
   const currentPath = window.location.pathname;
@@ -801,8 +804,8 @@ const VendorDashboard = () => {
           { text: 'About Us', url: '#about' },
           { text: 'Services', url: '#services' },
           { text: 'Gallery', url: '#gallery' },
-          { text: 'Contact', url: '#contact' }
-        ]
+          { text: 'Contact', url: '#contact' },
+        ],
       },
       {
         title: 'Contact Info',
@@ -811,20 +814,20 @@ const VendorDashboard = () => {
           showPhone: true,
           showEmail: true,
           showAddress: true,
-          showHours: false
-        }
-      }
+          showHours: false,
+        },
+      },
     ],
     socialLinks: {
       instagram: '',
       facebook: '',
       pinterest: '',
       twitter: '',
-      linkedin: ''
+      linkedin: '',
     },
     copyrightText: '',
     backgroundColor: '#1f2937',
-    textColor: '#ffffff'
+    textColor: '#ffffff',
   });
   const [showDeleteAccountModal, setShowDeleteAccountModal] = useState(false);
 
@@ -838,7 +841,7 @@ const VendorDashboard = () => {
   };
 
   // Handle footer data changes
-  const handleFooterChange = (updatedFooterData) => {
+  const handleFooterChange = updatedFooterData => {
     setFooterData(updatedFooterData);
     trackSectionChange('footer');
 
@@ -965,7 +968,9 @@ const VendorDashboard = () => {
           JSON.stringify(updatedVendor[key]) !==
             JSON.stringify(editingVendor[key])
         ) {
-          dispatch(updateVendorField({ field: key, value: updatedVendor[key] }));
+          dispatch(
+            updateVendorField({ field: key, value: updatedVendor[key] })
+          );
         }
       });
 
@@ -1193,8 +1198,8 @@ const VendorDashboard = () => {
               { text: 'About Us', url: '#about' },
               { text: 'Services', url: '#services' },
               { text: 'Gallery', url: '#gallery' },
-              { text: 'Contact', url: '#contact' }
-            ]
+              { text: 'Contact', url: '#contact' },
+            ],
           },
           {
             title: 'Contact Info',
@@ -1203,20 +1208,22 @@ const VendorDashboard = () => {
               showPhone: true,
               showEmail: true,
               showAddress: true,
-              showHours: false
-            }
-          }
+              showHours: false,
+            },
+          },
         ],
         socialLinks: vendorData.socialLinks || {
           instagram: '',
           facebook: '',
           pinterest: '',
           twitter: '',
-          linkedin: ''
+          linkedin: '',
         },
-        copyrightText: vendorData.footerCopyright || `© 2024 ${vendorData.name}. All rights reserved.`,
+        copyrightText:
+          vendorData.footerCopyright ||
+          `© 2024 ${vendorData.name}. All rights reserved.`,
         backgroundColor: vendorData.footerBackgroundColor || '#1f2937',
-        textColor: vendorData.footerTextColor || '#ffffff'
+        textColor: vendorData.footerTextColor || '#ffffff',
       });
 
       // Initialize custom section visibility
@@ -1347,7 +1354,9 @@ const VendorDashboard = () => {
       dispatch(setEditingVendor(updatedVendor.id));
       Object.keys(updatedVendor).forEach(key => {
         if (key !== 'id') {
-          dispatch(updateVendorField({ field: key, value: updatedVendor[key] }));
+          dispatch(
+            updateVendorField({ field: key, value: updatedVendor[key] })
+          );
         }
       });
 
@@ -3651,7 +3660,9 @@ const VendorDashboard = () => {
                 Footer
               </SectionTitle>
               <VisibilityToggleContainer>
-                <span>{sectionVisibility['footer'] ? 'Visible' : 'Hidden'}</span>
+                <span>
+                  {sectionVisibility['footer'] ? 'Visible' : 'Hidden'}
+                </span>
                 <ToggleSwitch>
                   <input
                     type="checkbox"
@@ -3681,7 +3692,10 @@ const VendorDashboard = () => {
                   <FormInput
                     value={footerData.companyName}
                     onChange={e => {
-                      handleFooterChange({ ...footerData, companyName: e.target.value });
+                      handleFooterChange({
+                        ...footerData,
+                        companyName: e.target.value,
+                      });
                     }}
                     placeholder="Your Company Name"
                   />
@@ -3691,7 +3705,10 @@ const VendorDashboard = () => {
                   <FormInput
                     value={footerData.copyrightText}
                     onChange={e => {
-                      handleFooterChange({ ...footerData, copyrightText: e.target.value });
+                      handleFooterChange({
+                        ...footerData,
+                        copyrightText: e.target.value,
+                      });
                     }}
                     placeholder="© 2024 Your Company. All rights reserved."
                   />
@@ -3701,7 +3718,10 @@ const VendorDashboard = () => {
                   <FormTextarea
                     value={footerData.description}
                     onChange={e => {
-                      handleFooterChange({ ...footerData, description: e.target.value });
+                      handleFooterChange({
+                        ...footerData,
+                        description: e.target.value,
+                      });
                     }}
                     placeholder="Brief description about your business for the footer..."
                     rows={3}
@@ -3729,7 +3749,10 @@ const VendorDashboard = () => {
                     type="color"
                     value={footerData.backgroundColor}
                     onChange={e => {
-                      setFooterData(prev => ({ ...prev, backgroundColor: e.target.value }));
+                      setFooterData(prev => ({
+                        ...prev,
+                        backgroundColor: e.target.value,
+                      }));
                       trackSectionChange('footer');
                     }}
                   />
@@ -3740,7 +3763,10 @@ const VendorDashboard = () => {
                     type="color"
                     value={footerData.textColor}
                     onChange={e => {
-                      setFooterData(prev => ({ ...prev, textColor: e.target.value }));
+                      setFooterData(prev => ({
+                        ...prev,
+                        textColor: e.target.value,
+                      }));
                       trackSectionChange('footer');
                     }}
                   />
@@ -3768,7 +3794,10 @@ const VendorDashboard = () => {
                     onChange={e => {
                       setFooterData(prev => ({
                         ...prev,
-                        socialLinks: { ...prev.socialLinks, instagram: e.target.value }
+                        socialLinks: {
+                          ...prev.socialLinks,
+                          instagram: e.target.value,
+                        },
                       }));
                       trackSectionChange('footer');
                     }}
@@ -3782,7 +3811,10 @@ const VendorDashboard = () => {
                     onChange={e => {
                       setFooterData(prev => ({
                         ...prev,
-                        socialLinks: { ...prev.socialLinks, facebook: e.target.value }
+                        socialLinks: {
+                          ...prev.socialLinks,
+                          facebook: e.target.value,
+                        },
                       }));
                       trackSectionChange('footer');
                     }}
@@ -3796,7 +3828,10 @@ const VendorDashboard = () => {
                     onChange={e => {
                       setFooterData(prev => ({
                         ...prev,
-                        socialLinks: { ...prev.socialLinks, pinterest: e.target.value }
+                        socialLinks: {
+                          ...prev.socialLinks,
+                          pinterest: e.target.value,
+                        },
                       }));
                       trackSectionChange('footer');
                     }}
@@ -3810,7 +3845,10 @@ const VendorDashboard = () => {
                     onChange={e => {
                       setFooterData(prev => ({
                         ...prev,
-                        socialLinks: { ...prev.socialLinks, twitter: e.target.value }
+                        socialLinks: {
+                          ...prev.socialLinks,
+                          twitter: e.target.value,
+                        },
                       }));
                       trackSectionChange('footer');
                     }}
@@ -3824,7 +3862,10 @@ const VendorDashboard = () => {
                     onChange={e => {
                       setFooterData(prev => ({
                         ...prev,
-                        socialLinks: { ...prev.socialLinks, linkedin: e.target.value }
+                        socialLinks: {
+                          ...prev.socialLinks,
+                          linkedin: e.target.value,
+                        },
                       }));
                       trackSectionChange('footer');
                     }}
@@ -3863,9 +3904,9 @@ const VendorDashboard = () => {
                         {
                           title: 'New Column',
                           type: 'links',
-                          content: [{ text: 'Link 1', url: '#' }]
-                        }
-                      ]
+                          content: [{ text: 'Link 1', url: '#' }],
+                        },
+                      ],
                     }));
                     trackSectionChange('footer');
                   }}
@@ -3908,7 +3949,9 @@ const VendorDashboard = () => {
                       onClick={() => {
                         setFooterData(prev => ({
                           ...prev,
-                          columns: prev.columns.filter((_, i) => i !== columnIndex)
+                          columns: prev.columns.filter(
+                            (_, i) => i !== columnIndex
+                          ),
                         }));
                         trackSectionChange('footer');
                       }}
@@ -3926,8 +3969,10 @@ const VendorDashboard = () => {
                           setFooterData(prev => ({
                             ...prev,
                             columns: prev.columns.map((col, i) =>
-                              i === columnIndex ? { ...col, title: e.target.value } : col
-                            )
+                              i === columnIndex
+                                ? { ...col, title: e.target.value }
+                                : col
+                            ),
                           }));
                           trackSectionChange('footer');
                         }}
@@ -3948,7 +3993,7 @@ const VendorDashboard = () => {
                               showPhone: true,
                               showEmail: true,
                               showAddress: true,
-                              showHours: false
+                              showHours: false,
                             };
                           } else {
                             newContent = 'Text content';
@@ -3957,8 +4002,10 @@ const VendorDashboard = () => {
                           setFooterData(prev => ({
                             ...prev,
                             columns: prev.columns.map((col, i) =>
-                              i === columnIndex ? { ...col, type: newType, content: newContent } : col
-                            )
+                              i === columnIndex
+                                ? { ...col, type: newType, content: newContent }
+                                : col
+                            ),
                           }));
                           trackSectionChange('footer');
                         }}
@@ -3978,121 +4025,22 @@ const VendorDashboard = () => {
 
                   {/* Column Content Based on Type */}
                   <div style={{ marginTop: theme.spacing.md }}>
-                    {column.type === 'links' && Array.isArray(column.content) && (
-                      <div>
-                        <FormLabel>Links</FormLabel>
-                        {column.content.map((link, linkIndex) => (
-                          <div
-                            key={linkIndex}
-                            style={{
-                              display: 'flex',
-                              gap: theme.spacing.sm,
-                              marginBottom: theme.spacing.sm,
-                              alignItems: 'center',
-                            }}
-                          >
-                            <FormInput
-                              value={link.text}
-                              onChange={e => {
-                                setFooterData(prev => ({
-                                  ...prev,
-                                  columns: prev.columns.map((col, i) =>
-                                    i === columnIndex
-                                      ? {
-                                          ...col,
-                                          content: col.content.map((l, j) =>
-                                            j === linkIndex ? { ...l, text: e.target.value } : l
-                                          )
-                                        }
-                                      : col
-                                  )
-                                }));
-                                trackSectionChange('footer');
-                              }}
-                              placeholder="Link Text"
-                              style={{ flex: 1 }}
-                            />
-                            <FormInput
-                              value={link.url}
-                              onChange={e => {
-                                setFooterData(prev => ({
-                                  ...prev,
-                                  columns: prev.columns.map((col, i) =>
-                                    i === columnIndex
-                                      ? {
-                                          ...col,
-                                          content: col.content.map((l, j) =>
-                                            j === linkIndex ? { ...l, url: e.target.value } : l
-                                          )
-                                        }
-                                      : col
-                                  )
-                                }));
-                                trackSectionChange('footer');
-                              }}
-                              placeholder="Link URL"
-                              style={{ flex: 1 }}
-                            />
-                            <ActionButton
-                              variant="danger"
-                              onClick={() => {
-                                setFooterData(prev => ({
-                                  ...prev,
-                                  columns: prev.columns.map((col, i) =>
-                                    i === columnIndex
-                                      ? {
-                                          ...col,
-                                          content: col.content.filter((_, j) => j !== linkIndex)
-                                        }
-                                      : col
-                                  )
-                                }));
-                                trackSectionChange('footer');
-                              }}
-                            >
-                              <FaTrash />
-                            </ActionButton>
-                          </div>
-                        ))}
-                        <ActionButton
-                          onClick={() => {
-                            setFooterData(prev => ({
-                              ...prev,
-                              columns: prev.columns.map((col, i) =>
-                                i === columnIndex
-                                  ? {
-                                      ...col,
-                                      content: [...col.content, { text: 'New Link', url: '#' }]
-                                    }
-                                  : col
-                              )
-                            }));
-                            trackSectionChange('footer');
-                          }}
-                        >
-                          <FaPlus />
-                          Add Link
-                        </ActionButton>
-                      </div>
-                    )}
-
-                    {column.type === 'contact' && typeof column.content === 'object' && !Array.isArray(column.content) && (
-                      <div>
-                        <FormLabel>Contact Information to Show</FormLabel>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: theme.spacing.sm }}>
-                          {Object.entries(column.content).map(([key, value]) => (
-                            <label
-                              key={key}
+                    {column.type === 'links' &&
+                      Array.isArray(column.content) && (
+                        <div>
+                          <FormLabel>Links</FormLabel>
+                          {column.content.map((link, linkIndex) => (
+                            <div
+                              key={linkIndex}
                               style={{
                                 display: 'flex',
-                                alignItems: 'center',
                                 gap: theme.spacing.sm,
-                                cursor: 'pointer',
+                                marginBottom: theme.spacing.sm,
+                                alignItems: 'center',
                               }}
                             >
-                              <input
-                                type="checkbox"
-                                checked={value}
+                              <FormInput
+                                value={link.text}
                                 onChange={e => {
                                   setFooterData(prev => ({
                                     ...prev,
@@ -4100,34 +4048,164 @@ const VendorDashboard = () => {
                                       i === columnIndex
                                         ? {
                                             ...col,
-                                            content: { ...col.content, [key]: e.target.checked }
+                                            content: col.content.map((l, j) =>
+                                              j === linkIndex
+                                                ? { ...l, text: e.target.value }
+                                                : l
+                                            ),
                                           }
                                         : col
-                                    )
+                                    ),
                                   }));
                                   trackSectionChange('footer');
                                 }}
+                                placeholder="Link Text"
+                                style={{ flex: 1 }}
                               />
-                              <span style={{ textTransform: 'capitalize' }}>
-                                {key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
-                              </span>
-                            </label>
+                              <FormInput
+                                value={link.url}
+                                onChange={e => {
+                                  setFooterData(prev => ({
+                                    ...prev,
+                                    columns: prev.columns.map((col, i) =>
+                                      i === columnIndex
+                                        ? {
+                                            ...col,
+                                            content: col.content.map((l, j) =>
+                                              j === linkIndex
+                                                ? { ...l, url: e.target.value }
+                                                : l
+                                            ),
+                                          }
+                                        : col
+                                    ),
+                                  }));
+                                  trackSectionChange('footer');
+                                }}
+                                placeholder="Link URL"
+                                style={{ flex: 1 }}
+                              />
+                              <ActionButton
+                                variant="danger"
+                                onClick={() => {
+                                  setFooterData(prev => ({
+                                    ...prev,
+                                    columns: prev.columns.map((col, i) =>
+                                      i === columnIndex
+                                        ? {
+                                            ...col,
+                                            content: col.content.filter(
+                                              (_, j) => j !== linkIndex
+                                            ),
+                                          }
+                                        : col
+                                    ),
+                                  }));
+                                  trackSectionChange('footer');
+                                }}
+                              >
+                                <FaTrash />
+                              </ActionButton>
+                            </div>
                           ))}
+                          <ActionButton
+                            onClick={() => {
+                              setFooterData(prev => ({
+                                ...prev,
+                                columns: prev.columns.map((col, i) =>
+                                  i === columnIndex
+                                    ? {
+                                        ...col,
+                                        content: [
+                                          ...col.content,
+                                          { text: 'New Link', url: '#' },
+                                        ],
+                                      }
+                                    : col
+                                ),
+                              }));
+                              trackSectionChange('footer');
+                            }}
+                          >
+                            <FaPlus />
+                            Add Link
+                          </ActionButton>
                         </div>
-                      </div>
-                    )}
+                      )}
+
+                    {column.type === 'contact' &&
+                      typeof column.content === 'object' &&
+                      !Array.isArray(column.content) && (
+                        <div>
+                          <FormLabel>Contact Information to Show</FormLabel>
+                          <div
+                            style={{
+                              display: 'flex',
+                              flexDirection: 'column',
+                              gap: theme.spacing.sm,
+                            }}
+                          >
+                            {Object.entries(column.content).map(
+                              ([key, value]) => (
+                                <label
+                                  key={key}
+                                  style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: theme.spacing.sm,
+                                    cursor: 'pointer',
+                                  }}
+                                >
+                                  <input
+                                    type="checkbox"
+                                    checked={value}
+                                    onChange={e => {
+                                      setFooterData(prev => ({
+                                        ...prev,
+                                        columns: prev.columns.map((col, i) =>
+                                          i === columnIndex
+                                            ? {
+                                                ...col,
+                                                content: {
+                                                  ...col.content,
+                                                  [key]: e.target.checked,
+                                                },
+                                              }
+                                            : col
+                                        ),
+                                      }));
+                                      trackSectionChange('footer');
+                                    }}
+                                  />
+                                  <span style={{ textTransform: 'capitalize' }}>
+                                    {key
+                                      .replace(/([A-Z])/g, ' $1')
+                                      .replace(/^./, str => str.toUpperCase())}
+                                  </span>
+                                </label>
+                              )
+                            )}
+                          </div>
+                        </div>
+                      )}
 
                     {column.type === 'text' && (
                       <div>
                         <FormLabel>Text Content</FormLabel>
                         <FormTextarea
-                          value={typeof column.content === 'string' ? column.content : ''}
+                          value={
+                            typeof column.content === 'string'
+                              ? column.content
+                              : ''
+                          }
                           onChange={e => {
                             setFooterData(prev => ({
                               ...prev,
                               columns: prev.columns.map((col, i) =>
-                                i === columnIndex ? { ...col, content: e.target.value } : col
-                              )
+                                i === columnIndex
+                                  ? { ...col, content: e.target.value }
+                                  : col
+                              ),
                             }));
                             trackSectionChange('footer');
                           }}

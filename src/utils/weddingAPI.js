@@ -2,7 +2,7 @@
 import weddingData from '../DummyData/wedding.json';
 
 // Simulate API delay for realistic behavior
-const simulateApiDelay = (ms = 100) => 
+const simulateApiDelay = (ms = 100) =>
   new Promise(resolve => setTimeout(resolve, ms));
 
 // Extract data from the JSON response structure
@@ -14,7 +14,7 @@ const getWeddingData = () => {
 };
 
 // Convert vendors object to array for backward compatibility
-const convertVendorsToArray = (vendorsObject) => {
+const convertVendorsToArray = vendorsObject => {
   if (!vendorsObject || typeof vendorsObject !== 'object') {
     return [];
   }
@@ -42,7 +42,11 @@ export const getStaticWeddingVendors = () => {
 export const getVendorsObject = () => {
   try {
     const data = getWeddingData();
-    if (data.vendors && typeof data.vendors === 'object' && !Array.isArray(data.vendors)) {
+    if (
+      data.vendors &&
+      typeof data.vendors === 'object' &&
+      !Array.isArray(data.vendors)
+    ) {
       return data.vendors;
     } else if (Array.isArray(data.vendors)) {
       // Convert array to object for new format
@@ -87,7 +91,23 @@ export const getWebsiteTemplates = () => {
 export const getDefaultSectionOrder = () => {
   try {
     const data = getWeddingData();
-    return data.defaultSectionOrder || [
+    return (
+      data.defaultSectionOrder || [
+        'hero',
+        'about-us',
+        'services-offered',
+        'recent-work',
+        'gallery',
+        'packages-pricing',
+        'testimonials',
+        'faq',
+        'contact',
+        'footer',
+      ]
+    );
+  } catch (error) {
+    console.error('Error loading default section order:', error);
+    return [
       'hero',
       'about-us',
       'services-offered',
@@ -97,11 +117,8 @@ export const getDefaultSectionOrder = () => {
       'testimonials',
       'faq',
       'contact',
-      'footer'
+      'footer',
     ];
-  } catch (error) {
-    console.error('Error loading default section order:', error);
-    return ['hero', 'about-us', 'services-offered', 'recent-work', 'gallery', 'packages-pricing', 'testimonials', 'faq', 'contact', 'footer'];
   }
 };
 
@@ -109,31 +126,33 @@ export const getDefaultSectionOrder = () => {
 export const getDefaultSectionVisibility = () => {
   try {
     const data = getWeddingData();
-    return data.defaultSectionVisibility || {
-      'hero': true,
-      'about-us': true,
-      'services-offered': true,
-      'recent-work': true,
-      'gallery': true,
-      'packages-pricing': true,
-      'testimonials': true,
-      'faq': true,
-      'contact': true,
-      'footer': true
-    };
+    return (
+      data.defaultSectionVisibility || {
+        hero: true,
+        'about-us': true,
+        'services-offered': true,
+        'recent-work': true,
+        gallery: true,
+        'packages-pricing': true,
+        testimonials: true,
+        faq: true,
+        contact: true,
+        footer: true,
+      }
+    );
   } catch (error) {
     console.error('Error loading default section visibility:', error);
     return {
-      'hero': true,
+      hero: true,
       'about-us': true,
       'services-offered': true,
       'recent-work': true,
-      'gallery': true,
+      gallery: true,
       'packages-pricing': true,
-      'testimonials': true,
-      'faq': true,
-      'contact': true,
-      'footer': true
+      testimonials: true,
+      faq: true,
+      contact: true,
+      footer: true,
     };
   }
 };
@@ -159,32 +178,36 @@ export const getWeddingVendors = async () => {
     return {
       success: true,
       data: convertVendorsToArray(data.vendors) || [],
-      meta: weddingData.meta
+      meta: weddingData.meta,
     };
   } catch (error) {
     return {
       success: false,
       error: error.message,
-      data: []
+      data: [],
     };
   }
 };
 
 // Get vendor by ID - works with both array and object formats
-export const getVendorById = (id) => {
+export const getVendorById = id => {
   try {
     const data = getWeddingData();
-    
+
     // Try object format first (new format)
-    if (data.vendors && typeof data.vendors === 'object' && !Array.isArray(data.vendors)) {
+    if (
+      data.vendors &&
+      typeof data.vendors === 'object' &&
+      !Array.isArray(data.vendors)
+    ) {
       return data.vendors[id] || null;
     }
-    
+
     // Fallback to array format (old format)
     if (Array.isArray(data.vendors)) {
       return data.vendors.find(vendor => vendor.id === id) || null;
     }
-    
+
     return null;
   } catch (error) {
     console.error('Error finding vendor by ID:', error);
@@ -193,7 +216,7 @@ export const getVendorById = (id) => {
 };
 
 // Get vendor by ID (async version)
-export const getVendorByIdAsync = async (id) => {
+export const getVendorByIdAsync = async id => {
   await simulateApiDelay();
   return getVendorById(id);
 };
@@ -204,7 +227,8 @@ export const getVendorsByLocation = (city, state) => {
     const vendors = getStaticWeddingVendors();
     return vendors.filter(
       vendor =>
-        vendor.city && vendor.state &&
+        vendor.city &&
+        vendor.state &&
         vendor.city.toLowerCase() === city.toLowerCase() &&
         vendor.state.toLowerCase() === state.toLowerCase()
     );
@@ -238,17 +262,19 @@ export const getFeaturedVendorsAsync = async () => {
 };
 
 // Search vendors
-export const searchVendors = (query) => {
+export const searchVendors = query => {
   try {
     const vendors = getStaticWeddingVendors();
     const searchTerm = query.toLowerCase();
     return vendors.filter(
       vendor =>
         (vendor.name && vendor.name.toLowerCase().includes(searchTerm)) ||
-        (vendor.specialties && vendor.specialties.some(specialty =>
-          specialty.toLowerCase().includes(searchTerm)
-        )) ||
-        (vendor.description && vendor.description.toLowerCase().includes(searchTerm))
+        (vendor.specialties &&
+          vendor.specialties.some(specialty =>
+            specialty.toLowerCase().includes(searchTerm)
+          )) ||
+        (vendor.description &&
+          vendor.description.toLowerCase().includes(searchTerm))
     );
   } catch (error) {
     console.error('Error searching vendors:', error);
@@ -257,7 +283,7 @@ export const searchVendors = (query) => {
 };
 
 // Search vendors (async version)
-export const searchVendorsAsync = async (query) => {
+export const searchVendorsAsync = async query => {
   await simulateApiDelay();
   return searchVendors(query);
 };
@@ -270,19 +296,19 @@ export const getWeddingBookings = async () => {
     return {
       success: true,
       data: data.bookings || [],
-      meta: weddingData.meta
+      meta: weddingData.meta,
     };
   } catch (error) {
     return {
       success: false,
       error: error.message,
-      data: []
+      data: [],
     };
   }
 };
 
 // Get bookings by vendor ID
-export const getBookingsByVendorId = (vendorId) => {
+export const getBookingsByVendorId = vendorId => {
   try {
     const bookings = getStaticWeddingBookings();
     return bookings.filter(booking => booking.vendorId === vendorId);
@@ -293,7 +319,7 @@ export const getBookingsByVendorId = (vendorId) => {
 };
 
 // Get bookings by user ID
-export const getBookingsByUserId = (userId) => {
+export const getBookingsByUserId = userId => {
   try {
     const bookings = getStaticWeddingBookings();
     return bookings.filter(booking => booking.userId === userId);
@@ -304,7 +330,7 @@ export const getBookingsByUserId = (userId) => {
 };
 
 // Create booking (simulate API call)
-export const createBooking = async (bookingData) => {
+export const createBooking = async bookingData => {
   await simulateApiDelay(500); // Longer delay for create operations
   try {
     // In a real API, this would create the booking on the server
@@ -312,19 +338,19 @@ export const createBooking = async (bookingData) => {
       id: `booking-${Date.now()}`,
       ...bookingData,
       bookingDate: new Date().toISOString().split('T')[0],
-      status: 'pending'
+      status: 'pending',
     };
-    
+
     return {
       success: true,
       data: newBooking,
-      message: 'Booking created successfully'
+      message: 'Booking created successfully',
     };
   } catch (error) {
     return {
       success: false,
       error: error.message,
-      data: null
+      data: null,
     };
   }
 };
@@ -338,23 +364,23 @@ export const updateVendor = async (vendorId, updateData) => {
     if (!vendor) {
       throw new Error('Vendor not found');
     }
-    
+
     const updatedVendor = {
       ...vendor,
       ...updateData,
-      updatedAt: new Date().toISOString()
+      updatedAt: new Date().toISOString(),
     };
-    
+
     return {
       success: true,
       data: updatedVendor,
-      message: 'Vendor updated successfully'
+      message: 'Vendor updated successfully',
     };
   } catch (error) {
     return {
       success: false,
       error: error.message,
-      data: null
+      data: null,
     };
   }
 };
@@ -367,69 +393,73 @@ export const updateVendorSections = async (vendorId, sectionsData) => {
     if (!vendor) {
       throw new Error('Vendor not found');
     }
-    
+
     const updatedVendor = {
       ...vendor,
       ...sectionsData,
-      updatedAt: new Date().toISOString()
+      updatedAt: new Date().toISOString(),
     };
-    
+
     return {
       success: true,
       data: updatedVendor,
-      message: 'Vendor sections updated successfully'
+      message: 'Vendor sections updated successfully',
     };
   } catch (error) {
     return {
       success: false,
       error: error.message,
-      data: null
+      data: null,
     };
   }
 };
 
 // Get vendor statistics
-export const getVendorStats = async (vendorId) => {
+export const getVendorStats = async vendorId => {
   await simulateApiDelay();
   try {
     const vendor = getVendorById(vendorId);
     const bookings = getBookingsByVendorId(vendorId);
-    
+
     if (!vendor) {
       throw new Error('Vendor not found');
     }
-    
+
     return {
       success: true,
       data: {
         vendorId,
         totalBookings: bookings.length,
-        confirmedBookings: bookings.filter(b => b.status === 'confirmed').length,
+        confirmedBookings: bookings.filter(b => b.status === 'confirmed')
+          .length,
         pendingBookings: bookings.filter(b => b.status === 'pending').length,
         totalRevenue: bookings
           .filter(b => b.status === 'confirmed')
           .reduce((sum, b) => sum + (b.totalPrice || 0), 0),
         rating: vendor.rating,
-        reviewCount: vendor.reviewCount
-      }
+        reviewCount: vendor.reviewCount,
+      },
     };
   } catch (error) {
     return {
       success: false,
       error: error.message,
-      data: null
+      data: null,
     };
   }
 };
 
 // Create a new wedding website
-export const createWeddingWebsite = async (vendorData, templateId = 'default') => {
+export const createWeddingWebsite = async (
+  vendorData,
+  templateId = 'default'
+) => {
   await simulateApiDelay(500);
   try {
     const templates = getWebsiteTemplates();
     const template = templates[templateId] || templates['default'];
     const sections = getSections();
-    
+
     const newVendor = {
       id: vendorData.id || `vendor-${Date.now()}`,
       ...vendorData,
@@ -439,32 +469,32 @@ export const createWeddingWebsite = async (vendorData, templateId = 'default') =
         primaryColor: '#db2777',
         secondaryColor: '#f472b6',
         backgroundColor: '#fdf2f8',
-        textColor: '#1f2937'
+        textColor: '#1f2937',
       },
       sections: template.sections.reduce((acc, sectionId) => {
         if (sections[sectionId]) {
           acc[sectionId] = {
             ...sections[sectionId],
             enabled: true,
-            customContent: {}
+            customContent: {},
           };
         }
         return acc;
       }, {}),
       createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
+      updatedAt: new Date().toISOString(),
     };
-    
+
     return {
       success: true,
       data: newVendor,
-      message: 'Wedding website created successfully'
+      message: 'Wedding website created successfully',
     };
   } catch (error) {
     return {
       success: false,
       error: error.message,
-      data: null
+      data: null,
     };
   }
 };
@@ -492,7 +522,7 @@ const weddingAPI = {
   getWebsiteTemplates,
   getDefaultSectionOrder,
   getDefaultSectionVisibility,
-  
+
   // Async functions
   getWeddingVendors,
   getVendorByIdAsync,
@@ -505,13 +535,13 @@ const weddingAPI = {
   updateVendorSections,
   getVendorStats,
   createWeddingWebsite,
-  
+
   // Legacy compatibility
   weddingVendors,
   getWeddingVendorById,
   getWeddingFeaturedVendors,
   getWeddingVendorsByLocation,
-  searchWeddingVendors
+  searchWeddingVendors,
 };
 
 export default weddingAPI;

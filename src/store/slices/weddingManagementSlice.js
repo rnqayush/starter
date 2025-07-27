@@ -1,5 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getStaticWeddingVendors, getStaticWeddingBookings } from '../../utils/weddingAPI';
+import {
+  getStaticWeddingVendors,
+  getStaticWeddingBookings,
+} from '../../utils/weddingAPI';
 
 const initialState = {
   // Vendor management
@@ -9,14 +12,14 @@ const initialState = {
   vendorChanges: {},
   hasUnsavedVendorChanges: false,
   activeVendorId: null,
-  
+
   // Booking management
   bookings: getStaticWeddingBookings(),
   editingBooking: null,
   bookingChanges: {},
   hasUnsavedBookingChanges: false,
   activeBookingId: null,
-  
+
   // UI state
   sectionVisibility: {
     hero: true,
@@ -30,7 +33,7 @@ const initialState = {
     customSections: true,
   },
   customSectionVisibility: {},
-  
+
   // Loading states
   loading: {
     vendors: false,
@@ -38,7 +41,7 @@ const initialState = {
     updating: false,
     saving: false,
   },
-  
+
   // Error states
   errors: {
     vendors: null,
@@ -46,7 +49,7 @@ const initialState = {
     updating: null,
     saving: null,
   },
-  
+
   // Filter and search state
   filters: {
     city: '',
@@ -55,7 +58,7 @@ const initialState = {
     searchQuery: '',
     category: '',
   },
-  
+
   // Real-time updates flag
   realTimeUpdates: true,
 };
@@ -92,10 +95,12 @@ const weddingManagementSlice = createSlice({
           new: value,
         };
         state.hasUnsavedVendorChanges = true;
-        
+
         // If real-time updates are enabled, immediately update the vendor in the vendors array
         if (state.realTimeUpdates) {
-          const vendorIndex = state.vendors.findIndex(v => v.id === state.editingVendor.id);
+          const vendorIndex = state.vendors.findIndex(
+            v => v.id === state.editingVendor.id
+          );
           if (vendorIndex !== -1) {
             state.vendors[vendorIndex] = { ...state.editingVendor };
           }
@@ -112,10 +117,12 @@ const weddingManagementSlice = createSlice({
           new: url,
         };
         state.hasUnsavedVendorChanges = true;
-        
+
         // Real-time update
         if (state.realTimeUpdates) {
-          const vendorIndex = state.vendors.findIndex(v => v.id === state.editingVendor.id);
+          const vendorIndex = state.vendors.findIndex(
+            v => v.id === state.editingVendor.id
+          );
           if (vendorIndex !== -1) {
             state.vendors[vendorIndex][field] = url;
           }
@@ -131,10 +138,12 @@ const weddingManagementSlice = createSlice({
           new: action.payload,
         };
         state.hasUnsavedVendorChanges = true;
-        
+
         // Real-time update
         if (state.realTimeUpdates) {
-          const vendorIndex = state.vendors.findIndex(v => v.id === state.editingVendor.id);
+          const vendorIndex = state.vendors.findIndex(
+            v => v.id === state.editingVendor.id
+          );
           if (vendorIndex !== -1) {
             state.vendors[vendorIndex].gallery = action.payload;
           }
@@ -150,10 +159,12 @@ const weddingManagementSlice = createSlice({
           new: action.payload,
         };
         state.hasUnsavedVendorChanges = true;
-        
+
         // Real-time update
         if (state.realTimeUpdates) {
-          const vendorIndex = state.vendors.findIndex(v => v.id === state.editingVendor.id);
+          const vendorIndex = state.vendors.findIndex(
+            v => v.id === state.editingVendor.id
+          );
           if (vendorIndex !== -1) {
             state.vendors[vendorIndex].services = action.payload;
           }
@@ -169,10 +180,12 @@ const weddingManagementSlice = createSlice({
           new: action.payload,
         };
         state.hasUnsavedVendorChanges = true;
-        
+
         // Real-time update
         if (state.realTimeUpdates) {
-          const vendorIndex = state.vendors.findIndex(v => v.id === state.editingVendor.id);
+          const vendorIndex = state.vendors.findIndex(
+            v => v.id === state.editingVendor.id
+          );
           if (vendorIndex !== -1) {
             state.vendors[vendorIndex].testimonials = action.payload;
           }
@@ -188,10 +201,12 @@ const weddingManagementSlice = createSlice({
           new: action.payload,
         };
         state.hasUnsavedVendorChanges = true;
-        
+
         // Real-time update
         if (state.realTimeUpdates) {
-          const vendorIndex = state.vendors.findIndex(v => v.id === state.editingVendor.id);
+          const vendorIndex = state.vendors.findIndex(
+            v => v.id === state.editingVendor.id
+          );
           if (vendorIndex !== -1) {
             state.vendors[vendorIndex].packages = action.payload;
           }
@@ -207,10 +222,12 @@ const weddingManagementSlice = createSlice({
           new: action.payload,
         };
         state.hasUnsavedVendorChanges = true;
-        
+
         // Real-time update
         if (state.realTimeUpdates) {
-          const vendorIndex = state.vendors.findIndex(v => v.id === state.editingVendor.id);
+          const vendorIndex = state.vendors.findIndex(
+            v => v.id === state.editingVendor.id
+          );
           if (vendorIndex !== -1) {
             state.vendors[vendorIndex].locationPortfolio = action.payload;
           }
@@ -229,7 +246,9 @@ const weddingManagementSlice = createSlice({
 
         // Real-time update
         if (state.realTimeUpdates) {
-          const vendorIndex = state.vendors.findIndex(v => v.id === state.editingVendor.id);
+          const vendorIndex = state.vendors.findIndex(
+            v => v.id === state.editingVendor.id
+          );
           if (vendorIndex !== -1) {
             state.vendors[vendorIndex].customSections = action.payload;
           }
@@ -277,20 +296,25 @@ const weddingManagementSlice = createSlice({
 
         // Real-time update
         if (state.realTimeUpdates) {
-          const vendorIndex = state.vendors.findIndex(v => v.id === state.editingVendor.id);
+          const vendorIndex = state.vendors.findIndex(
+            v => v.id === state.editingVendor.id
+          );
           if (vendorIndex !== -1) {
             state.vendors[vendorIndex].footerColumns = footerData.columns;
-            state.vendors[vendorIndex].footerCopyright = footerData.copyrightText;
-            state.vendors[vendorIndex].footerBackgroundColor = footerData.backgroundColor;
+            state.vendors[vendorIndex].footerCopyright =
+              footerData.copyrightText;
+            state.vendors[vendorIndex].footerBackgroundColor =
+              footerData.backgroundColor;
             state.vendors[vendorIndex].footerTextColor = footerData.textColor;
-            state.vendors[vendorIndex].footerDescription = footerData.description;
+            state.vendors[vendorIndex].footerDescription =
+              footerData.description;
             state.vendors[vendorIndex].socialLinks = footerData.socialLinks;
           }
         }
       }
     },
 
-    saveVendorChanges: (state) => {
+    saveVendorChanges: state => {
       if (state.editingVendor && state.hasUnsavedVendorChanges) {
         const vendorIndex = state.vendors.findIndex(
           v => v.id === state.editingVendor.id
@@ -304,15 +328,17 @@ const weddingManagementSlice = createSlice({
       }
     },
 
-    discardVendorChanges: (state) => {
+    discardVendorChanges: state => {
       if (state.originalVendor) {
         state.editingVendor = { ...state.originalVendor };
         state.vendorChanges = {};
         state.hasUnsavedVendorChanges = false;
-        
+
         // Revert real-time changes if they were applied
         if (state.realTimeUpdates) {
-          const vendorIndex = state.vendors.findIndex(v => v.id === state.originalVendor.id);
+          const vendorIndex = state.vendors.findIndex(
+            v => v.id === state.originalVendor.id
+          );
           if (vendorIndex !== -1) {
             state.vendors[vendorIndex] = { ...state.originalVendor };
           }
@@ -329,7 +355,7 @@ const weddingManagementSlice = createSlice({
       }
     },
 
-    clearEditingVendor: (state) => {
+    clearEditingVendor: state => {
       state.editingVendor = null;
       state.originalVendor = null;
       state.vendorChanges = {};
@@ -355,12 +381,15 @@ const weddingManagementSlice = createSlice({
           old: state.originalVendor?.sectionVisibility || {},
           new: state.editingVendor.sectionVisibility,
         };
-        
+
         // Real-time update
         if (state.realTimeUpdates) {
-          const vendorIndex = state.vendors.findIndex(v => v.id === state.editingVendor.id);
+          const vendorIndex = state.vendors.findIndex(
+            v => v.id === state.editingVendor.id
+          );
           if (vendorIndex !== -1) {
-            state.vendors[vendorIndex].sectionVisibility = state.editingVendor.sectionVisibility;
+            state.vendors[vendorIndex].sectionVisibility =
+              state.editingVendor.sectionVisibility;
           }
         }
       }
@@ -371,24 +400,27 @@ const weddingManagementSlice = createSlice({
     updateCustomSectionVisibility: (state, action) => {
       const { sectionId, visible } = action.payload;
       state.customSectionVisibility[sectionId] = visible;
-      
+
       if (state.editingVendor) {
         if (!state.editingVendor.customSectionVisibility) {
           state.editingVendor.customSectionVisibility = {};
         }
         state.editingVendor.customSectionVisibility[sectionId] = visible;
-        
+
         // Real-time update
         if (state.realTimeUpdates) {
-          const vendorIndex = state.vendors.findIndex(v => v.id === state.editingVendor.id);
+          const vendorIndex = state.vendors.findIndex(
+            v => v.id === state.editingVendor.id
+          );
           if (vendorIndex !== -1) {
             if (!state.vendors[vendorIndex].customSectionVisibility) {
               state.vendors[vendorIndex].customSectionVisibility = {};
             }
-            state.vendors[vendorIndex].customSectionVisibility[sectionId] = visible;
+            state.vendors[vendorIndex].customSectionVisibility[sectionId] =
+              visible;
           }
         }
-        
+
         state.hasUnsavedVendorChanges = true;
       }
     },
@@ -397,7 +429,7 @@ const weddingManagementSlice = createSlice({
     setEditingBooking: (state, action) => {
       const bookingId = action.payload;
       const booking = state.bookings.find(b => b.id === bookingId);
-      
+
       if (booking) {
         state.editingBooking = { ...booking };
         state.activeBookingId = bookingId;
@@ -415,7 +447,7 @@ const weddingManagementSlice = createSlice({
       }
     },
 
-    saveBookingChanges: (state) => {
+    saveBookingChanges: state => {
       if (state.editingBooking && state.hasUnsavedBookingChanges) {
         const bookingIndex = state.bookings.findIndex(
           b => b.id === state.editingBooking.id
@@ -433,7 +465,7 @@ const weddingManagementSlice = createSlice({
         ...action.payload,
         id: `booking-${Date.now()}`,
         bookingDate: new Date().toISOString().split('T')[0],
-        status: 'pending'
+        status: 'pending',
       };
       state.bookings.push(newBooking);
     },
@@ -443,7 +475,7 @@ const weddingManagementSlice = createSlice({
       state.filters = { ...state.filters, ...action.payload };
     },
 
-    clearFilters: (state) => {
+    clearFilters: state => {
       state.filters = {
         city: '',
         state: '',
@@ -454,7 +486,7 @@ const weddingManagementSlice = createSlice({
     },
 
     // Settings
-    toggleRealTimeUpdates: (state) => {
+    toggleRealTimeUpdates: state => {
       state.realTimeUpdates = !state.realTimeUpdates;
     },
 
@@ -474,7 +506,7 @@ const weddingManagementSlice = createSlice({
       state.errors[type] = null;
     },
 
-    clearAllErrors: (state) => {
+    clearAllErrors: state => {
       state.errors = {
         vendors: null,
         bookings: null,
@@ -484,11 +516,11 @@ const weddingManagementSlice = createSlice({
     },
 
     // Data refresh
-    refreshVendors: (state) => {
+    refreshVendors: state => {
       state.vendors = getStaticWeddingVendors();
     },
 
-    refreshBookings: (state) => {
+    refreshBookings: state => {
       state.bookings = getStaticWeddingBookings();
     },
   },
@@ -510,30 +542,30 @@ export const {
   discardVendorChanges,
   initializeVendor,
   clearEditingVendor,
-  
+
   // Section visibility
   toggleSectionVisibility,
   updateCustomSectionVisibility,
-  
+
   // Booking management
   setEditingBooking,
   updateBookingField,
   saveBookingChanges,
   addBooking,
-  
+
   // Filters and search
   updateFilters,
   clearFilters,
-  
+
   // Settings
   toggleRealTimeUpdates,
-  
+
   // Loading and errors
   setLoading,
   setError,
   clearError,
   clearAllErrors,
-  
+
   // Data refresh
   refreshVendors,
   refreshBookings,

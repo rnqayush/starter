@@ -68,7 +68,7 @@
         ],
         "specialties": [
           "Wedding Planning",
-          "Venue Decoration", 
+          "Venue Decoration",
           "Floral Arrangements",
           "Catering"
         ],
@@ -271,7 +271,7 @@
             ],
             "highlights": [
               "Oceanfront ceremony arch",
-              "Sunset cocktail hour", 
+              "Sunset cocktail hour",
               "Seaside reception setup",
               "Marine-themed centerpieces"
             ]
@@ -412,7 +412,7 @@
             "required": true
           },
           "mission": {
-            "type": "textarea", 
+            "type": "textarea",
             "label": "Mission & Values",
             "required": false
           },
@@ -468,11 +468,31 @@
             "label": "Services",
             "itemType": "object",
             "fields": {
-              "name": { "type": "text", "label": "Service Name", "required": true },
-              "description": { "type": "textarea", "label": "Service Description", "required": true },
-              "price": { "type": "text", "label": "Starting Price", "required": false },
-              "icon": { "type": "text", "label": "Service Icon (emoji)", "required": false },
-              "image": { "type": "image", "label": "Service Image", "required": false }
+              "name": {
+                "type": "text",
+                "label": "Service Name",
+                "required": true
+              },
+              "description": {
+                "type": "textarea",
+                "label": "Service Description",
+                "required": true
+              },
+              "price": {
+                "type": "text",
+                "label": "Starting Price",
+                "required": false
+              },
+              "icon": {
+                "type": "text",
+                "label": "Service Icon (emoji)",
+                "required": false
+              },
+              "image": {
+                "type": "image",
+                "label": "Service Image",
+                "required": false
+              }
             }
           }
         }
@@ -516,8 +536,16 @@
             "label": "Gallery Categories",
             "dynamic": true,
             "fields": {
-              "title": { "type": "text", "label": "Category Title", "required": true },
-              "images": { "type": "array", "itemType": "image", "label": "Category Images" }
+              "title": {
+                "type": "text",
+                "label": "Category Title",
+                "required": true
+              },
+              "images": {
+                "type": "array",
+                "itemType": "image",
+                "label": "Category Images"
+              }
             }
           }
         }
@@ -538,10 +566,26 @@
             "label": "Packages",
             "itemType": "object",
             "fields": {
-              "name": { "type": "text", "label": "Package Name", "required": true },
-              "description": { "type": "textarea", "label": "Package Description", "required": true },
-              "price": { "type": "text", "label": "Package Price", "required": true },
-              "features": { "type": "array", "itemType": "text", "label": "Package Features" }
+              "name": {
+                "type": "text",
+                "label": "Package Name",
+                "required": true
+              },
+              "description": {
+                "type": "textarea",
+                "label": "Package Description",
+                "required": true
+              },
+              "price": {
+                "type": "text",
+                "label": "Package Price",
+                "required": true
+              },
+              "features": {
+                "type": "array",
+                "itemType": "text",
+                "label": "Package Features"
+              }
             }
           }
         }
@@ -562,11 +606,33 @@
             "label": "Testimonials",
             "itemType": "object",
             "fields": {
-              "name": { "type": "text", "label": "Client Name", "required": true },
-              "text": { "type": "textarea", "label": "Testimonial Text", "required": true },
-              "rating": { "type": "number", "label": "Rating (1-5)", "min": 1, "max": 5, "default": 5 },
-              "wedding": { "type": "text", "label": "Wedding Type/Location", "required": false },
-              "date": { "type": "date", "label": "Wedding Date", "required": false }
+              "name": {
+                "type": "text",
+                "label": "Client Name",
+                "required": true
+              },
+              "text": {
+                "type": "textarea",
+                "label": "Testimonial Text",
+                "required": true
+              },
+              "rating": {
+                "type": "number",
+                "label": "Rating (1-5)",
+                "min": 1,
+                "max": 5,
+                "default": 5
+              },
+              "wedding": {
+                "type": "text",
+                "label": "Wedding Type/Location",
+                "required": false
+              },
+              "date": {
+                "type": "date",
+                "label": "Wedding Date",
+                "required": false
+              }
             }
           }
         }
@@ -587,8 +653,16 @@
             "label": "FAQs",
             "itemType": "object",
             "fields": {
-              "question": { "type": "text", "label": "Question", "required": true },
-              "answer": { "type": "textarea", "label": "Answer", "required": true }
+              "question": {
+                "type": "text",
+                "label": "Question",
+                "required": true
+              },
+              "answer": {
+                "type": "textarea",
+                "label": "Answer",
+                "required": true
+              }
             }
           }
         }
@@ -681,9 +755,17 @@
             "label": "Footer Columns",
             "itemType": "object",
             "fields": {
-              "title": { "type": "text", "label": "Column Title", "required": true },
-              "type": { "type": "select", "options": ["links", "contact", "text"], "default": "links" },
-              "content": { 
+              "title": {
+                "type": "text",
+                "label": "Column Title",
+                "required": true
+              },
+              "type": {
+                "type": "select",
+                "options": ["links", "contact", "text"],
+                "default": "links"
+              },
+              "content": {
                 "type": "dynamic",
                 "label": "Column Content",
                 "description": "Content varies based on column type"
@@ -734,7 +816,7 @@
             "default": "#1f2937"
           },
           "textColor": {
-            "type": "color", 
+            "type": "color",
             "label": "Footer Text Color",
             "default": "#ffffff"
           }
@@ -743,7 +825,7 @@
     },
     "defaultSectionOrder": [
       "hero",
-      "about-us", 
+      "about-us",
       "services-offered",
       "recent-work",
       "gallery",
@@ -773,7 +855,7 @@
           "hero",
           "about-us",
           "services-offered",
-          "recent-work", 
+          "recent-work",
           "gallery",
           "packages-pricing",
           "testimonials",
