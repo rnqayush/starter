@@ -691,17 +691,17 @@ const FeatureDescription = styled.p`
 `;
 
 const GallerySection = styled.div`
-  margin: ${theme.spacing.xxl} 0;
+  margin: calc(${theme.spacing.xxl} * 1.5) 0;
 `;
 
 const GalleryGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: ${theme.spacing.lg};
-  
+  gap: calc(${theme.spacing.lg} * 1.5);
+
   @media (max-width: ${theme.breakpoints.mobile}) {
     grid-template-columns: 1fr;
-    gap: ${theme.spacing.md};
+    gap: calc(${theme.spacing.md} * 1.5);
   }
 `;
 
