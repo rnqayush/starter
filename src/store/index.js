@@ -3,6 +3,7 @@ import hotelManagementReducer from './slices/hotelManagementSlice';
 import vendorManagementReducer from './slices/vendorManagementSlice';
 import weddingManagementReducer from './slices/weddingManagementSlice';
 import businessManagementReducer from './slices/businessManagementSlice';
+import automobileManagementReducer from './slices/automobileManagementSlice';
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     vendorManagement: vendorManagementReducer,
     weddingManagement: weddingManagementReducer,
     businessManagement: businessManagementReducer,
+    automobileManagement: automobileManagementReducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
@@ -24,6 +26,8 @@ export const store = configureStore({
           'weddingManagement.editingBooking',
           'businessManagement.editingBusiness',
           'businessManagement.originalBusiness',
+          'automobileManagement.selectedVehicle',
+          'automobileManagement.vehicles',
         ],
       },
     }),

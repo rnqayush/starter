@@ -1,24 +1,116 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { FaFilter, FaSort, FaTh, FaList, FaHome } from 'react-icons/fa';
+import {
+  FaFilter,
+  FaSort,
+  FaTh,
+  FaList,
+  FaHome,
+  FaSpinner,
+} from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import VehicleCard from '../components/VehicleCard';
 import BackToTop from '../../ecommerce/components/BackToTop';
 import {
-  automobileVehicles as vehicles,
-  automobileCategories as categories,
-  getVehiclesByCategory,
-  getAutomobileVendorByIdOrSlug as getVendorByIdOrSlug,
-} from '../../DummyData';
+  fetchAutomobileData,
+  setFilters,
+  clearFilters,
+  selectVendor,
+  selectCategories,
+  selectFilteredVehicles,
+  selectLoading,
+  selectError,
+  selectFilters,
+  selectAvailableFilters,
+  clearError,
+} from '../../store/slices/automobileManagementSlice';
 
 const PageContainer = styled.div`
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   background: ${theme.colors.gray50};
+`;
+
+const LoadingContainer = styled.div`
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: ${theme.colors.gray50};
+  gap: ${theme.spacing.lg};
+`;
+
+const LoadingSpinner = styled.div`
+  width: 60px;
+  height: 60px;
+  border: 4px solid ${theme.colors.gray200};
+  border-top: 4px solid ${theme.colors.primary};
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+`;
+
+const LoadingText = styled.p`
+  font-size: 1.2rem;
+  color: ${theme.colors.gray600};
+  text-align: center;
+`;
+
+const ErrorContainer = styled.div`
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: ${theme.colors.gray50};
+  padding: ${theme.spacing.xl};
+  text-align: center;
+`;
+
+const ErrorTitle = styled.h1`
+  font-size: 2.5rem;
+  color: ${theme.colors.red600};
+  margin-bottom: ${theme.spacing.md};
+`;
+
+const ErrorText = styled.p`
+  font-size: 1.1rem;
+  color: ${theme.colors.gray600};
+  margin-bottom: ${theme.spacing.xl};
+  max-width: 500px;
+`;
+
+const ErrorButton = styled.button`
+  background: ${theme.colors.primary};
+  color: ${theme.colors.white};
+  padding: ${theme.spacing.md} ${theme.spacing.xl};
+  border: none;
+  border-radius: ${theme.borderRadius.md};
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.sm};
+
+  &:hover {
+    background: ${theme.colors.primaryDark};
+    transform: translateY(-1px);
+  }
 `;
 
 const BackButton = styled.button`
@@ -258,146 +350,168 @@ const ClearFiltersButton = styled.button`
 const Vehicles = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const [selectedDealer, setSelectedDealer] = useState(null);
-  const [filteredVehicles, setFilteredVehicles] = useState(vehicles);
-  const [filters, setFilters] = useState({
-    category: searchParams.get('category') || '',
-    make: searchParams.get('make') || '',
-    condition: searchParams.get('condition') || '',
-    minPrice: searchParams.get('minPrice') || '',
-    maxPrice: searchParams.get('maxPrice') || '',
-    sortBy: searchParams.get('sort') || 'name',
-  });
-  const [viewMode, setViewMode] = useState('grid');
+  // Redux selectors
+  const vendor = useSelector(selectVendor);
+  const categories = useSelector(selectCategories);
+  const filteredVehicles = useSelector(selectFilteredVehicles);
+  const loading = useSelector(selectLoading);
+  const error = useSelector(selectError);
+  const filters = useSelector(selectFilters);
+  const availableFilters = useSelector(selectAvailableFilters);
 
-  const makes = [...new Set(vehicles.map(v => v.make))].sort();
-  const conditions = [...new Set(vehicles.map(v => v.condition))].sort();
+  const [viewMode, setViewMode] = useState('grid');
+  const [vendorSlug, setVendorSlug] = useState(null);
 
   useEffect(() => {
-    // Get dealer data from URL
+    // Get vendor slug from URL
     const path = location.pathname;
-    let dealer = null;
+    let slug = null;
 
     if (path !== '/automobiles/vehicles') {
       const pathSegments = path.split('/').filter(Boolean);
-      const dealerSlug = pathSegments[0];
-      dealer = getVendorByIdOrSlug(dealerSlug);
+      slug = pathSegments[0];
     }
 
-    if (dealer) {
-      setSelectedDealer(dealer);
-    } else {
-      // If no dealer found, redirect to dealer listing
+    if (!slug) {
       navigate('/auto-dealers');
       return;
     }
-  }, [location.pathname, navigate]);
 
-  const applyFilters = useCallback(() => {
-    let filtered = [...vehicles];
+    setVendorSlug(slug);
 
-    // Category filter
-    if (filters.category) {
-      filtered = getVehiclesByCategory(filters.category);
+    // Only fetch data if we don't have vendor data yet
+    if (!vendor || vendor.slug !== slug) {
+      dispatch(fetchAutomobileData(slug));
     }
 
-    // Make filter
-    if (filters.make) {
-      filtered = filtered.filter(v => v.make === filters.make);
-    }
+    // Apply URL search params to filters
+    const urlFilters = {
+      category: searchParams.get('category') || '',
+      make: searchParams.get('make') || '',
+      condition: searchParams.get('condition') || '',
+      priceRange: {
+        min: parseInt(searchParams.get('minPrice')) || 0,
+        max: parseInt(searchParams.get('maxPrice')) || 500000,
+      },
+      sortBy: searchParams.get('sort') || 'featured',
+    };
 
-    // Condition filter
-    if (filters.condition) {
-      filtered = filtered.filter(v => v.condition === filters.condition);
-    }
-
-    // Price range filter
-    if (filters.minPrice) {
-      filtered = filtered.filter(v => v.price >= parseInt(filters.minPrice));
-    }
-    if (filters.maxPrice) {
-      filtered = filtered.filter(v => v.price <= parseInt(filters.maxPrice));
-    }
-
-    // Sort
-    switch (filters.sortBy) {
-      case 'price-low':
-        filtered.sort((a, b) => a.price - b.price);
-        break;
-      case 'price-high':
-        filtered.sort((a, b) => b.price - a.price);
-        break;
-      case 'year-new':
-        filtered.sort((a, b) => b.year - a.year);
-        break;
-      case 'year-old':
-        filtered.sort((a, b) => a.year - b.year);
-        break;
-      case 'name':
-      default:
-        filtered.sort((a, b) => a.name.localeCompare(b.name));
-        break;
-    }
-
-    setFilteredVehicles(filtered);
-  }, [filters]);
-
-  useEffect(() => {
-    applyFilters();
-  }, [applyFilters]);
+    dispatch(setFilters(urlFilters));
+  }, [location.pathname, navigate, dispatch, vendor, searchParams]);
 
   const handleFilterChange = (key, value) => {
-    const newFilters = { ...filters, [key]: value };
-    setFilters(newFilters);
+    let newFilters = { ...filters };
+
+    if (key === 'minPrice' || key === 'maxPrice') {
+      newFilters.priceRange = {
+        ...newFilters.priceRange,
+        [key === 'minPrice' ? 'min' : 'max']:
+          parseInt(value) || (key === 'minPrice' ? 0 : 500000),
+      };
+    } else {
+      newFilters[key] = value;
+    }
+
+    dispatch(setFilters(newFilters));
 
     // Update URL params
     const newParams = new URLSearchParams();
-    Object.entries(newFilters).forEach(([k, v]) => {
-      if (v) newParams.set(k, v);
-    });
+    if (newFilters.category) newParams.set('category', newFilters.category);
+    if (newFilters.make) newParams.set('make', newFilters.make);
+    if (newFilters.condition) newParams.set('condition', newFilters.condition);
+    if (newFilters.priceRange.min > 0)
+      newParams.set('minPrice', newFilters.priceRange.min.toString());
+    if (newFilters.priceRange.max < 500000)
+      newParams.set('maxPrice', newFilters.priceRange.max.toString());
+    if (newFilters.sortBy !== 'featured')
+      newParams.set('sort', newFilters.sortBy);
+
     setSearchParams(newParams);
   };
 
-  const clearFilters = () => {
-    const clearedFilters = {
-      category: '',
-      make: '',
-      condition: '',
-      minPrice: '',
-      maxPrice: '',
-      sortBy: 'name',
-    };
-    setFilters(clearedFilters);
+  const handleClearFilters = () => {
+    dispatch(clearFilters());
     setSearchParams({});
   };
 
   const handleBackToDealer = () => {
-    if (selectedDealer) {
-      navigate(`/${selectedDealer.slug}`);
+    if (vendor) {
+      navigate(`/${vendor.slug}`);
     } else {
       navigate('/auto-dealers');
     }
   };
 
-  if (!selectedDealer) {
-    return null; // Will redirect
+  const handleRetry = () => {
+    if (vendorSlug) {
+      dispatch(clearError());
+      dispatch(fetchAutomobileData(vendorSlug));
+    }
+  };
+
+  // Show loading state
+  if (loading) {
+    return (
+      <LoadingContainer>
+        <LoadingSpinner />
+        <LoadingText>Loading vehicle inventory...</LoadingText>
+      </LoadingContainer>
+    );
   }
 
-  const dealerTheme = selectedDealer.theme || {};
+  // Show error state
+  if (error) {
+    return (
+      <ErrorContainer>
+        <ErrorTitle>Something went wrong</ErrorTitle>
+        <ErrorText>{error}</ErrorText>
+        <ErrorButton onClick={handleRetry}>
+          <FaSpinner />
+          Try Again
+        </ErrorButton>
+      </ErrorContainer>
+    );
+  }
+
+  // Show fallback if no vendor data
+  if (!vendor) {
+    return (
+      <ErrorContainer>
+        <ErrorTitle>Dealer Not Found</ErrorTitle>
+        <ErrorText>
+          The dealer you're looking for doesn't exist or may have been removed.
+        </ErrorText>
+        <ErrorButton onClick={() => navigate('/auto-dealers')}>
+          <FaHome />
+          Browse Dealers
+        </ErrorButton>
+      </ErrorContainer>
+    );
+  }
+
+  const dealerTheme = vendor.theme || {};
+  const hasActiveFilters =
+    filters.category ||
+    filters.make ||
+    filters.condition ||
+    filters.priceRange.min > 0 ||
+    filters.priceRange.max < 500000 ||
+    filters.sortBy !== 'featured';
 
   return (
     <PageContainer>
       <BackButton onClick={handleBackToDealer}>
         <FaHome />
-        Back to {selectedDealer.name}
+        Back to {vendor.name}
       </BackButton>
 
       <Navbar
-        dealerName={selectedDealer.name}
-        dealerLogo={selectedDealer.logo}
-        dealerSlug={selectedDealer.slug}
+        dealerName={vendor.name}
+        dealerLogo={vendor.businessInfo?.logo || vendor.logo}
+        dealerSlug={vendor.slug}
         theme={dealerTheme}
       />
 
@@ -405,7 +519,7 @@ const Vehicles = () => {
         <PageHeader>
           <PageTitle>Vehicle Inventory</PageTitle>
           <PageSubtitle>
-            Browse our complete selection of vehicles at {selectedDealer.name}
+            Browse our complete selection of vehicles at {vendor.name}
           </PageSubtitle>
         </PageHeader>
 
@@ -437,7 +551,7 @@ const Vehicles = () => {
             <FilterGroup>
               <FilterLabel>Category</FilterLabel>
               <Select
-                value={filters.category}
+                value={filters.category || ''}
                 onChange={e => handleFilterChange('category', e.target.value)}
               >
                 <option value="">All Categories</option>
@@ -452,11 +566,11 @@ const Vehicles = () => {
             <FilterGroup>
               <FilterLabel>Make</FilterLabel>
               <Select
-                value={filters.make}
+                value={filters.make || ''}
                 onChange={e => handleFilterChange('make', e.target.value)}
               >
                 <option value="">All Makes</option>
-                {makes.map(make => (
+                {availableFilters.makes?.map(make => (
                   <option key={make} value={make}>
                     {make}
                   </option>
@@ -467,11 +581,11 @@ const Vehicles = () => {
             <FilterGroup>
               <FilterLabel>Condition</FilterLabel>
               <Select
-                value={filters.condition}
+                value={filters.condition || ''}
                 onChange={e => handleFilterChange('condition', e.target.value)}
               >
                 <option value="">All Conditions</option>
-                {conditions.map(condition => (
+                {availableFilters.conditions?.map(condition => (
                   <option key={condition} value={condition}>
                     {condition.charAt(0).toUpperCase() + condition.slice(1)}
                   </option>
@@ -485,23 +599,27 @@ const Vehicles = () => {
                 <PriceInput
                   type="number"
                   placeholder="Min"
-                  value={filters.minPrice}
+                  value={filters.priceRange?.min || ''}
                   onChange={e => handleFilterChange('minPrice', e.target.value)}
                 />
                 <span>-</span>
                 <PriceInput
                   type="number"
                   placeholder="Max"
-                  value={filters.maxPrice}
+                  value={
+                    filters.priceRange?.max === 500000
+                      ? ''
+                      : filters.priceRange?.max || ''
+                  }
                   onChange={e => handleFilterChange('maxPrice', e.target.value)}
                 />
               </PriceRangeContainer>
             </FilterGroup>
           </FilterGrid>
 
-          {Object.values(filters).some(v => v && v !== 'name') && (
+          {hasActiveFilters && (
             <div style={{ marginTop: theme.spacing.lg, textAlign: 'center' }}>
-              <ClearFiltersButton onClick={clearFilters}>
+              <ClearFiltersButton onClick={handleClearFilters}>
                 Clear All Filters
               </ClearFiltersButton>
             </div>
@@ -516,14 +634,14 @@ const Vehicles = () => {
           <SortContainer>
             <FaSort />
             <Select
-              value={filters.sortBy}
+              value={filters.sortBy || 'featured'}
               onChange={e => handleFilterChange('sortBy', e.target.value)}
             >
+              <option value="featured">Featured First</option>
               <option value="name">Sort by Name</option>
-              <option value="price-low">Price: Low to High</option>
-              <option value="price-high">Price: High to Low</option>
-              <option value="year-new">Year: Newest First</option>
-              <option value="year-old">Year: Oldest First</option>
+              <option value="price">Price: Low to High</option>
+              <option value="year">Year: Newest First</option>
+              <option value="rating">Highest Rated</option>
             </Select>
           </SortContainer>
         </ResultsHeader>
@@ -534,7 +652,7 @@ const Vehicles = () => {
               <VehicleCard
                 key={vehicle.id}
                 vehicle={vehicle}
-                dealerSlug={selectedDealer.slug}
+                dealerSlug={vendor.slug}
               />
             ))}
           </VehiclesGrid>
@@ -545,18 +663,14 @@ const Vehicles = () => {
               Try adjusting your filters or search criteria to find more
               vehicles.
             </p>
-            <ClearFiltersButton onClick={clearFilters}>
+            <ClearFiltersButton onClick={handleClearFilters}>
               Clear All Filters
             </ClearFiltersButton>
           </EmptyState>
         )}
       </Container>
 
-      <Footer
-        dealerSlug={selectedDealer.slug}
-        dealer={selectedDealer}
-        theme={dealerTheme}
-      />
+      <Footer dealerSlug={vendor.slug} dealer={vendor} theme={dealerTheme} />
       <BackToTop />
     </PageContainer>
   );

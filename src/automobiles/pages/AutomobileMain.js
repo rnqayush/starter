@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import styled, { createGlobalStyle } from 'styled-components';
-import { FaArrowRight, FaCar, FaHome } from 'react-icons/fa';
+import { FaArrowRight, FaCar, FaHome, FaSpinner } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -9,11 +10,15 @@ import VehicleCard from '../components/VehicleCard';
 import CategoryCard from '../components/CategoryCard';
 import BackToTop from '../../ecommerce/components/BackToTop';
 import {
-  automobileCategories as categories,
-  getFeaturedVehicles,
-  getOnSaleVehicles,
-  getAutomobileVendorByIdOrSlug as getVendorByIdOrSlug,
-} from '../../DummyData';
+  fetchAutomobileData,
+  selectVendor,
+  selectCategories,
+  selectFeaturedVehicles,
+  selectOnSaleVehicles,
+  selectLoading,
+  selectError,
+  clearError,
+} from '../../store/slices/automobileManagementSlice';
 
 // Dynamic theme styles that override global styles
 const DynamicGlobalStyle = createGlobalStyle`
@@ -32,6 +37,83 @@ const PageContainer = styled.div.withConfig({
   display: flex;
   flex-direction: column;
   background: ${props => props.backgroundColor || theme.colors.gray50};
+`;
+
+const LoadingContainer = styled.div`
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: ${theme.colors.gray50};
+  gap: ${theme.spacing.lg};
+`;
+
+const LoadingSpinner = styled.div`
+  width: 60px;
+  height: 60px;
+  border: 4px solid ${theme.colors.gray200};
+  border-top: 4px solid ${theme.colors.primary};
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+`;
+
+const LoadingText = styled.p`
+  font-size: 1.2rem;
+  color: ${theme.colors.gray600};
+  text-align: center;
+`;
+
+const ErrorContainer = styled.div`
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: ${theme.colors.gray50};
+  padding: ${theme.spacing.xl};
+  text-align: center;
+`;
+
+const ErrorTitle = styled.h1`
+  font-size: 2.5rem;
+  color: ${theme.colors.red600};
+  margin-bottom: ${theme.spacing.md};
+`;
+
+const ErrorText = styled.p`
+  font-size: 1.1rem;
+  color: ${theme.colors.gray600};
+  margin-bottom: ${theme.spacing.xl};
+  max-width: 500px;
+`;
+
+const ErrorButton = styled.button`
+  background: ${theme.colors.primary};
+  color: ${theme.colors.white};
+  padding: ${theme.spacing.md} ${theme.spacing.xl};
+  border: none;
+  border-radius: ${theme.borderRadius.md};
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.sm};
+
+  &:hover {
+    background: ${theme.colors.primaryDark};
+    transform: translateY(-1px);
+  }
 `;
 
 const HeroSection = styled.section.withConfig({
@@ -345,49 +427,6 @@ const BackButton = styled.button`
   }
 `;
 
-const FallbackContainer = styled.div`
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: ${theme.spacing.xl};
-  background: ${theme.colors.gray50};
-`;
-
-const FallbackTitle = styled.h1`
-  font-size: 2.5rem;
-  color: ${theme.colors.gray900};
-  margin-bottom: ${theme.spacing.md};
-`;
-
-const FallbackText = styled.p`
-  font-size: 1.1rem;
-  color: ${theme.colors.gray600};
-  margin-bottom: ${theme.spacing.xl};
-  max-width: 500px;
-`;
-
-const FallbackButton = styled.button`
-  background: ${theme.colors.primary};
-  color: ${theme.colors.white};
-  padding: ${theme.spacing.md} ${theme.spacing.xl};
-  border: none;
-  border-radius: ${theme.borderRadius.md};
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  gap: ${theme.spacing.sm};
-
-  &:hover {
-    background: ${theme.colors.primaryDark};
-    transform: translateY(-1px);
-  }
-`;
-
 const Breadcrumb = styled.div`
   background: ${theme.colors.white};
   padding: ${theme.spacing.md} 0;
@@ -428,66 +467,94 @@ const BreadcrumbNav = styled.nav`
 const AutomobileMain = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const [featuredVehicles, setFeaturedVehicles] = useState([]);
-  const [saleVehicles, setSaleVehicles] = useState([]);
-  const [selectedDealer, setSelectedDealer] = useState(null);
+  // Redux selectors
+  const vendor = useSelector(selectVendor);
+  const categories = useSelector(selectCategories);
+  const featuredVehicles = useSelector(selectFeaturedVehicles);
+  const onSaleVehicles = useSelector(selectOnSaleVehicles);
+  const loading = useSelector(selectLoading);
+  const error = useSelector(selectError);
 
-  const getBaseUrl = () =>
-    selectedDealer ? `/${selectedDealer.slug}` : '/automobiles';
+  const [vendorSlug, setVendorSlug] = useState(null);
+
+  const getBaseUrl = () => (vendor ? `/${vendor.slug}` : '/automobiles');
 
   useEffect(() => {
-    // Get dealer data from URL slug or navigation state (fallback)
+    // Get vendor slug from URL
     const path = location.pathname;
-    let dealer = null;
+    let slug = null;
 
     if (path !== '/automobiles') {
-      // Extract dealer slug from URL like "/luxury-auto-gallery"
       const pathSegments = path.split('/').filter(Boolean);
-      const dealerSlug = pathSegments[0];
-      dealer = getVendorByIdOrSlug(dealerSlug);
+      slug = pathSegments[0];
     }
 
-    // Fallback to location state if no dealer found by slug
-    if (!dealer) {
-      dealer = location.state?.selectedDealer;
-    }
-
-    if (dealer) {
-      setSelectedDealer(dealer);
-    } else {
-      // If no dealer found, redirect to dealer listing
+    // If no vendor slug found, redirect to dealer listing
+    if (!slug) {
       navigate('/auto-dealers');
       return;
     }
 
-    // Load vehicles (these would be filtered by dealer in a real app)
-    setFeaturedVehicles(getFeaturedVehicles());
-    setSaleVehicles(getOnSaleVehicles());
-  }, [location.pathname, location.state, navigate]);
+    setVendorSlug(slug);
+
+    // Fetch automobile data for this vendor
+    dispatch(fetchAutomobileData(slug));
+  }, [location.pathname, navigate, dispatch]);
 
   const handleBackToDealers = () => {
     navigate('/auto-dealers');
   };
 
-  // Show fallback if no dealer is selected
-  if (!selectedDealer) {
+  const handleRetry = () => {
+    if (vendorSlug) {
+      dispatch(clearError());
+      dispatch(fetchAutomobileData(vendorSlug));
+    }
+  };
+
+  // Show loading state
+  if (loading) {
     return (
-      <FallbackContainer>
-        <FallbackTitle>Please Select a Dealer</FallbackTitle>
-        <FallbackText>
-          You need to select a dealer first to view their vehicles and continue
-          browsing.
-        </FallbackText>
-        <FallbackButton onClick={handleBackToDealers}>
-          <FaCar />
-          Browse Dealers
-        </FallbackButton>
-      </FallbackContainer>
+      <LoadingContainer>
+        <LoadingSpinner />
+        <LoadingText>Loading dealership information...</LoadingText>
+      </LoadingContainer>
     );
   }
 
-  const dealerTheme = selectedDealer.theme || {};
+  // Show error state
+  if (error) {
+    return (
+      <ErrorContainer>
+        <ErrorTitle>Something went wrong</ErrorTitle>
+        <ErrorText>{error}</ErrorText>
+        <ErrorButton onClick={handleRetry}>
+          <FaSpinner />
+          Try Again
+        </ErrorButton>
+      </ErrorContainer>
+    );
+  }
+
+  // Show fallback if no vendor data
+  if (!vendor) {
+    return (
+      <ErrorContainer>
+        <ErrorTitle>Dealer Not Found</ErrorTitle>
+        <ErrorText>
+          The dealer you're looking for doesn't exist or may have been removed.
+        </ErrorText>
+        <ErrorButton onClick={handleBackToDealers}>
+          <FaCar />
+          Browse Dealers
+        </ErrorButton>
+      </ErrorContainer>
+    );
+  }
+
+  const dealerTheme = vendor.theme || {};
 
   return (
     <>
@@ -505,9 +572,9 @@ const AutomobileMain = () => {
         </BackButton>
 
         <Navbar
-          dealerName={selectedDealer.name}
-          dealerLogo={selectedDealer.logo}
-          dealerSlug={selectedDealer.slug}
+          dealerName={vendor.name}
+          dealerLogo={vendor.businessInfo.logo}
+          dealerSlug={vendor.slug}
           theme={dealerTheme}
         />
 
@@ -515,26 +582,26 @@ const AutomobileMain = () => {
           <BreadcrumbNav>
             <Link to="/auto-dealers">All Dealers</Link>
             <span className="separator">›</span>
-            <span className="current">{selectedDealer.name}</span>
+            <span className="current">{vendor.name}</span>
           </BreadcrumbNav>
         </Breadcrumb>
 
         <HeroSection
           primaryColor={dealerTheme.primaryColor}
           secondaryColor={dealerTheme.secondaryColor}
-          heroImage={selectedDealer.image}
+          heroImage={vendor.businessInfo.coverImage}
         >
           <HeroContent>
             <DealerHeader>
               <DealerLogo
-                src={selectedDealer.logo}
-                alt={`${selectedDealer.name} logo`}
+                src={vendor.businessInfo.logo}
+                alt={`${vendor.name} logo`}
               />
               <div>
-                <HeroTitle>Welcome to {selectedDealer.name}</HeroTitle>
+                <HeroTitle>Welcome to {vendor.name}</HeroTitle>
               </div>
             </DealerHeader>
-            <HeroSubtitle>{selectedDealer.description}</HeroSubtitle>
+            <HeroSubtitle>{vendor.businessInfo.description}</HeroSubtitle>
             <HeroActions>
               <HeroButton
                 primaryColor={dealerTheme.primaryColor}
@@ -572,7 +639,7 @@ const AutomobileMain = () => {
                 <CategoryCard
                   key={category.id}
                   category={category}
-                  dealerSlug={selectedDealer.slug}
+                  dealerSlug={vendor.slug}
                 />
               ))}
             </Grid>
@@ -588,8 +655,8 @@ const AutomobileMain = () => {
                 Featured Vehicles
               </SectionTitle>
               <SectionSubtitle>
-                Handpicked vehicles from {selectedDealer.name} that customers
-                love the most
+                Handpicked vehicles from {vendor.name} that customers love the
+                most
               </SectionSubtitle>
             </SectionHeader>
             <Grid>
@@ -597,14 +664,14 @@ const AutomobileMain = () => {
                 <VehicleCard
                   key={vehicle.id}
                   vehicle={vehicle}
-                  dealerSlug={selectedDealer.slug}
+                  dealerSlug={vendor.slug}
                 />
               ))}
             </Grid>
           </Container>
         </Section>
 
-        {saleVehicles.length > 0 && (
+        {onSaleVehicles.length > 0 && (
           <Section>
             <Container>
               <SectionHeader>
@@ -612,16 +679,15 @@ const AutomobileMain = () => {
                   🔥 Special Offers
                 </SectionTitle>
                 <SectionSubtitle>
-                  Limited time deals from {selectedDealer.name} you don't want
-                  to miss
+                  Limited time deals from {vendor.name} you don't want to miss
                 </SectionSubtitle>
               </SectionHeader>
               <Grid>
-                {saleVehicles.slice(0, 4).map(vehicle => (
+                {onSaleVehicles.slice(0, 4).map(vehicle => (
                   <VehicleCard
                     key={vehicle.id}
                     vehicle={vehicle}
-                    dealerSlug={selectedDealer.slug}
+                    dealerSlug={vendor.slug}
                   />
                 ))}
               </Grid>
@@ -629,11 +695,7 @@ const AutomobileMain = () => {
           </Section>
         )}
 
-        <Footer
-          dealerSlug={selectedDealer.slug}
-          dealer={selectedDealer}
-          theme={dealerTheme}
-        />
+        <Footer dealerSlug={vendor.slug} dealer={vendor} theme={dealerTheme} />
         <BackToTop />
       </PageContainer>
     </>
