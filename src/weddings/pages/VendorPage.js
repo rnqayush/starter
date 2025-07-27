@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import styled, { keyframes, css } from 'styled-components';
 import {
   FaStar,
@@ -2686,7 +2686,7 @@ const VendorPage = () => {
         primaryColor={primaryColor}
         onClick={scrollToTop}
       >
-        ���
+        �����
       </BackToTopButton>
     </PageContainer>
   );
