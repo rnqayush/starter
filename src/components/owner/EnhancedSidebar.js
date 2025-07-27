@@ -18,7 +18,7 @@ import {
   FaExclamationTriangle,
   FaCheckCircle,
 } from 'react-icons/fa';
-import { saveChanges, discardChanges, clearEditingHotel } from '../../store/slices/hotelManagementSlice';
+import { saveChanges, publishChanges, discardChanges, clearEditingHotel } from '../../store/slices/hotelManagementSlice';
 import { theme, media } from '../../styles/GlobalStyle';
 import { Button } from '../shared/Button';
 
