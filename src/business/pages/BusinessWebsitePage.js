@@ -1738,10 +1738,9 @@ const BusinessWebsitePage = () => {
       {businessData.slug === 'freelancer' && content.portfolio ? (
         <Section id="portfolio">
           <SectionContainer>
-            <SectionTitle>My Portfolio</SectionTitle>
+            <SectionTitle>{content.sections?.portfolio?.title || 'My Portfolio'}</SectionTitle>
             <SectionSubtitle>
-              A showcase of my recent work and creative projects across various
-              industries and technologies.
+              {content.sections?.portfolio?.subtitle || 'A showcase of my recent work and creative projects across various industries and technologies.'}
             </SectionSubtitle>
             <PortfolioGrid>
               {(content.portfolio || []).map((project, index) => (
