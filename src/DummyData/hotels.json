@@ -188,6 +188,37 @@
             }
           ]
         },
+        "footer": {
+          "title": "Footer Information",
+          "subtitle": "Support contact and social media links",
+          "supportContact": {
+            "phone": "+91 11 6651 2233",
+            "email": "support@tajpalace.com",
+            "address": "1, Mansingh Road, New Delhi, 110011"
+          },
+          "socialLinks": [
+            {
+              "platform": "Facebook",
+              "url": "https://facebook.com/tajpalace",
+              "icon": "FaFacebook"
+            },
+            {
+              "platform": "Twitter",
+              "url": "https://twitter.com/tajpalace",
+              "icon": "FaTwitter"
+            },
+            {
+              "platform": "Instagram",
+              "url": "https://instagram.com/tajpalace",
+              "icon": "FaInstagram"
+            },
+            {
+              "platform": "LinkedIn",
+              "url": "https://linkedin.com/company/tajpalace",
+              "icon": "FaLinkedin"
+            }
+          ]
+        },
         "testimonials": {
           "title": "Guest Reviews",
           "subtitle": "Experiences from our valued guests at the legendary Taj Palace",
