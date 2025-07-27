@@ -1100,6 +1100,52 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
     updateTempData('contactFields', newContactFields);
   };
 
+  // Testimonials management
+  const addTestimonial = () => {
+    const newTestimonial = {
+      id: Date.now(),
+      guestName: '',
+      location: '',
+      rating: 5,
+      comment: '',
+      verified: true,
+      date: new Date().toISOString().split('T')[0]
+    };
+    const newTestimonials = [...(tempData.testimonials || []), newTestimonial];
+    updateTempData('testimonials', newTestimonials);
+  };
+
+  const removeTestimonial = (index) => {
+    const newTestimonials = tempData.testimonials.filter((_, i) => i !== index);
+    updateTempData('testimonials', newTestimonials);
+  };
+
+  const updateTestimonial = (index, field, value) => {
+    const newTestimonials = tempData.testimonials.map((testimonial, i) => {
+      if (i === index) {
+        return { ...testimonial, [field]: value };
+      }
+      return testimonial;
+    });
+    updateTempData('testimonials', newTestimonials);
+  };
+
+  // Footer social links management
+  const addSocialLink = () => {
+    const newLink = {
+      platform: '',
+      url: '',
+      icon: 'FaGlobe'
+    };
+    const newSocialLinks = [...(tempData.footerSocialLinks || []), newLink];
+    updateTempData('footerSocialLinks', newSocialLinks);
+  };
+
+  const removeSocialLink = (index) => {
+    const newSocialLinks = tempData.footerSocialLinks.filter((_, i) => i !== index);
+    updateTempData('footerSocialLinks', newSocialLinks);
+  };
+
   const removeContactField = index => {
     const newContactFields = tempData.contactFields.filter(
       (_, i) => i !== index
