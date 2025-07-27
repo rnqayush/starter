@@ -505,6 +505,7 @@ export const {
   updatePackages,
   updateRecentWork,
   updateCustomSections,
+  updateFooterData,
   saveVendorChanges,
   discardVendorChanges,
   initializeVendor,
