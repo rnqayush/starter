@@ -341,7 +341,7 @@ const HotelNavbar = ({ showBackToMain = true }) => {
   const closeMobileMenu = () => setMobileMenuOpen(false);
 
   return (
-    <NavbarContainer isTransparent={!isScrolled}>
+    <NavbarContainer isScrolled={isScrolled}>
       <NavbarContent>
         <Logo to={currentHotel ? `/${currentHotel.slug}` : '/hotels'}>
           <FaHotel />
