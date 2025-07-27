@@ -37,6 +37,7 @@ const hotelManagementSlice = createSlice({
     // Action to fetch and store hotel data from API/JSON
     loadHotelData: (state, action) => {
       const hotelData = action.payload;
+      console.log('Loading hotel data into Redux:', hotelData.name);
 
       // Check if hotel already exists in state
       const existingLiveIndex = state.liveHotels.findIndex(h => h.id === hotelData.id);
@@ -45,18 +46,24 @@ const hotelManagementSlice = createSlice({
       if (existingLiveIndex !== -1) {
         // Update existing hotel in live data
         state.liveHotels[existingLiveIndex] = { ...hotelData };
+        console.log('Updated existing live hotel');
       } else {
         // Add new hotel to live data
         state.liveHotels.push({ ...hotelData });
+        console.log('Added new hotel to live data');
       }
 
       if (existingDraftIndex !== -1) {
         // Update existing hotel in draft data
         state.draftHotels[existingDraftIndex] = { ...hotelData };
+        console.log('Updated existing draft hotel');
       } else {
         // Add new hotel to draft data
         state.draftHotels.push({ ...hotelData });
+        console.log('Added new hotel to draft data');
       }
+
+      console.log('Redux state updated - Live hotels:', state.liveHotels.length, 'Draft hotels:', state.draftHotels.length);
     },
 
     setEditingHotel: (state, action) => {
