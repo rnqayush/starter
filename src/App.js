@@ -62,6 +62,12 @@ const AppContainer = styled.div`
 function App() {
   const [user, setUser] = useState(null);
   const [userType, setUserType] = useState('customer'); // 'customer' or 'owner'
+
+  // Get live hotel data from Redux, fallback to static data
+  const liveHotels = useSelector(state => state.hotelManagement?.liveHotels || hotelModuleData);
+  const draftHotels = useSelector(state => state.hotelManagement?.draftHotels || hotelModuleData);
+
+  // For backwards compatibility, provide both live and static data
   const [hotels, setHotels] = useState(hotelModuleData);
   const [bookings, setBookings] = useState(hotelBookings);
   const [ownerHotels, setOwnerHotels] = useState(hotelOwnerData || []);
@@ -71,12 +77,15 @@ function App() {
     setUser,
     userType,
     setUserType,
-    hotels,
+    hotels: liveHotels, // Use live data from Redux
     setHotels,
     bookings,
     setBookings,
-    ownerHotels,
+    ownerHotels: draftHotels, // Admin sees draft data for editing
     setOwnerHotels,
+    // Expose both live and draft data for components that need to distinguish
+    liveHotels,
+    draftHotels,
   };
 
   return (
