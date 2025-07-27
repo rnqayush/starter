@@ -744,8 +744,14 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
   // Auto-select hotel based on URL slug and initialize section order
   useEffect(() => {
     if (slug && !editingHotel) {
-      // Find hotel by slug from URL
-      const hotelData = getHotelByIdOrSlug(slug);
+      // First try to find hotel in Redux state
+      let hotelData = liveHotels?.find(h => h.slug === slug || h.id === parseInt(slug));
+
+      // Fallback to static data if not found in Redux
+      if (!hotelData) {
+        hotelData = getHotelByIdOrSlug(slug);
+      }
+
       if (hotelData) {
         dispatch(setEditingHotel(hotelData.id));
         setSelectedHotelId(hotelData.id);
@@ -754,19 +760,17 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
           setSectionOrder(hotelData.sectionOrder);
         }
       }
-    } else if (!editingHotel && ownerHotels.length > 0 && !slug) {
+    } else if (!editingHotel && liveHotels && liveHotels.length > 0 && !slug) {
       // Fallback to first hotel if no slug
-      setSelectedHotelId(ownerHotels[0].id);
-      const hotelData = getHotelByIdOrSlug(ownerHotels[0].id);
-      if (hotelData) {
-        dispatch(setEditingHotel(ownerHotels[0].id));
-        // Initialize section order from hotel data
-        if (hotelData.sectionOrder) {
-          setSectionOrder(hotelData.sectionOrder);
-        }
+      const firstHotel = liveHotels[0];
+      setSelectedHotelId(firstHotel.id);
+      dispatch(setEditingHotel(firstHotel.id));
+      // Initialize section order from hotel data
+      if (firstHotel.sectionOrder) {
+        setSectionOrder(firstHotel.sectionOrder);
       }
     }
-  }, [slug, editingHotel, ownerHotels, dispatch]);
+  }, [slug, editingHotel, liveHotels, dispatch]);
 
   // Update section order when editingHotel changes
   useEffect(() => {
