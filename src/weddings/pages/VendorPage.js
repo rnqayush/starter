@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import styled from 'styled-components';
+import styled, { keyframes, css } from 'styled-components';
 import {
   FaStar,
   FaMapMarkerAlt,
@@ -33,9 +33,133 @@ import { theme } from '../../styles/GlobalStyle';
 import { getWeddingVendorById as getVendorById } from '../../DummyData';
 import { useAuth } from '../../context/AuthContext';
 
+// Keyframe animations
+const fadeInUp = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
+
+const fadeInLeft = keyframes`
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+`;
+
+const fadeInRight = keyframes`
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+`;
+
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
+
+const scaleIn = keyframes`
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+`;
+
+const float = keyframes`
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+`;
+
+const pulse = keyframes`
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+`;
+
+const slideInDown = keyframes`
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+`;
+
+const shimmer = keyframes`
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: calc(200px + 100%) 0;
+  }
+`;
+
+const spin = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+`;
+
+const glow = keyframes`
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.6);
+  }
+`;
+
 const PageContainer = styled.div`
   min-height: 100vh;
   background: ${theme.colors.gray50};
+  position: relative;
+  overflow-x: hidden;
+
+  &::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, rgba(59, 130, 246, 0.03) 0%, rgba(147, 51, 234, 0.03) 100%);
+    pointer-events: none;
+    z-index: -1;
+  }
 `;
 
 const BackToTopButton = styled.button.withConfig({
@@ -48,21 +172,43 @@ const BackToTopButton = styled.button.withConfig({
   color: white;
   border: none;
   border-radius: 50%;
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   box-shadow: ${theme.shadows.lg};
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 1000;
   opacity: ${props => (props.visible ? 1 : 0)};
   visibility: ${props => (props.visible ? 'visible' : 'hidden')};
+  transform: ${props => (props.visible ? 'translateY(0) scale(1)' : 'translateY(20px) scale(0.8)')};
+  backdrop-filter: blur(10px);
+  background: ${props => `linear-gradient(135deg, ${props.primaryColor || theme.colors.primary}, ${props.primaryColor || theme.colors.primary}dd)`};
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
 
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: ${theme.shadows.xl};
+    transform: translateY(-4px) scale(1.1);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    animation: ${pulse} 1.5s infinite;
+
+    &::before {
+      opacity: 1;
+    }
+  }
+
+  &:active {
+    transform: translateY(-2px) scale(1.05);
   }
 `;
 
@@ -79,13 +225,42 @@ const HeroSection = styled.section.withConfig({
   background: ${props =>
     props.backgroundImage
       ? `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(${props.backgroundImage})`
-      : 'linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4))'};
-  background-size: 100% 100%;
+      : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'};
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  background-attachment: fixed;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      45deg,
+      rgba(59, 130, 246, 0.1) 0%,
+      rgba(147, 51, 234, 0.1) 50%,
+      rgba(236, 72, 153, 0.1) 100%
+    );
+    z-index: 1;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.3) 100%);
+    z-index: 1;
+  }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     height: 100vh;
+    background-attachment: scroll;
   }
 `;
 
@@ -126,6 +301,21 @@ const HeroContent = styled.div`
   z-index: 2;
   max-width: 800px;
   padding: ${theme.spacing.xl} ${theme.spacing.md};
+  animation: ${fadeInUp} 1s ease-out;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 150%;
+    height: 150%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    border-radius: 50%;
+    z-index: -1;
+    animation: ${pulse} 3s ease-in-out infinite;
+  }
 `;
 
 const HeroTitle = styled.h1`
@@ -133,6 +323,25 @@ const HeroTitle = styled.h1`
   font-weight: 700;
   margin-bottom: ${theme.spacing.md};
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  background: linear-gradient(135deg, #fff 0%, #f8f9fa 50%, #fff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: ${fadeInUp} 1.2s ease-out 0.3s both;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
+    border-radius: 2px;
+    animation: ${fadeIn} 1.5s ease-out 1s both;
+  }
 
   @media (max-width: ${theme.breakpoints.tablet}) {
     font-size: 3rem;
@@ -147,6 +356,11 @@ const HeroTagline = styled.p`
   font-size: 1.5rem;
   margin-bottom: ${theme.spacing.xl};
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  animation: ${fadeInUp} 1.2s ease-out 0.6s both;
+  font-weight: 300;
+  letter-spacing: 1px;
+  opacity: 0.95;
+  line-height: 1.6;
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     font-size: 1.2rem;
@@ -156,24 +370,61 @@ const HeroTagline = styled.p`
 const HeroButton = styled.button.withConfig({
   shouldForwardProp: prop => !['primaryColor'].includes(prop),
 })`
-  background: ${props => props.primaryColor || theme.colors.primary};
+  background: linear-gradient(135deg, ${props => props.primaryColor || theme.colors.primary}, ${props => props.primaryColor ? `${props.primaryColor}dd` : `${theme.colors.primary}dd`});
   color: white;
   border: none;
   padding: ${theme.spacing.lg} ${theme.spacing.xxl};
-  border-radius: ${theme.borderRadius.lg};
+  border-radius: 50px;
   font-size: 1.2rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   text-transform: uppercase;
   letter-spacing: 1px;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: ${theme.spacing.sm};
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  animation: ${fadeInUp} 1.2s ease-out 0.9s both, ${float} 6s ease-in-out 2s infinite;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.6s ease;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50px;
+    padding: 2px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent, rgba(255,255,255,0.2));
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+  }
 
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: ${theme.shadows.xl};
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+    animation: ${float} 6s ease-in-out infinite, ${glow} 2s ease-in-out infinite;
+
+    &::before {
+      left: 100%;
+    }
+  }
+
+  &:active {
+    transform: translateY(-2px) scale(1.02);
   }
 `;
 
@@ -186,12 +437,24 @@ const NavBar = styled.nav.withConfig({
   width: 100%;
   background: ${props =>
     props.scrolled ? 'rgba(255,255,255,0.95)' : 'transparent'};
-  backdrop-filter: ${props => (props.scrolled ? 'blur(10px)' : 'none')};
+  backdrop-filter: ${props => (props.scrolled ? 'blur(20px)' : 'none')};
   padding: ${theme.spacing.md} 0;
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 1000;
   border-bottom: ${props =>
     props.scrolled ? `1px solid ${theme.colors.gray200}` : 'none'};
+  animation: ${slideInDown} 0.8s ease-out;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: ${props => props.scrolled ? 'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%)' : 'transparent'};
+    z-index: -1;
+  }
 `;
 
 const NavContent = styled.div`
