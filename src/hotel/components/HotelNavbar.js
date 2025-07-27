@@ -321,20 +321,6 @@ const HotelNavbar = ({ showBackToMain = true }) => {
     return getHotelByIdOrSlug(hotelSlug);
   }, [hotelSlug, liveHotels]);
 
-  // Handle scroll effect for navbar transparency
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollTop = window.scrollY;
-      setIsScrolled(scrollTop > 20);
-    };
-
-    // Check initial scroll position
-    handleScroll();
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
   const closeMobileMenu = () => setMobileMenuOpen(false);
 
   return (
