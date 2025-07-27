@@ -255,13 +255,20 @@ const hotelManagementSlice = createSlice({
         const liveHotelIndex = state.liveHotels.findIndex(
           h => h.id === state.editingHotel.id
         );
-        const draftHotel = state.draftHotels.find(
-          h => h.id === state.editingHotel.id
-        );
 
-        if (liveHotelIndex !== -1 && draftHotel) {
-          state.liveHotels[liveHotelIndex] = { ...draftHotel };
-          state.originalHotel = { ...draftHotel };
+        if (liveHotelIndex !== -1) {
+          // Copy the current editing hotel (with all changes) to live hotels
+          state.liveHotels[liveHotelIndex] = { ...state.editingHotel };
+
+          // Also update the draft hotel to match
+          const draftHotelIndex = state.draftHotels.findIndex(
+            h => h.id === state.editingHotel.id
+          );
+          if (draftHotelIndex !== -1) {
+            state.draftHotels[draftHotelIndex] = { ...state.editingHotel };
+          }
+
+          state.originalHotel = { ...state.editingHotel };
 
           // Clear pending changes for this hotel
           delete state.pendingChanges[state.editingHotel.id];
