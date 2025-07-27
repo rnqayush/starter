@@ -2000,10 +2000,9 @@ const BusinessWebsitePage = () => {
       {/* FAQ Section */}
       <Section id="faq">
         <SectionContainer>
-          <SectionTitle>Frequently Asked Questions</SectionTitle>
+          <SectionTitle>{content.sections?.faq?.title || 'Frequently Asked Questions'}</SectionTitle>
           <SectionSubtitle>
-            Find answers to common questions about our services, booking, and
-            policies.
+            {content.sections?.faq?.subtitle || 'Find answers to common questions about our services, booking, and policies.'}
           </SectionSubtitle>
           <FAQContainer>
             {[
