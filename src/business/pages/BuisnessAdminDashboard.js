@@ -3537,7 +3537,7 @@ const BuisnessAdminDashboard = () => {
                   <FormGroup>
                     <FormLabel>Name Field Placeholder</FormLabel>
                     <FormInput
-                      value={uiContentData.contactForm?.placeholders?.name || ''}
+                      value={uiContentData.contactForm?.placeholders?.name || 'Your Name'}
                       onChange={e => {
                         setUiContentData(prev => ({
                           ...prev,
@@ -3557,7 +3557,7 @@ const BuisnessAdminDashboard = () => {
                   <FormGroup>
                     <FormLabel>Email Field Placeholder</FormLabel>
                     <FormInput
-                      value={uiContentData.contactForm?.placeholders?.email || ''}
+                      value={uiContentData.contactForm?.placeholders?.email || 'Your Email'}
                       onChange={e => {
                         setUiContentData(prev => ({
                           ...prev,
@@ -3577,7 +3577,7 @@ const BuisnessAdminDashboard = () => {
                   <FormGroup>
                     <FormLabel>Phone Field Placeholder</FormLabel>
                     <FormInput
-                      value={uiContentData.contactForm?.placeholders?.phone || ''}
+                      value={uiContentData.contactForm?.placeholders?.phone || 'Your Phone'}
                       onChange={e => {
                         setUiContentData(prev => ({
                           ...prev,
@@ -3597,7 +3597,7 @@ const BuisnessAdminDashboard = () => {
                   <FormGroup>
                     <FormLabel>Message Field Placeholder</FormLabel>
                     <FormInput
-                      value={uiContentData.contactForm?.placeholders?.message || ''}
+                      value={uiContentData.contactForm?.placeholders?.message || 'Your Message'}
                       onChange={e => {
                         setUiContentData(prev => ({
                           ...prev,
@@ -4132,7 +4132,7 @@ const BuisnessAdminDashboard = () => {
                     portfolio: '💼',
                     skills: '🎯',
                     experience: '📄',
-                    team: '👨‍👩‍👧‍��',
+                    team: '👨‍👩‍👧‍👦',
                     gallery: '📸',
                     packages: '💰',
                     testimonials: '💬',
