@@ -298,7 +298,6 @@ const HotelNavbar = ({ showBackToMain = true }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
 
   // Get live hotel data from Redux
   const liveHotels = useSelector(state => state.hotelManagement?.liveHotels || []);
