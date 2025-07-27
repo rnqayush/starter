@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import {
   getStaticWeddingVendors,
   getStaticWeddingBookings,
+  getVendorById,
 } from '../../utils/weddingAPI';
 
 const initialState = {
