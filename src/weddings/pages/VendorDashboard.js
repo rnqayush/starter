@@ -1354,39 +1354,18 @@ const VendorDashboard = () => {
       dispatch(updateServices(cleanServices));
       dispatch(updateRecentWork(cleanRecentWork));
       dispatch(updateTestimonials(cleanTestimonials));
-      dispatch({
-        type: 'vendorManagement/updatePackages',
-        payload: cleanPackages,
-      });
-      dispatch({
-        type: 'vendorManagement/updateVendorGallery',
-        payload: cleanGallery,
-      });
-      dispatch({
-        type: 'vendorManagement/updateVendorField',
-        payload: {
-          field: 'sectionOrder',
-          value:
-            completeSectionOrder.length > 0
-              ? completeSectionOrder
-              : sectionOrder,
-        },
-      });
-      dispatch({
-        type: 'vendorManagement/updateVendorField',
-        payload: { field: 'customSections', value: customSections },
-      });
-      dispatch({
-        type: 'vendorManagement/updateVendorField',
-        payload: { field: 'sectionVisibility', value: sectionVisibility },
-      });
-      dispatch({
-        type: 'vendorManagement/updateVendorField',
-        payload: {
-          field: 'customSectionVisibility',
-          value: customSectionVisibility,
-        },
-      });
+      dispatch(updatePackages(cleanPackages));
+      dispatch(updateVendorGallery(cleanGallery));
+      dispatch(updateVendorField({
+        field: 'sectionOrder',
+        value: completeSectionOrder.length > 0 ? completeSectionOrder : sectionOrder,
+      }));
+      dispatch(updateVendorField({ field: 'customSections', value: customSections }));
+      dispatch(updateVendorField({ field: 'sectionVisibility', value: sectionVisibility }));
+      dispatch(updateVendorField({
+        field: 'customSectionVisibility',
+        value: customSectionVisibility,
+      }));
 
       console.log('Saving changes...');
       dispatch(saveVendorChanges());
