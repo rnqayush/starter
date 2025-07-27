@@ -2125,7 +2125,7 @@ const BuisnessAdminDashboard = () => {
                 <FormGroup>
                   <FormLabel>Section Title</FormLabel>
                   <FormInput
-                    value={uiContentData.sections?.team?.title || ''}
+                    value={uiContentData.sections?.team?.title || 'Meet Our Team'}
                     onChange={e => {
                       setUiContentData(prev => ({
                         ...prev,
@@ -2142,7 +2142,7 @@ const BuisnessAdminDashboard = () => {
                 <FormGroup>
                   <FormLabel>Section Subtitle</FormLabel>
                   <FormTextarea
-                    value={uiContentData.sections?.team?.subtitle || ''}
+                    value={uiContentData.sections?.team?.subtitle || 'Our experienced professionals are passionate about delivering exceptional service and results.'}
                     onChange={e => {
                       setUiContentData(prev => ({
                         ...prev,
@@ -2153,7 +2153,7 @@ const BuisnessAdminDashboard = () => {
                       }));
                       trackSectionChange('team');
                     }}
-                    placeholder="Our experienced professionals..."
+                    placeholder="Our experienced professionals are passionate about delivering exceptional service and results."
                     rows={3}
                   />
                 </FormGroup>
@@ -4129,7 +4129,7 @@ const BuisnessAdminDashboard = () => {
                     hero: '🏠',
                     'about-us': '👥',
                     'services-offered': '⚙️',
-                    portfolio: '💼',
+                    portfolio: '����',
                     skills: '🎯',
                     experience: '📄',
                     team: '👨‍👩‍👧‍👦',
