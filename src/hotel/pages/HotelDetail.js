@@ -814,7 +814,12 @@ const HotelDetail = () => {
   const [loading, setLoading] = useState(true);
 
   // Get hotels from Redux store (includes any admin updates)
-  const hotelsFromStore = useSelector(state => state.hotelManagement?.liveHotels || []);
+  const hotelsFromStore = useSelector(state => {
+    console.log('Full Redux state:', state);
+    console.log('hotelManagement state:', state.hotelManagement);
+    console.log('liveHotels:', state.hotelManagement?.liveHotels);
+    return state.hotelManagement?.liveHotels || [];
+  });
 
   useEffect(() => {
     const fetchData = async () => {
