@@ -1398,6 +1398,45 @@ const VendorPage = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Intersection Observer for scroll animations
+  useEffect(() => {
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const element = entry.target;
+            element.classList.add('animate-in');
+
+            // Animate child elements with stagger
+            const children = element.querySelectorAll('.stagger-child');
+            children.forEach((child, index) => {
+              setTimeout(() => {
+                child.classList.add('animate-in');
+              }, index * 100);
+            });
+
+            setAnimatedSections(prev => new Set([...prev, element.id]));
+            observerRef.current?.unobserve(element);
+          }
+        });
+      },
+      {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      }
+    );
+
+    // Observe all sections
+    const sections = document.querySelectorAll('section[id], .animate-on-scroll');
+    sections.forEach(section => {
+      observerRef.current?.observe(section);
+    });
+
+    return () => {
+      observerRef.current?.disconnect();
+    };
+  }, [vendor]);
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
