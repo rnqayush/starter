@@ -1697,6 +1697,8 @@ const VendorDashboard = () => {
         service.id === id ? { ...service, [field]: value } : service
       )
     );
+    // Track section change to enable save button
+    trackSectionChange('services-offered');
     // Automatically trigger real-time updates
     setTimeout(() => updateEditingVendorInRedux(), 100);
   };
