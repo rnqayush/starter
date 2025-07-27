@@ -19,6 +19,7 @@ import {
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
 import { getBusinessTemplate } from '../../DummyData';
+import { fetchBusinessData } from '../../utils/businessAPI';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -1382,6 +1383,8 @@ const BusinessWebsitePage = () => {
   const navigate = useNavigate();
   const [businessData, setBusinessData] = useState(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   // Support both businessSlug (legacy routes) and slug (new optimized routes)
   const actualSlug = businessSlug || slug;
@@ -1392,50 +1395,95 @@ const BusinessWebsitePage = () => {
   );
 
   useEffect(() => {
-    // Extract slug from URL - either from params or from pathname
-    let extractedSlug = actualSlug;
-    if (!extractedSlug) {
-      // For direct slug access like "/salon", extract from pathname
-      const pathSegments = location.pathname.split('/').filter(Boolean);
-      extractedSlug = pathSegments[0];
-    }
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
 
-    let businessTemplate = null;
+        // Extract slug from URL - either from params or from pathname
+        let extractedSlug = actualSlug;
+        if (!extractedSlug) {
+          // For direct slug access like "/salon", extract from pathname
+          const pathSegments = location.pathname.split('/').filter(Boolean);
+          extractedSlug = pathSegments[0];
+        }
 
-    // Priority 1: Use editing business data for real-time updates during editing
-    if (editingBusiness && editingBusiness.slug === extractedSlug) {
-      businessTemplate = editingBusiness;
-      console.log(
-        'Using editing business data for real-time updates:',
-        editingBusiness
-      );
-    }
-    // Priority 2: Use saved business data from Redux businesses array
-    else if (businesses && businesses.length > 0) {
-      businessTemplate = businesses.find(b => b.slug === extractedSlug);
-      console.log('Using saved business data from Redux:', businessTemplate);
-    }
-    // Priority 3: Fallback to template data
-    if (!businessTemplate) {
-      businessTemplate = getBusinessTemplate(extractedSlug);
-      console.log('Using fallback template data:', businessTemplate);
-    }
+        let businessTemplate = null;
 
-    if (businessTemplate) {
-      setBusinessData(businessTemplate);
-      console.log(
-        'BusinessWebsitePage: Updated business data',
-        businessTemplate
-      );
-    }
+        // Priority 1: Use editing business data for real-time updates during editing
+        if (editingBusiness && editingBusiness.slug === extractedSlug) {
+          businessTemplate = editingBusiness;
+          console.log(
+            'Using editing business data for real-time updates:',
+            editingBusiness
+          );
+          setBusinessData(businessTemplate);
+          setLoading(false);
+          return;
+        }
+
+        // Priority 2: Use saved business data from Redux businesses array
+        if (businesses && businesses.length > 0) {
+          businessTemplate = businesses.find(b => b.slug === extractedSlug);
+          if (businessTemplate) {
+            console.log('Using saved business data from Redux:', businessTemplate);
+            setBusinessData(businessTemplate);
+            setLoading(false);
+            return;
+          }
+        }
+
+        // Priority 3: Make fake API call to get business data
+        console.log(`[BusinessWebsitePage] Making API call for business: ${extractedSlug}`);
+        const response = await fetchBusinessData(extractedSlug);
+
+        if (response.success && response.data) {
+          console.log('[BusinessWebsitePage] API call successful:', response.data);
+          setBusinessData(response.data);
+        } else {
+          // Priority 4: Fallback to template data if API fails
+          console.log('[BusinessWebsitePage] API call failed, using template fallback');
+          businessTemplate = getBusinessTemplate(extractedSlug);
+          if (businessTemplate) {
+            setBusinessData(businessTemplate);
+          } else {
+            setError('Business not found');
+          }
+        }
+      } catch (err) {
+        console.error('[BusinessWebsitePage] Error fetching business data:', err);
+        setError(err.message);
+
+        // Fallback to template data on error
+        const businessTemplate = getBusinessTemplate(actualSlug);
+        if (businessTemplate) {
+          setBusinessData(businessTemplate);
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
   }, [actualSlug, location.pathname, businesses, editingBusiness]);
 
-  if (!businessData) {
+  if (loading) {
+    return (
+      <PageContainer>
+        <div style={{ padding: '4rem', textAlign: 'center' }}>
+          <h2>Loading...</h2>
+          <p>Fetching business website data...</p>
+        </div>
+      </PageContainer>
+    );
+  }
+
+  if (error || !businessData) {
     return (
       <PageContainer>
         <div style={{ padding: '4rem', textAlign: 'center' }}>
           <h2>Business Website Not Found</h2>
-          <p>The business website you're looking for doesn't exist.</p>
+          <p>{error || "The business website you're looking for doesn't exist."}</p>
         </div>
       </PageContainer>
     );
