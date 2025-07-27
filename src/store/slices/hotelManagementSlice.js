@@ -442,4 +442,8 @@ export const selectLiveHotel = (state, hotelId) => {
   return state.hotelManagement.liveHotels.find(h => h.id === hotelId);
 };
 
+export const selectHotelBySlug = (state, slug) => {
+  return state.hotelManagement.liveHotels.find(h => h.slug === slug || h.id === parseInt(slug));
+};
+
 export default hotelManagementSlice.reducer;
