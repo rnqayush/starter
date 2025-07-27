@@ -196,16 +196,41 @@ const hotelManagementSlice = createSlice({
     },
 
     saveChanges: state => {
+      // Save changes to draft only (for admin preview)
       if (state.editingHotel && state.hasUnsavedChanges) {
-        const hotelIndex = state.hotels.findIndex(
+        const hotelIndex = state.draftHotels.findIndex(
           h => h.id === state.editingHotel.id
         );
         if (hotelIndex !== -1) {
-          state.hotels[hotelIndex] = { ...state.editingHotel };
+          state.draftHotels[hotelIndex] = { ...state.editingHotel };
         }
-        state.originalHotel = { ...state.editingHotel };
+
+        // Store pending changes for publication
+        state.pendingChanges[state.editingHotel.id] = { ...state.changes };
         state.changes = {};
         state.hasUnsavedChanges = false;
+        state.lastSaveTime = new Date().toISOString();
+      }
+    },
+
+    publishChanges: state => {
+      // Publish draft changes to live data (what users see)
+      if (state.editingHotel) {
+        const liveHotelIndex = state.liveHotels.findIndex(
+          h => h.id === state.editingHotel.id
+        );
+        const draftHotel = state.draftHotels.find(
+          h => h.id === state.editingHotel.id
+        );
+
+        if (liveHotelIndex !== -1 && draftHotel) {
+          state.liveHotels[liveHotelIndex] = { ...draftHotel };
+          state.originalHotel = { ...draftHotel };
+
+          // Clear pending changes for this hotel
+          delete state.pendingChanges[state.editingHotel.id];
+          state.lastPublishTime = new Date().toISOString();
+        }
       }
     },
 
