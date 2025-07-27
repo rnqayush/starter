@@ -1726,8 +1726,8 @@ const BusinessWebsitePage = () => {
               <div className="label">{content.about?.stats?.[1]?.label || 'Years Experience'}</div>
             </StatCard>
             <StatCard primaryColor={businessData.primaryColor}>
-              <div className="number">4.9</div>
-              <div className="label">★ Average Rating</div>
+              <div className="number">{content.about?.stats?.[2]?.number || '4.9'}</div>
+              <div className="label">{content.about?.stats?.[2]?.label || '★ Average Rating'}</div>
             </StatCard>
             <StatCard primaryColor={businessData.primaryColor}>
               <div className="number">
