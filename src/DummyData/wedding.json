@@ -321,7 +321,10 @@
           "recent-work",
           "gallery",
           "packages-pricing",
-          "testimonials"
+          "testimonials",
+          "faq",
+          "contact",
+          "footer"
         ],
         "sectionVisibility": {
           "hero": true,
