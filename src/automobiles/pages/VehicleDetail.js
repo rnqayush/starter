@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import {
   FaArrowLeft,
@@ -14,6 +15,7 @@ import {
   FaCog,
   FaCheckCircle,
   FaStar,
+  FaSpinner,
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
 import Navbar from '../components/Navbar';
@@ -22,19 +24,99 @@ import VehicleCard from '../components/VehicleCard';
 import EnquiryModal from '../components/EnquiryModal';
 import BackToTop from '../../ecommerce/components/BackToTop';
 import {
-  getVehicleById,
-  getFeaturedVehicles,
-  getVehicleAvailabilityStatus as getAvailabilityStatus,
-  getVehicleAvailabilityLabel as getAvailabilityLabel,
-  getVehicleAvailabilityColor as getAvailabilityColor,
-  getAutomobileVendorByIdOrSlug as getVendorByIdOrSlug,
-} from '../../DummyData';
+  fetchAutomobileData,
+  fetchVehicleDetails,
+  addToWishlist,
+  removeFromWishlist,
+  addToRecentlyViewed,
+  selectVendor,
+  selectSelectedVehicle,
+  selectFeaturedVehicles,
+  selectVehicleLoading,
+  selectLoading,
+  selectError,
+  selectIsInWishlist,
+  clearError,
+} from '../../store/slices/automobileManagementSlice';
 
 const PageContainer = styled.div`
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   background: ${theme.colors.gray50};
+`;
+
+const LoadingContainer = styled.div`
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: ${theme.colors.gray50};
+  gap: ${theme.spacing.lg};
+`;
+
+const LoadingSpinner = styled.div`
+  width: 60px;
+  height: 60px;
+  border: 4px solid ${theme.colors.gray200};
+  border-top: 4px solid ${theme.colors.primary};
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+`;
+
+const LoadingText = styled.p`
+  font-size: 1.2rem;
+  color: ${theme.colors.gray600};
+  text-align: center;
+`;
+
+const ErrorContainer = styled.div`
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: ${theme.colors.gray50};
+  padding: ${theme.spacing.xl};
+  text-align: center;
+`;
+
+const ErrorTitle = styled.h1`
+  font-size: 2.5rem;
+  color: ${theme.colors.red600};
+  margin-bottom: ${theme.spacing.md};
+`;
+
+const ErrorText = styled.p`
+  font-size: 1.1rem;
+  color: ${theme.colors.gray600};
+  margin-bottom: ${theme.spacing.xl};
+  max-width: 500px;
+`;
+
+const ErrorButton = styled.button`
+  background: ${theme.colors.primary};
+  color: ${theme.colors.white};
+  padding: ${theme.spacing.md} ${theme.spacing.xl};
+  border: none;
+  border-radius: ${theme.borderRadius.md};
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.sm};
+
+  &:hover {
+    background: ${theme.colors.primaryDark};
+    transform: translateY(-1px);
+  }
 `;
 
 const Container = styled.div`
@@ -414,46 +496,44 @@ const RelatedGrid = styled.div`
 const VehicleDetail = () => {
   const { vehicleId } = useParams();
   const navigate = useNavigate();
-  const [vehicle, setVehicle] = useState(null);
-  const [selectedDealer, setSelectedDealer] = useState(null);
+  const dispatch = useDispatch();
+  
+  // Redux selectors
+  const vendor = useSelector(selectVendor);
+  const selectedVehicle = useSelector(selectSelectedVehicle);
+  const featuredVehicles = useSelector(selectFeaturedVehicles);
+  const vehicleLoading = useSelector(selectVehicleLoading);
+  const loading = useSelector(selectLoading);
+  const error = useSelector(selectError);
+  const isInWishlist = useSelector(selectIsInWishlist(parseInt(vehicleId)));
+
+  // Local state
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isEnquiryModalOpen, setIsEnquiryModalOpen] = useState(false);
-  const [isWishlisted, setIsWishlisted] = useState(false);
-  const [relatedVehicles, setRelatedVehicles] = useState([]);
+  const [vendorSlug, setVendorSlug] = useState(null);
 
   useEffect(() => {
-    // Get vehicle data
-    const vehicleData = getVehicleById(parseInt(vehicleId));
-    if (!vehicleData) {
-      navigate('/auto-dealers');
-      return;
-    }
-    setVehicle(vehicleData);
-
-    // Get dealer data from URL
+    // Get vendor slug from URL
     const pathSegments = window.location.pathname.split('/').filter(Boolean);
-    const dealerSlug = pathSegments[0];
-    const dealer = getVendorByIdOrSlug(dealerSlug);
+    const slug = pathSegments[0];
+    setVendorSlug(slug);
 
-    if (dealer) {
-      setSelectedDealer(dealer);
-    } else {
+    if (!slug) {
       navigate('/auto-dealers');
       return;
     }
 
-    // Get related vehicles (same category)
-    const featured = getFeaturedVehicles().filter(
-      v => v.vehicleId !== vehicleData.vehicleId
-    );
-    setRelatedVehicles(featured.slice(0, 3));
+    // Fetch automobile data if not available
+    if (!vendor || vendor.slug !== slug) {
+      dispatch(fetchAutomobileData(slug));
+    }
 
-    // Check wishlist status
-    const wishlist = JSON.parse(
-      localStorage.getItem('vehicleWishlist') || '[]'
-    );
-    setIsWishlisted(wishlist.includes(vehicleData.vehicleId));
-  }, [vehicleId, navigate]);
+    // Fetch vehicle details
+    dispatch(fetchVehicleDetails({ vehicleId: parseInt(vehicleId), vendorSlug: slug }));
+    
+    // Add to recently viewed
+    dispatch(addToRecentlyViewed(parseInt(vehicleId)));
+  }, [vehicleId, dispatch, navigate, vendor]);
 
   const formatPrice = price => {
     return new Intl.NumberFormat('en-US', {
@@ -469,28 +549,18 @@ const VehicleDetail = () => {
   };
 
   const handleWishlistToggle = () => {
-    const wishlist = JSON.parse(
-      localStorage.getItem('vehicleWishlist') || '[]'
-    );
-    let newWishlist;
-
-    if (isWishlisted) {
-      newWishlist = wishlist.filter(
-        vehicleId => vehicleId !== vehicle.vehicleId
-      );
+    if (isInWishlist) {
+      dispatch(removeFromWishlist(parseInt(vehicleId)));
     } else {
-      newWishlist = [...wishlist, vehicle.vehicleId];
+      dispatch(addToWishlist(parseInt(vehicleId)));
     }
-
-    localStorage.setItem('vehicleWishlist', JSON.stringify(newWishlist));
-    setIsWishlisted(!isWishlisted);
   };
 
   const handleShare = () => {
     if (navigator.share) {
       navigator.share({
-        title: vehicle.name,
-        text: `Check out this ${vehicle.year} ${vehicle.make} ${vehicle.model}`,
+        title: selectedVehicle.name,
+        text: `Check out this ${selectedVehicle.year} ${selectedVehicle.make} ${selectedVehicle.model}`,
         url: window.location.href,
       });
     } else {
@@ -499,32 +569,130 @@ const VehicleDetail = () => {
     }
   };
 
-  if (!vehicle || !selectedDealer) {
-    return null;
+  const handleRetry = () => {
+    if (vendorSlug) {
+      dispatch(clearError());
+      dispatch(fetchAutomobileData(vendorSlug));
+      dispatch(fetchVehicleDetails({ vehicleId: parseInt(vehicleId), vendorSlug }));
+    }
+  };
+
+  const getAvailabilityStatus = (vehicle) => {
+    if (!vehicle) return 'unknown';
+    if (vehicle.availability?.status === 'out_of_stock' || vehicle.availability?.quantity === 0) {
+      return 'out_of_stock';
+    } else if (vehicle.availability?.status === 'limited_stock' || vehicle.availability?.quantity <= 5) {
+      return 'limited_stock';
+    } else if (vehicle.availability?.status === 'pre_order') {
+      return 'pre_order';
+    } else {
+      return 'in_stock';
+    }
+  };
+
+  const getAvailabilityLabel = (availability) => {
+    switch (availability) {
+      case 'in_stock':
+        return 'In Stock';
+      case 'out_of_stock':
+        return 'Sold Out';
+      case 'limited_stock':
+        return 'Limited Stock';
+      case 'pre_order':
+        return 'Pre Order';
+      default:
+        return 'Unknown';
+    }
+  };
+
+  const getAvailabilityColor = (availability) => {
+    switch (availability) {
+      case 'in_stock':
+        return '#10b981';
+      case 'out_of_stock':
+        return '#ef4444';
+      case 'limited_stock':
+        return '#f59e0b';
+      case 'pre_order':
+        return '#3b82f6';
+      default:
+        return '#6b7280';
+    }
+  };
+
+  // Show loading state
+  if (loading || vehicleLoading) {
+    return (
+      <LoadingContainer>
+        <LoadingSpinner />
+        <LoadingText>Loading vehicle details...</LoadingText>
+      </LoadingContainer>
+    );
   }
 
-  const dealerTheme = selectedDealer.theme || {};
-  const availabilityStatus = getAvailabilityStatus(vehicle);
+  // Show error state
+  if (error) {
+    return (
+      <ErrorContainer>
+        <ErrorTitle>Something went wrong</ErrorTitle>
+        <ErrorText>{error}</ErrorText>
+        <ErrorButton onClick={handleRetry}>
+          <FaSpinner />
+          Try Again
+        </ErrorButton>
+      </ErrorContainer>
+    );
+  }
+
+  // Show fallback if no vehicle or vendor data
+  if (!selectedVehicle || !vendor) {
+    return (
+      <ErrorContainer>
+        <ErrorTitle>Vehicle Not Found</ErrorTitle>
+        <ErrorText>
+          The vehicle you're looking for doesn't exist or may have been sold.
+        </ErrorText>
+        <ErrorButton onClick={() => navigate('/auto-dealers')}>
+          <FaCar />
+          Browse Dealers
+        </ErrorButton>
+      </ErrorContainer>
+    );
+  }
+
+  const dealerTheme = vendor.theme || {};
+  const availabilityStatus = getAvailabilityStatus(selectedVehicle);
   const availabilityLabel = getAvailabilityLabel(availabilityStatus);
   const availabilityColor = getAvailabilityColor(availabilityStatus);
+
+  // Handle different data structures (new JSON vs old JS)
+  const vehiclePrice = selectedVehicle.pricing?.price || selectedVehicle.price;
+  const vehicleOriginalPrice = selectedVehicle.pricing?.originalPrice || selectedVehicle.originalPrice;
+  const vehicleImages = selectedVehicle.media?.images || selectedVehicle.images;
+  const vehicleMainImage = selectedVehicle.media?.mainImage || selectedVehicle.image;
+  const vehicleFeatures = selectedVehicle.keyFeatures || selectedVehicle.features;
+  const vehicleSpecs = selectedVehicle.specifications || {};
+  const vehicleStock = selectedVehicle.availability?.quantity || selectedVehicle.stock;
+
+  const relatedVehicles = featuredVehicles.filter(v => v.id !== selectedVehicle.id).slice(0, 3);
 
   return (
     <PageContainer>
       <Navbar
-        dealerName={selectedDealer.name}
-        dealerLogo={selectedDealer.logo}
-        dealerSlug={selectedDealer.slug}
+        dealerName={vendor.name}
+        dealerLogo={vendor.businessInfo?.logo || vendor.logo}
+        dealerSlug={vendor.slug}
         theme={dealerTheme}
       />
 
       <Container>
         <Breadcrumb>
-          <Link to={`/${selectedDealer.slug}`}>Home</Link>
+          <Link to={`/${vendor.slug}`}>Home</Link>
           <span className="separator">›</span>
-          <Link to={`/${selectedDealer.slug}/vehicles`}>Vehicles</Link>
+          <Link to={`/${vendor.slug}/vehicles`}>Vehicles</Link>
           <span className="separator">›</span>
           <span className="current">
-            {vehicle.year} {vehicle.make} {vehicle.model}
+            {selectedVehicle.year} {selectedVehicle.make} {selectedVehicle.model}
           </span>
         </Breadcrumb>
 
@@ -533,21 +701,21 @@ const VehicleDetail = () => {
             <MainImage>
               <MainImageContainer
                 src={
-                  vehicle.images
-                    ? vehicle.images[currentImageIndex]
-                    : vehicle.image
+                  vehicleImages && vehicleImages.length > 0
+                    ? (vehicleImages[currentImageIndex]?.url || vehicleImages[currentImageIndex])
+                    : vehicleMainImage
                 }
-                alt={vehicle.name}
+                alt={selectedVehicle.name}
               />
             </MainImage>
 
-            {vehicle.images && vehicle.images.length > 1 && (
+            {vehicleImages && vehicleImages.length > 1 && (
               <ImageThumbnails>
-                {vehicle.images.map((img, index) => (
+                {vehicleImages.map((img, index) => (
                   <Thumbnail
                     key={index}
-                    src={img}
-                    alt={`${vehicle.name} ${index + 1}`}
+                    src={img.url || img}
+                    alt={`${selectedVehicle.name} ${index + 1}`}
                     active={index === currentImageIndex}
                     onClick={() => setCurrentImageIndex(index)}
                   />
@@ -559,37 +727,33 @@ const VehicleDetail = () => {
           <VehicleInfo>
             <VehicleHeader>
               <VehicleTitle>
-                {vehicle.year} {vehicle.make} {vehicle.model}
+                {selectedVehicle.year} {selectedVehicle.make} {selectedVehicle.model}
               </VehicleTitle>
               <VehicleSubtitle>
-                {vehicle.trim} • {vehicle.condition === 'new' ? 'New' : 'Used'}
+                {selectedVehicle.trim} • {selectedVehicle.condition === 'new' ? 'New' : 'Used'}
               </VehicleSubtitle>
             </VehicleHeader>
 
             <PriceContainer>
-              <CurrentPrice>{formatPrice(vehicle.price)}</CurrentPrice>
-              {vehicle.originalPrice &&
-                vehicle.originalPrice > vehicle.price && (
-                  <>
-                    <OriginalPrice>
-                      {formatPrice(vehicle.originalPrice)}
-                    </OriginalPrice>
-                    <Savings>
-                      Save{' '}
-                      {formatPrice(
-                        calculateSavings(vehicle.originalPrice, vehicle.price)
-                      )}
-                    </Savings>
-                  </>
-                )}
+              <CurrentPrice>{formatPrice(vehiclePrice)}</CurrentPrice>
+              {vehicleOriginalPrice && vehicleOriginalPrice > vehiclePrice && (
+                <>
+                  <OriginalPrice>
+                    {formatPrice(vehicleOriginalPrice)}
+                  </OriginalPrice>
+                  <Savings>
+                    Save {formatPrice(calculateSavings(vehicleOriginalPrice, vehiclePrice))}
+                  </Savings>
+                </>
+              )}
             </PriceContainer>
 
             <AvailabilityStatus color={availabilityColor}>
               <FaCheckCircle />
               {availabilityLabel}
               {availabilityStatus === 'in_stock' &&
-                vehicle.stock > 0 &&
-                ` (${vehicle.stock} available)`}
+                vehicleStock > 0 &&
+                ` (${vehicleStock} available)`}
             </AvailabilityStatus>
 
             <SpecsGrid>
@@ -597,7 +761,7 @@ const VehicleDetail = () => {
                 <FaCalendar className="icon" />
                 <div>
                   <div className="label">Year</div>
-                  <div className="value">{vehicle.year}</div>
+                  <div className="value">{selectedVehicle.year}</div>
                 </div>
               </SpecItem>
               <SpecItem>
@@ -605,9 +769,9 @@ const VehicleDetail = () => {
                 <div>
                   <div className="label">Mileage</div>
                   <div className="value">
-                    {vehicle.mileage === 0
+                    {selectedVehicle.mileage === 0
                       ? 'New'
-                      : `${vehicle.mileage.toLocaleString()} mi`}
+                      : `${selectedVehicle.mileage.toLocaleString()} mi`}
                   </div>
                 </div>
               </SpecItem>
@@ -616,7 +780,7 @@ const VehicleDetail = () => {
                 <div>
                   <div className="label">Engine</div>
                   <div className="value">
-                    {vehicle.specifications?.engine || 'N/A'}
+                    {vehicleSpecs?.engine?.type || vehicleSpecs?.engine || 'N/A'}
                   </div>
                 </div>
               </SpecItem>
@@ -625,9 +789,9 @@ const VehicleDetail = () => {
                 <div>
                   <div className="label">Fuel Economy</div>
                   <div className="value">
-                    {vehicle.specifications?.fuelEconomy ||
-                      vehicle.specifications?.range ||
-                      'N/A'}
+                    {vehicleSpecs?.efficiency?.mpgCombined ? `${vehicleSpecs.efficiency.mpgCombined} MPG` :
+                     vehicleSpecs?.efficiency?.range ? `${vehicleSpecs.efficiency.range} range` :
+                     vehicleSpecs?.fuelEconomy || vehicleSpecs?.range || 'N/A'}
                   </div>
                 </div>
               </SpecItem>
@@ -656,7 +820,7 @@ const VehicleDetail = () => {
                 >
                   <FaHeart
                     style={{
-                      color: isWishlisted ? theme.colors.error : 'currentColor',
+                      color: isInWishlist ? theme.colors.error : 'currentColor',
                     }}
                   />
                 </IconButton>
@@ -664,7 +828,7 @@ const VehicleDetail = () => {
                   <FaShare />
                 </IconButton>
                 <IconButton
-                  onClick={() => navigate(`/${selectedDealer.slug}/vehicles`)}
+                  onClick={() => navigate(`/${vendor.slug}/vehicles`)}
                   title="Back to Vehicles"
                 >
                   <FaArrowLeft />
@@ -680,17 +844,17 @@ const VehicleDetail = () => {
               <FaCar />
               Description
             </SectionTitle>
-            <Description>{vehicle.description}</Description>
+            <Description>{selectedVehicle.description}</Description>
           </DetailsSection>
 
-          {vehicle.features && vehicle.features.length > 0 && (
+          {vehicleFeatures && vehicleFeatures.length > 0 && (
             <DetailsSection>
               <SectionTitle>
                 <FaCheckCircle />
                 Key Features
               </SectionTitle>
               <FeaturesList>
-                {vehicle.features.map((feature, index) => (
+                {vehicleFeatures.map((feature, index) => (
                   <FeatureItem key={index}>
                     <FaCheckCircle className="icon" />
                     {feature}
@@ -700,22 +864,33 @@ const VehicleDetail = () => {
             </DetailsSection>
           )}
 
-          {vehicle.specifications && (
+          {vehicleSpecs && Object.keys(vehicleSpecs).length > 0 && (
             <DetailsSection>
               <SectionTitle>
                 <FaCog />
                 Specifications
               </SectionTitle>
               <SpecificationsTable>
-                {Object.entries(vehicle.specifications).map(([key, value]) => (
-                  <SpecRow key={key}>
-                    <SpecLabel>
-                      {key.charAt(0).toUpperCase() +
-                        key.slice(1).replace(/([A-Z])/g, ' $1')}
-                    </SpecLabel>
-                    <SpecValue>{value}</SpecValue>
-                  </SpecRow>
-                ))}
+                {Object.entries(vehicleSpecs).map(([key, value]) => {
+                  if (typeof value === 'object' && value !== null) {
+                    return Object.entries(value).map(([subKey, subValue]) => (
+                      <SpecRow key={`${key}-${subKey}`}>
+                        <SpecLabel>
+                          {subKey.charAt(0).toUpperCase() + subKey.slice(1).replace(/([A-Z])/g, ' $1')}
+                        </SpecLabel>
+                        <SpecValue>{subValue}</SpecValue>
+                      </SpecRow>
+                    ));
+                  }
+                  return (
+                    <SpecRow key={key}>
+                      <SpecLabel>
+                        {key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1')}
+                      </SpecLabel>
+                      <SpecValue>{value}</SpecValue>
+                    </SpecRow>
+                  );
+                })}
               </SpecificationsTable>
             </DetailsSection>
           )}
@@ -730,9 +905,9 @@ const VehicleDetail = () => {
             <RelatedGrid>
               {relatedVehicles.map(relatedVehicle => (
                 <VehicleCard
-                  key={relatedVehicle.vehicleId}
+                  key={relatedVehicle.id}
                   vehicle={relatedVehicle}
-                  dealerSlug={selectedDealer.slug}
+                  dealerSlug={vendor.slug}
                 />
               ))}
             </RelatedGrid>
@@ -741,8 +916,8 @@ const VehicleDetail = () => {
       </Container>
 
       <Footer
-        dealerSlug={selectedDealer.slug}
-        dealer={selectedDealer}
+        dealerSlug={vendor.slug}
+        dealer={vendor}
         theme={dealerTheme}
       />
       <BackToTop />
@@ -750,7 +925,7 @@ const VehicleDetail = () => {
       <EnquiryModal
         isOpen={isEnquiryModalOpen}
         onClose={() => setIsEnquiryModalOpen(false)}
-        vehicle={vehicle}
+        vehicle={selectedVehicle}
       />
     </PageContainer>
   );
