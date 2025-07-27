@@ -333,7 +333,10 @@
           "recent-work": true,
           "gallery": true,
           "testimonials": true,
-          "packages-pricing": true
+          "packages-pricing": true,
+          "faq": true,
+          "contact": true,
+          "footer": true
         }
       }
     },
