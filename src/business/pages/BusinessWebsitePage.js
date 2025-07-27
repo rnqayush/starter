@@ -1559,7 +1559,7 @@ const BusinessWebsitePage = () => {
           </MobileMenuButton>
           <OwnerLink onClick={handleOwnerClick}>
             <FaEdit />
-            Owner Dashboard
+            {businessData.navigation?.ownerLinkText || 'Owner Dashboard'}
           </OwnerLink>
         </NavContainer>
       </Navbar>
