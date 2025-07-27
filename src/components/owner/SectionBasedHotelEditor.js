@@ -1347,10 +1347,13 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
 
         <HotelSelector>
           <HotelGrid>
-            {ownerHotels.map(hotel => (
+            {(liveHotels || ownerHotels).map(hotel => (
               <HotelSelectCard
                 key={hotel.id}
-                onClick={() => setSelectedHotelId(hotel.id)}
+                onClick={() => {
+                  setSelectedHotelId(hotel.id);
+                  dispatch(setEditingHotel(hotel.id));
+                }}
                 selected={selectedHotelId === hotel.id}
               >
                 <img
