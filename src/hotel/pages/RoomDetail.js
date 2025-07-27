@@ -484,11 +484,35 @@ const RoomDetail = () => {
   });
 
   useEffect(() => {
-    const foundHotel = getHotelByIdOrSlug(slug);
+    const fetchData = async () => {
+      try {
+        // First get hotel data
+        let foundHotel = getHotelByIdOrSlug(slug);
 
-    const foundRoom = foundHotel ? getRoomById(foundHotel.id, roomId) : null;
-    setHotel(foundHotel);
-    setRoom(foundRoom);
+        if (foundHotel) {
+          // Simulate API call to get updated hotel data
+          foundHotel = await fetchHotelData(foundHotel.id);
+
+          // Get room data
+          const foundRoom = foundHotel ? getRoomById(foundHotel.id, roomId) : null;
+
+          if (foundRoom) {
+            // Simulate API call to get room reviews
+            const roomReviews = await fetchRoomReviews(foundHotel.id, roomId);
+            foundRoom.reviews = roomReviews;
+          }
+
+          setHotel(foundHotel);
+          setRoom(foundRoom);
+        }
+      } catch (error) {
+        console.error('Error fetching room data:', error);
+        setHotel(null);
+        setRoom(null);
+      }
+    };
+
+    fetchData();
   }, [slug, roomId]);
 
   const getAmenityIcon = amenity => {
