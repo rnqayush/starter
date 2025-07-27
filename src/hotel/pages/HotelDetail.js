@@ -1378,23 +1378,54 @@ const HotelDetail = () => {
                 Hear what our valued guests have to say about their experience
               </SectionSubtitle>
             </SectionHeader>
-            <TestimonialCard>
-              <TestimonialQuote>
-                "Absolutely exceptional service and stunning accommodations. The
-                staff went above and beyond to make our anniversary celebration
-                truly memorable. The attention to detail and luxury amenities
-                exceeded all our expectations."
-              </TestimonialQuote>
-              <TestimonialAuthor>
-                <div className="avatar">RS</div>
-                <div className="info">
-                  <div className="name">Raj & Priya Sharma</div>
-                  <div className="details">
-                    Anniversary Celebration • Mumbai
+            {hotel.reviews && hotel.reviews.length > 0 ? (
+              <div style={{ display: 'grid', gap: theme.spacing.xl, marginBottom: theme.spacing.xl }}>
+                {hotel.reviews.slice(0, 3).map((review) => (
+                  <TestimonialCard key={review.id}>
+                    <TestimonialQuote>
+                      "{review.comment}"
+                    </TestimonialQuote>
+                    <TestimonialAuthor>
+                      <div className="avatar">{review.guestName.charAt(0)}</div>
+                      <div className="info">
+                        <div className="name">
+                          {review.guestName}
+                          {review.verified && (
+                            <span style={{ color: '#fbbf24', fontSize: '0.8rem', marginLeft: theme.spacing.sm }}>
+                              ✓ Verified Stay
+                            </span>
+                          )}
+                        </div>
+                        <div className="details">
+                          {review.roomType} • {new Date(review.date).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'short'
+                          })} • {review.rating}/5 ⭐
+                        </div>
+                      </div>
+                    </TestimonialAuthor>
+                  </TestimonialCard>
+                ))}
+              </div>
+            ) : (
+              <TestimonialCard>
+                <TestimonialQuote>
+                  "Absolutely exceptional service and stunning accommodations. The
+                  staff went above and beyond to make our anniversary celebration
+                  truly memorable. The attention to detail and luxury amenities
+                  exceeded all our expectations."
+                </TestimonialQuote>
+                <TestimonialAuthor>
+                  <div className="avatar">RS</div>
+                  <div className="info">
+                    <div className="name">Raj & Priya Sharma</div>
+                    <div className="details">
+                      Anniversary Celebration • Mumbai
+                    </div>
                   </div>
-                </div>
-              </TestimonialAuthor>
-            </TestimonialCard>
+                </TestimonialAuthor>
+              </TestimonialCard>
+            )}
           </TestimonialsSection>
         </Container>
       </ContentSection>
