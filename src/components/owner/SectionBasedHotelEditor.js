@@ -828,6 +828,8 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
           editingHotel.sections?.hero?.backgroundImage ||
           editingHotel.image ||
           '',
+        rating: editingHotel.rating || '',
+        location: editingHotel.location || editingHotel.city || '',
         gallery:
           editingHotel.sections?.gallery?.images ||
           editingHotel.gallery ||
