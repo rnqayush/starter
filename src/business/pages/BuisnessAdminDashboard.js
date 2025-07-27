@@ -845,7 +845,10 @@ const BuisnessAdminDashboard = () => {
       const updatedBusiness = {
         ...editingBusiness,
         hero: heroData,
-        about: aboutData,
+        about: {
+          ...aboutData,
+          stats: statisticsData
+        },
         services: servicesData,
         team: teamData,
         portfolio: portfolioData,
