@@ -816,8 +816,6 @@ const BuisnessAdminDashboard = () => {
     faq: true,
     'business-hours': true,
     contact: true,
-    'ui-content': true,
-    statistics: true,
   });
 
   // Track changes in a section and update Redux editing business for real-time preview
