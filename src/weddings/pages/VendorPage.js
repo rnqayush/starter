@@ -584,7 +584,9 @@ const NavButton = styled.button.withConfig({
     !['primary', 'primaryColor', 'scrolled'].includes(prop),
 })`
   background: ${props =>
-    props.primary ? props.primaryColor || theme.colors.primary : 'transparent'};
+    props.primary
+      ? `linear-gradient(135deg, ${props.primaryColor || theme.colors.primary}, ${props.primaryColor ? `${props.primaryColor}dd` : `${theme.colors.primary}dd`})`
+      : 'transparent'};
   color: ${props =>
     props.primary ? 'white' : props.scrolled ? theme.colors.gray700 : 'white'};
   border: ${props =>
@@ -592,16 +594,39 @@ const NavButton = styled.button.withConfig({
       ? 'none'
       : `2px solid ${props.scrolled ? theme.colors.gray300 : 'white'}`};
   padding: ${theme.spacing.sm} ${theme.spacing.md};
-  border-radius: ${theme.borderRadius.md};
+  border-radius: ${props => props.primary ? '25px' : theme.borderRadius.md};
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   align-items: center;
   gap: ${theme.spacing.xs};
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: ${props => props.primary ? 'blur(10px)' : 'none'};
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s ease;
+  }
 
   &:hover {
-    transform: translateY(-1px);
+    transform: translateY(-2px);
+    box-shadow: ${props => props.primary ? '0 8px 25px rgba(0,0,0,0.2)' : 'none'};
+
+    &::before {
+      left: 100%;
+    }
+  }
+
+  &:active {
+    transform: translateY(0);
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
@@ -613,13 +638,13 @@ const NavButton = styled.button.withConfig({
     border-color: ${props => (props.primary ? 'none' : theme.colors.gray300)};
     background: ${props =>
       props.primary
-        ? props.primaryColor || theme.colors.primary
+        ? `linear-gradient(135deg, ${props.primaryColor || theme.colors.primary}, ${props.primaryColor ? `${props.primaryColor}dd` : `${theme.colors.primary}dd`})`
         : theme.colors.white};
 
     &:hover {
       background: ${props =>
         props.primary
-          ? props.primaryColor || theme.colors.primary
+          ? `linear-gradient(135deg, ${props.primaryColor || theme.colors.primary}, ${props.primaryColor ? `${props.primaryColor}dd` : `${theme.colors.primary}dd`})`
           : theme.colors.gray50};
       transform: none;
     }
@@ -884,10 +909,26 @@ const GalleryItem = styled.img`
   object-fit: cover;
   border-radius: ${theme.borderRadius.md};
   cursor: pointer;
-  transition: transform 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  opacity: 0;
+  transform: scale(0.9);
+  filter: brightness(0.9);
+
+  &.animate-in {
+    opacity: 1;
+    transform: scale(1);
+  }
 
   &:hover {
-    transform: scale(1.05);
+    transform: scale(1.08);
+    filter: brightness(1.1);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+    border-radius: ${theme.borderRadius.lg};
+  }
+
+  &:active {
+    transform: scale(1.02);
   }
 `;
 
@@ -1050,6 +1091,21 @@ const FaqItem = styled.div`
   border-radius: ${theme.borderRadius.md};
   margin-bottom: ${theme.spacing.md};
   box-shadow: ${theme.shadows.sm};
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0;
+  transform: translateY(20px);
+  border: 1px solid transparent;
+
+  &.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  &:hover {
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    border-color: rgba(59, 130, 246, 0.1);
+    transform: translateY(-2px);
+  }
 `;
 
 const FaqQuestion = styled.button`
@@ -1065,6 +1121,18 @@ const FaqQuestion = styled.button`
   font-weight: 600;
   color: ${theme.colors.gray900};
   font-size: 1.1rem;
+  transition: all 0.2s ease;
+  position: relative;
+
+  &:hover {
+    color: ${theme.colors.primary};
+    background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.05), transparent);
+  }
+
+  &:focus {
+    outline: none;
+    background: rgba(59, 130, 246, 0.1);
+  }
 `;
 
 const FaqAnswer = styled.div`
@@ -1090,6 +1158,14 @@ const ContactForm = styled.form`
   display: flex;
   flex-direction: column;
   gap: ${theme.spacing.lg};
+  opacity: 0;
+  transform: translateX(-30px);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
+
+  &.animate-in {
+    opacity: 1;
+    transform: translateX(0);
+  }
 `;
 
 const FormGroup = styled.div`
@@ -1164,7 +1240,16 @@ const SubmitButton = styled.button.withConfig({
   }
 `;
 
-const ContactInfo = styled.div``;
+const ContactInfo = styled.div`
+  opacity: 0;
+  transform: translateX(30px);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.4s;
+
+  &.animate-in {
+    opacity: 1;
+    transform: translateX(0);
+  }
+`;
 
 const ContactItem = styled.div`
   display: flex;
@@ -1175,6 +1260,31 @@ const ContactItem = styled.div`
   background: white;
   border-radius: ${theme.borderRadius.md};
   box-shadow: ${theme.shadows.sm};
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid transparent;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    transition: left 0.6s ease;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    border-color: rgba(59, 130, 246, 0.2);
+
+    &::before {
+      left: 100%;
+    }
+  }
 `;
 
 const ContactIcon = styled.div.withConfig({
