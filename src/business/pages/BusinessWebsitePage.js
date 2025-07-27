@@ -2021,10 +2021,9 @@ const BusinessWebsitePage = () => {
       {/* Reviews Section */}
       <Section id="reviews" background={theme.colors.gray50}>
         <SectionContainer>
-          <SectionTitle>Recent Reviews</SectionTitle>
+          <SectionTitle>{content.sections?.reviews?.title || 'Recent Reviews'}</SectionTitle>
           <SectionSubtitle>
-            See what our recent customers are saying about their experiences
-            with us.
+            {content.sections?.reviews?.subtitle || 'See what our recent customers are saying about their experiences with us.'}
           </SectionSubtitle>
           <ReviewsGrid>
             {[
