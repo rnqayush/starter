@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import {
@@ -12,10 +13,10 @@ import {
 import { theme, media } from '../../styles/GlobalStyle';
 import EnquiryModal from './EnquiryModal';
 import {
-  getVehicleAvailabilityStatus as getAvailabilityStatus,
-  getVehicleAvailabilityLabel as getAvailabilityLabel,
-  getVehicleAvailabilityColor as getAvailabilityColor,
-} from '../../DummyData';
+  addToWishlist,
+  removeFromWishlist,
+  selectIsInWishlist,
+} from '../../store/slices/automobileManagementSlice';
 
 const Card = styled.div`
   background: ${theme.colors.white};
@@ -438,11 +439,13 @@ const StockIndicator = styled.div.withConfig({
 
 const VehicleCard = ({
   vehicle,
-  onToggleWishlist,
-  isInWishlist = false,
   dealerSlug = '',
 }) => {
+  const dispatch = useDispatch();
   const [isEnquiryModalOpen, setIsEnquiryModalOpen] = useState(false);
+  
+  // Redux selectors
+  const isInWishlist = useSelector(selectIsInWishlist(vehicle.id));
 
   const renderStars = rating => {
     const stars = [];
@@ -466,19 +469,11 @@ const VehicleCard = ({
     e.preventDefault();
     e.stopPropagation();
 
-    const wishlist = JSON.parse(
-      localStorage.getItem('vehicleWishlist') || '[]'
-    );
-    let newWishlist;
-
     if (isInWishlist) {
-      newWishlist = wishlist.filter(id => id !== vehicle.id);
+      dispatch(removeFromWishlist(vehicle.id));
     } else {
-      newWishlist = [...wishlist, vehicle.id];
+      dispatch(addToWishlist(vehicle.id));
     }
-
-    localStorage.setItem('vehicleWishlist', JSON.stringify(newWishlist));
-    onToggleWishlist?.(vehicle);
   };
 
   const getBaseUrl = () => `/${dealerSlug}`;
@@ -497,21 +492,73 @@ const VehicleCard = ({
     return new Intl.NumberFormat('en-US').format(mileage) + ' miles';
   };
 
+  const getAvailabilityStatus = (vehicle) => {
+    if (!vehicle) return 'unknown';
+    if (vehicle.availability?.status === 'out_of_stock' || vehicle.availability?.quantity === 0) {
+      return 'out_of_stock';
+    } else if (vehicle.availability?.status === 'limited_stock' || vehicle.availability?.quantity <= 5) {
+      return 'limited_stock';
+    } else if (vehicle.availability?.status === 'pre_order') {
+      return 'pre_order';
+    } else {
+      return 'in_stock';
+    }
+  };
+
+  const getAvailabilityLabel = (availability) => {
+    switch (availability) {
+      case 'in_stock':
+        return 'In Stock';
+      case 'out_of_stock':
+        return 'Sold Out';
+      case 'limited_stock':
+        return 'Limited Stock';
+      case 'pre_order':
+        return 'Pre Order';
+      default:
+        return 'Unknown';
+    }
+  };
+
+  const getAvailabilityColor = (availability) => {
+    switch (availability) {
+      case 'in_stock':
+        return '#10b981';
+      case 'out_of_stock':
+        return '#ef4444';
+      case 'limited_stock':
+        return '#f59e0b';
+      case 'pre_order':
+        return '#3b82f6';
+      default:
+        return '#6b7280';
+    }
+  };
+
   const availabilityStatus = getAvailabilityStatus(vehicle);
   const availabilityLabel = getAvailabilityLabel(availabilityStatus);
   const availabilityColor = getAvailabilityColor(availabilityStatus);
+
+  // Handle different data structures (new JSON vs old JS)
+  const vehiclePrice = vehicle.pricing?.price || vehicle.price;
+  const vehicleOriginalPrice = vehicle.pricing?.originalPrice || vehicle.originalPrice;
+  const vehicleRating = vehicle.reviews?.rating || vehicle.rating;
+  const vehicleReviewCount = vehicle.reviews?.totalReviews || vehicle.reviews;
+  const vehicleStock = vehicle.availability?.quantity || vehicle.stock;
+  const vehicleImage = vehicle.media?.mainImage || vehicle.image;
+  const vehicleSpecs = vehicle.specifications || {};
 
   return (
     <Link to={`${getBaseUrl()}/vehicledetail/${vehicle.id}`}>
       <Card>
         <ImageContainer>
-          <VehicleImage src={vehicle.image} alt={vehicle.name} />
+          <VehicleImage src={vehicleImage} alt={vehicle.name} />
 
-          {vehicle.onSale && vehicle.originalPrice && (
+          {vehicle.pricing?.onSale && vehicleOriginalPrice && (
             <Badge type="sale">Sale</Badge>
           )}
 
-          {vehicle.featured && !vehicle.onSale && (
+          {vehicle.featured && !vehicle.pricing?.onSale && (
             <Badge type="featured">Featured</Badge>
           )}
 
@@ -552,14 +599,14 @@ const VehicleCard = ({
           <VehicleSpecs>
             <SpecItem>
               <FaCar className="icon" />
-              <span>{vehicle.specifications?.engine || 'N/A'}</span>
+              <span>{vehicleSpecs?.engine?.type || vehicleSpecs?.engine || 'N/A'}</span>
             </SpecItem>
             <SpecItem>
               <FaGasPump className="icon" />
               <span>
-                {vehicle.specifications?.fuelEconomy ||
-                  vehicle.specifications?.range ||
-                  'N/A'}
+                {vehicleSpecs?.efficiency?.mpgCombined ? `${vehicleSpecs.efficiency.mpgCombined} MPG` :
+                 vehicleSpecs?.efficiency?.range ? `${vehicleSpecs.efficiency.range} range` :
+                 vehicleSpecs?.fuelEconomy || vehicleSpecs?.range || 'N/A'}
               </span>
             </SpecItem>
             <SpecItem>
@@ -571,19 +618,19 @@ const VehicleCard = ({
           <Description>{vehicle.description}</Description>
 
           <RatingContainer>
-            <StarRating>{renderStars(vehicle.rating)}</StarRating>
-            <ReviewCount>({vehicle.reviews} reviews)</ReviewCount>
+            <StarRating>{renderStars(vehicleRating)}</StarRating>
+            <ReviewCount>({vehicleReviewCount} reviews)</ReviewCount>
           </RatingContainer>
 
           <PriceContainer>
-            <CurrentPrice>{formatPrice(vehicle.price)}</CurrentPrice>
-            {vehicle.originalPrice && vehicle.originalPrice > vehicle.price && (
+            <CurrentPrice>{formatPrice(vehiclePrice)}</CurrentPrice>
+            {vehicleOriginalPrice && vehicleOriginalPrice > vehiclePrice && (
               <>
                 <OriginalPrice>
-                  {formatPrice(vehicle.originalPrice)}
+                  {formatPrice(vehicleOriginalPrice)}
                 </OriginalPrice>
                 <Discount>
-                  -{calculateDiscount(vehicle.originalPrice, vehicle.price)}%
+                  -{calculateDiscount(vehicleOriginalPrice, vehiclePrice)}%
                 </Discount>
               </>
             )}
@@ -593,8 +640,8 @@ const VehicleCard = ({
             availability={availabilityStatus}
             color={availabilityColor}
           >
-            {availabilityStatus === 'in_stock' && vehicle.stock > 0
-              ? `${vehicle.stock} available`
+            {availabilityStatus === 'in_stock' && vehicleStock > 0
+              ? `${vehicleStock} available`
               : availabilityLabel}
           </StockIndicator>
 
