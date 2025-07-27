@@ -252,13 +252,19 @@ const hotelManagementSlice = createSlice({
     publishChanges: state => {
       // Publish draft changes to live data (what users see)
       if (state.editingHotel) {
+        console.log('Publishing changes for hotel:', state.editingHotel.name);
+        console.log('Current live hotels count:', state.liveHotels.length);
+
         const liveHotelIndex = state.liveHotels.findIndex(
           h => h.id === state.editingHotel.id
         );
 
+        console.log('Live hotel index found:', liveHotelIndex);
+
         if (liveHotelIndex !== -1) {
           // Copy the current editing hotel (with all changes) to live hotels
           state.liveHotels[liveHotelIndex] = { ...state.editingHotel };
+          console.log('Updated live hotel:', state.liveHotels[liveHotelIndex].name);
 
           // Also update the draft hotel to match
           const draftHotelIndex = state.draftHotels.findIndex(
@@ -273,6 +279,10 @@ const hotelManagementSlice = createSlice({
           // Clear pending changes for this hotel
           delete state.pendingChanges[state.editingHotel.id];
           state.lastPublishTime = new Date().toISOString();
+
+          console.log('Published successfully at:', state.lastPublishTime);
+        } else {
+          console.log('ERROR: Live hotel not found for publishing!');
         }
       }
     },
