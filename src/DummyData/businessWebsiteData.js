@@ -342,12 +342,71 @@ export const businessWebsiteData = {
     about: {
       title: 'About Our Gym',
       description: "We're committed to helping you reach your fitness potential with personalized training programs and a supportive community.",
+      extendedDescription: 'We pride ourselves on delivering exceptional service and creating memorable experiences for all our clients. Our commitment to excellence has made us a trusted choice in the community.',
       stats: [
-        { number: '500+', label: 'Members' },
-        { number: '20+', label: 'Trainers' },
-        { number: '100+', label: 'Classes Monthly' },
-        { number: '10', label: 'Years Experience' }
+        { number: '500+', label: 'Active Members' },
+        { number: '10+', label: 'Years Experience' },
+        { number: '4.9', label: '★ Average Rating' },
+        { number: '20+', label: 'Expert Trainers' }
       ]
+    },
+    sections: {
+      services: {
+        title: 'Our Services',
+        subtitle: 'We offer a comprehensive range of fitness services designed to help you achieve your health and wellness goals.'
+      },
+      team: {
+        title: 'Meet Our Team',
+        subtitle: 'Our certified trainers and fitness professionals are here to guide you on your fitness journey.'
+      },
+      testimonials: {
+        title: 'What Our Members Say',
+        subtitle: "Don't just take our word for it - hear from our members about their transformation stories.",
+        sampleTestimonial: {
+          text: "Outstanding service and professional staff. I couldn't be happier with the results!",
+          author: "Member Name",
+          role: "Fitness Enthusiast"
+        }
+      },
+      gallery: {
+        title: 'Our Facilities',
+        subtitle: 'Take a look at our state-of-the-art equipment, group fitness studios, and member amenities.'
+      },
+      packages: {
+        title: 'Membership Plans',
+        subtitle: 'Choose from our flexible membership options designed to fit your lifestyle and fitness goals.'
+      },
+      faq: {
+        title: 'Frequently Asked Questions',
+        subtitle: 'Find answers to common questions about memberships, classes, and gym policies.'
+      },
+      reviews: {
+        title: 'Member Reviews',
+        subtitle: 'Read what our valued members have to say about their fitness journey with us.'
+      }
+    },
+    ui: {
+      buttons: {
+        bookNow: 'Join Now',
+        bookAppointment: 'Schedule Training',
+        learnMore: 'Learn More',
+        sendMessage: 'Send Message',
+        getStarted: 'Start Your Journey',
+        viewPortfolio: 'View Facilities',
+        contactUs: 'Contact Us'
+      },
+      contactForm: {
+        placeholders: {
+          name: 'Your Name',
+          email: 'Your Email',
+          phone: 'Your Phone',
+          message: 'Your Message'
+        }
+      },
+      businessHours: {
+        title: 'Gym Hours',
+        contactInfoTitle: 'Contact Information'
+      }
     },
     services: [
       {
