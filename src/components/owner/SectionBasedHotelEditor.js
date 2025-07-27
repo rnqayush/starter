@@ -838,6 +838,13 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
             icon: 'FaClock'
           },
         ],
+        testimonials: editingHotel.sections?.testimonials?.reviews || [],
+        footerSupportContact: editingHotel.sections?.footer?.supportContact || {
+          phone: '',
+          email: '',
+          address: ''
+        },
+        footerSocialLinks: editingHotel.sections?.footer?.socialLinks || [],
       });
     }
   };
