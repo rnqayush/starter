@@ -1722,16 +1722,8 @@ const BusinessWebsitePage = () => {
               <div className="label">{content.about?.stats?.[0]?.label || 'Services'}</div>
             </StatCard>
             <StatCard primaryColor={businessData.primaryColor}>
-              <div className="number">
-                {businessData.slug === 'restaurant'
-                  ? '15+'
-                  : businessData.slug === 'gym'
-                    ? '8+'
-                    : businessData.slug === 'salon'
-                      ? '12+'
-                      : '5+'}
-              </div>
-              <div className="label">Years Experience</div>
+              <div className="number">{content.about?.stats?.[1]?.number || '5+'}</div>
+              <div className="label">{content.about?.stats?.[1]?.label || 'Years Experience'}</div>
             </StatCard>
             <StatCard primaryColor={businessData.primaryColor}>
               <div className="number">4.9</div>
