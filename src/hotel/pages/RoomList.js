@@ -25,11 +25,13 @@ const PageContainer = styled.div`
 const Container = styled.div`
   max-width: 1400px;
   margin: 0 auto;
-  padding: ${theme.spacing.xl} ${theme.spacing.md};
+  padding: calc(70px + ${theme.spacing.xl}) ${theme.spacing.md}
+    ${theme.spacing.xl};
   flex: 1;
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    padding: ${theme.spacing.lg} ${theme.spacing.sm};
+    padding: calc(60px + ${theme.spacing.lg}) ${theme.spacing.sm}
+      ${theme.spacing.lg};
   }
 `;
 

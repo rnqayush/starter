@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import styled from 'styled-components';
+import styled, { keyframes, css } from 'styled-components';
 import {
   FaMapMarkerAlt,
   FaStar,
@@ -15,6 +15,14 @@ import {
   FaUmbrellaBeach,
   FaBusinessTime,
   FaTaxi,
+  FaWifi,
+  FaParking,
+  FaDumbbell,
+  FaSpa,
+  FaPlay,
+  FaChevronRight,
+  FaQuoteLeft,
+  FaArrowRight,
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
 import HotelNavbar from '../components/HotelNavbar';
@@ -28,11 +36,73 @@ import {
 import { loadHotelData } from '../../store/slices/hotelManagementSlice';
 import hotelJsonData from '../../DummyData/hotels.json';
 
+// Animations
+const fadeInUp = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
+
+const fadeInLeft = keyframes`
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+`;
+
+const fadeInRight = keyframes`
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+`;
+
+const scaleIn = keyframes`
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+`;
+
+const floatAnimation = keyframes`
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+`;
+
+const shimmerAnimation = keyframes`
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+`;
+
+const pulseGlow = keyframes`
+  0%, 100% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.3); }
+  50% { box-shadow: 0 0 40px rgba(59, 130, 246, 0.6); }
+`;
+
+// Styled Components
 const PageContainer = styled.div`
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: ${theme.colors.gray50};
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  overflow-x: hidden;
 `;
 
 const HeroBanner = styled.section.withConfig({
@@ -43,6 +113,7 @@ const HeroBanner = styled.section.withConfig({
   background-image: url(${props => props.image});
   background-size: cover;
   background-position: center;
+  background-attachment: fixed;
   display: flex;
   align-items: center;
   overflow: hidden;
@@ -54,24 +125,45 @@ const HeroBanner = styled.section.withConfig({
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6));
+    background: linear-gradient(
+      135deg,
+      rgba(0, 0, 0, 0.3) 0%,
+      rgba(0, 0, 0, 0.4) 50%,
+      rgba(0, 0, 0, 0.6) 100%
+    );
+    z-index: 1;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(
+      ellipse at center,
+      transparent 0%,
+      rgba(0, 0, 0, 0.2) 100%
+    );
+    z-index: 1;
   }
 
   @media (max-width: ${theme.breakpoints.tablet}) {
     height: 80vh;
+    background-attachment: scroll;
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     height: 100vh;
-    padding-top: 60px;
     background-attachment: scroll;
     background-position: center center;
 
     &::before {
       background: linear-gradient(
         135deg,
-        rgba(0, 0, 0, 0.3),
-        rgba(0, 0, 0, 0.5)
+        rgba(0, 0, 0, 0.4),
+        rgba(0, 0, 0, 0.6)
       );
     }
   }
@@ -83,11 +175,12 @@ const HeroContent = styled.div`
   color: ${theme.colors.white};
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 ${theme.spacing.xl};
+  padding: 120px ${theme.spacing.xl} 0;
   width: 100%;
+  animation: ${fadeInUp} 1s ease-out;
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    padding: 0 ${theme.spacing.md};
+    padding: 100px ${theme.spacing.md} 0;
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -97,19 +190,35 @@ const HeroContent = styled.div`
 `;
 
 const HeroTitle = styled.h1`
-  font-size: 4.5rem;
+  font-size: 5rem;
   font-weight: 700;
   margin-bottom: ${theme.spacing.lg};
-  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
   line-height: 1.1;
   background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  text-shadow: none;
+  position: relative;
+  animation: ${fadeInLeft} 1s ease-out 0.3s both;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 100px;
+    height: 4px;
+    background: linear-gradient(
+      90deg,
+      ${theme.colors.primary},
+      ${theme.colors.accent}
+    );
+    border-radius: 2px;
+    animation: ${fadeInLeft} 1s ease-out 0.6s both;
+  }
 
   @media (max-width: ${theme.breakpoints.tablet}) {
-    font-size: 3rem;
+    font-size: 3.5rem;
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
@@ -121,23 +230,32 @@ const HeroTitle = styled.h1`
     background: none;
     -webkit-text-fill-color: unset;
     text-shadow: 2px 2px 12px rgba(0, 0, 0, 0.8);
+
+    &::after {
+      left: 50%;
+      transform: translateX(-50%);
+    }
   }
 `;
 
 const HeroSubtitle = styled.p`
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   margin-bottom: ${theme.spacing.xl};
   opacity: 0.95;
   text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
-  max-width: 600px;
+  max-width: 700px;
+  font-weight: 300;
+  line-height: 1.4;
+  animation: ${fadeInRight} 1s ease-out 0.5s both;
 
   @media (max-width: ${theme.breakpoints.tablet}) {
-    font-size: 1.3rem;
+    font-size: 1.4rem;
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     margin-bottom: ${theme.spacing.lg};
+    max-width: 100%;
   }
 `;
 
@@ -146,6 +264,7 @@ const HeroActions = styled.div`
   gap: ${theme.spacing.lg};
   align-items: center;
   flex-wrap: wrap;
+  animation: ${fadeInUp} 1s ease-out 0.7s both;
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     flex-direction: column;
@@ -162,16 +281,18 @@ const CTAButton = styled.button`
     ${theme.colors.primaryDark}
   );
   color: ${theme.colors.white};
-  padding: ${theme.spacing.md} ${theme.spacing.xxl};
+  padding: ${theme.spacing.lg} ${theme.spacing.xxl};
   border: none;
-  border-radius: ${theme.borderRadius.lg};
-  font-size: 1.1rem;
+  border-radius: ${theme.borderRadius.xl};
+  font-size: 1.2rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4);
   position: relative;
   overflow: hidden;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 
   &::before {
     content: '';
@@ -183,19 +304,39 @@ const CTAButton = styled.button`
     background: linear-gradient(
       90deg,
       transparent,
-      rgba(255, 255, 255, 0.2),
+      rgba(255, 255, 255, 0.3),
       transparent
     );
-    transition: left 0.5s;
+    transition: left 0.6s;
   }
 
-  &:hover::before {
-    left: 100%;
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    opacity: 0;
+    transition: all 0.3s ease;
   }
 
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 35px rgba(59, 130, 246, 0.4);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 15px 40px rgba(59, 130, 246, 0.5);
+    animation: ${pulseGlow} 2s infinite;
+
+    &::before {
+      left: 100%;
+    }
+
+    &::after {
+      opacity: 1;
+      right: 15px;
+    }
+  }
+
+  &:active {
+    transform: translateY(-1px) scale(0.98);
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
@@ -203,40 +344,33 @@ const CTAButton = styled.button`
     font-size: 1.2rem;
     font-weight: 700;
     border-radius: ${theme.borderRadius.xl};
-    box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4);
+    box-shadow: 0 12px 35px rgba(59, 130, 246, 0.4);
     width: 100%;
-    max-width: 280px;
+    max-width: 300px;
     margin: 0 auto;
   }
 `;
 
 const QuickInfoCard = styled.div`
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: ${theme.borderRadius.lg};
-  padding: ${theme.spacing.lg};
+  background: transparent;
+  border: none;
+  padding: 0;
   color: ${theme.colors.white};
   display: flex;
   align-items: center;
   gap: ${theme.spacing.md};
-  min-width: 200px;
+  min-width: auto;
   transition: all 0.3s ease;
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.15);
-    transform: translateY(-2px);
-  }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     min-width: auto;
-    padding: ${theme.spacing.sm} ${theme.spacing.md};
-    background: rgba(255, 255, 255, 0.15);
-    border-radius: ${theme.borderRadius.md};
-    backdrop-filter: blur(15px);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    padding: 0;
+    background: transparent;
+    border: none;
+    backdrop-filter: none;
+    box-shadow: none;
     width: auto;
-    max-width: 140px;
+    max-width: none;
     justify-content: center;
     gap: ${theme.spacing.sm};
   }
@@ -255,23 +389,27 @@ const MobileQuickInfoContainer = styled.div`
 `;
 
 const QuickInfoIcon = styled.div`
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   color: #fbbf24;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  animation: ${floatAnimation} 3s ease-in-out infinite;
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    font-size: 1.2rem;
+    font-size: 1.4rem;
   }
 `;
 
 const QuickInfoText = styled.div`
   .label {
     font-size: 0.9rem;
-    opacity: 0.8;
+    opacity: 0.9;
     margin-bottom: 2px;
+    font-weight: 400;
   }
   .value {
-    font-size: 1.1rem;
-    font-weight: 600;
+    font-size: 1.2rem;
+    font-weight: 700;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
@@ -286,19 +424,75 @@ const QuickInfoText = styled.div`
   }
 `;
 
-const ContentSection = styled.section`
-  padding: ${theme.spacing.xxl} 0;
-  background: ${theme.colors.white};
+const ScrollIndicator = styled.div`
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  animation: ${floatAnimation} 2s ease-in-out infinite;
+  cursor: pointer;
 
-  &.alt {
-    background: ${theme.colors.gray50};
+  .scroll-text {
+    color: ${theme.colors.white};
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    text-align: center;
+    opacity: 0.8;
+  }
+
+  .scroll-arrow {
+    width: 30px;
+    height: 30px;
+    border: 2px solid ${theme.colors.white};
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: scale(1.1);
+    }
+  }
+`;
+
+const ContentSection = styled.section.withConfig({
+  shouldForwardProp: prop => prop !== 'alt',
+})`
+  padding: calc(${theme.spacing.xxl} * 1.5) 0;
+  margin: calc(${theme.spacing.xxl} * 1.5) 0;
+  background: ${props =>
+    props.alt
+      ? 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)'
+      : theme.colors.white};
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -50%;
+    width: 200%;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      ${theme.colors.primary}40,
+      transparent
+    );
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    padding: ${theme.spacing.xl} 0;
+    padding: calc(${theme.spacing.xl} * 1.5) 0;
+    margin: calc(${theme.spacing.xl} * 1.2) 0;
 
     &:first-of-type {
-      padding-top: ${theme.spacing.xxl};
+      padding-top: calc(${theme.spacing.xxl} * 1.5);
+      margin-top: 0;
     }
   }
 `;
@@ -307,6 +501,7 @@ const Container = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 ${theme.spacing.xl};
+  position: relative;
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     padding: 0 ${theme.spacing.lg};
@@ -315,18 +510,43 @@ const Container = styled.div`
 
 const SectionHeader = styled.div`
   text-align: center;
-  margin-bottom: ${theme.spacing.xxl};
+  margin-bottom: calc(${theme.spacing.xxl} * 1.5);
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(
+      90deg,
+      ${theme.colors.primary},
+      ${theme.colors.accent}
+    );
+    border-radius: 2px;
+  }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    margin-bottom: ${theme.spacing.xl};
+    margin-bottom: calc(${theme.spacing.xl} * 1.3);
   }
 `;
 
 const SectionTitle = styled.h2`
-  font-size: 2.5rem;
-  font-weight: 600;
-  color: ${theme.colors.gray900};
+  font-size: 3rem;
+  font-weight: 700;
+  background: linear-gradient(
+    135deg,
+    ${theme.colors.gray900} 0%,
+    ${theme.colors.gray700} 100%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   margin-bottom: ${theme.spacing.md};
+  position: relative;
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     font-size: 2.2rem;
@@ -337,11 +557,12 @@ const SectionTitle = styled.h2`
 `;
 
 const SectionSubtitle = styled.p`
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   color: ${theme.colors.gray600};
-  max-width: 600px;
+  max-width: 700px;
   margin: 0 auto;
   line-height: 1.6;
+  font-weight: 300;
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     font-size: 1.15rem;
@@ -351,11 +572,21 @@ const SectionSubtitle = styled.p`
   }
 `;
 
+const AnimatedSection = styled.div.withConfig({
+  shouldForwardProp: prop => !['inView', 'delay'].includes(prop),
+})`
+  opacity: ${props => (props.inView ? 1 : 0)};
+  transform: translateY(${props => (props.inView ? '0' : '50px')});
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  transition-delay: ${props => props.delay || '0s'};
+`;
+
 const Description = styled.p`
-  font-size: 1.1rem;
-  line-height: 1.7;
+  font-size: 1.2rem;
+  line-height: 1.8;
   color: ${theme.colors.gray700};
   margin-bottom: ${theme.spacing.lg};
+  font-weight: 300;
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     font-size: 1.15rem;
@@ -367,47 +598,95 @@ const Description = styled.p`
 
 const FeaturesGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: ${theme.spacing.xl};
-  margin: ${theme.spacing.xxl} 0;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: calc(${theme.spacing.xl} * 1.5);
+  margin: calc(${theme.spacing.xxl} * 1.5) 0;
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     grid-template-columns: 1fr;
-    gap: ${theme.spacing.lg};
-    margin: ${theme.spacing.xl} 0;
+    gap: calc(${theme.spacing.lg} * 1.3);
+    margin: calc(${theme.spacing.xl} * 1.3) 0;
   }
 `;
 
 const FeatureCard = styled.div`
   background: ${theme.colors.white};
-  padding: ${theme.spacing.xl};
-  border-radius: ${theme.borderRadius.lg};
-  box-shadow: ${theme.shadows.md};
+  padding: ${theme.spacing.xxl};
+  border-radius: ${theme.borderRadius.xl};
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
   text-align: center;
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   border: 2px solid transparent;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      135deg,
+      ${theme.colors.primary}05,
+      ${theme.colors.accent}05
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
 
   &:hover {
-    transform: translateY(-8px);
-    box-shadow: ${theme.shadows.xl};
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
     border-color: ${theme.colors.primary};
+
+    &::before {
+      opacity: 1;
+    }
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     padding: ${theme.spacing.xxl};
     border-radius: ${theme.borderRadius.xl};
-    box-shadow: ${theme.shadows.lg};
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
 
     &:hover {
-      transform: translateY(-4px);
+      transform: translateY(-5px);
     }
   }
 `;
 
 const FeatureIcon = styled.div`
-  font-size: 3rem;
-  color: ${theme.colors.primary};
+  font-size: 4rem;
+  background: linear-gradient(
+    135deg,
+    ${theme.colors.primary},
+    ${theme.colors.accent}
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   margin-bottom: ${theme.spacing.lg};
+  position: relative;
+  display: inline-block;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(
+      135deg,
+      ${theme.colors.primary}15,
+      ${theme.colors.accent}15
+    );
+    border-radius: 50%;
+    z-index: -1;
+  }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     font-size: 3.5rem;
@@ -416,8 +695,8 @@ const FeatureIcon = styled.div`
 `;
 
 const FeatureTitle = styled.h3`
-  font-size: 1.3rem;
-  font-weight: 600;
+  font-size: 1.5rem;
+  font-weight: 700;
   color: ${theme.colors.gray900};
   margin-bottom: ${theme.spacing.md};
 
@@ -430,7 +709,9 @@ const FeatureTitle = styled.h3`
 
 const FeatureDescription = styled.p`
   color: ${theme.colors.gray600};
-  line-height: 1.6;
+  line-height: 1.7;
+  font-size: 1.1rem;
+  font-weight: 300;
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     font-size: 1.1rem;
@@ -438,39 +719,136 @@ const FeatureDescription = styled.p`
   }
 `;
 
+const GallerySection = styled.div`
+  margin: calc(${theme.spacing.xxl} * 1.5) 0;
+`;
+
+const GalleryGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: calc(${theme.spacing.lg} * 1.5);
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    grid-template-columns: 1fr;
+    gap: calc(${theme.spacing.md} * 1.5);
+  }
+`;
+
+const GalleryItem = styled.div`
+  position: relative;
+  height: 300px;
+  border-radius: ${theme.borderRadius.xl};
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+
+  &:hover img {
+    transform: scale(1.1);
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      135deg,
+      transparent 0%,
+      rgba(0, 0, 0, 0.3) 100%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  &:hover::after {
+    opacity: 1;
+  }
+`;
+
 const AmenitiesSection = styled.div`
   background: ${theme.colors.white};
-  border-radius: ${theme.borderRadius.xl};
+  border-radius: ${theme.borderRadius.xxl};
   padding: ${theme.spacing.xxl};
-  box-shadow: ${theme.shadows.lg};
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(
+      90deg,
+      ${theme.colors.primary},
+      ${theme.colors.accent}
+    );
+  }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     padding: ${theme.spacing.xl};
-    border-radius: ${theme.borderRadius.lg};
+    border-radius: ${theme.borderRadius.xl};
     margin: 0 -${theme.spacing.sm};
   }
 `;
 
 const AmenitiesGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: ${theme.spacing.lg};
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: calc(${theme.spacing.xl} * 1.5);
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     grid-template-columns: 1fr;
-    gap: ${theme.spacing.xl};
+    gap: calc(${theme.spacing.xl} * 1.3);
   }
 `;
 
 const AmenityCategory = styled.div`
+  background: linear-gradient(
+    135deg,
+    ${theme.colors.gray50} 0%,
+    ${theme.colors.white} 100%
+  );
+  border-radius: ${theme.borderRadius.lg};
+  padding: ${theme.spacing.xl};
+  border: 1px solid ${theme.colors.gray200};
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border-color: ${theme.colors.primary}40;
+  }
+
   h4 {
-    font-size: 1.2rem;
-    font-weight: 600;
+    font-size: 1.3rem;
+    font-weight: 700;
     color: ${theme.colors.gray900};
-    margin-bottom: ${theme.spacing.md};
+    margin-bottom: ${theme.spacing.lg};
     display: flex;
     align-items: center;
     gap: ${theme.spacing.sm};
+
+    .icon {
+      font-size: 1.5rem;
+      color: ${theme.colors.primary};
+    }
 
     @media (max-width: ${theme.breakpoints.mobile}) {
       font-size: 1.3rem;
@@ -498,969 +876,744 @@ const AmenityList = styled.ul`
 const AmenityItem = styled.li`
   display: flex;
   align-items: center;
-  gap: ${theme.spacing.sm};
-  padding: ${theme.spacing.xs} 0;
+  gap: ${theme.spacing.md};
+  padding: ${theme.spacing.sm} 0;
   color: ${theme.colors.gray700};
-  font-size: 0.95rem;
+  font-size: 1.05rem;
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: ${theme.colors.primary};
+    transform: translateX(5px);
+  }
 
   .icon {
     color: ${theme.colors.success};
-    font-size: 0.8rem;
-  }
-`;
-
-const GallerySection = styled.div`
-  margin: ${theme.spacing.xxl} 0;
-`;
-
-const GalleryGrid = styled.div`
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr;
-  grid-template-rows: 300px 300px;
-  gap: ${theme.spacing.md};
-  border-radius: ${theme.borderRadius.xl};
-  overflow: hidden;
-
-  @media (max-width: ${theme.breakpoints.tablet}) {
-    grid-template-columns: 1fr;
-    grid-template-rows: repeat(5, 200px);
+    font-size: 1.1rem;
+    flex-shrink: 0;
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    grid-template-columns: 1fr;
-    grid-template-rows: repeat(5, 250px);
-    gap: ${theme.spacing.sm};
-    border-radius: ${theme.borderRadius.lg};
+    padding: ${theme.spacing.md} 0;
+    font-size: 1.1rem;
+    font-weight: 500;
   }
 `;
 
-const GalleryItem = styled.div.withConfig({
-  shouldForwardProp: prop => !['image', 'span'].includes(prop),
-})`
-  background-image: url(${props => props.image});
-  background-size: cover;
-  background-position: center;
+const ReviewsSection = styled.div`
+  margin: calc(${theme.spacing.xxl} * 1.5) 0;
+`;
+
+const ReviewsGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: calc(${theme.spacing.xl} * 1.5);
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    grid-template-columns: 1fr;
+    gap: calc(${theme.spacing.lg} * 1.3);
+  }
+`;
+
+const ReviewCard = styled.div`
+  background: ${theme.colors.white};
+  padding: ${theme.spacing.xl};
+  border-radius: ${theme.borderRadius.xl};
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
   position: relative;
-  cursor: pointer;
-  transition: transform 0.3s ease;
-  ${props => props.span && `grid-row: span ${props.span};`}
+  transition: all 0.3s ease;
+  border-left: 4px solid ${theme.colors.primary};
 
   &:hover {
-    transform: scale(1.02);
+    transform: translateY(-5px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
   }
 
-  &::before {
-    content: '';
+  .quote-icon {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.1);
-    transition: background 0.3s ease;
-  }
-
-  &:hover::before {
-    background: rgba(0, 0, 0, 0.3);
-  }
-
-  &:first-child {
-    grid-row: span 2;
+    top: ${theme.spacing.lg};
+    right: ${theme.spacing.lg};
+    font-size: 2rem;
+    color: ${theme.colors.primary}30;
   }
 `;
 
-const GalleryOverlay = styled.div`
-  position: absolute;
-  bottom: ${theme.spacing.md};
-  left: ${theme.spacing.md};
-  color: ${theme.colors.white};
-  font-weight: 500;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
-`;
-
-const TestimonialsSection = styled.div`
-  background: linear-gradient(
-    135deg,
-    ${theme.colors.primary},
-    ${theme.colors.primaryDark}
-  );
-  border-radius: ${theme.borderRadius.xl};
-  padding: ${theme.spacing.xxl};
-  color: ${theme.colors.white};
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><pattern id="testimonial-pattern" width="100" height="100" patternUnits="userSpaceOnUse"><circle fill="%23ffffff05" cx="50" cy="50" r="25"/></pattern></defs><rect width="100%" height="100%" fill="url(%23testimonial-pattern)"/></svg>');
-  }
-
-  @media (max-width: ${theme.breakpoints.mobile}) {
-    padding: ${theme.spacing.xl};
-    border-radius: ${theme.borderRadius.lg};
-    margin: 0 -${theme.spacing.sm};
-  }
-`;
-
-const TestimonialCard = styled.div`
-  max-width: 800px;
-  margin: 0 auto;
-`;
-
-const TestimonialQuote = styled.blockquote`
-  font-size: 1.3rem;
+const ReviewText = styled.p`
+  font-size: 1.1rem;
   line-height: 1.7;
-  margin: ${theme.spacing.xl} 0;
+  color: ${theme.colors.gray700};
+  margin-bottom: ${theme.spacing.lg};
   font-style: italic;
-  position: relative;
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: -20px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 3rem;
-    color: rgba(255, 255, 255, 0.3);
-  }
-
-  @media (max-width: ${theme.breakpoints.mobile}) {
-    font-size: 1.4rem;
-    line-height: 1.8;
-    margin: ${theme.spacing.lg} 0;
-    padding: 0 ${theme.spacing.sm};
-  }
 `;
 
-const TestimonialAuthor = styled.div`
+const ReviewAuthor = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: ${theme.spacing.md};
-  margin-top: ${theme.spacing.lg};
 
   .avatar {
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.2);
+    background: linear-gradient(
+      135deg,
+      ${theme.colors.primary},
+      ${theme.colors.accent}
+    );
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.5rem;
+    color: ${theme.colors.white};
+    font-weight: 700;
+    font-size: 1.2rem;
   }
 
   .info {
-    text-align: left;
-
     .name {
-      font-weight: 600;
+      font-weight: 700;
+      color: ${theme.colors.gray900};
+      margin-bottom: 2px;
+    }
+
+    .location {
+      color: ${theme.colors.gray600};
+      font-size: 0.9rem;
+    }
+  }
+
+  .rating {
+    margin-left: auto;
+    display: flex;
+    gap: 2px;
+
+    .star {
+      color: #fbbf24;
       font-size: 1.1rem;
     }
-    .details {
-      font-size: 0.9rem;
-      opacity: 0.8;
-    }
   }
 `;
 
-const LocationSection = styled.div`
-  background: ${theme.colors.white};
-  border-radius: ${theme.borderRadius.xl};
-  padding: ${theme.spacing.xxl};
-  box-shadow: ${theme.shadows.lg};
+const ContactSection = styled.div`
+  background: linear-gradient(
+    135deg,
+    ${theme.colors.primary} 0%,
+    ${theme.colors.primaryDark} 100%
+  );
+  color: ${theme.colors.white};
+  border-radius: ${theme.borderRadius.xxl};
+  padding: calc(${theme.spacing.xxl} * 1.5);
+  margin: calc(${theme.spacing.xxl} * 1.5) 0;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="1" fill="white" opacity="0.1"/><circle cx="10" cy="90" r="1" fill="white" opacity="0.1"/><circle cx="90" cy="40" r="1" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+    opacity: 0.3;
+  }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    padding: ${theme.spacing.xl};
-    border-radius: ${theme.borderRadius.lg};
-    margin: 0 -${theme.spacing.sm};
+    padding: calc(${theme.spacing.xl} * 1.3);
+    border-radius: ${theme.borderRadius.xl};
+    margin: calc(${theme.spacing.xl} * 1.3) -${theme.spacing.sm};
   }
 `;
 
-const LocationGrid = styled.div`
+const ContactGrid = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: ${theme.spacing.xxl};
-
-  @media (max-width: ${theme.breakpoints.tablet}) {
-    grid-template-columns: 1fr;
-    gap: ${theme.spacing.xl};
-  }
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: calc(${theme.spacing.xl} * 1.5);
+  position: relative;
+  z-index: 1;
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    gap: ${theme.spacing.xxl};
-  }
-`;
-
-const ContactInfo = styled.div`
-  h4 {
-    font-size: 1.3rem;
-    font-weight: 600;
-    color: ${theme.colors.gray900};
-    margin-bottom: ${theme.spacing.lg};
+    grid-template-columns: 1fr;
+    gap: calc(${theme.spacing.lg} * 1.3);
   }
 `;
 
 const ContactItem = styled.div`
   display: flex;
   align-items: center;
-  gap: ${theme.spacing.md};
-  padding: ${theme.spacing.md} 0;
-  border-bottom: 1px solid ${theme.colors.gray100};
+  gap: ${theme.spacing.lg};
+  padding: ${theme.spacing.lg};
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: ${theme.borderRadius.lg};
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
 
-  &:last-child {
-    border-bottom: none;
+  &:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-5px);
   }
 
   .icon {
-    color: ${theme.colors.primary};
-    font-size: 1.1rem;
-    width: 20px;
+    font-size: 2rem;
+    color: ${theme.colors.white};
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
   }
 
-  .content {
+  .info {
     .label {
       font-size: 0.9rem;
-      color: ${theme.colors.gray500};
-      margin-bottom: 2px;
+      opacity: 0.9;
+      margin-bottom: 4px;
     }
+
     .value {
-      font-weight: 500;
-      color: ${theme.colors.gray900};
+      font-size: 1.1rem;
+      font-weight: 600;
     }
   }
+`;
 
-  @media (max-width: ${theme.breakpoints.mobile}) {
-    padding: ${theme.spacing.lg} 0;
+// Custom Hook for Intersection Observer
+const useIntersectionObserver = (options = {}) => {
+  const [isIntersecting, setIsIntersecting] = useState(false);
+  const ref = useRef(null);
 
-    .icon {
-      font-size: 1.3rem;
-      width: 24px;
+  useEffect(() => {
+    const observer = new IntersectionObserver(([entry]) => {
+      setIsIntersecting(entry.isIntersecting);
+    }, options);
+
+    if (ref.current) {
+      observer.observe(ref.current);
     }
 
-    .content {
-      .label {
-        font-size: 1rem;
-        margin-bottom: 4px;
+    return () => {
+      if (ref.current) {
+        observer.unobserve(ref.current);
       }
-      .value {
-        font-size: 1.1rem;
-        font-weight: 600;
-      }
-    }
-  }
-`;
+    };
+  }, [options]);
 
-const MapPlaceholder = styled.div`
-  background: linear-gradient(
-    135deg,
-    ${theme.colors.gray100},
-    ${theme.colors.gray200}
-  );
-  border-radius: ${theme.borderRadius.lg};
-  height: 300px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: ${theme.colors.gray500};
-  font-size: 1.1rem;
-  text-align: center;
-  border: 1px solid ${theme.colors.gray200};
+  return [ref, isIntersecting];
+};
 
-  @media (max-width: ${theme.breakpoints.mobile}) {
-    height: 250px;
-    font-size: 1rem;
-  }
-`;
-
-const BackToTop = styled.button`
-  position: fixed;
-  bottom: ${theme.spacing.xl};
-  right: ${theme.spacing.xl};
-  background: ${theme.colors.primary};
-  color: ${theme.colors.white};
-  border: none;
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  cursor: pointer;
-  box-shadow: ${theme.shadows.lg};
-  transition: all 0.3s ease;
-  z-index: 50;
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: ${theme.shadows.xl};
-  }
-
-  @media (max-width: ${theme.breakpoints.mobile}) {
-    bottom: ${theme.spacing.lg};
-    right: ${theme.spacing.lg};
-  }
-`;
+// Icon Components
+const iconComponents = {
+  FaConciergeBell,
+  FaMapMarkerAlt,
+  FaUtensils,
+  FaSpa,
+  FaSwimmingPool,
+  FaWifi,
+  FaParking,
+  FaDumbbell,
+  FaBusinessTime,
+  FaUmbrellaBeach,
+  FaTaxi,
+  FaClock,
+  FaPhone,
+  FaEnvelope,
+};
 
 const HotelDetail = () => {
-  const { hotelSlug, slug } = useParams();
-  const slugParam = hotelSlug || slug;
+  const { slug } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [hotel, setHotel] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Get hotels from Redux store (includes any admin updates)
-  const hotelsFromStore = useSelector(state => {
-    console.log('Full Redux state:', state);
-    console.log('hotelManagement state:', state.hotelManagement);
-    console.log('liveHotels:', state.hotelManagement?.liveHotels);
-    return state.hotelManagement?.liveHotels || [];
+  // Animation refs
+  const [heroRef, heroInView] = useIntersectionObserver({ threshold: 0.1 });
+  const [aboutRef, aboutInView] = useIntersectionObserver({ threshold: 0.2 });
+  const [featuresRef, featuresInView] = useIntersectionObserver({
+    threshold: 0.1,
   });
+  const [galleryRef, galleryInView] = useIntersectionObserver({
+    threshold: 0.1,
+  });
+  const [amenitiesRef, amenitiesInView] = useIntersectionObserver({
+    threshold: 0.1,
+  });
+  const [reviewsRef, reviewsInView] = useIntersectionObserver({
+    threshold: 0.1,
+  });
+  const [contactRef, contactInView] = useIntersectionObserver({
+    threshold: 0.1,
+  });
+
+  // Get updated hotel data from Redux if available
+  const hotels = useSelector(state => state.hotelManagement?.liveHotels || []);
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        let foundHotel;
+        // First check if we have updated hotel data in Redux state
+        const updatedHotel = hotels.find(h => h.slug === slug);
 
-        // Try to get hotel from Redux store first (for updated data)
-        if (hotelsFromStore && hotelsFromStore.length > 0) {
-          foundHotel = hotelsFromStore.find(
-            h => h.slug === slugParam || h.id === parseInt(slugParam)
-          );
-          console.log('Found hotel in Redux:', foundHotel?.name);
-        }
-
-        // If not found in Redux, fetch from hotels.json and dispatch to Redux
-        if (!foundHotel) {
-          console.log('Hotel not found in Redux, loading from JSON...');
-          const hotelData = hotelJsonData.data.hotel;
-
-          // Check if this is the hotel we're looking for
-          if (
-            hotelData.slug === slugParam ||
-            hotelData.id === parseInt(slugParam)
-          ) {
-            foundHotel = hotelData;
-
-            // Dispatch to Redux to store the hotel data
-            console.log('Dispatching hotel data to Redux:', hotelData.name);
-            dispatch(loadHotelData(hotelData));
+        if (updatedHotel) {
+          // Use updated hotel data from Redux (includes admin changes)
+          setHotel(updatedHotel);
+        } else {
+          // Fetch from API
+          const response = await fetchHotelById(slug);
+          if (response.success) {
+            setHotel(response.data);
+          } else {
+            // Fallback to static data
+            const staticHotel = hotelJsonData.data.hotel;
+            if (staticHotel && staticHotel.slug === slug) {
+              setHotel(staticHotel);
+            } else {
+              setError('Hotel not found');
+            }
           }
         }
-
-        if (foundHotel) {
-          console.log(
-            'Setting hotel:',
-            foundHotel.name,
-            'Sections:',
-            Object.keys(foundHotel.sections || {})
-          );
-        }
-        setHotel(foundHotel);
       } catch (error) {
         console.error('Error fetching hotel data:', error);
-        setHotel(null);
+        setError('Failed to load hotel data');
       } finally {
         setLoading(false);
       }
     };
 
     fetchData();
-  }, [slugParam, hotelsFromStore, dispatch]);
+  }, [slug, hotels]);
 
-  // Re-render when Redux store updates (for live preview)
-  useEffect(() => {
-    console.log('Redux state changed, checking for hotel updates...');
-    if (hotelsFromStore && hotelsFromStore.length > 0) {
-      const updatedHotel = hotelsFromStore.find(
-        h => h.slug === slugParam || h.id === parseInt(slugParam)
-      );
-      if (updatedHotel) {
-        console.log(
-          'Found updated hotel in Redux, updating display:',
-          updatedHotel.name
-        );
-        console.log(
-          'Updated hotel sections:',
-          Object.keys(updatedHotel.sections || {})
-        );
-        setHotel(updatedHotel);
-      }
+  const scrollToNextSection = () => {
+    const nextSection = document.querySelector('[data-section="about"]');
+    if (nextSection) {
+      nextSection.scrollIntoView({ behavior: 'smooth' });
     }
-  }, [hotelsFromStore, slugParam]);
+  };
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  const handleBookRoom = () => {
+    navigate(`/${hotel.slug}/rooms`);
   };
 
   if (loading) {
     return (
       <PageContainer>
         <HotelNavbar />
-        <div style={{ padding: '4rem', textAlign: 'center' }}>
-          <h2>Loading...</h2>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100vh',
+            fontSize: '1.2rem',
+            color: theme.colors.gray600,
+          }}
+        >
+          Loading...
         </div>
         <HotelFooter />
       </PageContainer>
     );
   }
 
-  if (!hotel) {
+  if (error || !hotel) {
     return (
       <PageContainer>
         <HotelNavbar />
-        <div style={{ padding: '4rem', textAlign: 'center' }}>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100vh',
+            gap: '20px',
+          }}
+        >
           <h2>Hotel not found</h2>
-          <p>The hotel you're looking for doesn't exist.</p>
+          <p>
+            The hotel you're looking for doesn't exist or couldn't be loaded.
+          </p>
         </div>
         <HotelFooter />
       </PageContainer>
     );
   }
 
-  // Get features from hotel sections data
-  const features = hotel.sections?.features?.items || [];
-
-  // Get amenity categories from hotel sections data
-  const amenityCategories = hotel.sections?.amenities?.categories || [];
-
-  // Get the appropriate icon for categories (fallback icons)
-  const getCategoryIcon = title => {
-    const iconMap = {
-      Recreation: FaSwimmingPool,
-      Dining: FaUtensils,
-      Business: FaBusinessTime,
-      Services: FaConciergeBell,
-    };
-    return iconMap[title] || FaConciergeBell;
-  };
+  const heroSection = hotel.sections?.hero || {};
+  const aboutSection = hotel.sections?.about || {};
+  const featuresSection = hotel.sections?.features || {};
+  const gallerySection = hotel.sections?.gallery || {};
+  const amenitiesSection = hotel.sections?.amenities || {};
+  const reviewsSection = hotel.sections?.testimonials || {};
+  const contactSection = hotel.sections?.contact || {};
 
   return (
     <PageContainer>
       <HotelNavbar />
 
-      <HeroBanner image={hotel.sections?.hero?.backgroundImage || hotel.image}>
+      {/* Hero Section */}
+      <HeroBanner
+        ref={heroRef}
+        image={heroSection.backgroundImage || hotel.image}
+      >
         <HeroContent>
-          <HeroTitle>{hotel.sections?.hero?.title || hotel.name}</HeroTitle>
+          <HeroTitle>{heroSection.title || hotel.name}</HeroTitle>
+
           <HeroSubtitle>
-            {hotel.sections?.hero?.subtitle ||
+            {heroSection.subtitle ||
               `Experience luxury hospitality in the heart of ${hotel.city}`}
           </HeroSubtitle>
+
+          <MobileQuickInfoContainer>
+            {heroSection.quickInfo?.map((info, index) => {
+              const IconComponent = iconComponents[info.icon] || FaStar;
+              return (
+                <QuickInfoCard key={index}>
+                  <QuickInfoIcon>
+                    <IconComponent />
+                  </QuickInfoIcon>
+                  <QuickInfoText>
+                    <div className="label">{info.label}</div>
+                    <div className="value">{info.value}</div>
+                  </QuickInfoText>
+                </QuickInfoCard>
+              );
+            })}
+          </MobileQuickInfoContainer>
+
           <HeroActions>
-            <MobileQuickInfoContainer>
-              {hotel.sections?.hero?.quickInfo?.map((info, index) => {
-                const IconComponent =
-                  info.icon === 'FaStar' ? FaStar : FaMapMarkerAlt;
-                return (
-                  <QuickInfoCard key={index}>
-                    <QuickInfoIcon>
-                      <IconComponent />
-                    </QuickInfoIcon>
-                    <QuickInfoText>
-                      <div className="label">{info.label}</div>
-                      <div className="value">{info.value}</div>
-                    </QuickInfoText>
-                  </QuickInfoCard>
-                );
-              }) || (
-                <>
-                  <QuickInfoCard>
-                    <QuickInfoIcon>
-                      <FaStar />
-                    </QuickInfoIcon>
-                    <QuickInfoText>
-                      <div className="label">Rating</div>
-                      <div className="value">{hotel.rating}/5</div>
-                    </QuickInfoText>
-                  </QuickInfoCard>
-                  <QuickInfoCard>
-                    <QuickInfoIcon>
-                      <FaMapMarkerAlt />
-                    </QuickInfoIcon>
-                    <QuickInfoText>
-                      <div className="label">Location</div>
-                      <div className="value">{hotel.city}</div>
-                    </QuickInfoText>
-                  </QuickInfoCard>
-                </>
-              )}
-            </MobileQuickInfoContainer>
-            <CTAButton onClick={() => navigate(`/${slug}/rooms`)}>
-              {hotel.sections?.hero?.ctaText || 'Book Your Stay'}
+            <CTAButton onClick={handleBookRoom}>
+              {heroSection.ctaText || 'Book Your room'}
             </CTAButton>
           </HeroActions>
         </HeroContent>
+
+        <ScrollIndicator onClick={scrollToNextSection}>
+          <div className="scroll-text">Scroll to explore</div>
+          <div className="scroll-arrow">
+            <FaChevronRight style={{ transform: 'rotate(90deg)' }} />
+          </div>
+        </ScrollIndicator>
       </HeroBanner>
 
-      {/* Render sections in custom order - only if visible */}
-      {(
-        hotel.sectionOrder || [
-          'about',
-          'features',
-          'gallery',
-          'amenities',
-          'testimonials',
-          'contact',
-        ]
-      )
-        .filter(sectionId => {
-          // Check if section is visible and exists
-          const sectionVisibility = hotel.sectionVisibility || {};
-          return (
-            sectionVisibility[sectionId] !== false &&
-            hotel.sections?.[sectionId]
-          );
-        })
-        .map((sectionId, index) => {
-          const isAlt = index % 2 === 1; // Alternate background colors
+      {/* About Section */}
+      <ContentSection data-section="about">
+        <Container>
+          <AnimatedSection ref={aboutRef} inView={aboutInView}>
+            <SectionHeader>
+              <SectionTitle>
+                {aboutSection.title || `About ${hotel.name}`}
+              </SectionTitle>
+              <SectionSubtitle>
+                {aboutSection.subtitle ||
+                  'A legacy of legendary hospitality and royal elegance'}
+              </SectionSubtitle>
+            </SectionHeader>
 
-          switch (sectionId) {
-            case 'about':
-              return (
-                <ContentSection key={sectionId} className={isAlt ? 'alt' : ''}>
-                  <Container>
-                    <SectionHeader>
-                      <SectionTitle>{hotel.sections.about.title}</SectionTitle>
-                      <SectionSubtitle>
-                        {hotel.sections.about.subtitle}
-                      </SectionSubtitle>
-                    </SectionHeader>
-                    <Description
+            <Description>
+              {aboutSection.content || hotel.description}
+            </Description>
+
+            {aboutSection.highlights && (
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+                  gap: theme.spacing.lg,
+                  marginTop: theme.spacing.xl,
+                }}
+              >
+                {aboutSection.highlights.map((highlight, index) => (
+                  <AnimatedSection
+                    key={index}
+                    inView={aboutInView}
+                    delay={`${index * 0.1}s`}
+                  >
+                    <div
                       style={{
-                        fontSize: '1.1rem',
-                        lineHeight: '1.8',
-                        textAlign: 'center',
-                        maxWidth: '800px',
-                        margin: '0 auto',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: theme.spacing.md,
+                        padding: theme.spacing.lg,
+                        background: theme.colors.gray50,
+                        borderRadius: theme.borderRadius.lg,
+                        border: `1px solid ${theme.colors.gray200}`,
+                        transition: 'all 0.3s ease',
+                      }}
+                      onMouseEnter={e => {
+                        e.target.style.transform = 'translateY(-5px)';
+                        e.target.style.boxShadow =
+                          '0 10px 30px rgba(0, 0, 0, 0.1)';
+                      }}
+                      onMouseLeave={e => {
+                        e.target.style.transform = 'translateY(0)';
+                        e.target.style.boxShadow = 'none';
                       }}
                     >
-                      {hotel.sections.about.content}
-                    </Description>
-                    {hotel.sections.about.highlights && (
-                      <div style={{ marginTop: '2rem', textAlign: 'center' }}>
-                        <ul
-                          style={{
-                            listStyle: 'none',
-                            padding: 0,
-                            maxWidth: '600px',
-                            margin: '0 auto',
-                          }}
-                        >
-                          {hotel.sections.about.highlights.map(
-                            (highlight, index) => (
-                              <li
-                                key={index}
-                                style={{
-                                  padding: '0.5rem 0',
-                                  color: theme.colors.gray700,
-                                }}
-                              >
-                                <FaCheckCircle
-                                  style={{
-                                    color: theme.colors.success,
-                                    marginRight: '0.5rem',
-                                  }}
-                                />
-                                {highlight}
-                              </li>
-                            )
-                          )}
-                        </ul>
-                      </div>
-                    )}
-                  </Container>
-                </ContentSection>
-              );
+                      <FaCheckCircle
+                        style={{
+                          color: theme.colors.success,
+                          fontSize: '1.2rem',
+                        }}
+                      />
+                      <span
+                        style={{
+                          fontSize: '1.1rem',
+                          color: theme.colors.gray700,
+                        }}
+                      >
+                        {highlight}
+                      </span>
+                    </div>
+                  </AnimatedSection>
+                ))}
+              </div>
+            )}
+          </AnimatedSection>
+        </Container>
+      </ContentSection>
 
-            case 'features':
-              return (
-                <ContentSection key={sectionId} className={isAlt ? 'alt' : ''}>
-                  <Container>
-                    <SectionHeader>
-                      <SectionTitle>
-                        {hotel.sections.features.title}
-                      </SectionTitle>
-                      <SectionSubtitle>
-                        {hotel.sections.features.subtitle}
-                      </SectionSubtitle>
-                    </SectionHeader>
-                    <FeaturesGrid>
-                      {features.map((feature, index) => {
-                        // Map icon names to components
-                        const getIconComponent = iconName => {
-                          const iconMap = {
-                            FaConciergeBell: FaConciergeBell,
-                            FaUmbrellaBeach: FaUmbrellaBeach,
-                            FaBusinessTime: FaBusinessTime,
-                            FaTaxi: FaTaxi,
-                            FaMountain: FaBusinessTime, // Fallback
-                            FaHiking: FaBusinessTime, // Fallback
-                            FaLeaf: FaBusinessTime, // Fallback
-                            FaFire: FaBusinessTime, // Fallback
-                            FaCrown: FaConciergeBell, // Fallback
-                            FaMusic: FaConciergeBell, // Fallback
-                            FaGem: FaConciergeBell, // Fallback
-                            FaCamera: FaConciergeBell, // Fallback
-                            FaSpa: FaConciergeBell, // Fallback
-                          };
-                          return iconMap[iconName] || FaConciergeBell;
-                        };
+      {/* Features Section */}
+      <ContentSection alt>
+        <Container>
+          <AnimatedSection ref={featuresRef} inView={featuresInView}>
+            <SectionHeader>
+              <SectionTitle>
+                {featuresSection.title || `Why Choose ${hotel.name}?`}
+              </SectionTitle>
+              <SectionSubtitle>
+                {featuresSection.subtitle ||
+                  'Experience the legendary hospitality and world-class amenities'}
+              </SectionSubtitle>
+            </SectionHeader>
 
-                        const IconComponent = getIconComponent(feature.icon);
-
-                        return (
-                          <FeatureCard key={index}>
-                            <FeatureIcon>
-                              <IconComponent />
-                            </FeatureIcon>
-                            <FeatureTitle>{feature.title}</FeatureTitle>
-                            <FeatureDescription>
-                              {feature.description}
-                            </FeatureDescription>
-                          </FeatureCard>
-                        );
-                      })}
-                    </FeaturesGrid>
-                  </Container>
-                </ContentSection>
-              );
-
-            case 'gallery':
-              return (
-                <ContentSection key={sectionId} className={isAlt ? 'alt' : ''}>
-                  <Container>
-                    <SectionHeader>
-                      <SectionTitle>
-                        {hotel.sections.gallery.title}
-                      </SectionTitle>
-                      <SectionSubtitle>
-                        {hotel.sections.gallery.subtitle}
-                      </SectionSubtitle>
-                    </SectionHeader>
-                    <GallerySection>
-                      <GalleryGrid>
-                        {hotel.sections.gallery.images
-                          .slice(0, 5)
-                          .map((item, index) => (
-                            <GalleryItem key={index} image={item.image}>
-                              <GalleryOverlay>{item.title}</GalleryOverlay>
-                            </GalleryItem>
-                          ))}
-                      </GalleryGrid>
-                    </GallerySection>
-                  </Container>
-                </ContentSection>
-              );
-
-            case 'amenities':
-              return (
-                <ContentSection key={sectionId} className={isAlt ? 'alt' : ''}>
-                  <Container>
-                    <SectionHeader>
-                      <SectionTitle>
-                        {hotel.sections.amenities.title}
-                      </SectionTitle>
-                      <SectionSubtitle>
-                        {hotel.sections.amenities.subtitle}
-                      </SectionSubtitle>
-                    </SectionHeader>
-                    <AmenitiesSection>
-                      <AmenitiesGrid>
-                        {amenityCategories.map((category, index) => {
-                          const CategoryIcon = getCategoryIcon(category.title);
-                          return (
-                            <AmenityCategory key={index}>
-                              <h4>
-                                <CategoryIcon />
-                                {category.title}
-                              </h4>
-                              <AmenityList>
-                                {category.items.map((item, itemIndex) => (
-                                  <AmenityItem key={itemIndex}>
-                                    <FaCheckCircle className="icon" />
-                                    {item}
-                                  </AmenityItem>
-                                ))}
-                              </AmenityList>
-                            </AmenityCategory>
-                          );
-                        })}
-                      </AmenitiesGrid>
-                    </AmenitiesSection>
-                  </Container>
-                </ContentSection>
-              );
-
-            case 'testimonials':
-              return (
-                <ContentSection key={sectionId} className={isAlt ? 'alt' : ''}>
-                  <Container>
-                    <TestimonialsSection>
-                      <SectionHeader>
-                        <SectionTitle style={{ color: 'white' }}>
-                          {hotel.sections?.testimonials?.title ||
-                            'Guest Reviews'}
-                        </SectionTitle>
-                        <SectionSubtitle
-                          style={{ color: 'rgba(255,255,255,0.8)' }}
-                        >
-                          {hotel.sections?.testimonials?.subtitle ||
-                            'Hear what our valued guests have to say about their experience'}
-                        </SectionSubtitle>
-                      </SectionHeader>
-                      {hotel.sections?.testimonials?.reviews &&
-                      hotel.sections.testimonials.reviews.length > 0 ? (
-                        <div
-                          style={{
-                            display: 'grid',
-                            gridTemplateColumns:
-                              'repeat(auto-fit, minmax(350px, 1fr))',
-                            gap: theme.spacing.xl,
-                            marginBottom: theme.spacing.xl,
-                          }}
-                        >
-                          {hotel.sections.testimonials.reviews
-                            .slice(0, 3)
-                            .map(review => (
-                              <TestimonialCard key={review.id}>
-                                <TestimonialQuote>
-                                  "{review.comment}"
-                                </TestimonialQuote>
-                                <TestimonialAuthor>
-                                  <div className="avatar">
-                                    {review.guestName.charAt(0)}
-                                  </div>
-                                  <div className="info">
-                                    <div className="name">
-                                      {review.guestName}
-                                      {review.verified && (
-                                        <span
-                                          style={{
-                                            color: '#fbbf24',
-                                            fontSize: '0.8rem',
-                                            marginLeft: theme.spacing.sm,
-                                          }}
-                                        >
-                                          ✓ Verified Stay
-                                        </span>
-                                      )}
-                                    </div>
-                                    <div className="details">
-                                      {review.roomType} •{' '}
-                                      {new Date(review.date).toLocaleDateString(
-                                        'en-US',
-                                        {
-                                          year: 'numeric',
-                                          month: 'short',
-                                        }
-                                      )}{' '}
-                                      • {review.rating}/5 ⭐
-                                    </div>
-                                  </div>
-                                </TestimonialAuthor>
-                              </TestimonialCard>
-                            ))}
-                        </div>
-                      ) : (
-                        <TestimonialCard>
-                          <TestimonialQuote>
-                            "Absolutely exceptional service and stunning
-                            accommodations. The staff went above and beyond to
-                            make our anniversary celebration truly memorable.
-                            The attention to detail and luxury amenities
-                            exceeded all our expectations."
-                          </TestimonialQuote>
-                          <TestimonialAuthor>
-                            <div className="avatar">RS</div>
-                            <div className="info">
-                              <div className="name">Raj & Priya Sharma</div>
-                              <div className="details">
-                                Anniversary Celebration • Mumbai
-                              </div>
-                            </div>
-                          </TestimonialAuthor>
-                        </TestimonialCard>
-                      )}
-                    </TestimonialsSection>
-                  </Container>
-                </ContentSection>
-              );
-
-            case 'contact':
-              return (
-                <ContentSection key={sectionId} className={isAlt ? 'alt' : ''}>
-                  <Container>
-                    <SectionHeader>
-                      <SectionTitle>
-                        {hotel.sections.contact.title}
-                      </SectionTitle>
-                      <SectionSubtitle>
-                        {hotel.sections.contact.subtitle}
-                      </SectionSubtitle>
-                    </SectionHeader>
-                    <LocationSection>
-                      <LocationGrid>
-                        <ContactInfo>
-                          <h4>Get in Touch</h4>
-                          {hotel.sections.contact.info.map((field, index) => {
-                            const getIcon = iconName => {
-                              const iconMap = {
-                                FaMapMarkerAlt: FaMapMarkerAlt,
-                                FaPhone: FaPhone,
-                                FaEnvelope: FaEnvelope,
-                                FaClock: FaClock,
-                              };
-                              return iconMap[iconName] || FaMapMarkerAlt;
-                            };
-                            const IconComponent = getIcon(field.icon);
-
-                            return (
-                              <ContactItem key={index}>
-                                <IconComponent className="icon" />
-                                <div className="content">
-                                  <div className="label">{field.label}</div>
-                                  <div className="value">{field.value}</div>
-                                </div>
-                              </ContactItem>
-                            );
-                          })}
-                        </ContactInfo>
-                        <MapPlaceholder>
-                          <div>
-                            <FaMapMarkerAlt
-                              style={{ fontSize: '2rem', marginBottom: '1rem' }}
-                            />
-                            <div>Interactive Map View</div>
-                            <div
-                              style={{
-                                fontSize: '0.9rem',
-                                opacity: 0.7,
-                                marginTop: '0.5rem',
-                              }}
-                            >
-                              Prime location in {hotel.city}
-                            </div>
-                          </div>
-                        </MapPlaceholder>
-                      </LocationGrid>
-                    </LocationSection>
-                  </Container>
-                </ContentSection>
-              );
-
-            case 'footer':
-              // Footer is handled separately at the bottom of the page
-              return null;
-
-            default:
-              // Handle custom sections
-              const customSection = hotel.customSections?.find(
-                cs => cs.id === sectionId
-              );
-              if (customSection && customSection.isVisible) {
+            <FeaturesGrid>
+              {(featuresSection.items || []).map((feature, index) => {
+                const IconComponent =
+                  iconComponents[feature.icon] || FaConciergeBell;
                 return (
-                  <ContentSection
-                    key={sectionId}
-                    className={isAlt ? 'alt' : ''}
+                  <AnimatedSection
+                    key={index}
+                    inView={featuresInView}
+                    delay={`${index * 0.2}s`}
                   >
-                    <Container>
-                      <SectionHeader>
-                        <SectionTitle>{customSection.title}</SectionTitle>
-                      </SectionHeader>
-                      {customSection.type === 'text' && (
-                        <div>
-                          {customSection.content?.map((item, idx) => (
-                            <Description
-                              key={idx}
-                              style={{
-                                textAlign: 'center',
-                                maxWidth: '800px',
-                                margin: '0 auto',
-                              }}
-                            >
-                              {item.content}
-                            </Description>
-                          ))}
-                        </div>
-                      )}
-                      {customSection.type === 'cards' && (
-                        <FeaturesGrid>
-                          {customSection.content?.map((card, idx) => (
-                            <FeatureCard key={idx}>
-                              {card.image && (
-                                <img
-                                  src={card.image}
-                                  alt={card.title}
-                                  style={{
-                                    width: '100%',
-                                    height: '200px',
-                                    objectFit: 'cover',
-                                    borderRadius: '8px',
-                                    marginBottom: '1rem',
-                                  }}
-                                />
-                              )}
-                              <FeatureTitle>{card.title}</FeatureTitle>
-                              <FeatureDescription>
-                                {card.description}
-                              </FeatureDescription>
-                              {card.link && (
-                                <a
-                                  href={card.link}
-                                  style={{
-                                    color: theme.colors.primary,
-                                    textDecoration: 'none',
-                                    fontWeight: '600',
-                                    marginTop: '1rem',
-                                    display: 'inline-block',
-                                  }}
-                                >
-                                  Learn More →
-                                </a>
-                              )}
-                            </FeatureCard>
-                          ))}
-                        </FeaturesGrid>
-                      )}
-                      {customSection.type === 'gallery' && (
-                        <GallerySection>
-                          <GalleryGrid>
-                            {customSection.content
-                              ?.slice(0, 5)
-                              .map((item, idx) => (
-                                <GalleryItem key={idx} image={item.image}>
-                                  <GalleryOverlay>{item.title}</GalleryOverlay>
-                                </GalleryItem>
-                              ))}
-                          </GalleryGrid>
-                        </GallerySection>
-                      )}
-                      {customSection.type === 'list' && (
-                        <AmenityList
-                          style={{ maxWidth: '600px', margin: '0 auto' }}
-                        >
-                          {customSection.content?.map((item, idx) => (
-                            <AmenityItem key={idx}>
-                              <FaCheckCircle className="icon" />
-                              {item.text}
-                            </AmenityItem>
-                          ))}
-                        </AmenityList>
-                      )}
-                    </Container>
-                  </ContentSection>
+                    <FeatureCard>
+                      <FeatureIcon>
+                        <IconComponent />
+                      </FeatureIcon>
+                      <FeatureTitle>{feature.title}</FeatureTitle>
+                      <FeatureDescription>
+                        {feature.description}
+                      </FeatureDescription>
+                    </FeatureCard>
+                  </AnimatedSection>
                 );
-              }
-              return null;
-          }
-        })}
+              })}
+            </FeaturesGrid>
+          </AnimatedSection>
+        </Container>
+      </ContentSection>
 
-      <BackToTop onClick={scrollToTop}>↑</BackToTop>
+      {/* Gallery Section */}
+      {gallerySection.images && gallerySection.images.length > 0 && (
+        <ContentSection>
+          <Container>
+            <AnimatedSection ref={galleryRef} inView={galleryInView}>
+              <SectionHeader>
+                <SectionTitle>
+                  {gallerySection.title || `${hotel.name} Gallery`}
+                </SectionTitle>
+                <SectionSubtitle>
+                  {gallerySection.subtitle ||
+                    'Witness the grandeur and elegance'}
+                </SectionSubtitle>
+              </SectionHeader>
+
+              <GallerySection>
+                <GalleryGrid>
+                  {gallerySection.images.map((item, index) => (
+                    <AnimatedSection
+                      key={index}
+                      inView={galleryInView}
+                      delay={`${index * 0.1}s`}
+                    >
+                      <GalleryItem>
+                        <img src={item.image} alt={item.title} />
+                      </GalleryItem>
+                    </AnimatedSection>
+                  ))}
+                </GalleryGrid>
+              </GallerySection>
+            </AnimatedSection>
+          </Container>
+        </ContentSection>
+      )}
+
+      {/* Amenities Section */}
+      <ContentSection alt>
+        <Container>
+          <AnimatedSection ref={amenitiesRef} inView={amenitiesInView}>
+            <SectionHeader>
+              <SectionTitle>World-Class Amenities</SectionTitle>
+              <SectionSubtitle>
+                Indulge in luxury with our comprehensive range of premium
+                amenities
+              </SectionSubtitle>
+            </SectionHeader>
+
+            <AmenitiesSection>
+              <AmenitiesGrid>
+                {(amenitiesSection.categories || []).map((category, index) => (
+                  <AnimatedSection
+                    key={index}
+                    inView={amenitiesInView}
+                    delay={`${index * 0.15}s`}
+                  >
+                    <AmenityCategory>
+                      <h4>
+                        <span className="icon">
+                          {category.title.includes('Recreation') && (
+                            <FaSwimmingPool />
+                          )}
+                          {category.title.includes('Business') && (
+                            <FaBusinessTime />
+                          )}
+                          {category.title.includes('Connectivity') && (
+                            <FaWifi />
+                          )}
+                          {category.title.includes('Wellness') && <FaSpa />}
+                          {![
+                            'Recreation',
+                            'Business',
+                            'Connectivity',
+                            'Wellness',
+                          ].some(keyword =>
+                            category.title.includes(keyword)
+                          ) && <FaConciergeBell />}
+                        </span>
+                        {category.title}
+                      </h4>
+                      <AmenityList>
+                        {category.items.map((item, itemIndex) => (
+                          <AmenityItem key={itemIndex}>
+                            <FaCheckCircle className="icon" />
+                            {item}
+                          </AmenityItem>
+                        ))}
+                      </AmenityList>
+                    </AmenityCategory>
+                  </AnimatedSection>
+                ))}
+              </AmenitiesGrid>
+            </AmenitiesSection>
+          </AnimatedSection>
+        </Container>
+      </ContentSection>
+
+      {/* Reviews Section */}
+      {reviewsSection.reviews && reviewsSection.reviews.length > 0 && (
+        <ContentSection>
+          <Container>
+            <AnimatedSection ref={reviewsRef} inView={reviewsInView}>
+              <SectionHeader>
+                <SectionTitle>Guest Reviews</SectionTitle>
+                <SectionSubtitle>
+                  Hear what our guests have to say about their experience
+                </SectionSubtitle>
+              </SectionHeader>
+
+              <ReviewsSection>
+                <ReviewsGrid>
+                  {reviewsSection.reviews.slice(0, 3).map((review, index) => (
+                    <AnimatedSection
+                      key={index}
+                      inView={reviewsInView}
+                      delay={`${index * 0.2}s`}
+                    >
+                      <ReviewCard>
+                        <FaQuoteLeft className="quote-icon" />
+                        <ReviewText>"{review.comment}"</ReviewText>
+                        <ReviewAuthor>
+                          <div className="avatar">
+                            {review.guestName.charAt(0)}
+                          </div>
+                          <div className="info">
+                            <div className="name">{review.guestName}</div>
+                            <div className="location">{review.location}</div>
+                          </div>
+                          <div className="rating">
+                            {[...Array(review.rating)].map((_, i) => (
+                              <FaStar key={i} className="star" />
+                            ))}
+                          </div>
+                        </ReviewAuthor>
+                      </ReviewCard>
+                    </AnimatedSection>
+                  ))}
+                </ReviewsGrid>
+              </ReviewsSection>
+            </AnimatedSection>
+          </Container>
+        </ContentSection>
+      )}
+
+      {/* Contact Section */}
+      <ContentSection>
+        <Container>
+          <AnimatedSection ref={contactRef} inView={contactInView}>
+            <ContactSection>
+              <SectionHeader style={{ color: theme.colors.white }}>
+                <SectionTitle
+                  style={{
+                    color: theme.colors.white,
+                    WebkitTextFillColor: theme.colors.white,
+                  }}
+                >
+                  Location & Contact
+                </SectionTitle>
+                <SectionSubtitle style={{ color: 'rgba(255, 255, 255, 0.9)' }}>
+                  Get in touch with us for reservations and inquiries
+                </SectionSubtitle>
+              </SectionHeader>
+
+              <ContactGrid>
+                {(
+                  contactSection.info || [
+                    {
+                      label: 'Address',
+                      value: hotel.address,
+                      icon: 'FaMapMarkerAlt',
+                    },
+                    { label: 'Phone', value: hotel.phone, icon: 'FaPhone' },
+                    { label: 'Email', value: hotel.email, icon: 'FaEnvelope' },
+                    {
+                      label: 'Check-in / Check-out',
+                      value: `${hotel.checkInTime} / ${hotel.checkOutTime}`,
+                      icon: 'FaClock',
+                    },
+                  ]
+                ).map((contact, index) => {
+                  const IconComponent =
+                    iconComponents[contact.icon] || FaMapMarkerAlt;
+                  return (
+                    <AnimatedSection
+                      key={index}
+                      inView={contactInView}
+                      delay={`${index * 0.1}s`}
+                    >
+                      <ContactItem>
+                        <IconComponent className="icon" />
+                        <div className="info">
+                          <div className="label">{contact.label}</div>
+                          <div className="value">{contact.value}</div>
+                        </div>
+                      </ContactItem>
+                    </AnimatedSection>
+                  );
+                })}
+              </ContactGrid>
+            </ContactSection>
+          </AnimatedSection>
+        </Container>
+      </ContentSection>
 
       <HotelFooter />
     </PageContainer>

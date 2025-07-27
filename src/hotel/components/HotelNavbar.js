@@ -1,5 +1,6 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import {
   FaHotel,
@@ -8,15 +9,72 @@ import {
   FaHome,
   FaBars,
   FaTimes,
+  FaBed,
 } from 'react-icons/fa';
 import { theme, media } from '../../styles/GlobalStyle';
+import { getHotelByIdOrSlug } from '../../DummyData';
 
-const NavbarContainer = styled.nav`
-  background: ${theme.colors.white};
-  box-shadow: ${theme.shadows.md};
-  position: sticky;
+const NavbarContainer = styled.nav.withConfig({
+  shouldForwardProp: prop => prop !== 'isScrolled',
+})`
+  background: ${props =>
+    props.isScrolled ? 'rgba(255, 255, 255, 0.95)' : 'transparent'};
+  backdrop-filter: ${props => (props.isScrolled ? 'blur(12px)' : 'none')};
+  border-bottom: ${props =>
+    props.isScrolled ? '1px solid rgba(0, 0, 0, 0.1)' : 'none'};
+  box-shadow: ${props =>
+    props.isScrolled ? '0 2px 20px rgba(0, 0, 0, 0.1)' : 'none'};
+  position: fixed;
   top: 0;
-  z-index: 100;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Ensure text is readable on both backgrounds */
+  ${props =>
+    !props.isScrolled &&
+    `
+    .nav-text {
+      color: ${theme.colors.white};
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+      font-weight: 600;
+    }
+
+    .nav-link {
+      color: ${theme.colors.white};
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+      font-weight: 500;
+
+      &:hover {
+        color: rgba(255, 255, 255, 0.9);
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: ${theme.borderRadius.md};
+      }
+    }
+  `}
+
+  ${props =>
+    props.isScrolled &&
+    `
+    .nav-text {
+      color: ${theme.colors.gray900};
+      text-shadow: none;
+      font-weight: 600;
+    }
+
+    .nav-link {
+      color: ${theme.colors.gray700};
+      text-shadow: none;
+      font-weight: 500;
+
+      &:hover {
+        color: ${theme.colors.primary};
+        background: ${theme.colors.gray50};
+        border-radius: ${theme.borderRadius.md};
+      }
+    }
+  `}
 `;
 
 const NavbarContent = styled.div`
@@ -295,6 +353,12 @@ const HotelNavbar = ({ showBackToMain = true }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  // Get live hotel data from Redux
+  const liveHotels = useSelector(
+    state => state.hotelManagement?.liveHotels || []
+  );
 
   // Extract hotel slug from URL path like "/taj-palace/rooms/101"
   const hotelSlug = useMemo(() => {
@@ -305,63 +369,92 @@ const HotelNavbar = ({ showBackToMain = true }) => {
       : '';
   }, [location.pathname]);
 
+  // Get current hotel data
+  const currentHotel = useMemo(() => {
+    if (!hotelSlug) return null;
+    // First try to find in live hotels (updated data)
+    const liveHotel = liveHotels.find(
+      h => h.slug === hotelSlug || h.id === parseInt(hotelSlug)
+    );
+    if (liveHotel) return liveHotel;
+    // Fallback to static data
+    return getHotelByIdOrSlug(hotelSlug);
+  }, [hotelSlug, liveHotels]);
+
+  // Professional scroll effect for navbar
+  useEffect(() => {
+    let ticking = false;
+
+    const updateScrollState = () => {
+      const scrollTop =
+        window.pageYOffset || document.documentElement.scrollTop;
+      const threshold = 50; // Lower threshold for better responsiveness
+
+      setIsScrolled(scrollTop > threshold);
+      ticking = false;
+    };
+
+    const handleScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(updateScrollState);
+        ticking = true;
+      }
+    };
+
+    // Set initial state - ensure it starts as transparent
+    setIsScrolled(false);
+    // Check scroll position after a brief delay to ensure proper initialization
+    setTimeout(updateScrollState, 100);
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   const closeMobileMenu = () => setMobileMenuOpen(false);
 
   return (
-    <NavbarContainer>
+    <NavbarContainer isScrolled={isScrolled}>
       <NavbarContent>
-        <Logo to="/hotels">
+        <Logo
+          to={currentHotel ? `/${currentHotel.slug}` : '/hotels'}
+          className="nav-text"
+        >
           <FaHotel />
-          HotelBooker
+          {currentHotel ? currentHotel.name : 'HotelBooker'}
         </Logo>
 
         <NavLinks isOpen={mobileMenuOpen}>
-          <NavLink to="/hotels" onClick={closeMobileMenu}>
-            Find Hotels
+          <NavLink
+            to={'hoteladmin'}
+            onClick={closeMobileMenu}
+            className="nav-link"
+          >
+            Admin Panel
           </NavLink>
-          <NavLink to="/my-bookings" onClick={closeMobileMenu}>
-            My Bookings
-          </NavLink>
-          <NavLink to={'hoteladmin'} onClick={closeMobileMenu}>
-            Hotel Owner
+          <NavLink
+            to={currentHotel ? `/${currentHotel.slug}/rooms` : '/hotels'}
+            onClick={closeMobileMenu}
+            className="nav-link"
+          >
+            Book Room
           </NavLink>
 
           <MobileNavActions>
-            {showBackToMain && (
-              <MobileActionButton to="/" onClick={closeMobileMenu}>
-                <FaHome />
-                Main Site
-              </MobileActionButton>
-            )}
-            <MobileActionButton to="/my-bookings" onClick={closeMobileMenu}>
-              <FaCalendarAlt />
-              My Bookings
+            <MobileActionButton
+              to={currentHotel ? `/${currentHotel.slug}/rooms` : '/hotels'}
+              onClick={closeMobileMenu}
+            >
+              <FaBed />
+              Book Room
             </MobileActionButton>
           </MobileNavActions>
         </NavLinks>
 
         <NavActions>
-          {showBackToMain && (
-            <BackButton to="/" title="Back to Main Site">
-              <FaHome />
-              Main Site
-            </BackButton>
-          )}
-
-          <ActionButton
-            title="My Bookings"
-            onClick={() => navigate('/my-bookings')}
-          >
-            <FaCalendarAlt />
-          </ActionButton>
-
-          <ActionButton title="User Account">
-            <FaUser />
-          </ActionButton>
-
           <MobileMenuButton
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             title="Menu"
+            className="nav-text"
           >
             {mobileMenuOpen ? <FaTimes /> : <FaBars />}
           </MobileMenuButton>

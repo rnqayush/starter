@@ -828,6 +828,8 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
           editingHotel.sections?.hero?.backgroundImage ||
           editingHotel.image ||
           '',
+        rating: editingHotel.rating || '',
+        location: editingHotel.location || editingHotel.city || '',
         gallery:
           editingHotel.sections?.gallery?.images ||
           editingHotel.gallery ||
@@ -921,6 +923,48 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
                 section: 'hero',
               })
             );
+            break;
+          case 'rating':
+            dispatch(
+              updateHotelField({ field: 'rating', value: tempData[key] })
+            );
+            // Also update hero quickInfo rating
+            if (editingHotel.sections?.hero?.quickInfo) {
+              const updatedQuickInfo = editingHotel.sections.hero.quickInfo.map(
+                info =>
+                  info.label === 'Rating'
+                    ? { ...info, value: `${tempData[key]}/5` }
+                    : info
+              );
+              dispatch(
+                updateHotelField({
+                  field: 'quickInfo',
+                  value: updatedQuickInfo,
+                  section: 'hero',
+                })
+              );
+            }
+            break;
+          case 'location':
+            dispatch(
+              updateHotelField({ field: 'location', value: tempData[key] })
+            );
+            // Also update hero quickInfo location
+            if (editingHotel.sections?.hero?.quickInfo) {
+              const updatedQuickInfo = editingHotel.sections.hero.quickInfo.map(
+                info =>
+                  info.label === 'Location'
+                    ? { ...info, value: tempData[key] }
+                    : info
+              );
+              dispatch(
+                updateHotelField({
+                  field: 'quickInfo',
+                  value: updatedQuickInfo,
+                  section: 'hero',
+                })
+              );
+            }
             break;
           case 'description':
             dispatch(
@@ -1790,6 +1834,31 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
                       }
                       placeholder="Enter hero subtitle"
                       rows={3}
+                    />
+                  </FormField>
+                  <FormField>
+                    <Label>Rating</Label>
+                    <Input
+                      type="number"
+                      step="0.1"
+                      min="0"
+                      max="5"
+                      value={tempData.rating || ''}
+                      onChange={e =>
+                        updateTempData(
+                          'rating',
+                          parseFloat(e.target.value) || ''
+                        )
+                      }
+                      placeholder="Enter hotel rating (e.g., 4.8)"
+                    />
+                  </FormField>
+                  <FormField>
+                    <Label>Location</Label>
+                    <Input
+                      value={tempData.location || ''}
+                      onChange={e => updateTempData('location', e.target.value)}
+                      placeholder="Enter hotel location (e.g., New Delhi)"
                     />
                   </FormField>
                   <FormField>
