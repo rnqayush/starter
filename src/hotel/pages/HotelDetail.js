@@ -175,12 +175,12 @@ const HeroContent = styled.div`
   color: ${theme.colors.white};
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 ${theme.spacing.xl};
+  padding: 120px ${theme.spacing.xl} 0;
   width: 100%;
   animation: ${fadeInUp} 1s ease-out;
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    padding: 0 ${theme.spacing.md};
+    padding: 100px ${theme.spacing.md} 0;
     text-align: center;
     display: flex;
     flex-direction: column;
