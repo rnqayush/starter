@@ -940,6 +940,13 @@ const VendorDashboard = () => {
         customSections: customSections,
         sectionVisibility: sectionVisibility,
         customSectionVisibility: customSectionVisibility,
+        // Footer data
+        footerColumns: footerData.columns,
+        footerCopyright: footerData.copyrightText,
+        footerBackgroundColor: footerData.backgroundColor,
+        footerTextColor: footerData.textColor,
+        footerDescription: footerData.description,
+        socialLinks: footerData.socialLinks,
       };
 
       // Update Redux with the current form data for real-time preview
