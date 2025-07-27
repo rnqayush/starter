@@ -827,18 +827,14 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
         checkOutTime: editingHotel.checkOutTime || '11:00 AM',
         features: editingHotel.sections?.features?.items || editingHotel.features || [],
         amenityCategories: editingHotel.sections?.amenities?.categories || editingHotel.amenityCategories || [],
-        contactFields: editingHotel.contactFields || [
-          { label: 'Address', value: editingHotel.address || '' },
-          { label: 'Phone', value: editingHotel.phone || '+91 22 6601 1825' },
-          {
-            label: 'Email',
-            value:
-              editingHotel.email ||
-              `reservations@${editingHotel.slug || 'hotel'}.com`,
-          },
+        contactFields: editingHotel.sections?.contact?.info || editingHotel.contactFields || [
+          { label: 'Address', value: editingHotel.address || '', icon: 'FaMapMarkerAlt' },
+          { label: 'Phone', value: editingHotel.phone || '', icon: 'FaPhone' },
+          { label: 'Email', value: editingHotel.email || '', icon: 'FaEnvelope' },
           {
             label: 'Check-in / Check-out',
             value: `${editingHotel.checkInTime || '3:00 PM'} / ${editingHotel.checkOutTime || '11:00 AM'}`,
+            icon: 'FaClock'
           },
         ],
       });
