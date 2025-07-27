@@ -494,7 +494,7 @@ const RoomList = () => {
   const [loading, setLoading] = useState(true);
 
   // Get updated hotel data from Redux if available
-  const { hotels } = useSelector(state => state.hotelManagement);
+  const hotels = useSelector(state => state.hotelManagement?.liveHotels || []);
   const [searchParams, setSearchParams] = useState({
     checkIn: '',
     checkOut: '',
