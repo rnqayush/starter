@@ -20,7 +20,11 @@ import { theme } from '../../styles/GlobalStyle';
 import HotelNavbar from '../components/HotelNavbar';
 import HotelFooter from '../components/HotelFooter';
 
-import { getHotelByIdOrSlug } from '../../DummyData';
+import {
+  getHotelByIdOrSlug,
+  fetchHotelData,
+  fetchHotelReviews,
+} from '../../DummyData/hotels';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -810,22 +814,44 @@ const HotelDetail = () => {
   const hotelsFromStore = useSelector(state => state.hotelManagement?.hotels);
 
   useEffect(() => {
-    let foundHotel;
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        let foundHotel;
 
-    // Try to get hotel from Redux store first (for updated data)
-    if (hotelsFromStore && hotelsFromStore.length > 0) {
-      foundHotel = hotelsFromStore.find(
-        h => h.slug === slugParam || h.id === parseInt(slugParam)
-      );
-    }
+        // Try to get hotel from Redux store first (for updated data)
+        if (hotelsFromStore && hotelsFromStore.length > 0) {
+          foundHotel = hotelsFromStore.find(
+            h => h.slug === slugParam || h.id === parseInt(slugParam)
+          );
+        }
 
-    // Fallback to original data if not found in store
-    if (!foundHotel) {
-      foundHotel = getHotelByIdOrSlug(slugParam);
-    }
+        // Simulate API call if not found in store
+        if (!foundHotel) {
+          // First try to get by slug/id to get hotel ID for API call
+          const tempHotel = getHotelByIdOrSlug(slugParam);
+          if (tempHotel) {
+            // Simulate API call to fetch hotel data
+            foundHotel = await fetchHotelData(tempHotel.id);
 
-    setHotel(foundHotel);
-    setLoading(false);
+            // Fetch additional data like reviews
+            if (foundHotel) {
+              const reviews = await fetchHotelReviews(foundHotel.id);
+              foundHotel.reviews = reviews;
+            }
+          }
+        }
+
+        setHotel(foundHotel);
+      } catch (error) {
+        console.error('Error fetching hotel data:', error);
+        setHotel(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
   }, [slugParam, hotelsFromStore]);
 
   // Re-render when Redux store updates (for live preview)
@@ -1356,23 +1382,66 @@ const HotelDetail = () => {
                 Hear what our valued guests have to say about their experience
               </SectionSubtitle>
             </SectionHeader>
-            <TestimonialCard>
-              <TestimonialQuote>
-                "Absolutely exceptional service and stunning accommodations. The
-                staff went above and beyond to make our anniversary celebration
-                truly memorable. The attention to detail and luxury amenities
-                exceeded all our expectations."
-              </TestimonialQuote>
-              <TestimonialAuthor>
-                <div className="avatar">RS</div>
-                <div className="info">
-                  <div className="name">Raj & Priya Sharma</div>
-                  <div className="details">
-                    Anniversary Celebration • Mumbai
+            {hotel.reviews && hotel.reviews.length > 0 ? (
+              <div
+                style={{
+                  display: 'grid',
+                  gap: theme.spacing.xl,
+                  marginBottom: theme.spacing.xl,
+                }}
+              >
+                {hotel.reviews.slice(0, 3).map(review => (
+                  <TestimonialCard key={review.id}>
+                    <TestimonialQuote>"{review.comment}"</TestimonialQuote>
+                    <TestimonialAuthor>
+                      <div className="avatar">{review.guestName.charAt(0)}</div>
+                      <div className="info">
+                        <div className="name">
+                          {review.guestName}
+                          {review.verified && (
+                            <span
+                              style={{
+                                color: '#fbbf24',
+                                fontSize: '0.8rem',
+                                marginLeft: theme.spacing.sm,
+                              }}
+                            >
+                              ✓ Verified Stay
+                            </span>
+                          )}
+                        </div>
+                        <div className="details">
+                          {review.roomType} •{' '}
+                          {new Date(review.date).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'short',
+                          })}{' '}
+                          • {review.rating}/5 ⭐
+                        </div>
+                      </div>
+                    </TestimonialAuthor>
+                  </TestimonialCard>
+                ))}
+              </div>
+            ) : (
+              <TestimonialCard>
+                <TestimonialQuote>
+                  "Absolutely exceptional service and stunning accommodations.
+                  The staff went above and beyond to make our anniversary
+                  celebration truly memorable. The attention to detail and
+                  luxury amenities exceeded all our expectations."
+                </TestimonialQuote>
+                <TestimonialAuthor>
+                  <div className="avatar">RS</div>
+                  <div className="info">
+                    <div className="name">Raj & Priya Sharma</div>
+                    <div className="details">
+                      Anniversary Celebration • Mumbai
+                    </div>
                   </div>
-                </div>
-              </TestimonialAuthor>
-            </TestimonialCard>
+                </TestimonialAuthor>
+              </TestimonialCard>
+            )}
           </TestimonialsSection>
         </Container>
       </ContentSection>

@@ -13,7 +13,7 @@ import { theme } from '../../styles/GlobalStyle';
 import HotelNavbar from '../components/HotelNavbar';
 import HotelFooter from '../components/HotelFooter';
 import RoomCard from '../components/RoomCard';
-import { getHotelByIdOrSlug } from '../../DummyData';
+import { getHotelByIdOrSlug, fetchHotelData } from '../../DummyData/hotels';
 
 const PageContainer = styled.div`
   min-height: 100vh;

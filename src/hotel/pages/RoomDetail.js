@@ -12,11 +12,17 @@ import {
   FaHeart,
   FaCheckCircle,
   FaCoffee,
+  FaStar,
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
 import HotelNavbar from '../components/HotelNavbar';
 import HotelFooter from '../components/HotelFooter';
-import { getHotelByIdOrSlug, getRoomById } from '../../DummyData';
+import {
+  getHotelByIdOrSlug,
+  getRoomById,
+  fetchHotelData,
+  fetchRoomReviews,
+} from '../../DummyData/hotels';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -484,11 +490,37 @@ const RoomDetail = () => {
   });
 
   useEffect(() => {
-    const foundHotel = getHotelByIdOrSlug(slug);
+    const fetchData = async () => {
+      try {
+        // First get hotel data
+        let foundHotel = getHotelByIdOrSlug(slug);
 
-    const foundRoom = foundHotel ? getRoomById(foundHotel.id, roomId) : null;
-    setHotel(foundHotel);
-    setRoom(foundRoom);
+        if (foundHotel) {
+          // Simulate API call to get updated hotel data
+          foundHotel = await fetchHotelData(foundHotel.id);
+
+          // Get room data
+          const foundRoom = foundHotel
+            ? getRoomById(foundHotel.id, roomId)
+            : null;
+
+          if (foundRoom) {
+            // Simulate API call to get room reviews
+            const roomReviews = await fetchRoomReviews(foundHotel.id, roomId);
+            foundRoom.reviews = roomReviews;
+          }
+
+          setHotel(foundHotel);
+          setRoom(foundRoom);
+        }
+      } catch (error) {
+        console.error('Error fetching room data:', error);
+        setHotel(null);
+        setRoom(null);
+      }
+    };
+
+    fetchData();
   }, [slug, roomId]);
 
   const getAmenityIcon = amenity => {
@@ -639,6 +671,115 @@ const RoomDetail = () => {
                   </AmenityItem>
                 ))}
               </AmenitiesGrid>
+            </Section>
+
+            <Section>
+              <SectionTitle>Guest Reviews</SectionTitle>
+              {room.reviews && room.reviews.length > 0 ? (
+                <div>
+                  {room.reviews.map(review => (
+                    <PolicyCard
+                      key={review.id}
+                      style={{ marginBottom: theme.spacing.lg }}
+                    >
+                      <div
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'flex-start',
+                          marginBottom: theme.spacing.md,
+                        }}
+                      >
+                        <div>
+                          <h4
+                            style={{
+                              color: theme.colors.gray900,
+                              marginBottom: theme.spacing.xs,
+                            }}
+                          >
+                            {review.guestName}
+                            {review.verified && (
+                              <span
+                                style={{
+                                  color: theme.colors.success,
+                                  fontSize: '0.8rem',
+                                  marginLeft: theme.spacing.sm,
+                                }}
+                              >
+                                ✓ Verified Stay
+                              </span>
+                            )}
+                          </h4>
+                          <div
+                            style={{
+                              fontSize: '0.9rem',
+                              color: theme.colors.gray500,
+                            }}
+                          >
+                            {new Date(review.date).toLocaleDateString('en-US', {
+                              year: 'numeric',
+                              month: 'long',
+                              day: 'numeric',
+                            })}
+                          </div>
+                        </div>
+                        <div
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '2px',
+                          }}
+                        >
+                          {[...Array(5)].map((_, i) => (
+                            <FaStar
+                              key={i}
+                              style={{
+                                color:
+                                  i < review.rating
+                                    ? '#fbbf24'
+                                    : theme.colors.gray300,
+                                fontSize: '0.9rem',
+                              }}
+                            />
+                          ))}
+                          <span
+                            style={{
+                              marginLeft: theme.spacing.xs,
+                              fontSize: '0.9rem',
+                              fontWeight: '600',
+                            }}
+                          >
+                            {review.rating}/5
+                          </span>
+                        </div>
+                      </div>
+                      <p
+                        style={{
+                          color: theme.colors.gray700,
+                          lineHeight: '1.6',
+                          fontSize: '0.95rem',
+                          fontStyle: 'italic',
+                        }}
+                      >
+                        "{review.comment}"
+                      </p>
+                    </PolicyCard>
+                  ))}
+                </div>
+              ) : (
+                <PolicyCard>
+                  <p
+                    style={{
+                      color: theme.colors.gray600,
+                      textAlign: 'center',
+                      fontStyle: 'italic',
+                    }}
+                  >
+                    No reviews available for this room yet. Be the first to
+                    share your experience!
+                  </p>
+                </PolicyCard>
+              )}
             </Section>
 
             <Section>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import {
@@ -14,7 +14,7 @@ import {
 import { theme } from '../../styles/GlobalStyle';
 import HotelNavbar from '../components/HotelNavbar';
 import HotelFooter from '../components/HotelFooter';
-import { bookings } from '../data/hotels';
+import { bookings, fetchHotelBookings } from '../../DummyData/hotels';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -274,9 +274,29 @@ const BrowseButton = styled(Link)`
 
 const MyBookings = () => {
   const [activeFilter, setActiveFilter] = useState('all');
+  const [userBookings, setUserBookings] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // Mock user bookings - in real app, this would come from API
-  const userBookings = bookings;
+  // Fetch user bookings - simulating API call
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        // Simulate API call to fetch user bookings
+        const mockUserId = 'user123'; // In real app, this would come from auth context
+        const bookingsData = await fetchHotelBookings(mockUserId);
+        setUserBookings(bookingsData);
+      } catch (error) {
+        console.error('Error fetching bookings:', error);
+        // Fallback to all bookings for demo
+        setUserBookings(bookings);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const getStatusIcon = status => {
     switch (status) {
@@ -322,6 +342,20 @@ const MyBookings = () => {
       `Booking Details:\nBooking ID: ${booking.id}\nGuest: ${booking.guestName}\nEmail: ${booking.guestEmail}\nPhone: ${booking.guestPhone}\nSpecial Requests: ${booking.specialRequests || 'None'}`
     );
   };
+
+  if (loading) {
+    return (
+      <PageContainer>
+        <HotelNavbar />
+        <Container>
+          <div style={{ textAlign: 'center', padding: '4rem 0' }}>
+            <h2>Loading your bookings...</h2>
+          </div>
+        </Container>
+        <HotelFooter />
+      </PageContainer>
+    );
+  }
 
   if (filteredBookings.length === 0) {
     return (
