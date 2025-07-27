@@ -2112,25 +2112,13 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
                         <div style={{ flex: 1 }}>
                           <Input
                             value={review.guestName || ''}
-                            onChange={e =>
-                              updateTempData('testimonials',
-                                tempData.testimonials.map((r, i) =>
-                                  i === index ? { ...r, guestName: e.target.value } : r
-                                )
-                              )
-                            }
+                            onChange={e => updateTestimonial(index, 'guestName', e.target.value)}
                             placeholder="Guest name"
                             style={{ marginBottom: theme.spacing.sm }}
                           />
                           <Input
                             value={review.location || ''}
-                            onChange={e =>
-                              updateTempData('testimonials',
-                                tempData.testimonials.map((r, i) =>
-                                  i === index ? { ...r, location: e.target.value } : r
-                                )
-                              )
-                            }
+                            onChange={e => updateTestimonial(index, 'location', e.target.value)}
                             placeholder="Guest location"
                             style={{ marginBottom: theme.spacing.sm }}
                           />
@@ -2139,34 +2127,18 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
                             min="1"
                             max="5"
                             value={review.rating || 5}
-                            onChange={e =>
-                              updateTempData('testimonials',
-                                tempData.testimonials.map((r, i) =>
-                                  i === index ? { ...r, rating: parseInt(e.target.value) } : r
-                                )
-                              )
-                            }
+                            onChange={e => updateTestimonial(index, 'rating', parseInt(e.target.value))}
                             placeholder="Rating (1-5)"
                             style={{ marginBottom: theme.spacing.sm }}
                           />
                           <TextArea
                             value={review.comment || ''}
-                            onChange={e =>
-                              updateTempData('testimonials',
-                                tempData.testimonials.map((r, i) =>
-                                  i === index ? { ...r, comment: e.target.value } : r
-                                )
-                              )
-                            }
+                            onChange={e => updateTestimonial(index, 'comment', e.target.value)}
                             placeholder="Review comment"
                             rows={3}
                           />
                         </div>
-                        <RemoveButton onClick={() =>
-                          updateTempData('testimonials',
-                            tempData.testimonials.filter((_, i) => i !== index)
-                          )
-                        }>
+                        <RemoveButton onClick={() => removeTestimonial(index)}>
                           <FaTrash />
                         </RemoveButton>
                       </div>
