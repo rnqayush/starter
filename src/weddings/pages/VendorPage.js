@@ -1525,6 +1525,7 @@ const VendorPage = () => {
   const { vendorSlug } = useParams();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const dispatch = useDispatch();
   const sectionRefs = useRef([]);
   const observerRef = useRef(null);
 
@@ -2686,7 +2687,7 @@ const VendorPage = () => {
         primaryColor={primaryColor}
         onClick={scrollToTop}
       >
-        �����
+        ���
       </BackToTopButton>
     </PageContainer>
   );
