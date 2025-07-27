@@ -693,10 +693,15 @@ const Section = styled.section.withConfig({
   background: ${props => props.backgroundColor || 'white'};
   position: relative;
   overflow: hidden;
+  opacity: 1;
+  transform: translateY(0);
 
   ${props => props.animated && css`
-    opacity: 0;
-    transform: translateY(30px);
+    &:not(.animate-in) {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
     transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 
     &.animate-in {
