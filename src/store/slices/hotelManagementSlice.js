@@ -48,14 +48,34 @@ const hotelManagementSlice = createSlice({
     },
 
     updateHotelField: (state, action) => {
-      const { field, value } = action.payload;
+      const { field, value, section } = action.payload;
       if (state.editingHotel) {
-        state.editingHotel[field] = value;
-        state.changes[field] = {
-          old: state.originalHotel[field],
-          new: value,
-        };
+        if (section) {
+          // Update nested section field
+          if (!state.editingHotel.sections) {
+            state.editingHotel.sections = {};
+          }
+          if (!state.editingHotel.sections[section]) {
+            state.editingHotel.sections[section] = {};
+          }
+          state.editingHotel.sections[section][field] = value;
+
+          // Track changes for nested sections
+          const changeKey = `sections.${section}.${field}`;
+          state.changes[changeKey] = {
+            old: state.originalHotel?.sections?.[section]?.[field],
+            new: value,
+          };
+        } else {
+          // Update top-level field
+          state.editingHotel[field] = value;
+          state.changes[field] = {
+            old: state.originalHotel?.[field],
+            new: value,
+          };
+        }
         state.hasUnsavedChanges = true;
+        state.lastSaveTime = new Date().toISOString();
       }
     },
 
