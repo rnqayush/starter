@@ -535,7 +535,7 @@ const RoomDetail = () => {
     };
 
     fetchData();
-  }, [slug, roomId]);
+  }, [slug, roomId, hotels]);
 
   const getAmenityIcon = amenity => {
     const iconMap = {
