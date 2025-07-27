@@ -516,13 +516,14 @@ const MobileMenuOverlay = styled.div.withConfig({
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(8px);
     z-index: 1001;
     opacity: ${props => (props.isOpen ? '1' : '0')};
     visibility: ${props => (props.isOpen ? 'visible' : 'hidden')};
     transition:
-      opacity 0.3s ease,
-      visibility 0.3s ease;
+      opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+      visibility 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
 `;
 
@@ -537,18 +538,31 @@ const NavActions = styled.div.withConfig({
   @media (max-width: ${theme.breakpoints.mobile}) {
     position: fixed;
     top: 0;
-    left: 0;
     right: 0;
     bottom: 0;
-    background: ${theme.colors.white};
+    width: 320px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(248,250,252,0.95));
+    backdrop-filter: blur(20px);
     flex-direction: column;
     justify-content: center;
     gap: ${theme.spacing.lg};
     z-index: 1002;
     transform: translateX(${props => (props.isOpen ? '0' : '100%')});
-    transition: transform 0.3s ease;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     padding: ${theme.spacing.xl};
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.1);
+    border-left: 1px solid rgba(59, 130, 246, 0.1);
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(45deg, rgba(59, 130, 246, 0.02) 0%, rgba(147, 51, 234, 0.02) 100%);
+      z-index: -1;
+    }
   }
 `;
 
@@ -1186,12 +1200,29 @@ const FormInput = styled.input.withConfig({
   border: 2px solid ${theme.colors.gray200};
   border-radius: ${theme.borderRadius.md};
   font-size: 1rem;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: ${theme.colors.white};
+  position: relative;
+
+  &::placeholder {
+    color: ${theme.colors.gray400};
+    transition: all 0.3s ease;
+  }
 
   &:focus {
     outline: none;
     border-color: ${props => props.primaryColor || theme.colors.primary};
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    transform: translateY(-1px);
+
+    &::placeholder {
+      color: transparent;
+    }
+  }
+
+  &:hover {
+    border-color: ${theme.colors.gray300};
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
   }
 `;
 
@@ -1204,39 +1235,79 @@ const FormTextarea = styled.textarea.withConfig({
   font-size: 1rem;
   min-height: 120px;
   resize: vertical;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: inherit;
+
+  &::placeholder {
+    color: ${theme.colors.gray400};
+    transition: all 0.3s ease;
+  }
 
   &:focus {
     outline: none;
     border-color: ${props => props.primaryColor || theme.colors.primary};
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    transform: translateY(-1px);
+
+    &::placeholder {
+      color: transparent;
+    }
+  }
+
+  &:hover {
+    border-color: ${theme.colors.gray300};
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
   }
 `;
 
 const SubmitButton = styled.button.withConfig({
   shouldForwardProp: prop => !['primaryColor'].includes(prop),
 })`
-  background: ${props => props.primaryColor || theme.colors.primary};
+  background: linear-gradient(135deg, ${props => props.primaryColor || theme.colors.primary}, ${props => props.primaryColor ? `${props.primaryColor}dd` : `${theme.colors.primary}dd`});
   color: white;
   border: none;
   padding: ${theme.spacing.md} ${theme.spacing.xl};
-  border-radius: ${theme.borderRadius.md};
+  border-radius: 30px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   align-items: center;
   justify-content: center;
   gap: ${theme.spacing.sm};
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
 
-  &:hover {
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.6s ease;
+  }
+
+  &:hover:not(:disabled) {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+
+    &::before {
+      left: 100%;
+    }
+  }
+
+  &:active:not(:disabled) {
     transform: translateY(-1px);
-    box-shadow: ${theme.shadows.md};
   }
 
   &:disabled {
     opacity: 0.6;
     cursor: not-allowed;
+    transform: none;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
   }
 `;
 
