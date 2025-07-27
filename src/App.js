@@ -64,7 +64,7 @@ function App() {
   const [userType, setUserType] = useState('customer'); // 'customer' or 'owner'
   const [hotels, setHotels] = useState(hotelModuleData);
   const [bookings, setBookings] = useState(hotelBookings);
-  const [ownerHotels, setOwnerHotels] = useState(hotelOwnerData);
+  const [ownerHotels, setOwnerHotels] = useState(hotelOwnerData || []);
 
   const contextValue = {
     user,
