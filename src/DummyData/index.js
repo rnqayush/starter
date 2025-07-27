@@ -87,8 +87,6 @@ export const {
 } = EcommerceData;
 
 // Hotel functions - now from hotelAPI
-import hotelAPI from '../utils/hotelAPI';
-
 export const {
   getHotelById,
   getHotelBySlug,
