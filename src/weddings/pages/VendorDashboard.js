@@ -853,6 +853,10 @@ const VendorDashboard = () => {
   const handleSectionVisibilityToggle = sectionId => {
     console.log('Toggling section visibility for:', sectionId);
 
+    // Track section change first
+    setChangedSections(prev => new Set([...prev, sectionId]));
+    setSaved(false);
+
     if (sectionId.startsWith('custom-')) {
       const customId = sectionId.replace('custom-', '');
       setCustomSectionVisibility(prev => {
@@ -865,10 +869,12 @@ const VendorDashboard = () => {
 
         // Immediately update Redux for real-time preview
         if (editingVendor) {
-          dispatch(updateVendorField({
-            field: 'customSectionVisibility',
-            value: newVisibility
-          }));
+          setTimeout(() => {
+            dispatch(updateVendorField({
+              field: 'customSectionVisibility',
+              value: newVisibility
+            }));
+          }, 0);
         }
 
         return newVisibility;
@@ -884,16 +890,17 @@ const VendorDashboard = () => {
 
         // Immediately update Redux for real-time preview
         if (editingVendor) {
-          dispatch(updateVendorField({
-            field: 'sectionVisibility',
-            value: newVisibility
-          }));
+          setTimeout(() => {
+            dispatch(updateVendorField({
+              field: 'sectionVisibility',
+              value: newVisibility
+            }));
+          }, 0);
         }
 
         return newVisibility;
       });
     }
-    trackSectionChange(sectionId);
   };
 
   // Helper function to immediately update Redux editing vendor
