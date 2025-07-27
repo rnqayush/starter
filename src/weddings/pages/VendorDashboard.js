@@ -1339,32 +1339,8 @@ const VendorDashboard = () => {
         couplesVisible: aboutUsData.couplesVisible,
       };
 
-      console.log('Dispatching basic field updates...');
-      // Update basic fields one by one
-      dispatch(updateVendorField({ field: 'name', value: heroData.name || '' }));
-      dispatch(updateVendorField({ field: 'tagline', value: heroData.tagline || '' }));
-      dispatch(updateVendorField({ field: 'image', value: heroData.image || '' }));
-      dispatch(updateVendorField({ field: 'description', value: aboutUsData.description || '' }));
-      dispatch(updateVendorField({ field: 'aboutUs', value: cleanAboutUs }));
-
-      console.log('Dispatching array updates...');
-      dispatch(updateServices(cleanServices));
-      dispatch(updateRecentWork(cleanRecentWork));
-      dispatch(updateTestimonials(cleanTestimonials));
-      dispatch(updatePackages(cleanPackages));
-      dispatch(updateVendorGallery(cleanGallery));
-      dispatch(updateVendorField({
-        field: 'sectionOrder',
-        value: (completeSectionOrder && completeSectionOrder.length > 0) ? completeSectionOrder : (sectionOrder || []),
-      }));
-      dispatch(updateVendorField({ field: 'customSections', value: customSections || [] }));
-      dispatch(updateVendorField({ field: 'sectionVisibility', value: sectionVisibility || {} }));
-      dispatch(updateVendorField({
-        field: 'customSectionVisibility',
-        value: customSectionVisibility || {},
-      }));
-
-      console.log('Saving changes...');
+      console.log('Saving changes directly...');
+      // Simply save the changes that are already in the editing vendor state
       dispatch(saveVendorChanges());
 
       setSaved(false);
