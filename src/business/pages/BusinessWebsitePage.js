@@ -2026,50 +2026,7 @@ const BusinessWebsitePage = () => {
             {content.sections?.reviews?.subtitle || 'See what our recent customers are saying about their experiences with us.'}
           </SectionSubtitle>
           <ReviewsGrid>
-            {[
-              {
-                name: 'Emma Thompson',
-                date: '2 weeks ago',
-                rating: 5,
-                review:
-                  "Absolutely amazing experience! The staff was professional, the atmosphere was relaxing, and the results exceeded my expectations. I'll definitely be coming back!",
-              },
-              {
-                name: 'Michael Chen',
-                date: '1 month ago',
-                rating: 5,
-                review:
-                  'Top-notch service and quality. The attention to detail and customer care is outstanding. Highly recommend to anyone looking for excellence.',
-              },
-              {
-                name: 'Sarah Williams',
-                date: '3 weeks ago',
-                rating: 5,
-                review:
-                  'Best decision I made! The team is knowledgeable, friendly, and really listens to what you want. The facility is clean and modern too.',
-              },
-              {
-                name: 'David Rodriguez',
-                date: '1 week ago',
-                rating: 5,
-                review:
-                  'Fantastic value for money. The package I chose was perfect and included everything I needed. Will be booking again soon!',
-              },
-              {
-                name: 'Lisa Park',
-                date: '2 months ago',
-                rating: 5,
-                review:
-                  "I've been a customer for over a year now and they never disappoint. Consistent quality and service every single time.",
-              },
-              {
-                name: 'James Wilson',
-                date: '3 days ago',
-                rating: 5,
-                review:
-                  'Exceeded all expectations! From booking to completion, everything was seamless. The results speak for themselves.',
-              },
-            ].map((review, index) => (
+            {(content.reviews || []).map((review, index) => (
               <ReviewCard key={index} primaryColor={businessData.primaryColor}>
                 <div className="review-header">
                   <div className="avatar">
