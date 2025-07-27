@@ -1056,7 +1056,19 @@ const VendorDashboard = () => {
   ];
 
   useEffect(() => {
-    const vendorData = getVendorById(vendorId);
+    // Priority 1: Check if vendor exists in Redux state first
+    let vendorData = vendors.find(v => v.id === vendorId);
+
+    // Priority 2: If not in Redux, fetch from JSON and add to Redux
+    if (!vendorData) {
+      vendorData = getVendorById(vendorId);
+      if (vendorData) {
+        // Initialize vendor in Redux state
+        const sanitizedVendor = JSON.parse(JSON.stringify(vendorData));
+        dispatch(initializeVendor(sanitizedVendor));
+      }
+    }
+
     if (vendorData) {
       setVendor(vendorData);
 
