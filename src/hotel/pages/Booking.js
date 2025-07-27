@@ -487,10 +487,29 @@ const Booking = () => {
   });
 
   useEffect(() => {
-    const foundHotel = getHotelByIdOrSlug(slug);
-    const foundRoom = foundHotel ? getRoomById(foundHotel.id, roomId) : null;
-    setHotel(foundHotel);
-    setRoom(foundRoom);
+    const fetchData = async () => {
+      try {
+        // First get hotel data
+        let foundHotel = getHotelByIdOrSlug(slug);
+
+        if (foundHotel) {
+          // Simulate API call to get updated hotel data
+          foundHotel = await fetchHotelData(foundHotel.id);
+
+          // Get room data
+          const foundRoom = foundHotel ? getRoomById(foundHotel.id, roomId) : null;
+
+          setHotel(foundHotel);
+          setRoom(foundRoom);
+        }
+      } catch (error) {
+        console.error('Error fetching booking data:', error);
+        setHotel(null);
+        setRoom(null);
+      }
+    };
+
+    fetchData();
   }, [slug, roomId]);
 
   const handleInputChange = e => {
