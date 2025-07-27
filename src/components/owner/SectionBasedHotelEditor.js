@@ -849,28 +849,68 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
   const saveSection = () => {
     if (!editingHotel) return;
 
-    // Only update the local editing hotel state, NOT the global live data
+    // Map tempData to proper section structure for the hotel
     Object.keys(tempData).forEach(key => {
       if (tempData[key] !== undefined) {
-        if (key === 'features') {
-          dispatch(updateFeatures(tempData[key]));
-        } else if (key === 'amenityCategories') {
-          dispatch(updateAmenityCategories(tempData[key]));
-        } else if (key === 'gallery') {
-          dispatch(
-            updateHotelField({ field: 'gallery', value: tempData[key] })
-          );
-        } else if (key === 'contactFields') {
-          dispatch(
-            updateHotelField({ field: 'contactFields', value: tempData[key] })
-          );
-        } else {
-          dispatch(updateHotelField({ field: key, value: tempData[key] }));
+        switch (key) {
+          case 'name':
+            dispatch(updateHotelField({ field: 'name', value: tempData[key] }));
+            break;
+          case 'heroSubtitle':
+            dispatch(updateHotelField({
+              field: 'subtitle',
+              value: tempData[key],
+              section: 'hero'
+            }));
+            break;
+          case 'image':
+            dispatch(updateHotelField({
+              field: 'backgroundImage',
+              value: tempData[key],
+              section: 'hero'
+            }));
+            break;
+          case 'description':
+            dispatch(updateHotelField({
+              field: 'content',
+              value: tempData[key],
+              section: 'about'
+            }));
+            break;
+          case 'gallery':
+            dispatch(updateHotelField({
+              field: 'images',
+              value: tempData[key],
+              section: 'gallery'
+            }));
+            break;
+          case 'features':
+            dispatch(updateHotelField({
+              field: 'items',
+              value: tempData[key],
+              section: 'features'
+            }));
+            break;
+          case 'amenityCategories':
+            dispatch(updateHotelField({
+              field: 'categories',
+              value: tempData[key],
+              section: 'amenities'
+            }));
+            break;
+          case 'contactFields':
+            dispatch(updateHotelField({
+              field: 'info',
+              value: tempData[key],
+              section: 'contact'
+            }));
+            break;
+          default:
+            dispatch(updateHotelField({ field: key, value: tempData[key] }));
         }
       }
     });
 
-    // DON'T save to global state here - only save to editing state
     closeModal();
     alert(
       'Section updated! Click "Save & Go Live" to publish changes to the live hotel page.'
