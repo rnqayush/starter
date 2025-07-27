@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Provider } from 'react-redux';
+
 import styled from 'styled-components';
 import { GlobalStyle } from './styles/GlobalStyle';
 import { AppContext } from './context/AppContext';
 import { AuthProvider } from './context/AuthContext';
 import ErrorBoundary from './components/ErrorBoundary';
-import { store } from './store';
+
 
 // User Components
 import PlatformHomePage from './components/user/PlatformHomePage';
@@ -81,15 +81,14 @@ function App() {
 
   return (
     <ErrorBoundary>
-      <Provider store={store}>
-        <AuthProvider>
-          <NotificationProvider>
-            <AppContext.Provider value={contextValue}>
-              <Router>
-                <AppContainer>
-                  <GlobalStyle />
-                  <ScrollToTop />
-                  <Routes>
+      <AuthProvider>
+        <NotificationProvider>
+          <AppContext.Provider value={contextValue}>
+            <Router>
+              <AppContainer>
+                <GlobalStyle />
+                <ScrollToTop />
+                <Routes>
                     {/* Main Platform Routes (Highest Priority) */}
                     <Route path="/" element={<PlatformHomePage />} />
                     <Route path="/pricing" element={<PricingPage />} />
@@ -177,7 +176,6 @@ function App() {
             </AppContext.Provider>
           </NotificationProvider>
         </AuthProvider>
-      </Provider>
     </ErrorBoundary>
   );
 }
