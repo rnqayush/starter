@@ -892,7 +892,19 @@ const BuisnessAdminDashboard = () => {
     }
   };
 
+  // Auto-update Redux when UI content changes for real-time preview
+  useEffect(() => {
+    if (editingBusiness && uiContentData) {
+      updateEditingBusinessInRedux();
+    }
+  }, [uiContentData]);
 
+  // Auto-update Redux when statistics data changes for real-time preview
+  useEffect(() => {
+    if (editingBusiness && statisticsData) {
+      updateEditingBusinessInRedux();
+    }
+  }, [statisticsData]);
 
   const navigationItems = [
     {
