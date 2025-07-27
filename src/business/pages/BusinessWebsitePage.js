@@ -1950,10 +1950,9 @@ const BusinessWebsitePage = () => {
       {/* Gallery Section */}
       <Section id="gallery">
         <SectionContainer>
-          <SectionTitle>Our Gallery</SectionTitle>
+          <SectionTitle>{content.sections?.gallery?.title || 'Our Gallery'}</SectionTitle>
           <SectionSubtitle>
-            Take a look at our work, facilities, and the experiences we create
-            for our clients.
+            {content.sections?.gallery?.subtitle || 'Take a look at our work, facilities, and the experiences we create for our clients.'}
           </SectionSubtitle>
           <GalleryGrid>
             {content.gallery?.map((category, index) => (
