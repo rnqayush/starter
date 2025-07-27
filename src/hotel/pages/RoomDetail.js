@@ -12,6 +12,7 @@ import {
   FaHeart,
   FaCheckCircle,
   FaCoffee,
+  FaStar,
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
 import HotelNavbar from '../components/HotelNavbar';
