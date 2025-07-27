@@ -3691,8 +3691,7 @@ const VendorDashboard = () => {
                   <FormInput
                     value={footerData.copyrightText}
                     onChange={e => {
-                      setFooterData(prev => ({ ...prev, copyrightText: e.target.value }));
-                      trackSectionChange('footer');
+                      handleFooterChange({ ...footerData, copyrightText: e.target.value });
                     }}
                     placeholder="© 2024 Your Company. All rights reserved."
                   />
