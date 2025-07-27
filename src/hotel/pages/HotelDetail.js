@@ -25,6 +25,8 @@ import {
   fetchHotelSections,
   fetchHotelReviews,
 } from '../../utils/hotelAPI';
+import { loadHotelData } from '../../store/slices/hotelManagementSlice';
+import hotelJsonData from '../../DummyData/hotels.json';
 
 const PageContainer = styled.div`
   min-height: 100vh;
