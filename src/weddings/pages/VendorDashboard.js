@@ -1707,6 +1707,8 @@ const VendorDashboard = () => {
 
   const deleteService = id => {
     setServicesData(prev => prev.filter(service => service.id !== id));
+    // Track section change to enable save button
+    trackSectionChange('services-offered');
   };
 
   const addRecentWork = () => {
