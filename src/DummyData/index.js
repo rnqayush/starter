@@ -21,7 +21,13 @@ export const {
   sellerDashboardData,
 } = EcommerceData;
 
-export const { hotels, hotelBookings, ownerHotels, amenitiesList } = HotelData;
+// Hotel data now comes from hotels.json via hotelAPI
+import { getStaticHotelData, getStaticBookingsData, getStaticAmenitiesData, getOwnerHotels } from '../utils/hotelAPI';
+
+export const hotels = getStaticHotelData();
+export const hotelBookings = getStaticBookingsData();
+export const ownerHotels = getOwnerHotels('owner123'); // Default owner for compatibility
+export const amenitiesList = getStaticAmenitiesData();
 
 export const { weddingVendors } = WeddingData;
 
