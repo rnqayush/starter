@@ -263,7 +263,8 @@
         "gallery": true,
         "amenities": true,
         "testimonials": true,
-        "contact": true
+        "contact": true,
+        "footer": true
       },
       "rooms": [
         {
