@@ -1246,16 +1246,10 @@ const VendorDashboard = () => {
       };
 
       // Update the editing vendor in Redux for real-time preview
-      dispatch({
-        type: 'vendorManagement/setEditingVendor',
-        payload: updatedVendor.id,
-      });
+      dispatch(setEditingVendor(updatedVendor.id));
       Object.keys(updatedVendor).forEach(key => {
         if (key !== 'id') {
-          dispatch({
-            type: 'vendorManagement/updateVendorField',
-            payload: { field: key, value: updatedVendor[key] },
-          });
+          dispatch(updateVendorField({ field: key, value: updatedVendor[key] }));
         }
       });
 
