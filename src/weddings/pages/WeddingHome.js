@@ -23,7 +23,7 @@ import {
   FaTimes,
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
-import { weddingVendors } from '../data/vendors';
+import { getStaticWeddingVendors } from '../../utils/weddingAPI';
 import {
   getCurrentLocation,
   getLocationFromZip,
