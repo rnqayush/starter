@@ -1015,7 +1015,7 @@ const VendorPage = () => {
 
   // Get vendor data from Redux store for real-time updates
   const { vendors, editingVendor } = useSelector(
-    state => state.vendorManagement
+    state => state.weddingManagement
   );
 
   const [vendor, setVendor] = useState(null);
