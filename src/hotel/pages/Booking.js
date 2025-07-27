@@ -11,7 +11,11 @@ import {
 import { theme } from '../../styles/GlobalStyle';
 import HotelNavbar from '../components/HotelNavbar';
 import HotelFooter from '../components/HotelFooter';
-import { getHotelByIdOrSlug, getRoomById, fetchHotelData } from '../../DummyData/hotels';
+import {
+  getHotelByIdOrSlug,
+  getRoomById,
+  fetchHotelData,
+} from '../../DummyData/hotels';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -497,7 +501,9 @@ const Booking = () => {
           foundHotel = await fetchHotelData(foundHotel.id);
 
           // Get room data
-          const foundRoom = foundHotel ? getRoomById(foundHotel.id, roomId) : null;
+          const foundRoom = foundHotel
+            ? getRoomById(foundHotel.id, roomId)
+            : null;
 
           setHotel(foundHotel);
           setRoom(foundRoom);

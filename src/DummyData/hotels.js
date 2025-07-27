@@ -25,15 +25,18 @@ export const hotelData = {
       gallery: [
         {
           title: 'Grand Entrance',
-          image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?ixlib=rb-4.0.3',
+          image:
+            'https://images.unsplash.com/photo-1571896349842-33c89424de2d?ixlib=rb-4.0.3',
         },
         {
           title: 'Luxury Suites',
-          image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3',
+          image:
+            'https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3',
         },
         {
           title: 'Fine Dining',
-          image: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?ixlib=rb-4.0.3',
+          image:
+            'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?ixlib=rb-4.0.3',
         },
       ],
       amenities: [
@@ -50,19 +53,39 @@ export const hotelData = {
       amenityCategories: [
         {
           title: 'Luxury Services',
-          items: ['24/7 Concierge', 'Butler Service', 'Limousine Service', 'Personal Shopping'],
+          items: [
+            '24/7 Concierge',
+            'Butler Service',
+            'Limousine Service',
+            'Personal Shopping',
+          ],
         },
         {
           title: 'Wellness',
-          items: ['Luxury Spa', 'Fitness Center', 'Swimming Pool', 'Yoga Classes'],
+          items: [
+            'Luxury Spa',
+            'Fitness Center',
+            'Swimming Pool',
+            'Yoga Classes',
+          ],
         },
         {
           title: 'Business',
-          items: ['Business Center', 'Meeting Rooms', 'Conference Facilities', 'Secretarial Services'],
+          items: [
+            'Business Center',
+            'Meeting Rooms',
+            'Conference Facilities',
+            'Secretarial Services',
+          ],
         },
         {
           title: 'Dining',
-          items: ['Multiple Restaurants', 'Room Service', 'Private Dining', 'Wine Cellar'],
+          items: [
+            'Multiple Restaurants',
+            'Room Service',
+            'Private Dining',
+            'Wine Cellar',
+          ],
         },
       ],
       checkInTime: '3:00 PM',
@@ -72,19 +95,23 @@ export const hotelData = {
       features: [
         {
           title: 'Legendary Service',
-          description: 'Experience the renowned Taj hospitality with personalized service and attention to detail.',
+          description:
+            'Experience the renowned Taj hospitality with personalized service and attention to detail.',
         },
         {
           title: 'Prime Location',
-          description: 'Located in the heart of New Delhi with easy access to business districts and attractions.',
+          description:
+            'Located in the heart of New Delhi with easy access to business districts and attractions.',
         },
         {
           title: 'World-Class Dining',
-          description: 'Multiple award-winning restaurants serving global cuisines and signature dishes.',
+          description:
+            'Multiple award-winning restaurants serving global cuisines and signature dishes.',
         },
         {
           title: 'Luxury Spa',
-          description: 'Rejuvenate at our luxury spa with traditional and modern wellness treatments.',
+          description:
+            'Rejuvenate at our luxury spa with traditional and modern wellness treatments.',
         },
       ],
       reviews: [
@@ -309,13 +336,13 @@ export const searchHotels = searchTerm => {
 };
 
 // API simulation functions
-export const fetchHotelData = async (hotelId) => {
+export const fetchHotelData = async hotelId => {
   // Simulate API call delay
   await new Promise(resolve => setTimeout(resolve, 500));
   return getHotelById(hotelId);
 };
 
-export const fetchHotelReviews = async (hotelId) => {
+export const fetchHotelReviews = async hotelId => {
   await new Promise(resolve => setTimeout(resolve, 300));
   const hotel = getHotelById(hotelId);
   return hotel?.reviews || [];
@@ -327,7 +354,7 @@ export const fetchRoomReviews = async (hotelId, roomId) => {
   return room?.reviews || [];
 };
 
-export const fetchHotelBookings = async (userId) => {
+export const fetchHotelBookings = async userId => {
   await new Promise(resolve => setTimeout(resolve, 400));
   return hotelData.bookings.filter(booking => booking.userId === userId);
 };

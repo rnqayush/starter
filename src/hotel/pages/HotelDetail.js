@@ -20,7 +20,11 @@ import { theme } from '../../styles/GlobalStyle';
 import HotelNavbar from '../components/HotelNavbar';
 import HotelFooter from '../components/HotelFooter';
 
-import { getHotelByIdOrSlug, fetchHotelData, fetchHotelReviews } from '../../DummyData/hotels';
+import {
+  getHotelByIdOrSlug,
+  fetchHotelData,
+  fetchHotelReviews,
+} from '../../DummyData/hotels';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -1379,28 +1383,40 @@ const HotelDetail = () => {
               </SectionSubtitle>
             </SectionHeader>
             {hotel.reviews && hotel.reviews.length > 0 ? (
-              <div style={{ display: 'grid', gap: theme.spacing.xl, marginBottom: theme.spacing.xl }}>
-                {hotel.reviews.slice(0, 3).map((review) => (
+              <div
+                style={{
+                  display: 'grid',
+                  gap: theme.spacing.xl,
+                  marginBottom: theme.spacing.xl,
+                }}
+              >
+                {hotel.reviews.slice(0, 3).map(review => (
                   <TestimonialCard key={review.id}>
-                    <TestimonialQuote>
-                      "{review.comment}"
-                    </TestimonialQuote>
+                    <TestimonialQuote>"{review.comment}"</TestimonialQuote>
                     <TestimonialAuthor>
                       <div className="avatar">{review.guestName.charAt(0)}</div>
                       <div className="info">
                         <div className="name">
                           {review.guestName}
                           {review.verified && (
-                            <span style={{ color: '#fbbf24', fontSize: '0.8rem', marginLeft: theme.spacing.sm }}>
+                            <span
+                              style={{
+                                color: '#fbbf24',
+                                fontSize: '0.8rem',
+                                marginLeft: theme.spacing.sm,
+                              }}
+                            >
                               ✓ Verified Stay
                             </span>
                           )}
                         </div>
                         <div className="details">
-                          {review.roomType} • {new Date(review.date).toLocaleDateString('en-US', {
+                          {review.roomType} •{' '}
+                          {new Date(review.date).toLocaleDateString('en-US', {
                             year: 'numeric',
-                            month: 'short'
-                          })} • {review.rating}/5 ⭐
+                            month: 'short',
+                          })}{' '}
+                          • {review.rating}/5 ⭐
                         </div>
                       </div>
                     </TestimonialAuthor>
@@ -1410,10 +1426,10 @@ const HotelDetail = () => {
             ) : (
               <TestimonialCard>
                 <TestimonialQuote>
-                  "Absolutely exceptional service and stunning accommodations. The
-                  staff went above and beyond to make our anniversary celebration
-                  truly memorable. The attention to detail and luxury amenities
-                  exceeded all our expectations."
+                  "Absolutely exceptional service and stunning accommodations.
+                  The staff went above and beyond to make our anniversary
+                  celebration truly memorable. The attention to detail and
+                  luxury amenities exceeded all our expectations."
                 </TestimonialQuote>
                 <TestimonialAuthor>
                   <div className="avatar">RS</div>
