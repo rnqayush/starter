@@ -273,6 +273,12 @@ const AddRoomManager = () => {
 
     dispatch(addRoom(newRoom));
 
+    // Save changes to draft and publish to live data
+    dispatch(saveChanges());
+    dispatch(publishChanges());
+
+    console.log('Room added and published to live data:', newRoom.name);
+
     // Reset form
     setRoomData({
       name: '',
@@ -286,7 +292,7 @@ const AddRoomManager = () => {
       offer: '',
     });
 
-    alert('Room added successfully!');
+    alert('Room added and published to live hotel page successfully!');
   };
 
   const handleReset = () => {
