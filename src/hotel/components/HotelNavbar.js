@@ -15,11 +15,12 @@ import { theme, media } from '../../styles/GlobalStyle';
 import { getHotelByIdOrSlug } from '../../DummyData';
 
 const NavbarContainer = styled.nav.withConfig({
-  shouldForwardProp: prop => prop !== 'isTransparent',
+  shouldForwardProp: prop => prop !== 'isScrolled',
 })`
-  background: ${props => props.isTransparent ? 'rgba(255, 255, 255, 0.9)' : theme.colors.white};
-  backdrop-filter: ${props => props.isTransparent ? 'blur(10px)' : 'none'};
-  box-shadow: ${props => props.isTransparent ? 'none' : theme.shadows.md};
+  background: ${props => props.isScrolled ? theme.colors.white : 'rgba(255, 255, 255, 0.1)'};
+  backdrop-filter: ${props => props.isScrolled ? 'none' : 'blur(10px)'};
+  box-shadow: ${props => props.isScrolled ? theme.shadows.md : 'none'};
+  border-bottom: ${props => props.isScrolled ? 'none' : '1px solid rgba(255, 255, 255, 0.1)'};
   position: sticky;
   top: 0;
   z-index: 100;
