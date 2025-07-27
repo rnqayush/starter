@@ -51,11 +51,13 @@ export const {
 
 // Export utility functions with prefixed names to avoid conflicts
 // Automobile functions - using JSON data directly
-export const getVehiclesByCategory = (categoryId) => {
-  return automobileVehicles.filter(vehicle => vehicle.category.id === categoryId);
+export const getVehiclesByCategory = categoryId => {
+  return automobileVehicles.filter(
+    vehicle => vehicle.category.id === categoryId
+  );
 };
 
-export const getVehicleById = (id) => {
+export const getVehicleById = id => {
   return automobileVehicles.find(vehicle => vehicle.id === id);
 };
 
@@ -67,17 +69,19 @@ export const getOnSaleVehicles = () => {
   return automobileVehicles.filter(vehicle => vehicle.pricing?.onSale === true);
 };
 
-export const getVehiclesByAvailability = (status) => {
-  return automobileVehicles.filter(vehicle => vehicle.availability?.status === status);
+export const getVehiclesByAvailability = status => {
+  return automobileVehicles.filter(
+    vehicle => vehicle.availability?.status === status
+  );
 };
 
-export const getVehiclesByCondition = (condition) => {
+export const getVehiclesByCondition = condition => {
   return automobileVehicles.filter(vehicle => vehicle.condition === condition);
 };
 
-export const getVehiclesByMake = (make) => {
-  return automobileVehicles.filter(vehicle =>
-    vehicle.make.toLowerCase() === make.toLowerCase()
+export const getVehiclesByMake = make => {
+  return automobileVehicles.filter(
+    vehicle => vehicle.make.toLowerCase() === make.toLowerCase()
   );
 };
 
@@ -88,61 +92,71 @@ export const getVehiclesByPriceRange = (min, max) => {
   });
 };
 
-export const getVehicleAvailabilityStatus = (vehicle) => {
+export const getVehicleAvailabilityStatus = vehicle => {
   return vehicle.availability?.status || 'unknown';
 };
 
-export const getVehicleAvailabilityLabel = (status) => {
+export const getVehicleAvailabilityLabel = status => {
   const labels = {
-    'in_stock': 'In Stock',
-    'limited_stock': 'Limited Stock',
-    'out_of_stock': 'Out of Stock',
-    'pre_order': 'Pre-Order',
-    'sold': 'Sold'
+    in_stock: 'In Stock',
+    limited_stock: 'Limited Stock',
+    out_of_stock: 'Out of Stock',
+    pre_order: 'Pre-Order',
+    sold: 'Sold',
   };
   return labels[status] || 'Unknown';
 };
 
-export const getVehicleAvailabilityColor = (status) => {
+export const getVehicleAvailabilityColor = status => {
   const colors = {
-    'in_stock': '#10b981',
-    'limited_stock': '#f59e0b',
-    'out_of_stock': '#ef4444',
-    'pre_order': '#3b82f6',
-    'sold': '#6b7280'
+    in_stock: '#10b981',
+    limited_stock: '#f59e0b',
+    out_of_stock: '#ef4444',
+    pre_order: '#3b82f6',
+    sold: '#6b7280',
   };
   return colors[status] || '#6b7280';
 };
 
-export const getAutomobileVendorsByLocation = (location) => {
-  return automobileVendors.filter(vendor =>
-    vendor.contact?.address?.city?.toLowerCase().includes(location.toLowerCase()) ||
-    vendor.contact?.address?.state?.toLowerCase().includes(location.toLowerCase())
+export const getAutomobileVendorsByLocation = location => {
+  return automobileVendors.filter(
+    vendor =>
+      vendor.contact?.address?.city
+        ?.toLowerCase()
+        .includes(location.toLowerCase()) ||
+      vendor.contact?.address?.state
+        ?.toLowerCase()
+        .includes(location.toLowerCase())
   );
 };
 
-export const getAutomobileVendorById = (id) => {
+export const getAutomobileVendorById = id => {
   return automobileVendors.find(vendor => vendor.id === id);
 };
 
-export const getAutomobileVendorBySlug = (slug) => {
+export const getAutomobileVendorBySlug = slug => {
   return automobileVendors.find(vendor => vendor.slug === slug);
 };
 
-export const getAutomobileVendorByIdOrSlug = (identifier) => {
-  return getAutomobileVendorById(identifier) || getAutomobileVendorBySlug(identifier);
+export const getAutomobileVendorByIdOrSlug = identifier => {
+  return (
+    getAutomobileVendorById(identifier) || getAutomobileVendorBySlug(identifier)
+  );
 };
 
 export const getAutomobileFeaturedVendors = () => {
   return automobileVendors.filter(vendor => vendor.settings?.featured === true);
 };
 
-export const searchAutomobileVendors = (searchTerm) => {
+export const searchAutomobileVendors = searchTerm => {
   const term = searchTerm.toLowerCase();
-  return automobileVendors.filter(vendor =>
-    vendor.name.toLowerCase().includes(term) ||
-    vendor.businessInfo?.description?.toLowerCase().includes(term) ||
-    vendor.specialties?.some(specialty => specialty.toLowerCase().includes(term))
+  return automobileVendors.filter(
+    vendor =>
+      vendor.name.toLowerCase().includes(term) ||
+      vendor.businessInfo?.description?.toLowerCase().includes(term) ||
+      vendor.specialties?.some(specialty =>
+        specialty.toLowerCase().includes(term)
+      )
   );
 };
 
