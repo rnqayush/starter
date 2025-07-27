@@ -26,6 +26,7 @@ const initialState = {
     gallery: true,
     testimonials: true,
     'packages-pricing': true,
+    footer: true,
     customSections: true,
   },
   customSectionVisibility: {},
