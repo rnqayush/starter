@@ -77,11 +77,11 @@ function App() {
     setUser,
     userType,
     setUserType,
-    hotels: liveHotels, // Use live data from Redux
+    hotels: liveHotels, // Use live data from Redux for public pages
     setHotels,
     bookings,
     setBookings,
-    ownerHotels: draftHotels, // Admin sees draft data for editing
+    ownerHotels: liveHotels, // Admin should also see current live data for selection
     setOwnerHotels,
     // Expose both live and draft data for components that need to distinguish
     liveHotels,
