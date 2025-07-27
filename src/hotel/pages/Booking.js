@@ -11,7 +11,7 @@ import {
 import { theme } from '../../styles/GlobalStyle';
 import HotelNavbar from '../components/HotelNavbar';
 import HotelFooter from '../components/HotelFooter';
-import { getHotelByIdOrSlug, getRoomById } from '../../DummyData';
+import { getHotelByIdOrSlug, getRoomById, fetchHotelData } from '../../DummyData/hotels';
 
 const PageContainer = styled.div`
   min-height: 100vh;
