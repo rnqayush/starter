@@ -1556,32 +1556,49 @@ const VendorPage = () => {
   const [animatedSections, setAnimatedSections] = useState(new Set());
 
   useEffect(() => {
-    let vendorData = null;
+    const loadVendorData = async () => {
+      setLoading(true);
+      let vendorData = null;
 
-    // Priority 1: Use editing vendor data for real-time updates during editing
-    if (editingVendor && editingVendor.id === vendorId) {
-      vendorData = editingVendor;
-      console.log(
-        'Using editing vendor data for real-time updates:',
-        editingVendor
-      );
-    }
-    // Priority 2: Use saved vendor data from Redux vendors array
-    else if (vendors && vendors.length > 0) {
-      vendorData = vendors.find(v => v.id === vendorId);
-      console.log('Using saved vendor data from Redux:', vendorData);
-    }
-    // Priority 3: Fallback to dummy data
-    if (!vendorData) {
-      vendorData = getVendorById(vendorId);
-      console.log('Using fallback dummy data:', vendorData);
-    }
+      // Priority 1: Use editing vendor data for real-time updates during editing
+      if (editingVendor && editingVendor.id === vendorId) {
+        vendorData = editingVendor;
+        console.log('VendorPage: Using editing vendor data for real-time updates:', editingVendor);
+      }
+      // Priority 2: Use saved vendor data from Redux vendors array
+      else if (vendors && vendors.length > 0) {
+        vendorData = vendors.find(v => v.id === vendorId);
+        console.log('VendorPage: Using saved vendor data from Redux:', vendorData);
+      }
 
-    if (vendorData) {
-      setVendor(vendorData);
-      console.log('VendorPage: Updated vendor data', vendorData);
-    }
-    setLoading(false);
+      // Priority 3: Fetch from wedding.json and initialize Redux
+      if (!vendorData) {
+        try {
+          // Fetch vendor data from wedding.json
+          vendorData = getVendorById(vendorId);
+          console.log('VendorPage: Fetched vendor data from wedding.json:', vendorData);
+
+          if (vendorData) {
+            // Initialize vendor in Redux state
+            dispatch(initializeVendor(vendorData));
+            console.log('VendorPage: Initialized vendor in Redux state');
+          }
+        } catch (error) {
+          console.error('VendorPage: Error fetching vendor data:', error);
+        }
+      }
+
+      if (vendorData) {
+        setVendor(vendorData);
+        console.log('VendorPage: Set vendor data successfully:', vendorData);
+      } else {
+        console.warn('VendorPage: No vendor data found for ID:', vendorId);
+      }
+
+      setLoading(false);
+    };
+
+    loadVendorData();
 
     // Pre-fill form if user is logged in
     if (user) {
@@ -1591,7 +1608,7 @@ const VendorPage = () => {
         email: user.email || '',
       }));
     }
-  }, [vendorId, user, vendors, editingVendor]);
+  }, [vendorId, user, vendors, editingVendor, dispatch]);
 
   useEffect(() => {
     const handleScroll = () => {
