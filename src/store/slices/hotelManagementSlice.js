@@ -30,6 +30,31 @@ const hotelManagementSlice = createSlice({
   name: 'hotelManagement',
   initialState,
   reducers: {
+    // Action to fetch and store hotel data from API/JSON
+    loadHotelData: (state, action) => {
+      const hotelData = action.payload;
+
+      // Check if hotel already exists in state
+      const existingLiveIndex = state.liveHotels.findIndex(h => h.id === hotelData.id);
+      const existingDraftIndex = state.draftHotels.findIndex(h => h.id === hotelData.id);
+
+      if (existingLiveIndex !== -1) {
+        // Update existing hotel in live data
+        state.liveHotels[existingLiveIndex] = { ...hotelData };
+      } else {
+        // Add new hotel to live data
+        state.liveHotels.push({ ...hotelData });
+      }
+
+      if (existingDraftIndex !== -1) {
+        // Update existing hotel in draft data
+        state.draftHotels[existingDraftIndex] = { ...hotelData };
+      } else {
+        // Add new hotel to draft data
+        state.draftHotels.push({ ...hotelData });
+      }
+    },
+
     setEditingHotel: (state, action) => {
       // Get hotel from draft data for editing
       const hotel = state.draftHotels.find(h => h.id === action.payload);
