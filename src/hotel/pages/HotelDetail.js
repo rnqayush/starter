@@ -864,17 +864,17 @@ const AmenityItem = styled.li`
 `;
 
 const ReviewsSection = styled.div`
-  margin: ${theme.spacing.xxl} 0;
+  margin: calc(${theme.spacing.xxl} * 1.5) 0;
 `;
 
 const ReviewsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: ${theme.spacing.xl};
-  
+  gap: calc(${theme.spacing.xl} * 1.5);
+
   @media (max-width: ${theme.breakpoints.mobile}) {
     grid-template-columns: 1fr;
-    gap: ${theme.spacing.lg};
+    gap: calc(${theme.spacing.lg} * 1.3);
   }
 `;
 
