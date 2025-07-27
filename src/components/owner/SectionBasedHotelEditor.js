@@ -924,6 +924,42 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
               })
             );
             break;
+          case 'rating':
+            dispatch(updateHotelField({ field: 'rating', value: tempData[key] }));
+            // Also update hero quickInfo rating
+            if (editingHotel.sections?.hero?.quickInfo) {
+              const updatedQuickInfo = editingHotel.sections.hero.quickInfo.map(info =>
+                info.label === 'Rating'
+                  ? { ...info, value: `${tempData[key]}/5` }
+                  : info
+              );
+              dispatch(
+                updateHotelField({
+                  field: 'quickInfo',
+                  value: updatedQuickInfo,
+                  section: 'hero',
+                })
+              );
+            }
+            break;
+          case 'location':
+            dispatch(updateHotelField({ field: 'location', value: tempData[key] }));
+            // Also update hero quickInfo location
+            if (editingHotel.sections?.hero?.quickInfo) {
+              const updatedQuickInfo = editingHotel.sections.hero.quickInfo.map(info =>
+                info.label === 'Location'
+                  ? { ...info, value: tempData[key] }
+                  : info
+              );
+              dispatch(
+                updateHotelField({
+                  field: 'quickInfo',
+                  value: updatedQuickInfo,
+                  section: 'hero',
+                })
+              );
+            }
+            break;
           case 'description':
             dispatch(
               updateHotelField({
