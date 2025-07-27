@@ -343,6 +343,20 @@ const MyBookings = () => {
     );
   };
 
+  if (loading) {
+    return (
+      <PageContainer>
+        <HotelNavbar />
+        <Container>
+          <div style={{ textAlign: 'center', padding: '4rem 0' }}>
+            <h2>Loading your bookings...</h2>
+          </div>
+        </Container>
+        <HotelFooter />
+      </PageContainer>
+    );
+  }
+
   if (filteredBookings.length === 0) {
     return (
       <PageContainer>
