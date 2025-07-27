@@ -909,10 +909,7 @@ const VendorDashboard = () => {
           JSON.stringify(updatedVendor[key]) !==
             JSON.stringify(editingVendor[key])
         ) {
-          dispatch({
-            type: 'vendorManagement/updateVendorField',
-            payload: { field: key, value: updatedVendor[key] },
-          });
+          dispatch(updateVendorField({ field: key, value: updatedVendor[key] }));
         }
       });
 
