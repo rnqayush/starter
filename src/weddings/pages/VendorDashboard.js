@@ -60,7 +60,6 @@ import {
   updateFooterData,
   saveVendorChanges,
   discardVendorChanges,
-  toggleSectionVisibility,
   toggleRealTimeUpdates,
 } from '../../store/slices/weddingManagementSlice';
 
