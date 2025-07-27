@@ -1595,6 +1595,9 @@ const VendorPage = () => {
 
   // Intersection Observer for scroll animations
   useEffect(() => {
+    // Add smooth scrolling to the document
+    document.documentElement.style.scrollBehavior = 'smooth';
+
     observerRef.current = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -1629,6 +1632,7 @@ const VendorPage = () => {
 
     return () => {
       observerRef.current?.disconnect();
+      document.documentElement.style.scrollBehavior = 'auto';
     };
   }, [vendor]);
 
