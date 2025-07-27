@@ -350,7 +350,7 @@ const WeddingStoresListing = () => {
 
   const loadStoresForLocation = useCallback(location => {
     const vendorsWithDistance = updateVendorsWithDistance(
-      weddingVendors,
+      getStaticWeddingVendors(),
       location
     );
     setStores(vendorsWithDistance);
