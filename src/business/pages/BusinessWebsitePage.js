@@ -1849,10 +1849,9 @@ const BusinessWebsitePage = () => {
       {/* Team Section */}
       <Section id="team" background={theme.colors.gray50}>
         <SectionContainer>
-          <SectionTitle>Meet Our Team</SectionTitle>
+          <SectionTitle>{content.sections?.team?.title || 'Meet Our Team'}</SectionTitle>
           <SectionSubtitle>
-            Our experienced professionals are passionate about delivering
-            exceptional service and results.
+            {content.sections?.team?.subtitle || 'Our experienced professionals are passionate about delivering exceptional service and results.'}
           </SectionSubtitle>
           <TeamGrid>
             {(content.team || []).map((member, index) => (
