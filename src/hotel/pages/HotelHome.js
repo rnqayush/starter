@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { theme, media } from '../../styles/GlobalStyle';
 import HotelNavbar from '../components/HotelNavbar';
 import HotelFooter from '../components/HotelFooter';
 import HotelCard from '../components/HotelCard';
 import SearchForm from '../components/SearchForm';
-import { hotels } from '../../DummyData';
+import { hotels as fallbackHotels } from '../../DummyData';
 
 const PageContainer = styled.div`
   min-height: 100vh;
