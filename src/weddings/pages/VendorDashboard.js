@@ -1344,26 +1344,11 @@ const VendorDashboard = () => {
 
       console.log('Dispatching basic field updates...');
       // Update basic fields one by one
-      dispatch({
-        type: 'vendorManagement/updateVendorField',
-        payload: { field: 'name', value: heroData.name || '' },
-      });
-      dispatch({
-        type: 'vendorManagement/updateVendorField',
-        payload: { field: 'tagline', value: heroData.tagline || '' },
-      });
-      dispatch({
-        type: 'vendorManagement/updateVendorField',
-        payload: { field: 'image', value: heroData.image || '' },
-      });
-      dispatch({
-        type: 'vendorManagement/updateVendorField',
-        payload: { field: 'description', value: aboutUsData.description || '' },
-      });
-      dispatch({
-        type: 'vendorManagement/updateVendorField',
-        payload: { field: 'aboutUs', value: cleanAboutUs },
-      });
+      dispatch(updateVendorField({ field: 'name', value: heroData.name || '' }));
+      dispatch(updateVendorField({ field: 'tagline', value: heroData.tagline || '' }));
+      dispatch(updateVendorField({ field: 'image', value: heroData.image || '' }));
+      dispatch(updateVendorField({ field: 'description', value: aboutUsData.description || '' }));
+      dispatch(updateVendorField({ field: 'aboutUs', value: cleanAboutUs }));
 
       console.log('Dispatching array updates...');
       dispatch({
