@@ -1,7 +1,7 @@
 // Centralized data exports - all dummy data flows through this file
 
 // Import all data and utility functions with namespaced aliases to avoid conflicts
-import * as AutomobileData from './automobiles';
+import automobileData from './automobiles.json';
 import * as BusinessData from './business';
 import * as EcommerceData from './ecommerce';
 import * as WeddingData from '../utils/weddingAPI';
