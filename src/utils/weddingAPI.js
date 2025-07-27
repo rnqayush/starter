@@ -13,14 +13,128 @@ const getWeddingData = () => {
   throw new Error('Failed to load wedding data');
 };
 
-// Get static vendor data from JSON
+// Convert vendors object to array for backward compatibility
+const convertVendorsToArray = (vendorsObject) => {
+  if (!vendorsObject || typeof vendorsObject !== 'object') {
+    return [];
+  }
+  return Object.values(vendorsObject);
+};
+
+// Get static vendor data from JSON (converted to array for compatibility)
 export const getStaticWeddingVendors = () => {
   try {
     const data = getWeddingData();
-    return data.vendors || [];
+    // Handle both old array format and new object format
+    if (Array.isArray(data.vendors)) {
+      return data.vendors;
+    } else if (data.vendors && typeof data.vendors === 'object') {
+      return convertVendorsToArray(data.vendors);
+    }
+    return [];
   } catch (error) {
     console.error('Error loading wedding vendors:', error);
     return [];
+  }
+};
+
+// Get vendors object (new format)
+export const getVendorsObject = () => {
+  try {
+    const data = getWeddingData();
+    if (data.vendors && typeof data.vendors === 'object' && !Array.isArray(data.vendors)) {
+      return data.vendors;
+    } else if (Array.isArray(data.vendors)) {
+      // Convert array to object for new format
+      const vendorsObj = {};
+      data.vendors.forEach(vendor => {
+        if (vendor.id) {
+          vendorsObj[vendor.id] = vendor;
+        }
+      });
+      return vendorsObj;
+    }
+    return {};
+  } catch (error) {
+    console.error('Error loading vendors object:', error);
+    return {};
+  }
+};
+
+// Get sections configuration
+export const getSections = () => {
+  try {
+    const data = getWeddingData();
+    return data.sections || {};
+  } catch (error) {
+    console.error('Error loading sections:', error);
+    return {};
+  }
+};
+
+// Get website templates
+export const getWebsiteTemplates = () => {
+  try {
+    const data = getWeddingData();
+    return data.websiteTemplates || {};
+  } catch (error) {
+    console.error('Error loading website templates:', error);
+    return {};
+  }
+};
+
+// Get default section order
+export const getDefaultSectionOrder = () => {
+  try {
+    const data = getWeddingData();
+    return data.defaultSectionOrder || [
+      'hero',
+      'about-us',
+      'services-offered',
+      'recent-work',
+      'gallery',
+      'packages-pricing',
+      'testimonials',
+      'faq',
+      'contact',
+      'footer'
+    ];
+  } catch (error) {
+    console.error('Error loading default section order:', error);
+    return ['hero', 'about-us', 'services-offered', 'recent-work', 'gallery', 'packages-pricing', 'testimonials', 'faq', 'contact', 'footer'];
+  }
+};
+
+// Get default section visibility
+export const getDefaultSectionVisibility = () => {
+  try {
+    const data = getWeddingData();
+    return data.defaultSectionVisibility || {
+      'hero': true,
+      'about-us': true,
+      'services-offered': true,
+      'recent-work': true,
+      'gallery': true,
+      'packages-pricing': true,
+      'testimonials': true,
+      'faq': true,
+      'contact': true,
+      'footer': true
+    };
+  } catch (error) {
+    console.error('Error loading default section visibility:', error);
+    return {
+      'hero': true,
+      'about-us': true,
+      'services-offered': true,
+      'recent-work': true,
+      'gallery': true,
+      'packages-pricing': true,
+      'testimonials': true,
+      'faq': true,
+      'contact': true,
+      'footer': true
+    };
   }
 };
 
@@ -44,7 +158,7 @@ export const getWeddingVendors = async () => {
     const data = getWeddingData();
     return {
       success: true,
-      data: data.vendors || [],
+      data: convertVendorsToArray(data.vendors) || [],
       meta: weddingData.meta
     };
   } catch (error) {
@@ -56,11 +170,22 @@ export const getWeddingVendors = async () => {
   }
 };
 
-// Get vendor by ID
+// Get vendor by ID - works with both array and object formats
 export const getVendorById = (id) => {
   try {
-    const vendors = getStaticWeddingVendors();
-    return vendors.find(vendor => vendor.id === id) || null;
+    const data = getWeddingData();
+    
+    // Try object format first (new format)
+    if (data.vendors && typeof data.vendors === 'object' && !Array.isArray(data.vendors)) {
+      return data.vendors[id] || null;
+    }
+    
+    // Fallback to array format (old format)
+    if (Array.isArray(data.vendors)) {
+      return data.vendors.find(vendor => vendor.id === id) || null;
+    }
+    
+    return null;
   } catch (error) {
     console.error('Error finding vendor by ID:', error);
     return null;
@@ -79,6 +204,7 @@ export const getVendorsByLocation = (city, state) => {
     const vendors = getStaticWeddingVendors();
     return vendors.filter(
       vendor =>
+        vendor.city && vendor.state &&
         vendor.city.toLowerCase() === city.toLowerCase() &&
         vendor.state.toLowerCase() === state.toLowerCase()
     );
@@ -118,11 +244,11 @@ export const searchVendors = (query) => {
     const searchTerm = query.toLowerCase();
     return vendors.filter(
       vendor =>
-        vendor.name.toLowerCase().includes(searchTerm) ||
-        vendor.specialties?.some(specialty =>
+        (vendor.name && vendor.name.toLowerCase().includes(searchTerm)) ||
+        (vendor.specialties && vendor.specialties.some(specialty =>
           specialty.toLowerCase().includes(searchTerm)
-        ) ||
-        vendor.description.toLowerCase().includes(searchTerm)
+        )) ||
+        (vendor.description && vendor.description.toLowerCase().includes(searchTerm))
     );
   } catch (error) {
     console.error('Error searching vendors:', error);
@@ -233,6 +359,35 @@ export const updateVendor = async (vendorId, updateData) => {
   }
 };
 
+// Update vendor sections
+export const updateVendorSections = async (vendorId, sectionsData) => {
+  await simulateApiDelay(300);
+  try {
+    const vendor = getVendorById(vendorId);
+    if (!vendor) {
+      throw new Error('Vendor not found');
+    }
+    
+    const updatedVendor = {
+      ...vendor,
+      ...sectionsData,
+      updatedAt: new Date().toISOString()
+    };
+    
+    return {
+      success: true,
+      data: updatedVendor,
+      message: 'Vendor sections updated successfully'
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: error.message,
+      data: null
+    };
+  }
+};
+
 // Get vendor statistics
 export const getVendorStats = async (vendorId) => {
   await simulateApiDelay();
@@ -267,6 +422,53 @@ export const getVendorStats = async (vendorId) => {
   }
 };
 
+// Create a new wedding website
+export const createWeddingWebsite = async (vendorData, templateId = 'default') => {
+  await simulateApiDelay(500);
+  try {
+    const templates = getWebsiteTemplates();
+    const template = templates[templateId] || templates['default'];
+    const sections = getSections();
+    
+    const newVendor = {
+      id: vendorData.id || `vendor-${Date.now()}`,
+      ...vendorData,
+      sectionOrder: template.sections || getDefaultSectionOrder(),
+      sectionVisibility: getDefaultSectionVisibility(),
+      theme: template.theme || {
+        primaryColor: '#db2777',
+        secondaryColor: '#f472b6',
+        backgroundColor: '#fdf2f8',
+        textColor: '#1f2937'
+      },
+      sections: template.sections.reduce((acc, sectionId) => {
+        if (sections[sectionId]) {
+          acc[sectionId] = {
+            ...sections[sectionId],
+            enabled: true,
+            customContent: {}
+          };
+        }
+        return acc;
+      }, {}),
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+    
+    return {
+      success: true,
+      data: newVendor,
+      message: 'Wedding website created successfully'
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: error.message,
+      data: null
+    };
+  }
+};
+
 // Legacy compatibility - export the same function names as the old JS file
 export const weddingVendors = getStaticWeddingVendors();
 export const getWeddingVendorById = getVendorById;
@@ -285,6 +487,11 @@ const weddingAPI = {
   searchVendors,
   getBookingsByVendorId,
   getBookingsByUserId,
+  getVendorsObject,
+  getSections,
+  getWebsiteTemplates,
+  getDefaultSectionOrder,
+  getDefaultSectionVisibility,
   
   // Async functions
   getWeddingVendors,
@@ -295,7 +502,9 @@ const weddingAPI = {
   getWeddingBookings,
   createBooking,
   updateVendor,
+  updateVendorSections,
   getVendorStats,
+  createWeddingWebsite,
   
   // Legacy compatibility
   weddingVendors,
