@@ -378,6 +378,7 @@ export const {
   updateRoom,
   removeRoom,
   saveChanges,
+  publishChanges,
   discardChanges,
   clearEditingHotel,
   toggleSectionVisibility,
@@ -389,5 +390,19 @@ export const {
   addAmenityToCategory,
   removeAmenityFromCategory,
 } = hotelManagementSlice.actions;
+
+// Selectors
+export const selectHasPendingChanges = (state, hotelId) => {
+  return state.hotelManagement.pendingChanges[hotelId] &&
+         Object.keys(state.hotelManagement.pendingChanges[hotelId]).length > 0;
+};
+
+export const selectDraftHotel = (state, hotelId) => {
+  return state.hotelManagement.draftHotels.find(h => h.id === hotelId);
+};
+
+export const selectLiveHotel = (state, hotelId) => {
+  return state.hotelManagement.liveHotels.find(h => h.id === hotelId);
+};
 
 export default hotelManagementSlice.reducer;
