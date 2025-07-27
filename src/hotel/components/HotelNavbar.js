@@ -401,7 +401,7 @@ const HotelNavbar = ({ showBackToMain = true }) => {
   return (
     <NavbarContainer isScrolled={isScrolled}>
       <NavbarContent>
-        <Logo to={currentHotel ? `/${currentHotel.slug}` : '/hotels'}>
+        <Logo to={currentHotel ? `/${currentHotel.slug}` : '/hotels'} className="nav-text">
           <FaHotel />
           {currentHotel ? currentHotel.name : 'HotelBooker'}
         </Logo>
