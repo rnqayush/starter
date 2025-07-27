@@ -16,7 +16,8 @@ const createApiResponse = (data, success = true, message = '') => ({
 export const fetchHotels = async (filters = {}) => {
   await delay(300);
 
-  let hotels = [...hotelData.hotels];
+  // Since we now have a single hotel object, create array for compatibility
+  let hotels = [hotelData.data.hotel];
 
   // Apply filters
   if (filters.city) {
