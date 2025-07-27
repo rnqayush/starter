@@ -1357,11 +1357,11 @@ const VendorDashboard = () => {
         field: 'sectionOrder',
         value: completeSectionOrder.length > 0 ? completeSectionOrder : sectionOrder,
       }));
-      dispatch(updateVendorField({ field: 'customSections', value: customSections }));
-      dispatch(updateVendorField({ field: 'sectionVisibility', value: sectionVisibility }));
+      dispatch(updateVendorField({ field: 'customSections', value: customSections || [] }));
+      dispatch(updateVendorField({ field: 'sectionVisibility', value: sectionVisibility || {} }));
       dispatch(updateVendorField({
         field: 'customSectionVisibility',
-        value: customSectionVisibility,
+        value: customSectionVisibility || {},
       }));
 
       console.log('Saving changes...');
