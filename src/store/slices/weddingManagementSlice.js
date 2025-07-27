@@ -226,12 +226,65 @@ const weddingManagementSlice = createSlice({
           new: action.payload,
         };
         state.hasUnsavedVendorChanges = true;
-        
+
         // Real-time update
         if (state.realTimeUpdates) {
           const vendorIndex = state.vendors.findIndex(v => v.id === state.editingVendor.id);
           if (vendorIndex !== -1) {
             state.vendors[vendorIndex].customSections = action.payload;
+          }
+        }
+      }
+    },
+
+    updateFooterData: (state, action) => {
+      if (state.editingVendor) {
+        const { footerData } = action.payload;
+
+        // Update footer-related fields in editing vendor
+        state.editingVendor.footerColumns = footerData.columns;
+        state.editingVendor.footerCopyright = footerData.copyrightText;
+        state.editingVendor.footerBackgroundColor = footerData.backgroundColor;
+        state.editingVendor.footerTextColor = footerData.textColor;
+        state.editingVendor.footerDescription = footerData.description;
+
+        // Update social links (they can be used in both contact and footer sections)
+        state.editingVendor.socialLinks = footerData.socialLinks;
+
+        // Track changes
+        state.vendorChanges.footerColumns = {
+          old: state.originalVendor.footerColumns || [],
+          new: footerData.columns,
+        };
+        state.vendorChanges.footerCopyright = {
+          old: state.originalVendor.footerCopyright || '',
+          new: footerData.copyrightText,
+        };
+        state.vendorChanges.footerBackgroundColor = {
+          old: state.originalVendor.footerBackgroundColor || '#1f2937',
+          new: footerData.backgroundColor,
+        };
+        state.vendorChanges.footerTextColor = {
+          old: state.originalVendor.footerTextColor || '#ffffff',
+          new: footerData.textColor,
+        };
+        state.vendorChanges.socialLinks = {
+          old: state.originalVendor.socialLinks || {},
+          new: footerData.socialLinks,
+        };
+
+        state.hasUnsavedVendorChanges = true;
+
+        // Real-time update
+        if (state.realTimeUpdates) {
+          const vendorIndex = state.vendors.findIndex(v => v.id === state.editingVendor.id);
+          if (vendorIndex !== -1) {
+            state.vendors[vendorIndex].footerColumns = footerData.columns;
+            state.vendors[vendorIndex].footerCopyright = footerData.copyrightText;
+            state.vendors[vendorIndex].footerBackgroundColor = footerData.backgroundColor;
+            state.vendors[vendorIndex].footerTextColor = footerData.textColor;
+            state.vendors[vendorIndex].footerDescription = footerData.description;
+            state.vendors[vendorIndex].socialLinks = footerData.socialLinks;
           }
         }
       }
