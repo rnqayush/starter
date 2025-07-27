@@ -253,7 +253,8 @@
         "gallery",
         "amenities",
         "testimonials",
-        "contact"
+        "contact",
+        "footer"
       ],
       "sectionVisibility": {
         "hero": true,
