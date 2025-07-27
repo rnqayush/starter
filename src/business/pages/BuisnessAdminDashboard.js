@@ -1130,6 +1130,37 @@ const BuisnessAdminDashboard = () => {
           },
         });
 
+        // Initialize UI content data from API data
+        setUiContentData(businessData.ui || {
+          sections: businessData.sections || {},
+          buttons: {
+            bookNow: 'Book Now',
+            learnMore: 'Learn More',
+            sendMessage: 'Send Message',
+            contactUs: 'Contact Us'
+          },
+          contactForm: {
+            placeholders: {
+              name: 'Your Name',
+              email: 'Your Email',
+              phone: 'Your Phone',
+              message: 'Your Message'
+            }
+          },
+          businessHours: {
+            title: 'Business Hours',
+            contactInfoTitle: 'Contact Information'
+          }
+        });
+
+        // Initialize statistics data from API data
+        setStatisticsData(businessData.about?.stats || [
+          { number: '100+', label: 'Services' },
+          { number: '5+', label: 'Years Experience' },
+          { number: '4.9', label: '★ Average Rating' },
+          { number: '200+', label: 'Happy Clients' }
+        ]);
+
       } catch (error) {
         console.error('[AdminDashboard] Error fetching business data:', error);
         setApiError(error.message);
