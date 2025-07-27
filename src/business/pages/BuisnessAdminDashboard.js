@@ -3475,7 +3475,7 @@ const BuisnessAdminDashboard = () => {
                   <FormGroup>
                     <FormLabel>Primary Action Button</FormLabel>
                     <FormInput
-                      value={uiContentData.buttons?.bookNow || ''}
+                      value={uiContentData.buttons?.bookNow || 'Book Now'}
                       onChange={e => {
                         setUiContentData(prev => ({
                           ...prev,
@@ -3489,7 +3489,7 @@ const BuisnessAdminDashboard = () => {
                   <FormGroup>
                     <FormLabel>Send Message Button</FormLabel>
                     <FormInput
-                      value={uiContentData.buttons?.sendMessage || ''}
+                      value={uiContentData.buttons?.sendMessage || 'Send Message'}
                       onChange={e => {
                         setUiContentData(prev => ({
                           ...prev,
@@ -3503,7 +3503,7 @@ const BuisnessAdminDashboard = () => {
                   <FormGroup>
                     <FormLabel>Contact Us Button</FormLabel>
                     <FormInput
-                      value={uiContentData.buttons?.contactUs || ''}
+                      value={uiContentData.buttons?.contactUs || 'Contact Us'}
                       onChange={e => {
                         setUiContentData(prev => ({
                           ...prev,
@@ -3517,7 +3517,7 @@ const BuisnessAdminDashboard = () => {
                   <FormGroup>
                     <FormLabel>Learn More Button</FormLabel>
                     <FormInput
-                      value={uiContentData.buttons?.learnMore || ''}
+                      value={uiContentData.buttons?.learnMore || 'Learn More'}
                       onChange={e => {
                         setUiContentData(prev => ({
                           ...prev,
@@ -4132,7 +4132,7 @@ const BuisnessAdminDashboard = () => {
                     portfolio: '💼',
                     skills: '🎯',
                     experience: '📄',
-                    team: '👨‍👩‍👧‍👦',
+                    team: '👨‍👩‍👧‍��',
                     gallery: '📸',
                     packages: '💰',
                     testimonials: '💬',
