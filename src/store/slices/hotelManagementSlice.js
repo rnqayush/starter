@@ -392,6 +392,7 @@ const hotelManagementSlice = createSlice({
 });
 
 export const {
+  loadHotelData,
   setEditingHotel,
   updateHotelField,
   updateHotelImage,
