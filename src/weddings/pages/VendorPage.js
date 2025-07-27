@@ -695,6 +695,7 @@ const Section = styled.section.withConfig({
   shouldForwardProp: prop => !['backgroundColor', 'animated'].includes(prop),
 })`
   padding: ${theme.spacing.xxl} ${theme.spacing.md};
+  margin-bottom: ${theme.spacing.xxl};
   background: ${props => props.backgroundColor || 'white'};
   position: relative;
   overflow: hidden;
@@ -718,6 +719,11 @@ const Section = styled.section.withConfig({
     right: 0;
     height: 1px;
     background: linear-gradient(90deg, transparent, rgba(0,0,0,0.1), transparent);
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    margin-bottom: ${theme.spacing.xl};
+    padding: ${theme.spacing.xl} ${theme.spacing.sm};
   }
 `;
 
