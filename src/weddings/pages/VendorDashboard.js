@@ -3468,7 +3468,7 @@ const VendorDashboard = () => {
                           type="checkbox"
                           checked={customSectionVisibility[section.id] || false}
                           onChange={() =>
-                            toggleSectionVisibility(`custom-${section.id}`)
+                            handleSectionVisibilityToggle(`custom-${section.id}`)
                           }
                         />
                         <span></span>
