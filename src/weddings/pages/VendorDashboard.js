@@ -870,10 +870,12 @@ const VendorDashboard = () => {
         // Immediately update Redux for real-time preview
         if (editingVendor) {
           setTimeout(() => {
-            dispatch(updateVendorField({
-              field: 'customSectionVisibility',
-              value: newVisibility
-            }));
+            dispatch(
+              updateVendorField({
+                field: 'customSectionVisibility',
+                value: newVisibility,
+              })
+            );
           }, 0);
         }
 
@@ -891,10 +893,12 @@ const VendorDashboard = () => {
         // Immediately update Redux for real-time preview
         if (editingVendor) {
           setTimeout(() => {
-            dispatch(updateVendorField({
-              field: 'sectionVisibility',
-              value: newVisibility
-            }));
+            dispatch(
+              updateVendorField({
+                field: 'sectionVisibility',
+                value: newVisibility,
+              })
+            );
           }, 0);
         }
 
@@ -1394,7 +1398,8 @@ const VendorDashboard = () => {
           });
           return cleanGallery;
         })(),
-        sectionOrder: completeSectionOrder.length > 0 ? completeSectionOrder : sectionOrder,
+        sectionOrder:
+          completeSectionOrder.length > 0 ? completeSectionOrder : sectionOrder,
         customSections: customSections,
         sectionVisibility: sectionVisibility,
         customSectionVisibility: customSectionVisibility,
@@ -2401,7 +2406,9 @@ const VendorDashboard = () => {
                   <input
                     type="checkbox"
                     checked={sectionVisibility['services-offered']}
-                    onChange={() => handleSectionVisibilityToggle('services-offered')}
+                    onChange={() =>
+                      handleSectionVisibilityToggle('services-offered')
+                    }
                   />
                   <span></span>
                 </ToggleSwitch>
@@ -2540,7 +2547,9 @@ const VendorDashboard = () => {
                   <input
                     type="checkbox"
                     checked={sectionVisibility['recent-work']}
-                    onChange={() => handleSectionVisibilityToggle('recent-work')}
+                    onChange={() =>
+                      handleSectionVisibilityToggle('recent-work')
+                    }
                   />
                   <span></span>
                 </ToggleSwitch>
@@ -3042,7 +3051,9 @@ const VendorDashboard = () => {
                   <input
                     type="checkbox"
                     checked={sectionVisibility['testimonials']}
-                    onChange={() => handleSectionVisibilityToggle('testimonials')}
+                    onChange={() =>
+                      handleSectionVisibilityToggle('testimonials')
+                    }
                   />
                   <span></span>
                 </ToggleSwitch>
@@ -3140,7 +3151,9 @@ const VendorDashboard = () => {
                   <input
                     type="checkbox"
                     checked={sectionVisibility['packages-pricing']}
-                    onChange={() => handleSectionVisibilityToggle('packages-pricing')}
+                    onChange={() =>
+                      handleSectionVisibilityToggle('packages-pricing')
+                    }
                   />
                   <span></span>
                 </ToggleSwitch>
@@ -3491,7 +3504,9 @@ const VendorDashboard = () => {
                           type="checkbox"
                           checked={customSectionVisibility[section.id] || false}
                           onChange={() =>
-                            handleSectionVisibilityToggle(`custom-${section.id}`)
+                            handleSectionVisibilityToggle(
+                              `custom-${section.id}`
+                            )
                           }
                         />
                         <span></span>

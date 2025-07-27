@@ -35,7 +35,7 @@ import { useAuth } from '../../context/AuthContext';
 import {
   initializeVendor,
   setEditingVendor,
-  loadVendorFromJson
+  loadVendorFromJson,
 } from '../../store/slices/weddingManagementSlice';
 
 // Keyframe animations
@@ -162,7 +162,11 @@ const PageContainer = styled.div`
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(45deg, rgba(59, 130, 246, 0.03) 0%, rgba(147, 51, 234, 0.03) 100%);
+    background: linear-gradient(
+      45deg,
+      rgba(59, 130, 246, 0.03) 0%,
+      rgba(147, 51, 234, 0.03) 100%
+    );
     pointer-events: none;
     z-index: -1;
   }
@@ -174,8 +178,17 @@ const PageContainer = styled.div`
     left: 0;
     right: 0;
     bottom: 0;
-    background: radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.05) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(147, 51, 234, 0.05) 0%, transparent 50%);
+    background:
+      radial-gradient(
+        circle at 20% 80%,
+        rgba(59, 130, 246, 0.05) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 80% 20%,
+        rgba(147, 51, 234, 0.05) 0%,
+        transparent 50%
+      );
     pointer-events: none;
     z-index: -1;
   }
@@ -202,23 +215,30 @@ const BackToTopButton = styled.button.withConfig({
   z-index: 1000;
   opacity: ${props => (props.visible ? 1 : 0)};
   visibility: ${props => (props.visible ? 'visible' : 'hidden')};
-  transform: ${props => (props.visible ? 'translateY(0) scale(1)' : 'translateY(20px) scale(0.8)')};
+  transform: ${props =>
+    props.visible ? 'translateY(0) scale(1)' : 'translateY(20px) scale(0.8)'};
   backdrop-filter: blur(10px);
-  background: ${props => `linear-gradient(135deg, ${props.primaryColor || theme.colors.primary}, ${props.primaryColor || theme.colors.primary}dd)`};
+  background: ${props =>
+    `linear-gradient(135deg, ${props.primaryColor || theme.colors.primary}, ${props.primaryColor || theme.colors.primary}dd)`};
 
   &::before {
     content: '';
     position: absolute;
     inset: 0;
     border-radius: 50%;
-    background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
+    background: linear-gradient(
+      45deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
     opacity: 0;
     transition: opacity 0.3s ease;
   }
 
   &:hover {
     transform: translateY(-4px) scale(1.1);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
     animation: ${pulse} 1.5s infinite;
 
     &::before {
@@ -273,7 +293,11 @@ const HeroSection = styled.section.withConfig({
     left: 0;
     right: 0;
     bottom: 0;
-    background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.3) 100%);
+    background: radial-gradient(
+      circle at center,
+      transparent 0%,
+      rgba(0, 0, 0, 0.3) 100%
+    );
     z-index: 1;
   }
 
@@ -336,7 +360,11 @@ const HeroContent = styled.div`
     transform: translate(-50%, -50%);
     width: 150%;
     height: 150%;
-    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    background: radial-gradient(
+      circle,
+      rgba(255, 255, 255, 0.1) 0%,
+      transparent 70%
+    );
     border-radius: 50%;
     z-index: -1;
     animation: ${pulse} 3s ease-in-out infinite;
@@ -363,7 +391,12 @@ const HeroTitle = styled.h1`
     transform: translateX(-50%);
     width: 100px;
     height: 3px;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.8),
+      transparent
+    );
     border-radius: 2px;
     animation: ${fadeIn} 1.5s ease-out 1s both;
   }
@@ -395,7 +428,14 @@ const HeroTagline = styled.p`
 const HeroButton = styled.button.withConfig({
   shouldForwardProp: prop => !['primaryColor'].includes(prop),
 })`
-  background: linear-gradient(135deg, ${props => props.primaryColor || theme.colors.primary}, ${props => props.primaryColor ? `${props.primaryColor}dd` : `${theme.colors.primary}dd`});
+  background: linear-gradient(
+    135deg,
+    ${props => props.primaryColor || theme.colors.primary},
+    ${props =>
+      props.primaryColor
+        ? `${props.primaryColor}dd`
+        : `${theme.colors.primary}dd`}
+  );
   color: white;
   border: none;
   padding: ${theme.spacing.lg} ${theme.spacing.xxl};
@@ -413,7 +453,7 @@ const HeroButton = styled.button.withConfig({
   position: relative;
   overflow: hidden;
   backdrop-filter: blur(10px);
-  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   animation: ${fadeInUp} 1.2s ease-out 0.9s both;
 
   &::before {
@@ -423,13 +463,18 @@ const HeroButton = styled.button.withConfig({
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
     transition: left 0.5s ease;
   }
 
   &:hover {
     transform: translateY(-3px) scale(1.03);
-    box-shadow: 0 12px 35px rgba(0,0,0,0.4);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4);
 
     &::before {
       left: 100%;
@@ -443,7 +488,9 @@ const HeroButton = styled.button.withConfig({
 
   &:focus {
     outline: none;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.3), 0 0 0 3px rgba(255,255,255,0.3);
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.3),
+      0 0 0 3px rgba(255, 255, 255, 0.3);
   }
 `;
 
@@ -471,7 +518,10 @@ const NavBar = styled.nav.withConfig({
     left: 0;
     right: 0;
     bottom: 0;
-    background: ${props => props.scrolled ? 'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%)' : 'transparent'};
+    background: ${props =>
+      props.scrolled
+        ? 'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%)'
+        : 'transparent'};
     z-index: -1;
   }
 `;
@@ -560,7 +610,11 @@ const NavActions = styled.div.withConfig({
     right: 0;
     bottom: 0;
     width: 320px;
-    background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(248,250,252,0.95));
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.95),
+      rgba(248, 250, 252, 0.95)
+    );
     backdrop-filter: blur(20px);
     flex-direction: column;
     justify-content: center;
@@ -579,7 +633,11 @@ const NavActions = styled.div.withConfig({
       left: 0;
       right: 0;
       bottom: 0;
-      background: linear-gradient(45deg, rgba(59, 130, 246, 0.02) 0%, rgba(147, 51, 234, 0.02) 100%);
+      background: linear-gradient(
+        45deg,
+        rgba(59, 130, 246, 0.02) 0%,
+        rgba(147, 51, 234, 0.02) 100%
+      );
       z-index: -1;
     }
   }
@@ -627,7 +685,7 @@ const NavButton = styled.button.withConfig({
       ? 'none'
       : `2px solid ${props.scrolled ? theme.colors.gray300 : 'white'}`};
   padding: ${theme.spacing.sm} ${theme.spacing.md};
-  border-radius: ${props => props.primary ? '25px' : theme.borderRadius.md};
+  border-radius: ${props => (props.primary ? '25px' : theme.borderRadius.md)};
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -636,7 +694,7 @@ const NavButton = styled.button.withConfig({
   gap: ${theme.spacing.xs};
   position: relative;
   overflow: hidden;
-  backdrop-filter: ${props => props.primary ? 'blur(10px)' : 'none'};
+  backdrop-filter: ${props => (props.primary ? 'blur(10px)' : 'none')};
 
   &::before {
     content: '';
@@ -645,13 +703,19 @@ const NavButton = styled.button.withConfig({
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
     transition: left 0.5s ease;
   }
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: ${props => props.primary ? '0 8px 25px rgba(0,0,0,0.2)' : 'none'};
+    box-shadow: ${props =>
+      props.primary ? '0 8px 25px rgba(0,0,0,0.2)' : 'none'};
 
     &::before {
       left: 100%;
@@ -696,19 +760,21 @@ const Section = styled.section.withConfig({
   opacity: 1;
   transform: translateY(0);
 
-  ${props => props.animated && css`
-    &:not(.animate-in) {
-      opacity: 0;
-      transform: translateY(30px);
-    }
+  ${props =>
+    props.animated &&
+    css`
+      &:not(.animate-in) {
+        opacity: 0;
+        transform: translateY(30px);
+      }
 
-    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 
-    &.animate-in {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  `}
+      &.animate-in {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    `}
 
   &::before {
     content: '';
@@ -717,7 +783,12 @@ const Section = styled.section.withConfig({
     left: 0;
     right: 0;
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(0,0,0,0.1), transparent);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(0, 0, 0, 0.1),
+      transparent
+    );
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
@@ -766,7 +837,12 @@ const SectionTitle = styled.h2`
     transform: translateX(-50%);
     width: 80px;
     height: 3px;
-    background: linear-gradient(90deg, transparent, ${theme.colors.primary}, transparent);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      ${theme.colors.primary},
+      transparent
+    );
     border-radius: 2px;
     opacity: 0;
     transition: opacity 0.6s ease 0.8s;
@@ -974,7 +1050,7 @@ const GalleryItem = styled.img`
   &:hover {
     transform: scale(1.08);
     filter: brightness(1.1);
-    box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
     border-radius: ${theme.borderRadius.lg};
   }
 
@@ -1153,7 +1229,7 @@ const FaqItem = styled.div`
   }
 
   &:hover {
-    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
     border-color: rgba(59, 130, 246, 0.1);
     transform: translateY(-2px);
   }
@@ -1177,7 +1253,12 @@ const FaqQuestion = styled.button`
 
   &:hover {
     color: ${theme.colors.primary};
-    background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.05), transparent);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(59, 130, 246, 0.05),
+      transparent
+    );
   }
 
   &:focus {
@@ -1259,7 +1340,7 @@ const FormInput = styled.input.withConfig({
 
   &:hover {
     border-color: ${theme.colors.gray300};
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   }
 `;
 
@@ -1293,14 +1374,21 @@ const FormTextarea = styled.textarea.withConfig({
 
   &:hover {
     border-color: ${theme.colors.gray300};
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   }
 `;
 
 const SubmitButton = styled.button.withConfig({
   shouldForwardProp: prop => !['primaryColor'].includes(prop),
 })`
-  background: linear-gradient(135deg, ${props => props.primaryColor || theme.colors.primary}, ${props => props.primaryColor ? `${props.primaryColor}dd` : `${theme.colors.primary}dd`});
+  background: linear-gradient(
+    135deg,
+    ${props => props.primaryColor || theme.colors.primary},
+    ${props =>
+      props.primaryColor
+        ? `${props.primaryColor}dd`
+        : `${theme.colors.primary}dd`}
+  );
   color: white;
   border: none;
   padding: ${theme.spacing.md} ${theme.spacing.xl};
@@ -1323,7 +1411,12 @@ const SubmitButton = styled.button.withConfig({
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
     transition: left 0.6s ease;
   }
 
@@ -1380,13 +1473,18 @@ const ContactItem = styled.div`
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.4),
+      transparent
+    );
     transition: left 0.6s ease;
   }
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
     border-color: rgba(59, 130, 246, 0.2);
 
     &::before {
@@ -1576,12 +1674,18 @@ const VendorPage = () => {
       // Priority 1: Use editing vendor data for real-time updates during editing
       if (editingVendor && editingVendor.id === vendorId) {
         vendorData = editingVendor;
-        console.log('VendorPage: Using editing vendor data for real-time updates:', editingVendor);
+        console.log(
+          'VendorPage: Using editing vendor data for real-time updates:',
+          editingVendor
+        );
       }
       // Priority 2: Use saved vendor data from Redux vendors array
       else if (vendors && vendors.length > 0) {
         vendorData = vendors.find(v => v.id === vendorId);
-        console.log('VendorPage: Using saved vendor data from Redux:', vendorData);
+        console.log(
+          'VendorPage: Using saved vendor data from Redux:',
+          vendorData
+        );
       }
 
       // Priority 3: Load from wedding.json and initialize Redux
@@ -1592,7 +1696,10 @@ const VendorPage = () => {
 
           // Try to get the vendor data after loading into Redux
           vendorData = getVendorById(vendorId);
-          console.log('VendorPage: Loaded vendor data from wedding.json:', vendorData);
+          console.log(
+            'VendorPage: Loaded vendor data from wedding.json:',
+            vendorData
+          );
         } catch (error) {
           console.error('VendorPage: Error loading vendor data:', error);
         }
@@ -1637,8 +1744,8 @@ const VendorPage = () => {
     document.documentElement.style.scrollBehavior = 'smooth';
 
     observerRef.current = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
+      entries => {
+        entries.forEach(entry => {
           if (entry.isIntersecting) {
             const element = entry.target;
             element.classList.add('animate-in');
@@ -1658,12 +1765,14 @@ const VendorPage = () => {
       },
       {
         threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
+        rootMargin: '0px 0px -50px 0px',
       }
     );
 
     // Observe all sections
-    const sections = document.querySelectorAll('section[id], .animate-on-scroll');
+    const sections = document.querySelectorAll(
+      'section[id], .animate-on-scroll'
+    );
     sections.forEach(section => {
       observerRef.current?.observe(section);
     });
@@ -2008,7 +2117,9 @@ const VendorPage = () => {
                   animated
                 >
                   <Container>
-                    <SectionTitle className="animate-on-scroll">About Us</SectionTitle>
+                    <SectionTitle className="animate-on-scroll">
+                      About Us
+                    </SectionTitle>
                     <AboutGrid>
                       <AboutContent>
                         <AboutText>
@@ -2076,14 +2187,19 @@ const VendorPage = () => {
               return (
                 <Section key="services" id="services" animated>
                   <Container>
-                    <SectionTitle className="animate-on-scroll">Services Offered</SectionTitle>
+                    <SectionTitle className="animate-on-scroll">
+                      Services Offered
+                    </SectionTitle>
                     <SectionSubtitle>
                       We provide comprehensive wedding services to make your
                       special day perfect
                     </SectionSubtitle>
                     <ServicesGrid>
                       {vendor.services?.map((service, index) => (
-                        <ServiceCard key={index} className="stagger-child animate-on-scroll">
+                        <ServiceCard
+                          key={index}
+                          className="stagger-child animate-on-scroll"
+                        >
                           <ServiceImage
                             src={service.image}
                             alt={service.name}
@@ -2107,7 +2223,9 @@ const VendorPage = () => {
                 vendor.locationPortfolio.length > 0 ? (
                 <Section key="portfolio" id="portfolio" animated>
                   <Container>
-                    <SectionTitle className="animate-on-scroll">Our Recent Work</SectionTitle>
+                    <SectionTitle className="animate-on-scroll">
+                      Our Recent Work
+                    </SectionTitle>
                     <SectionSubtitle>
                       Explore some of our beautiful weddings across different
                       venues and locations
@@ -2220,7 +2338,9 @@ const VendorPage = () => {
                   animated
                 >
                   <Container>
-                    <SectionTitle className="animate-on-scroll">Gallery</SectionTitle>
+                    <SectionTitle className="animate-on-scroll">
+                      Gallery
+                    </SectionTitle>
                     <SectionSubtitle>
                       Browse through our portfolio of beautiful weddings and
                       events
@@ -2271,13 +2391,19 @@ const VendorPage = () => {
               return vendor.packages ? (
                 <Section key="packages" id="packages" animated>
                   <Container>
-                    <SectionTitle className="animate-on-scroll">Packages & Pricing</SectionTitle>
+                    <SectionTitle className="animate-on-scroll">
+                      Packages & Pricing
+                    </SectionTitle>
                     <SectionSubtitle>
                       Choose the perfect package for your wedding celebration
                     </SectionSubtitle>
                     <PackagesGrid>
                       {vendor.packages.map((pkg, index) => (
-                        <PackageCard key={index} primaryColor={primaryColor} className="stagger-child animate-on-scroll">
+                        <PackageCard
+                          key={index}
+                          primaryColor={primaryColor}
+                          className="stagger-child animate-on-scroll"
+                        >
                           <PackageName>{pkg.name}</PackageName>
                           <PackagePrice primaryColor={primaryColor}>
                             {pkg.price}
@@ -2317,7 +2443,9 @@ const VendorPage = () => {
                   animated
                 >
                   <Container>
-                    <SectionTitle className="animate-on-scroll">What Our Couples Say</SectionTitle>
+                    <SectionTitle className="animate-on-scroll">
+                      What Our Couples Say
+                    </SectionTitle>
                     <SectionSubtitle>
                       Real testimonials from couples whose special day we helped
                       create
@@ -2362,7 +2490,9 @@ const VendorPage = () => {
       {/* FAQ Section */}
       <Section id="faq" animated>
         <Container>
-          <SectionTitle className="animate-on-scroll">Frequently Asked Questions</SectionTitle>
+          <SectionTitle className="animate-on-scroll">
+            Frequently Asked Questions
+          </SectionTitle>
           <SectionSubtitle>
             Find answers to common questions about our services
           </SectionSubtitle>
@@ -2383,12 +2513,17 @@ const VendorPage = () => {
       {/* Contact Section */}
       <Section id="contact" backgroundColor={theme.colors.gray50} animated>
         <Container>
-          <SectionTitle className="animate-on-scroll">Get In Touch</SectionTitle>
+          <SectionTitle className="animate-on-scroll">
+            Get In Touch
+          </SectionTitle>
           <SectionSubtitle>
             Ready to start planning your dream wedding? Send us a message!
           </SectionSubtitle>
           <ContactGrid>
-            <ContactForm onSubmit={handleContactSubmit} className="animate-on-scroll">
+            <ContactForm
+              onSubmit={handleContactSubmit}
+              className="animate-on-scroll"
+            >
               <FormGroup>
                 <FormLabel>Name *</FormLabel>
                 <FormInput

@@ -526,7 +526,10 @@ const weddingManagementSlice = createSlice({
           const vendorData = getVendorById(vendorId);
           if (vendorData) {
             state.vendors.push(vendorData);
-            console.log('Redux: Loaded vendor from JSON and added to state:', vendorData);
+            console.log(
+              'Redux: Loaded vendor from JSON and added to state:',
+              vendorData
+            );
           }
         } catch (error) {
           console.error('Redux: Error loading vendor from JSON:', error);
