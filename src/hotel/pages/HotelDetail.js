@@ -1338,6 +1338,10 @@ const HotelDetail = () => {
                 </ContentSection>
               );
 
+            case 'footer':
+              // Footer is handled separately at the bottom of the page
+              return null;
+
             default:
               // Handle custom sections
               const customSection = hotel.customSections?.find(
