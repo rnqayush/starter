@@ -851,18 +851,42 @@ const VendorDashboard = () => {
   };
 
   // Handle section visibility toggle
-  const toggleSectionVisibility = sectionId => {
+  const handleSectionVisibilityToggle = sectionId => {
     if (sectionId.startsWith('custom-')) {
       const customId = sectionId.replace('custom-', '');
-      setCustomSectionVisibility(prev => ({
-        ...prev,
-        [customId]: !prev[customId],
-      }));
+      setCustomSectionVisibility(prev => {
+        const newVisibility = {
+          ...prev,
+          [customId]: !prev[customId],
+        };
+
+        // Immediately update Redux for real-time preview
+        if (editingVendor) {
+          dispatch(updateVendorField({
+            field: 'customSectionVisibility',
+            value: newVisibility
+          }));
+        }
+
+        return newVisibility;
+      });
     } else {
-      setSectionVisibility(prev => ({
-        ...prev,
-        [sectionId]: !prev[sectionId],
-      }));
+      setSectionVisibility(prev => {
+        const newVisibility = {
+          ...prev,
+          [sectionId]: !prev[sectionId],
+        };
+
+        // Immediately update Redux for real-time preview
+        if (editingVendor) {
+          dispatch(updateVendorField({
+            field: 'sectionVisibility',
+            value: newVisibility
+          }));
+        }
+
+        return newVisibility;
+      });
     }
     trackSectionChange(sectionId);
   };
