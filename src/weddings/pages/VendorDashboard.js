@@ -1365,18 +1365,7 @@ const VendorDashboard = () => {
       }));
 
       console.log('Saving changes...');
-      // Temporarily comment out to debug
-      // dispatch(saveVendorChanges());
-
-      // Instead, let's try a simpler action first
-      try {
-        console.log('About to dispatch saveVendorChanges');
-        const action = saveVendorChanges();
-        console.log('Generated action:', action);
-        dispatch(action);
-      } catch (err) {
-        console.error('Error with saveVendorChanges:', err);
-      }
+      dispatch(saveVendorChanges());
 
       setSaved(false);
       alert('All changes published to live vendor page successfully!');
