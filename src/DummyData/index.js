@@ -87,15 +87,31 @@ export const {
   searchVendors: searchEcommerceVendors,
 } = EcommerceData;
 
-// Hotel functions
+// Hotel functions - now from hotelAPI
+import hotelAPI from '../utils/hotelAPI';
+
 export const {
   getHotelById,
   getHotelBySlug,
   getHotelByIdOrSlug,
   getRoomById,
-  getHotelsByCity,
-  searchHotels,
-} = HotelData;
+} = hotelAPI;
+
+// These need to be async now, but for compatibility we'll export sync versions
+export const getHotelsByCity = (city) => {
+  return hotels.filter(hotel =>
+    hotel.city.toLowerCase().includes(city.toLowerCase())
+  );
+};
+
+export const searchHotels = (searchTerm) => {
+  const term = searchTerm.toLowerCase();
+  return hotels.filter(hotel =>
+    hotel.name.toLowerCase().includes(term) ||
+    hotel.location.toLowerCase().includes(term) ||
+    hotel.city.toLowerCase().includes(term)
+  );
+};
 
 // Wedding functions
 export const {
