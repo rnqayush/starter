@@ -772,6 +772,7 @@ const VendorDashboard = () => {
     gallery: true,
     testimonials: true,
     'packages-pricing': true,
+    footer: true,
   });
 
   const [changedSections, setChangedSections] = useState(new Set());
@@ -785,6 +786,44 @@ const VendorDashboard = () => {
     images: [],
     cards: [],
     visible: true,
+  });
+
+  // Footer data state
+  const [footerData, setFooterData] = useState({
+    companyName: '',
+    description: '',
+    columns: [
+      {
+        title: 'Quick Links',
+        type: 'links',
+        content: [
+          { text: 'About Us', url: '#about' },
+          { text: 'Services', url: '#services' },
+          { text: 'Gallery', url: '#gallery' },
+          { text: 'Contact', url: '#contact' }
+        ]
+      },
+      {
+        title: 'Contact Info',
+        type: 'contact',
+        content: {
+          showPhone: true,
+          showEmail: true,
+          showAddress: true,
+          showHours: false
+        }
+      }
+    ],
+    socialLinks: {
+      instagram: '',
+      facebook: '',
+      pinterest: '',
+      twitter: '',
+      linkedin: ''
+    },
+    copyrightText: '',
+    backgroundColor: '#1f2937',
+    textColor: '#ffffff'
   });
   const [showDeleteAccountModal, setShowDeleteAccountModal] = useState(false);
 
@@ -975,6 +1014,12 @@ const VendorDashboard = () => {
       section: 'Content Management',
     },
     {
+      id: 'footer',
+      label: 'Footer',
+      icon: FaAddressCard,
+      section: 'Content Management',
+    },
+    {
       id: 'section-order',
       label: 'Section Order',
       icon: FaList,
@@ -1119,6 +1164,44 @@ const VendorDashboard = () => {
       );
       setCustomSections(customSectionsWithIds);
 
+      // Pre-fill footer data
+      setFooterData({
+        companyName: vendorData.name || '',
+        description: vendorData.description || '',
+        columns: vendorData.footerColumns || [
+          {
+            title: 'Quick Links',
+            type: 'links',
+            content: [
+              { text: 'About Us', url: '#about' },
+              { text: 'Services', url: '#services' },
+              { text: 'Gallery', url: '#gallery' },
+              { text: 'Contact', url: '#contact' }
+            ]
+          },
+          {
+            title: 'Contact Info',
+            type: 'contact',
+            content: {
+              showPhone: true,
+              showEmail: true,
+              showAddress: true,
+              showHours: false
+            }
+          }
+        ],
+        socialLinks: vendorData.socialLinks || {
+          instagram: '',
+          facebook: '',
+          pinterest: '',
+          twitter: '',
+          linkedin: ''
+        },
+        copyrightText: vendorData.footerCopyright || `© 2024 ${vendorData.name}. All rights reserved.`,
+        backgroundColor: vendorData.footerBackgroundColor || '#1f2937',
+        textColor: vendorData.footerTextColor || '#ffffff'
+      });
+
       // Initialize custom section visibility
       const customVisibility = {};
       customSectionsWithIds.forEach(section => {
@@ -1163,6 +1246,7 @@ const VendorDashboard = () => {
         testimonials: vendorData.sectionVisibility?.testimonials !== false,
         'packages-pricing':
           vendorData.sectionVisibility?.['packages-pricing'] !== false,
+        footer: vendorData.sectionVisibility?.footer !== false,
       };
       setSectionVisibility(initialVisibility);
     }
