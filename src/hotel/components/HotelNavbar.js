@@ -407,12 +407,13 @@ const HotelNavbar = ({ showBackToMain = true }) => {
         </Logo>
 
         <NavLinks isOpen={mobileMenuOpen}>
-          <NavLink to={'hoteladmin'} onClick={closeMobileMenu}>
+          <NavLink to={'hoteladmin'} onClick={closeMobileMenu} className="nav-link">
             Admin Panel
           </NavLink>
           <NavLink
             to={currentHotel ? `/${currentHotel.slug}/rooms` : '/hotels'}
             onClick={closeMobileMenu}
+            className="nav-link"
           >
             Book Room
           </NavLink>
