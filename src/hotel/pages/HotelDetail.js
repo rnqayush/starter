@@ -827,10 +827,12 @@ const HotelDetail = () => {
           foundHotel = hotelsFromStore.find(
             h => h.slug === slugParam || h.id === parseInt(slugParam)
           );
+          console.log('Found hotel in Redux:', foundHotel?.name);
         }
 
         // If not found in Redux, fetch from hotels.json and dispatch to Redux
         if (!foundHotel) {
+          console.log('Hotel not found in Redux, loading from JSON...');
           const hotelData = hotelJsonData.data.hotel;
 
           // Check if this is the hotel we're looking for
@@ -838,10 +840,14 @@ const HotelDetail = () => {
             foundHotel = hotelData;
 
             // Dispatch to Redux to store the hotel data
+            console.log('Dispatching hotel data to Redux:', hotelData.name);
             dispatch(loadHotelData(hotelData));
           }
         }
 
+        if (foundHotel) {
+          console.log('Setting hotel:', foundHotel.name, 'Sections:', Object.keys(foundHotel.sections || {}));
+        }
         setHotel(foundHotel);
       } catch (error) {
         console.error('Error fetching hotel data:', error);
