@@ -30,8 +30,12 @@ import {
   FaTimes,
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
-import { getWeddingVendorById as getVendorById } from '../../DummyData';
+import { getVendorById } from '../../utils/weddingAPI';
 import { useAuth } from '../../context/AuthContext';
+import {
+  initializeVendor,
+  setEditingVendor
+} from '../../store/slices/weddingManagementSlice';
 
 // Keyframe animations
 const fadeInUp = keyframes`
