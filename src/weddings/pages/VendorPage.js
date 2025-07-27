@@ -738,9 +738,15 @@ const SectionTitle = styled.h2`
   margin-bottom: ${theme.spacing.xl};
   color: ${theme.colors.gray900};
   position: relative;
-  opacity: 0;
-  transform: translateY(20px);
+  opacity: 1;
+  transform: translateY(0);
   transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
+  z-index: 2;
+
+  &:not(.animate-in) {
+    opacity: 0;
+    transform: translateY(20px);
+  }
 
   &.animate-in {
     opacity: 1;
@@ -767,6 +773,7 @@ const SectionTitle = styled.h2`
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     font-size: 2rem;
+    margin-bottom: ${theme.spacing.lg};
   }
 `;
 
