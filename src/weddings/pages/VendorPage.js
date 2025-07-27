@@ -1924,105 +1924,150 @@ const VendorPage = () => {
       </Section>
 
       {/* Footer */}
-      <Footer>
-        <Container>
-          <FooterContent>
-            <FooterSection>
-              <FooterTitle>{vendor.name}</FooterTitle>
-              <FooterText>{vendor.description}</FooterText>
-              <SocialLinks>
-                {vendor.socialLinks?.instagram && (
-                  <SocialLink
-                    href={vendor.socialLinks.instagram}
-                    primaryColor={primaryColor}
-                  >
-                    <FaInstagram />
-                  </SocialLink>
+      {(sectionVisibility?.footer !== false && vendor.sectionVisibility?.footer !== false) && (
+        <Footer
+          style={{
+            background: vendor.footerBackgroundColor || theme.colors.gray900,
+            color: vendor.footerTextColor || 'white',
+          }}
+        >
+          <Container>
+            <FooterContent>
+              {/* Company Info Section */}
+              <FooterSection>
+                <FooterTitle style={{ color: vendor.footerTextColor || 'white' }}>
+                  {vendor.footerCompanyName || vendor.name}
+                </FooterTitle>
+                <FooterText style={{ color: vendor.footerTextColor || theme.colors.gray300 }}>
+                  {vendor.footerDescription || vendor.description}
+                </FooterText>
+                {vendor.socialLinks && (
+                  <SocialLinks>
+                    {vendor.socialLinks?.instagram && (
+                      <SocialLink
+                        href={vendor.socialLinks.instagram}
+                        primaryColor={primaryColor}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <FaInstagram />
+                      </SocialLink>
+                    )}
+                    {vendor.socialLinks?.facebook && (
+                      <SocialLink
+                        href={vendor.socialLinks.facebook}
+                        primaryColor={primaryColor}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <FaFacebook />
+                      </SocialLink>
+                    )}
+                    {vendor.socialLinks?.pinterest && (
+                      <SocialLink
+                        href={vendor.socialLinks.pinterest}
+                        primaryColor={primaryColor}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <FaPinterest />
+                      </SocialLink>
+                    )}
+                    {vendor.socialLinks?.twitter && (
+                      <SocialLink
+                        href={vendor.socialLinks.twitter}
+                        primaryColor={primaryColor}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <i className="fab fa-twitter" />
+                      </SocialLink>
+                    )}
+                    {vendor.socialLinks?.linkedin && (
+                      <SocialLink
+                        href={vendor.socialLinks.linkedin}
+                        primaryColor={primaryColor}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <i className="fab fa-linkedin" />
+                      </SocialLink>
+                    )}
+                  </SocialLinks>
                 )}
-                {vendor.socialLinks?.facebook && (
-                  <SocialLink
-                    href={vendor.socialLinks.facebook}
-                    primaryColor={primaryColor}
-                  >
-                    <FaFacebook />
-                  </SocialLink>
-                )}
-                {vendor.socialLinks?.pinterest && (
-                  <SocialLink
-                    href={vendor.socialLinks.pinterest}
-                    primaryColor={primaryColor}
-                  >
-                    <FaPinterest />
-                  </SocialLink>
-                )}
-              </SocialLinks>
-            </FooterSection>
+              </FooterSection>
 
-            <FooterSection>
-              <FooterTitle>Contact Info</FooterTitle>
-              <FooterText>
-                {vendor.phone}
-                <br />
-                {vendor.email}
-                <br />
-                {vendor.address}
-              </FooterText>
-            </FooterSection>
+              {/* Dynamic Footer Columns */}
+              {vendor.footerColumns && vendor.footerColumns.length > 0 && vendor.footerColumns.map((column, index) => (
+                <FooterSection key={index}>
+                  <FooterTitle style={{ color: vendor.footerTextColor || 'white' }}>
+                    {column.title}
+                  </FooterTitle>
 
-            <FooterSection>
-              <FooterTitle>Quick Links</FooterTitle>
-              <FooterText>
-                <a
-                  href="#about"
-                  style={{
-                    color: theme.colors.gray300,
-                    textDecoration: 'none',
-                  }}
-                >
-                  About Us
-                </a>
-                <br />
-                <a
-                  href="#services"
-                  style={{
-                    color: theme.colors.gray300,
-                    textDecoration: 'none',
-                  }}
-                >
-                  Services
-                </a>
-                <br />
-                <a
-                  href="#gallery"
-                  style={{
-                    color: theme.colors.gray300,
-                    textDecoration: 'none',
-                  }}
-                >
-                  Gallery
-                </a>
-                <br />
-                <a
-                  href="#contact"
-                  style={{
-                    color: theme.colors.gray300,
-                    textDecoration: 'none',
-                  }}
-                >
-                  Contact
-                </a>
-              </FooterText>
-            </FooterSection>
-          </FooterContent>
+                  {/* Links Column */}
+                  {column.type === 'links' && Array.isArray(column.content) && (
+                    <FooterText style={{ color: vendor.footerTextColor || theme.colors.gray300 }}>
+                      {column.content.map((link, linkIndex) => (
+                        <React.Fragment key={linkIndex}>
+                          <a
+                            href={link.url}
+                            style={{
+                              color: vendor.footerTextColor || theme.colors.gray300,
+                              textDecoration: 'none',
+                            }}
+                            onMouseOver={e => e.target.style.color = primaryColor}
+                            onMouseOut={e => e.target.style.color = vendor.footerTextColor || theme.colors.gray300}
+                          >
+                            {link.text}
+                          </a>
+                          {linkIndex < column.content.length - 1 && <br />}
+                        </React.Fragment>
+                      ))}
+                    </FooterText>
+                  )}
 
-          <FooterBottom>
-            <p>
-              &copy; 2024 {vendor.name}. All rights reserved. | Terms &
-              Conditions | Privacy Policy
-            </p>
-          </FooterBottom>
-        </Container>
-      </Footer>
+                  {/* Contact Info Column */}
+                  {column.type === 'contact' && typeof column.content === 'object' && !Array.isArray(column.content) && (
+                    <FooterText style={{ color: vendor.footerTextColor || theme.colors.gray300 }}>
+                      {column.content.showPhone && vendor.phone && (
+                        <>{vendor.phone}<br /></>
+                      )}
+                      {column.content.showEmail && vendor.email && (
+                        <>{vendor.email}<br /></>
+                      )}
+                      {column.content.showAddress && vendor.address && (
+                        <>{vendor.address}<br /></>
+                      )}
+                      {column.content.showHours && vendor.hours && (
+                        <>
+                          Business Hours:<br />
+                          Mon-Fri: {vendor.hours.monday || '9:00 AM - 6:00 PM'}
+                        </>
+                      )}
+                    </FooterText>
+                  )}
+
+                  {/* Text Column */}
+                  {column.type === 'text' && typeof column.content === 'string' && (
+                    <FooterText style={{
+                      color: vendor.footerTextColor || theme.colors.gray300,
+                      whiteSpace: 'pre-line'
+                    }}>
+                      {column.content}
+                    </FooterText>
+                  )}
+                </FooterSection>
+              ))}
+            </FooterContent>
+
+            <FooterBottom>
+              <p style={{ color: vendor.footerTextColor || theme.colors.gray400 }}>
+                {vendor.footerCopyright || `© ${new Date().getFullYear()} ${vendor.name}. All rights reserved.`}
+              </p>
+            </FooterBottom>
+          </Container>
+        </Footer>
+      )}
 
       {/* Back to Top Button */}
       <BackToTopButton
