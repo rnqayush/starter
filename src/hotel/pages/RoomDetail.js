@@ -485,23 +485,41 @@ const RoomDetail = () => {
     guests: '2',
   });
 
+  // Get hotels from Redux store first
+  const hotels = useSelector(state => state.hotelManagement?.liveHotels || []);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch hotel data
-        const hotelResponse = await fetchHotelById(slug);
+        let foundHotel;
 
-        if (hotelResponse.success) {
-          const foundHotel = hotelResponse.data;
+        // Try to get hotel from Redux store first
+        if (hotels && hotels.length > 0) {
+          foundHotel = hotels.find(h => h.slug === slug || h.id === parseInt(slug));
+        }
 
-          // Fetch room data
-          const roomResponse = await fetchRoomById(foundHotel.id, roomId);
+        // Fallback to API if not found in Redux
+        if (!foundHotel) {
+          const hotelResponse = await fetchHotelById(slug);
+          if (hotelResponse.success) {
+            foundHotel = hotelResponse.data;
+          }
+        }
 
-          if (roomResponse.success) {
-            const foundRoom = roomResponse.data;
+        if (foundHotel) {
+          // Find room in hotel data
+          const foundRoom = foundHotel.rooms?.find(r => r.id === parseInt(roomId));
+
+          if (foundRoom) {
             setRoom(foundRoom);
           } else {
-            setRoom(null);
+            // Fallback to API for room data
+            const roomResponse = await fetchRoomById(foundHotel.id, roomId);
+            if (roomResponse.success) {
+              setRoom(roomResponse.data);
+            } else {
+              setRoom(null);
+            }
           }
 
           setHotel(foundHotel);
