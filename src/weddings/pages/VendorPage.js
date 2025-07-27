@@ -1734,38 +1734,30 @@ const VendorPage = () => {
             </MobileCloseButton>
             <NavButton
               onClick={() => {
-                navigate('/weddings');
+                scrollToSection('about');
                 closeMobileMenu();
               }}
               scrolled={scrolled}
             >
-              <FaArrowLeft />
-              Back
+              About Us
             </NavButton>
             <NavButton
               onClick={() => {
-                alert('Vendor saved to your favorites!');
+                scrollToSection('services');
                 closeMobileMenu();
               }}
               scrolled={scrolled}
             >
-              <FaHeart />
-              Save
+              Services
             </NavButton>
             <NavButton
               onClick={() => {
-                navigator.share
-                  ? navigator.share({
-                      title: vendor.name,
-                      url: window.location.href,
-                    })
-                  : alert('Share: ' + window.location.href);
+                scrollToSection('packages');
                 closeMobileMenu();
               }}
               scrolled={scrolled}
             >
-              <FaShare />
-              Share
+              Pricing
             </NavButton>
             <NavButton
               onClick={() => {
