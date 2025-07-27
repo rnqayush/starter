@@ -809,11 +809,12 @@ const HotelDetail = () => {
   const { hotelSlug, slug } = useParams();
   const slugParam = hotelSlug || slug;
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [hotel, setHotel] = useState(null);
   const [loading, setLoading] = useState(true);
 
   // Get hotels from Redux store (includes any admin updates)
-  const hotelsFromStore = useSelector(state => state.hotelManagement?.hotels);
+  const hotelsFromStore = useSelector(state => state.hotelManagement?.liveHotels || []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -828,11 +829,16 @@ const HotelDetail = () => {
           );
         }
 
-        // Fetch from API if not found in store
+        // If not found in Redux, fetch from hotels.json and dispatch to Redux
         if (!foundHotel) {
-          const response = await fetchHotelById(slugParam);
-          if (response.success) {
-            foundHotel = response.data;
+          const hotelData = hotelJsonData.data.hotel;
+
+          // Check if this is the hotel we're looking for
+          if (hotelData.slug === slugParam || hotelData.id === parseInt(slugParam)) {
+            foundHotel = hotelData;
+
+            // Dispatch to Redux to store the hotel data
+            dispatch(loadHotelData(hotelData));
           }
         }
 
@@ -846,7 +852,7 @@ const HotelDetail = () => {
     };
 
     fetchData();
-  }, [slugParam, hotelsFromStore]);
+  }, [slugParam, hotelsFromStore, dispatch]);
 
   // Re-render when Redux store updates (for live preview)
   useEffect(() => {
