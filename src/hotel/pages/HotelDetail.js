@@ -484,8 +484,9 @@ const ScrollIndicator = styled.div`
 
 const ContentSection = styled.section`
   padding: ${theme.spacing.xxl} 0;
-  background: ${props => props.alt ? 
-    'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)' : 
+  margin: ${theme.spacing.xxl} 0;
+  background: ${props => props.alt ?
+    'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)' :
     theme.colors.white};
   position: relative;
   overflow: hidden;
@@ -507,9 +508,11 @@ const ContentSection = styled.section`
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     padding: ${theme.spacing.xl} 0;
+    margin: ${theme.spacing.xl} 0;
 
     &:first-of-type {
       padding-top: ${theme.spacing.xxl};
+      margin-top: 0;
     }
   }
 `;
