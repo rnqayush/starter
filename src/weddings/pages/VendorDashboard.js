@@ -3681,8 +3681,7 @@ const VendorDashboard = () => {
                   <FormInput
                     value={footerData.companyName}
                     onChange={e => {
-                      setFooterData(prev => ({ ...prev, companyName: e.target.value }));
-                      trackSectionChange('footer');
+                      handleFooterChange({ ...footerData, companyName: e.target.value });
                     }}
                     placeholder="Your Company Name"
                   />
