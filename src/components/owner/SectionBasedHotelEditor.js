@@ -706,8 +706,19 @@ const AddAmenityForm = styled.div`
 const SectionBasedHotelEditor = ({ setActiveSection }) => {
   const dispatch = useDispatch();
   const { ownerHotels } = useAppContext();
-  const { editingHotel, hasUnsavedChanges, changes, sectionVisibility } =
-    useSelector(state => state.hotelManagement);
+  const {
+    editingHotel,
+    hasUnsavedChanges,
+    changes,
+    sectionVisibility,
+    pendingChanges,
+    lastSaveTime,
+    lastPublishTime
+  } = useSelector(state => state.hotelManagement);
+
+  const hasPendingChanges = useSelector(state =>
+    editingHotel ? selectHasPendingChanges(state, editingHotel.id) : false
+  );
 
   const { slug } = useParams(); // Get slug from URL
   const [selectedHotelId, setSelectedHotelId] = useState(null);
