@@ -3625,6 +3625,510 @@ const VendorDashboard = () => {
           </ContentSection>
         );
 
+      case 'footer':
+        return (
+          <ContentSection>
+            <SectionHeader>
+              <SectionTitle>
+                <FaAddressCard />
+                Footer
+              </SectionTitle>
+              <VisibilityToggleContainer>
+                <span>{sectionVisibility['footer'] ? 'Visible' : 'Hidden'}</span>
+                <ToggleSwitch>
+                  <input
+                    type="checkbox"
+                    checked={sectionVisibility['footer']}
+                    onChange={() => toggleSectionVisibility('footer')}
+                  />
+                  <span></span>
+                </ToggleSwitch>
+              </VisibilityToggleContainer>
+            </SectionHeader>
+
+            {/* Basic Footer Information */}
+            <div style={{ marginBottom: theme.spacing.xxl }}>
+              <h3
+                style={{
+                  fontSize: '1.3rem',
+                  fontWeight: 600,
+                  marginBottom: theme.spacing.lg,
+                  color: theme.colors.gray900,
+                }}
+              >
+                Basic Information
+              </h3>
+              <FormGrid>
+                <FormGroup>
+                  <FormLabel>Company Name</FormLabel>
+                  <FormInput
+                    value={footerData.companyName}
+                    onChange={e => {
+                      setFooterData(prev => ({ ...prev, companyName: e.target.value }));
+                      trackSectionChange('footer');
+                    }}
+                    placeholder="Your Company Name"
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <FormLabel>Copyright Text</FormLabel>
+                  <FormInput
+                    value={footerData.copyrightText}
+                    onChange={e => {
+                      setFooterData(prev => ({ ...prev, copyrightText: e.target.value }));
+                      trackSectionChange('footer');
+                    }}
+                    placeholder="© 2024 Your Company. All rights reserved."
+                  />
+                </FormGroup>
+                <FormGroup style={{ gridColumn: '1 / -1' }}>
+                  <FormLabel>Footer Description</FormLabel>
+                  <FormTextarea
+                    value={footerData.description}
+                    onChange={e => {
+                      setFooterData(prev => ({ ...prev, description: e.target.value }));
+                      trackSectionChange('footer');
+                    }}
+                    placeholder="Brief description about your business for the footer..."
+                    rows={3}
+                  />
+                </FormGroup>
+              </FormGrid>
+            </div>
+
+            {/* Footer Styling */}
+            <div style={{ marginBottom: theme.spacing.xxl }}>
+              <h3
+                style={{
+                  fontSize: '1.3rem',
+                  fontWeight: 600,
+                  marginBottom: theme.spacing.lg,
+                  color: theme.colors.gray900,
+                }}
+              >
+                Footer Styling
+              </h3>
+              <FormGrid>
+                <FormGroup>
+                  <FormLabel>Background Color</FormLabel>
+                  <FormInput
+                    type="color"
+                    value={footerData.backgroundColor}
+                    onChange={e => {
+                      setFooterData(prev => ({ ...prev, backgroundColor: e.target.value }));
+                      trackSectionChange('footer');
+                    }}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <FormLabel>Text Color</FormLabel>
+                  <FormInput
+                    type="color"
+                    value={footerData.textColor}
+                    onChange={e => {
+                      setFooterData(prev => ({ ...prev, textColor: e.target.value }));
+                      trackSectionChange('footer');
+                    }}
+                  />
+                </FormGroup>
+              </FormGrid>
+            </div>
+
+            {/* Social Media Links */}
+            <div style={{ marginBottom: theme.spacing.xxl }}>
+              <h3
+                style={{
+                  fontSize: '1.3rem',
+                  fontWeight: 600,
+                  marginBottom: theme.spacing.lg,
+                  color: theme.colors.gray900,
+                }}
+              >
+                Social Media Links
+              </h3>
+              <FormGrid>
+                <FormGroup>
+                  <FormLabel>Instagram URL</FormLabel>
+                  <FormInput
+                    value={footerData.socialLinks.instagram}
+                    onChange={e => {
+                      setFooterData(prev => ({
+                        ...prev,
+                        socialLinks: { ...prev.socialLinks, instagram: e.target.value }
+                      }));
+                      trackSectionChange('footer');
+                    }}
+                    placeholder="https://instagram.com/yourhandle"
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <FormLabel>Facebook URL</FormLabel>
+                  <FormInput
+                    value={footerData.socialLinks.facebook}
+                    onChange={e => {
+                      setFooterData(prev => ({
+                        ...prev,
+                        socialLinks: { ...prev.socialLinks, facebook: e.target.value }
+                      }));
+                      trackSectionChange('footer');
+                    }}
+                    placeholder="https://facebook.com/yourpage"
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <FormLabel>Pinterest URL</FormLabel>
+                  <FormInput
+                    value={footerData.socialLinks.pinterest}
+                    onChange={e => {
+                      setFooterData(prev => ({
+                        ...prev,
+                        socialLinks: { ...prev.socialLinks, pinterest: e.target.value }
+                      }));
+                      trackSectionChange('footer');
+                    }}
+                    placeholder="https://pinterest.com/yourhandle"
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <FormLabel>Twitter URL</FormLabel>
+                  <FormInput
+                    value={footerData.socialLinks.twitter}
+                    onChange={e => {
+                      setFooterData(prev => ({
+                        ...prev,
+                        socialLinks: { ...prev.socialLinks, twitter: e.target.value }
+                      }));
+                      trackSectionChange('footer');
+                    }}
+                    placeholder="https://twitter.com/yourhandle"
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <FormLabel>LinkedIn URL</FormLabel>
+                  <FormInput
+                    value={footerData.socialLinks.linkedin}
+                    onChange={e => {
+                      setFooterData(prev => ({
+                        ...prev,
+                        socialLinks: { ...prev.socialLinks, linkedin: e.target.value }
+                      }));
+                      trackSectionChange('footer');
+                    }}
+                    placeholder="https://linkedin.com/company/yourcompany"
+                  />
+                </FormGroup>
+              </FormGrid>
+            </div>
+
+            {/* Footer Columns */}
+            <div style={{ marginBottom: theme.spacing.xxl }}>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  marginBottom: theme.spacing.lg,
+                }}
+              >
+                <h3
+                  style={{
+                    fontSize: '1.3rem',
+                    fontWeight: 600,
+                    color: theme.colors.gray900,
+                    margin: 0,
+                  }}
+                >
+                  Footer Columns
+                </h3>
+                <ActionButton
+                  onClick={() => {
+                    setFooterData(prev => ({
+                      ...prev,
+                      columns: [
+                        ...prev.columns,
+                        {
+                          title: 'New Column',
+                          type: 'links',
+                          content: [{ text: 'Link 1', url: '#' }]
+                        }
+                      ]
+                    }));
+                    trackSectionChange('footer');
+                  }}
+                >
+                  <FaPlus />
+                  Add Column
+                </ActionButton>
+              </div>
+
+              {footerData.columns.map((column, columnIndex) => (
+                <div
+                  key={columnIndex}
+                  style={{
+                    background: theme.colors.gray50,
+                    padding: theme.spacing.lg,
+                    borderRadius: theme.borderRadius.md,
+                    marginBottom: theme.spacing.md,
+                  }}
+                >
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      marginBottom: theme.spacing.md,
+                    }}
+                  >
+                    <h4
+                      style={{
+                        margin: 0,
+                        fontSize: '1.1rem',
+                        fontWeight: 600,
+                        color: theme.colors.gray900,
+                      }}
+                    >
+                      Column {columnIndex + 1}
+                    </h4>
+                    <ActionButton
+                      variant="danger"
+                      onClick={() => {
+                        setFooterData(prev => ({
+                          ...prev,
+                          columns: prev.columns.filter((_, i) => i !== columnIndex)
+                        }));
+                        trackSectionChange('footer');
+                      }}
+                    >
+                      <FaTrash />
+                    </ActionButton>
+                  </div>
+
+                  <FormGrid>
+                    <FormGroup>
+                      <FormLabel>Column Title</FormLabel>
+                      <FormInput
+                        value={column.title}
+                        onChange={e => {
+                          setFooterData(prev => ({
+                            ...prev,
+                            columns: prev.columns.map((col, i) =>
+                              i === columnIndex ? { ...col, title: e.target.value } : col
+                            )
+                          }));
+                          trackSectionChange('footer');
+                        }}
+                        placeholder="Column Title"
+                      />
+                    </FormGroup>
+                    <FormGroup>
+                      <FormLabel>Column Type</FormLabel>
+                      <select
+                        value={column.type}
+                        onChange={e => {
+                          const newType = e.target.value;
+                          let newContent;
+                          if (newType === 'links') {
+                            newContent = [{ text: 'Link 1', url: '#' }];
+                          } else if (newType === 'contact') {
+                            newContent = {
+                              showPhone: true,
+                              showEmail: true,
+                              showAddress: true,
+                              showHours: false
+                            };
+                          } else {
+                            newContent = 'Text content';
+                          }
+
+                          setFooterData(prev => ({
+                            ...prev,
+                            columns: prev.columns.map((col, i) =>
+                              i === columnIndex ? { ...col, type: newType, content: newContent } : col
+                            )
+                          }));
+                          trackSectionChange('footer');
+                        }}
+                        style={{
+                          padding: theme.spacing.md,
+                          border: `2px solid ${theme.colors.gray200}`,
+                          borderRadius: theme.borderRadius.md,
+                          fontSize: '1rem',
+                        }}
+                      >
+                        <option value="links">Links</option>
+                        <option value="contact">Contact Info</option>
+                        <option value="text">Text</option>
+                      </select>
+                    </FormGroup>
+                  </FormGrid>
+
+                  {/* Column Content Based on Type */}
+                  <div style={{ marginTop: theme.spacing.md }}>
+                    {column.type === 'links' && Array.isArray(column.content) && (
+                      <div>
+                        <FormLabel>Links</FormLabel>
+                        {column.content.map((link, linkIndex) => (
+                          <div
+                            key={linkIndex}
+                            style={{
+                              display: 'flex',
+                              gap: theme.spacing.sm,
+                              marginBottom: theme.spacing.sm,
+                              alignItems: 'center',
+                            }}
+                          >
+                            <FormInput
+                              value={link.text}
+                              onChange={e => {
+                                setFooterData(prev => ({
+                                  ...prev,
+                                  columns: prev.columns.map((col, i) =>
+                                    i === columnIndex
+                                      ? {
+                                          ...col,
+                                          content: col.content.map((l, j) =>
+                                            j === linkIndex ? { ...l, text: e.target.value } : l
+                                          )
+                                        }
+                                      : col
+                                  )
+                                }));
+                                trackSectionChange('footer');
+                              }}
+                              placeholder="Link Text"
+                              style={{ flex: 1 }}
+                            />
+                            <FormInput
+                              value={link.url}
+                              onChange={e => {
+                                setFooterData(prev => ({
+                                  ...prev,
+                                  columns: prev.columns.map((col, i) =>
+                                    i === columnIndex
+                                      ? {
+                                          ...col,
+                                          content: col.content.map((l, j) =>
+                                            j === linkIndex ? { ...l, url: e.target.value } : l
+                                          )
+                                        }
+                                      : col
+                                  )
+                                }));
+                                trackSectionChange('footer');
+                              }}
+                              placeholder="Link URL"
+                              style={{ flex: 1 }}
+                            />
+                            <ActionButton
+                              variant="danger"
+                              onClick={() => {
+                                setFooterData(prev => ({
+                                  ...prev,
+                                  columns: prev.columns.map((col, i) =>
+                                    i === columnIndex
+                                      ? {
+                                          ...col,
+                                          content: col.content.filter((_, j) => j !== linkIndex)
+                                        }
+                                      : col
+                                  )
+                                }));
+                                trackSectionChange('footer');
+                              }}
+                            >
+                              <FaTrash />
+                            </ActionButton>
+                          </div>
+                        ))}
+                        <ActionButton
+                          onClick={() => {
+                            setFooterData(prev => ({
+                              ...prev,
+                              columns: prev.columns.map((col, i) =>
+                                i === columnIndex
+                                  ? {
+                                      ...col,
+                                      content: [...col.content, { text: 'New Link', url: '#' }]
+                                    }
+                                  : col
+                              )
+                            }));
+                            trackSectionChange('footer');
+                          }}
+                        >
+                          <FaPlus />
+                          Add Link
+                        </ActionButton>
+                      </div>
+                    )}
+
+                    {column.type === 'contact' && typeof column.content === 'object' && !Array.isArray(column.content) && (
+                      <div>
+                        <FormLabel>Contact Information to Show</FormLabel>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: theme.spacing.sm }}>
+                          {Object.entries(column.content).map(([key, value]) => (
+                            <label
+                              key={key}
+                              style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: theme.spacing.sm,
+                                cursor: 'pointer',
+                              }}
+                            >
+                              <input
+                                type="checkbox"
+                                checked={value}
+                                onChange={e => {
+                                  setFooterData(prev => ({
+                                    ...prev,
+                                    columns: prev.columns.map((col, i) =>
+                                      i === columnIndex
+                                        ? {
+                                            ...col,
+                                            content: { ...col.content, [key]: e.target.checked }
+                                          }
+                                        : col
+                                    )
+                                  }));
+                                  trackSectionChange('footer');
+                                }}
+                              />
+                              <span style={{ textTransform: 'capitalize' }}>
+                                {key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
+                              </span>
+                            </label>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {column.type === 'text' && (
+                      <div>
+                        <FormLabel>Text Content</FormLabel>
+                        <FormTextarea
+                          value={typeof column.content === 'string' ? column.content : ''}
+                          onChange={e => {
+                            setFooterData(prev => ({
+                              ...prev,
+                              columns: prev.columns.map((col, i) =>
+                                i === columnIndex ? { ...col, content: e.target.value } : col
+                              )
+                            }));
+                            trackSectionChange('footer');
+                          }}
+                          placeholder="Enter text content for this column..."
+                          rows={4}
+                        />
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </ContentSection>
+        );
+
       default:
         return (
           <ContentSection>
