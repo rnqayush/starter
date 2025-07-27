@@ -2540,37 +2540,7 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
         </Overlay>
       )}
 
-      {/* Save & Go Live Bar - appears when there are unsaved or pending changes */}
-      {(hasUnsavedChanges || hasPendingChanges) && (
-        <SaveGoLiveBar>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: theme.spacing.xs }}>
-            {hasUnsavedChanges && (
-              <ChangesIndicator>
-                <FaEdit />
-                {Object.keys(changes || {}).length} unsaved changes
-              </ChangesIndicator>
-            )}
-            {hasPendingChanges && !hasUnsavedChanges && (
-              <ChangesIndicator style={{ color: theme.colors.warning }}>
-                <FaSave />
-                Changes saved in draft - ready to publish
-              </ChangesIndicator>
-            )}
-            {lastSaveTime && (
-              <div style={{ fontSize: '0.8rem', color: theme.colors.gray500 }}>
-                Last saved: {new Date(lastSaveTime).toLocaleTimeString()}
-              </div>
-            )}
-          </div>
-          <SaveGoLiveButton
-            onClick={handleSaveAndGoLive}
-            disabled={!hasUnsavedChanges && !hasPendingChanges}
-          >
-            <FaSave />
-            {hasUnsavedChanges ? 'Save & Go Live' : 'Publish Draft'}
-          </SaveGoLiveButton>
-        </SaveGoLiveBar>
-      )}
+
     </EditorContainer>
   );
 };
