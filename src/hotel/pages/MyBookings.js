@@ -274,9 +274,29 @@ const BrowseButton = styled(Link)`
 
 const MyBookings = () => {
   const [activeFilter, setActiveFilter] = useState('all');
+  const [userBookings, setUserBookings] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // Mock user bookings - in real app, this would come from API
-  const userBookings = bookings;
+  // Fetch user bookings - simulating API call
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        // Simulate API call to fetch user bookings
+        const mockUserId = 'user123'; // In real app, this would come from auth context
+        const bookingsData = await fetchHotelBookings(mockUserId);
+        setUserBookings(bookingsData);
+      } catch (error) {
+        console.error('Error fetching bookings:', error);
+        // Fallback to all bookings for demo
+        setUserBookings(bookings);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const getStatusIcon = status => {
     switch (status) {
