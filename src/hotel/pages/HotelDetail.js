@@ -451,7 +451,9 @@ const ScrollIndicator = styled.div`
   }
 `;
 
-const ContentSection = styled.section`
+const ContentSection = styled.section.withConfig({
+  shouldForwardProp: (prop) => prop !== 'alt',
+})`
   padding: ${theme.spacing.xxl} 0;
   margin: ${theme.spacing.xxl} 0;
   background: ${props => props.alt ?
