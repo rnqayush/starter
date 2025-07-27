@@ -1814,14 +1814,10 @@ const BusinessWebsitePage = () => {
       >
         <SectionContainer>
           <SectionTitle>
-            {businessData.slug === 'freelancer'
-              ? 'My Services'
-              : 'Our Services'}
+            {content.sections?.services?.title || (businessData.slug === 'freelancer' ? 'My Services' : 'Our Services')}
           </SectionTitle>
           <SectionSubtitle>
-            {businessData.slug === 'freelancer'
-              ? 'Professional services tailored to help your business succeed in the digital landscape.'
-              : 'We offer a comprehensive range of professional services designed to meet your needs and exceed your expectations.'}
+            {content.sections?.services?.subtitle || 'We offer a comprehensive range of professional services designed to meet your needs and exceed your expectations.'}
           </SectionSubtitle>
           <ServicesGrid>
             {(content.services || []).map((service, index) => (
