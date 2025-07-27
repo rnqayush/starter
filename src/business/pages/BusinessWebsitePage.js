@@ -1989,7 +1989,7 @@ const BusinessWebsitePage = () => {
                   <div className="package-price">{pkg.price}</div>
                   <div className="package-duration">{pkg.duration}</div>
                   <div className="package-description">{pkg.description}</div>
-                  <button className="package-button">Book Now</button>
+                  <button className="package-button">{content.ui?.buttons?.bookNow || 'Book Now'}</button>
                 </PackageCard>
               ))}
             </PackagesGrid>
