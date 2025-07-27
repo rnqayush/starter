@@ -211,7 +211,15 @@
           ]
         }
       },
-      "sectionOrder": ["hero", "about", "features", "gallery", "amenities", "testimonials", "contact"],
+      "sectionOrder": [
+        "hero",
+        "about",
+        "features",
+        "gallery",
+        "amenities",
+        "testimonials",
+        "contact"
+      ],
       "sectionVisibility": {
         "hero": true,
         "about": true,

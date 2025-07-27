@@ -13,7 +13,10 @@ import {
   FaGift,
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
-import { addRoom, setEditingHotel } from '../../store/slices/hotelManagementSlice';
+import {
+  addRoom,
+  setEditingHotel,
+} from '../../store/slices/hotelManagementSlice';
 import { getHotelByIdOrSlug } from '../../DummyData';
 import { Button } from '../shared/Button';
 import { Input } from '../shared/Input';
@@ -84,7 +87,7 @@ const TextArea = styled.textarea`
   line-height: 1.5;
   resize: vertical;
   min-height: 100px;
-  
+
   &:focus {
     outline: none;
     border-color: ${theme.colors.primary};
@@ -113,7 +116,7 @@ const ImagePreview = styled.div`
   height: 60px;
   border-radius: ${theme.borderRadius.md};
   overflow: hidden;
-  
+
   img {
     width: 100%;
     height: 100%;
@@ -147,7 +150,7 @@ const RemoveButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  
+
   &:hover {
     background: ${theme.colors.errorDark};
   }
@@ -164,7 +167,7 @@ const AddButton = styled.button`
   align-items: center;
   gap: ${theme.spacing.sm};
   font-weight: 500;
-  
+
   &:hover {
     background: ${theme.colors.primaryDark};
   }
@@ -192,7 +195,7 @@ const AddRoomManager = () => {
       }
     }
   }, [slug, editingHotel, dispatch]);
-  
+
   const [roomData, setRoomData] = useState({
     name: '',
     type: '',
@@ -202,7 +205,7 @@ const AddRoomManager = () => {
     description: '',
     images: [''],
     amenities: [''],
-    offer: ''
+    offer: '',
   });
 
   const updateField = (field, value) => {
@@ -213,17 +216,17 @@ const AddRoomManager = () => {
     setRoomData(prev => ({ ...prev, images: [...prev.images, ''] }));
   };
 
-  const removeImage = (index) => {
+  const removeImage = index => {
     setRoomData(prev => ({
       ...prev,
-      images: prev.images.filter((_, i) => i !== index)
+      images: prev.images.filter((_, i) => i !== index),
     }));
   };
 
   const updateImage = (index, value) => {
     setRoomData(prev => ({
       ...prev,
-      images: prev.images.map((img, i) => i === index ? value : img)
+      images: prev.images.map((img, i) => (i === index ? value : img)),
     }));
   };
 
@@ -231,17 +234,19 @@ const AddRoomManager = () => {
     setRoomData(prev => ({ ...prev, amenities: [...prev.amenities, ''] }));
   };
 
-  const removeAmenity = (index) => {
+  const removeAmenity = index => {
     setRoomData(prev => ({
       ...prev,
-      amenities: prev.amenities.filter((_, i) => i !== index)
+      amenities: prev.amenities.filter((_, i) => i !== index),
     }));
   };
 
   const updateAmenity = (index, value) => {
     setRoomData(prev => ({
       ...prev,
-      amenities: prev.amenities.map((amenity, i) => i === index ? value : amenity)
+      amenities: prev.amenities.map((amenity, i) =>
+        i === index ? value : amenity
+      ),
     }));
   };
 
@@ -261,11 +266,11 @@ const AddRoomManager = () => {
       description: roomData.description,
       images: roomData.images.filter(img => img.trim()),
       amenities: roomData.amenities.filter(amenity => amenity.trim()),
-      offer: roomData.offer
+      offer: roomData.offer,
     };
 
     dispatch(addRoom(newRoom));
-    
+
     // Reset form
     setRoomData({
       name: '',
@@ -276,7 +281,7 @@ const AddRoomManager = () => {
       description: '',
       images: [''],
       amenities: [''],
-      offer: ''
+      offer: '',
     });
 
     alert('Room added successfully!');
@@ -292,7 +297,7 @@ const AddRoomManager = () => {
       description: '',
       images: [''],
       amenities: [''],
-      offer: ''
+      offer: '',
     });
   };
 
@@ -324,7 +329,7 @@ const AddRoomManager = () => {
             <Label>Room Name *</Label>
             <Input
               value={roomData.name}
-              onChange={(e) => updateField('name', e.target.value)}
+              onChange={e => updateField('name', e.target.value)}
               placeholder="e.g., Deluxe Ocean View"
             />
           </FormField>
@@ -332,7 +337,7 @@ const AddRoomManager = () => {
             <Label>Room Type *</Label>
             <Input
               value={roomData.type}
-              onChange={(e) => updateField('type', e.target.value)}
+              onChange={e => updateField('type', e.target.value)}
               placeholder="e.g., Deluxe, Suite, Standard"
             />
           </FormField>
@@ -341,7 +346,7 @@ const AddRoomManager = () => {
             <Input
               type="number"
               value={roomData.price}
-              onChange={(e) => updateField('price', e.target.value)}
+              onChange={e => updateField('price', e.target.value)}
               placeholder="e.g., 8500"
             />
           </FormField>
@@ -350,7 +355,7 @@ const AddRoomManager = () => {
             <Input
               type="number"
               value={roomData.maxGuests}
-              onChange={(e) => updateField('maxGuests', e.target.value)}
+              onChange={e => updateField('maxGuests', e.target.value)}
               placeholder="e.g., 2"
             />
           </FormField>
@@ -358,7 +363,7 @@ const AddRoomManager = () => {
             <Label>Bed Type</Label>
             <Input
               value={roomData.bedType}
-              onChange={(e) => updateField('bedType', e.target.value)}
+              onChange={e => updateField('bedType', e.target.value)}
               placeholder="e.g., King Size, Double Bed"
             />
           </FormField>
@@ -368,7 +373,7 @@ const AddRoomManager = () => {
           <Label>Room Description</Label>
           <TextArea
             value={roomData.description}
-            onChange={(e) => updateField('description', e.target.value)}
+            onChange={e => updateField('description', e.target.value)}
             placeholder="Enter detailed room description..."
           />
         </FormField>
@@ -383,7 +388,7 @@ const AddRoomManager = () => {
           <Label>Room Offers</Label>
           <TextArea
             value={roomData.offer}
-            onChange={(e) => updateField('offer', e.target.value)}
+            onChange={e => updateField('offer', e.target.value)}
             placeholder="Enter special offers, rewards, or perks for this room..."
             rows={4}
           />
@@ -405,7 +410,7 @@ const AddRoomManager = () => {
               )}
               <Input
                 value={image}
-                onChange={(e) => updateImage(index, e.target.value)}
+                onChange={e => updateImage(index, e.target.value)}
                 placeholder="Enter image URL"
                 style={{ flex: 1 }}
               />
@@ -430,7 +435,7 @@ const AddRoomManager = () => {
             <AmenityItem key={index}>
               <Input
                 value={amenity}
-                onChange={(e) => updateAmenity(index, e.target.value)}
+                onChange={e => updateAmenity(index, e.target.value)}
                 placeholder="Enter amenity (e.g., WiFi, AC, TV)"
                 style={{ flex: 1 }}
               />

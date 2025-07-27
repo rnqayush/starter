@@ -7,7 +7,12 @@ import * as EcommerceData from './ecommerce';
 import * as WeddingData from './weddings';
 import * as PlatformData from './platform';
 // Hotel data now comes from hotels.json via hotelAPI
-import { getStaticHotelData, getStaticBookingsData, getStaticAmenitiesData, getOwnerHotels } from '../utils/hotelAPI';
+import {
+  getStaticHotelData,
+  getStaticBookingsData,
+  getStaticAmenitiesData,
+  getOwnerHotels,
+} from '../utils/hotelAPI';
 import hotelAPI from '../utils/hotelAPI';
 
 // Export data arrays/objects
@@ -87,26 +92,23 @@ export const {
 } = EcommerceData;
 
 // Hotel functions - now from hotelAPI
-export const {
-  getHotelById,
-  getHotelBySlug,
-  getHotelByIdOrSlug,
-  getRoomById,
-} = hotelAPI;
+export const { getHotelById, getHotelBySlug, getHotelByIdOrSlug, getRoomById } =
+  hotelAPI;
 
 // These need to be async now, but for compatibility we'll export sync versions
-export const getHotelsByCity = (city) => {
+export const getHotelsByCity = city => {
   return hotels.filter(hotel =>
     hotel.city.toLowerCase().includes(city.toLowerCase())
   );
 };
 
-export const searchHotels = (searchTerm) => {
+export const searchHotels = searchTerm => {
   const term = searchTerm.toLowerCase();
-  return hotels.filter(hotel =>
-    hotel.name.toLowerCase().includes(term) ||
-    hotel.location.toLowerCase().includes(term) ||
-    hotel.city.toLowerCase().includes(term)
+  return hotels.filter(
+    hotel =>
+      hotel.name.toLowerCase().includes(term) ||
+      hotel.location.toLowerCase().includes(term) ||
+      hotel.city.toLowerCase().includes(term)
   );
 };
 

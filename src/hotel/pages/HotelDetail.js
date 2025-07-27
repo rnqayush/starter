@@ -913,12 +913,14 @@ const HotelDetail = () => {
         <HeroContent>
           <HeroTitle>{hotel.sections?.hero?.title || hotel.name}</HeroTitle>
           <HeroSubtitle>
-            {hotel.sections?.hero?.subtitle || `Experience luxury hospitality in the heart of ${hotel.city}`}
+            {hotel.sections?.hero?.subtitle ||
+              `Experience luxury hospitality in the heart of ${hotel.city}`}
           </HeroSubtitle>
           <HeroActions>
             <MobileQuickInfoContainer>
               {hotel.sections?.hero?.quickInfo?.map((info, index) => {
-                const IconComponent = info.icon === 'FaStar' ? FaStar : FaMapMarkerAlt;
+                const IconComponent =
+                  info.icon === 'FaStar' ? FaStar : FaMapMarkerAlt;
                 return (
                   <QuickInfoCard key={index}>
                     <QuickInfoIcon>
@@ -962,13 +964,22 @@ const HotelDetail = () => {
 
       {/* Render sections in custom order - only if visible */}
       {(
-        hotel.sectionOrder ||
-        ['about', 'features', 'gallery', 'amenities', 'testimonials', 'contact']
+        hotel.sectionOrder || [
+          'about',
+          'features',
+          'gallery',
+          'amenities',
+          'testimonials',
+          'contact',
+        ]
       )
         .filter(sectionId => {
           // Check if section is visible and exists
           const sectionVisibility = hotel.sectionVisibility || {};
-          return sectionVisibility[sectionId] !== false && hotel.sections?.[sectionId];
+          return (
+            sectionVisibility[sectionId] !== false &&
+            hotel.sections?.[sectionId]
+          );
         })
         .map((sectionId, index) => {
           const isAlt = index % 2 === 1; // Alternate background colors
@@ -997,13 +1008,33 @@ const HotelDetail = () => {
                     </Description>
                     {hotel.sections.about.highlights && (
                       <div style={{ marginTop: '2rem', textAlign: 'center' }}>
-                        <ul style={{ listStyle: 'none', padding: 0, maxWidth: '600px', margin: '0 auto' }}>
-                          {hotel.sections.about.highlights.map((highlight, index) => (
-                            <li key={index} style={{ padding: '0.5rem 0', color: theme.colors.gray700 }}>
-                              <FaCheckCircle style={{ color: theme.colors.success, marginRight: '0.5rem' }} />
-                              {highlight}
-                            </li>
-                          ))}
+                        <ul
+                          style={{
+                            listStyle: 'none',
+                            padding: 0,
+                            maxWidth: '600px',
+                            margin: '0 auto',
+                          }}
+                        >
+                          {hotel.sections.about.highlights.map(
+                            (highlight, index) => (
+                              <li
+                                key={index}
+                                style={{
+                                  padding: '0.5rem 0',
+                                  color: theme.colors.gray700,
+                                }}
+                              >
+                                <FaCheckCircle
+                                  style={{
+                                    color: theme.colors.success,
+                                    marginRight: '0.5rem',
+                                  }}
+                                />
+                                {highlight}
+                              </li>
+                            )
+                          )}
                         </ul>
                       </div>
                     )}
@@ -1016,7 +1047,9 @@ const HotelDetail = () => {
                 <ContentSection key={sectionId} className={isAlt ? 'alt' : ''}>
                   <Container>
                     <SectionHeader>
-                      <SectionTitle>{hotel.sections.features.title}</SectionTitle>
+                      <SectionTitle>
+                        {hotel.sections.features.title}
+                      </SectionTitle>
                       <SectionSubtitle>
                         {hotel.sections.features.subtitle}
                       </SectionSubtitle>
@@ -1024,21 +1057,21 @@ const HotelDetail = () => {
                     <FeaturesGrid>
                       {features.map((feature, index) => {
                         // Map icon names to components
-                        const getIconComponent = (iconName) => {
+                        const getIconComponent = iconName => {
                           const iconMap = {
-                            'FaConciergeBell': FaConciergeBell,
-                            'FaUmbrellaBeach': FaUmbrellaBeach,
-                            'FaBusinessTime': FaBusinessTime,
-                            'FaTaxi': FaTaxi,
-                            'FaMountain': FaBusinessTime, // Fallback
-                            'FaHiking': FaBusinessTime, // Fallback
-                            'FaLeaf': FaBusinessTime, // Fallback
-                            'FaFire': FaBusinessTime, // Fallback
-                            'FaCrown': FaConciergeBell, // Fallback
-                            'FaMusic': FaConciergeBell, // Fallback
-                            'FaGem': FaConciergeBell, // Fallback
-                            'FaCamera': FaConciergeBell, // Fallback
-                            'FaSpa': FaConciergeBell, // Fallback
+                            FaConciergeBell: FaConciergeBell,
+                            FaUmbrellaBeach: FaUmbrellaBeach,
+                            FaBusinessTime: FaBusinessTime,
+                            FaTaxi: FaTaxi,
+                            FaMountain: FaBusinessTime, // Fallback
+                            FaHiking: FaBusinessTime, // Fallback
+                            FaLeaf: FaBusinessTime, // Fallback
+                            FaFire: FaBusinessTime, // Fallback
+                            FaCrown: FaConciergeBell, // Fallback
+                            FaMusic: FaConciergeBell, // Fallback
+                            FaGem: FaConciergeBell, // Fallback
+                            FaCamera: FaConciergeBell, // Fallback
+                            FaSpa: FaConciergeBell, // Fallback
                           };
                           return iconMap[iconName] || FaConciergeBell;
                         };
@@ -1067,7 +1100,9 @@ const HotelDetail = () => {
                 <ContentSection key={sectionId} className={isAlt ? 'alt' : ''}>
                   <Container>
                     <SectionHeader>
-                      <SectionTitle>{hotel.sections.gallery.title}</SectionTitle>
+                      <SectionTitle>
+                        {hotel.sections.gallery.title}
+                      </SectionTitle>
                       <SectionSubtitle>
                         {hotel.sections.gallery.subtitle}
                       </SectionSubtitle>
@@ -1092,7 +1127,9 @@ const HotelDetail = () => {
                 <ContentSection key={sectionId} className={isAlt ? 'alt' : ''}>
                   <Container>
                     <SectionHeader>
-                      <SectionTitle>{hotel.sections.amenities.title}</SectionTitle>
+                      <SectionTitle>
+                        {hotel.sections.amenities.title}
+                      </SectionTitle>
                       <SectionSubtitle>
                         {hotel.sections.amenities.subtitle}
                       </SectionSubtitle>
@@ -1131,13 +1168,18 @@ const HotelDetail = () => {
                     <TestimonialsSection>
                       <SectionHeader>
                         <SectionTitle style={{ color: 'white' }}>
-                          {hotel.sections?.testimonials?.title || 'Guest Reviews'}
+                          {hotel.sections?.testimonials?.title ||
+                            'Guest Reviews'}
                         </SectionTitle>
-                        <SectionSubtitle style={{ color: 'rgba(255,255,255,0.8)' }}>
-                          {hotel.sections?.testimonials?.subtitle || 'Hear what our valued guests have to say about their experience'}
+                        <SectionSubtitle
+                          style={{ color: 'rgba(255,255,255,0.8)' }}
+                        >
+                          {hotel.sections?.testimonials?.subtitle ||
+                            'Hear what our valued guests have to say about their experience'}
                         </SectionSubtitle>
                       </SectionHeader>
-                      {hotel.sections?.testimonials?.reviews && hotel.sections.testimonials.reviews.length > 0 ? (
+                      {hotel.sections?.testimonials?.reviews &&
+                      hotel.sections.testimonials.reviews.length > 0 ? (
                         <div
                           style={{
                             display: 'grid',
@@ -1145,46 +1187,56 @@ const HotelDetail = () => {
                             marginBottom: theme.spacing.xl,
                           }}
                         >
-                          {hotel.sections.testimonials.reviews.slice(0, 3).map(review => (
-                            <TestimonialCard key={review.id}>
-                              <TestimonialQuote>"{review.comment}"</TestimonialQuote>
-                              <TestimonialAuthor>
-                                <div className="avatar">{review.guestName.charAt(0)}</div>
-                                <div className="info">
-                                  <div className="name">
-                                    {review.guestName}
-                                    {review.verified && (
-                                      <span
-                                        style={{
-                                          color: '#fbbf24',
-                                          fontSize: '0.8rem',
-                                          marginLeft: theme.spacing.sm,
-                                        }}
-                                      >
-                                        ✓ Verified Stay
-                                      </span>
-                                    )}
+                          {hotel.sections.testimonials.reviews
+                            .slice(0, 3)
+                            .map(review => (
+                              <TestimonialCard key={review.id}>
+                                <TestimonialQuote>
+                                  "{review.comment}"
+                                </TestimonialQuote>
+                                <TestimonialAuthor>
+                                  <div className="avatar">
+                                    {review.guestName.charAt(0)}
                                   </div>
-                                  <div className="details">
-                                    {review.roomType} •{' '}
-                                    {new Date(review.date).toLocaleDateString('en-US', {
-                                      year: 'numeric',
-                                      month: 'short',
-                                    })}{' '}
-                                    • {review.rating}/5 ⭐
+                                  <div className="info">
+                                    <div className="name">
+                                      {review.guestName}
+                                      {review.verified && (
+                                        <span
+                                          style={{
+                                            color: '#fbbf24',
+                                            fontSize: '0.8rem',
+                                            marginLeft: theme.spacing.sm,
+                                          }}
+                                        >
+                                          ✓ Verified Stay
+                                        </span>
+                                      )}
+                                    </div>
+                                    <div className="details">
+                                      {review.roomType} •{' '}
+                                      {new Date(review.date).toLocaleDateString(
+                                        'en-US',
+                                        {
+                                          year: 'numeric',
+                                          month: 'short',
+                                        }
+                                      )}{' '}
+                                      • {review.rating}/5 ⭐
+                                    </div>
                                   </div>
-                                </div>
-                              </TestimonialAuthor>
-                            </TestimonialCard>
-                          ))}
+                                </TestimonialAuthor>
+                              </TestimonialCard>
+                            ))}
                         </div>
                       ) : (
                         <TestimonialCard>
                           <TestimonialQuote>
-                            "Absolutely exceptional service and stunning accommodations.
-                            The staff went above and beyond to make our anniversary
-                            celebration truly memorable. The attention to detail and
-                            luxury amenities exceeded all our expectations."
+                            "Absolutely exceptional service and stunning
+                            accommodations. The staff went above and beyond to
+                            make our anniversary celebration truly memorable.
+                            The attention to detail and luxury amenities
+                            exceeded all our expectations."
                           </TestimonialQuote>
                           <TestimonialAuthor>
                             <div className="avatar">RS</div>
@@ -1207,7 +1259,9 @@ const HotelDetail = () => {
                 <ContentSection key={sectionId} className={isAlt ? 'alt' : ''}>
                   <Container>
                     <SectionHeader>
-                      <SectionTitle>{hotel.sections.contact.title}</SectionTitle>
+                      <SectionTitle>
+                        {hotel.sections.contact.title}
+                      </SectionTitle>
                       <SectionSubtitle>
                         {hotel.sections.contact.subtitle}
                       </SectionSubtitle>
@@ -1219,10 +1273,10 @@ const HotelDetail = () => {
                           {hotel.sections.contact.info.map((field, index) => {
                             const getIcon = iconName => {
                               const iconMap = {
-                                'FaMapMarkerAlt': FaMapMarkerAlt,
-                                'FaPhone': FaPhone,
-                                'FaEnvelope': FaEnvelope,
-                                'FaClock': FaClock,
+                                FaMapMarkerAlt: FaMapMarkerAlt,
+                                FaPhone: FaPhone,
+                                FaEnvelope: FaEnvelope,
+                                FaClock: FaClock,
                               };
                               return iconMap[iconName] || FaMapMarkerAlt;
                             };
@@ -1364,8 +1418,6 @@ const HotelDetail = () => {
               return null;
           }
         })}
-
-
 
       <BackToTop onClick={scrollToTop}>↑</BackToTop>
 
