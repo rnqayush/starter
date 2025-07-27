@@ -125,7 +125,7 @@ export const fetchRoomById = async (hotelId, roomId) => {
 export const fetchBookings = async (filters = {}) => {
   await delay(300);
 
-  let bookings = [...hotelData.bookings];
+  let bookings = [...hotelData.data.bookings];
 
   if (filters.userId) {
     bookings = bookings.filter(booking => booking.userId === filters.userId);
@@ -148,9 +148,8 @@ export const fetchBookings = async (filters = {}) => {
 export const fetchHotelReviews = async hotelId => {
   await delay(200);
 
-  const hotel = hotelData.hotels.find(h => h.id === parseInt(hotelId));
-
-  if (!hotel || !hotel.sections.testimonials) {
+  const hotel = hotelData.data.hotel;
+  if (hotel.id !== parseInt(hotelId) || !hotel.sections.testimonials) {
     return createApiResponse([]);
   }
 
@@ -161,18 +160,19 @@ export const fetchHotelReviews = async hotelId => {
 export const searchHotels = async searchTerm => {
   await delay(400);
 
+  const hotel = hotelData.data.hotel;
+
   if (!searchTerm || searchTerm.trim() === '') {
-    return createApiResponse(hotelData.hotels);
+    return createApiResponse([hotel]);
   }
 
   const term = searchTerm.toLowerCase();
-  const hotels = hotelData.hotels.filter(
-    hotel =>
-      hotel.name.toLowerCase().includes(term) ||
+  const matches = hotel.name.toLowerCase().includes(term) ||
       hotel.city.toLowerCase().includes(term) ||
       hotel.location.toLowerCase().includes(term) ||
-      hotel.description.toLowerCase().includes(term)
-  );
+      hotel.description.toLowerCase().includes(term);
+
+  const hotels = matches ? [hotel] : [];
 
   return createApiResponse(hotels);
 };
@@ -181,16 +181,16 @@ export const searchHotels = async searchTerm => {
 export const fetchAmenitiesList = async () => {
   await delay(100);
 
-  return createApiResponse(hotelData.amenitiesList);
+  return createApiResponse(hotelData.data.amenitiesList);
 };
 
 // Get hotels by city
 export const fetchHotelsByCity = async city => {
   await delay(300);
 
-  const hotels = hotelData.hotels.filter(hotel =>
-    hotel.city.toLowerCase().includes(city.toLowerCase())
-  );
+  const hotel = hotelData.data.hotel;
+  const matches = hotel.city.toLowerCase().includes(city.toLowerCase());
+  const hotels = matches ? [hotel] : [];
 
   return createApiResponse(hotels);
 };
