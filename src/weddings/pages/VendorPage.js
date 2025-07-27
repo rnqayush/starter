@@ -1924,7 +1924,7 @@ const VendorPage = () => {
       </Section>
 
       {/* Footer */}
-      {(sectionVisibility?.footer !== false && vendor.sectionVisibility?.footer !== false) && (
+      {vendor.sectionVisibility?.footer !== false && (
         <Footer
           style={{
             background: vendor.footerBackgroundColor || theme.colors.gray900,
