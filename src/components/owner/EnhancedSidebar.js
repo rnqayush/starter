@@ -534,6 +534,68 @@ const EnhancedSidebar = ({ activeSection, setActiveSection }) => {
         </SidebarNav>
 
 
+        {(editingHotel || hasUnsavedChanges) && (
+          <ChangesPanel>
+            <ChangesPanelHeader>
+              <FaSave />
+              Changes Tracker
+            </ChangesPanelHeader>
+
+            <ChangesStatus hasChanges={hasUnsavedChanges}>
+              {hasUnsavedChanges ? (
+                <>
+                  <FaExclamationTriangle />
+                  {Object.keys(changes).length} unsaved changes
+                </>
+              ) : (
+                <>
+                  <FaCheckCircle />
+                  All changes saved
+                </>
+              )}
+            </ChangesStatus>
+
+            {hasUnsavedChanges && Object.keys(changes).length > 0 && (
+              <ChangesList>
+                {renderChangesList()}
+              </ChangesList>
+            )}
+
+            <ActionsContainer>
+              {hasUnsavedChanges && (
+                <>
+                  <Button
+                    size="small"
+                    onClick={handleSaveChanges}
+                    style={{ width: '100%' }}
+                  >
+                    <FaSave /> Save Changes
+                  </Button>
+                  <Button
+                    variant="secondary"
+                    size="small"
+                    onClick={handleDiscardChanges}
+                    style={{ width: '100%' }}
+                  >
+                    <FaUndo /> Discard Changes
+                  </Button>
+                </>
+              )}
+
+              {editingHotel && (
+                <Button
+                  variant="primary"
+                  size="small"
+                  onClick={handleSaveAndExit}
+                  style={{ width: '100%' }}
+                  disabled={hasUnsavedChanges}
+                >
+                  <FaCheckCircle /> Save & Go Live
+                </Button>
+              )}
+            </ActionsContainer>
+          </ChangesPanel>
+        )}
       </SidebarContainer>
     </>
   );
