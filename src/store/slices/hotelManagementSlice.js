@@ -57,7 +57,18 @@ const hotelManagementSlice = createSlice({
 
     setEditingHotel: (state, action) => {
       // Get hotel from draft data for editing
-      const hotel = state.draftHotels.find(h => h.id === action.payload);
+      let hotel = state.draftHotels.find(h => h.id === action.payload);
+
+      // If not found in draft, get from live data
+      if (!hotel) {
+        const liveHotel = state.liveHotels.find(h => h.id === action.payload);
+        if (liveHotel) {
+          // Copy live hotel to draft for editing
+          hotel = { ...liveHotel };
+          state.draftHotels.push(hotel);
+        }
+      }
+
       state.editingHotel = hotel ? { ...hotel } : null;
       // Keep reference to original live version for comparison
       const originalHotel = state.liveHotels.find(h => h.id === action.payload);
