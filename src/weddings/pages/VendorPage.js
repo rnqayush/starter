@@ -2217,9 +2217,10 @@ const VendorPage = () => {
                   key="gallery"
                   id="gallery"
                   backgroundColor={theme.colors.gray50}
+                  animated
                 >
                   <Container>
-                    <SectionTitle>Gallery</SectionTitle>
+                    <SectionTitle className="animate-on-scroll">Gallery</SectionTitle>
                     <SectionSubtitle>
                       Browse through our portfolio of beautiful weddings and
                       events
