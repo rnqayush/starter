@@ -553,7 +553,9 @@ const SectionSubtitle = styled.p`
   }
 `;
 
-const AnimatedSection = styled.div`
+const AnimatedSection = styled.div.withConfig({
+  shouldForwardProp: (prop) => !['inView', 'delay'].includes(prop),
+})`
   opacity: ${props => props.inView ? 1 : 0};
   transform: translateY(${props => props.inView ? '0' : '50px'});
   transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
