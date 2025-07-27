@@ -14,17 +14,12 @@ import {
 import { theme, media } from '../../styles/GlobalStyle';
 import { getHotelByIdOrSlug } from '../../DummyData';
 
-const NavbarContainer = styled.nav.withConfig({
-  shouldForwardProp: prop => prop !== 'isScrolled',
-})`
-  background: ${props => props.isScrolled ? theme.colors.white : 'rgba(255, 255, 255, 0.1)'};
-  backdrop-filter: ${props => props.isScrolled ? 'none' : 'blur(10px)'};
-  box-shadow: ${props => props.isScrolled ? theme.shadows.md : 'none'};
-  border-bottom: ${props => props.isScrolled ? 'none' : '1px solid rgba(255, 255, 255, 0.1)'};
+const NavbarContainer = styled.nav`
+  background: ${theme.colors.white};
+  box-shadow: ${theme.shadows.md};
   position: sticky;
   top: 0;
   z-index: 100;
-  transition: all 0.3s ease;
 `;
 
 const NavbarContent = styled.div`
