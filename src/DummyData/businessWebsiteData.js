@@ -972,12 +972,83 @@ export const businessWebsiteData = {
     about: {
       title: 'About Me',
       description: "I'm a passionate creative professional with 8+ years of experience helping businesses and individuals bring their visions to life through innovative design and development.",
+      extendedDescription: 'I pride myself on delivering exceptional service and creating memorable experiences for all my clients. My commitment to excellence has made me a trusted choice for businesses worldwide.',
       stats: [
-        { number: '8+', label: 'Years Experience' },
         { number: '150+', label: 'Projects Completed' },
-        { number: '50+', label: 'Happy Clients' },
+        { number: '8+', label: 'Years Experience' },
+        { number: '4.9', label: '★ Average Rating' },
         { number: '95%', label: 'Client Satisfaction' }
       ]
+    },
+    sections: {
+      services: {
+        title: 'My Services',
+        subtitle: 'Professional services tailored to help your business succeed in the digital landscape.'
+      },
+      team: {
+        title: 'My Team',
+        subtitle: 'Collaborative network of specialists I work with to deliver exceptional results.'
+      },
+      testimonials: {
+        title: 'What My Clients Say',
+        subtitle: "Don't just take my word for it - hear from satisfied clients about their project experiences.",
+        sampleTestimonial: {
+          text: "Outstanding service and professional results. I couldn't be happier with the outcome!",
+          author: "Client Name",
+          role: "Business Owner"
+        }
+      },
+      gallery: {
+        title: 'My Work',
+        subtitle: 'Explore my latest projects and creative work across various industries and platforms.'
+      },
+      packages: {
+        title: 'Service Packages',
+        subtitle: 'Choose from my specially curated packages designed to meet your business needs and budget.'
+      },
+      faq: {
+        title: 'Frequently Asked Questions',
+        subtitle: 'Find answers to common questions about my services, process, and working together.'
+      },
+      reviews: {
+        title: 'Client Reviews',
+        subtitle: 'Read what my valued clients have to say about working with me on their projects.'
+      },
+      portfolio: {
+        title: 'My Portfolio',
+        subtitle: 'Explore my latest projects and creative work across various industries and platforms.'
+      },
+      skills: {
+        title: 'My Skills',
+        subtitle: 'Technical expertise and creative abilities that I bring to every project.'
+      },
+      experience: {
+        title: 'Experience',
+        subtitle: 'Professional journey and key roles that have shaped my expertise in design and development.'
+      }
+    },
+    ui: {
+      buttons: {
+        bookNow: 'Hire Me',
+        bookAppointment: 'Schedule Consultation',
+        learnMore: 'Learn More',
+        sendMessage: 'Send Message',
+        getStarted: 'Get Started',
+        viewPortfolio: 'View Portfolio',
+        contactUs: 'Contact Me'
+      },
+      contactForm: {
+        placeholders: {
+          name: 'Your Name',
+          email: 'Your Email',
+          phone: 'Your Phone',
+          message: 'Tell me about your project'
+        }
+      },
+      businessHours: {
+        title: 'Availability',
+        contactInfoTitle: 'Contact Information'
+      }
     },
     skills: [
       { id: 1, name: 'Web Design', level: 95, icon: '🎨' },
