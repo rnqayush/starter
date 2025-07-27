@@ -1914,10 +1914,9 @@ const BusinessWebsitePage = () => {
       {/* Testimonials Section */}
       <Section id="testimonials">
         <SectionContainer>
-          <SectionTitle>What Our Clients Say</SectionTitle>
+          <SectionTitle>{content.sections?.testimonials?.title || 'What Our Clients Say'}</SectionTitle>
           <SectionSubtitle>
-            Don't just take our word for it - hear from our satisfied customers
-            about their experiences.
+            {content.sections?.testimonials?.subtitle || "Don't just take our word for it - hear from our satisfied customers about their experiences."}
           </SectionSubtitle>
           <TestimonialsGrid>
             {[1, 2, 3].map((_, index) => (
