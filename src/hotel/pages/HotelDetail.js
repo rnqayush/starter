@@ -867,13 +867,18 @@ const HotelDetail = () => {
 
   // Re-render when Redux store updates (for live preview)
   useEffect(() => {
-    if (hotelsFromStore && hotel) {
-      const updatedHotel = hotelsFromStore.find(h => h.id === hotel.id);
+    console.log('Redux state changed, checking for hotel updates...');
+    if (hotelsFromStore && hotelsFromStore.length > 0) {
+      const updatedHotel = hotelsFromStore.find(h =>
+        h.slug === slugParam || h.id === parseInt(slugParam)
+      );
       if (updatedHotel) {
+        console.log('Found updated hotel in Redux, updating display:', updatedHotel.name);
+        console.log('Updated hotel sections:', Object.keys(updatedHotel.sections || {}));
         setHotel(updatedHotel);
       }
     }
-  }, [hotelsFromStore, hotel]);
+  }, [hotelsFromStore, slugParam]);
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
