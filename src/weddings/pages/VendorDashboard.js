@@ -692,8 +692,8 @@ const VendorDashboard = () => {
   const dispatch = useDispatch();
 
   // Redux state
-  const { editingVendor, hasUnsavedChanges, originalVendor } = useSelector(
-    state => state.vendorManagement
+  const { editingVendor, hasUnsavedVendorChanges, originalVendor, realTimeUpdates } = useSelector(
+    state => state.weddingManagement
   );
 
   // Get vendor ID from URL path
