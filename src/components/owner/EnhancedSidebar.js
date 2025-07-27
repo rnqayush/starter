@@ -448,9 +448,16 @@ const EnhancedSidebar = ({ activeSection, setActiveSection }) => {
 
   const handleSaveAndExit = () => {
     if (hasUnsavedChanges) {
+      // Save changes to draft first
       dispatch(saveChanges());
-      alert('Changes saved successfully!');
     }
+
+    // Always publish changes to live data when "Save & Go Live" is clicked
+    dispatch(publishChanges());
+    console.log('Published changes to live data from sidebar');
+
+    alert('Changes published to live hotel page successfully!');
+
     if (editingHotel && hotelSlug) {
       // Navigate to the hotel detail page with updated data
       navigate(`/${editingHotel.slug || hotelSlug}`);
