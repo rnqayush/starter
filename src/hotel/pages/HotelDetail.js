@@ -982,13 +982,13 @@ const ContactSection = styled.div`
 const ContactGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: ${theme.spacing.xl};
+  gap: calc(${theme.spacing.xl} * 1.5);
   position: relative;
   z-index: 1;
-  
+
   @media (max-width: ${theme.breakpoints.mobile}) {
     grid-template-columns: 1fr;
-    gap: ${theme.spacing.lg};
+    gap: calc(${theme.spacing.lg} * 1.3);
   }
 `;
 
