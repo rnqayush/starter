@@ -2,7 +2,10 @@ import { createSlice } from '@reduxjs/toolkit';
 import { hotels } from '../../DummyData';
 
 const initialState = {
-  hotels: hotels,
+  // Live hotel data (what users see on public pages)
+  liveHotels: hotels,
+  // Draft hotel data (admin changes before going live)
+  draftHotels: hotels.map(hotel => ({ ...hotel })),
   editingHotel: null,
   originalHotel: null,
   changes: {},
@@ -15,7 +18,12 @@ const initialState = {
     gallery: true,
     amenities: true,
     contact: true,
+    testimonials: true,
   },
+  // Track which changes are pending publication
+  pendingChanges: {},
+  lastSaveTime: null,
+  lastPublishTime: null,
 };
 
 const hotelManagementSlice = createSlice({
