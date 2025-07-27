@@ -2865,7 +2865,7 @@ const BuisnessAdminDashboard = () => {
                 <FormGroup>
                   <FormLabel>Section Title</FormLabel>
                   <FormInput
-                    value={uiContentData.sections?.testimonials?.title || ''}
+                    value={uiContentData.sections?.testimonials?.title || 'What Our Clients Say'}
                     onChange={e => {
                       setUiContentData(prev => ({
                         ...prev,
@@ -2882,7 +2882,7 @@ const BuisnessAdminDashboard = () => {
                 <FormGroup>
                   <FormLabel>Section Subtitle</FormLabel>
                   <FormTextarea
-                    value={uiContentData.sections?.testimonials?.subtitle || ''}
+                    value={uiContentData.sections?.testimonials?.subtitle || "Don't just take our word for it - hear from our satisfied customers about their experiences."}
                     onChange={e => {
                       setUiContentData(prev => ({
                         ...prev,
@@ -2893,7 +2893,7 @@ const BuisnessAdminDashboard = () => {
                       }));
                       trackSectionChange('testimonials');
                     }}
-                    placeholder="Don't just take our word for it..."
+                    placeholder="Don't just take our word for it - hear from our satisfied customers about their experiences."
                     rows={3}
                   />
                 </FormGroup>
@@ -4129,7 +4129,7 @@ const BuisnessAdminDashboard = () => {
                     hero: '🏠',
                     'about-us': '👥',
                     'services-offered': '⚙️',
-                    portfolio: '����',
+                    portfolio: '💼',
                     skills: '🎯',
                     experience: '📄',
                     team: '👨‍👩‍👧‍👦',
