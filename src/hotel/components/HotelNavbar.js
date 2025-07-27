@@ -1,5 +1,6 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import {
   FaHotel,
@@ -8,15 +9,21 @@ import {
   FaHome,
   FaBars,
   FaTimes,
+  FaBed,
 } from 'react-icons/fa';
 import { theme, media } from '../../styles/GlobalStyle';
+import { getHotelByIdOrSlug } from '../../DummyData';
 
-const NavbarContainer = styled.nav`
-  background: ${theme.colors.white};
-  box-shadow: ${theme.shadows.md};
+const NavbarContainer = styled.nav.withConfig({
+  shouldForwardProp: prop => prop !== 'isTransparent',
+})`
+  background: ${props => props.isTransparent ? 'rgba(255, 255, 255, 0.9)' : theme.colors.white};
+  backdrop-filter: ${props => props.isTransparent ? 'blur(10px)' : 'none'};
+  box-shadow: ${props => props.isTransparent ? 'none' : theme.shadows.md};
   position: sticky;
   top: 0;
   z-index: 100;
+  transition: all 0.3s ease;
 `;
 
 const NavbarContent = styled.div`
@@ -295,6 +302,10 @@ const HotelNavbar = ({ showBackToMain = true }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  // Get live hotel data from Redux
+  const liveHotels = useSelector(state => state.hotelManagement?.liveHotels || []);
 
   // Extract hotel slug from URL path like "/taj-palace/rooms/101"
   const hotelSlug = useMemo(() => {
@@ -305,60 +316,60 @@ const HotelNavbar = ({ showBackToMain = true }) => {
       : '';
   }, [location.pathname]);
 
+  // Get current hotel data
+  const currentHotel = useMemo(() => {
+    if (!hotelSlug) return null;
+    // First try to find in live hotels (updated data)
+    const liveHotel = liveHotels.find(h => h.slug === hotelSlug || h.id === parseInt(hotelSlug));
+    if (liveHotel) return liveHotel;
+    // Fallback to static data
+    return getHotelByIdOrSlug(hotelSlug);
+  }, [hotelSlug, liveHotels]);
+
+  // Handle scroll effect for navbar transparency
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      setIsScrolled(scrollTop > 50);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   const closeMobileMenu = () => setMobileMenuOpen(false);
 
   return (
-    <NavbarContainer>
+    <NavbarContainer isTransparent={!isScrolled}>
       <NavbarContent>
-        <Logo to="/hotels">
+        <Logo to={currentHotel ? `/${currentHotel.slug}` : '/hotels'}>
           <FaHotel />
-          HotelBooker
+          {currentHotel ? currentHotel.name : 'HotelBooker'}
         </Logo>
 
         <NavLinks isOpen={mobileMenuOpen}>
-          <NavLink to="/hotels" onClick={closeMobileMenu}>
-            Find Hotels
-          </NavLink>
-          <NavLink to="/my-bookings" onClick={closeMobileMenu}>
-            My Bookings
-          </NavLink>
           <NavLink to={'hoteladmin'} onClick={closeMobileMenu}>
-            Hotel Owner
+            Admin Panel
+          </NavLink>
+          <NavLink
+            to={currentHotel ? `/${currentHotel.slug}/rooms` : '/hotels'}
+            onClick={closeMobileMenu}
+          >
+            Book Room
           </NavLink>
 
           <MobileNavActions>
-            {showBackToMain && (
-              <MobileActionButton to="/" onClick={closeMobileMenu}>
-                <FaHome />
-                Main Site
-              </MobileActionButton>
-            )}
-            <MobileActionButton to="/my-bookings" onClick={closeMobileMenu}>
-              <FaCalendarAlt />
-              My Bookings
+            <MobileActionButton
+              to={currentHotel ? `/${currentHotel.slug}/rooms` : '/hotels'}
+              onClick={closeMobileMenu}
+            >
+              <FaBed />
+              Book Room
             </MobileActionButton>
           </MobileNavActions>
         </NavLinks>
 
         <NavActions>
-          {showBackToMain && (
-            <BackButton to="/" title="Back to Main Site">
-              <FaHome />
-              Main Site
-            </BackButton>
-          )}
-
-          <ActionButton
-            title="My Bookings"
-            onClick={() => navigate('/my-bookings')}
-          >
-            <FaCalendarAlt />
-          </ActionButton>
-
-          <ActionButton title="User Account">
-            <FaUser />
-          </ActionButton>
-
           <MobileMenuButton
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             title="Menu"
