@@ -956,11 +956,11 @@ const ContactSection = styled.div`
   background: linear-gradient(135deg, ${theme.colors.primary} 0%, ${theme.colors.primaryDark} 100%);
   color: ${theme.colors.white};
   border-radius: ${theme.borderRadius.xxl};
-  padding: ${theme.spacing.xxl};
-  margin: ${theme.spacing.xxl} 0;
+  padding: calc(${theme.spacing.xxl} * 1.5);
+  margin: calc(${theme.spacing.xxl} * 1.5) 0;
   position: relative;
   overflow: hidden;
-  
+
   &::before {
     content: '';
     position: absolute;
@@ -971,11 +971,11 @@ const ContactSection = styled.div`
     background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="1" fill="white" opacity="0.1"/><circle cx="10" cy="90" r="1" fill="white" opacity="0.1"/><circle cx="90" cy="40" r="1" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
     opacity: 0.3;
   }
-  
+
   @media (max-width: ${theme.breakpoints.mobile}) {
-    padding: ${theme.spacing.xl};
+    padding: calc(${theme.spacing.xl} * 1.3);
     border-radius: ${theme.borderRadius.xl};
-    margin: ${theme.spacing.xl} -${theme.spacing.sm};
+    margin: calc(${theme.spacing.xl} * 1.3) -${theme.spacing.sm};
   }
 `;
 
