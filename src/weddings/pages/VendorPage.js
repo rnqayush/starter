@@ -1572,20 +1572,17 @@ const VendorPage = () => {
         console.log('VendorPage: Using saved vendor data from Redux:', vendorData);
       }
 
-      // Priority 3: Fetch from wedding.json and initialize Redux
+      // Priority 3: Load from wedding.json and initialize Redux
       if (!vendorData) {
         try {
-          // Fetch vendor data from wedding.json
-          vendorData = getVendorById(vendorId);
-          console.log('VendorPage: Fetched vendor data from wedding.json:', vendorData);
+          // Load vendor from JSON into Redux state
+          dispatch(loadVendorFromJson(vendorId));
 
-          if (vendorData) {
-            // Initialize vendor in Redux state
-            dispatch(initializeVendor(vendorData));
-            console.log('VendorPage: Initialized vendor in Redux state');
-          }
+          // Try to get the vendor data after loading into Redux
+          vendorData = getVendorById(vendorId);
+          console.log('VendorPage: Loaded vendor data from wedding.json:', vendorData);
         } catch (error) {
-          console.error('VendorPage: Error fetching vendor data:', error);
+          console.error('VendorPage: Error loading vendor data:', error);
         }
       }
 
