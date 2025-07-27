@@ -694,6 +694,7 @@ const VendorDashboard = () => {
 
   // Redux state
   const {
+    vendors,
     editingVendor,
     hasUnsavedVendorChanges,
     originalVendor,
