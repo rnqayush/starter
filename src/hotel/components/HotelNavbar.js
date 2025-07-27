@@ -433,6 +433,7 @@ const HotelNavbar = ({ showBackToMain = true }) => {
           <MobileMenuButton
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             title="Menu"
+            className="nav-text"
           >
             {mobileMenuOpen ? <FaTimes /> : <FaBars />}
           </MobileMenuButton>
