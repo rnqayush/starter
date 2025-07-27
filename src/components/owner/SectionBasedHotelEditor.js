@@ -849,6 +849,9 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
   const saveSection = () => {
     if (!editingHotel) return;
 
+    console.log('Saving section data:', tempData);
+    console.log('Active modal:', activeModal);
+
     // Map tempData to proper section structure for the hotel
     Object.keys(tempData).forEach(key => {
       if (tempData[key] !== undefined) {
