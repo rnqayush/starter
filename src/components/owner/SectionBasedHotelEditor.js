@@ -2144,20 +2144,7 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
                       </div>
                     </div>
                   ))}
-                  <AddButton onClick={() =>
-                    updateTempData('testimonials', [
-                      ...(tempData.testimonials || []),
-                      {
-                        id: Date.now(),
-                        guestName: '',
-                        location: '',
-                        rating: 5,
-                        comment: '',
-                        verified: true,
-                        date: new Date().toISOString().split('T')[0]
-                      }
-                    ])
-                  }>
+                  <AddButton onClick={addTestimonial}>
                     <FaPlus /> Add New Review
                   </AddButton>
                 </FormField>
