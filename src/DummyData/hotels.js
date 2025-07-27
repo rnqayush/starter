@@ -273,6 +273,29 @@ export const hotelData = {
       specialRequests: 'Butler service required',
     },
   ],
+  ownerHotels: [
+    {
+      id: 4,
+      name: 'Taj Palace',
+      slug: 'taj-palace',
+      location: 'New Delhi, Delhi',
+      address: '1, Mansingh Road, New Delhi',
+      city: 'New Delhi',
+      pincode: '110011',
+      phone: '+91 11 6651 2233',
+      email: 'reservations@tajpalace.com',
+      description:
+        'Legendary luxury hotel in the heart of New Delhi, offering world-class hospitality and royal elegance.',
+      rating: 4.8,
+      starRating: 5,
+      image:
+        'https://images.unsplash.com/photo-1571896349842-33c89424de2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1632&q=80',
+      totalRooms: 120,
+      availableRooms: 85,
+      startingPrice: 12000,
+      ownerId: 'owner123',
+    },
+  ],
   amenitiesList: [
     { id: 'wifi', name: 'WiFi', icon: '📶' },
     { id: 'ac', name: 'Air Conditioning', icon: '❄️' },
