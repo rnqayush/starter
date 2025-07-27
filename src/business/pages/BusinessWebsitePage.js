@@ -1426,7 +1426,10 @@ const BusinessWebsitePage = () => {
         if (businesses && businesses.length > 0) {
           businessTemplate = businesses.find(b => b.slug === extractedSlug);
           if (businessTemplate) {
-            console.log('Using saved business data from Redux:', businessTemplate);
+            console.log(
+              'Using saved business data from Redux:',
+              businessTemplate
+            );
             setBusinessData(businessTemplate);
             setLoading(false);
             return;
@@ -1434,15 +1437,22 @@ const BusinessWebsitePage = () => {
         }
 
         // Priority 3: Make fake API call to get business data
-        console.log(`[BusinessWebsitePage] Making API call for business: ${extractedSlug}`);
+        console.log(
+          `[BusinessWebsitePage] Making API call for business: ${extractedSlug}`
+        );
         const response = await fetchBusinessData(extractedSlug);
 
         if (response.success && response.data) {
-          console.log('[BusinessWebsitePage] API call successful:', response.data);
+          console.log(
+            '[BusinessWebsitePage] API call successful:',
+            response.data
+          );
           setBusinessData(response.data);
         } else {
           // Priority 4: Fallback to template data if API fails
-          console.log('[BusinessWebsitePage] API call failed, using template fallback');
+          console.log(
+            '[BusinessWebsitePage] API call failed, using template fallback'
+          );
           businessTemplate = getBusinessTemplate(extractedSlug);
           if (businessTemplate) {
             setBusinessData(businessTemplate);
@@ -1451,7 +1461,10 @@ const BusinessWebsitePage = () => {
           }
         }
       } catch (err) {
-        console.error('[BusinessWebsitePage] Error fetching business data:', err);
+        console.error(
+          '[BusinessWebsitePage] Error fetching business data:',
+          err
+        );
         setError(err.message);
 
         // Fallback to template data on error
@@ -1483,7 +1496,9 @@ const BusinessWebsitePage = () => {
       <PageContainer>
         <div style={{ padding: '4rem', textAlign: 'center' }}>
           <h2>Business Website Not Found</h2>
-          <p>{error || "The business website you're looking for doesn't exist."}</p>
+          <p>
+            {error || "The business website you're looking for doesn't exist."}
+          </p>
         </div>
       </PageContainer>
     );
@@ -1506,9 +1521,10 @@ const BusinessWebsitePage = () => {
   };
 
   // Use business data directly from API (editing business takes priority for real-time updates)
-  const content = editingBusiness && editingBusiness.slug === businessData.slug
-    ? editingBusiness
-    : businessData;
+  const content =
+    editingBusiness && editingBusiness.slug === businessData.slug
+      ? editingBusiness
+      : businessData;
 
   return (
     <PageContainer>
@@ -1535,7 +1551,9 @@ const BusinessWebsitePage = () => {
                 {businessData.slug === 'freelancer' && (
                   <a href="#portfolio">Portfolio</a>
                 )}
-                {businessData.slug === 'freelancer' && <a href="#skills">Skills</a>}
+                {businessData.slug === 'freelancer' && (
+                  <a href="#skills">Skills</a>
+                )}
                 <a href="#services">Services</a>
                 {businessData.slug !== 'freelancer' && <a href="#team">Team</a>}
                 {businessData.slug === 'freelancer' && (
@@ -1701,7 +1719,8 @@ const BusinessWebsitePage = () => {
                   `Learn more about ${businessData.name}`}
               </p>
               <p>
-                {content.about?.extendedDescription || 'We pride ourselves on delivering exceptional service and creating memorable experiences for all our clients.'}
+                {content.about?.extendedDescription ||
+                  'We pride ourselves on delivering exceptional service and creating memorable experiences for all our clients.'}
               </p>
             </AboutContent>
             <AboutImage primaryColor={businessData.primaryColor}>
@@ -1715,20 +1734,36 @@ const BusinessWebsitePage = () => {
 
           <StatsGrid>
             <StatCard primaryColor={businessData.primaryColor}>
-              <div className="number">{content.about?.stats?.[0]?.number || '100+'}</div>
-              <div className="label">{content.about?.stats?.[0]?.label || 'Services'}</div>
+              <div className="number">
+                {content.about?.stats?.[0]?.number || '100+'}
+              </div>
+              <div className="label">
+                {content.about?.stats?.[0]?.label || 'Services'}
+              </div>
             </StatCard>
             <StatCard primaryColor={businessData.primaryColor}>
-              <div className="number">{content.about?.stats?.[1]?.number || '5+'}</div>
-              <div className="label">{content.about?.stats?.[1]?.label || 'Years Experience'}</div>
+              <div className="number">
+                {content.about?.stats?.[1]?.number || '5+'}
+              </div>
+              <div className="label">
+                {content.about?.stats?.[1]?.label || 'Years Experience'}
+              </div>
             </StatCard>
             <StatCard primaryColor={businessData.primaryColor}>
-              <div className="number">{content.about?.stats?.[2]?.number || '4.9'}</div>
-              <div className="label">{content.about?.stats?.[2]?.label || '★ Average Rating'}</div>
+              <div className="number">
+                {content.about?.stats?.[2]?.number || '4.9'}
+              </div>
+              <div className="label">
+                {content.about?.stats?.[2]?.label || '★ Average Rating'}
+              </div>
             </StatCard>
             <StatCard primaryColor={businessData.primaryColor}>
-              <div className="number">{content.about?.stats?.[3]?.number || '100+'}</div>
-              <div className="label">{content.about?.stats?.[3]?.label || 'Happy Clients'}</div>
+              <div className="number">
+                {content.about?.stats?.[3]?.number || '100+'}
+              </div>
+              <div className="label">
+                {content.about?.stats?.[3]?.label || 'Happy Clients'}
+              </div>
             </StatCard>
           </StatsGrid>
         </SectionContainer>
@@ -1738,9 +1773,12 @@ const BusinessWebsitePage = () => {
       {businessData.slug === 'freelancer' && content.portfolio ? (
         <Section id="portfolio">
           <SectionContainer>
-            <SectionTitle>{content.sections?.portfolio?.title || 'My Portfolio'}</SectionTitle>
+            <SectionTitle>
+              {content.sections?.portfolio?.title || 'My Portfolio'}
+            </SectionTitle>
             <SectionSubtitle>
-              {content.sections?.portfolio?.subtitle || 'A showcase of my recent work and creative projects across various industries and technologies.'}
+              {content.sections?.portfolio?.subtitle ||
+                'A showcase of my recent work and creative projects across various industries and technologies.'}
             </SectionSubtitle>
             <PortfolioGrid>
               {(content.portfolio || []).map((project, index) => (
@@ -1774,9 +1812,12 @@ const BusinessWebsitePage = () => {
       {businessData.slug === 'freelancer' && content.skills ? (
         <Section id="skills" background={theme.colors.gray50}>
           <SectionContainer>
-            <SectionTitle>{content.sections?.skills?.title || 'My Skills'}</SectionTitle>
+            <SectionTitle>
+              {content.sections?.skills?.title || 'My Skills'}
+            </SectionTitle>
             <SectionSubtitle>
-              {content.sections?.skills?.subtitle || 'Technical expertise and creative skills developed through years of professional experience.'}
+              {content.sections?.skills?.subtitle ||
+                'Technical expertise and creative skills developed through years of professional experience.'}
             </SectionSubtitle>
             <SkillsGrid>
               {(content.skills || []).map((skill, index) => (
@@ -1812,10 +1853,14 @@ const BusinessWebsitePage = () => {
       >
         <SectionContainer>
           <SectionTitle>
-            {content.sections?.services?.title || (businessData.slug === 'freelancer' ? 'My Services' : 'Our Services')}
+            {content.sections?.services?.title ||
+              (businessData.slug === 'freelancer'
+                ? 'My Services'
+                : 'Our Services')}
           </SectionTitle>
           <SectionSubtitle>
-            {content.sections?.services?.subtitle || 'We offer a comprehensive range of professional services designed to meet your needs and exceed your expectations.'}
+            {content.sections?.services?.subtitle ||
+              'We offer a comprehensive range of professional services designed to meet your needs and exceed your expectations.'}
           </SectionSubtitle>
           <ServicesGrid>
             {(content.services || []).map((service, index) => (
@@ -1847,9 +1892,12 @@ const BusinessWebsitePage = () => {
       {/* Team Section */}
       <Section id="team" background={theme.colors.gray50}>
         <SectionContainer>
-          <SectionTitle>{content.sections?.team?.title || 'Meet Our Team'}</SectionTitle>
+          <SectionTitle>
+            {content.sections?.team?.title || 'Meet Our Team'}
+          </SectionTitle>
           <SectionSubtitle>
-            {content.sections?.team?.subtitle || 'Our experienced professionals are passionate about delivering exceptional service and results.'}
+            {content.sections?.team?.subtitle ||
+              'Our experienced professionals are passionate about delivering exceptional service and results.'}
           </SectionSubtitle>
           <TeamGrid>
             {(content.team || []).map((member, index) => (
@@ -1884,9 +1932,12 @@ const BusinessWebsitePage = () => {
       {businessData.slug === 'freelancer' && content.experience ? (
         <Section id="experience">
           <SectionContainer>
-            <SectionTitle>{content.sections?.experience?.title || 'Professional Experience'}</SectionTitle>
+            <SectionTitle>
+              {content.sections?.experience?.title || 'Professional Experience'}
+            </SectionTitle>
             <SectionSubtitle>
-              {content.sections?.experience?.subtitle || 'My journey in the creative industry, working with diverse clients and challenging projects.'}
+              {content.sections?.experience?.subtitle ||
+                'My journey in the creative industry, working with diverse clients and challenging projects.'}
             </SectionSubtitle>
             <ExperienceTimeline>
               {(content.experience || []).map((exp, index) => (
@@ -1911,9 +1962,12 @@ const BusinessWebsitePage = () => {
       {/* Testimonials Section */}
       <Section id="testimonials">
         <SectionContainer>
-          <SectionTitle>{content.sections?.testimonials?.title || 'What Our Clients Say'}</SectionTitle>
+          <SectionTitle>
+            {content.sections?.testimonials?.title || 'What Our Clients Say'}
+          </SectionTitle>
           <SectionSubtitle>
-            {content.sections?.testimonials?.subtitle || "Don't just take our word for it - hear from our satisfied customers about their experiences."}
+            {content.sections?.testimonials?.subtitle ||
+              "Don't just take our word for it - hear from our satisfied customers about their experiences."}
           </SectionSubtitle>
           <TestimonialsGrid>
             {[1, 2, 3].map((_, index) => (
@@ -1925,12 +1979,21 @@ const BusinessWebsitePage = () => {
                   <FaQuoteLeft />
                 </div>
                 <div className="text">
-                  "{content.sections?.testimonials?.sampleTestimonial?.text || 'Outstanding service and professional staff. I couldn\'t be happier with the results!'}"
+                  "
+                  {content.sections?.testimonials?.sampleTestimonial?.text ||
+                    "Outstanding service and professional staff. I couldn't be happier with the results!"}
+                  "
                 </div>
                 <div className="author">
                   <div className="info">
-                    <h4>{content.sections?.testimonials?.sampleTestimonial?.author || 'Client Name'}</h4>
-                    <p>{content.sections?.testimonials?.sampleTestimonial?.role || 'Satisfied Customer'}</p>
+                    <h4>
+                      {content.sections?.testimonials?.sampleTestimonial
+                        ?.author || 'Client Name'}
+                    </h4>
+                    <p>
+                      {content.sections?.testimonials?.sampleTestimonial
+                        ?.role || 'Satisfied Customer'}
+                    </p>
                   </div>
                   <div className="rating">
                     {[...Array(5)].map((_, i) => (
@@ -1947,9 +2010,12 @@ const BusinessWebsitePage = () => {
       {/* Gallery Section */}
       <Section id="gallery">
         <SectionContainer>
-          <SectionTitle>{content.sections?.gallery?.title || 'Our Gallery'}</SectionTitle>
+          <SectionTitle>
+            {content.sections?.gallery?.title || 'Our Gallery'}
+          </SectionTitle>
           <SectionSubtitle>
-            {content.sections?.gallery?.subtitle || 'Take a look at our work, facilities, and the experiences we create for our clients.'}
+            {content.sections?.gallery?.subtitle ||
+              'Take a look at our work, facilities, and the experiences we create for our clients.'}
           </SectionSubtitle>
           <GalleryGrid>
             {content.gallery?.map((category, index) => (
@@ -1971,9 +2037,12 @@ const BusinessWebsitePage = () => {
       {content.packages && (
         <Section id="packages" background={theme.colors.gray50}>
           <SectionContainer>
-            <SectionTitle>{content.sections?.packages?.title || 'Our Packages'}</SectionTitle>
+            <SectionTitle>
+              {content.sections?.packages?.title || 'Our Packages'}
+            </SectionTitle>
             <SectionSubtitle>
-              {content.sections?.packages?.subtitle || 'Choose from our specially curated packages designed to give you the best value and experience.'}
+              {content.sections?.packages?.subtitle ||
+                'Choose from our specially curated packages designed to give you the best value and experience.'}
             </SectionSubtitle>
             <PackagesGrid>
               {(content.packages || []).map((pkg, index) => (
@@ -1986,7 +2055,9 @@ const BusinessWebsitePage = () => {
                   <div className="package-price">{pkg.price}</div>
                   <div className="package-duration">{pkg.duration}</div>
                   <div className="package-description">{pkg.description}</div>
-                  <button className="package-button">{content.ui?.buttons?.bookNow || 'Book Now'}</button>
+                  <button className="package-button">
+                    {content.ui?.buttons?.bookNow || 'Book Now'}
+                  </button>
                 </PackageCard>
               ))}
             </PackagesGrid>
@@ -1997,9 +2068,12 @@ const BusinessWebsitePage = () => {
       {/* FAQ Section */}
       <Section id="faq">
         <SectionContainer>
-          <SectionTitle>{content.sections?.faq?.title || 'Frequently Asked Questions'}</SectionTitle>
+          <SectionTitle>
+            {content.sections?.faq?.title || 'Frequently Asked Questions'}
+          </SectionTitle>
           <SectionSubtitle>
-            {content.sections?.faq?.subtitle || 'Find answers to common questions about our services, booking, and policies.'}
+            {content.sections?.faq?.subtitle ||
+              'Find answers to common questions about our services, booking, and policies.'}
           </SectionSubtitle>
           <FAQContainer>
             {(content.faq || []).map((faq, index) => (
@@ -2018,9 +2092,12 @@ const BusinessWebsitePage = () => {
       {/* Reviews Section */}
       <Section id="reviews" background={theme.colors.gray50}>
         <SectionContainer>
-          <SectionTitle>{content.sections?.reviews?.title || 'Recent Reviews'}</SectionTitle>
+          <SectionTitle>
+            {content.sections?.reviews?.title || 'Recent Reviews'}
+          </SectionTitle>
           <SectionSubtitle>
-            {content.sections?.reviews?.subtitle || 'See what our recent customers are saying about their experiences with us.'}
+            {content.sections?.reviews?.subtitle ||
+              'See what our recent customers are saying about their experiences with us.'}
           </SectionSubtitle>
           <ReviewsGrid>
             {(content.reviews || []).map((review, index) => (
@@ -2052,37 +2129,54 @@ const BusinessWebsitePage = () => {
       {/* Business Hours Section */}
       <Section id="hours">
         <SectionContainer>
-          <SectionTitle>{content.ui?.businessHours?.title || 'Business Hours & Location'}</SectionTitle>
+          <SectionTitle>
+            {content.ui?.businessHours?.title || 'Business Hours & Location'}
+          </SectionTitle>
           <SectionSubtitle>
-            Visit us during our business hours or contact us anytime for appointments and inquiries.
+            Visit us during our business hours or contact us anytime for
+            appointments and inquiries.
           </SectionSubtitle>
           <HoursGrid>
             <HoursCard primaryColor={businessData.primaryColor}>
               <h4>{content.ui?.businessHours?.title || 'Operating Hours'}</h4>
               <div className="hours-list">
-                {Object.entries(content.businessHours?.hours || {}).map(([day, time]) => (
-                  <div key={day} className="hours-item">
-                    <span className="day">{day.charAt(0).toUpperCase() + day.slice(1)}</span>
-                    <span className="time">{time}</span>
-                  </div>
-                ))}
+                {Object.entries(content.businessHours?.hours || {}).map(
+                  ([day, time]) => (
+                    <div key={day} className="hours-item">
+                      <span className="day">
+                        {day.charAt(0).toUpperCase() + day.slice(1)}
+                      </span>
+                      <span className="time">{time}</span>
+                    </div>
+                  )
+                )}
               </div>
             </HoursCard>
 
             <HoursCard primaryColor={businessData.primaryColor}>
-              <h4>{content.ui?.businessHours?.contactInfoTitle || 'Contact Information'}</h4>
+              <h4>
+                {content.ui?.businessHours?.contactInfoTitle ||
+                  'Contact Information'}
+              </h4>
               <div className="hours-list">
                 <div className="hours-item">
                   <span className="day">Phone</span>
-                  <span className="time">{content.contact?.phone || '+1 (555) 123-4567'}</span>
+                  <span className="time">
+                    {content.contact?.phone || '+1 (555) 123-4567'}
+                  </span>
                 </div>
                 <div className="hours-item">
                   <span className="day">Email</span>
-                  <span className="time">{content.contact?.email || `info@${businessData.slug}.com`}</span>
+                  <span className="time">
+                    {content.contact?.email || `info@${businessData.slug}.com`}
+                  </span>
                 </div>
                 <div className="hours-item">
                   <span className="day">Address</span>
-                  <span className="time">{content.contact?.address || '123 Business Street, City, State 12345'}</span>
+                  <span className="time">
+                    {content.contact?.address ||
+                      '123 Business Street, City, State 12345'}
+                  </span>
                 </div>
               </div>
             </HoursCard>
@@ -2093,31 +2187,45 @@ const BusinessWebsitePage = () => {
       {/* Contact Section */}
       <Section id="contact" background={theme.colors.gray50}>
         <SectionContainer>
-          <SectionTitle>{content.contact?.title || 'Get In Touch'}</SectionTitle>
+          <SectionTitle>
+            {content.contact?.title || 'Get In Touch'}
+          </SectionTitle>
           <SectionSubtitle>
-            {content.contact?.description || 'Ready to get started? Contact us today to schedule a consultation or learn more about our services.'}
+            {content.contact?.description ||
+              'Ready to get started? Contact us today to schedule a consultation or learn more about our services.'}
           </SectionSubtitle>
           <ContactGrid>
             <ContactForm primaryColor={businessData.primaryColor}>
               <input
                 type="text"
-                placeholder={content.ui?.contactForm?.placeholders?.name || 'Your Name'}
+                placeholder={
+                  content.ui?.contactForm?.placeholders?.name || 'Your Name'
+                }
                 required
               />
               <input
                 type="email"
-                placeholder={content.ui?.contactForm?.placeholders?.email || 'Your Email'}
+                placeholder={
+                  content.ui?.contactForm?.placeholders?.email || 'Your Email'
+                }
                 required
               />
               <input
                 type="tel"
-                placeholder={content.ui?.contactForm?.placeholders?.phone || 'Your Phone'}
+                placeholder={
+                  content.ui?.contactForm?.placeholders?.phone || 'Your Phone'
+                }
               />
               <textarea
-                placeholder={content.ui?.contactForm?.placeholders?.message || 'Your Message'}
+                placeholder={
+                  content.ui?.contactForm?.placeholders?.message ||
+                  'Your Message'
+                }
                 required
               ></textarea>
-              <button type="submit">{content.ui?.buttons?.sendMessage || 'Send Message'}</button>
+              <button type="submit">
+                {content.ui?.buttons?.sendMessage || 'Send Message'}
+              </button>
             </ContactForm>
 
             <ContactInfo primaryColor={businessData.primaryColor}>

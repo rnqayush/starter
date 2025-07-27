@@ -796,7 +796,7 @@ const BuisnessAdminDashboard = () => {
     sections: {},
     buttons: {},
     contactForm: { placeholders: {} },
-    businessHours: {}
+    businessHours: {},
   });
   const [statisticsData, setStatisticsData] = useState([]);
 
@@ -847,7 +847,7 @@ const BuisnessAdminDashboard = () => {
         hero: heroData,
         about: {
           ...aboutData,
-          stats: statisticsData
+          stats: statisticsData,
         },
         services: servicesData,
         team: teamData,
@@ -1023,7 +1023,9 @@ const BuisnessAdminDashboard = () => {
         setApiLoading(true);
         setApiError(null);
 
-        console.log(`[AdminDashboard] Making API call for business: ${businessId}`);
+        console.log(
+          `[AdminDashboard] Making API call for business: ${businessId}`
+        );
         const response = await fetchBusinessData(businessId);
 
         let businessData;
@@ -1032,7 +1034,9 @@ const BuisnessAdminDashboard = () => {
           console.log('[AdminDashboard] API call successful:', response.data);
           businessData = response.data;
         } else {
-          console.log('[AdminDashboard] API call failed, using template fallback');
+          console.log(
+            '[AdminDashboard] API call failed, using template fallback'
+          );
           businessData = getBusinessTemplate(businessId);
           if (!businessData) {
             setApiError('Business not found');
@@ -1057,13 +1061,17 @@ const BuisnessAdminDashboard = () => {
         // Pre-fill all form data from business data (using API data structure)
         setHeroData({
           title: businessData.hero?.title || `${businessData.name}`,
-          subtitle: businessData.hero?.subtitle || `Welcome to ${businessData.name}`,
-          backgroundImage: businessData.hero?.backgroundImage || businessData.image || '',
+          subtitle:
+            businessData.hero?.subtitle || `Welcome to ${businessData.name}`,
+          backgroundImage:
+            businessData.hero?.backgroundImage || businessData.image || '',
         });
 
         setAboutData({
           title: businessData.about?.title || 'About Us',
-          description: businessData.about?.description || `Learn more about ${businessData.name}`,
+          description:
+            businessData.about?.description ||
+            `Learn more about ${businessData.name}`,
           profileImage: businessData.about?.profileImage || '',
         });
 
@@ -1080,18 +1088,20 @@ const BuisnessAdminDashboard = () => {
         setFaqData(businessData.faq || []);
 
         // Initialize business hours from API data
-        setBusinessHoursData(businessData.businessHours || {
-          title: 'Business Hours',
-          hours: {
-            monday: '9:00 AM - 6:00 PM',
-            tuesday: '9:00 AM - 6:00 PM',
-            wednesday: '9:00 AM - 6:00 PM',
-            thursday: '9:00 AM - 6:00 PM',
-            friday: '9:00 AM - 6:00 PM',
-            saturday: '10:00 AM - 4:00 PM',
-            sunday: 'Closed',
-          },
-        });
+        setBusinessHoursData(
+          businessData.businessHours || {
+            title: 'Business Hours',
+            hours: {
+              monday: '9:00 AM - 6:00 PM',
+              tuesday: '9:00 AM - 6:00 PM',
+              wednesday: '9:00 AM - 6:00 PM',
+              thursday: '9:00 AM - 6:00 PM',
+              friday: '9:00 AM - 6:00 PM',
+              saturday: '10:00 AM - 4:00 PM',
+              sunday: 'Closed',
+            },
+          }
+        );
 
         // Initialize section order
         setSectionOrderData([
@@ -1112,60 +1122,65 @@ const BuisnessAdminDashboard = () => {
         ]);
 
         // Initialize contact data from API data
-        setContactData(businessData.contact || {
-          title: 'Get In Touch',
-          description: `Contact us to learn more about ${businessData.name}`,
-          email: `hello@${businessData.slug}.com`,
-          phone: '+1 (555) 123-4567',
-          address: '123 Business Street, City, State 12345',
-          hours: {
-            monday: '9:00 AM - 6:00 PM',
-            tuesday: '9:00 AM - 6:00 PM',
-            wednesday: '9:00 AM - 6:00 PM',
-            thursday: '9:00 AM - 6:00 PM',
-            friday: '9:00 AM - 6:00 PM',
-            saturday: '10:00 AM - 4:00 PM',
-            sunday: 'Closed',
-          },
-          socialMedia: {
-            facebook: '',
-            twitter: '',
-            instagram: '',
-            linkedin: '',
-          },
-        });
+        setContactData(
+          businessData.contact || {
+            title: 'Get In Touch',
+            description: `Contact us to learn more about ${businessData.name}`,
+            email: `hello@${businessData.slug}.com`,
+            phone: '+1 (555) 123-4567',
+            address: '123 Business Street, City, State 12345',
+            hours: {
+              monday: '9:00 AM - 6:00 PM',
+              tuesday: '9:00 AM - 6:00 PM',
+              wednesday: '9:00 AM - 6:00 PM',
+              thursday: '9:00 AM - 6:00 PM',
+              friday: '9:00 AM - 6:00 PM',
+              saturday: '10:00 AM - 4:00 PM',
+              sunday: 'Closed',
+            },
+            socialMedia: {
+              facebook: '',
+              twitter: '',
+              instagram: '',
+              linkedin: '',
+            },
+          }
+        );
 
         // Initialize UI content data from API data
-        setUiContentData(businessData.ui || {
-          sections: businessData.sections || {},
-          buttons: {
-            bookNow: 'Book Now',
-            learnMore: 'Learn More',
-            sendMessage: 'Send Message',
-            contactUs: 'Contact Us'
-          },
-          contactForm: {
-            placeholders: {
-              name: 'Your Name',
-              email: 'Your Email',
-              phone: 'Your Phone',
-              message: 'Your Message'
-            }
-          },
-          businessHours: {
-            title: 'Business Hours',
-            contactInfoTitle: 'Contact Information'
+        setUiContentData(
+          businessData.ui || {
+            sections: businessData.sections || {},
+            buttons: {
+              bookNow: 'Book Now',
+              learnMore: 'Learn More',
+              sendMessage: 'Send Message',
+              contactUs: 'Contact Us',
+            },
+            contactForm: {
+              placeholders: {
+                name: 'Your Name',
+                email: 'Your Email',
+                phone: 'Your Phone',
+                message: 'Your Message',
+              },
+            },
+            businessHours: {
+              title: 'Business Hours',
+              contactInfoTitle: 'Contact Information',
+            },
           }
-        });
+        );
 
         // Initialize statistics data from API data
-        setStatisticsData(businessData.about?.stats || [
-          { number: '100+', label: 'Services' },
-          { number: '5+', label: 'Years Experience' },
-          { number: '4.9', label: '★ Average Rating' },
-          { number: '200+', label: 'Happy Clients' }
-        ]);
-
+        setStatisticsData(
+          businessData.about?.stats || [
+            { number: '100+', label: 'Services' },
+            { number: '5+', label: 'Years Experience' },
+            { number: '4.9', label: '★ Average Rating' },
+            { number: '200+', label: 'Happy Clients' },
+          ]
+        );
       } catch (error) {
         console.error('[AdminDashboard] Error fetching business data:', error);
         setApiError(error.message);
@@ -1893,10 +1908,27 @@ const BuisnessAdminDashboard = () => {
               </FormGroup>
 
               {/* Statistics Section within About Us */}
-              <FormGroup style={{ gridColumn: '1 / -1', marginTop: theme.spacing.xl }}>
-                <h3 style={{ marginBottom: theme.spacing.lg, color: theme.colors.gray800, borderTop: `1px solid ${theme.colors.gray200}`, paddingTop: theme.spacing.lg }}>Statistics</h3>
-                <p style={{ marginBottom: theme.spacing.md, color: theme.colors.gray600 }}>
-                  Edit the statistics displayed in the about section of your website.
+              <FormGroup
+                style={{ gridColumn: '1 / -1', marginTop: theme.spacing.xl }}
+              >
+                <h3
+                  style={{
+                    marginBottom: theme.spacing.lg,
+                    color: theme.colors.gray800,
+                    borderTop: `1px solid ${theme.colors.gray200}`,
+                    paddingTop: theme.spacing.lg,
+                  }}
+                >
+                  Statistics
+                </h3>
+                <p
+                  style={{
+                    marginBottom: theme.spacing.md,
+                    color: theme.colors.gray600,
+                  }}
+                >
+                  Edit the statistics displayed in the about section of your
+                  website.
                 </p>
 
                 <AddButton
@@ -1904,7 +1936,7 @@ const BuisnessAdminDashboard = () => {
                     const newStat = {
                       number: '0',
                       label: 'New Stat',
-                      id: Date.now()
+                      id: Date.now(),
                     };
                     setStatisticsData(prev => [...prev, newStat]);
                     trackSectionChange('about-us');
@@ -1927,7 +1959,9 @@ const BuisnessAdminDashboard = () => {
                               onChange={e => {
                                 setStatisticsData(prev =>
                                   prev.map((s, i) =>
-                                    i === index ? { ...s, number: e.target.value } : s
+                                    i === index
+                                      ? { ...s, number: e.target.value }
+                                      : s
                                   )
                                 );
                                 trackSectionChange('about-us');
@@ -1942,7 +1976,9 @@ const BuisnessAdminDashboard = () => {
                               onChange={e => {
                                 setStatisticsData(prev =>
                                   prev.map((s, i) =>
-                                    i === index ? { ...s, label: e.target.value } : s
+                                    i === index
+                                      ? { ...s, label: e.target.value }
+                                      : s
                                   )
                                 );
                                 trackSectionChange('about-us');
@@ -1956,7 +1992,9 @@ const BuisnessAdminDashboard = () => {
                         <ItemButton
                           variant="danger"
                           onClick={() => {
-                            setStatisticsData(prev => prev.filter((_, i) => i !== index));
+                            setStatisticsData(prev =>
+                              prev.filter((_, i) => i !== index)
+                            );
                             trackSectionChange('about-us');
                           }}
                         >
@@ -1996,37 +2034,69 @@ const BuisnessAdminDashboard = () => {
             </SectionHeader>
 
             {/* Section UI Content Editing */}
-            <div style={{ marginBottom: theme.spacing.xl, padding: theme.spacing.lg, background: theme.colors.gray50, borderRadius: theme.borderRadius.md }}>
-              <h3 style={{ marginBottom: theme.spacing.md, color: theme.colors.gray800 }}>Section Text & Labels</h3>
+            <div
+              style={{
+                marginBottom: theme.spacing.xl,
+                padding: theme.spacing.lg,
+                background: theme.colors.gray50,
+                borderRadius: theme.borderRadius.md,
+              }}
+            >
+              <h3
+                style={{
+                  marginBottom: theme.spacing.md,
+                  color: theme.colors.gray800,
+                }}
+              >
+                Section Text & Labels
+              </h3>
               <FormGrid>
                 <FormGroup>
                   <FormLabel>Section Title</FormLabel>
                   <FormInput
-                    value={uiContentData.sections?.services?.title || (business?.slug === 'freelancer' ? 'My Services' : 'Our Services')}
+                    value={
+                      uiContentData.sections?.services?.title ||
+                      (business?.slug === 'freelancer'
+                        ? 'My Services'
+                        : 'Our Services')
+                    }
                     onChange={e => {
                       setUiContentData(prev => ({
                         ...prev,
                         sections: {
                           ...prev.sections,
-                          services: { ...prev.sections?.services, title: e.target.value }
-                        }
+                          services: {
+                            ...prev.sections?.services,
+                            title: e.target.value,
+                          },
+                        },
                       }));
                       trackSectionChange('services-offered');
                     }}
-                    placeholder={business?.slug === 'freelancer' ? 'My Services' : 'Our Services'}
+                    placeholder={
+                      business?.slug === 'freelancer'
+                        ? 'My Services'
+                        : 'Our Services'
+                    }
                   />
                 </FormGroup>
                 <FormGroup>
                   <FormLabel>Section Subtitle</FormLabel>
                   <FormTextarea
-                    value={uiContentData.sections?.services?.subtitle || 'We offer a comprehensive range of professional services designed to meet your needs and exceed your expectations.'}
+                    value={
+                      uiContentData.sections?.services?.subtitle ||
+                      'We offer a comprehensive range of professional services designed to meet your needs and exceed your expectations.'
+                    }
                     onChange={e => {
                       setUiContentData(prev => ({
                         ...prev,
                         sections: {
                           ...prev.sections,
-                          services: { ...prev.sections?.services, subtitle: e.target.value }
-                        }
+                          services: {
+                            ...prev.sections?.services,
+                            subtitle: e.target.value,
+                          },
+                        },
                       }));
                       trackSectionChange('services-offered');
                     }}
@@ -2131,20 +2201,39 @@ const BuisnessAdminDashboard = () => {
             </SectionHeader>
 
             {/* Section UI Content Editing */}
-            <div style={{ marginBottom: theme.spacing.xl, padding: theme.spacing.lg, background: theme.colors.gray50, borderRadius: theme.borderRadius.md }}>
-              <h3 style={{ marginBottom: theme.spacing.md, color: theme.colors.gray800 }}>Section Text & Labels</h3>
+            <div
+              style={{
+                marginBottom: theme.spacing.xl,
+                padding: theme.spacing.lg,
+                background: theme.colors.gray50,
+                borderRadius: theme.borderRadius.md,
+              }}
+            >
+              <h3
+                style={{
+                  marginBottom: theme.spacing.md,
+                  color: theme.colors.gray800,
+                }}
+              >
+                Section Text & Labels
+              </h3>
               <FormGrid>
                 <FormGroup>
                   <FormLabel>Section Title</FormLabel>
                   <FormInput
-                    value={uiContentData.sections?.team?.title || 'Meet Our Team'}
+                    value={
+                      uiContentData.sections?.team?.title || 'Meet Our Team'
+                    }
                     onChange={e => {
                       setUiContentData(prev => ({
                         ...prev,
                         sections: {
                           ...prev.sections,
-                          team: { ...prev.sections?.team, title: e.target.value }
-                        }
+                          team: {
+                            ...prev.sections?.team,
+                            title: e.target.value,
+                          },
+                        },
                       }));
                       trackSectionChange('team');
                     }}
@@ -2154,14 +2243,20 @@ const BuisnessAdminDashboard = () => {
                 <FormGroup>
                   <FormLabel>Section Subtitle</FormLabel>
                   <FormTextarea
-                    value={uiContentData.sections?.team?.subtitle || 'Our experienced professionals are passionate about delivering exceptional service and results.'}
+                    value={
+                      uiContentData.sections?.team?.subtitle ||
+                      'Our experienced professionals are passionate about delivering exceptional service and results.'
+                    }
                     onChange={e => {
                       setUiContentData(prev => ({
                         ...prev,
                         sections: {
                           ...prev.sections,
-                          team: { ...prev.sections?.team, subtitle: e.target.value }
-                        }
+                          team: {
+                            ...prev.sections?.team,
+                            subtitle: e.target.value,
+                          },
+                        },
                       }));
                       trackSectionChange('team');
                     }}
@@ -2871,20 +2966,40 @@ const BuisnessAdminDashboard = () => {
             </SectionHeader>
 
             {/* Section UI Content Editing */}
-            <div style={{ marginBottom: theme.spacing.xl, padding: theme.spacing.lg, background: theme.colors.gray50, borderRadius: theme.borderRadius.md }}>
-              <h3 style={{ marginBottom: theme.spacing.md, color: theme.colors.gray800 }}>Section Text & Labels</h3>
+            <div
+              style={{
+                marginBottom: theme.spacing.xl,
+                padding: theme.spacing.lg,
+                background: theme.colors.gray50,
+                borderRadius: theme.borderRadius.md,
+              }}
+            >
+              <h3
+                style={{
+                  marginBottom: theme.spacing.md,
+                  color: theme.colors.gray800,
+                }}
+              >
+                Section Text & Labels
+              </h3>
               <FormGrid>
                 <FormGroup>
                   <FormLabel>Section Title</FormLabel>
                   <FormInput
-                    value={uiContentData.sections?.testimonials?.title || 'What Our Clients Say'}
+                    value={
+                      uiContentData.sections?.testimonials?.title ||
+                      'What Our Clients Say'
+                    }
                     onChange={e => {
                       setUiContentData(prev => ({
                         ...prev,
                         sections: {
                           ...prev.sections,
-                          testimonials: { ...prev.sections?.testimonials, title: e.target.value }
-                        }
+                          testimonials: {
+                            ...prev.sections?.testimonials,
+                            title: e.target.value,
+                          },
+                        },
                       }));
                       trackSectionChange('testimonials');
                     }}
@@ -2894,14 +3009,20 @@ const BuisnessAdminDashboard = () => {
                 <FormGroup>
                   <FormLabel>Section Subtitle</FormLabel>
                   <FormTextarea
-                    value={uiContentData.sections?.testimonials?.subtitle || "Don't just take our word for it - hear from our satisfied customers about their experiences."}
+                    value={
+                      uiContentData.sections?.testimonials?.subtitle ||
+                      "Don't just take our word for it - hear from our satisfied customers about their experiences."
+                    }
                     onChange={e => {
                       setUiContentData(prev => ({
                         ...prev,
                         sections: {
                           ...prev.sections,
-                          testimonials: { ...prev.sections?.testimonials, subtitle: e.target.value }
-                        }
+                          testimonials: {
+                            ...prev.sections?.testimonials,
+                            subtitle: e.target.value,
+                          },
+                        },
                       }));
                       trackSectionChange('testimonials');
                     }}
@@ -3481,8 +3602,19 @@ const BuisnessAdminDashboard = () => {
               </FormGroup>
 
               {/* Button Labels & Contact Form UI */}
-              <FormGroup style={{ gridColumn: '1 / -1', marginTop: theme.spacing.xl }}>
-                <h3 style={{ marginBottom: theme.spacing.lg, color: theme.colors.gray800, borderTop: `1px solid ${theme.colors.gray200}`, paddingTop: theme.spacing.lg }}>Button Labels</h3>
+              <FormGroup
+                style={{ gridColumn: '1 / -1', marginTop: theme.spacing.xl }}
+              >
+                <h3
+                  style={{
+                    marginBottom: theme.spacing.lg,
+                    color: theme.colors.gray800,
+                    borderTop: `1px solid ${theme.colors.gray200}`,
+                    paddingTop: theme.spacing.lg,
+                  }}
+                >
+                  Button Labels
+                </h3>
                 <FormGrid>
                   <FormGroup>
                     <FormLabel>Primary Action Button</FormLabel>
@@ -3491,7 +3623,7 @@ const BuisnessAdminDashboard = () => {
                       onChange={e => {
                         setUiContentData(prev => ({
                           ...prev,
-                          buttons: { ...prev.buttons, bookNow: e.target.value }
+                          buttons: { ...prev.buttons, bookNow: e.target.value },
                         }));
                         trackSectionChange('contact');
                       }}
@@ -3501,11 +3633,16 @@ const BuisnessAdminDashboard = () => {
                   <FormGroup>
                     <FormLabel>Send Message Button</FormLabel>
                     <FormInput
-                      value={uiContentData.buttons?.sendMessage || 'Send Message'}
+                      value={
+                        uiContentData.buttons?.sendMessage || 'Send Message'
+                      }
                       onChange={e => {
                         setUiContentData(prev => ({
                           ...prev,
-                          buttons: { ...prev.buttons, sendMessage: e.target.value }
+                          buttons: {
+                            ...prev.buttons,
+                            sendMessage: e.target.value,
+                          },
                         }));
                         trackSectionChange('contact');
                       }}
@@ -3519,7 +3656,10 @@ const BuisnessAdminDashboard = () => {
                       onChange={e => {
                         setUiContentData(prev => ({
                           ...prev,
-                          buttons: { ...prev.buttons, contactUs: e.target.value }
+                          buttons: {
+                            ...prev.buttons,
+                            contactUs: e.target.value,
+                          },
                         }));
                         trackSectionChange('contact');
                       }}
@@ -3533,7 +3673,10 @@ const BuisnessAdminDashboard = () => {
                       onChange={e => {
                         setUiContentData(prev => ({
                           ...prev,
-                          buttons: { ...prev.buttons, learnMore: e.target.value }
+                          buttons: {
+                            ...prev.buttons,
+                            learnMore: e.target.value,
+                          },
                         }));
                         trackSectionChange('contact');
                       }}
@@ -3543,13 +3686,25 @@ const BuisnessAdminDashboard = () => {
                 </FormGrid>
               </FormGroup>
 
-              <FormGroup style={{ gridColumn: '1 / -1', marginTop: theme.spacing.lg }}>
-                <h3 style={{ marginBottom: theme.spacing.lg, color: theme.colors.gray800 }}>Contact Form Placeholders</h3>
+              <FormGroup
+                style={{ gridColumn: '1 / -1', marginTop: theme.spacing.lg }}
+              >
+                <h3
+                  style={{
+                    marginBottom: theme.spacing.lg,
+                    color: theme.colors.gray800,
+                  }}
+                >
+                  Contact Form Placeholders
+                </h3>
                 <FormGrid>
                   <FormGroup>
                     <FormLabel>Name Field Placeholder</FormLabel>
                     <FormInput
-                      value={uiContentData.contactForm?.placeholders?.name || 'Your Name'}
+                      value={
+                        uiContentData.contactForm?.placeholders?.name ||
+                        'Your Name'
+                      }
                       onChange={e => {
                         setUiContentData(prev => ({
                           ...prev,
@@ -3557,9 +3712,9 @@ const BuisnessAdminDashboard = () => {
                             ...prev.contactForm,
                             placeholders: {
                               ...prev.contactForm?.placeholders,
-                              name: e.target.value
-                            }
-                          }
+                              name: e.target.value,
+                            },
+                          },
                         }));
                         trackSectionChange('contact');
                       }}
@@ -3569,7 +3724,10 @@ const BuisnessAdminDashboard = () => {
                   <FormGroup>
                     <FormLabel>Email Field Placeholder</FormLabel>
                     <FormInput
-                      value={uiContentData.contactForm?.placeholders?.email || 'Your Email'}
+                      value={
+                        uiContentData.contactForm?.placeholders?.email ||
+                        'Your Email'
+                      }
                       onChange={e => {
                         setUiContentData(prev => ({
                           ...prev,
@@ -3577,9 +3735,9 @@ const BuisnessAdminDashboard = () => {
                             ...prev.contactForm,
                             placeholders: {
                               ...prev.contactForm?.placeholders,
-                              email: e.target.value
-                            }
-                          }
+                              email: e.target.value,
+                            },
+                          },
                         }));
                         trackSectionChange('contact');
                       }}
@@ -3589,7 +3747,10 @@ const BuisnessAdminDashboard = () => {
                   <FormGroup>
                     <FormLabel>Phone Field Placeholder</FormLabel>
                     <FormInput
-                      value={uiContentData.contactForm?.placeholders?.phone || 'Your Phone'}
+                      value={
+                        uiContentData.contactForm?.placeholders?.phone ||
+                        'Your Phone'
+                      }
                       onChange={e => {
                         setUiContentData(prev => ({
                           ...prev,
@@ -3597,9 +3758,9 @@ const BuisnessAdminDashboard = () => {
                             ...prev.contactForm,
                             placeholders: {
                               ...prev.contactForm?.placeholders,
-                              phone: e.target.value
-                            }
-                          }
+                              phone: e.target.value,
+                            },
+                          },
                         }));
                         trackSectionChange('contact');
                       }}
@@ -3609,7 +3770,10 @@ const BuisnessAdminDashboard = () => {
                   <FormGroup>
                     <FormLabel>Message Field Placeholder</FormLabel>
                     <FormInput
-                      value={uiContentData.contactForm?.placeholders?.message || 'Your Message'}
+                      value={
+                        uiContentData.contactForm?.placeholders?.message ||
+                        'Your Message'
+                      }
                       onChange={e => {
                         setUiContentData(prev => ({
                           ...prev,
@@ -3617,9 +3781,9 @@ const BuisnessAdminDashboard = () => {
                             ...prev.contactForm,
                             placeholders: {
                               ...prev.contactForm?.placeholders,
-                              message: e.target.value
-                            }
-                          }
+                              message: e.target.value,
+                            },
+                          },
                         }));
                         trackSectionChange('contact');
                       }}

@@ -1151,7 +1151,9 @@ const SectionBasedHotelEditor = ({ setActiveSection }) => {
     );
 
     closeModal();
-    alert('Custom section updated! Remember to "Save & Go Live" to publish changes.');
+    alert(
+      'Custom section updated! Remember to "Save & Go Live" to publish changes.'
+    );
   };
 
   const addContentItem = () => {

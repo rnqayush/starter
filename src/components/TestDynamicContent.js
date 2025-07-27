@@ -34,9 +34,9 @@ const TestResult = styled.div`
   padding: ${theme.spacing.md};
   border-radius: ${theme.borderRadius.sm};
   margin-bottom: ${theme.spacing.sm};
-  background: ${props => props.success ? '#d4edda' : '#f8d7da'};
-  color: ${props => props.success ? '#155724' : '#721c24'};
-  border: 1px solid ${props => props.success ? '#c3e6cb' : '#f5c6cb'};
+  background: ${props => (props.success ? '#d4edda' : '#f8d7da')};
+  color: ${props => (props.success ? '#155724' : '#721c24')};
+  border: 1px solid ${props => (props.success ? '#c3e6cb' : '#f5c6cb')};
 `;
 
 const LoadingSpinner = styled.div`
@@ -62,11 +62,11 @@ const TestButton = styled.button`
   cursor: pointer;
   margin-right: ${theme.spacing.md};
   margin-bottom: ${theme.spacing.md};
-  
+
   &:hover {
     background: ${theme.colors.primaryDark};
   }
-  
+
   &:disabled {
     background: ${theme.colors.gray400};
     cursor: not-allowed;
@@ -78,45 +78,51 @@ const TestDynamicContent = () => {
   const [loading, setLoading] = useState(false);
   const [businessData, setBusinessData] = useState({});
 
-  const testBusinessContent = async (businessType) => {
+  const testBusinessContent = async businessType => {
     setLoading(true);
     try {
       console.log(`🧪 Testing dynamic content for ${businessType}...`);
       const response = await fetchBusinessData(businessType);
-      
+
       if (response.success && response.data) {
         const data = response.data;
-        
+
         // Test results object
         const results = {
           businessType,
           timestamp: new Date().toLocaleTimeString(),
-          tests: []
+          tests: [],
         };
 
         // Test 1: Section Titles and Subtitles
         const sectionsTest = {
           name: 'Section Titles & Subtitles',
           success: true,
-          details: []
+          details: [],
         };
 
         if (data.sections?.services?.title) {
-          sectionsTest.details.push(`✅ Services Title: "${data.sections.services.title}"`);
+          sectionsTest.details.push(
+            `✅ Services Title: "${data.sections.services.title}"`
+          );
         } else {
           sectionsTest.success = false;
           sectionsTest.details.push('❌ Services title missing');
         }
 
         if (data.sections?.team?.title) {
-          sectionsTest.details.push(`✅ Team Title: "${data.sections.team.title}"`);
+          sectionsTest.details.push(
+            `✅ Team Title: "${data.sections.team.title}"`
+          );
         } else {
           sectionsTest.success = false;
           sectionsTest.details.push('❌ Team title missing');
         }
 
         if (data.sections?.testimonials?.title) {
-          sectionsTest.details.push(`✅ Testimonials Title: "${data.sections.testimonials.title}"`);
+          sectionsTest.details.push(
+            `✅ Testimonials Title: "${data.sections.testimonials.title}"`
+          );
         } else {
           sectionsTest.success = false;
           sectionsTest.details.push('❌ Testimonials title missing');
@@ -128,18 +134,22 @@ const TestDynamicContent = () => {
         const buttonsTest = {
           name: 'Button Labels',
           success: true,
-          details: []
+          details: [],
         };
 
         if (data.ui?.buttons?.bookNow) {
-          buttonsTest.details.push(`✅ Book Now Button: "${data.ui.buttons.bookNow}"`);
+          buttonsTest.details.push(
+            `✅ Book Now Button: "${data.ui.buttons.bookNow}"`
+          );
         } else {
           buttonsTest.success = false;
           buttonsTest.details.push('❌ Book Now button text missing');
         }
 
         if (data.ui?.buttons?.sendMessage) {
-          buttonsTest.details.push(`✅ Send Message Button: "${data.ui.buttons.sendMessage}"`);
+          buttonsTest.details.push(
+            `✅ Send Message Button: "${data.ui.buttons.sendMessage}"`
+          );
         } else {
           buttonsTest.success = false;
           buttonsTest.details.push('❌ Send Message button text missing');
@@ -151,14 +161,18 @@ const TestDynamicContent = () => {
         const statsTest = {
           name: 'Statistics',
           success: true,
-          details: []
+          details: [],
         };
 
         if (data.about?.stats && Array.isArray(data.about.stats)) {
-          statsTest.details.push(`✅ Statistics Count: ${data.about.stats.length} stats`);
+          statsTest.details.push(
+            `✅ Statistics Count: ${data.about.stats.length} stats`
+          );
           data.about.stats.forEach((stat, index) => {
             if (stat.number && stat.label) {
-              statsTest.details.push(`✅ Stat ${index + 1}: "${stat.number}" - "${stat.label}"`);
+              statsTest.details.push(
+                `✅ Stat ${index + 1}: "${stat.number}" - "${stat.label}"`
+              );
             } else {
               statsTest.success = false;
               statsTest.details.push(`❌ Stat ${index + 1}: incomplete data`);
@@ -175,7 +189,7 @@ const TestDynamicContent = () => {
         const formTest = {
           name: 'Contact Form Placeholders',
           success: true,
-          details: []
+          details: [],
         };
 
         const placeholders = data.ui?.contactForm?.placeholders || {};
@@ -187,7 +201,9 @@ const TestDynamicContent = () => {
         }
 
         if (placeholders.email) {
-          formTest.details.push(`✅ Email Placeholder: "${placeholders.email}"`);
+          formTest.details.push(
+            `✅ Email Placeholder: "${placeholders.email}"`
+          );
         } else {
           formTest.success = false;
           formTest.details.push('❌ Email placeholder missing');
@@ -199,15 +215,19 @@ const TestDynamicContent = () => {
         const hoursTest = {
           name: 'Business Hours',
           success: true,
-          details: []
+          details: [],
         };
 
         if (data.businessHours?.hours) {
           const daysCount = Object.keys(data.businessHours.hours).length;
-          hoursTest.details.push(`✅ Business Hours: ${daysCount} days configured`);
-          
+          hoursTest.details.push(
+            `✅ Business Hours: ${daysCount} days configured`
+          );
+
           Object.entries(data.businessHours.hours).forEach(([day, time]) => {
-            hoursTest.details.push(`✅ ${day.charAt(0).toUpperCase() + day.slice(1)}: ${time}`);
+            hoursTest.details.push(
+              `✅ ${day.charAt(0).toUpperCase() + day.slice(1)}: ${time}`
+            );
           });
         } else {
           hoursTest.success = false;
@@ -220,14 +240,16 @@ const TestDynamicContent = () => {
         const faqTest = {
           name: 'FAQ Content',
           success: true,
-          details: []
+          details: [],
         };
 
         if (data.faq && Array.isArray(data.faq) && data.faq.length > 0) {
           faqTest.details.push(`✅ FAQ Count: ${data.faq.length} questions`);
           data.faq.slice(0, 3).forEach((faq, index) => {
             if (faq.question && faq.answer) {
-              faqTest.details.push(`✅ FAQ ${index + 1}: "${faq.question.substring(0, 50)}..."`);
+              faqTest.details.push(
+                `✅ FAQ ${index + 1}: "${faq.question.substring(0, 50)}..."`
+              );
             } else {
               faqTest.success = false;
               faqTest.details.push(`❌ FAQ ${index + 1}: incomplete data`);
@@ -245,22 +267,21 @@ const TestDynamicContent = () => {
 
         setTestResults(prev => ({
           ...prev,
-          [businessType]: results
+          [businessType]: results,
         }));
 
         setBusinessData(prev => ({
           ...prev,
-          [businessType]: data
+          [businessType]: data,
         }));
-
       } else {
         setTestResults(prev => ({
           ...prev,
           [businessType]: {
             success: false,
             message: response.message || 'API call failed',
-            timestamp: new Date().toLocaleTimeString()
-          }
+            timestamp: new Date().toLocaleTimeString(),
+          },
         }));
       }
     } catch (error) {
@@ -269,8 +290,8 @@ const TestDynamicContent = () => {
         [businessType]: {
           success: false,
           message: error.message,
-          timestamp: new Date().toLocaleTimeString()
-        }
+          timestamp: new Date().toLocaleTimeString(),
+        },
       }));
     } finally {
       setLoading(false);
@@ -279,7 +300,7 @@ const TestDynamicContent = () => {
 
   const runAllTests = async () => {
     const businessTypes = ['salon', 'gym', 'restaurant', 'freelancer'];
-    
+
     for (const type of businessTypes) {
       await testBusinessContent(type);
       // Small delay to see each test result
@@ -295,22 +316,37 @@ const TestDynamicContent = () => {
   return (
     <TestContainer>
       <TestHeader>🔍 Dynamic Content Verification Test</TestHeader>
-      
+
       <TestSection>
         <TestTitle>📋 Hardcoded Content Elimination Test</TestTitle>
-        <p>Verify that all previously hardcoded content is now dynamic and comes from the centralized data source.</p>
-        
+        <p>
+          Verify that all previously hardcoded content is now dynamic and comes
+          from the centralized data source.
+        </p>
+
         <div style={{ marginBottom: theme.spacing.lg }}>
-          <TestButton onClick={() => testBusinessContent('salon')} disabled={loading}>
+          <TestButton
+            onClick={() => testBusinessContent('salon')}
+            disabled={loading}
+          >
             Test Salon
           </TestButton>
-          <TestButton onClick={() => testBusinessContent('gym')} disabled={loading}>
+          <TestButton
+            onClick={() => testBusinessContent('gym')}
+            disabled={loading}
+          >
             Test Gym
           </TestButton>
-          <TestButton onClick={() => testBusinessContent('restaurant')} disabled={loading}>
+          <TestButton
+            onClick={() => testBusinessContent('restaurant')}
+            disabled={loading}
+          >
             Test Restaurant
           </TestButton>
-          <TestButton onClick={() => testBusinessContent('freelancer')} disabled={loading}>
+          <TestButton
+            onClick={() => testBusinessContent('freelancer')}
+            disabled={loading}
+          >
             Test Freelancer
           </TestButton>
           <TestButton onClick={runAllTests} disabled={loading}>
@@ -323,11 +359,10 @@ const TestDynamicContent = () => {
         {Object.entries(testResults).map(([businessType, result]) => (
           <div key={businessType} style={{ marginBottom: theme.spacing.lg }}>
             <TestResult success={result.overallSuccess || result.success}>
-              <strong>{businessType.toUpperCase()}</strong>: {
-                result.overallSuccess ? 
-                  `✅ All dynamic content tests passed (${result.tests?.length || 0} tests)` :
-                  result.message || '❌ Some tests failed'
-              }
+              <strong>{businessType.toUpperCase()}</strong>:{' '}
+              {result.overallSuccess
+                ? `✅ All dynamic content tests passed (${result.tests?.length || 0} tests)`
+                : result.message || '❌ Some tests failed'}
               <small> (at {result.timestamp})</small>
             </TestResult>
 
@@ -336,7 +371,8 @@ const TestDynamicContent = () => {
                 {result.tests.map((test, index) => (
                   <div key={index} style={{ marginBottom: theme.spacing.md }}>
                     <TestResult success={test.success}>
-                      <strong>{test.name}</strong>: {test.success ? '✅ Passed' : '❌ Failed'}
+                      <strong>{test.name}</strong>:{' '}
+                      {test.success ? '✅ Passed' : '❌ Failed'}
                     </TestResult>
                     <ContentPreview>
                       {test.details.map((detail, i) => (
@@ -355,45 +391,63 @@ const TestDynamicContent = () => {
         <TestTitle>🎯 Implementation Summary</TestTitle>
         <div>
           <TestResult success={true}>
-            ✅ <strong>Removed Hardcoded Content:</strong> All UI text, section titles, button labels, and static content
+            ✅ <strong>Removed Hardcoded Content:</strong> All UI text, section
+            titles, button labels, and static content
           </TestResult>
           <TestResult success={true}>
-            ✅ <strong>Centralized Data:</strong> All content now stored in businessWebsiteData.js
+            ✅ <strong>Centralized Data:</strong> All content now stored in
+            businessWebsiteData.js
           </TestResult>
           <TestResult success={true}>
-            ✅ <strong>Dynamic API Integration:</strong> Both pages use fetchBusinessData() API
+            ✅ <strong>Dynamic API Integration:</strong> Both pages use
+            fetchBusinessData() API
           </TestResult>
           <TestResult success={true}>
-            ✅ <strong>Admin Dashboard:</strong> Added UI Text & Labels and Statistics editing sections
+            ✅ <strong>Admin Dashboard:</strong> Added UI Text & Labels and
+            Statistics editing sections
           </TestResult>
           <TestResult success={true}>
-            ✅ <strong>Real-time Updates:</strong> Changes in admin reflect immediately via Redux
+            ✅ <strong>Real-time Updates:</strong> Changes in admin reflect
+            immediately via Redux
           </TestResult>
         </div>
-        
+
         <p style={{ marginTop: theme.spacing.lg, color: theme.colors.gray600 }}>
-          <strong>What was accomplished:</strong><br />
-          • Identified and cataloged all hardcoded content in BusinessWebsitePage<br />
-          • Extended businessWebsiteData.js with comprehensive UI content structure<br />
-          • Replaced hardcoded text with dynamic data from centralized source<br />
-          • Added admin editing interfaces for UI content, statistics, and labels<br />
-          • Verified all content is now editable through admin dashboard<br />
-          • Maintained data consistency between website and admin views
+          <strong>What was accomplished:</strong>
+          <br />
+          • Identified and cataloged all hardcoded content in
+          BusinessWebsitePage
+          <br />
+          • Extended businessWebsiteData.js with comprehensive UI content
+          structure
+          <br />
+          • Replaced hardcoded text with dynamic data from centralized source
+          <br />
+          • Added admin editing interfaces for UI content, statistics, and
+          labels
+          <br />
+          • Verified all content is now editable through admin dashboard
+          <br />• Maintained data consistency between website and admin views
         </p>
       </TestSection>
 
       <TestSection>
         <TestTitle>🏗️ Architecture Improvements</TestTitle>
         <div>
-          <p><strong>Before:</strong> Hardcoded strings scattered throughout components</p>
+          <p>
+            <strong>Before:</strong> Hardcoded strings scattered throughout
+            components
+          </p>
           <ContentPreview>
             {`// Old hardcoded approach
 <h2>Our Services</h2>
 <p>We offer comprehensive services...</p>
 <button>Book Now</button>`}
           </ContentPreview>
-          
-          <p style={{ marginTop: theme.spacing.md }}><strong>After:</strong> Dynamic content from centralized API</p>
+
+          <p style={{ marginTop: theme.spacing.md }}>
+            <strong>After:</strong> Dynamic content from centralized API
+          </p>
           <ContentPreview>
             {`// New dynamic approach
 <h2>{content.sections?.services?.title || 'Our Services'}</h2>
