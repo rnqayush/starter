@@ -1519,27 +1519,37 @@ const BusinessWebsitePage = () => {
             <FaArrowLeft />
           </BackToListButton>
           <Logo primaryColor={businessData.primaryColor}>
-            {businessData.name}
+            {businessData.navigation?.logo || businessData.name}
           </Logo>
           <NavLinks primaryColor={businessData.primaryColor}>
-            <a href="#home">Home</a>
-            <a href="#about">About</a>
-            {businessData.slug === 'freelancer' && (
-              <a href="#portfolio">Portfolio</a>
+            {businessData.navigation?.menuItems ? (
+              businessData.navigation.menuItems.map((item, index) => (
+                <a key={index} href={item.href}>
+                  {item.name}
+                </a>
+              ))
+            ) : (
+              <>
+                <a href="#home">Home</a>
+                <a href="#about">About</a>
+                {businessData.slug === 'freelancer' && (
+                  <a href="#portfolio">Portfolio</a>
+                )}
+                {businessData.slug === 'freelancer' && <a href="#skills">Skills</a>}
+                <a href="#services">Services</a>
+                {businessData.slug !== 'freelancer' && <a href="#team">Team</a>}
+                {businessData.slug === 'freelancer' && (
+                  <a href="#experience">Experience</a>
+                )}
+                {businessData.slug !== 'freelancer' && (
+                  <a href="#gallery">Gallery</a>
+                )}
+                {businessData.slug !== 'freelancer' && (
+                  <a href="#packages">Packages</a>
+                )}
+                <a href="#contact">Contact</a>
+              </>
             )}
-            {businessData.slug === 'freelancer' && <a href="#skills">Skills</a>}
-            <a href="#services">Services</a>
-            {businessData.slug !== 'freelancer' && <a href="#team">Team</a>}
-            {businessData.slug === 'freelancer' && (
-              <a href="#experience">Experience</a>
-            )}
-            {businessData.slug !== 'freelancer' && (
-              <a href="#gallery">Gallery</a>
-            )}
-            {businessData.slug !== 'freelancer' && (
-              <a href="#packages">Packages</a>
-            )}
-            <a href="#contact">Contact</a>
           </NavLinks>
           <MobileMenuButton
             primaryColor={businessData.primaryColor}
