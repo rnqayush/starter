@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { hotelData } from '../../DummyData/hotels';
 
 const initialState = {
-  hotels: hotels,
+  hotels: hotelData.hotels,
   editingHotel: null,
   originalHotel: null,
   changes: {},
