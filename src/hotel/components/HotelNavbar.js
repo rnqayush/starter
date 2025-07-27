@@ -382,7 +382,7 @@ const HotelNavbar = ({ showBackToMain = true }) => {
 
     const updateScrollState = () => {
       const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      const threshold = 100; // More responsive threshold
+      const threshold = 50; // Lower threshold for better responsiveness
 
       setIsScrolled(scrollTop > threshold);
       ticking = false;
@@ -395,8 +395,10 @@ const HotelNavbar = ({ showBackToMain = true }) => {
       }
     };
 
-    // Set initial state
-    updateScrollState();
+    // Set initial state - ensure it starts as transparent
+    setIsScrolled(false);
+    // Check scroll position after a brief delay to ensure proper initialization
+    setTimeout(updateScrollState, 100);
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
