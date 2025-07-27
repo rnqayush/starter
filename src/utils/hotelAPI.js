@@ -199,26 +199,27 @@ export const fetchHotelsByCity = async city => {
 export const fetchFeaturedHotels = async (limit = 4) => {
   await delay(250);
 
-  const featuredHotels = hotelData.hotels
-    .sort((a, b) => b.rating - a.rating)
-    .slice(0, limit);
+  // With single hotel, return it if it qualifies as featured
+  const hotel = hotelData.data.hotel;
+  const featuredHotels = [hotel].slice(0, limit);
 
   return createApiResponse(featuredHotels);
 };
 
 // Helper functions for backward compatibility
 export const getHotelByIdOrSlug = identifier => {
-  return hotelData.hotels.find(
-    h => h.id === parseInt(identifier) || h.slug === identifier
-  );
+  const hotel = hotelData.data.hotel;
+  return (hotel.id === parseInt(identifier) || hotel.slug === identifier) ? hotel : null;
 };
 
 export const getHotelById = id => {
-  return hotelData.hotels.find(h => h.id === parseInt(id));
+  const hotel = hotelData.data.hotel;
+  return hotel.id === parseInt(id) ? hotel : null;
 };
 
 export const getHotelBySlug = slug => {
-  return hotelData.hotels.find(h => h.slug === slug);
+  const hotel = hotelData.data.hotel;
+  return hotel.slug === slug ? hotel : null;
 };
 
 export const getRoomById = (hotelId, roomId) => {
@@ -227,9 +228,9 @@ export const getRoomById = (hotelId, roomId) => {
 };
 
 // Export the data for components that need immediate access
-export const getStaticHotelData = () => hotelData.hotels;
-export const getStaticBookingsData = () => hotelData.bookings;
-export const getStaticAmenitiesData = () => hotelData.amenitiesList;
+export const getStaticHotelData = () => [hotelData.data.hotel]; // Return as array for compatibility
+export const getStaticBookingsData = () => hotelData.data.bookings;
+export const getStaticAmenitiesData = () => hotelData.data.amenitiesList;
 
 // For owner dashboard - get hotels by owner ID
 export const getOwnerHotels = ownerId => {
