@@ -177,6 +177,8 @@ const DealerDashboard = () => {
         return 'Create and manage custom sections for your dealership page';
       case 'inventory':
         return 'Manage your vehicle inventory and stock levels';
+      case 'categories':
+        return 'Create, edit, and manage vehicle categories';
       case 'add-vehicle':
         return 'Add a new vehicle to your inventory';
       case 'bulk-import':
