@@ -170,6 +170,8 @@ const DealerDashboard = () => {
     switch (activeTab) {
       case 'dashboard':
         return <DashboardTab dealer={dealer} />;
+      case 'content-management':
+        return <ContentManagementTab dealer={dealer} />;
       case 'inventory':
         return <VehicleInventoryTab dealer={dealer} />;
       case 'add-vehicle':
