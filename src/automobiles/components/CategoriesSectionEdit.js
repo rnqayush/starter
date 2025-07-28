@@ -235,11 +235,18 @@ const CategoriesSectionEdit = ({ dealer }) => {
   }, [sections, categories]);
 
   const updateContent = (field, value) => {
-    setSectionContent(prev => ({
-      ...prev,
+    const newContent = {
+      ...sectionContent,
       [field]: value,
-    }));
+    };
+    setSectionContent(newContent);
     setHasChanges(true);
+
+    // Dispatch to Redux to track changes
+    dispatch(updatePageSectionContent({
+      sectionId: 'categories',
+      content: { [field]: value },
+    }));
   };
 
   const toggleCategoryVisibility = categoryId => {
@@ -252,27 +259,23 @@ const CategoriesSectionEdit = ({ dealer }) => {
   };
 
   const saveChanges = () => {
-    const updatedSections = sections.map(section =>
-      section.id === 'categories'
-        ? { ...section, content: { ...section.content, ...sectionContent } }
-        : section
-    );
-
-    dispatch(updatePageSections(updatedSections));
+    // Update the section content in Redux
+    dispatch(updatePageSectionContent({
+      sectionId: 'categories',
+      content: sectionContent,
+    }));
     setHasChanges(false);
-    alert('Categories section saved successfully!');
+    alert('Categories section changes tracked! Use sidebar to save/publish.');
   };
 
   const publishChanges = () => {
-    const updatedSections = sections.map(section =>
-      section.id === 'categories'
-        ? { ...section, content: { ...section.content, ...sectionContent } }
-        : section
-    );
-
-    dispatch(publishPageContent(updatedSections));
+    // Update the section content in Redux
+    dispatch(updatePageSectionContent({
+      sectionId: 'categories',
+      content: sectionContent,
+    }));
     setHasChanges(false);
-    alert('Categories section published successfully! Changes are now live.');
+    alert('Categories section changes tracked! Use sidebar to save/publish.');
   };
 
   if (loading) {
@@ -301,16 +304,7 @@ const CategoriesSectionEdit = ({ dealer }) => {
             color={theme.colors.blue500}
           >
             <FaSave />
-            Save Changes
-          </ActionButton>
-          <ActionButton
-            onClick={publishChanges}
-            disabled={!hasChanges}
-            filled
-            color={theme.colors.success}
-          >
-            <FaGlobe />
-            Save & Go Public
+            Apply Changes
           </ActionButton>
         </HeaderActions>
       </Header>
