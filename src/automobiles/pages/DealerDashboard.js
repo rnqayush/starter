@@ -190,8 +190,16 @@ const DealerDashboard = () => {
     switch (activeTab) {
       case 'dashboard':
         return <DashboardTab dealer={dealer} />;
-      case 'content-management':
-        return <ContentManagementTab dealer={dealer} />;
+      case 'hero-section':
+        return <HeroSectionEdit dealer={dealer} />;
+      case 'categories-section':
+        return <CategoriesSectionEdit dealer={dealer} />;
+      case 'featured-section':
+        return <FeaturedSectionEdit dealer={dealer} />;
+      case 'offers-section':
+        return <SpecialOffersSectionEdit dealer={dealer} />;
+      case 'footer-section':
+        return <FooterSectionEdit dealer={dealer} />;
       case 'inventory':
         return <VehicleInventoryTab dealer={dealer} />;
       case 'add-vehicle':
