@@ -218,7 +218,6 @@ const HeroSectionEdit = ({ dealer }) => {
     backgroundImage: '',
   });
   const [hasChanges, setHasChanges] = useState(false);
-  const [imageFile, setImageFile] = useState(null);
 
   // Initialize with data from Redux state and vendor
   useEffect(() => {
