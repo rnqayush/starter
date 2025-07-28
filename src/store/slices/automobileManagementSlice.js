@@ -107,6 +107,53 @@ const initialState = {
   customerReviews: [],
   financing: null,
 
+  // Page content management
+  pageContent: {
+    sections: [
+      {
+        id: 'hero',
+        name: 'Hero Section',
+        description: 'Main banner with dealer branding and call-to-action',
+        type: 'default',
+        visible: true,
+        order: 1,
+      },
+      {
+        id: 'categories',
+        name: 'Browse by Category',
+        description: 'Display vehicle categories for easy browsing',
+        type: 'default',
+        visible: true,
+        order: 2,
+      },
+      {
+        id: 'featured',
+        name: 'Featured Vehicles',
+        description: 'Showcase handpicked vehicles from your inventory',
+        type: 'default',
+        visible: true,
+        order: 3,
+      },
+      {
+        id: 'special-offers',
+        name: 'Special Offers',
+        description: 'Highlight vehicles with special pricing or promotions',
+        type: 'default',
+        visible: true,
+        order: 4,
+      },
+      {
+        id: 'footer',
+        name: 'Footer',
+        description: 'Contact information and dealership details',
+        type: 'default',
+        visible: true,
+        order: 5,
+      },
+    ],
+    lastPublished: null,
+  },
+
   // UI state
   loading: false,
   vehicleLoading: false,
