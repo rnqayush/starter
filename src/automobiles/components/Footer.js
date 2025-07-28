@@ -192,23 +192,7 @@ const Footer = ({
           )}
         </FooterSection>
 
-        {shouldShowSection('Services') && vendorData.services && (
-          <FooterSection>
-            <h3>Services</h3>
-            {vendorData.services.slice(0, 5).map((service, index) => (
-              <p key={index}>{service}</p>
-            ))}
-          </FooterSection>
-        )}
 
-        {shouldShowSection('Certifications') && vendorData.certifications && vendorData.certifications.length > 0 && (
-          <FooterSection>
-            <h3>Certifications</h3>
-            {vendorData.certifications.slice(0, 4).map((cert, index) => (
-              <p key={index}>{cert}</p>
-            ))}
-          </FooterSection>
-        )}
 
         {shouldShowSection('Hours') && contact.hours && (
           <FooterSection>
