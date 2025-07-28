@@ -228,14 +228,12 @@ const Footer = ({
           </FooterSection>
         )}
 
-        {shouldShowSection('Map') && (
+        {shouldShowSection('QuickLinks') && businessInfo.quickLinks && businessInfo.quickLinks.length > 0 && (
           <FooterSection>
             <h3>Quick Links</h3>
-            <a href={`/${dealerSlug}/vehicles`}>Browse Vehicles</a>
-            <a href={`/${dealerSlug}/vehicles?category=luxury-cars`}>Luxury Cars</a>
-            <a href={`/${dealerSlug}/vehicles?category=electric-vehicles`}>Electric Vehicles</a>
-            <a href={`/${dealerSlug}/financing`}>Financing</a>
-            <a href={`/${dealerSlug}/trade-in`}>Trade-In</a>
+            {businessInfo.quickLinks.filter(link => link.visible !== false).map((link, index) => (
+              <a key={index} href={`/${dealerSlug}${link.url}`}>{link.name}</a>
+            ))}
           </FooterSection>
         )}
       </FooterContent>
