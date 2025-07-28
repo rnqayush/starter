@@ -239,6 +239,7 @@ const FeaturedSectionEdit = ({ dealer }) => {
   const sections = useSelector(selectPageSections);
   const vehicles = useSelector(selectVehicles);
   const vendor = useSelector(selectVendor);
+  const loading = useSelector(selectLoading);
   
   const [sectionContent, setSectionContent] = useState({
     title: 'Featured Vehicles',
