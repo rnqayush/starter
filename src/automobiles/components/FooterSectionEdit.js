@@ -295,39 +295,86 @@ const FooterSectionEdit = ({ dealer }) => {
       { name: 'Contact', url: '/contact', visible: true },
     ],
     
-    // Support & Contact
-    showSupport: true,
-    supportInfo: {
+    // Contact Information (basic business contact)
+    showContact: true,
+    contactInfo: {
       email: '',
       phone: '',
       address: '',
+    },
+    contactCustomFields: [],
+    
+    // Support Information (customer service)
+    showSupport: true,
+    supportInfo: {
+      supportEmail: '',
+      supportPhone: '',
       supportHours: 'Mon-Fri 9AM-6PM',
     },
+    supportCustomFields: [],
     
     customText: '',
   });
   
   const [hasChanges, setHasChanges] = useState(false);
 
-  // Initialize with data from Redux state and vendor
+  // Helper function to format business hours from vendor data
+  const formatBusinessHours = (hoursData) => {
+    if (!hoursData) return [];
+    
+    const dayNames = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+    const dayLabels = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    
+    return dayLabels.map((label, index) => {
+      const dayKey = dayNames[index];
+      const dayInfo = hoursData[dayKey];
+      if (!dayInfo || !dayInfo.isOpen) {
+        return { day: label, hours: 'Closed' };
+      }
+      return { day: label, hours: `${dayInfo.open} - ${dayInfo.close}` };
+    });
+  };
+
+  // Initialize with data from Redux state and vendor businessInfo
   useEffect(() => {
     const footerSection = sections.find(s => s.id === 'footer');
+    
     if (footerSection?.content && Object.keys(footerSection.content).length > 0) {
       setSectionContent({
         ...sectionContent,
         ...footerSection.content,
       });
     } else if (vendor) {
-      // Initialize with vendor data
+      // Initialize with vendor businessInfo and contact data
+      const businessInfo = vendor.businessInfo || {};
+      const contactInfo = vendor.contact || {};
+      
       setSectionContent(prev => ({
         ...prev,
-        supportInfo: {
-          ...prev.supportInfo,
-          email: vendor.contactInfo?.email || '',
-          phone: vendor.contactInfo?.phone || '',
-          address: vendor.contactInfo?.address || '',
+        // Social Media from businessInfo
+        socialMediaLinks: {
+          facebook: businessInfo.socialMedia?.facebook || '',
+          twitter: businessInfo.socialMedia?.twitter || '',
+          instagram: businessInfo.socialMedia?.instagram || '',
+          linkedin: businessInfo.socialMedia?.linkedin || '',
+          youtube: businessInfo.socialMedia?.youtube || '',
         },
-        customText: vendor.businessInfo?.description || '',
+        // Business Hours from contact.hours
+        businessHours: formatBusinessHours(contactInfo.hours),
+        // Contact Information from contact
+        contactInfo: {
+          email: contactInfo.email || '',
+          phone: contactInfo.phone || '',
+          address: contactInfo.address ? 
+            `${contactInfo.address.street}, ${contactInfo.address.city}, ${contactInfo.address.state} ${contactInfo.address.zipCode}` : '',
+        },
+        // Support defaults to business contact if not separate
+        supportInfo: {
+          supportEmail: contactInfo.email || '',
+          supportPhone: contactInfo.phone || '',
+          supportHours: 'Mon-Fri 9AM-6PM',
+        },
+        customText: businessInfo.description || '',
       }));
     }
   }, [sections, vendor]);
@@ -371,6 +418,40 @@ const FooterSectionEdit = ({ dealer }) => {
   const removeQuickLink = (index) => {
     const newLinks = sectionContent.quickLinks.filter((_, i) => i !== index);
     updateContent('quickLinks', newLinks);
+  };
+
+  // Contact custom fields
+  const addContactCustomField = () => {
+    const newFields = [...sectionContent.contactCustomFields, { name: '', value: '' }];
+    updateContent('contactCustomFields', newFields);
+  };
+
+  const updateContactCustomField = (index, field, value) => {
+    const newFields = [...sectionContent.contactCustomFields];
+    newFields[index] = { ...newFields[index], [field]: value };
+    updateContent('contactCustomFields', newFields);
+  };
+
+  const removeContactCustomField = (index) => {
+    const newFields = sectionContent.contactCustomFields.filter((_, i) => i !== index);
+    updateContent('contactCustomFields', newFields);
+  };
+
+  // Support custom fields
+  const addSupportCustomField = () => {
+    const newFields = [...sectionContent.supportCustomFields, { name: '', value: '' }];
+    updateContent('supportCustomFields', newFields);
+  };
+
+  const updateSupportCustomField = (index, field, value) => {
+    const newFields = [...sectionContent.supportCustomFields];
+    newFields[index] = { ...newFields[index], [field]: value };
+    updateContent('supportCustomFields', newFields);
+  };
+
+  const removeSupportCustomField = (index) => {
+    const newFields = sectionContent.supportCustomFields.filter((_, i) => i !== index);
+    updateContent('supportCustomFields', newFields);
   };
 
   const saveChanges = () => {
@@ -582,10 +663,85 @@ const FooterSectionEdit = ({ dealer }) => {
           )}
         </Section>
 
-        {/* Support & Contact */}
+        {/* Contact Information */}
         <Section>
           <SectionHeader>
-            <SectionTitle>Support & Contact</SectionTitle>
+            <SectionTitle>Contact Information</SectionTitle>
+            <ToggleButton
+              enabled={sectionContent.showContact}
+              onClick={() => updateContent('showContact', !sectionContent.showContact)}
+            >
+              {sectionContent.showContact ? <FaEye /> : <FaEyeSlash />}
+            </ToggleButton>
+          </SectionHeader>
+          {sectionContent.showContact && (
+            <SectionContent>
+              <FormRow>
+                <FormGroup>
+                  <Label>Business Email</Label>
+                  <Input
+                    type="email"
+                    value={sectionContent.contactInfo.email}
+                    onChange={(e) => updateNestedContent('contactInfo', 'email', e.target.value)}
+                    placeholder="contact@dealership.com"
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Label>Business Phone</Label>
+                  <Input
+                    type="tel"
+                    value={sectionContent.contactInfo.phone}
+                    onChange={(e) => updateNestedContent('contactInfo', 'phone', e.target.value)}
+                    placeholder="(555) 123-4567"
+                  />
+                </FormGroup>
+              </FormRow>
+              <FormGroup>
+                <Label>Business Address</Label>
+                <TextArea
+                  value={sectionContent.contactInfo.address}
+                  onChange={(e) => updateNestedContent('contactInfo', 'address', e.target.value)}
+                  placeholder="123 Main Street, City, State 12345"
+                />
+              </FormGroup>
+              
+              {/* Contact Custom Fields */}
+              <div style={{ marginTop: theme.spacing.lg }}>
+                <Label>Additional Contact Fields</Label>
+                {sectionContent.contactCustomFields.map((field, index) => (
+                  <ListItem key={index}>
+                    <ListItemContent>
+                      <Input
+                        type="text"
+                        value={field.name}
+                        onChange={(e) => updateContactCustomField(index, 'name', e.target.value)}
+                        placeholder="Field Name (e.g., Fax, Website)"
+                      />
+                      <Input
+                        type="text"
+                        value={field.value}
+                        onChange={(e) => updateContactCustomField(index, 'value', e.target.value)}
+                        placeholder="Field Value"
+                      />
+                    </ListItemContent>
+                    <RemoveButton onClick={() => removeContactCustomField(index)}>
+                      <FaTrash />
+                    </RemoveButton>
+                  </ListItem>
+                ))}
+                <AddButton onClick={addContactCustomField}>
+                  <FaPlus />
+                  Add Custom Contact Field
+                </AddButton>
+              </div>
+            </SectionContent>
+          )}
+        </Section>
+
+        {/* Support Information */}
+        <Section>
+          <SectionHeader>
+            <SectionTitle>Customer Support</SectionTitle>
             <ToggleButton
               enabled={sectionContent.showSupport}
               onClick={() => updateContent('showSupport', !sectionContent.showSupport)}
@@ -597,32 +753,24 @@ const FooterSectionEdit = ({ dealer }) => {
             <SectionContent>
               <FormRow>
                 <FormGroup>
-                  <Label>Contact Email</Label>
+                  <Label>Support Email</Label>
                   <Input
                     type="email"
-                    value={sectionContent.supportInfo.email}
-                    onChange={(e) => updateNestedContent('supportInfo', 'email', e.target.value)}
-                    placeholder="contact@dealership.com"
+                    value={sectionContent.supportInfo.supportEmail}
+                    onChange={(e) => updateNestedContent('supportInfo', 'supportEmail', e.target.value)}
+                    placeholder="support@dealership.com"
                   />
                 </FormGroup>
                 <FormGroup>
-                  <Label>Contact Phone</Label>
+                  <Label>Support Phone</Label>
                   <Input
                     type="tel"
-                    value={sectionContent.supportInfo.phone}
-                    onChange={(e) => updateNestedContent('supportInfo', 'phone', e.target.value)}
-                    placeholder="(555) 123-4567"
+                    value={sectionContent.supportInfo.supportPhone}
+                    onChange={(e) => updateNestedContent('supportInfo', 'supportPhone', e.target.value)}
+                    placeholder="(555) 123-HELP"
                   />
                 </FormGroup>
               </FormRow>
-              <FormGroup>
-                <Label>Address</Label>
-                <TextArea
-                  value={sectionContent.supportInfo.address}
-                  onChange={(e) => updateNestedContent('supportInfo', 'address', e.target.value)}
-                  placeholder="123 Main Street, City, State 12345"
-                />
-              </FormGroup>
               <FormGroup>
                 <Label>Support Hours</Label>
                 <Input
@@ -632,6 +780,36 @@ const FooterSectionEdit = ({ dealer }) => {
                   placeholder="Mon-Fri 9AM-6PM"
                 />
               </FormGroup>
+              
+              {/* Support Custom Fields */}
+              <div style={{ marginTop: theme.spacing.lg }}>
+                <Label>Additional Support Fields</Label>
+                {sectionContent.supportCustomFields.map((field, index) => (
+                  <ListItem key={index}>
+                    <ListItemContent>
+                      <Input
+                        type="text"
+                        value={field.name}
+                        onChange={(e) => updateSupportCustomField(index, 'name', e.target.value)}
+                        placeholder="Field Name (e.g., Live Chat, Ticket System)"
+                      />
+                      <Input
+                        type="text"
+                        value={field.value}
+                        onChange={(e) => updateSupportCustomField(index, 'value', e.target.value)}
+                        placeholder="Field Value"
+                      />
+                    </ListItemContent>
+                    <RemoveButton onClick={() => removeSupportCustomField(index)}>
+                      <FaTrash />
+                    </RemoveButton>
+                  </ListItem>
+                ))}
+                <AddButton onClick={addSupportCustomField}>
+                  <FaPlus />
+                  Add Custom Support Field
+                </AddButton>
+              </div>
             </SectionContent>
           )}
         </Section>
