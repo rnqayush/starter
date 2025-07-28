@@ -20,6 +20,7 @@ import {
   FaImage,
   FaList,
   FaAlignLeft,
+  FaSort,
 } from 'react-icons/fa';
 import { theme, media } from '../../styles/GlobalStyle';
 import { useNavigate } from 'react-router-dom';
