@@ -166,7 +166,9 @@ const CardFooter = styled.div`
   border-top: 1px solid ${theme.colors.gray100};
 `;
 
-const CardBadge = styled.span`
+const CardBadge = styled.span.withConfig({
+  shouldForwardProp: (prop) => !['color', 'textColor'].includes(prop),
+})`
   background: ${props => props.color || theme.colors.gray100};
   color: ${props => props.textColor || theme.colors.gray700};
   padding: ${theme.spacing.xs} ${theme.spacing.sm};
