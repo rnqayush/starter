@@ -1045,7 +1045,7 @@ const ContentManagementTab = ({ dealer }) => {
 
         <SectionsContainer>
           <SectionsGrid>
-            {sections
+            {[...sections]
               .sort((a, b) => a.order - b.order)
               .map((section) => {
                 const config = sectionConfigs[section.id];
