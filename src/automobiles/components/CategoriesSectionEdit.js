@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import { FaSave, FaList, FaEye, FaEyeSlash } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
 import {
-  selectPageSections,
   selectCategories,
   selectLoading,
   selectSectionContent,
