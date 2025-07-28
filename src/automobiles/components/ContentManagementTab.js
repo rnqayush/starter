@@ -68,7 +68,9 @@ const HeaderActions = styled.div`
   flex-wrap: wrap;
 `;
 
-const ActionButton = styled.button`
+const ActionButton = styled.button.withConfig({
+  shouldForwardProp: (prop) => !['filled', 'color'].includes(prop),
+})`
   padding: ${theme.spacing.sm} ${theme.spacing.md};
   border: 2px solid ${props => props.color || theme.colors.primary};
   background: ${props => props.filled ? (props.color || theme.colors.primary) : theme.colors.white};
