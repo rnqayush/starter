@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { theme } from '../../styles/GlobalStyle';
 import DealerSidebar from '../components/DealerSidebar';
 import DashboardTab from '../components/DashboardTab';
+import SectionOrderEdit from '../components/SectionOrderEdit';
 import HeroSectionEdit from '../components/HeroSectionEdit';
 import CategoriesSectionEdit from '../components/CategoriesSectionEdit';
 import FeaturedSectionEdit from '../components/FeaturedSectionEdit';
