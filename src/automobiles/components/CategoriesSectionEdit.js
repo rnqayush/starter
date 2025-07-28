@@ -4,11 +4,10 @@ import styled from 'styled-components';
 import { FaSave, FaGlobe, FaList, FaEye, FaEyeSlash } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
 import {
-  selectPageSections,
+  selectDraftPageSections,
   selectCategories,
   selectLoading,
-  updatePageSections,
-  publishPageContent,
+  updatePageSectionContent,
 } from '../../store/slices/automobileManagementSlice';
 
 const Container = styled.div`
@@ -200,7 +199,7 @@ const VisibilityButton = styled.button.withConfig({
 
 const CategoriesSectionEdit = ({ dealer }) => {
   const dispatch = useDispatch();
-  const sections = useSelector(selectPageSections);
+  const sections = useSelector(selectDraftPageSections);
   const categories = useSelector(selectCategories);
   const loading = useSelector(selectLoading);
 
