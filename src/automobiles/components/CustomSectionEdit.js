@@ -3,13 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import {
   FaSave,
-  FaGlobe,
   FaPlus,
   FaTrash,
   FaSearch,
   FaTimes,
   FaEye,
-  FaEyeSlash,
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
 import {
