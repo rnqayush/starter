@@ -325,6 +325,7 @@ const DealerSidebar = ({ activeTab, onTabChange, dealer }) => {
       section: 'Inventory Management',
       items: [
         { id: 'inventory', label: 'Vehicle Inventory', icon: FaCar },
+        { id: 'categories', label: 'Categories', icon: FaList },
         { id: 'add-vehicle', label: 'Add Vehicle', icon: FaPlus },
         { id: 'bulk-import', label: 'Bulk Import', icon: FaFileImport },
       ],
