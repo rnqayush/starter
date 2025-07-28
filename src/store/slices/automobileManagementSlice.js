@@ -302,6 +302,20 @@ const automobileManagementSlice = createSlice({
         state.customerReviews = data.customerReviews;
         state.financing = data.financing;
 
+        // Update page content with data from API
+        if (data.pageContent) {
+          state.pageContent = {
+            ...state.pageContent,
+            sections: state.pageContent.sections.map(section => ({
+              ...section,
+              content: {
+                ...section.content,
+                ...data.pageContent[section.id],
+              },
+            })),
+          };
+        }
+
         // Update pagination
         state.pagination = {
           ...state.pagination,
