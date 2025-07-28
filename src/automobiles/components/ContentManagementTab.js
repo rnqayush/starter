@@ -329,57 +329,30 @@ const TypeDescription = styled.p`
 `;
 
 const ContentManagementTab = ({ dealer }) => {
-  const [sections, setSections] = useState([
-    {
-      id: 'hero',
-      name: 'Hero Section',
-      description: 'Main banner with dealer branding and call-to-action',
-      icon: FaImage,
-      type: 'default',
-      visible: true,
-      order: 1,
-    },
-    {
-      id: 'categories',
-      name: 'Browse by Category',
-      description: 'Display vehicle categories for easy browsing',
-      icon: FaList,
-      type: 'default',
-      visible: true,
-      order: 2,
-    },
-    {
-      id: 'featured',
-      name: 'Featured Vehicles',
-      description: 'Showcase handpicked vehicles from your inventory',
-      icon: FaCar,
-      type: 'default',
-      visible: true,
-      order: 3,
-    },
-    {
-      id: 'special-offers',
-      name: 'Special Offers',
-      description: 'Highlight vehicles with special pricing or promotions',
-      icon: FaCar,
-      type: 'default',
-      visible: true,
-      order: 4,
-    },
-    {
-      id: 'footer',
-      name: 'Footer',
-      description: 'Contact information and dealership details',
-      icon: FaAlignLeft,
-      type: 'default',
-      visible: true,
-      order: 5,
-    },
-  ]);
+  const dispatch = useDispatch();
+  const reduxSections = useSelector(selectPageSections);
 
+  // Local state for UI interactions and temporary changes
+  const [sections, setSections] = useState([]);
   const [draggedSection, setDraggedSection] = useState(null);
   const [showAddModal, setShowAddModal] = useState(false);
   const [hasChanges, setHasChanges] = useState(false);
+
+  // Initialize sections with icons (Redux doesn't store functions)
+  const initializeSections = (reduxSections) => {
+    const iconMapping = {
+      'hero': FaImage,
+      'categories': FaList,
+      'featured': FaCar,
+      'special-offers': FaCar,
+      'footer': FaAlignLeft,
+    };
+
+    return reduxSections.map(section => ({
+      ...section,
+      icon: iconMapping[section.id] || FaEdit,
+    }));
+  };
 
   const sectionTypes = [
     {
