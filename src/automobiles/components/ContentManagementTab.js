@@ -2,24 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import {
-  FaGripVertical,
   FaEye,
   FaEyeSlash,
   FaPlus,
   FaTimes,
-  FaEdit,
   FaSave,
   FaGlobe,
   FaImage,
   FaAlignLeft,
   FaList,
   FaCar,
-  FaArrowUp,
-  FaArrowDown,
-  FaSort,
   FaSearch,
   FaTrash,
-  FaCheck,
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
 import {
