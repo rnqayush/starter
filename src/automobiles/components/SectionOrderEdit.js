@@ -112,21 +112,37 @@ const SectionItem = styled.div`
   border-radius: ${theme.borderRadius.md};
   background: ${theme.colors.white};
   transition: all 0.2s ease;
-  cursor: move;
-
   &:hover {
     border-color: ${theme.colors.primary};
     box-shadow: ${theme.shadows.sm};
   }
 `;
 
-const DragHandle = styled.div`
-  color: ${theme.colors.gray400};
+const ArrowControls = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${theme.spacing.xs};
   margin-right: ${theme.spacing.md};
-  cursor: grab;
+`;
 
-  &:active {
-    cursor: grabbing;
+const ArrowButton = styled.button.withConfig({
+  shouldForwardProp: (prop) => !['disabled'].includes(prop),
+})`
+  width: 32px;
+  height: 24px;
+  border: 1px solid ${theme.colors.gray300};
+  background: ${props => props.disabled ? theme.colors.gray100 : theme.colors.white};
+  color: ${props => props.disabled ? theme.colors.gray400 : theme.colors.gray600};
+  border-radius: ${theme.borderRadius.sm};
+  cursor: ${props => props.disabled ? 'not-allowed' : 'pointer'};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: ${props => props.disabled ? theme.colors.gray100 : theme.colors.gray50};
   }
 `;
 
@@ -220,17 +236,20 @@ const SectionOrderEdit = ({ dealer }) => {
     }
   }, [sections]);
 
-  const handleSectionMove = (fromIndex, toIndex) => {
+  const moveSection = (index, direction) => {
+    const newIndex = direction === 'up' ? index - 1 : index + 1;
+    if (newIndex < 0 || newIndex >= orderedSections.length) return;
+
     const newSections = [...orderedSections];
-    const [movedSection] = newSections.splice(fromIndex, 1);
-    newSections.splice(toIndex, 0, movedSection);
-    
+    const [movedSection] = newSections.splice(index, 1);
+    newSections.splice(newIndex, 0, movedSection);
+
     // Update order numbers
-    const updatedSections = newSections.map((section, index) => ({
+    const updatedSections = newSections.map((section, idx) => ({
       ...section,
-      order: index + 1,
+      order: idx + 1,
     }));
-    
+
     setOrderedSections(updatedSections);
     setHasChanges(true);
   };
@@ -302,7 +321,7 @@ const SectionOrderEdit = ({ dealer }) => {
         <Instructions>
           <InstructionsTitle>How to use Section Order Management:</InstructionsTitle>
           <InstructionsList>
-            <li>Drag sections up or down to reorder them on your website</li>
+            <li>Use the up/down arrows to reorder sections on your website</li>
             <li>Click the eye icon to show/hide sections</li>
             <li>The order number shows the current position</li>
             <li>Don't forget to "Save & Go Public" to make changes live</li>
@@ -312,9 +331,22 @@ const SectionOrderEdit = ({ dealer }) => {
         <SectionsList>
           {orderedSections.map((section, index) => (
             <SectionItem key={section.id}>
-              <DragHandle>
-                <FaGripVertical />
-              </DragHandle>
+              <ArrowControls>
+                <ArrowButton
+                  onClick={() => moveSection(index, 'up')}
+                  disabled={index === 0}
+                  title="Move up"
+                >
+                  <FaArrowUp />
+                </ArrowButton>
+                <ArrowButton
+                  onClick={() => moveSection(index, 'down')}
+                  disabled={index === orderedSections.length - 1}
+                  title="Move down"
+                >
+                  <FaArrowDown />
+                </ArrowButton>
+              </ArrowControls>
               
               <SectionOrder>
                 #{section.order}
