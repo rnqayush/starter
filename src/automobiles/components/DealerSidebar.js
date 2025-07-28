@@ -18,6 +18,9 @@ import {
   FaTags,
   FaArrowLeft,
   FaEdit,
+  FaImage,
+  FaList,
+  FaAlignLeft,
 } from 'react-icons/fa';
 import { theme, media } from '../../styles/GlobalStyle';
 import { useNavigate } from 'react-router-dom';
