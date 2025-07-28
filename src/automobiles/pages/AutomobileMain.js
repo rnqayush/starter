@@ -709,20 +709,23 @@ const AutomobileMain = () => {
               );
 
             case 'special-offers':
-              if (onSaleVehicles.length === 0) return null;
+              const specialOfferVehicles = sectionConfig.content?.vehicleIds?.length > 0
+                ? vehicles.filter(vehicle => sectionConfig.content.vehicleIds.includes(vehicle.id))
+                : onSaleVehicles.slice(0, 4);
+              if (specialOfferVehicles.length === 0) return null;
               return (
                 <Section key="special-offers">
                   <Container>
                     <SectionHeader>
                       <SectionTitle textColor={dealerTheme.textColor}>
-                        🔥 Special Offers
+                        {sectionConfig.content?.title || '🔥 Special Offers'}
                       </SectionTitle>
                       <SectionSubtitle>
-                        Limited time deals from {vendor.name} you don't want to miss
+                        {sectionConfig.content?.subtitle || `Limited time deals from ${vendor.name} you don't want to miss`}
                       </SectionSubtitle>
                     </SectionHeader>
                     <Grid>
-                      {onSaleVehicles.slice(0, 4).map(vehicle => (
+                      {specialOfferVehicles.map(vehicle => (
                         <VehicleCard
                           key={vehicle.id}
                           vehicle={vehicle}
