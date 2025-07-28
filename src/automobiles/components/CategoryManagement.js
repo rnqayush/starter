@@ -5,10 +5,8 @@ import {
   FaPlus,
   FaEdit,
   FaTrash,
-  FaEye,
   FaSave,
   FaTimes,
-  FaImage,
   FaTag,
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
