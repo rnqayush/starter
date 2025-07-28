@@ -30,13 +30,11 @@ import {
   FaCheckCircle,
 } from 'react-icons/fa';
 import {
-  saveChanges,
-  publishChanges,
-  discardChanges,
-
-  selectEditingVendor,
+  applyTempChanges,
+  saveAndPublishChanges,
+  discardTempChanges,
   selectHasUnsavedChanges,
-  selectChanges,
+  selectTempChanges,
 } from '../../store/slices/automobileManagementSlice';
 import { theme, media } from '../../styles/GlobalStyle';
 import { Button } from '../../components/shared/Button';
