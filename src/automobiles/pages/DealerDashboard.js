@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { theme } from '../../styles/GlobalStyle';
 import DealerSidebar from '../components/DealerSidebar';
 import DashboardTab from '../components/DashboardTab';
+import ContentManagementTab from '../components/ContentManagementTab';
 import VehicleInventoryTab from '../components/VehicleInventoryTab';
 import AddVehicleTab from '../components/AddVehicleTab';
 import BulkImportTab from '../components/BulkImportTab';
