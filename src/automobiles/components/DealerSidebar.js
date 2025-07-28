@@ -17,6 +17,7 @@ import {
   FaWrench,
   FaTags,
   FaArrowLeft,
+  FaEdit,
 } from 'react-icons/fa';
 import { theme, media } from '../../styles/GlobalStyle';
 import { useNavigate } from 'react-router-dom';
