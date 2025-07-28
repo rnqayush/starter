@@ -13,6 +13,7 @@ import {
   fetchAutomobileData,
   selectVendor,
   selectCategories,
+  selectVehicles,
   selectFeaturedVehicles,
   selectOnSaleVehicles,
   selectLoading,
