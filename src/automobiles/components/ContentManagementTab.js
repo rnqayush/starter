@@ -676,7 +676,6 @@ const ContentManagementTab = ({ dealer }) => {
   };
 
   const getVehicleById = (id) => vehicles?.find(v => v.id === id);
-  const getCategoryById = (id) => categories?.find(c => c.id === id);
 
   const formatPrice = (price) => {
     return new Intl.NumberFormat('en-US', {
