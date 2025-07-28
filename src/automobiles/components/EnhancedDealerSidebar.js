@@ -374,14 +374,13 @@ const EnhancedDealerSidebar = ({ activeTab, onTabChange, dealer }) => {
   const dispatch = useDispatch();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
-  const editingVendor = useSelector(selectEditingVendor);
   const hasUnsavedChanges = useSelector(selectHasUnsavedChanges);
-  const changes = useSelector(selectChanges);
+  const changes = useSelector(selectTempChanges);
 
   const handleTabChange = (tab) => {
     if (hasUnsavedChanges) {
       if (window.confirm('You have unsaved changes. Discard them?')) {
-        dispatch(discardChanges());
+        dispatch(discardTempChanges());
         onTabChange(tab);
         setIsMobileOpen(false);
       }
@@ -394,7 +393,7 @@ const EnhancedDealerSidebar = ({ activeTab, onTabChange, dealer }) => {
   const handleBackToDealership = () => {
     if (hasUnsavedChanges) {
       if (window.confirm('You have unsaved changes. Discard them?')) {
-        dispatch(discardChanges());
+        dispatch(discardTempChanges());
         navigate(`/${dealer.slug}`);
       }
     } else {
@@ -403,13 +402,8 @@ const EnhancedDealerSidebar = ({ activeTab, onTabChange, dealer }) => {
   };
 
   const handleSaveAndGoLive = () => {
-    if (hasUnsavedChanges) {
-      // Save changes to draft first
-      dispatch(saveChanges());
-    }
-
-    // Always publish changes to live data when "Save & Go Live" is clicked
-    dispatch(publishChanges());
+    // Apply all temp changes to live state
+    dispatch(saveAndPublishChanges());
     console.log('Published changes to live data from dealer sidebar');
 
     alert('Changes published to live dealership page successfully!');
@@ -419,13 +413,13 @@ const EnhancedDealerSidebar = ({ activeTab, onTabChange, dealer }) => {
   };
 
   const handleSaveChanges = () => {
-    dispatch(saveChanges());
+    dispatch(applyTempChanges());
     alert('Changes saved successfully!');
   };
 
   const handleDiscardChanges = () => {
     if (window.confirm('Are you sure you want to discard all changes?')) {
-      dispatch(discardChanges());
+      dispatch(discardTempChanges());
     }
   };
 
@@ -551,7 +545,7 @@ const EnhancedDealerSidebar = ({ activeTab, onTabChange, dealer }) => {
           ))}
         </Navigation>
 
-        {(editingVendor || hasUnsavedChanges) && (
+        {hasUnsavedChanges && (
           <ChangesPanel>
             <ChangesPanelHeader>
               <FaSave />
@@ -611,7 +605,6 @@ const EnhancedDealerSidebar = ({ activeTab, onTabChange, dealer }) => {
                 size="small"
                 onClick={handleSaveAndGoLive}
                 style={{ width: '100%' }}
-                disabled={hasUnsavedChanges}
               >
                 <FaCheckCircle /> Save & Go Live
               </Button>
