@@ -315,11 +315,12 @@ const CategoriesSectionEdit = ({ dealer }) => {
 
       <Content>
         <FormGroup>
-          <Label>Section Title (Fixed)</Label>
+          <Label>Section Title</Label>
           <Input
             type="text"
-            value="Browse by Category"
-            disabled
+            value={sectionContent.title}
+            onChange={(e) => updateContent('title', e.target.value)}
+            placeholder="Enter section title"
           />
         </FormGroup>
 
