@@ -4,9 +4,10 @@ import styled from 'styled-components';
 import { FaSave, FaList, FaEye, FaEyeSlash } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
 import {
-  selectDraftPageSections,
+  selectPageSections,
   selectCategories,
   selectLoading,
+  selectSectionContent,
   updatePageSectionContent,
 } from '../../store/slices/automobileManagementSlice';
 
@@ -199,58 +200,30 @@ const VisibilityButton = styled.button.withConfig({
 
 const CategoriesSectionEdit = ({ dealer }) => {
   const dispatch = useDispatch();
-  const sections = useSelector(selectDraftPageSections);
+  const sections = useSelector(selectPageSections);
+  const categoriesContent = useSelector(selectSectionContent('categories'));
   const categories = useSelector(selectCategories);
   const loading = useSelector(selectLoading);
 
-  const [sectionContent, setSectionContent] = useState({
-    title: 'Browse by Category',
-    subtitle:
-      'Explore our diverse range of vehicles across different categories',
-    visibleCategories: [],
-  });
+  const [localChanges, setLocalChanges] = useState({});
   const [hasChanges, setHasChanges] = useState(false);
 
-  // Initialize with data from Redux state
-  useEffect(() => {
-    const categorySection = sections.find(s => s.id === 'categories');
-    if (categorySection?.content) {
-      setSectionContent({
-        title: categorySection.content.title || 'Browse by Category',
-        subtitle:
-          categorySection.content.subtitle ||
-          'Explore our diverse range of vehicles across different categories',
-        visibleCategories:
-          categorySection.content.visibleCategories ||
-          categories?.map(cat => cat.id) ||
-          [],
-      });
-    } else if (categories) {
-      // Initialize with all categories visible by default
-      setSectionContent(prev => ({
-        ...prev,
-        visibleCategories: categories.map(cat => cat.id),
-      }));
-    }
-  }, [sections, categories]);
+  // Get current values (Redux + local changes)
+  const currentContent = {
+    ...categoriesContent,
+    ...localChanges,
+  };
 
   const updateContent = (field, value) => {
-    const newContent = {
-      ...sectionContent,
+    setLocalChanges(prev => ({
+      ...prev,
       [field]: value,
-    };
-    setSectionContent(newContent);
-    setHasChanges(true);
-
-    // Dispatch to Redux to track changes
-    dispatch(updatePageSectionContent({
-      sectionId: 'categories',
-      content: { [field]: value },
     }));
+    setHasChanges(true);
   };
 
   const toggleCategoryVisibility = categoryId => {
-    const currentCategories = sectionContent.visibleCategories || [];
+    const currentCategories = currentContent.visibleCategories || [];
     const newCategories = currentCategories.includes(categoryId)
       ? currentCategories.filter(id => id !== categoryId)
       : [...currentCategories, categoryId];
@@ -259,11 +232,12 @@ const CategoriesSectionEdit = ({ dealer }) => {
   };
 
   const saveChanges = () => {
-    // Update the section content in Redux
+    // Update the section content in Redux temp changes
     dispatch(updatePageSectionContent({
       sectionId: 'categories',
-      content: sectionContent,
+      content: localChanges,
     }));
+    setLocalChanges({});
     setHasChanges(false);
     alert('Categories section changes tracked! Use sidebar to save/publish.');
   };
@@ -306,7 +280,7 @@ const CategoriesSectionEdit = ({ dealer }) => {
           <Label>Section Title</Label>
           <Input
             type="text"
-            value={sectionContent.title}
+            value={currentContent.title || ''}
             onChange={e => updateContent('title', e.target.value)}
             placeholder="Enter section title"
           />
@@ -315,7 +289,7 @@ const CategoriesSectionEdit = ({ dealer }) => {
         <FormGroup>
           <Label>Section Subtitle</Label>
           <TextArea
-            value={sectionContent.subtitle}
+            value={currentContent.subtitle || ''}
             onChange={e => updateContent('subtitle', e.target.value)}
             placeholder="Enter section description"
           />
@@ -334,17 +308,17 @@ const CategoriesSectionEdit = ({ dealer }) => {
                   </CategoryDescription>
                 </CategoryInfo>
                 <VisibilityButton
-                  visible={sectionContent.visibleCategories?.includes(
+                  visible={currentContent.visibleCategories?.includes(
                     category.id
                   )}
                   onClick={() => toggleCategoryVisibility(category.id)}
                   title={
-                    sectionContent.visibleCategories?.includes(category.id)
+                    currentContent.visibleCategories?.includes(category.id)
                       ? 'Hide category'
                       : 'Show category'
                   }
                 >
-                  {sectionContent.visibleCategories?.includes(category.id) ? (
+                  {currentContent.visibleCategories?.includes(category.id) ? (
                     <FaEye />
                   ) : (
                     <FaEyeSlash />
