@@ -131,14 +131,22 @@ const CustomSectionActions = styled.div`
 `;
 
 const ActionButton = styled.button.withConfig({
-  shouldForwardProp: (prop) => !['variant', 'small'].includes(prop),
+  shouldForwardProp: prop => !['variant', 'small'].includes(prop),
 })`
-  padding: ${props => props.small ? theme.spacing.xs + ' ' + theme.spacing.sm : theme.spacing.sm + ' ' + theme.spacing.md};
-  border: ${props => props.variant === 'danger' ? '1px solid ' + theme.colors.error : '1px solid ' + theme.colors.gray300};
-  background: ${props => props.variant === 'danger' ? theme.colors.error : theme.colors.white};
-  color: ${props => props.variant === 'danger' ? theme.colors.white : theme.colors.gray700};
+  padding: ${props =>
+    props.small
+      ? theme.spacing.xs + ' ' + theme.spacing.sm
+      : theme.spacing.sm + ' ' + theme.spacing.md};
+  border: ${props =>
+    props.variant === 'danger'
+      ? '1px solid ' + theme.colors.error
+      : '1px solid ' + theme.colors.gray300};
+  background: ${props =>
+    props.variant === 'danger' ? theme.colors.error : theme.colors.white};
+  color: ${props =>
+    props.variant === 'danger' ? theme.colors.white : theme.colors.gray700};
   border-radius: ${theme.borderRadius.sm};
-  font-size: ${props => props.small ? '0.8rem' : '0.9rem'};
+  font-size: ${props => (props.small ? '0.8rem' : '0.9rem')};
   font-weight: 500;
   cursor: pointer;
   display: flex;
@@ -147,12 +155,15 @@ const ActionButton = styled.button.withConfig({
   transition: all 0.2s ease;
 
   &:hover {
-    background: ${props => props.variant === 'danger' ? theme.colors.errorDark : theme.colors.gray50};
+    background: ${props =>
+      props.variant === 'danger'
+        ? theme.colors.errorDark
+        : theme.colors.gray50};
   }
 `;
 
 const Modal = styled.div.withConfig({
-  shouldForwardProp: (prop) => !['isOpen'].includes(prop),
+  shouldForwardProp: prop => !['isOpen'].includes(prop),
 })`
   position: fixed;
   top: 0;
@@ -160,7 +171,7 @@ const Modal = styled.div.withConfig({
   right: 0;
   bottom: 0;
   background: rgba(0, 0, 0, 0.5);
-  display: ${props => props.isOpen ? 'flex' : 'none'};
+  display: ${props => (props.isOpen ? 'flex' : 'none')};
   align-items: center;
   justify-content: center;
   z-index: 1000;
@@ -279,14 +290,16 @@ const ProductsList = styled.div`
 `;
 
 const ProductItem = styled.div.withConfig({
-  shouldForwardProp: (prop) => !['selected'].includes(prop),
+  shouldForwardProp: prop => !['selected'].includes(prop),
 })`
   display: flex;
   align-items: center;
   padding: ${theme.spacing.md};
-  border: 2px solid ${props => props.selected ? theme.colors.primary : theme.colors.gray200};
+  border: 2px solid
+    ${props => (props.selected ? theme.colors.primary : theme.colors.gray200)};
   border-radius: ${theme.borderRadius.md};
-  background: ${props => props.selected ? theme.colors.primary + '10' : theme.colors.white};
+  background: ${props =>
+    props.selected ? theme.colors.primary + '10' : theme.colors.white};
   cursor: pointer;
   transition: all 0.2s ease;
 
@@ -371,7 +384,7 @@ const CustomSectionEdit = ({ dealer }) => {
   const sections = useSelector(selectPageSections);
   const vehicles = useSelector(selectVehicles);
   const loading = useSelector(selectLoading);
-  
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editingSectionId, setEditingSectionId] = useState(null);
@@ -391,11 +404,13 @@ const CustomSectionEdit = ({ dealer }) => {
     if (!searchQuery) {
       setFilteredVehicles(vehicles || []);
     } else {
-      const filtered = vehicles?.filter(vehicle =>
-        vehicle.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        vehicle.make.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        vehicle.model.toLowerCase().includes(searchQuery.toLowerCase())
-      ) || [];
+      const filtered =
+        vehicles?.filter(
+          vehicle =>
+            vehicle.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            vehicle.make.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            vehicle.model.toLowerCase().includes(searchQuery.toLowerCase())
+        ) || [];
       setFilteredVehicles(filtered);
     }
   }, [searchQuery, vehicles]);
@@ -408,7 +423,7 @@ const CustomSectionEdit = ({ dealer }) => {
     setIsModalOpen(true);
   };
 
-  const openEditModal = (section) => {
+  const openEditModal = section => {
     setIsEditing(true);
     setEditingSectionId(section.id);
     setSectionData({
@@ -428,19 +443,19 @@ const CustomSectionEdit = ({ dealer }) => {
     setSearchQuery('');
   };
 
-  const toggleVehicleSelection = (vehicleId) => {
+  const toggleVehicleSelection = vehicleId => {
     setSectionData(prev => ({
       ...prev,
       vehicleIds: prev.vehicleIds.includes(vehicleId)
         ? prev.vehicleIds.filter(id => id !== vehicleId)
-        : [...prev.vehicleIds, vehicleId]
+        : [...prev.vehicleIds, vehicleId],
     }));
   };
 
-  const removeSelectedVehicle = (vehicleId) => {
+  const removeSelectedVehicle = vehicleId => {
     setSectionData(prev => ({
       ...prev,
-      vehicleIds: prev.vehicleIds.filter(id => id !== vehicleId)
+      vehicleIds: prev.vehicleIds.filter(id => id !== vehicleId),
     }));
   };
 
@@ -488,15 +503,21 @@ const CustomSectionEdit = ({ dealer }) => {
     closeModal();
   };
 
-  const handleDelete = (sectionId) => {
-    if (window.confirm('Are you sure you want to delete this custom section?')) {
+  const handleDelete = sectionId => {
+    if (
+      window.confirm('Are you sure you want to delete this custom section?')
+    ) {
       dispatch(removeCustomSection(sectionId));
       alert('Custom section deleted successfully!');
     }
   };
 
   const getSelectedVehicles = () => {
-    return vehicles?.filter(vehicle => sectionData.vehicleIds.includes(vehicle.id)) || [];
+    return (
+      vehicles?.filter(vehicle =>
+        sectionData.vehicleIds.includes(vehicle.id)
+      ) || []
+    );
   };
 
   if (loading) {
@@ -531,24 +552,44 @@ const CustomSectionEdit = ({ dealer }) => {
 
           {customSections.length > 0 && (
             <CustomSectionsList>
-              {customSections.map((section) => (
+              {customSections.map(section => (
                 <CustomSectionItem key={section.id}>
                   <CustomSectionHeader>
                     <div>
                       <CustomSectionTitle>{section.name}</CustomSectionTitle>
-                      <p style={{ margin: '4px 0 0 0', fontSize: '0.85rem', color: theme.colors.gray600 }}>
+                      <p
+                        style={{
+                          margin: '4px 0 0 0',
+                          fontSize: '0.85rem',
+                          color: theme.colors.gray600,
+                        }}
+                      >
                         {section.description}
                       </p>
-                      <p style={{ margin: '4px 0 0 0', fontSize: '0.8rem', color: theme.colors.gray500 }}>
-                        {section.content?.vehicleIds?.length || 0} vehicles selected
+                      <p
+                        style={{
+                          margin: '4px 0 0 0',
+                          fontSize: '0.8rem',
+                          color: theme.colors.gray500,
+                        }}
+                      >
+                        {section.content?.vehicleIds?.length || 0} vehicles
+                        selected
                       </p>
                     </div>
                     <CustomSectionActions>
-                      <ActionButton small onClick={() => openEditModal(section)}>
+                      <ActionButton
+                        small
+                        onClick={() => openEditModal(section)}
+                      >
                         <FaEye />
                         Edit
                       </ActionButton>
-                      <ActionButton small variant="danger" onClick={() => handleDelete(section.id)}>
+                      <ActionButton
+                        small
+                        variant="danger"
+                        onClick={() => handleDelete(section.id)}
+                      >
                         <FaTrash />
                         Delete
                       </ActionButton>
@@ -578,7 +619,9 @@ const CustomSectionEdit = ({ dealer }) => {
               <Input
                 type="text"
                 value={sectionData.title}
-                onChange={(e) => setSectionData(prev => ({ ...prev, title: e.target.value }))}
+                onChange={e =>
+                  setSectionData(prev => ({ ...prev, title: e.target.value }))
+                }
                 placeholder="Enter section title"
               />
             </FormGroup>
@@ -587,7 +630,12 @@ const CustomSectionEdit = ({ dealer }) => {
               <Label>Section Description</Label>
               <TextArea
                 value={sectionData.description}
-                onChange={(e) => setSectionData(prev => ({ ...prev, description: e.target.value }))}
+                onChange={e =>
+                  setSectionData(prev => ({
+                    ...prev,
+                    description: e.target.value,
+                  }))
+                }
                 placeholder="Enter section description"
               />
             </FormGroup>
@@ -601,34 +649,43 @@ const CustomSectionEdit = ({ dealer }) => {
                 <SearchField
                   type="text"
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onChange={e => setSearchQuery(e.target.value)}
                   placeholder="Search vehicles by name, make, or model..."
                 />
               </SearchInput>
 
               <ProductsList>
-                {filteredVehicles.map((vehicle) => (
+                {filteredVehicles.map(vehicle => (
                   <ProductItem
                     key={vehicle.id}
                     selected={sectionData.vehicleIds.includes(vehicle.id)}
                     onClick={() => toggleVehicleSelection(vehicle.id)}
                   >
-                    <ProductImage src={vehicle.media?.mainImage} alt={vehicle.name} />
+                    <ProductImage
+                      src={vehicle.media?.mainImage}
+                      alt={vehicle.name}
+                    />
                     <ProductInfo>
                       <ProductName>{vehicle.name}</ProductName>
-                      <ProductPrice>${vehicle.pricing?.price?.toLocaleString()}</ProductPrice>
+                      <ProductPrice>
+                        ${vehicle.pricing?.price?.toLocaleString()}
+                      </ProductPrice>
                     </ProductInfo>
                   </ProductItem>
                 ))}
               </ProductsList>
 
               <SelectedProducts>
-                <Label>Selected Vehicles ({sectionData.vehicleIds.length})</Label>
+                <Label>
+                  Selected Vehicles ({sectionData.vehicleIds.length})
+                </Label>
                 <SelectedProductsList>
-                  {getSelectedVehicles().map((vehicle) => (
+                  {getSelectedVehicles().map(vehicle => (
                     <SelectedProductChip key={vehicle.id}>
                       {vehicle.name}
-                      <RemoveChip onClick={() => removeSelectedVehicle(vehicle.id)}>
+                      <RemoveChip
+                        onClick={() => removeSelectedVehicle(vehicle.id)}
+                      >
                         <FaTimes />
                       </RemoveChip>
                     </SelectedProductChip>
@@ -639,9 +696,7 @@ const CustomSectionEdit = ({ dealer }) => {
           </ModalBody>
 
           <ModalFooter>
-            <ActionButton onClick={closeModal}>
-              Cancel
-            </ActionButton>
+            <ActionButton onClick={closeModal}>Cancel</ActionButton>
             <ActionButton
               style={{
                 background: theme.colors.primary,

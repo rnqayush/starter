@@ -1,13 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import {
-  FaSave,
-  FaGlobe,
-  FaImage,
-  FaUpload,
-  FaTimes,
-} from 'react-icons/fa';
+import { FaSave, FaGlobe, FaImage, FaUpload, FaTimes } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
 import {
   selectPageSections,
@@ -64,12 +58,14 @@ const HeaderActions = styled.div`
 `;
 
 const ActionButton = styled.button.withConfig({
-  shouldForwardProp: (prop) => !['filled', 'color'].includes(prop),
+  shouldForwardProp: prop => !['filled', 'color'].includes(prop),
 })`
   padding: ${theme.spacing.sm} ${theme.spacing.md};
   border: 2px solid ${props => props.color || theme.colors.primary};
-  background: ${props => props.filled ? (props.color || theme.colors.primary) : theme.colors.white};
-  color: ${props => props.filled ? theme.colors.white : (props.color || theme.colors.primary)};
+  background: ${props =>
+    props.filled ? props.color || theme.colors.primary : theme.colors.white};
+  color: ${props =>
+    props.filled ? theme.colors.white : props.color || theme.colors.primary};
   border-radius: ${theme.borderRadius.md};
   font-weight: 600;
   cursor: pointer;
@@ -213,7 +209,7 @@ const HeroSectionEdit = ({ dealer }) => {
   const sections = useSelector(selectPageSections);
   const vendor = useSelector(selectVendor);
   const loading = useSelector(selectLoading);
-  
+
   const [heroContent, setHeroContent] = useState({
     title: '',
     subtitle: '',
@@ -227,9 +223,17 @@ const HeroSectionEdit = ({ dealer }) => {
 
     if (heroSection?.content && Object.keys(heroSection.content).length > 0) {
       setHeroContent({
-        title: heroSection.content.title || (vendor?.name ? `Welcome to ${vendor.name}` : ''),
-        subtitle: heroSection.content.subtitle || vendor?.businessInfo?.description || '',
-        backgroundImage: heroSection.content.backgroundImage || vendor?.businessInfo?.coverImage || '',
+        title:
+          heroSection.content.title ||
+          (vendor?.name ? `Welcome to ${vendor.name}` : ''),
+        subtitle:
+          heroSection.content.subtitle ||
+          vendor?.businessInfo?.description ||
+          '',
+        backgroundImage:
+          heroSection.content.backgroundImage ||
+          vendor?.businessInfo?.coverImage ||
+          '',
       });
     } else if (vendor) {
       // Initialize with vendor data if no section content exists
@@ -249,11 +253,11 @@ const HeroSectionEdit = ({ dealer }) => {
     setHasChanges(true);
   };
 
-  const handleImageUpload = (event) => {
+  const handleImageUpload = event => {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
-      reader.onload = (e) => {
+      reader.onload = e => {
         updateContent('backgroundImage', e.target.result);
       };
       reader.readAsDataURL(file);
@@ -265,24 +269,24 @@ const HeroSectionEdit = ({ dealer }) => {
   };
 
   const saveChanges = () => {
-    const updatedSections = sections.map(section => 
-      section.id === 'hero' 
+    const updatedSections = sections.map(section =>
+      section.id === 'hero'
         ? { ...section, content: { ...section.content, ...heroContent } }
         : section
     );
-    
+
     dispatch(updatePageSections(updatedSections));
     setHasChanges(false);
     alert('Hero section saved successfully!');
   };
 
   const publishChanges = () => {
-    const updatedSections = sections.map(section => 
-      section.id === 'hero' 
+    const updatedSections = sections.map(section =>
+      section.id === 'hero'
         ? { ...section, content: { ...section.content, ...heroContent } }
         : section
     );
-    
+
     dispatch(publishPageContent(updatedSections));
     setHasChanges(false);
     alert('Hero section published successfully! Changes are now live.');
@@ -308,7 +312,7 @@ const HeroSectionEdit = ({ dealer }) => {
           <HeaderTitle>Hero Section</HeaderTitle>
         </HeaderLeft>
         <HeaderActions>
-          <ActionButton 
+          <ActionButton
             onClick={saveChanges}
             disabled={!hasChanges}
             color={theme.colors.blue500}
@@ -316,7 +320,7 @@ const HeroSectionEdit = ({ dealer }) => {
             <FaSave />
             Save Changes
           </ActionButton>
-          <ActionButton 
+          <ActionButton
             onClick={publishChanges}
             disabled={!hasChanges}
             filled
@@ -334,16 +338,16 @@ const HeroSectionEdit = ({ dealer }) => {
           <ImageUploadSection>
             {heroContent.backgroundImage && (
               <ImagePreview>
-                <PreviewImage 
-                  src={heroContent.backgroundImage} 
-                  alt="Hero background preview" 
+                <PreviewImage
+                  src={heroContent.backgroundImage}
+                  alt="Hero background preview"
                 />
                 <RemoveImageButton onClick={removeImage}>
                   <FaTimes />
                 </RemoveImageButton>
               </ImagePreview>
             )}
-            
+
             <UploadButton>
               <FaUpload />
               Upload Image
@@ -359,7 +363,7 @@ const HeroSectionEdit = ({ dealer }) => {
               <Input
                 type="url"
                 value={heroContent.backgroundImage}
-                onChange={(e) => updateContent('backgroundImage', e.target.value)}
+                onChange={e => updateContent('backgroundImage', e.target.value)}
                 placeholder="https://example.com/image.jpg"
               />
             </UrlOption>
@@ -371,7 +375,7 @@ const HeroSectionEdit = ({ dealer }) => {
           <Input
             type="text"
             value={heroContent.title}
-            onChange={(e) => updateContent('title', e.target.value)}
+            onChange={e => updateContent('title', e.target.value)}
             placeholder="Enter hero section title"
           />
         </FormGroup>
@@ -380,7 +384,7 @@ const HeroSectionEdit = ({ dealer }) => {
           <Label>Hero Subtitle/Description</Label>
           <TextArea
             value={heroContent.subtitle}
-            onChange={(e) => updateContent('subtitle', e.target.value)}
+            onChange={e => updateContent('subtitle', e.target.value)}
             placeholder="Enter hero section description"
           />
         </FormGroup>

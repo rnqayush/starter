@@ -65,12 +65,14 @@ const HeaderActions = styled.div`
 `;
 
 const ActionButton = styled.button.withConfig({
-  shouldForwardProp: (prop) => !['filled', 'color'].includes(prop),
+  shouldForwardProp: prop => !['filled', 'color'].includes(prop),
 })`
   padding: ${theme.spacing.sm} ${theme.spacing.md};
   border: 2px solid ${props => props.color || theme.colors.primary};
-  background: ${props => props.filled ? (props.color || theme.colors.primary) : theme.colors.white};
-  color: ${props => props.filled ? theme.colors.white : (props.color || theme.colors.primary)};
+  background: ${props =>
+    props.filled ? props.color || theme.colors.primary : theme.colors.white};
+  color: ${props =>
+    props.filled ? theme.colors.white : props.color || theme.colors.primary};
   border-radius: ${theme.borderRadius.md};
   font-weight: 600;
   cursor: pointer;
@@ -124,15 +126,17 @@ const ArrowControls = styled.div`
 `;
 
 const ArrowButton = styled.button.withConfig({
-  shouldForwardProp: (prop) => !['disabled'].includes(prop),
+  shouldForwardProp: prop => !['disabled'].includes(prop),
 })`
   width: 32px;
   height: 24px;
   border: 1px solid ${theme.colors.gray300};
-  background: ${props => props.disabled ? theme.colors.gray100 : theme.colors.white};
-  color: ${props => props.disabled ? theme.colors.gray400 : theme.colors.gray600};
+  background: ${props =>
+    props.disabled ? theme.colors.gray100 : theme.colors.white};
+  color: ${props =>
+    props.disabled ? theme.colors.gray400 : theme.colors.gray600};
   border-radius: ${theme.borderRadius.sm};
-  cursor: ${props => props.disabled ? 'not-allowed' : 'pointer'};
+  cursor: ${props => (props.disabled ? 'not-allowed' : 'pointer')};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -140,7 +144,8 @@ const ArrowButton = styled.button.withConfig({
   transition: all 0.2s ease;
 
   &:hover {
-    background: ${props => props.disabled ? theme.colors.gray100 : theme.colors.gray50};
+    background: ${props =>
+      props.disabled ? theme.colors.gray100 : theme.colors.gray50};
   }
 `;
 
@@ -177,14 +182,16 @@ const SectionOrder = styled.div`
 `;
 
 const VisibilityButton = styled.button.withConfig({
-  shouldForwardProp: (prop) => !['visible'].includes(prop),
+  shouldForwardProp: prop => !['visible'].includes(prop),
 })`
   width: 40px;
   height: 40px;
   border: none;
   border-radius: ${theme.borderRadius.md};
-  background: ${props => props.visible ? theme.colors.success : theme.colors.gray300};
-  color: ${props => props.visible ? theme.colors.white : theme.colors.gray600};
+  background: ${props =>
+    props.visible ? theme.colors.success : theme.colors.gray300};
+  color: ${props =>
+    props.visible ? theme.colors.white : theme.colors.gray600};
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -192,7 +199,8 @@ const VisibilityButton = styled.button.withConfig({
   transition: all 0.2s ease;
 
   &:hover {
-    background: ${props => props.visible ? theme.colors.successDark : theme.colors.gray400};
+    background: ${props =>
+      props.visible ? theme.colors.successDark : theme.colors.gray400};
   }
 `;
 
@@ -221,7 +229,7 @@ const SectionOrderEdit = ({ dealer }) => {
   const dispatch = useDispatch();
   const sections = useSelector(selectPageSections);
   const loading = useSelector(selectLoading);
-  
+
   const [orderedSections, setOrderedSections] = useState([]);
   const [hasChanges, setHasChanges] = useState(false);
 
@@ -252,13 +260,13 @@ const SectionOrderEdit = ({ dealer }) => {
     setHasChanges(true);
   };
 
-  const handleVisibilityToggle = (sectionId) => {
+  const handleVisibilityToggle = sectionId => {
     const updatedSections = orderedSections.map(section =>
       section.id === sectionId
         ? { ...section, visible: !section.visible }
         : section
     );
-    
+
     setOrderedSections(updatedSections);
     setHasChanges(true);
   };
@@ -295,7 +303,7 @@ const SectionOrderEdit = ({ dealer }) => {
           <HeaderTitle>Section Order Management</HeaderTitle>
         </HeaderLeft>
         <HeaderActions>
-          <ActionButton 
+          <ActionButton
             onClick={saveChanges}
             disabled={!hasChanges}
             color={theme.colors.blue500}
@@ -303,7 +311,7 @@ const SectionOrderEdit = ({ dealer }) => {
             <FaSave />
             Save Changes
           </ActionButton>
-          <ActionButton 
+          <ActionButton
             onClick={publishChanges}
             disabled={!hasChanges}
             filled
@@ -317,7 +325,9 @@ const SectionOrderEdit = ({ dealer }) => {
 
       <Content>
         <Instructions>
-          <InstructionsTitle>How to use Section Order Management:</InstructionsTitle>
+          <InstructionsTitle>
+            How to use Section Order Management:
+          </InstructionsTitle>
           <InstructionsList>
             <li>Use the up/down arrows to reorder sections on your website</li>
             <li>Click the eye icon to show/hide sections</li>
@@ -345,16 +355,14 @@ const SectionOrderEdit = ({ dealer }) => {
                   <FaArrowDown />
                 </ArrowButton>
               </ArrowControls>
-              
-              <SectionOrder>
-                #{section.order}
-              </SectionOrder>
-              
+
+              <SectionOrder>#{section.order}</SectionOrder>
+
               <SectionInfo>
                 <SectionName>{section.name}</SectionName>
                 <SectionDescription>{section.description}</SectionDescription>
               </SectionInfo>
-              
+
               <VisibilityButton
                 visible={section.visible}
                 onClick={() => handleVisibilityToggle(section.id)}

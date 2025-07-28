@@ -66,12 +66,14 @@ const HeaderActions = styled.div`
 `;
 
 const ActionButton = styled.button.withConfig({
-  shouldForwardProp: (prop) => !['filled', 'color'].includes(prop),
+  shouldForwardProp: prop => !['filled', 'color'].includes(prop),
 })`
   padding: ${theme.spacing.sm} ${theme.spacing.md};
   border: 2px solid ${props => props.color || theme.colors.primary};
-  background: ${props => props.filled ? (props.color || theme.colors.primary) : theme.colors.white};
-  color: ${props => props.filled ? theme.colors.white : (props.color || theme.colors.primary)};
+  background: ${props =>
+    props.filled ? props.color || theme.colors.primary : theme.colors.white};
+  color: ${props =>
+    props.filled ? theme.colors.white : props.color || theme.colors.primary};
   border-radius: ${theme.borderRadius.md};
   font-weight: 600;
   cursor: pointer;
@@ -179,14 +181,16 @@ const TextArea = styled.textarea`
 `;
 
 const ToggleButton = styled.button.withConfig({
-  shouldForwardProp: (prop) => !['enabled'].includes(prop),
+  shouldForwardProp: prop => !['enabled'].includes(prop),
 })`
   width: 40px;
   height: 40px;
   border: none;
   border-radius: ${theme.borderRadius.md};
-  background: ${props => props.enabled ? theme.colors.success : theme.colors.gray300};
-  color: ${props => props.enabled ? theme.colors.white : theme.colors.gray600};
+  background: ${props =>
+    props.enabled ? theme.colors.success : theme.colors.gray300};
+  color: ${props =>
+    props.enabled ? theme.colors.white : theme.colors.gray600};
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -194,7 +198,8 @@ const ToggleButton = styled.button.withConfig({
   transition: all 0.2s ease;
 
   &:hover {
-    background: ${props => props.enabled ? theme.colors.successDark : theme.colors.gray400};
+    background: ${props =>
+      props.enabled ? theme.colors.successDark : theme.colors.gray400};
   }
 `;
 
@@ -257,7 +262,7 @@ const FooterSectionEdit = ({ dealer }) => {
   const sections = useSelector(selectPageSections);
   const vendor = useSelector(selectVendor);
   const loading = useSelector(selectLoading);
-  
+
   const [sectionContent, setSectionContent] = useState({
     // Social Media
     showSocialMedia: true,
@@ -268,7 +273,7 @@ const FooterSectionEdit = ({ dealer }) => {
       linkedin: '',
       youtube: '',
     },
-    
+
     // Business Hours
     showHours: true,
     businessHours: [
@@ -280,7 +285,7 @@ const FooterSectionEdit = ({ dealer }) => {
       { day: 'Saturday', hours: '9:00 AM - 4:00 PM' },
       { day: 'Sunday', hours: 'Closed' },
     ],
-    
+
     // Quick Links
     showQuickLinks: true,
     quickLinks: [
@@ -289,7 +294,7 @@ const FooterSectionEdit = ({ dealer }) => {
       { name: 'About Us', url: '/about', visible: true },
       { name: 'Contact', url: '/contact', visible: true },
     ],
-    
+
     // Contact Information (basic business contact)
     showContact: true,
     contactInfo: {
@@ -298,7 +303,7 @@ const FooterSectionEdit = ({ dealer }) => {
       address: '',
     },
     contactCustomFields: [],
-    
+
     // Support Information (customer service)
     showSupport: true,
     supportInfo: {
@@ -307,19 +312,35 @@ const FooterSectionEdit = ({ dealer }) => {
       supportHours: 'Mon-Fri 9AM-6PM',
     },
     supportCustomFields: [],
-    
+
     customText: '',
   });
-  
+
   const [hasChanges, setHasChanges] = useState(false);
 
   // Helper function to format business hours from vendor data
-  const formatBusinessHours = (hoursData) => {
+  const formatBusinessHours = hoursData => {
     if (!hoursData) return [];
-    
-    const dayNames = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
-    const dayLabels = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-    
+
+    const dayNames = [
+      'monday',
+      'tuesday',
+      'wednesday',
+      'thursday',
+      'friday',
+      'saturday',
+      'sunday',
+    ];
+    const dayLabels = [
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday',
+      'Sunday',
+    ];
+
     return dayLabels.map((label, index) => {
       const dayKey = dayNames[index];
       const dayInfo = hoursData[dayKey];
@@ -333,8 +354,11 @@ const FooterSectionEdit = ({ dealer }) => {
   // Initialize with data from Redux state and vendor businessInfo
   useEffect(() => {
     const footerSection = sections.find(s => s.id === 'footer');
-    
-    if (footerSection?.content && Object.keys(footerSection.content).length > 0) {
+
+    if (
+      footerSection?.content &&
+      Object.keys(footerSection.content).length > 0
+    ) {
       setSectionContent(prev => ({
         ...prev,
         ...footerSection.content,
@@ -343,7 +367,7 @@ const FooterSectionEdit = ({ dealer }) => {
       // Initialize with vendor businessInfo and contact data
       const businessInfo = vendor.businessInfo || {};
       const contactInfo = vendor.contact || {};
-      
+
       setSectionContent(prev => ({
         ...prev,
         // Social Media from businessInfo
@@ -360,8 +384,9 @@ const FooterSectionEdit = ({ dealer }) => {
         contactInfo: {
           email: contactInfo.email || '',
           phone: contactInfo.phone || '',
-          address: contactInfo.address ? 
-            `${contactInfo.address.street}, ${contactInfo.address.city}, ${contactInfo.address.state} ${contactInfo.address.zipCode}` : '',
+          address: contactInfo.address
+            ? `${contactInfo.address.street}, ${contactInfo.address.city}, ${contactInfo.address.state} ${contactInfo.address.zipCode}`
+            : '',
         },
         // Support defaults to business contact if not separate
         supportInfo: {
@@ -406,18 +431,24 @@ const FooterSectionEdit = ({ dealer }) => {
   };
 
   const addQuickLink = () => {
-    const newLinks = [...sectionContent.quickLinks, { name: '', url: '', visible: true }];
+    const newLinks = [
+      ...sectionContent.quickLinks,
+      { name: '', url: '', visible: true },
+    ];
     updateContent('quickLinks', newLinks);
   };
 
-  const removeQuickLink = (index) => {
+  const removeQuickLink = index => {
     const newLinks = sectionContent.quickLinks.filter((_, i) => i !== index);
     updateContent('quickLinks', newLinks);
   };
 
   // Contact custom fields
   const addContactCustomField = () => {
-    const newFields = [...sectionContent.contactCustomFields, { name: '', value: '' }];
+    const newFields = [
+      ...sectionContent.contactCustomFields,
+      { name: '', value: '' },
+    ];
     updateContent('contactCustomFields', newFields);
   };
 
@@ -427,14 +458,19 @@ const FooterSectionEdit = ({ dealer }) => {
     updateContent('contactCustomFields', newFields);
   };
 
-  const removeContactCustomField = (index) => {
-    const newFields = sectionContent.contactCustomFields.filter((_, i) => i !== index);
+  const removeContactCustomField = index => {
+    const newFields = sectionContent.contactCustomFields.filter(
+      (_, i) => i !== index
+    );
     updateContent('contactCustomFields', newFields);
   };
 
   // Support custom fields
   const addSupportCustomField = () => {
-    const newFields = [...sectionContent.supportCustomFields, { name: '', value: '' }];
+    const newFields = [
+      ...sectionContent.supportCustomFields,
+      { name: '', value: '' },
+    ];
     updateContent('supportCustomFields', newFields);
   };
 
@@ -444,30 +480,32 @@ const FooterSectionEdit = ({ dealer }) => {
     updateContent('supportCustomFields', newFields);
   };
 
-  const removeSupportCustomField = (index) => {
-    const newFields = sectionContent.supportCustomFields.filter((_, i) => i !== index);
+  const removeSupportCustomField = index => {
+    const newFields = sectionContent.supportCustomFields.filter(
+      (_, i) => i !== index
+    );
     updateContent('supportCustomFields', newFields);
   };
 
   const saveChanges = () => {
-    const updatedSections = sections.map(section => 
-      section.id === 'footer' 
+    const updatedSections = sections.map(section =>
+      section.id === 'footer'
         ? { ...section, content: { ...section.content, ...sectionContent } }
         : section
     );
-    
+
     dispatch(updatePageSections(updatedSections));
     setHasChanges(false);
     alert('Footer section saved successfully!');
   };
 
   const publishChanges = () => {
-    const updatedSections = sections.map(section => 
-      section.id === 'footer' 
+    const updatedSections = sections.map(section =>
+      section.id === 'footer'
         ? { ...section, content: { ...section.content, ...sectionContent } }
         : section
     );
-    
+
     dispatch(publishPageContent(updatedSections));
     setHasChanges(false);
     alert('Footer section published successfully! Changes are now live.');
@@ -493,7 +531,7 @@ const FooterSectionEdit = ({ dealer }) => {
           <HeaderTitle>Footer Section</HeaderTitle>
         </HeaderLeft>
         <HeaderActions>
-          <ActionButton 
+          <ActionButton
             onClick={saveChanges}
             disabled={!hasChanges}
             color={theme.colors.blue500}
@@ -501,7 +539,7 @@ const FooterSectionEdit = ({ dealer }) => {
             <FaSave />
             Save Changes
           </ActionButton>
-          <ActionButton 
+          <ActionButton
             onClick={publishChanges}
             disabled={!hasChanges}
             filled
@@ -520,7 +558,12 @@ const FooterSectionEdit = ({ dealer }) => {
             <SectionTitle>Social Media Links</SectionTitle>
             <ToggleButton
               enabled={sectionContent.showSocialMedia}
-              onClick={() => updateContent('showSocialMedia', !sectionContent.showSocialMedia)}
+              onClick={() =>
+                updateContent(
+                  'showSocialMedia',
+                  !sectionContent.showSocialMedia
+                )
+              }
             >
               {sectionContent.showSocialMedia ? <FaEye /> : <FaEyeSlash />}
             </ToggleButton>
@@ -533,7 +576,13 @@ const FooterSectionEdit = ({ dealer }) => {
                   <Input
                     type="url"
                     value={sectionContent.socialMediaLinks.facebook}
-                    onChange={(e) => updateNestedContent('socialMediaLinks', 'facebook', e.target.value)}
+                    onChange={e =>
+                      updateNestedContent(
+                        'socialMediaLinks',
+                        'facebook',
+                        e.target.value
+                      )
+                    }
                     placeholder="https://facebook.com/yourpage"
                   />
                 </FormGroup>
@@ -542,7 +591,13 @@ const FooterSectionEdit = ({ dealer }) => {
                   <Input
                     type="url"
                     value={sectionContent.socialMediaLinks.twitter}
-                    onChange={(e) => updateNestedContent('socialMediaLinks', 'twitter', e.target.value)}
+                    onChange={e =>
+                      updateNestedContent(
+                        'socialMediaLinks',
+                        'twitter',
+                        e.target.value
+                      )
+                    }
                     placeholder="https://twitter.com/yourhandle"
                   />
                 </FormGroup>
@@ -553,7 +608,13 @@ const FooterSectionEdit = ({ dealer }) => {
                   <Input
                     type="url"
                     value={sectionContent.socialMediaLinks.instagram}
-                    onChange={(e) => updateNestedContent('socialMediaLinks', 'instagram', e.target.value)}
+                    onChange={e =>
+                      updateNestedContent(
+                        'socialMediaLinks',
+                        'instagram',
+                        e.target.value
+                      )
+                    }
                     placeholder="https://instagram.com/yourprofile"
                   />
                 </FormGroup>
@@ -562,7 +623,13 @@ const FooterSectionEdit = ({ dealer }) => {
                   <Input
                     type="url"
                     value={sectionContent.socialMediaLinks.linkedin}
-                    onChange={(e) => updateNestedContent('socialMediaLinks', 'linkedin', e.target.value)}
+                    onChange={e =>
+                      updateNestedContent(
+                        'socialMediaLinks',
+                        'linkedin',
+                        e.target.value
+                      )
+                    }
                     placeholder="https://linkedin.com/company/yourcompany"
                   />
                 </FormGroup>
@@ -572,7 +639,13 @@ const FooterSectionEdit = ({ dealer }) => {
                 <Input
                   type="url"
                   value={sectionContent.socialMediaLinks.youtube}
-                  onChange={(e) => updateNestedContent('socialMediaLinks', 'youtube', e.target.value)}
+                  onChange={e =>
+                    updateNestedContent(
+                      'socialMediaLinks',
+                      'youtube',
+                      e.target.value
+                    )
+                  }
                   placeholder="https://youtube.com/channel/yourchannel"
                 />
               </FormGroup>
@@ -586,7 +659,9 @@ const FooterSectionEdit = ({ dealer }) => {
             <SectionTitle>Business Hours</SectionTitle>
             <ToggleButton
               enabled={sectionContent.showHours}
-              onClick={() => updateContent('showHours', !sectionContent.showHours)}
+              onClick={() =>
+                updateContent('showHours', !sectionContent.showHours)
+              }
             >
               {sectionContent.showHours ? <FaEye /> : <FaEyeSlash />}
             </ToggleButton>
@@ -600,7 +675,9 @@ const FooterSectionEdit = ({ dealer }) => {
                     <Input
                       type="text"
                       value={dayInfo.hours}
-                      onChange={(e) => updateBusinessHours(index, 'hours', e.target.value)}
+                      onChange={e =>
+                        updateBusinessHours(index, 'hours', e.target.value)
+                      }
                       placeholder="9:00 AM - 6:00 PM"
                     />
                   </FormGroup>
@@ -616,7 +693,9 @@ const FooterSectionEdit = ({ dealer }) => {
             <SectionTitle>Quick Links</SectionTitle>
             <ToggleButton
               enabled={sectionContent.showQuickLinks}
-              onClick={() => updateContent('showQuickLinks', !sectionContent.showQuickLinks)}
+              onClick={() =>
+                updateContent('showQuickLinks', !sectionContent.showQuickLinks)
+              }
             >
               {sectionContent.showQuickLinks ? <FaEye /> : <FaEyeSlash />}
             </ToggleButton>
@@ -627,7 +706,9 @@ const FooterSectionEdit = ({ dealer }) => {
                 <ListItem key={index}>
                   <ToggleButton
                     enabled={link.visible}
-                    onClick={() => updateQuickLink(index, 'visible', !link.visible)}
+                    onClick={() =>
+                      updateQuickLink(index, 'visible', !link.visible)
+                    }
                   >
                     {link.visible ? <FaEye /> : <FaEyeSlash />}
                   </ToggleButton>
@@ -635,13 +716,17 @@ const FooterSectionEdit = ({ dealer }) => {
                     <Input
                       type="text"
                       value={link.name}
-                      onChange={(e) => updateQuickLink(index, 'name', e.target.value)}
+                      onChange={e =>
+                        updateQuickLink(index, 'name', e.target.value)
+                      }
                       placeholder="Link Name"
                     />
                     <Input
                       type="text"
                       value={link.url}
-                      onChange={(e) => updateQuickLink(index, 'url', e.target.value)}
+                      onChange={e =>
+                        updateQuickLink(index, 'url', e.target.value)
+                      }
                       placeholder="/page-url"
                     />
                   </ListItemContent>
@@ -664,7 +749,9 @@ const FooterSectionEdit = ({ dealer }) => {
             <SectionTitle>Contact Information</SectionTitle>
             <ToggleButton
               enabled={sectionContent.showContact}
-              onClick={() => updateContent('showContact', !sectionContent.showContact)}
+              onClick={() =>
+                updateContent('showContact', !sectionContent.showContact)
+              }
             >
               {sectionContent.showContact ? <FaEye /> : <FaEyeSlash />}
             </ToggleButton>
@@ -677,7 +764,13 @@ const FooterSectionEdit = ({ dealer }) => {
                   <Input
                     type="email"
                     value={sectionContent.contactInfo.email}
-                    onChange={(e) => updateNestedContent('contactInfo', 'email', e.target.value)}
+                    onChange={e =>
+                      updateNestedContent(
+                        'contactInfo',
+                        'email',
+                        e.target.value
+                      )
+                    }
                     placeholder="contact@dealership.com"
                   />
                 </FormGroup>
@@ -686,7 +779,13 @@ const FooterSectionEdit = ({ dealer }) => {
                   <Input
                     type="tel"
                     value={sectionContent.contactInfo.phone}
-                    onChange={(e) => updateNestedContent('contactInfo', 'phone', e.target.value)}
+                    onChange={e =>
+                      updateNestedContent(
+                        'contactInfo',
+                        'phone',
+                        e.target.value
+                      )
+                    }
                     placeholder="(555) 123-4567"
                   />
                 </FormGroup>
@@ -695,11 +794,17 @@ const FooterSectionEdit = ({ dealer }) => {
                 <Label>Business Address</Label>
                 <TextArea
                   value={sectionContent.contactInfo.address}
-                  onChange={(e) => updateNestedContent('contactInfo', 'address', e.target.value)}
+                  onChange={e =>
+                    updateNestedContent(
+                      'contactInfo',
+                      'address',
+                      e.target.value
+                    )
+                  }
                   placeholder="123 Main Street, City, State 12345"
                 />
               </FormGroup>
-              
+
               {/* Contact Custom Fields */}
               <div style={{ marginTop: theme.spacing.lg }}>
                 <Label>Additional Contact Fields</Label>
@@ -709,17 +814,31 @@ const FooterSectionEdit = ({ dealer }) => {
                       <Input
                         type="text"
                         value={field.name}
-                        onChange={(e) => updateContactCustomField(index, 'name', e.target.value)}
+                        onChange={e =>
+                          updateContactCustomField(
+                            index,
+                            'name',
+                            e.target.value
+                          )
+                        }
                         placeholder="Field Name (e.g., Fax, Website)"
                       />
                       <Input
                         type="text"
                         value={field.value}
-                        onChange={(e) => updateContactCustomField(index, 'value', e.target.value)}
+                        onChange={e =>
+                          updateContactCustomField(
+                            index,
+                            'value',
+                            e.target.value
+                          )
+                        }
                         placeholder="Field Value"
                       />
                     </ListItemContent>
-                    <RemoveButton onClick={() => removeContactCustomField(index)}>
+                    <RemoveButton
+                      onClick={() => removeContactCustomField(index)}
+                    >
                       <FaTrash />
                     </RemoveButton>
                   </ListItem>
@@ -739,7 +858,9 @@ const FooterSectionEdit = ({ dealer }) => {
             <SectionTitle>Customer Support</SectionTitle>
             <ToggleButton
               enabled={sectionContent.showSupport}
-              onClick={() => updateContent('showSupport', !sectionContent.showSupport)}
+              onClick={() =>
+                updateContent('showSupport', !sectionContent.showSupport)
+              }
             >
               {sectionContent.showSupport ? <FaEye /> : <FaEyeSlash />}
             </ToggleButton>
@@ -752,7 +873,13 @@ const FooterSectionEdit = ({ dealer }) => {
                   <Input
                     type="email"
                     value={sectionContent.supportInfo.supportEmail}
-                    onChange={(e) => updateNestedContent('supportInfo', 'supportEmail', e.target.value)}
+                    onChange={e =>
+                      updateNestedContent(
+                        'supportInfo',
+                        'supportEmail',
+                        e.target.value
+                      )
+                    }
                     placeholder="support@dealership.com"
                   />
                 </FormGroup>
@@ -761,7 +888,13 @@ const FooterSectionEdit = ({ dealer }) => {
                   <Input
                     type="tel"
                     value={sectionContent.supportInfo.supportPhone}
-                    onChange={(e) => updateNestedContent('supportInfo', 'supportPhone', e.target.value)}
+                    onChange={e =>
+                      updateNestedContent(
+                        'supportInfo',
+                        'supportPhone',
+                        e.target.value
+                      )
+                    }
                     placeholder="(555) 123-HELP"
                   />
                 </FormGroup>
@@ -771,11 +904,17 @@ const FooterSectionEdit = ({ dealer }) => {
                 <Input
                   type="text"
                   value={sectionContent.supportInfo.supportHours}
-                  onChange={(e) => updateNestedContent('supportInfo', 'supportHours', e.target.value)}
+                  onChange={e =>
+                    updateNestedContent(
+                      'supportInfo',
+                      'supportHours',
+                      e.target.value
+                    )
+                  }
                   placeholder="Mon-Fri 9AM-6PM"
                 />
               </FormGroup>
-              
+
               {/* Support Custom Fields */}
               <div style={{ marginTop: theme.spacing.lg }}>
                 <Label>Additional Support Fields</Label>
@@ -785,17 +924,31 @@ const FooterSectionEdit = ({ dealer }) => {
                       <Input
                         type="text"
                         value={field.name}
-                        onChange={(e) => updateSupportCustomField(index, 'name', e.target.value)}
+                        onChange={e =>
+                          updateSupportCustomField(
+                            index,
+                            'name',
+                            e.target.value
+                          )
+                        }
                         placeholder="Field Name (e.g., Live Chat, Ticket System)"
                       />
                       <Input
                         type="text"
                         value={field.value}
-                        onChange={(e) => updateSupportCustomField(index, 'value', e.target.value)}
+                        onChange={e =>
+                          updateSupportCustomField(
+                            index,
+                            'value',
+                            e.target.value
+                          )
+                        }
                         placeholder="Field Value"
                       />
                     </ListItemContent>
-                    <RemoveButton onClick={() => removeSupportCustomField(index)}>
+                    <RemoveButton
+                      onClick={() => removeSupportCustomField(index)}
+                    >
                       <FaTrash />
                     </RemoveButton>
                   </ListItem>
@@ -819,7 +972,7 @@ const FooterSectionEdit = ({ dealer }) => {
               <Label>Additional Information</Label>
               <TextArea
                 value={sectionContent.customText}
-                onChange={(e) => updateContent('customText', e.target.value)}
+                onChange={e => updateContent('customText', e.target.value)}
                 placeholder="Add any additional text for your footer..."
               />
             </FormGroup>

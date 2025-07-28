@@ -62,9 +62,12 @@ const HeaderActions = styled.div`
 `;
 
 const ActionButton = styled.button.withConfig({
-  shouldForwardProp: (prop) => !['variant', 'small'].includes(prop),
+  shouldForwardProp: prop => !['variant', 'small'].includes(prop),
 })`
-  padding: ${props => props.small ? theme.spacing.xs + ' ' + theme.spacing.sm : theme.spacing.sm + ' ' + theme.spacing.md};
+  padding: ${props =>
+    props.small
+      ? theme.spacing.xs + ' ' + theme.spacing.sm
+      : theme.spacing.sm + ' ' + theme.spacing.md};
   border: ${props => {
     if (props.variant === 'danger') return '1px solid ' + theme.colors.error;
     if (props.variant === 'primary') return '1px solid ' + theme.colors.primary;
@@ -76,11 +79,12 @@ const ActionButton = styled.button.withConfig({
     return theme.colors.white;
   }};
   color: ${props => {
-    if (props.variant === 'danger' || props.variant === 'primary') return theme.colors.white;
+    if (props.variant === 'danger' || props.variant === 'primary')
+      return theme.colors.white;
     return theme.colors.gray700;
   }};
   border-radius: ${theme.borderRadius.md};
-  font-size: ${props => props.small ? '0.8rem' : '0.9rem'};
+  font-size: ${props => (props.small ? '0.8rem' : '0.9rem')};
   font-weight: 600;
   cursor: pointer;
   display: flex;
@@ -215,7 +219,7 @@ const CategoryActions = styled.div`
 `;
 
 const Modal = styled.div.withConfig({
-  shouldForwardProp: (prop) => !['isOpen'].includes(prop),
+  shouldForwardProp: prop => !['isOpen'].includes(prop),
 })`
   position: fixed;
   top: 0;
@@ -223,7 +227,7 @@ const Modal = styled.div.withConfig({
   right: 0;
   bottom: 0;
   background: rgba(0, 0, 0, 0.5);
-  display: ${props => props.isOpen ? 'flex' : 'none'};
+  display: ${props => (props.isOpen ? 'flex' : 'none')};
   align-items: center;
   justify-content: center;
   z-index: 1000;
@@ -363,7 +367,7 @@ const ModalFooter = styled.div`
 const CategoryManagement = ({ dealer }) => {
   const categories = useSelector(selectCategories);
   const loading = useSelector(selectLoading);
-  
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editingCategoryId, setEditingCategoryId] = useState(null);
@@ -407,7 +411,7 @@ const CategoryManagement = ({ dealer }) => {
     setIsModalOpen(true);
   };
 
-  const openEditModal = (category) => {
+  const openEditModal = category => {
     setIsEditing(true);
     setEditingCategoryId(category.id);
     setCategoryData({
@@ -445,20 +449,20 @@ const CategoryManagement = ({ dealer }) => {
     if (tagInput.trim() && !categoryData.tags.includes(tagInput.trim())) {
       setCategoryData(prev => ({
         ...prev,
-        tags: [...prev.tags, tagInput.trim()]
+        tags: [...prev.tags, tagInput.trim()],
       }));
       setTagInput('');
     }
   };
 
-  const removeTag = (tagToRemove) => {
+  const removeTag = tagToRemove => {
     setCategoryData(prev => ({
       ...prev,
-      tags: prev.tags.filter(tag => tag !== tagToRemove)
+      tags: prev.tags.filter(tag => tag !== tagToRemove),
     }));
   };
 
-  const handleKeyPress = (e) => {
+  const handleKeyPress = e => {
     if (e.key === 'Enter') {
       e.preventDefault();
       addTag();
@@ -480,7 +484,10 @@ const CategoryManagement = ({ dealer }) => {
     // For now, we'll just show alerts
     if (isEditing) {
       alert('Category updated successfully!');
-      console.log('Updated category:', { id: editingCategoryId, ...categoryData });
+      console.log('Updated category:', {
+        id: editingCategoryId,
+        ...categoryData,
+      });
     } else {
       alert('Category created successfully!');
       console.log('Created category:', { id: Date.now(), ...categoryData });
@@ -489,7 +496,11 @@ const CategoryManagement = ({ dealer }) => {
   };
 
   const handleDelete = (categoryId, categoryName) => {
-    if (window.confirm(`Are you sure you want to delete the category "${categoryName}"?`)) {
+    if (
+      window.confirm(
+        `Are you sure you want to delete the category "${categoryName}"?`
+      )
+    ) {
       alert('Category deleted successfully!');
       console.log('Deleted category:', categoryId);
     }
@@ -525,7 +536,7 @@ const CategoryManagement = ({ dealer }) => {
 
         <Content>
           <CategoriesGrid>
-            {categories?.map((category) => (
+            {categories?.map(category => (
               <CategoryCard key={category.id}>
                 <CategoryImage src={category.image} alt={category.name} />
                 <CategoryContent>
@@ -547,7 +558,8 @@ const CategoryManagement = ({ dealer }) => {
                     </StatItem>
                     <StatItem>
                       <StatValue>
-                        ${category.priceRange?.min?.toLocaleString()} - ${category.priceRange?.max?.toLocaleString()}
+                        ${category.priceRange?.min?.toLocaleString()} - $
+                        {category.priceRange?.max?.toLocaleString()}
                       </StatValue>
                       <StatLabel>Price Range</StatLabel>
                     </StatItem>
@@ -566,7 +578,11 @@ const CategoryManagement = ({ dealer }) => {
                       <FaEdit />
                       Edit
                     </ActionButton>
-                    <ActionButton small variant="danger" onClick={() => handleDelete(category.id, category.name)}>
+                    <ActionButton
+                      small
+                      variant="danger"
+                      onClick={() => handleDelete(category.id, category.name)}
+                    >
                       <FaTrash />
                       Delete
                     </ActionButton>
@@ -595,7 +611,9 @@ const CategoryManagement = ({ dealer }) => {
               <Input
                 type="text"
                 value={categoryData.name}
-                onChange={(e) => setCategoryData(prev => ({ ...prev, name: e.target.value }))}
+                onChange={e =>
+                  setCategoryData(prev => ({ ...prev, name: e.target.value }))
+                }
                 placeholder="Enter category name"
               />
             </FormGroup>
@@ -605,7 +623,9 @@ const CategoryManagement = ({ dealer }) => {
               <Input
                 type="text"
                 value={categoryData.slug}
-                onChange={(e) => setCategoryData(prev => ({ ...prev, slug: e.target.value }))}
+                onChange={e =>
+                  setCategoryData(prev => ({ ...prev, slug: e.target.value }))
+                }
                 placeholder="category-slug"
               />
             </FormGroup>
@@ -615,7 +635,9 @@ const CategoryManagement = ({ dealer }) => {
               <Input
                 type="url"
                 value={categoryData.image}
-                onChange={(e) => setCategoryData(prev => ({ ...prev, image: e.target.value }))}
+                onChange={e =>
+                  setCategoryData(prev => ({ ...prev, image: e.target.value }))
+                }
                 placeholder="https://example.com/image.jpg"
               />
             </FormGroup>
@@ -624,7 +646,12 @@ const CategoryManagement = ({ dealer }) => {
               <Label>Description</Label>
               <TextArea
                 value={categoryData.description}
-                onChange={(e) => setCategoryData(prev => ({ ...prev, description: e.target.value }))}
+                onChange={e =>
+                  setCategoryData(prev => ({
+                    ...prev,
+                    description: e.target.value,
+                  }))
+                }
                 placeholder="Enter category description"
               />
             </FormGroup>
@@ -635,7 +662,12 @@ const CategoryManagement = ({ dealer }) => {
                 <Input
                   type="number"
                   value={categoryData.vehicleCount}
-                  onChange={(e) => setCategoryData(prev => ({ ...prev, vehicleCount: parseInt(e.target.value) || 0 }))}
+                  onChange={e =>
+                    setCategoryData(prev => ({
+                      ...prev,
+                      vehicleCount: parseInt(e.target.value) || 0,
+                    }))
+                  }
                   placeholder="0"
                 />
               </FormGroup>
@@ -644,7 +676,12 @@ const CategoryManagement = ({ dealer }) => {
                   <Checkbox
                     type="checkbox"
                     checked={categoryData.featured}
-                    onChange={(e) => setCategoryData(prev => ({ ...prev, featured: e.target.checked }))}
+                    onChange={e =>
+                      setCategoryData(prev => ({
+                        ...prev,
+                        featured: e.target.checked,
+                      }))
+                    }
                   />
                   Featured Category
                 </Label>
@@ -657,10 +694,15 @@ const CategoryManagement = ({ dealer }) => {
                 <Input
                   type="number"
                   value={categoryData.priceRange.min}
-                  onChange={(e) => setCategoryData(prev => ({
-                    ...prev,
-                    priceRange: { ...prev.priceRange, min: parseInt(e.target.value) || 0 }
-                  }))}
+                  onChange={e =>
+                    setCategoryData(prev => ({
+                      ...prev,
+                      priceRange: {
+                        ...prev.priceRange,
+                        min: parseInt(e.target.value) || 0,
+                      },
+                    }))
+                  }
                   placeholder="0"
                 />
               </FormGroup>
@@ -669,10 +711,15 @@ const CategoryManagement = ({ dealer }) => {
                 <Input
                   type="number"
                   value={categoryData.priceRange.max}
-                  onChange={(e) => setCategoryData(prev => ({
-                    ...prev,
-                    priceRange: { ...prev.priceRange, max: parseInt(e.target.value) || 0 }
-                  }))}
+                  onChange={e =>
+                    setCategoryData(prev => ({
+                      ...prev,
+                      priceRange: {
+                        ...prev.priceRange,
+                        max: parseInt(e.target.value) || 0,
+                      },
+                    }))
+                  }
                   placeholder="0"
                 />
               </FormGroup>
@@ -692,7 +739,7 @@ const CategoryManagement = ({ dealer }) => {
                 <TagInputField
                   type="text"
                   value={tagInput}
-                  onChange={(e) => setTagInput(e.target.value)}
+                  onChange={e => setTagInput(e.target.value)}
                   onKeyPress={handleKeyPress}
                   onBlur={addTag}
                   placeholder="Add tags..."
@@ -702,9 +749,7 @@ const CategoryManagement = ({ dealer }) => {
           </ModalBody>
 
           <ModalFooter>
-            <ActionButton onClick={closeModal}>
-              Cancel
-            </ActionButton>
+            <ActionButton onClick={closeModal}>Cancel</ActionButton>
             <ActionButton variant="primary" onClick={handleSave}>
               <FaSave />
               {isEditing ? 'Update Category' : 'Create Category'}

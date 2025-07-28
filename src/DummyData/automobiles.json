@@ -33,8 +33,16 @@
         },
         "quickLinks": [
           { "name": "Browse Vehicles", "url": "/vehicles", "visible": true },
-          { "name": "Luxury Cars", "url": "/vehicles?category=luxury-cars", "visible": true },
-          { "name": "Electric Vehicles", "url": "/vehicles?category=electric-vehicles", "visible": true },
+          {
+            "name": "Luxury Cars",
+            "url": "/vehicles?category=luxury-cars",
+            "visible": true
+          },
+          {
+            "name": "Electric Vehicles",
+            "url": "/vehicles?category=electric-vehicles",
+            "visible": true
+          },
           { "name": "Financing", "url": "/financing", "visible": true },
           { "name": "Trade-In", "url": "/trade-in", "visible": true }
         ]

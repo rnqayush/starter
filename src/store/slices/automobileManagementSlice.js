@@ -436,8 +436,10 @@ export const selectRecentlyViewed = state =>
 export const selectPagination = state => state.automobileManagement.pagination;
 export const selectAvailableFilters = state =>
   state.automobileManagement.meta.availableFilters;
-export const selectPageContent = state => state.automobileManagement.pageContent;
-export const selectPageSections = state => state.automobileManagement.pageContent.sections;
+export const selectPageContent = state =>
+  state.automobileManagement.pageContent;
+export const selectPageSections = state =>
+  state.automobileManagement.pageContent.sections;
 
 // Complex selectors
 export const selectFilteredVehicles = state => {

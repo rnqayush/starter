@@ -1,13 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import {
-  FaSave,
-  FaGlobe,
-  FaList,
-  FaEye,
-  FaEyeSlash,
-} from 'react-icons/fa';
+import { FaSave, FaGlobe, FaList, FaEye, FaEyeSlash } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
 import {
   selectPageSections,
@@ -64,12 +58,14 @@ const HeaderActions = styled.div`
 `;
 
 const ActionButton = styled.button.withConfig({
-  shouldForwardProp: (prop) => !['filled', 'color'].includes(prop),
+  shouldForwardProp: prop => !['filled', 'color'].includes(prop),
 })`
   padding: ${theme.spacing.sm} ${theme.spacing.md};
   border: 2px solid ${props => props.color || theme.colors.primary};
-  background: ${props => props.filled ? (props.color || theme.colors.primary) : theme.colors.white};
-  color: ${props => props.filled ? theme.colors.white : (props.color || theme.colors.primary)};
+  background: ${props =>
+    props.filled ? props.color || theme.colors.primary : theme.colors.white};
+  color: ${props =>
+    props.filled ? theme.colors.white : props.color || theme.colors.primary};
   border-radius: ${theme.borderRadius.md};
   font-weight: 600;
   cursor: pointer;
@@ -185,11 +181,12 @@ const CategoryDescription = styled.div`
 `;
 
 const VisibilityButton = styled.button.withConfig({
-  shouldForwardProp: (prop) => prop !== 'visible',
+  shouldForwardProp: prop => prop !== 'visible',
 })`
   background: none;
   border: none;
-  color: ${props => props.visible ? theme.colors.success : theme.colors.gray400};
+  color: ${props =>
+    props.visible ? theme.colors.success : theme.colors.gray400};
   font-size: 1.2rem;
   cursor: pointer;
   padding: ${theme.spacing.sm};
@@ -206,10 +203,11 @@ const CategoriesSectionEdit = ({ dealer }) => {
   const sections = useSelector(selectPageSections);
   const categories = useSelector(selectCategories);
   const loading = useSelector(selectLoading);
-  
+
   const [sectionContent, setSectionContent] = useState({
     title: 'Browse by Category',
-    subtitle: 'Explore our diverse range of vehicles across different categories',
+    subtitle:
+      'Explore our diverse range of vehicles across different categories',
     visibleCategories: [],
   });
   const [hasChanges, setHasChanges] = useState(false);
@@ -220,8 +218,13 @@ const CategoriesSectionEdit = ({ dealer }) => {
     if (categorySection?.content) {
       setSectionContent({
         title: categorySection.content.title || 'Browse by Category',
-        subtitle: categorySection.content.subtitle || 'Explore our diverse range of vehicles across different categories',
-        visibleCategories: categorySection.content.visibleCategories || categories?.map(cat => cat.id) || [],
+        subtitle:
+          categorySection.content.subtitle ||
+          'Explore our diverse range of vehicles across different categories',
+        visibleCategories:
+          categorySection.content.visibleCategories ||
+          categories?.map(cat => cat.id) ||
+          [],
       });
     } else if (categories) {
       // Initialize with all categories visible by default
@@ -240,34 +243,34 @@ const CategoriesSectionEdit = ({ dealer }) => {
     setHasChanges(true);
   };
 
-  const toggleCategoryVisibility = (categoryId) => {
+  const toggleCategoryVisibility = categoryId => {
     const currentCategories = sectionContent.visibleCategories || [];
     const newCategories = currentCategories.includes(categoryId)
       ? currentCategories.filter(id => id !== categoryId)
       : [...currentCategories, categoryId];
-    
+
     updateContent('visibleCategories', newCategories);
   };
 
   const saveChanges = () => {
-    const updatedSections = sections.map(section => 
-      section.id === 'categories' 
+    const updatedSections = sections.map(section =>
+      section.id === 'categories'
         ? { ...section, content: { ...section.content, ...sectionContent } }
         : section
     );
-    
+
     dispatch(updatePageSections(updatedSections));
     setHasChanges(false);
     alert('Categories section saved successfully!');
   };
 
   const publishChanges = () => {
-    const updatedSections = sections.map(section => 
-      section.id === 'categories' 
+    const updatedSections = sections.map(section =>
+      section.id === 'categories'
         ? { ...section, content: { ...section.content, ...sectionContent } }
         : section
     );
-    
+
     dispatch(publishPageContent(updatedSections));
     setHasChanges(false);
     alert('Categories section published successfully! Changes are now live.');
@@ -293,7 +296,7 @@ const CategoriesSectionEdit = ({ dealer }) => {
           <HeaderTitle>Categories Section</HeaderTitle>
         </HeaderLeft>
         <HeaderActions>
-          <ActionButton 
+          <ActionButton
             onClick={saveChanges}
             disabled={!hasChanges}
             color={theme.colors.blue500}
@@ -301,7 +304,7 @@ const CategoriesSectionEdit = ({ dealer }) => {
             <FaSave />
             Save Changes
           </ActionButton>
-          <ActionButton 
+          <ActionButton
             onClick={publishChanges}
             disabled={!hasChanges}
             filled
@@ -319,7 +322,7 @@ const CategoriesSectionEdit = ({ dealer }) => {
           <Input
             type="text"
             value={sectionContent.title}
-            onChange={(e) => updateContent('title', e.target.value)}
+            onChange={e => updateContent('title', e.target.value)}
             placeholder="Enter section title"
           />
         </FormGroup>
@@ -328,7 +331,7 @@ const CategoriesSectionEdit = ({ dealer }) => {
           <Label>Section Subtitle</Label>
           <TextArea
             value={sectionContent.subtitle}
-            onChange={(e) => updateContent('subtitle', e.target.value)}
+            onChange={e => updateContent('subtitle', e.target.value)}
             placeholder="Enter section description"
           />
         </FormGroup>
@@ -341,14 +344,26 @@ const CategoriesSectionEdit = ({ dealer }) => {
                 <CategoryImage src={category.image} alt={category.name} />
                 <CategoryInfo>
                   <CategoryName>{category.name}</CategoryName>
-                  <CategoryDescription>{category.description}</CategoryDescription>
+                  <CategoryDescription>
+                    {category.description}
+                  </CategoryDescription>
                 </CategoryInfo>
                 <VisibilityButton
-                  visible={sectionContent.visibleCategories?.includes(category.id)}
+                  visible={sectionContent.visibleCategories?.includes(
+                    category.id
+                  )}
                   onClick={() => toggleCategoryVisibility(category.id)}
-                  title={sectionContent.visibleCategories?.includes(category.id) ? 'Hide category' : 'Show category'}
+                  title={
+                    sectionContent.visibleCategories?.includes(category.id)
+                      ? 'Hide category'
+                      : 'Show category'
+                  }
                 >
-                  {sectionContent.visibleCategories?.includes(category.id) ? <FaEye /> : <FaEyeSlash />}
+                  {sectionContent.visibleCategories?.includes(category.id) ? (
+                    <FaEye />
+                  ) : (
+                    <FaEyeSlash />
+                  )}
                 </VisibilityButton>
               </CategoryItem>
             ))}

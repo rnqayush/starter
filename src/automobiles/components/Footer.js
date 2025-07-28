@@ -122,7 +122,7 @@ const Footer = ({
   const businessInfo = vendorData.businessInfo || {};
   const socialMedia = businessInfo.socialMedia || {};
 
-  const shouldShowSection = (sectionName) => {
+  const shouldShowSection = sectionName => {
     return content[`show${sectionName}`] !== false;
   };
 
@@ -135,34 +135,59 @@ const Footer = ({
         <FooterSection>
           <h3>{vendorData.name || 'Auto Dealer'}</h3>
           <p>
-            {content.customText || 
-             businessInfo.description || 
-             'Your trusted automobile dealer.'}
+            {content.customText ||
+              businessInfo.description ||
+              'Your trusted automobile dealer.'}
           </p>
           {shouldShowSection('SocialMedia') && (
             <SocialLinks>
               {socialMedia.facebook && (
-                <SocialLink href={socialMedia.facebook} aria-label="Facebook" target="_blank" rel="noopener">
+                <SocialLink
+                  href={socialMedia.facebook}
+                  aria-label="Facebook"
+                  target="_blank"
+                  rel="noopener"
+                >
                   <FaFacebook />
                 </SocialLink>
               )}
               {socialMedia.twitter && (
-                <SocialLink href={socialMedia.twitter} aria-label="Twitter" target="_blank" rel="noopener">
+                <SocialLink
+                  href={socialMedia.twitter}
+                  aria-label="Twitter"
+                  target="_blank"
+                  rel="noopener"
+                >
                   <FaTwitter />
                 </SocialLink>
               )}
               {socialMedia.instagram && (
-                <SocialLink href={socialMedia.instagram} aria-label="Instagram" target="_blank" rel="noopener">
+                <SocialLink
+                  href={socialMedia.instagram}
+                  aria-label="Instagram"
+                  target="_blank"
+                  rel="noopener"
+                >
                   <FaInstagram />
                 </SocialLink>
               )}
               {socialMedia.youtube && (
-                <SocialLink href={socialMedia.youtube} aria-label="YouTube" target="_blank" rel="noopener">
+                <SocialLink
+                  href={socialMedia.youtube}
+                  aria-label="YouTube"
+                  target="_blank"
+                  rel="noopener"
+                >
                   <FaYoutube />
                 </SocialLink>
               )}
               {socialMedia.linkedin && (
-                <SocialLink href={socialMedia.linkedin} aria-label="LinkedIn" target="_blank" rel="noopener">
+                <SocialLink
+                  href={socialMedia.linkedin}
+                  aria-label="LinkedIn"
+                  target="_blank"
+                  rel="noopener"
+                >
                   <FaLinkedin />
                 </SocialLink>
               )}
@@ -188,16 +213,24 @@ const Footer = ({
             {(content.contactInfo?.address || contact.address) && (
               <p>
                 <FaMapMarkerAlt />
-                {content.contactInfo?.address || (contact.address.street + ', ' + contact.address.city + ', ' + contact.address.state)}
+                {content.contactInfo?.address ||
+                  contact.address.street +
+                    ', ' +
+                    contact.address.city +
+                    ', ' +
+                    contact.address.state}
               </p>
             )}
-            {content.contactCustomFields && content.contactCustomFields.map((field, index) => (
-              field.name && field.value && (
-                <p key={index}>
-                  {field.name}: {field.value}
-                </p>
-              )
-            ))}
+            {content.contactCustomFields &&
+              content.contactCustomFields.map(
+                (field, index) =>
+                  field.name &&
+                  field.value && (
+                    <p key={index}>
+                      {field.name}: {field.value}
+                    </p>
+                  )
+              )}
           </FooterSection>
         )}
 
@@ -222,49 +255,60 @@ const Footer = ({
                 {content.supportInfo.supportHours}
               </p>
             )}
-            {content.supportCustomFields && content.supportCustomFields.map((field, index) => (
-              field.name && field.value && (
-                <p key={index}>
-                  {field.name}: {field.value}
-                </p>
-              )
-            ))}
+            {content.supportCustomFields &&
+              content.supportCustomFields.map(
+                (field, index) =>
+                  field.name &&
+                  field.value && (
+                    <p key={index}>
+                      {field.name}: {field.value}
+                    </p>
+                  )
+              )}
           </FooterSection>
         )}
-
-
 
         {shouldShowSection('Hours') && contact.hours && (
           <FooterSection>
             <h3>Business Hours</h3>
             <p>
               <FaClock />
-              Monday - Friday: {contact.hours.monday?.open || '9:00'} - {contact.hours.friday?.close || '19:00'}
+              Monday - Friday: {contact.hours.monday?.open || '9:00'} -{' '}
+              {contact.hours.friday?.close || '19:00'}
             </p>
             <p>
               <FaClock />
-              Saturday: {contact.hours.saturday?.open || '10:00'} - {contact.hours.saturday?.close || '20:00'}
+              Saturday: {contact.hours.saturday?.open || '10:00'} -{' '}
+              {contact.hours.saturday?.close || '20:00'}
             </p>
             <p>
               <FaClock />
-              Sunday: {contact.hours.sunday?.open || '12:00'} - {contact.hours.sunday?.close || '18:00'}
+              Sunday: {contact.hours.sunday?.open || '12:00'} -{' '}
+              {contact.hours.sunday?.close || '18:00'}
             </p>
           </FooterSection>
         )}
 
-        {shouldShowSection('QuickLinks') && businessInfo.quickLinks && businessInfo.quickLinks.length > 0 && (
-          <FooterSection>
-            <h3>Quick Links</h3>
-            {businessInfo.quickLinks.filter(link => link.visible !== false).map((link, index) => (
-              <a key={index} href={`/${dealerSlug}${link.url}`}>{link.name}</a>
-            ))}
-          </FooterSection>
-        )}
+        {shouldShowSection('QuickLinks') &&
+          businessInfo.quickLinks &&
+          businessInfo.quickLinks.length > 0 && (
+            <FooterSection>
+              <h3>Quick Links</h3>
+              {businessInfo.quickLinks
+                .filter(link => link.visible !== false)
+                .map((link, index) => (
+                  <a key={index} href={`/${dealerSlug}${link.url}`}>
+                    {link.name}
+                  </a>
+                ))}
+            </FooterSection>
+          )}
       </FooterContent>
 
       <FooterBottom>
         <p>
-          &copy; {currentYear} {vendorData.name || 'Auto Dealer'}. All rights reserved.
+          &copy; {currentYear} {vendorData.name || 'Auto Dealer'}. All rights
+          reserved.
         </p>
       </FooterBottom>
     </FooterContainer>

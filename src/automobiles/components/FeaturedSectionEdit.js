@@ -66,12 +66,14 @@ const HeaderActions = styled.div`
 `;
 
 const ActionButton = styled.button.withConfig({
-  shouldForwardProp: (prop) => !['filled', 'color'].includes(prop),
+  shouldForwardProp: prop => !['filled', 'color'].includes(prop),
 })`
   padding: ${theme.spacing.sm} ${theme.spacing.md};
   border: 2px solid ${props => props.color || theme.colors.primary};
-  background: ${props => props.filled ? (props.color || theme.colors.primary) : theme.colors.white};
-  color: ${props => props.filled ? theme.colors.white : (props.color || theme.colors.primary)};
+  background: ${props =>
+    props.filled ? props.color || theme.colors.primary : theme.colors.white};
+  color: ${props =>
+    props.filled ? theme.colors.white : props.color || theme.colors.primary};
   border-radius: ${theme.borderRadius.md};
   font-weight: 600;
   cursor: pointer;
@@ -218,7 +220,7 @@ const VehiclePrice = styled.div`
 `;
 
 const IconButton = styled.button.withConfig({
-  shouldForwardProp: (prop) => !['color', 'hoverColor'].includes(prop),
+  shouldForwardProp: prop => !['color', 'hoverColor'].includes(prop),
 })`
   background: none;
   border: none;
@@ -240,7 +242,7 @@ const FeaturedSectionEdit = ({ dealer }) => {
   const vehicles = useSelector(selectVehicles);
   const vendor = useSelector(selectVendor);
   const loading = useSelector(selectLoading);
-  
+
   const [sectionContent, setSectionContent] = useState({
     title: 'Featured Vehicles',
     subtitle: '',
@@ -255,11 +257,13 @@ const FeaturedSectionEdit = ({ dealer }) => {
     if (!vehicleSearch) {
       setFilteredVehicles(vehicles || []);
     } else {
-      const filtered = vehicles?.filter(vehicle => 
-        vehicle.name.toLowerCase().includes(vehicleSearch.toLowerCase()) ||
-        vehicle.make.toLowerCase().includes(vehicleSearch.toLowerCase()) ||
-        vehicle.model.toLowerCase().includes(vehicleSearch.toLowerCase())
-      ) || [];
+      const filtered =
+        vehicles?.filter(
+          vehicle =>
+            vehicle.name.toLowerCase().includes(vehicleSearch.toLowerCase()) ||
+            vehicle.make.toLowerCase().includes(vehicleSearch.toLowerCase()) ||
+            vehicle.model.toLowerCase().includes(vehicleSearch.toLowerCase())
+        ) || [];
       setFilteredVehicles(filtered);
     }
   }, [vehicleSearch, vehicles]);
@@ -270,15 +274,25 @@ const FeaturedSectionEdit = ({ dealer }) => {
     if (featuredSection?.content) {
       setSectionContent({
         title: featuredSection.content.title || 'Featured Vehicles',
-        subtitle: featuredSection.content.subtitle || (vendor?.name ? `Handpicked vehicles from ${vendor.name} that customers love the most` : ''),
+        subtitle:
+          featuredSection.content.subtitle ||
+          (vendor?.name
+            ? `Handpicked vehicles from ${vendor.name} that customers love the most`
+            : ''),
         vehicleIds: featuredSection.content.vehicleIds || [],
       });
     } else {
       // Initialize with featured vehicles from data
-      const featuredVehicleIds = vehicles?.filter(v => v.featured).map(v => v.id).slice(0, 4) || [];
+      const featuredVehicleIds =
+        vehicles
+          ?.filter(v => v.featured)
+          .map(v => v.id)
+          .slice(0, 4) || [];
       setSectionContent(prev => ({
         ...prev,
-        subtitle: vendor?.name ? `Handpicked vehicles from ${vendor.name} that customers love the most` : '',
+        subtitle: vendor?.name
+          ? `Handpicked vehicles from ${vendor.name} that customers love the most`
+          : '',
         vehicleIds: featuredVehicleIds,
       }));
     }
@@ -292,21 +306,24 @@ const FeaturedSectionEdit = ({ dealer }) => {
     setHasChanges(true);
   };
 
-  const addVehicleToSection = (vehicleId) => {
+  const addVehicleToSection = vehicleId => {
     const currentVehicles = sectionContent.vehicleIds || [];
     if (!currentVehicles.includes(vehicleId)) {
       updateContent('vehicleIds', [...currentVehicles, vehicleId]);
     }
   };
 
-  const removeVehicleFromSection = (vehicleId) => {
+  const removeVehicleFromSection = vehicleId => {
     const currentVehicles = sectionContent.vehicleIds || [];
-    updateContent('vehicleIds', currentVehicles.filter(id => id !== vehicleId));
+    updateContent(
+      'vehicleIds',
+      currentVehicles.filter(id => id !== vehicleId)
+    );
   };
 
-  const getVehicleById = (id) => vehicles?.find(v => v.id === id);
+  const getVehicleById = id => vehicles?.find(v => v.id === id);
 
-  const formatPrice = (price) => {
+  const formatPrice = price => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD',
@@ -316,27 +333,29 @@ const FeaturedSectionEdit = ({ dealer }) => {
   };
 
   const saveChanges = () => {
-    const updatedSections = sections.map(section => 
-      section.id === 'featured' 
+    const updatedSections = sections.map(section =>
+      section.id === 'featured'
         ? { ...section, content: { ...section.content, ...sectionContent } }
         : section
     );
-    
+
     dispatch(updatePageSections(updatedSections));
     setHasChanges(false);
     alert('Featured vehicles section saved successfully!');
   };
 
   const publishChanges = () => {
-    const updatedSections = sections.map(section => 
-      section.id === 'featured' 
+    const updatedSections = sections.map(section =>
+      section.id === 'featured'
         ? { ...section, content: { ...section.content, ...sectionContent } }
         : section
     );
-    
+
     dispatch(publishPageContent(updatedSections));
     setHasChanges(false);
-    alert('Featured vehicles section published successfully! Changes are now live.');
+    alert(
+      'Featured vehicles section published successfully! Changes are now live.'
+    );
   };
 
   if (loading) {
@@ -359,7 +378,7 @@ const FeaturedSectionEdit = ({ dealer }) => {
           <HeaderTitle>Featured Vehicles</HeaderTitle>
         </HeaderLeft>
         <HeaderActions>
-          <ActionButton 
+          <ActionButton
             onClick={saveChanges}
             disabled={!hasChanges}
             color={theme.colors.blue500}
@@ -367,7 +386,7 @@ const FeaturedSectionEdit = ({ dealer }) => {
             <FaSave />
             Save Changes
           </ActionButton>
-          <ActionButton 
+          <ActionButton
             onClick={publishChanges}
             disabled={!hasChanges}
             filled
@@ -385,7 +404,7 @@ const FeaturedSectionEdit = ({ dealer }) => {
           <Input
             type="text"
             value={sectionContent.title}
-            onChange={(e) => updateContent('title', e.target.value)}
+            onChange={e => updateContent('title', e.target.value)}
             placeholder="Featured Vehicles"
           />
         </FormGroup>
@@ -394,7 +413,7 @@ const FeaturedSectionEdit = ({ dealer }) => {
           <Label>Section Subtitle</Label>
           <TextArea
             value={sectionContent.subtitle}
-            onChange={(e) => updateContent('subtitle', e.target.value)}
+            onChange={e => updateContent('subtitle', e.target.value)}
             placeholder="Section description"
           />
         </FormGroup>
@@ -407,13 +426,20 @@ const FeaturedSectionEdit = ({ dealer }) => {
               if (!vehicle) return null;
               return (
                 <VehicleItem key={vehicleId}>
-                  <VehicleImage src={vehicle.media?.mainImage} alt={vehicle.name} />
+                  <VehicleImage
+                    src={vehicle.media?.mainImage}
+                    alt={vehicle.name}
+                  />
                   <VehicleInfo>
                     <VehicleName>{vehicle.name}</VehicleName>
-                    <VehicleDetails>{vehicle.year} {vehicle.make} {vehicle.model}</VehicleDetails>
+                    <VehicleDetails>
+                      {vehicle.year} {vehicle.make} {vehicle.model}
+                    </VehicleDetails>
                   </VehicleInfo>
-                  <VehiclePrice>{formatPrice(vehicle.pricing?.price)}</VehiclePrice>
-                  <IconButton 
+                  <VehiclePrice>
+                    {formatPrice(vehicle.pricing?.price)}
+                  </VehiclePrice>
+                  <IconButton
                     color={theme.colors.error}
                     hoverColor={theme.colors.error}
                     onClick={() => removeVehicleFromSection(vehicleId)}
@@ -436,30 +462,39 @@ const FeaturedSectionEdit = ({ dealer }) => {
               type="text"
               placeholder="Search vehicles by name, make, or model..."
               value={vehicleSearch}
-              onChange={(e) => setVehicleSearch(e.target.value)}
+              onChange={e => setVehicleSearch(e.target.value)}
             />
           </SearchContainer>
           <VehicleList>
             {filteredVehicles
-              ?.filter(vehicle => !sectionContent.vehicleIds?.includes(vehicle.id))
+              ?.filter(
+                vehicle => !sectionContent.vehicleIds?.includes(vehicle.id)
+              )
               ?.slice(0, 10)
               ?.map(vehicle => (
-              <VehicleItem key={vehicle.id}>
-                <VehicleImage src={vehicle.media?.mainImage} alt={vehicle.name} />
-                <VehicleInfo>
-                  <VehicleName>{vehicle.name}</VehicleName>
-                  <VehicleDetails>{vehicle.year} {vehicle.make} {vehicle.model}</VehicleDetails>
-                </VehicleInfo>
-                <VehiclePrice>{formatPrice(vehicle.pricing?.price)}</VehiclePrice>
-                <IconButton 
-                  color={theme.colors.success}
-                  hoverColor={theme.colors.success}
-                  onClick={() => addVehicleToSection(vehicle.id)}
-                >
-                  <FaPlus />
-                </IconButton>
-              </VehicleItem>
-            ))}
+                <VehicleItem key={vehicle.id}>
+                  <VehicleImage
+                    src={vehicle.media?.mainImage}
+                    alt={vehicle.name}
+                  />
+                  <VehicleInfo>
+                    <VehicleName>{vehicle.name}</VehicleName>
+                    <VehicleDetails>
+                      {vehicle.year} {vehicle.make} {vehicle.model}
+                    </VehicleDetails>
+                  </VehicleInfo>
+                  <VehiclePrice>
+                    {formatPrice(vehicle.pricing?.price)}
+                  </VehiclePrice>
+                  <IconButton
+                    color={theme.colors.success}
+                    hoverColor={theme.colors.success}
+                    onClick={() => addVehicleToSection(vehicle.id)}
+                  >
+                    <FaPlus />
+                  </IconButton>
+                </VehicleItem>
+              ))}
           </VehicleList>
         </FormGroup>
       </Content>

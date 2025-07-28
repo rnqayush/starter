@@ -606,7 +606,10 @@ const AutomobileMain = () => {
                   key="hero"
                   primaryColor={dealerTheme.primaryColor}
                   secondaryColor={dealerTheme.secondaryColor}
-                  heroImage={sectionConfig.content?.backgroundImage || vendor.businessInfo.coverImage}
+                  heroImage={
+                    sectionConfig.content?.backgroundImage ||
+                    vendor.businessInfo.coverImage
+                  }
                 >
                   <HeroContent>
                     <DealerHeader>
@@ -616,12 +619,14 @@ const AutomobileMain = () => {
                       />
                       <div>
                         <HeroTitle>
-                          {sectionConfig.content?.title || `Welcome to ${vendor.name}`}
+                          {sectionConfig.content?.title ||
+                            `Welcome to ${vendor.name}`}
                         </HeroTitle>
                       </div>
                     </DealerHeader>
                     <HeroSubtitle>
-                      {sectionConfig.content?.subtitle || vendor.businessInfo.description}
+                      {sectionConfig.content?.subtitle ||
+                        vendor.businessInfo.description}
                     </HeroSubtitle>
                     <HeroActions>
                       <HeroButton
@@ -629,15 +634,19 @@ const AutomobileMain = () => {
                         onClick={() => navigate(`${getBaseUrl()}/vehicles`)}
                       >
                         <FaCar />
-                        {sectionConfig.content?.primaryButtonText || 'Browse Vehicles'}
+                        {sectionConfig.content?.primaryButtonText ||
+                          'Browse Vehicles'}
                       </HeroButton>
                       <HeroButton
                         className="secondary"
                         onClick={() =>
-                          navigate(`${getBaseUrl()}/vehicles?category=${categories[0]?.slug || 'all'}`)
+                          navigate(
+                            `${getBaseUrl()}/vehicles?category=${categories[0]?.slug || 'all'}`
+                          )
                         }
                       >
-                        {sectionConfig.content?.secondaryButtonText || 'View Categories'}
+                        {sectionConfig.content?.secondaryButtonText ||
+                          'View Categories'}
                         <FaArrowRight />
                       </HeroButton>
                     </HeroActions>
@@ -646,8 +655,11 @@ const AutomobileMain = () => {
               );
 
             case 'categories':
-              const visibleCategories = categories.filter(category =>
-                sectionConfig.content?.visibleCategories?.includes(category.id) ?? true
+              const visibleCategories = categories.filter(
+                category =>
+                  sectionConfig.content?.visibleCategories?.includes(
+                    category.id
+                  ) ?? true
               );
               return (
                 <Section key="categories">
@@ -657,7 +669,8 @@ const AutomobileMain = () => {
                         {sectionConfig.content?.title || 'Browse by Category'}
                       </SectionTitle>
                       <SectionSubtitle>
-                        {sectionConfig.content?.subtitle || 'Explore our diverse range of vehicles across different categories'}
+                        {sectionConfig.content?.subtitle ||
+                          'Explore our diverse range of vehicles across different categories'}
                       </SectionSubtitle>
                     </SectionHeader>
                     <Grid minWidth="280px">
@@ -674,13 +687,18 @@ const AutomobileMain = () => {
               );
 
             case 'featured':
-              const featuredVehiclesToShow = sectionConfig.content?.vehicleIds?.length > 0
-                ? vehicles.filter(vehicle => sectionConfig.content.vehicleIds.includes(vehicle.id))
-                : featuredVehicles.slice(0, 4);
+              const featuredVehiclesToShow =
+                sectionConfig.content?.vehicleIds?.length > 0
+                  ? vehicles.filter(vehicle =>
+                      sectionConfig.content.vehicleIds.includes(vehicle.id)
+                    )
+                  : featuredVehicles.slice(0, 4);
               return (
                 <Section
                   key="featured"
-                  background={dealerTheme.backgroundColor || theme.colors.gray50}
+                  background={
+                    dealerTheme.backgroundColor || theme.colors.gray50
+                  }
                 >
                   <Container>
                     <SectionHeader>
@@ -688,7 +706,8 @@ const AutomobileMain = () => {
                         {sectionConfig.content?.title || 'Featured Vehicles'}
                       </SectionTitle>
                       <SectionSubtitle>
-                        {sectionConfig.content?.subtitle || `Handpicked vehicles from ${vendor.name} that customers love the most`}
+                        {sectionConfig.content?.subtitle ||
+                          `Handpicked vehicles from ${vendor.name} that customers love the most`}
                       </SectionSubtitle>
                     </SectionHeader>
                     <Grid>
@@ -705,9 +724,12 @@ const AutomobileMain = () => {
               );
 
             case 'special-offers':
-              const specialOfferVehicles = sectionConfig.content?.vehicleIds?.length > 0
-                ? vehicles.filter(vehicle => sectionConfig.content.vehicleIds.includes(vehicle.id))
-                : onSaleVehicles.slice(0, 4);
+              const specialOfferVehicles =
+                sectionConfig.content?.vehicleIds?.length > 0
+                  ? vehicles.filter(vehicle =>
+                      sectionConfig.content.vehicleIds.includes(vehicle.id)
+                    )
+                  : onSaleVehicles.slice(0, 4);
               if (specialOfferVehicles.length === 0) return null;
               return (
                 <Section key="special-offers">
@@ -717,7 +739,8 @@ const AutomobileMain = () => {
                         {sectionConfig.content?.title || '🔥 Special Offers'}
                       </SectionTitle>
                       <SectionSubtitle>
-                        {sectionConfig.content?.subtitle || `Limited time deals from ${vendor.name} you don't want to miss`}
+                        {sectionConfig.content?.subtitle ||
+                          `Limited time deals from ${vendor.name} you don't want to miss`}
                       </SectionSubtitle>
                     </SectionHeader>
                     <Grid>
@@ -759,10 +782,13 @@ const AutomobileMain = () => {
                         </SectionSubtitle>
                       </SectionHeader>
                       {/* Render selected vehicles for custom section */}
-                      {sectionConfig.content?.vehicleIds && sectionConfig.content.vehicleIds.length > 0 ? (
+                      {sectionConfig.content?.vehicleIds &&
+                      sectionConfig.content.vehicleIds.length > 0 ? (
                         <Grid>
                           {sectionConfig.content.vehicleIds
-                            .map(vehicleId => vehicles.find(v => v.id === vehicleId))
+                            .map(vehicleId =>
+                              vehicles.find(v => v.id === vehicleId)
+                            )
                             .filter(Boolean)
                             .map(vehicle => (
                               <VehicleCard
@@ -773,13 +799,15 @@ const AutomobileMain = () => {
                             ))}
                         </Grid>
                       ) : (
-                        <div style={{
-                          padding: theme.spacing.xl,
-                          background: theme.colors.gray100,
-                          borderRadius: theme.borderRadius.md,
-                          textAlign: 'center',
-                          color: theme.colors.gray600
-                        }}>
+                        <div
+                          style={{
+                            padding: theme.spacing.xl,
+                            background: theme.colors.gray100,
+                            borderRadius: theme.borderRadius.md,
+                            textAlign: 'center',
+                            color: theme.colors.gray600,
+                          }}
+                        >
                           <p>No vehicles selected for this custom section.</p>
                         </div>
                       )}
