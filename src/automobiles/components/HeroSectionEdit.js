@@ -4,8 +4,6 @@ import styled from 'styled-components';
 import { FaSave, FaImage, FaUpload, FaTimes } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
 import {
-  selectPageSections,
-  selectVendor,
   selectLoading,
   selectSectionContent,
   updatePageSectionContent,
