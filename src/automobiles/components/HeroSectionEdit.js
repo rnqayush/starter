@@ -221,14 +221,21 @@ const HeroSectionEdit = ({ dealer }) => {
 
   // Initialize with data from Redux state and vendor
   useEffect(() => {
+    console.log('HeroSectionEdit: Redux sections:', sections);
+    console.log('HeroSectionEdit: Vendor data:', vendor);
+
     const heroSection = sections.find(s => s.id === 'hero');
-    if (heroSection?.content) {
+    console.log('HeroSectionEdit: Found hero section:', heroSection);
+
+    if (heroSection?.content && Object.keys(heroSection.content).length > 0) {
+      console.log('HeroSectionEdit: Using hero section content:', heroSection.content);
       setHeroContent({
         title: heroSection.content.title || (vendor?.name ? `Welcome to ${vendor.name}` : ''),
         subtitle: heroSection.content.subtitle || vendor?.businessInfo?.description || '',
         backgroundImage: heroSection.content.backgroundImage || vendor?.businessInfo?.coverImage || '',
       });
     } else if (vendor) {
+      console.log('HeroSectionEdit: Using vendor fallback data');
       // Initialize with vendor data if no section content exists
       setHeroContent({
         title: vendor.name ? `Welcome to ${vendor.name}` : '',
