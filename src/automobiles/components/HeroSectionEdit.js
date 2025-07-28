@@ -12,6 +12,7 @@ import { theme } from '../../styles/GlobalStyle';
 import {
   selectPageSections,
   selectVendor,
+  selectLoading,
   updatePageSections,
   publishPageContent,
 } from '../../store/slices/automobileManagementSlice';
@@ -211,6 +212,7 @@ const HeroSectionEdit = ({ dealer }) => {
   const dispatch = useDispatch();
   const sections = useSelector(selectPageSections);
   const vendor = useSelector(selectVendor);
+  const loading = useSelector(selectLoading);
   
   const [heroContent, setHeroContent] = useState({
     title: '',
@@ -291,6 +293,16 @@ const HeroSectionEdit = ({ dealer }) => {
     setHasChanges(false);
     alert('Hero section published successfully! Changes are now live.');
   };
+
+  if (loading) {
+    return (
+      <Container>
+        <Header>
+          <HeaderTitle>Loading Hero Section...</HeaderTitle>
+        </Header>
+      </Container>
+    );
+  }
 
   return (
     <Container>
