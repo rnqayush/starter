@@ -361,7 +361,6 @@ const ModalFooter = styled.div`
 `;
 
 const CategoryManagement = ({ dealer }) => {
-  const dispatch = useDispatch();
   const categories = useSelector(selectCategories);
   const loading = useSelector(selectLoading);
   
