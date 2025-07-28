@@ -493,17 +493,25 @@ const ContentManagementTab = ({ dealer }) => {
   };
 
   const saveChanges = () => {
-    // Save to local state (this will be updated to save to Redux later)
-    localStorage.setItem(`dealership-content-${dealer.slug}`, JSON.stringify(sections));
+    // Save sections without icons to Redux (clean data)
+    const sectionsToSave = sections.map(({ icon, ...section }) => section);
+    dispatch(updatePageSections(sectionsToSave));
+
+    // Also save to localStorage as backup
+    localStorage.setItem(`dealership-content-${dealer.slug}`, JSON.stringify(sectionsToSave));
     setHasChanges(false);
-    alert('Changes saved locally!');
+    alert('Changes saved successfully!');
   };
 
   const publishChanges = () => {
-    // This will update Redux state for real-time changes
-    saveChanges();
-    // TODO: Dispatch to Redux to update the live page
-    alert('Changes published successfully! Your dealership page has been updated.');
+    // Publish to Redux for real-time updates on the live page
+    const sectionsToSave = sections.map(({ icon, ...section }) => section);
+    dispatch(publishPageContent(sectionsToSave));
+
+    // Also save to localStorage as backup
+    localStorage.setItem(`dealership-content-${dealer.slug}`, JSON.stringify(sectionsToSave));
+    setHasChanges(false);
+    alert('Changes published successfully! Your dealership page has been updated and is now live.');
   };
 
   const getSectionIcon = (section) => {
