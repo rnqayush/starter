@@ -377,7 +377,7 @@ const EnhancedDealerSidebar = ({ activeTab, onTabChange, dealer }) => {
   const hasUnsavedChanges = useSelector(selectHasUnsavedChanges);
   const changes = useSelector(selectTempChanges);
 
-  const handleTabChange = (tab) => {
+  const handleTabChange = tab => {
     if (hasUnsavedChanges) {
       if (window.confirm('You have unsaved changes. Discard them?')) {
         dispatch(discardTempChanges());
@@ -546,69 +546,69 @@ const EnhancedDealerSidebar = ({ activeTab, onTabChange, dealer }) => {
         </Navigation>
 
         <ChangesPanel>
-            <ChangesPanelHeader>
-              <FaSave />
-              Changes Tracker
-            </ChangesPanelHeader>
+          <ChangesPanelHeader>
+            <FaSave />
+            Changes Tracker
+          </ChangesPanelHeader>
 
-            <ChangesStatus hasChanges={hasUnsavedChanges}>
-              {hasUnsavedChanges ? (
-                <>
-                  <FaExclamationTriangle />
-                  {Object.keys(changes).length} unsaved changes
-                </>
-              ) : (
-                <>
-                  <FaCheckCircle />
-                  All changes saved
-                </>
-              )}
-            </ChangesStatus>
+          <ChangesStatus hasChanges={hasUnsavedChanges}>
+            {hasUnsavedChanges ? (
+              <>
+                <FaExclamationTriangle />
+                {Object.keys(changes).length} unsaved changes
+              </>
+            ) : (
+              <>
+                <FaCheckCircle />
+                All changes saved
+              </>
+            )}
+          </ChangesStatus>
 
-            {hasUnsavedChanges && Object.keys(changes).length > 0 && (
-              <ChangesList>{renderChangesList()}</ChangesList>
+          {hasUnsavedChanges && Object.keys(changes).length > 0 && (
+            <ChangesList>{renderChangesList()}</ChangesList>
+          )}
+
+          <ActionsContainer>
+            {hasUnsavedChanges && (
+              <>
+                <Button
+                  size="small"
+                  onClick={handleSaveChanges}
+                  style={{ width: '100%' }}
+                >
+                  <FaSave /> Save Changes
+                </Button>
+                <Button
+                  variant="secondary"
+                  size="small"
+                  onClick={handleDiscardChanges}
+                  style={{ width: '100%' }}
+                >
+                  <FaUndo /> Discard Changes
+                </Button>
+              </>
             )}
 
-            <ActionsContainer>
-              {hasUnsavedChanges && (
-                <>
-                  <Button
-                    size="small"
-                    onClick={handleSaveChanges}
-                    style={{ width: '100%' }}
-                  >
-                    <FaSave /> Save Changes
-                  </Button>
-                  <Button
-                    variant="secondary"
-                    size="small"
-                    onClick={handleDiscardChanges}
-                    style={{ width: '100%' }}
-                  >
-                    <FaUndo /> Discard Changes
-                  </Button>
-                </>
-              )}
+            <Button
+              variant="secondary"
+              size="small"
+              onClick={handlePreviewChanges}
+              style={{ width: '100%' }}
+            >
+              <FaEye /> Preview Changes
+            </Button>
 
-              <Button
-                variant="secondary"
-                size="small"
-                onClick={handlePreviewChanges}
-                style={{ width: '100%' }}
-              >
-                <FaEye /> Preview Changes
-              </Button>
-
-              <Button
-                variant="primary"
-                size="small"
-                onClick={handleSaveAndGoLive}
-                style={{ width: '100%' }}
-              >
-                <FaCheckCircle /> Save & Go Live
-              </Button>
-            </ActionsContainer>
-          </ChangesPanel>
+            <Button
+              variant="primary"
+              size="small"
+              onClick={handleSaveAndGoLive}
+              style={{ width: '100%' }}
+            >
+              <FaCheckCircle /> Save & Go Live
+            </Button>
+          </ActionsContainer>
+        </ChangesPanel>
       </SidebarContainer>
     </>
   );

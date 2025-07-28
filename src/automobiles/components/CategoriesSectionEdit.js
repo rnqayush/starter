@@ -56,8 +56,6 @@ const HeaderActions = styled.div`
   gap: ${theme.spacing.md};
 `;
 
-
-
 const Content = styled.div`
   padding: ${theme.spacing.xl};
 `;
@@ -201,25 +199,23 @@ const CategoriesSectionEdit = ({ dealer }) => {
     updateContent('visibleCategories', newCategories);
   };
 
-
-
   // Apply changes automatically when user makes any change
   useEffect(() => {
     if (hasChanges) {
       const timeout = setTimeout(() => {
         if (Object.keys(localChanges).length > 0) {
-          dispatch(updatePageSectionContent({
-            sectionId: 'categories',
-            content: localChanges,
-          }));
+          dispatch(
+            updatePageSectionContent({
+              sectionId: 'categories',
+              content: localChanges,
+            })
+          );
           setLocalChanges({});
         }
       }, 500); // Debounce
       return () => clearTimeout(timeout);
     }
   }, [localChanges, hasChanges, dispatch]);
-
-
 
   if (loading) {
     return (

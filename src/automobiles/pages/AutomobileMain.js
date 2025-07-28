@@ -615,9 +615,7 @@ const AutomobileMain = () => {
                         alt={`${vendor.name} logo`}
                       />
                       <div>
-                        <HeroTitle>
-                          {sectionConfig.content.title}
-                        </HeroTitle>
+                        <HeroTitle>{sectionConfig.content.title}</HeroTitle>
                       </div>
                     </DealerHeader>
                     <HeroSubtitle>
@@ -648,11 +646,8 @@ const AutomobileMain = () => {
               );
 
             case 'categories':
-              const visibleCategories = categories.filter(
-                category =>
-                  sectionConfig.content.visibleCategories.includes(
-                    category.id
-                  )
+              const visibleCategories = categories.filter(category =>
+                sectionConfig.content.visibleCategories.includes(category.id)
               );
               return (
                 <Section key="categories">
@@ -679,11 +674,12 @@ const AutomobileMain = () => {
               );
 
             case 'featured':
-              const featuredVehiclesToShow = sectionConfig.content.vehicleIds.length > 0
-                ? vehicles.filter(vehicle =>
-                    sectionConfig.content.vehicleIds.includes(vehicle.id)
-                  )
-                : featuredVehicles.slice(0, 4);
+              const featuredVehiclesToShow =
+                sectionConfig.content.vehicleIds.length > 0
+                  ? vehicles.filter(vehicle =>
+                      sectionConfig.content.vehicleIds.includes(vehicle.id)
+                    )
+                  : featuredVehicles.slice(0, 4);
               return (
                 <Section
                   key="featured"
@@ -714,11 +710,12 @@ const AutomobileMain = () => {
               );
 
             case 'special-offers':
-              const specialOfferVehicles = sectionConfig.content.vehicleIds.length > 0
-                ? vehicles.filter(vehicle =>
-                    sectionConfig.content.vehicleIds.includes(vehicle.id)
-                  )
-                : onSaleVehicles.slice(0, 4);
+              const specialOfferVehicles =
+                sectionConfig.content.vehicleIds.length > 0
+                  ? vehicles.filter(vehicle =>
+                      sectionConfig.content.vehicleIds.includes(vehicle.id)
+                    )
+                  : onSaleVehicles.slice(0, 4);
               if (specialOfferVehicles.length === 0) return null;
               return (
                 <Section key="special-offers">

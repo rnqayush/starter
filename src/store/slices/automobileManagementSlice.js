@@ -122,7 +122,8 @@ const defaultPageSections = [
     order: 2,
     content: {
       title: 'Browse by Category',
-      subtitle: 'Explore our diverse range of vehicles across different categories',
+      subtitle:
+        'Explore our diverse range of vehicles across different categories',
       visibleCategories: [],
     },
   },
@@ -148,7 +149,7 @@ const defaultPageSections = [
     order: 4,
     content: {
       title: '🔥 Special Offers',
-      subtitle: 'Limited time deals you don\'t want to miss',
+      subtitle: "Limited time deals you don't want to miss",
       vehicleIds: [],
     },
   },
@@ -256,12 +257,12 @@ const automobileManagementSlice = createSlice({
       }
     },
 
-    applyTempChanges: (state) => {
+    applyTempChanges: state => {
       // Apply all temp changes to the main state
       Object.entries(state.tempChanges).forEach(([path, value]) => {
         const pathArray = path.split('.');
         let target = state;
-        
+
         // Navigate to the nested object
         for (let i = 0; i < pathArray.length - 1; i++) {
           const key = pathArray[i];
@@ -279,23 +280,23 @@ const automobileManagementSlice = createSlice({
           }
           target = target[key];
         }
-        
+
         // Set the final value
         const finalKey = pathArray[pathArray.length - 1];
         target[finalKey] = value;
       });
-      
+
       // Clear temp changes
       state.tempChanges = {};
       state.hasUnsavedChanges = false;
     },
 
-    saveAndPublishChanges: (state) => {
+    saveAndPublishChanges: state => {
       // Apply all temp changes directly to main state (real-time update)
       Object.entries(state.tempChanges).forEach(([path, value]) => {
         const pathArray = path.split('.');
         let target = state;
-        
+
         // Navigate to the nested object
         for (let i = 0; i < pathArray.length - 1; i++) {
           const key = pathArray[i];
@@ -313,20 +314,20 @@ const automobileManagementSlice = createSlice({
           }
           target = target[key];
         }
-        
+
         // Set the final value
         const finalKey = pathArray[pathArray.length - 1];
         target[finalKey] = value;
       });
-      
+
       // Clear temp changes
       state.tempChanges = {};
       state.hasUnsavedChanges = false;
-      
+
       console.log('Changes published to main state');
     },
 
-    discardTempChanges: (state) => {
+    discardTempChanges: state => {
       state.tempChanges = {};
       state.hasUnsavedChanges = false;
     },
@@ -437,40 +438,62 @@ const automobileManagementSlice = createSlice({
         // Initialize page content with vendor data
         state.pageContent.sections = state.pageContent.sections.map(section => {
           const sectionContent = { ...section.content };
-          
+
           // Initialize content based on vendor data
           if (section.id === 'hero') {
-            sectionContent.title = sectionContent.title || `Welcome to ${data.vendor.name}`;
-            sectionContent.subtitle = sectionContent.subtitle || data.vendor.businessInfo?.description || '';
-            sectionContent.backgroundImage = sectionContent.backgroundImage || data.vendor.businessInfo?.coverImage || '';
+            sectionContent.title =
+              sectionContent.title || `Welcome to ${data.vendor.name}`;
+            sectionContent.subtitle =
+              sectionContent.subtitle ||
+              data.vendor.businessInfo?.description ||
+              '';
+            sectionContent.backgroundImage =
+              sectionContent.backgroundImage ||
+              data.vendor.businessInfo?.coverImage ||
+              '';
           } else if (section.id === 'categories') {
-            sectionContent.visibleCategories = sectionContent.visibleCategories.length > 0 
-              ? sectionContent.visibleCategories 
-              : data.categories.map(cat => cat.id);
+            sectionContent.visibleCategories =
+              sectionContent.visibleCategories.length > 0
+                ? sectionContent.visibleCategories
+                : data.categories.map(cat => cat.id);
           } else if (section.id === 'featured') {
-            sectionContent.subtitle = sectionContent.subtitle || `Handpicked vehicles from ${data.vendor.name} that customers love the most`;
-            sectionContent.vehicleIds = sectionContent.vehicleIds.length > 0
-              ? sectionContent.vehicleIds
-              : data.vehicles.filter(v => v.featured).slice(0, 4).map(v => v.id);
+            sectionContent.subtitle =
+              sectionContent.subtitle ||
+              `Handpicked vehicles from ${data.vendor.name} that customers love the most`;
+            sectionContent.vehicleIds =
+              sectionContent.vehicleIds.length > 0
+                ? sectionContent.vehicleIds
+                : data.vehicles
+                    .filter(v => v.featured)
+                    .slice(0, 4)
+                    .map(v => v.id);
           } else if (section.id === 'special-offers') {
-            sectionContent.subtitle = sectionContent.subtitle || `Limited time deals from ${data.vendor.name} you don't want to miss`;
-            sectionContent.vehicleIds = sectionContent.vehicleIds.length > 0
-              ? sectionContent.vehicleIds
-              : data.vehicles.filter(v => v.pricing?.onSale).slice(0, 4).map(v => v.id);
+            sectionContent.subtitle =
+              sectionContent.subtitle ||
+              `Limited time deals from ${data.vendor.name} you don't want to miss`;
+            sectionContent.vehicleIds =
+              sectionContent.vehicleIds.length > 0
+                ? sectionContent.vehicleIds
+                : data.vehicles
+                    .filter(v => v.pricing?.onSale)
+                    .slice(0, 4)
+                    .map(v => v.id);
           }
-          
+
           return { ...section, content: sectionContent };
         });
 
         // Update page content with data from API if available
         if (data.pageContent) {
-          state.pageContent.sections = state.pageContent.sections.map(section => ({
-            ...section,
-            content: {
-              ...section.content,
-              ...data.pageContent[section.id],
-            },
-          }));
+          state.pageContent.sections = state.pageContent.sections.map(
+            section => ({
+              ...section,
+              content: {
+                ...section.content,
+                ...data.pageContent[section.id],
+              },
+            })
+          );
         }
 
         // Update pagination
@@ -603,8 +626,10 @@ export const selectTempChanges = state =>
   state.automobileManagement.tempChanges;
 
 // Helper selector to get current section content
-export const selectSectionContent = (sectionId) => (state) => {
-  const section = state.automobileManagement.pageContent.sections.find(s => s.id === sectionId);
+export const selectSectionContent = sectionId => state => {
+  const section = state.automobileManagement.pageContent.sections.find(
+    s => s.id === sectionId
+  );
   return section ? section.content : {};
 };
 
