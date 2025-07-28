@@ -213,7 +213,9 @@ const Modal = styled.div.withConfig({
   padding: ${theme.spacing.lg};
 `;
 
-const ModalContent = styled.div`
+const ModalContent = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'maxWidth',
+})`
   background: ${theme.colors.white};
   border-radius: ${theme.borderRadius.lg};
   width: 100%;
