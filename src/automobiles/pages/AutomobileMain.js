@@ -474,6 +474,7 @@ const AutomobileMain = () => {
   // Redux selectors
   const vendor = useSelector(selectVendor);
   const categories = useSelector(selectCategories);
+  const vehicles = useSelector(selectVehicles);
   const featuredVehicles = useSelector(selectFeaturedVehicles);
   const onSaleVehicles = useSelector(selectOnSaleVehicles);
   const loading = useSelector(selectLoading);
