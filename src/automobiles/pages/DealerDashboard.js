@@ -124,6 +124,8 @@ const DealerDashboard = () => {
         return 'Special Offers';
       case 'footer-section':
         return 'Footer Section';
+      case 'custom-section':
+        return 'Custom Sections';
       case 'inventory':
         return 'Vehicle Inventory';
       case 'add-vehicle':
