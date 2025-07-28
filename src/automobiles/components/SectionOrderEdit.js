@@ -5,7 +5,8 @@ import {
   FaSave,
   FaGlobe,
   FaSort,
-  FaGripVertical,
+  FaArrowUp,
+  FaArrowDown,
   FaEye,
   FaEyeSlash,
 } from 'react-icons/fa';
