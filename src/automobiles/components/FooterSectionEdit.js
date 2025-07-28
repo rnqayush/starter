@@ -335,10 +335,10 @@ const FooterSectionEdit = ({ dealer }) => {
     const footerSection = sections.find(s => s.id === 'footer');
     
     if (footerSection?.content && Object.keys(footerSection.content).length > 0) {
-      setSectionContent({
-        ...sectionContent,
+      setSectionContent(prev => ({
+        ...prev,
         ...footerSection.content,
-      });
+      }));
     } else if (vendor) {
       // Initialize with vendor businessInfo and contact data
       const businessInfo = vendor.businessInfo || {};
