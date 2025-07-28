@@ -1,10 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { theme } from '../../styles/GlobalStyle';
 import DealerSidebar from '../components/DealerSidebar';
 import DashboardTab from '../components/DashboardTab';
+import SectionOrderEdit from '../components/SectionOrderEdit';
+import HeroSectionEdit from '../components/HeroSectionEdit';
+import CategoriesSectionEdit from '../components/CategoriesSectionEdit';
+import FeaturedSectionEdit from '../components/FeaturedSectionEdit';
+import SpecialOffersSectionEdit from '../components/SpecialOffersSectionEdit';
+import FooterSectionEdit from '../components/FooterSectionEdit';
+import CustomSectionEdit from '../components/CustomSectionEdit';
 import VehicleInventoryTab from '../components/VehicleInventoryTab';
+import CategoryManagement from '../components/CategoryManagement';
 import AddVehicleTab from '../components/AddVehicleTab';
 import BulkImportTab from '../components/BulkImportTab';
 import SalesOrdersTab from '../components/SalesOrdersTab';
@@ -17,6 +26,7 @@ import PromotionsTab from '../components/PromotionsTab';
 import DealerSettingsTab from '../components/DealerSettingsTab';
 import AnalyticsTab from '../components/AnalyticsTab';
 import { getAutomobileVendorByIdOrSlug as getVendorByIdOrSlug } from '../../DummyData';
+import { fetchAutomobileData } from '../../store/slices/automobileManagementSlice';
 
 const DashboardContainer = styled.div`
   display: flex;
@@ -74,6 +84,7 @@ const LoadingContainer = styled.div`
 const DealerDashboard = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState('dashboard');
   const [dealer, setDealer] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -88,19 +99,37 @@ const DealerDashboard = () => {
 
     if (dealerData) {
       setDealer(dealerData);
+      // Fetch automobile data to populate Redux store
+      dispatch(fetchAutomobileData(dealerSlug));
       setLoading(false);
     } else {
       // If no dealer found, redirect to dealer listing
       navigate('/auto-dealers');
     }
-  }, [location.pathname, navigate]);
+  }, [location.pathname, navigate, dispatch]);
 
   const getPageTitle = () => {
     switch (activeTab) {
       case 'dashboard':
         return 'Dealership Overview';
+      case 'section-order':
+        return 'Section Order Management';
+      case 'hero-section':
+        return 'Hero Section';
+      case 'categories-section':
+        return 'Categories Section';
+      case 'featured-section':
+        return 'Featured Vehicles';
+      case 'offers-section':
+        return 'Special Offers';
+      case 'footer-section':
+        return 'Footer Section';
+      case 'custom-section':
+        return 'Custom Sections';
       case 'inventory':
         return 'Vehicle Inventory';
+      case 'categories':
+        return 'Category Management';
       case 'add-vehicle':
         return 'Add New Vehicle';
       case 'bulk-import':
@@ -132,8 +161,24 @@ const DealerDashboard = () => {
     switch (activeTab) {
       case 'dashboard':
         return 'Monitor your dealership performance and key metrics';
+      case 'section-order':
+        return 'Manage the order and visibility of sections on your dealership page';
+      case 'hero-section':
+        return 'Customize your hero section with title, description, and background image';
+      case 'categories-section':
+        return 'Manage category visibility and section content';
+      case 'featured-section':
+        return 'Select and manage featured vehicles for your homepage';
+      case 'offers-section':
+        return 'Manage special offers and promotional vehicles';
+      case 'footer-section':
+        return 'Configure footer components and content';
+      case 'custom-section':
+        return 'Create and manage custom sections for your dealership page';
       case 'inventory':
         return 'Manage your vehicle inventory and stock levels';
+      case 'categories':
+        return 'Create, edit, and manage vehicle categories';
       case 'add-vehicle':
         return 'Add a new vehicle to your inventory';
       case 'bulk-import':
@@ -165,8 +210,24 @@ const DealerDashboard = () => {
     switch (activeTab) {
       case 'dashboard':
         return <DashboardTab dealer={dealer} />;
+      case 'section-order':
+        return <SectionOrderEdit dealer={dealer} />;
+      case 'hero-section':
+        return <HeroSectionEdit dealer={dealer} />;
+      case 'categories-section':
+        return <CategoriesSectionEdit dealer={dealer} />;
+      case 'featured-section':
+        return <FeaturedSectionEdit dealer={dealer} />;
+      case 'offers-section':
+        return <SpecialOffersSectionEdit dealer={dealer} />;
+      case 'footer-section':
+        return <FooterSectionEdit dealer={dealer} />;
+      case 'custom-section':
+        return <CustomSectionEdit dealer={dealer} />;
       case 'inventory':
         return <VehicleInventoryTab dealer={dealer} />;
+      case 'categories':
+        return <CategoryManagement dealer={dealer} />;
       case 'add-vehicle':
         return <AddVehicleTab dealer={dealer} />;
       case 'bulk-import':

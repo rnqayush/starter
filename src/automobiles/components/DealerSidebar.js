@@ -17,6 +17,10 @@ import {
   FaWrench,
   FaTags,
   FaArrowLeft,
+  FaImage,
+  FaList,
+  FaAlignLeft,
+  FaSort,
 } from 'react-icons/fa';
 import { theme, media } from '../../styles/GlobalStyle';
 import { useNavigate } from 'react-router-dom';
@@ -306,9 +310,22 @@ const DealerSidebar = ({ activeTab, onTabChange, dealer }) => {
       items: [{ id: 'dashboard', label: 'Dashboard', icon: FaHome }],
     },
     {
+      section: 'Content Management',
+      items: [
+        { id: 'section-order', label: 'Section Order', icon: FaSort },
+        { id: 'hero-section', label: 'Hero Section', icon: FaImage },
+        { id: 'categories-section', label: 'Categories', icon: FaList },
+        { id: 'featured-section', label: 'Featured Vehicles', icon: FaCar },
+        { id: 'offers-section', label: 'Special Offers', icon: FaTags },
+        { id: 'footer-section', label: 'Footer', icon: FaAlignLeft },
+        { id: 'custom-section', label: 'Custom Section', icon: FaPlus },
+      ],
+    },
+    {
       section: 'Inventory Management',
       items: [
         { id: 'inventory', label: 'Vehicle Inventory', icon: FaCar },
+        { id: 'categories', label: 'Categories', icon: FaList },
         { id: 'add-vehicle', label: 'Add Vehicle', icon: FaPlus },
         { id: 'bulk-import', label: 'Bulk Import', icon: FaFileImport },
       ],

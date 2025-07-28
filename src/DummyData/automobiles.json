@@ -30,7 +30,22 @@
           "instagram": "https://instagram.com/luxuryautogallery",
           "twitter": "https://twitter.com/luxuryautogallery",
           "youtube": "https://youtube.com/luxuryautogallery"
-        }
+        },
+        "quickLinks": [
+          { "name": "Browse Vehicles", "url": "/vehicles", "visible": true },
+          {
+            "name": "Luxury Cars",
+            "url": "/vehicles?category=luxury-cars",
+            "visible": true
+          },
+          {
+            "name": "Electric Vehicles",
+            "url": "/vehicles?category=electric-vehicles",
+            "visible": true
+          },
+          { "name": "Financing", "url": "/financing", "visible": true },
+          { "name": "Trade-In", "url": "/trade-in", "visible": true }
+        ]
       },
       "contact": {
         "email": "sales@luxuryautogallery.com",
@@ -710,6 +725,44 @@
         "maxTerm": 48,
         "maxAnnualMileage": 15000,
         "excessMileageCharge": 0.25
+      }
+    },
+    "pageContent": {
+      "hero": {
+        "title": "Welcome to Luxury Auto Gallery",
+        "subtitle": "Premium luxury vehicles from world-renowned brands. Experience excellence in automotive craftsmanship with our curated selection of luxury cars, sports cars, and electric vehicles.",
+        "backgroundImage": "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800&q=80",
+        "primaryButton": {
+          "text": "Browse Vehicles",
+          "link": "/vehicles"
+        },
+        "secondaryButton": {
+          "text": "View Categories",
+          "link": "/vehicles?category=luxury-cars"
+        }
+      },
+      "categories": {
+        "title": "Browse by Category",
+        "subtitle": "Explore our diverse range of vehicles across different categories",
+        "visibleCategories": [1, 2, 3, 4]
+      },
+      "featured": {
+        "title": "Featured Vehicles",
+        "subtitle": "Handpicked vehicles from Luxury Auto Gallery that customers love the most",
+        "vehicleIds": [1, 2, 3]
+      },
+      "specialOffers": {
+        "title": "🔥 Special Offers",
+        "subtitle": "Limited time deals from Luxury Auto Gallery you don't want to miss",
+        "vehicleIds": [1]
+      },
+      "footer": {
+        "showSocialMedia": true,
+        "showHours": true,
+        "showQuickLinks": true,
+        "showContact": true,
+        "showSupport": true,
+        "customText": "Your trusted automotive partner since 2019. We pride ourselves on exceptional customer service and premium vehicle selection."
       }
     }
   },

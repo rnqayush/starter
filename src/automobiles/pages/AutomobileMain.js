@@ -13,10 +13,12 @@ import {
   fetchAutomobileData,
   selectVendor,
   selectCategories,
+  selectVehicles,
   selectFeaturedVehicles,
   selectOnSaleVehicles,
   selectLoading,
   selectError,
+  selectPageSections,
   clearError,
 } from '../../store/slices/automobileManagementSlice';
 
@@ -472,10 +474,12 @@ const AutomobileMain = () => {
   // Redux selectors
   const vendor = useSelector(selectVendor);
   const categories = useSelector(selectCategories);
+  const vehicles = useSelector(selectVehicles);
   const featuredVehicles = useSelector(selectFeaturedVehicles);
   const onSaleVehicles = useSelector(selectOnSaleVehicles);
   const loading = useSelector(selectLoading);
   const error = useSelector(selectError);
+  const pageSections = useSelector(selectPageSections);
 
   const [vendorSlug, setVendorSlug] = useState(null);
 
@@ -512,6 +516,11 @@ const AutomobileMain = () => {
       dispatch(clearError());
       dispatch(fetchAutomobileData(vendorSlug));
     }
+  };
+
+  // Helper function to get sections in order
+  const getSortedSections = () => {
+    return [...pageSections].sort((a, b) => a.order - b.order);
   };
 
   // Show loading state
@@ -586,116 +595,229 @@ const AutomobileMain = () => {
           </BreadcrumbNav>
         </Breadcrumb>
 
-        <HeroSection
-          primaryColor={dealerTheme.primaryColor}
-          secondaryColor={dealerTheme.secondaryColor}
-          heroImage={vendor.businessInfo.coverImage}
-        >
-          <HeroContent>
-            <DealerHeader>
-              <DealerLogo
-                src={vendor.businessInfo.logo}
-                alt={`${vendor.name} logo`}
-              />
-              <div>
-                <HeroTitle>Welcome to {vendor.name}</HeroTitle>
-              </div>
-            </DealerHeader>
-            <HeroSubtitle>{vendor.businessInfo.description}</HeroSubtitle>
-            <HeroActions>
-              <HeroButton
-                primaryColor={dealerTheme.primaryColor}
-                onClick={() => navigate(`${getBaseUrl()}/vehicles`)}
-              >
-                <FaCar />
-                Browse Vehicles
-              </HeroButton>
-              <HeroButton
-                className="secondary"
-                onClick={() =>
-                  navigate(`${getBaseUrl()}/vehicles?category=luxury-cars`)
-                }
-              >
-                View Categories
-                <FaArrowRight />
-              </HeroButton>
-            </HeroActions>
-          </HeroContent>
-        </HeroSection>
+        {/* Render sections dynamically based on content management settings */}
+        {getSortedSections().map(sectionConfig => {
+          if (!sectionConfig.visible) return null;
 
-        <Section>
-          <Container>
-            <SectionHeader>
-              <SectionTitle textColor={dealerTheme.textColor}>
-                Browse by Category
-              </SectionTitle>
-              <SectionSubtitle>
-                Explore our diverse range of vehicles across different
-                categories
-              </SectionSubtitle>
-            </SectionHeader>
-            <Grid minWidth="280px">
-              {categories.map(category => (
-                <CategoryCard
-                  key={category.id}
-                  category={category}
+          switch (sectionConfig.id) {
+            case 'hero':
+              return (
+                <HeroSection
+                  key="hero"
+                  primaryColor={dealerTheme.primaryColor}
+                  secondaryColor={dealerTheme.secondaryColor}
+                  heroImage={
+                    sectionConfig.content?.backgroundImage ||
+                    vendor.businessInfo.coverImage
+                  }
+                >
+                  <HeroContent>
+                    <DealerHeader>
+                      <DealerLogo
+                        src={vendor.businessInfo.logo}
+                        alt={`${vendor.name} logo`}
+                      />
+                      <div>
+                        <HeroTitle>
+                          {sectionConfig.content?.title ||
+                            `Welcome to ${vendor.name}`}
+                        </HeroTitle>
+                      </div>
+                    </DealerHeader>
+                    <HeroSubtitle>
+                      {sectionConfig.content?.subtitle ||
+                        vendor.businessInfo.description}
+                    </HeroSubtitle>
+                    <HeroActions>
+                      <HeroButton
+                        primaryColor={dealerTheme.primaryColor}
+                        onClick={() => navigate(`${getBaseUrl()}/vehicles`)}
+                      >
+                        <FaCar />
+                        {sectionConfig.content?.primaryButtonText ||
+                          'Browse Vehicles'}
+                      </HeroButton>
+                      <HeroButton
+                        className="secondary"
+                        onClick={() =>
+                          navigate(
+                            `${getBaseUrl()}/vehicles?category=${categories[0]?.slug || 'all'}`
+                          )
+                        }
+                      >
+                        {sectionConfig.content?.secondaryButtonText ||
+                          'View Categories'}
+                        <FaArrowRight />
+                      </HeroButton>
+                    </HeroActions>
+                  </HeroContent>
+                </HeroSection>
+              );
+
+            case 'categories':
+              const visibleCategories = categories.filter(
+                category =>
+                  sectionConfig.content?.visibleCategories?.includes(
+                    category.id
+                  ) ?? true
+              );
+              return (
+                <Section key="categories">
+                  <Container>
+                    <SectionHeader>
+                      <SectionTitle textColor={dealerTheme.textColor}>
+                        {sectionConfig.content?.title || 'Browse by Category'}
+                      </SectionTitle>
+                      <SectionSubtitle>
+                        {sectionConfig.content?.subtitle ||
+                          'Explore our diverse range of vehicles across different categories'}
+                      </SectionSubtitle>
+                    </SectionHeader>
+                    <Grid minWidth="280px">
+                      {visibleCategories.map(category => (
+                        <CategoryCard
+                          key={category.id}
+                          category={category}
+                          dealerSlug={vendor.slug}
+                        />
+                      ))}
+                    </Grid>
+                  </Container>
+                </Section>
+              );
+
+            case 'featured':
+              const featuredVehiclesToShow =
+                sectionConfig.content?.vehicleIds?.length > 0
+                  ? vehicles.filter(vehicle =>
+                      sectionConfig.content.vehicleIds.includes(vehicle.id)
+                    )
+                  : featuredVehicles.slice(0, 4);
+              return (
+                <Section
+                  key="featured"
+                  background={
+                    dealerTheme.backgroundColor || theme.colors.gray50
+                  }
+                >
+                  <Container>
+                    <SectionHeader>
+                      <SectionTitle textColor={dealerTheme.textColor}>
+                        {sectionConfig.content?.title || 'Featured Vehicles'}
+                      </SectionTitle>
+                      <SectionSubtitle>
+                        {sectionConfig.content?.subtitle ||
+                          `Handpicked vehicles from ${vendor.name} that customers love the most`}
+                      </SectionSubtitle>
+                    </SectionHeader>
+                    <Grid>
+                      {featuredVehiclesToShow.map(vehicle => (
+                        <VehicleCard
+                          key={vehicle.id}
+                          vehicle={vehicle}
+                          dealerSlug={vendor.slug}
+                        />
+                      ))}
+                    </Grid>
+                  </Container>
+                </Section>
+              );
+
+            case 'special-offers':
+              const specialOfferVehicles =
+                sectionConfig.content?.vehicleIds?.length > 0
+                  ? vehicles.filter(vehicle =>
+                      sectionConfig.content.vehicleIds.includes(vehicle.id)
+                    )
+                  : onSaleVehicles.slice(0, 4);
+              if (specialOfferVehicles.length === 0) return null;
+              return (
+                <Section key="special-offers">
+                  <Container>
+                    <SectionHeader>
+                      <SectionTitle textColor={dealerTheme.textColor}>
+                        {sectionConfig.content?.title || '🔥 Special Offers'}
+                      </SectionTitle>
+                      <SectionSubtitle>
+                        {sectionConfig.content?.subtitle ||
+                          `Limited time deals from ${vendor.name} you don't want to miss`}
+                      </SectionSubtitle>
+                    </SectionHeader>
+                    <Grid>
+                      {specialOfferVehicles.map(vehicle => (
+                        <VehicleCard
+                          key={vehicle.id}
+                          vehicle={vehicle}
+                          dealerSlug={vendor.slug}
+                        />
+                      ))}
+                    </Grid>
+                  </Container>
+                </Section>
+              );
+
+            case 'footer':
+              return (
+                <Footer
+                  key="footer"
                   dealerSlug={vendor.slug}
+                  dealer={vendor}
+                  theme={dealerTheme}
+                  content={sectionConfig.content || {}}
                 />
-              ))}
-            </Grid>
-          </Container>
-        </Section>
+              );
 
-        <Section
-          background={dealerTheme.backgroundColor || theme.colors.gray50}
-        >
-          <Container>
-            <SectionHeader>
-              <SectionTitle textColor={dealerTheme.textColor}>
-                Featured Vehicles
-              </SectionTitle>
-              <SectionSubtitle>
-                Handpicked vehicles from {vendor.name} that customers love the
-                most
-              </SectionSubtitle>
-            </SectionHeader>
-            <Grid>
-              {featuredVehicles.slice(0, 4).map(vehicle => (
-                <VehicleCard
-                  key={vehicle.id}
-                  vehicle={vehicle}
-                  dealerSlug={vendor.slug}
-                />
-              ))}
-            </Grid>
-          </Container>
-        </Section>
-
-        {onSaleVehicles.length > 0 && (
-          <Section>
-            <Container>
-              <SectionHeader>
-                <SectionTitle textColor={dealerTheme.textColor}>
-                  🔥 Special Offers
-                </SectionTitle>
-                <SectionSubtitle>
-                  Limited time deals from {vendor.name} you don't want to miss
-                </SectionSubtitle>
-              </SectionHeader>
-              <Grid>
-                {onSaleVehicles.slice(0, 4).map(vehicle => (
-                  <VehicleCard
-                    key={vehicle.id}
-                    vehicle={vehicle}
-                    dealerSlug={vendor.slug}
-                  />
-                ))}
-              </Grid>
-            </Container>
-          </Section>
-        )}
-
-        <Footer dealerSlug={vendor.slug} dealer={vendor} theme={dealerTheme} />
+            default:
+              // Handle custom sections
+              if (sectionConfig.type === 'custom') {
+                return (
+                  <Section key={sectionConfig.id}>
+                    <Container>
+                      <SectionHeader>
+                        <SectionTitle textColor={dealerTheme.textColor}>
+                          {sectionConfig.name}
+                        </SectionTitle>
+                        <SectionSubtitle>
+                          {sectionConfig.description}
+                        </SectionSubtitle>
+                      </SectionHeader>
+                      {/* Render selected vehicles for custom section */}
+                      {sectionConfig.content?.vehicleIds &&
+                      sectionConfig.content.vehicleIds.length > 0 ? (
+                        <Grid>
+                          {sectionConfig.content.vehicleIds
+                            .map(vehicleId =>
+                              vehicles.find(v => v.id === vehicleId)
+                            )
+                            .filter(Boolean)
+                            .map(vehicle => (
+                              <VehicleCard
+                                key={vehicle.id}
+                                vehicle={vehicle}
+                                dealerSlug={vendor.slug}
+                              />
+                            ))}
+                        </Grid>
+                      ) : (
+                        <div
+                          style={{
+                            padding: theme.spacing.xl,
+                            background: theme.colors.gray100,
+                            borderRadius: theme.borderRadius.md,
+                            textAlign: 'center',
+                            color: theme.colors.gray600,
+                          }}
+                        >
+                          <p>No vehicles selected for this custom section.</p>
+                        </div>
+                      )}
+                    </Container>
+                  </Section>
+                );
+              }
+              return null;
+          }
+        })}
         <BackToTop />
       </PageContainer>
     </>

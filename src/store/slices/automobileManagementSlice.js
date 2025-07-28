@@ -107,6 +107,58 @@ const initialState = {
   customerReviews: [],
   financing: null,
 
+  // Page content management
+  pageContent: {
+    sections: [
+      {
+        id: 'hero',
+        name: 'Hero Section',
+        description: 'Main banner with dealer branding and call-to-action',
+        type: 'default',
+        visible: true,
+        order: 1,
+        content: {},
+      },
+      {
+        id: 'categories',
+        name: 'Browse by Category',
+        description: 'Display vehicle categories for easy browsing',
+        type: 'default',
+        visible: true,
+        order: 2,
+        content: {},
+      },
+      {
+        id: 'featured',
+        name: 'Featured Vehicles',
+        description: 'Showcase handpicked vehicles from your inventory',
+        type: 'default',
+        visible: true,
+        order: 3,
+        content: {},
+      },
+      {
+        id: 'special-offers',
+        name: 'Special Offers',
+        description: 'Highlight vehicles with special pricing or promotions',
+        type: 'default',
+        visible: true,
+        order: 4,
+        content: {},
+      },
+      {
+        id: 'footer',
+        name: 'Footer',
+        description: 'Contact information and dealership details',
+        type: 'default',
+        visible: true,
+        order: 5,
+        content: {},
+      },
+    ],
+    lastPublished: null,
+  },
+
   // UI state
   loading: false,
   vehicleLoading: false,
@@ -205,6 +257,33 @@ const automobileManagementSlice = createSlice({
       state.error = null;
     },
 
+    // Page content management actions
+    updatePageSections: (state, action) => {
+      state.pageContent.sections = action.payload;
+    },
+    publishPageContent: (state, action) => {
+      state.pageContent.sections = action.payload;
+      state.pageContent.lastPublished = new Date().toISOString();
+    },
+    addCustomSection: (state, action) => {
+      state.pageContent.sections.push(action.payload);
+    },
+    removeCustomSection: (state, action) => {
+      state.pageContent.sections = state.pageContent.sections.filter(
+        section => section.id !== action.payload
+      );
+    },
+    updateSectionVisibility: (state, action) => {
+      const { sectionId, visible } = action.payload;
+      const section = state.pageContent.sections.find(s => s.id === sectionId);
+      if (section) {
+        section.visible = visible;
+      }
+    },
+    reorderSections: (state, action) => {
+      state.pageContent.sections = action.payload;
+    },
+
     // Reset state
     resetAutomobileState: state => {
       return initialState;
@@ -227,6 +306,20 @@ const automobileManagementSlice = createSlice({
         state.promotions = data.promotions;
         state.customerReviews = data.customerReviews;
         state.financing = data.financing;
+
+        // Update page content with data from API
+        if (data.pageContent) {
+          state.pageContent = {
+            ...state.pageContent,
+            sections: state.pageContent.sections.map(section => ({
+              ...section,
+              content: {
+                ...section.content,
+                ...data.pageContent[section.id],
+              },
+            })),
+          };
+        }
 
         // Update pagination
         state.pagination = {
@@ -310,6 +403,12 @@ export const {
   addToRecentlyViewed,
   clearError,
   resetAutomobileState,
+  updatePageSections,
+  publishPageContent,
+  addCustomSection,
+  removeCustomSection,
+  updateSectionVisibility,
+  reorderSections,
 } = automobileManagementSlice.actions;
 
 // Selectors
@@ -337,6 +436,10 @@ export const selectRecentlyViewed = state =>
 export const selectPagination = state => state.automobileManagement.pagination;
 export const selectAvailableFilters = state =>
   state.automobileManagement.meta.availableFilters;
+export const selectPageContent = state =>
+  state.automobileManagement.pageContent;
+export const selectPageSections = state =>
+  state.automobileManagement.pageContent.sections;
 
 // Complex selectors
 export const selectFilteredVehicles = state => {
