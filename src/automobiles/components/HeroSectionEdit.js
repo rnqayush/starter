@@ -4,9 +4,10 @@ import styled from 'styled-components';
 import { FaSave, FaImage, FaUpload, FaTimes } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
 import {
-  selectDraftPageSections,
-  selectEditingVendor,
+  selectPageSections,
+  selectVendor,
   selectLoading,
+  selectSectionContent,
   updatePageSectionContent,
 } from '../../store/slices/automobileManagementSlice';
 
@@ -205,58 +206,26 @@ const UrlOption = styled.div`
 
 const HeroSectionEdit = ({ dealer }) => {
   const dispatch = useDispatch();
-  const sections = useSelector(selectDraftPageSections);
-  const vendor = useSelector(selectEditingVendor);
+  const sections = useSelector(selectPageSections);
+  const vendor = useSelector(selectVendor);
   const loading = useSelector(selectLoading);
+  const heroContent = useSelector(selectSectionContent('hero'));
 
-  const [heroContent, setHeroContent] = useState({
-    title: '',
-    subtitle: '',
-    backgroundImage: '',
-  });
+  const [localChanges, setLocalChanges] = useState({});
   const [hasChanges, setHasChanges] = useState(false);
 
-  // Initialize with data from Redux state and vendor
-  useEffect(() => {
-    const heroSection = sections.find(s => s.id === 'hero');
-
-    if (heroSection?.content && Object.keys(heroSection.content).length > 0) {
-      setHeroContent({
-        title:
-          heroSection.content.title ||
-          (vendor?.name ? `Welcome to ${vendor.name}` : ''),
-        subtitle:
-          heroSection.content.subtitle ||
-          vendor?.businessInfo?.description ||
-          '',
-        backgroundImage:
-          heroSection.content.backgroundImage ||
-          vendor?.businessInfo?.coverImage ||
-          '',
-      });
-    } else if (vendor) {
-      // Initialize with vendor data if no section content exists
-      setHeroContent({
-        title: vendor.name ? `Welcome to ${vendor.name}` : '',
-        subtitle: vendor.businessInfo?.description || '',
-        backgroundImage: vendor.businessInfo?.coverImage || '',
-      });
-    }
-  }, [sections, vendor]);
+  // Get current values (Redux + local changes)
+  const currentContent = {
+    ...heroContent,
+    ...localChanges,
+  };
 
   const updateContent = (field, value) => {
-    const newContent = {
-      ...heroContent,
+    setLocalChanges(prev => ({
+      ...prev,
       [field]: value,
-    };
-    setHeroContent(newContent);
-    setHasChanges(true);
-
-    // Dispatch to Redux to track changes
-    dispatch(updatePageSectionContent({
-      sectionId: 'hero',
-      content: { [field]: value },
     }));
+    setHasChanges(true);
   };
 
   const handleImageUpload = event => {
@@ -275,11 +244,12 @@ const HeroSectionEdit = ({ dealer }) => {
   };
 
   const saveChanges = () => {
-    // Update the section content in Redux
+    // Update the section content in Redux temp changes
     dispatch(updatePageSectionContent({
       sectionId: 'hero',
-      content: heroContent,
+      content: localChanges,
     }));
+    setLocalChanges({});
     setHasChanges(false);
     alert('Hero section changes tracked! Use sidebar to save/publish.');
   };
@@ -321,10 +291,10 @@ const HeroSectionEdit = ({ dealer }) => {
         <FormGroup>
           <Label>Background Image</Label>
           <ImageUploadSection>
-            {heroContent.backgroundImage && (
+            {currentContent.backgroundImage && (
               <ImagePreview>
                 <PreviewImage
-                  src={heroContent.backgroundImage}
+                  src={currentContent.backgroundImage}
                   alt="Hero background preview"
                 />
                 <RemoveImageButton onClick={removeImage}>
@@ -359,7 +329,7 @@ const HeroSectionEdit = ({ dealer }) => {
           <Label>Hero Title</Label>
           <Input
             type="text"
-            value={heroContent.title}
+            value={currentContent.title || ''}
             onChange={e => updateContent('title', e.target.value)}
             placeholder="Enter hero section title"
           />
@@ -368,7 +338,7 @@ const HeroSectionEdit = ({ dealer }) => {
         <FormGroup>
           <Label>Hero Subtitle/Description</Label>
           <TextArea
-            value={heroContent.subtitle}
+            value={currentContent.subtitle || ''}
             onChange={e => updateContent('subtitle', e.target.value)}
             placeholder="Enter hero section description"
           />
