@@ -516,6 +516,17 @@ const AutomobileMain = () => {
     }
   };
 
+  // Helper function to check if a section should be displayed
+  const isSectionVisible = (sectionId) => {
+    const section = pageSections.find(s => s.id === sectionId);
+    return section ? section.visible : true; // Default to visible if section not found
+  };
+
+  // Helper function to get sections in order
+  const getSortedSections = () => {
+    return [...pageSections].sort((a, b) => a.order - b.order);
+  };
+
   // Show loading state
   if (loading) {
     return (
