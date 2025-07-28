@@ -17,14 +17,16 @@ import {
   FaArrowUp,
   FaArrowDown,
   FaSort,
-  FaPalette,
-  FaLink,
-  FaUpload,
+  FaSearch,
+  FaTrash,
+  FaCheck,
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
 import {
   selectPageSections,
   selectVendor,
+  selectCategories,
+  selectVehicles,
   updatePageSections,
   publishPageContent,
 } from '../../store/slices/automobileManagementSlice';
@@ -133,13 +135,6 @@ const SectionCard = styled.div.withConfig({
   }
 `;
 
-const CardHeader = styled.div`
-  display: flex;
-  justify-content: between;
-  align-items: flex-start;
-  margin-bottom: ${theme.spacing.md};
-`;
-
 const CardIcon = styled.div`
   width: 48px;
   height: 48px;
@@ -197,61 +192,6 @@ const VisibilityButton = styled.button`
   &:hover {
     background: ${theme.colors.gray100};
   }
-`;
-
-const AddSectionCard = styled.div`
-  border: 2px dashed ${theme.colors.gray300};
-  border-radius: ${theme.borderRadius.lg};
-  padding: ${theme.spacing.xl};
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 200px;
-
-  &:hover {
-    border-color: ${theme.colors.primary};
-    background: ${theme.colors.primary}05;
-  }
-`;
-
-const AddIcon = styled.div`
-  width: 60px;
-  height: 60px;
-  border-radius: ${theme.borderRadius.md};
-  background: ${theme.colors.gray100};
-  color: ${theme.colors.gray500};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5rem;
-  margin-bottom: ${theme.spacing.md};
-  transition: all 0.2s ease;
-
-  ${AddSectionCard}:hover & {
-    background: ${theme.colors.primary};
-    color: ${theme.colors.white};
-  }
-`;
-
-const AddTitle = styled.h4`
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: ${theme.colors.gray700};
-  margin: 0 0 ${theme.spacing.sm} 0;
-
-  ${AddSectionCard}:hover & {
-    color: ${theme.colors.primary};
-  }
-`;
-
-const AddDescription = styled.p`
-  font-size: 0.9rem;
-  color: ${theme.colors.gray500};
-  margin: 0;
 `;
 
 // Modal Styles
@@ -347,6 +287,11 @@ const Input = styled.input`
     outline: none;
     border-color: ${theme.colors.primary};
   }
+
+  &:disabled {
+    background: ${theme.colors.gray100};
+    cursor: not-allowed;
+  }
 `;
 
 const TextArea = styled.textarea`
@@ -365,14 +310,17 @@ const TextArea = styled.textarea`
   }
 `;
 
-const Select = styled.select`
+const SearchContainer = styled.div`
+  position: relative;
+  margin-bottom: ${theme.spacing.lg};
+`;
+
+const SearchInput = styled.input`
   width: 100%;
-  padding: ${theme.spacing.md};
+  padding: ${theme.spacing.md} ${theme.spacing.md} ${theme.spacing.md} 2.5rem;
   border: 2px solid ${theme.colors.gray200};
   border-radius: ${theme.borderRadius.md};
   font-size: 0.9rem;
-  background: ${theme.colors.white};
-  cursor: pointer;
 
   &:focus {
     outline: none;
@@ -380,347 +328,261 @@ const Select = styled.select`
   }
 `;
 
-const ColorPicker = styled.input`
-  width: 60px;
-  height: 40px;
+const SearchIcon = styled.div`
+  position: absolute;
+  left: ${theme.spacing.md};
+  top: 50%;
+  transform: translateY(-50%);
+  color: ${theme.colors.gray400};
+`;
+
+const VehicleList = styled.div`
+  max-height: 300px;
+  overflow-y: auto;
   border: 2px solid ${theme.colors.gray200};
   border-radius: ${theme.borderRadius.md};
-  cursor: pointer;
-  background: none;
-
-  &::-webkit-color-swatch-wrapper {
-    padding: 2px;
-  }
-
-  &::-webkit-color-swatch {
-    border: none;
-    border-radius: 4px;
-  }
+  margin-bottom: ${theme.spacing.lg};
 `;
 
-const FileInput = styled.input`
-  width: 100%;
-  padding: ${theme.spacing.md};
-  border: 2px dashed ${theme.colors.gray300};
-  border-radius: ${theme.borderRadius.md};
-  background: ${theme.colors.gray50};
-  cursor: pointer;
-
-  &:hover {
-    border-color: ${theme.colors.primary};
-  }
-`;
-
-const OrderList = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${theme.spacing.md};
-`;
-
-const OrderItem = styled.div.withConfig({
-  shouldForwardProp: prop => prop !== 'isDragging',
-})`
-  background: ${theme.colors.white};
-  border: 2px solid ${theme.colors.gray200};
-  border-radius: ${theme.borderRadius.md};
-  padding: ${theme.spacing.md};
+const VehicleItem = styled.div`
   display: flex;
   align-items: center;
+  padding: ${theme.spacing.md};
+  border-bottom: 1px solid ${theme.colors.gray100};
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: ${theme.colors.gray50};
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+`;
+
+const VehicleImage = styled.img`
+  width: 60px;
+  height: 45px;
+  object-fit: cover;
+  border-radius: ${theme.borderRadius.sm};
+  margin-right: ${theme.spacing.md};
+`;
+
+const VehicleInfo = styled.div`
+  flex: 1;
+`;
+
+const VehicleName = styled.div`
+  font-weight: 600;
+  color: ${theme.colors.gray900};
+  margin-bottom: ${theme.spacing.xs};
+`;
+
+const VehicleDetails = styled.div`
+  font-size: 0.85rem;
+  color: ${theme.colors.gray600};
+`;
+
+const VehiclePrice = styled.div`
+  font-weight: 600;
+  color: ${theme.colors.primary};
+  margin-right: ${theme.spacing.md};
+`;
+
+const IconButton = styled.button`
+  background: none;
+  border: none;
+  color: ${props => props.color || theme.colors.gray500};
+  cursor: pointer;
+  padding: ${theme.spacing.sm};
+  border-radius: ${theme.borderRadius.sm};
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: ${theme.colors.gray100};
+    color: ${props => props.hoverColor || theme.colors.primary};
+  }
+`;
+
+const CategoryList = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: ${theme.spacing.md};
-  cursor: grab;
+  margin-bottom: ${theme.spacing.lg};
+`;
+
+const CategoryItem = styled.div`
+  display: flex;
+  align-items: center;
+  padding: ${theme.spacing.md};
+  border: 2px solid ${theme.colors.gray200};
+  border-radius: ${theme.borderRadius.md};
   transition: all 0.2s ease;
 
   &:hover {
     border-color: ${theme.colors.primary};
   }
-
-  ${props => props.isDragging && `
-    opacity: 0.8;
-    transform: scale(1.02);
-    cursor: grabbing;
-  `}
 `;
 
-const DragHandle = styled.div`
-  color: ${theme.colors.gray400};
-  cursor: grab;
-`;
-
-const OrderItemContent = styled.div`
-  flex: 1;
-  display: flex;
-  align-items: center;
-  gap: ${theme.spacing.md};
-`;
-
-const OrderItemIcon = styled.div`
-  width: 32px;
-  height: 32px;
+const CategoryImage = styled.img`
+  width: 60px;
+  height: 45px;
+  object-fit: cover;
   border-radius: ${theme.borderRadius.sm};
-  background: ${props => props.color || `${theme.colors.primary}20`};
-  color: ${props => props.textColor || theme.colors.primary};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.9rem;
+  margin-right: ${theme.spacing.md};
 `;
 
-const OrderItemInfo = styled.div``;
+const CategoryInfo = styled.div`
+  flex: 1;
+`;
 
-const OrderItemName = styled.div`
+const CategoryName = styled.div`
   font-weight: 600;
   color: ${theme.colors.gray900};
-  font-size: 0.9rem;
+  margin-bottom: ${theme.spacing.xs};
 `;
 
-const OrderItemType = styled.div`
-  font-size: 0.8rem;
-  color: ${theme.colors.gray500};
-`;
-
-const OrderActions = styled.div`
-  display: flex;
-  gap: ${theme.spacing.sm};
-`;
-
-const OrderButton = styled.button`
-  background: none;
-  border: 1px solid ${theme.colors.gray300};
+const CategoryDescription = styled.div`
+  font-size: 0.85rem;
   color: ${theme.colors.gray600};
-  width: 32px;
-  height: 32px;
-  border-radius: ${theme.borderRadius.sm};
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+`;
 
-  &:hover {
-    border-color: ${theme.colors.primary};
-    color: ${theme.colors.primary};
-  }
+const FooterComponentsList = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: ${theme.spacing.md};
+  margin-bottom: ${theme.spacing.lg};
+`;
+
+const FooterComponent = styled.div`
+  padding: ${theme.spacing.md};
+  border: 2px solid ${theme.colors.gray200};
+  border-radius: ${theme.borderRadius.md};
+  text-align: center;
+`;
+
+const ComponentName = styled.div`
+  font-weight: 600;
+  color: ${theme.colors.gray900};
+  margin-bottom: ${theme.spacing.sm};
+`;
+
+const ComponentDescription = styled.div`
+  font-size: 0.85rem;
+  color: ${theme.colors.gray600};
+  margin-bottom: ${theme.spacing.md};
 `;
 
 const ContentManagementTab = ({ dealer }) => {
   const dispatch = useDispatch();
   const reduxSections = useSelector(selectPageSections);
   const vendor = useSelector(selectVendor);
+  const categories = useSelector(selectCategories);
+  const vehicles = useSelector(selectVehicles);
   
   // Local state for UI and modal management
   const [sections, setSections] = useState([]);
   const [hasChanges, setHasChanges] = useState(false);
   const [activeModal, setActiveModal] = useState(null);
   const [editingSection, setEditingSection] = useState(null);
-  const [customSectionModal, setCustomSectionModal] = useState(false);
-  const [orderModal, setOrderModal] = useState(false);
-  const [draggedItem, setDraggedItem] = useState(null);
+  
+  // Search and filter states
+  const [vehicleSearch, setVehicleSearch] = useState('');
+  const [filteredVehicles, setFilteredVehicles] = useState([]);
 
-  // Section configuration with form fields
-  const sectionConfigs = {
-    hero: {
-      name: 'Hero Section',
-      description: 'Main banner with dealer branding and call-to-action',
-      icon: FaImage,
-      color: `${theme.colors.blue500}20`,
-      textColor: theme.colors.blue500,
-      fields: [
-        { name: 'title', label: 'Main Title', type: 'text', required: true },
-        { name: 'subtitle', label: 'Subtitle', type: 'textarea' },
-        { name: 'backgroundImage', label: 'Background Image URL', type: 'url' },
-        { name: 'primaryColor', label: 'Primary Color', type: 'color' },
-        { name: 'secondaryColor', label: 'Secondary Color', type: 'color' },
-        { name: 'ctaText', label: 'Call-to-Action Text', type: 'text' },
-        { name: 'ctaLink', label: 'Call-to-Action Link', type: 'text' },
-      ]
-    },
-    categories: {
-      name: 'Browse by Category',
-      description: 'Display vehicle categories for easy browsing',
-      icon: FaList,
-      color: `${theme.colors.green500}20`,
-      textColor: theme.colors.green500,
-      fields: [
-        { name: 'title', label: 'Section Title', type: 'text', required: true },
-        { name: 'subtitle', label: 'Section Subtitle', type: 'textarea' },
-        { name: 'showCount', label: 'Show Vehicle Count', type: 'checkbox' },
-        { name: 'displayStyle', label: 'Display Style', type: 'select', options: ['grid', 'list', 'carousel'] },
-      ]
-    },
-    featured: {
-      name: 'Featured Vehicles',
-      description: 'Showcase handpicked vehicles from your inventory',
-      icon: FaCar,
-      color: `${theme.colors.purple500}20`,
-      textColor: theme.colors.purple500,
-      fields: [
-        { name: 'title', label: 'Section Title', type: 'text', required: true },
-        { name: 'subtitle', label: 'Section Subtitle', type: 'textarea' },
-        { name: 'maxVehicles', label: 'Maximum Vehicles to Show', type: 'number', min: 1, max: 12 },
-        { name: 'showPricing', label: 'Show Pricing', type: 'checkbox' },
-        { name: 'showBadges', label: 'Show Feature Badges', type: 'checkbox' },
-      ]
-    },
-    'special-offers': {
-      name: 'Special Offers',
-      description: 'Highlight vehicles with special pricing or promotions',
-      icon: FaCar,
-      color: `${theme.colors.red500}20`,
-      textColor: theme.colors.red500,
-      fields: [
-        { name: 'title', label: 'Section Title', type: 'text', required: true },
-        { name: 'subtitle', label: 'Section Subtitle', type: 'textarea' },
-        { name: 'maxOffers', label: 'Maximum Offers to Show', type: 'number', min: 1, max: 8 },
-        { name: 'highlightSavings', label: 'Highlight Savings Amount', type: 'checkbox' },
-        { name: 'showCountdown', label: 'Show Offer Countdown', type: 'checkbox' },
-      ]
-    },
-    footer: {
-      name: 'Footer',
-      description: 'Contact information and dealership details',
-      icon: FaAlignLeft,
-      color: `${theme.colors.gray500}20`,
-      textColor: theme.colors.gray500,
-      fields: [
-        { name: 'showSocialMedia', label: 'Show Social Media Links', type: 'checkbox' },
-        { name: 'showHours', label: 'Show Business Hours', type: 'checkbox' },
-        { name: 'showMap', label: 'Show Location Map', type: 'checkbox' },
-        { name: 'customText', label: 'Custom Footer Text', type: 'textarea' },
-        { name: 'backgroundColor', label: 'Background Color', type: 'color' },
-      ]
+  // Initialize sections from Redux
+  useEffect(() => {
+    if (reduxSections && reduxSections.length > 0) {
+      setSections(reduxSections);
+    } else {
+      // Initialize with default sections
+      const defaultSections = [
+        {
+          id: 'hero',
+          name: 'Hero Section',
+          type: 'default',
+          visible: true,
+          order: 1,
+          content: {
+            title: vendor?.name ? `Welcome to ${vendor.name}` : 'Welcome to Our Dealership',
+            subtitle: vendor?.businessInfo?.description || 'Your trusted automotive partner',
+            backgroundImage: vendor?.businessInfo?.coverImage || '',
+          }
+        },
+        {
+          id: 'categories',
+          name: 'Browse by Category',
+          type: 'default',
+          visible: true,
+          order: 2,
+          content: {
+            title: 'Browse by Category',
+            subtitle: 'Explore our diverse range of vehicles across different categories',
+            visibleCategories: categories?.map(cat => cat.id) || [],
+          }
+        },
+        {
+          id: 'featured',
+          name: 'Featured Vehicles',
+          type: 'default',
+          visible: true,
+          order: 3,
+          content: {
+            title: 'Featured Vehicles',
+            subtitle: `Handpicked vehicles from ${vendor?.name || 'our dealership'} that customers love the most`,
+            vehicleIds: vehicles?.filter(v => v.featured).map(v => v.id).slice(0, 4) || [],
+          }
+        },
+        {
+          id: 'special-offers',
+          name: 'Special Offers',
+          type: 'default',
+          visible: true,
+          order: 4,
+          content: {
+            title: '🔥 Special Offers',
+            subtitle: `Limited time deals from ${vendor?.name || 'our dealership'} you don't want to miss`,
+            vehicleIds: vehicles?.filter(v => v.pricing?.onSale).map(v => v.id) || [],
+          }
+        },
+        {
+          id: 'footer',
+          name: 'Footer',
+          type: 'default',
+          visible: true,
+          order: 5,
+          content: {
+            showSocialMedia: true,
+            showHours: true,
+            showMap: true,
+            showServices: true,
+            showCertifications: true,
+            customText: vendor?.businessInfo?.description || '',
+            backgroundColor: vendor?.theme?.primaryColor || '#1f2937',
+          }
+        },
+      ];
+      setSections(defaultSections);
     }
-  };
+  }, [reduxSections, vendor, categories, vehicles]);
 
-  const customSectionTypes = [
-    {
-      id: 'text-content',
-      name: 'Text Content',
-      description: 'Add custom text blocks, announcements, or information',
-      icon: FaAlignLeft,
-      color: `${theme.colors.blue500}20`,
-      textColor: theme.colors.blue500,
-      fields: [
-        { name: 'title', label: 'Section Title', type: 'text', required: true },
-        { name: 'content', label: 'Content', type: 'textarea', required: true },
-        { name: 'alignment', label: 'Text Alignment', type: 'select', options: ['left', 'center', 'right'] },
-        { name: 'backgroundColor', label: 'Background Color', type: 'color' },
-      ]
-    },
-    {
-      id: 'vehicle-showcase',
-      name: 'Vehicle Showcase',
-      description: 'Create additional vehicle displays or highlights',
-      icon: FaCar,
-      color: `${theme.colors.green500}20`,
-      textColor: theme.colors.green500,
-      fields: [
-        { name: 'title', label: 'Section Title', type: 'text', required: true },
-        { name: 'subtitle', label: 'Section Subtitle', type: 'textarea' },
-        { name: 'filterBy', label: 'Filter Vehicles By', type: 'select', options: ['category', 'make', 'condition', 'price-range'] },
-        { name: 'filterValue', label: 'Filter Value', type: 'text' },
-        { name: 'displayCount', label: 'Number of Vehicles', type: 'number', min: 1, max: 12 },
-      ]
-    },
-    {
-      id: 'image-gallery',
-      name: 'Image Gallery',
-      description: 'Display dealership photos, awards, or team pictures',
-      icon: FaImage,
-      color: `${theme.colors.purple500}20`,
-      textColor: theme.colors.purple500,
-      fields: [
-        { name: 'title', label: 'Gallery Title', type: 'text', required: true },
-        { name: 'subtitle', label: 'Gallery Description', type: 'textarea' },
-        { name: 'images', label: 'Image URLs (one per line)', type: 'textarea', required: true },
-        { name: 'layoutStyle', label: 'Layout Style', type: 'select', options: ['grid', 'masonry', 'carousel'] },
-      ]
-    },
-    {
-      id: 'info-cards',
-      name: 'Information Cards',
-      description: 'Services, certifications, or key dealership features',
-      icon: FaList,
-      color: `${theme.colors.orange500}20`,
-      textColor: theme.colors.orange500,
-      fields: [
-        { name: 'title', label: 'Section Title', type: 'text', required: true },
-        { name: 'subtitle', label: 'Section Subtitle', type: 'textarea' },
-        { name: 'cards', label: 'Cards (JSON format)', type: 'textarea', required: true, placeholder: '[{"title": "Service", "description": "Description", "icon": "icon-name"}]' },
-        { name: 'cardsPerRow', label: 'Cards Per Row', type: 'number', min: 1, max: 4 },
-      ]
+  // Filter vehicles based on search
+  useEffect(() => {
+    if (!vehicleSearch) {
+      setFilteredVehicles(vehicles || []);
+    } else {
+      const filtered = vehicles?.filter(vehicle => 
+        vehicle.name.toLowerCase().includes(vehicleSearch.toLowerCase()) ||
+        vehicle.make.toLowerCase().includes(vehicleSearch.toLowerCase()) ||
+        vehicle.model.toLowerCase().includes(vehicleSearch.toLowerCase())
+      ) || [];
+      setFilteredVehicles(filtered);
     }
-  ];
-
-  // Initialize sections with default content from vendor data
-  const initializeSections = (reduxSections) => {
-    const iconMapping = {
-      'hero': FaImage,
-      'categories': FaList,
-      'featured': FaCar,
-      'special-offers': FaCar,
-      'footer': FaAlignLeft,
-    };
-
-    return reduxSections.map(section => ({
-      ...section,
-      icon: iconMapping[section.id] || FaEdit,
-      content: section.content || getDefaultContent(section.id),
-    }));
-  };
-
-  const getDefaultContent = (sectionId) => {
-    const defaults = {
-      hero: {
-        title: vendor?.name || 'Welcome to Our Dealership',
-        subtitle: vendor?.businessInfo?.description || 'Your trusted automotive partner',
-        backgroundImage: vendor?.businessInfo?.coverImage || '',
-        primaryColor: vendor?.theme?.primaryColor || theme.colors.primary,
-        secondaryColor: vendor?.theme?.secondaryColor || theme.colors.secondary,
-        ctaText: 'Browse Vehicles',
-        ctaLink: '/vehicles',
-      },
-      categories: {
-        title: 'Browse by Category',
-        subtitle: 'Explore our diverse range of vehicles across different categories',
-        showCount: true,
-        displayStyle: 'grid',
-      },
-      featured: {
-        title: 'Featured Vehicles',
-        subtitle: `Handpicked vehicles from ${vendor?.name || 'our dealership'} that customers love the most`,
-        maxVehicles: 4,
-        showPricing: true,
-        showBadges: true,
-      },
-      'special-offers': {
-        title: '🔥 Special Offers',
-        subtitle: `Limited time deals from ${vendor?.name || 'our dealership'} you don't want to miss`,
-        maxOffers: 4,
-        highlightSavings: true,
-        showCountdown: false,
-      },
-      footer: {
-        showSocialMedia: true,
-        showHours: true,
-        showMap: true,
-        customText: '',
-        backgroundColor: theme.colors.gray900,
-      },
-    };
-
-    return defaults[sectionId] || {};
-  };
+  }, [vehicleSearch, vehicles]);
 
   const handleSectionClick = (section) => {
     setEditingSection({ ...section });
     setActiveModal(section.id);
-  };
-
-  const handleOrderClick = () => {
-    setOrderModal(true);
-  };
-
-  const handleAddCustomSection = () => {
-    setCustomSectionModal(true);
   };
 
   const toggleSectionVisibility = (sectionId, event) => {
@@ -733,6 +595,65 @@ const ContentManagementTab = ({ dealer }) => {
     setHasChanges(true);
   };
 
+  const toggleCategoryVisibility = (categoryId) => {
+    const currentCategories = editingSection.content.visibleCategories || [];
+    const newCategories = currentCategories.includes(categoryId)
+      ? currentCategories.filter(id => id !== categoryId)
+      : [...currentCategories, categoryId];
+    
+    setEditingSection({
+      ...editingSection,
+      content: {
+        ...editingSection.content,
+        visibleCategories: newCategories,
+      }
+    });
+  };
+
+  const addVehicleToSection = (vehicleId) => {
+    const currentVehicles = editingSection.content.vehicleIds || [];
+    if (!currentVehicles.includes(vehicleId)) {
+      setEditingSection({
+        ...editingSection,
+        content: {
+          ...editingSection.content,
+          vehicleIds: [...currentVehicles, vehicleId],
+        }
+      });
+    }
+  };
+
+  const removeVehicleFromSection = (vehicleId) => {
+    const currentVehicles = editingSection.content.vehicleIds || [];
+    setEditingSection({
+      ...editingSection,
+      content: {
+        ...editingSection.content,
+        vehicleIds: currentVehicles.filter(id => id !== vehicleId),
+      }
+    });
+  };
+
+  const toggleFooterComponent = (componentName) => {
+    setEditingSection({
+      ...editingSection,
+      content: {
+        ...editingSection.content,
+        [componentName]: !editingSection.content[componentName],
+      }
+    });
+  };
+
+  const updateSectionContent = (field, value) => {
+    setEditingSection({
+      ...editingSection,
+      content: {
+        ...editingSection.content,
+        [field]: value,
+      }
+    });
+  };
+
   const saveSection = () => {
     setSections(sections.map(section => 
       section.id === editingSection.id ? editingSection : section
@@ -742,183 +663,353 @@ const ContentManagementTab = ({ dealer }) => {
     setEditingSection(null);
   };
 
-  const saveSectionOrder = () => {
-    setHasChanges(true);
-    setOrderModal(false);
-  };
-
-  const addCustomSection = (type) => {
-    const typeConfig = customSectionTypes.find(t => t.id === type);
-    const newSection = {
-      id: `custom-${Date.now()}`,
-      name: typeConfig.name,
-      description: typeConfig.description,
-      icon: typeConfig.icon,
-      type: 'custom',
-      customType: type,
-      visible: true,
-      order: sections.length + 1,
-      content: {},
-    };
-
-    setSections([...sections, newSection]);
-    setCustomSectionModal(false);
-    setHasChanges(true);
-  };
-
-  const removeCustomSection = (sectionId) => {
-    setSections(sections.filter(s => s.id !== sectionId));
-    setHasChanges(true);
-  };
-
   const saveChanges = () => {
-    const sectionsToSave = sections.map(({ icon, ...section }) => section);
-    dispatch(updatePageSections(sectionsToSave));
-    localStorage.setItem(`dealership-content-${dealer.slug}`, JSON.stringify(sectionsToSave));
+    dispatch(updatePageSections(sections));
+    localStorage.setItem(`dealership-content-${dealer.slug}`, JSON.stringify(sections));
     setHasChanges(false);
     alert('Changes saved successfully!');
   };
 
   const publishChanges = () => {
-    const sectionsToSave = sections.map(({ icon, ...section }) => section);
-    dispatch(publishPageContent(sectionsToSave));
-    localStorage.setItem(`dealership-content-${dealer.slug}`, JSON.stringify(sectionsToSave));
+    dispatch(publishPageContent(sections));
+    localStorage.setItem(`dealership-content-${dealer.slug}`, JSON.stringify(sections));
     setHasChanges(false);
     alert('Changes published successfully! Your dealership page has been updated and is now live.');
   };
 
-  const renderFormField = (field, value, onChange) => {
-    const commonProps = {
-      id: field.name,
-      value: value || '',
-      onChange: (e) => onChange(field.name, e.target.value),
-      required: field.required,
-    };
+  const getVehicleById = (id) => vehicles?.find(v => v.id === id);
+  const getCategoryById = (id) => categories?.find(c => c.id === id);
 
-    switch (field.type) {
-      case 'textarea':
-        return <TextArea {...commonProps} placeholder={field.placeholder} />;
-      case 'select':
-        return (
-          <Select {...commonProps}>
-            <option value="">Select {field.label}</option>
-            {field.options?.map(option => (
-              <option key={option} value={option}>
-                {option.charAt(0).toUpperCase() + option.slice(1)}
-              </option>
-            ))}
-          </Select>
-        );
-      case 'number':
-        return <Input {...commonProps} type="number" min={field.min} max={field.max} />;
-      case 'color':
-        return <ColorPicker {...commonProps} type="color" />;
-      case 'checkbox':
-        return (
-          <Input
-            type="checkbox"
-            id={field.name}
-            checked={value || false}
-            onChange={(e) => onChange(field.name, e.target.checked)}
-            style={{ width: 'auto' }}
-          />
-        );
-      case 'url':
-        return <Input {...commonProps} type="url" placeholder="https://example.com/image.jpg" />;
-      case 'file':
-        return <FileInput {...commonProps} type="file" accept="image/*" />;
-      default:
-        return <Input {...commonProps} type="text" placeholder={field.placeholder} />;
-    }
+  const formatPrice = (price) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(price);
   };
 
-  const handleDragStart = (e, sectionId) => {
-    setDraggedItem(sectionId);
-    e.dataTransfer.effectAllowed = 'move';
+  const renderHeroModal = () => (
+    <Modal isOpen={activeModal === 'hero'}>
+      <ModalContent>
+        <ModalHeader>
+          <ModalTitle>Edit Hero Section</ModalTitle>
+          <CloseButton onClick={() => setActiveModal(null)}>
+            <FaTimes />
+          </CloseButton>
+        </ModalHeader>
+        <ModalBody>
+          <FormGroup>
+            <Label>Background Image URL</Label>
+            <Input
+              type="url"
+              value={editingSection?.content?.backgroundImage || ''}
+              onChange={(e) => updateSectionContent('backgroundImage', e.target.value)}
+              placeholder="https://example.com/image.jpg"
+            />
+          </FormGroup>
+          <FormGroup>
+            <Label>Title</Label>
+            <Input
+              type="text"
+              value={editingSection?.content?.title || ''}
+              onChange={(e) => updateSectionContent('title', e.target.value)}
+            />
+          </FormGroup>
+          <FormGroup>
+            <Label>Description</Label>
+            <TextArea
+              value={editingSection?.content?.subtitle || ''}
+              onChange={(e) => updateSectionContent('subtitle', e.target.value)}
+            />
+          </FormGroup>
+        </ModalBody>
+        <ModalFooter>
+          <ActionButton onClick={() => setActiveModal(null)}>Cancel</ActionButton>
+          <ActionButton filled onClick={saveSection}>Save Section</ActionButton>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
+  );
+
+  const renderCategoriesModal = () => (
+    <Modal isOpen={activeModal === 'categories'}>
+      <ModalContent maxWidth="700px">
+        <ModalHeader>
+          <ModalTitle>Edit Browse by Category</ModalTitle>
+          <CloseButton onClick={() => setActiveModal(null)}>
+            <FaTimes />
+          </CloseButton>
+        </ModalHeader>
+        <ModalBody>
+          <FormGroup>
+            <Label>Title (Disabled)</Label>
+            <Input
+              type="text"
+              value="Browse by Category"
+              disabled
+            />
+          </FormGroup>
+          <FormGroup>
+            <Label>Category Visibility</Label>
+            <CategoryList>
+              {categories?.map(category => (
+                <CategoryItem key={category.id}>
+                  <CategoryImage src={category.image} alt={category.name} />
+                  <CategoryInfo>
+                    <CategoryName>{category.name}</CategoryName>
+                    <CategoryDescription>{category.description}</CategoryDescription>
+                  </CategoryInfo>
+                  <VisibilityButton
+                    visible={editingSection?.content?.visibleCategories?.includes(category.id)}
+                    onClick={() => toggleCategoryVisibility(category.id)}
+                  >
+                    {editingSection?.content?.visibleCategories?.includes(category.id) ? <FaEye /> : <FaEyeSlash />}
+                  </VisibilityButton>
+                </CategoryItem>
+              ))}
+            </CategoryList>
+          </FormGroup>
+        </ModalBody>
+        <ModalFooter>
+          <ActionButton onClick={() => setActiveModal(null)}>Cancel</ActionButton>
+          <ActionButton filled onClick={saveSection}>Save Section</ActionButton>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
+  );
+
+  const renderVehicleModal = (sectionId, title) => (
+    <Modal isOpen={activeModal === sectionId}>
+      <ModalContent maxWidth="800px">
+        <ModalHeader>
+          <ModalTitle>Edit {title}</ModalTitle>
+          <CloseButton onClick={() => setActiveModal(null)}>
+            <FaTimes />
+          </CloseButton>
+        </ModalHeader>
+        <ModalBody>
+          <FormGroup>
+            <Label>Section Title</Label>
+            <Input
+              type="text"
+              value={editingSection?.content?.title || ''}
+              onChange={(e) => updateSectionContent('title', e.target.value)}
+            />
+          </FormGroup>
+          <FormGroup>
+            <Label>Section Subtitle</Label>
+            <TextArea
+              value={editingSection?.content?.subtitle || ''}
+              onChange={(e) => updateSectionContent('subtitle', e.target.value)}
+            />
+          </FormGroup>
+
+          <FormGroup>
+            <Label>Current {title} Vehicles</Label>
+            <VehicleList>
+              {editingSection?.content?.vehicleIds?.map(vehicleId => {
+                const vehicle = getVehicleById(vehicleId);
+                if (!vehicle) return null;
+                return (
+                  <VehicleItem key={vehicleId}>
+                    <VehicleImage src={vehicle.media?.mainImage} alt={vehicle.name} />
+                    <VehicleInfo>
+                      <VehicleName>{vehicle.name}</VehicleName>
+                      <VehicleDetails>{vehicle.year} {vehicle.make} {vehicle.model}</VehicleDetails>
+                    </VehicleInfo>
+                    <VehiclePrice>{formatPrice(vehicle.pricing?.price)}</VehiclePrice>
+                    <IconButton 
+                      color={theme.colors.error}
+                      hoverColor={theme.colors.error}
+                      onClick={() => removeVehicleFromSection(vehicleId)}
+                    >
+                      <FaTrash />
+                    </IconButton>
+                  </VehicleItem>
+                );
+              })}
+            </VehicleList>
+          </FormGroup>
+
+          <FormGroup>
+            <Label>Search Vehicles to Add</Label>
+            <SearchContainer>
+              <SearchIcon>
+                <FaSearch />
+              </SearchIcon>
+              <SearchInput
+                type="text"
+                placeholder="Search vehicles by name, make, or model..."
+                value={vehicleSearch}
+                onChange={(e) => setVehicleSearch(e.target.value)}
+              />
+            </SearchContainer>
+            <VehicleList>
+              {filteredVehicles
+                ?.filter(vehicle => !editingSection?.content?.vehicleIds?.includes(vehicle.id))
+                ?.slice(0, 10)
+                ?.map(vehicle => (
+                <VehicleItem key={vehicle.id}>
+                  <VehicleImage src={vehicle.media?.mainImage} alt={vehicle.name} />
+                  <VehicleInfo>
+                    <VehicleName>{vehicle.name}</VehicleName>
+                    <VehicleDetails>{vehicle.year} {vehicle.make} {vehicle.model}</VehicleDetails>
+                  </VehicleInfo>
+                  <VehiclePrice>{formatPrice(vehicle.pricing?.price)}</VehiclePrice>
+                  <IconButton 
+                    color={theme.colors.success}
+                    hoverColor={theme.colors.success}
+                    onClick={() => addVehicleToSection(vehicle.id)}
+                  >
+                    <FaPlus />
+                  </IconButton>
+                </VehicleItem>
+              ))}
+            </VehicleList>
+          </FormGroup>
+        </ModalBody>
+        <ModalFooter>
+          <ActionButton onClick={() => setActiveModal(null)}>Cancel</ActionButton>
+          <ActionButton filled onClick={saveSection}>Save Section</ActionButton>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
+  );
+
+  const renderFooterModal = () => (
+    <Modal isOpen={activeModal === 'footer'}>
+      <ModalContent maxWidth="700px">
+        <ModalHeader>
+          <ModalTitle>Edit Footer</ModalTitle>
+          <CloseButton onClick={() => setActiveModal(null)}>
+            <FaTimes />
+          </CloseButton>
+        </ModalHeader>
+        <ModalBody>
+          <FormGroup>
+            <Label>Footer Components</Label>
+            <FooterComponentsList>
+              <FooterComponent>
+                <ComponentName>Social Media Links</ComponentName>
+                <ComponentDescription>Display social media icons and links</ComponentDescription>
+                <VisibilityButton
+                  visible={editingSection?.content?.showSocialMedia}
+                  onClick={() => toggleFooterComponent('showSocialMedia')}
+                >
+                  {editingSection?.content?.showSocialMedia ? <FaEye /> : <FaEyeSlash />}
+                </VisibilityButton>
+              </FooterComponent>
+              
+              <FooterComponent>
+                <ComponentName>Business Hours</ComponentName>
+                <ComponentDescription>Show opening and closing times</ComponentDescription>
+                <VisibilityButton
+                  visible={editingSection?.content?.showHours}
+                  onClick={() => toggleFooterComponent('showHours')}
+                >
+                  {editingSection?.content?.showHours ? <FaEye /> : <FaEyeSlash />}
+                </VisibilityButton>
+              </FooterComponent>
+              
+              <FooterComponent>
+                <ComponentName>Location Map</ComponentName>
+                <ComponentDescription>Display dealership location</ComponentDescription>
+                <VisibilityButton
+                  visible={editingSection?.content?.showMap}
+                  onClick={() => toggleFooterComponent('showMap')}
+                >
+                  {editingSection?.content?.showMap ? <FaEye /> : <FaEyeSlash />}
+                </VisibilityButton>
+              </FooterComponent>
+              
+              <FooterComponent>
+                <ComponentName>Services List</ComponentName>
+                <ComponentDescription>Show available services</ComponentDescription>
+                <VisibilityButton
+                  visible={editingSection?.content?.showServices}
+                  onClick={() => toggleFooterComponent('showServices')}
+                >
+                  {editingSection?.content?.showServices ? <FaEye /> : <FaEyeSlash />}
+                </VisibilityButton>
+              </FooterComponent>
+              
+              <FooterComponent>
+                <ComponentName>Certifications</ComponentName>
+                <ComponentDescription>Display certifications and awards</ComponentDescription>
+                <VisibilityButton
+                  visible={editingSection?.content?.showCertifications}
+                  onClick={() => toggleFooterComponent('showCertifications')}
+                >
+                  {editingSection?.content?.showCertifications ? <FaEye /> : <FaEyeSlash />}
+                </VisibilityButton>
+              </FooterComponent>
+            </FooterComponentsList>
+          </FormGroup>
+          
+          <FormGroup>
+            <Label>Custom Footer Text</Label>
+            <TextArea
+              value={editingSection?.content?.customText || ''}
+              onChange={(e) => updateSectionContent('customText', e.target.value)}
+              placeholder="Add any custom text for the footer..."
+            />
+          </FormGroup>
+          
+          <FormGroup>
+            <Label>Background Color</Label>
+            <Input
+              type="color"
+              value={editingSection?.content?.backgroundColor || '#1f2937'}
+              onChange={(e) => updateSectionContent('backgroundColor', e.target.value)}
+            />
+          </FormGroup>
+        </ModalBody>
+        <ModalFooter>
+          <ActionButton onClick={() => setActiveModal(null)}>Cancel</ActionButton>
+          <ActionButton filled onClick={saveSection}>Save Section</ActionButton>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
+  );
+
+  const sectionConfigs = {
+    hero: {
+      name: 'Hero Section',
+      description: 'Main banner with dealer branding and call-to-action',
+      icon: FaImage,
+      color: `${theme.colors.blue500}20`,
+      textColor: theme.colors.blue500,
+    },
+    categories: {
+      name: 'Browse by Category',
+      description: 'Display vehicle categories for easy browsing',
+      icon: FaList,
+      color: `${theme.colors.green500}20`,
+      textColor: theme.colors.green500,
+    },
+    featured: {
+      name: 'Featured Vehicles',
+      description: 'Showcase handpicked vehicles from your inventory',
+      icon: FaCar,
+      color: `${theme.colors.purple500}20`,
+      textColor: theme.colors.purple500,
+    },
+    'special-offers': {
+      name: 'Special Offers',
+      description: 'Highlight vehicles with special pricing or promotions',
+      icon: FaCar,
+      color: `${theme.colors.red500}20`,
+      textColor: theme.colors.red500,
+    },
+    footer: {
+      name: 'Footer',
+      description: 'Contact information and dealership details',
+      icon: FaAlignLeft,
+      color: `${theme.colors.gray500}20`,
+      textColor: theme.colors.gray500,
+    },
   };
-
-  const handleDragOver = (e) => {
-    e.preventDefault();
-    e.dataTransfer.dropEffect = 'move';
-  };
-
-  const handleDrop = (e, targetSectionId) => {
-    e.preventDefault();
-    
-    if (!draggedItem || draggedItem === targetSectionId) {
-      setDraggedItem(null);
-      return;
-    }
-
-    const draggedIndex = sections.findIndex(s => s.id === draggedItem);
-    const targetIndex = sections.findIndex(s => s.id === targetSectionId);
-
-    if (draggedIndex === -1 || targetIndex === -1) {
-      setDraggedItem(null);
-      return;
-    }
-
-    const newSections = [...sections];
-    const [draggedSection] = newSections.splice(draggedIndex, 1);
-    newSections.splice(targetIndex, 0, draggedSection);
-
-    const updatedSections = newSections.map((section, index) => ({
-      ...section,
-      order: index + 1,
-    }));
-
-    setSections(updatedSections);
-    setDraggedItem(null);
-    setHasChanges(true);
-  };
-
-  const moveSection = (sectionId, direction) => {
-    const currentIndex = sections.findIndex(s => s.id === sectionId);
-    if (currentIndex === -1) return;
-
-    const newIndex = direction === 'up' ? currentIndex - 1 : currentIndex + 1;
-    if (newIndex < 0 || newIndex >= sections.length) return;
-
-    const newSections = [...sections];
-    [newSections[currentIndex], newSections[newIndex]] = [newSections[newIndex], newSections[currentIndex]];
-
-    const updatedSections = newSections.map((section, index) => ({
-      ...section,
-      order: index + 1,
-    }));
-
-    setSections(updatedSections);
-    setHasChanges(true);
-  };
-
-  // Load sections from Redux on component mount
-  useEffect(() => {
-    if (reduxSections && reduxSections.length > 0) {
-      setSections(initializeSections(reduxSections));
-    } else {
-      const saved = localStorage.getItem(`dealership-content-${dealer.slug}`);
-      if (saved) {
-        try {
-          const savedSections = JSON.parse(saved);
-          setSections(initializeSections(savedSections));
-          dispatch(updatePageSections(savedSections));
-        } catch (error) {
-          console.error('Failed to load saved sections:', error);
-        }
-      } else {
-        setSections(initializeSections(reduxSections));
-      }
-    }
-  }, [reduxSections, dealer.slug, dispatch, vendor]);
-
-  // Reset hasChanges when sections match Redux state
-  useEffect(() => {
-    if (reduxSections && sections.length > 0) {
-      const currentSectionsData = sections.map(({ icon, ...section }) => section);
-      const hasChangedData = JSON.stringify(currentSectionsData) !== JSON.stringify(reduxSections);
-      setHasChanges(hasChangedData);
-    }
-  }, [sections, reduxSections]);
 
   return (
     <>
@@ -950,28 +1041,7 @@ const ContentManagementTab = ({ dealer }) => {
 
         <SectionsContainer>
           <SectionsGrid>
-            {/* Section Order Card */}
-            <SectionCard 
-              color={theme.colors.gray600}
-              onClick={handleOrderClick}
-            >
-              <CardIcon color={`${theme.colors.gray600}20`} textColor={theme.colors.gray600}>
-                <FaSort />
-              </CardIcon>
-              <CardTitle>Section Order</CardTitle>
-              <CardDescription>
-                Arrange the order of all page sections using drag and drop
-              </CardDescription>
-              <CardFooter>
-                <CardBadge color={`${theme.colors.gray600}20`} textColor={theme.colors.gray600}>
-                  System
-                </CardBadge>
-              </CardFooter>
-            </SectionCard>
-
-            {/* Default Section Cards */}
             {sections
-              .filter(section => section.type === 'default' || !section.type)
               .sort((a, b) => a.order - b.order)
               .map((section) => {
                 const config = sectionConfigs[section.id];
@@ -1003,231 +1073,16 @@ const ContentManagementTab = ({ dealer }) => {
                   </SectionCard>
                 );
               })}
-
-            {/* Custom Section Cards */}
-            {sections
-              .filter(section => section.type === 'custom')
-              .sort((a, b) => a.order - b.order)
-              .map((section) => {
-                const typeConfig = customSectionTypes.find(t => t.id === section.customType);
-                const colors = typeConfig ? {
-                  color: typeConfig.color,
-                  textColor: typeConfig.textColor,
-                } : {
-                  color: `${theme.colors.primary}20`,
-                  textColor: theme.colors.primary,
-                };
-
-                return (
-                  <SectionCard
-                    key={section.id}
-                    isVisible={section.visible}
-                    color={colors.textColor}
-                    onClick={() => handleSectionClick(section)}
-                  >
-                    <CardIcon color={colors.color} textColor={colors.textColor}>
-                      <section.icon />
-                    </CardIcon>
-                    <CardTitle>{section.name}</CardTitle>
-                    <CardDescription>{section.description}</CardDescription>
-                    <CardFooter>
-                      <CardBadge color={colors.color} textColor={colors.textColor}>
-                        Custom
-                      </CardBadge>
-                      <div style={{ display: 'flex', gap: theme.spacing.sm }}>
-                        <VisibilityButton
-                          visible={section.visible}
-                          onClick={(e) => toggleSectionVisibility(section.id, e)}
-                        >
-                          {section.visible ? <FaEye /> : <FaEyeSlash />}
-                        </VisibilityButton>
-                        <VisibilityButton
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            removeCustomSection(section.id);
-                          }}
-                          style={{ color: theme.colors.error }}
-                        >
-                          <FaTimes />
-                        </VisibilityButton>
-                      </div>
-                    </CardFooter>
-                  </SectionCard>
-                );
-              })}
-
-            {/* Add Custom Section Card */}
-            <AddSectionCard onClick={handleAddCustomSection}>
-              <AddIcon>
-                <FaPlus />
-              </AddIcon>
-              <AddTitle>Add Custom Section</AddTitle>
-              <AddDescription>
-                Create a custom content section for your dealership page
-              </AddDescription>
-            </AddSectionCard>
           </SectionsGrid>
         </SectionsContainer>
       </ContentContainer>
 
-      {/* Section Order Modal */}
-      <Modal isOpen={orderModal} maxWidth="700px">
-        <ModalContent>
-          <ModalHeader>
-            <ModalTitle>Section Order</ModalTitle>
-            <CloseButton onClick={() => setOrderModal(false)}>
-              <FaTimes />
-            </CloseButton>
-          </ModalHeader>
-          <ModalBody>
-            <OrderList>
-              {sections
-                .sort((a, b) => a.order - b.order)
-                .map((section) => {
-                  const config = sectionConfigs[section.id] || customSectionTypes.find(t => t.id === section.customType);
-                  const colors = config ? {
-                    color: config.color,
-                    textColor: config.textColor,
-                  } : {
-                    color: `${theme.colors.primary}20`,
-                    textColor: theme.colors.primary,
-                  };
-
-                  return (
-                    <OrderItem
-                      key={section.id}
-                      isDragging={draggedItem === section.id}
-                      draggable
-                      onDragStart={(e) => handleDragStart(e, section.id)}
-                      onDragOver={handleDragOver}
-                      onDrop={(e) => handleDrop(e, section.id)}
-                    >
-                      <DragHandle>
-                        <FaGripVertical />
-                      </DragHandle>
-                      <OrderItemContent>
-                        <OrderItemIcon color={colors.color} textColor={colors.textColor}>
-                          <section.icon />
-                        </OrderItemIcon>
-                        <OrderItemInfo>
-                          <OrderItemName>{section.name}</OrderItemName>
-                          <OrderItemType>
-                            {section.type === 'custom' ? 'Custom' : 'Default'} Section
-                          </OrderItemType>
-                        </OrderItemInfo>
-                      </OrderItemContent>
-                      <OrderActions>
-                        <OrderButton onClick={() => moveSection(section.id, 'up')}>
-                          <FaArrowUp />
-                        </OrderButton>
-                        <OrderButton onClick={() => moveSection(section.id, 'down')}>
-                          <FaArrowDown />
-                        </OrderButton>
-                      </OrderActions>
-                    </OrderItem>
-                  );
-                })}
-            </OrderList>
-          </ModalBody>
-          <ModalFooter>
-            <ActionButton onClick={() => setOrderModal(false)}>
-              Cancel
-            </ActionButton>
-            <ActionButton filled onClick={saveSectionOrder}>
-              Save Order
-            </ActionButton>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-
-      {/* Section Edit Modal */}
-      <Modal isOpen={!!activeModal && activeModal !== 'custom'}>
-        <ModalContent>
-          <ModalHeader>
-            <ModalTitle>
-              Edit {editingSection?.name || 'Section'}
-            </ModalTitle>
-            <CloseButton onClick={() => setActiveModal(null)}>
-              <FaTimes />
-            </CloseButton>
-          </ModalHeader>
-          <ModalBody>
-            {editingSection && (
-              <>
-                {/* Get field configuration */}
-                {(() => {
-                  const config = editingSection.type === 'custom' 
-                    ? customSectionTypes.find(t => t.id === editingSection.customType)
-                    : sectionConfigs[editingSection.id];
-                  
-                  return config?.fields?.map((field) => (
-                    <FormGroup key={field.name}>
-                      <Label htmlFor={field.name}>
-                        {field.label} {field.required && '*'}
-                      </Label>
-                      {renderFormField(
-                        field,
-                        editingSection.content?.[field.name],
-                        (fieldName, value) => {
-                          setEditingSection({
-                            ...editingSection,
-                            content: {
-                              ...editingSection.content,
-                              [fieldName]: value,
-                            },
-                          });
-                        }
-                      )}
-                    </FormGroup>
-                  ));
-                })()}
-              </>
-            )}
-          </ModalBody>
-          <ModalFooter>
-            <ActionButton onClick={() => setActiveModal(null)}>
-              Cancel
-            </ActionButton>
-            <ActionButton filled onClick={saveSection}>
-              Save Section
-            </ActionButton>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-
-      {/* Add Custom Section Modal */}
-      <Modal isOpen={customSectionModal}>
-        <ModalContent maxWidth="800px">
-          <ModalHeader>
-            <ModalTitle>Add Custom Section</ModalTitle>
-            <CloseButton onClick={() => setCustomSectionModal(false)}>
-              <FaTimes />
-            </CloseButton>
-          </ModalHeader>
-          <ModalBody>
-            <SectionsGrid>
-              {customSectionTypes.map((type) => (
-                <SectionCard 
-                  key={type.id} 
-                  color={type.textColor}
-                  onClick={() => addCustomSection(type.id)}
-                >
-                  <CardIcon color={type.color} textColor={type.textColor}>
-                    <type.icon />
-                  </CardIcon>
-                  <CardTitle>{type.name}</CardTitle>
-                  <CardDescription>{type.description}</CardDescription>
-                  <CardFooter>
-                    <CardBadge color={type.color} textColor={type.textColor}>
-                      Custom
-                    </CardBadge>
-                  </CardFooter>
-                </SectionCard>
-              ))}
-            </SectionsGrid>
-          </ModalBody>
-        </ModalContent>
-      </Modal>
+      {/* Render modals */}
+      {renderHeroModal()}
+      {renderCategoriesModal()}
+      {renderVehicleModal('featured', 'Featured Vehicles')}
+      {renderVehicleModal('special-offers', 'Special Offers')}
+      {renderFooterModal()}
     </>
   );
 };
