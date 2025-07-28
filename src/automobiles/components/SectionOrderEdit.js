@@ -16,8 +16,6 @@ import {
   selectLoading,
   updatePageSections,
   publishPageContent,
-  updateSectionVisibility,
-  reorderSections,
 } from '../../store/slices/automobileManagementSlice';
 
 const Container = styled.div`
