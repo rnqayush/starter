@@ -4,11 +4,10 @@ import styled from 'styled-components';
 import { FaSave, FaGlobe, FaImage, FaUpload, FaTimes } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
 import {
-  selectPageSections,
-  selectVendor,
+  selectDraftPageSections,
+  selectEditingVendor,
   selectLoading,
-  updatePageSections,
-  publishPageContent,
+  updatePageSectionContent,
 } from '../../store/slices/automobileManagementSlice';
 
 const Container = styled.div`
@@ -206,8 +205,8 @@ const UrlOption = styled.div`
 
 const HeroSectionEdit = ({ dealer }) => {
   const dispatch = useDispatch();
-  const sections = useSelector(selectPageSections);
-  const vendor = useSelector(selectVendor);
+  const sections = useSelector(selectDraftPageSections);
+  const vendor = useSelector(selectEditingVendor);
   const loading = useSelector(selectLoading);
 
   const [heroContent, setHeroContent] = useState({
@@ -246,11 +245,18 @@ const HeroSectionEdit = ({ dealer }) => {
   }, [sections, vendor]);
 
   const updateContent = (field, value) => {
-    setHeroContent(prev => ({
-      ...prev,
+    const newContent = {
+      ...heroContent,
       [field]: value,
-    }));
+    };
+    setHeroContent(newContent);
     setHasChanges(true);
+
+    // Dispatch to Redux to track changes
+    dispatch(updatePageSectionContent({
+      sectionId: 'hero',
+      content: { [field]: value },
+    }));
   };
 
   const handleImageUpload = event => {
@@ -269,27 +275,23 @@ const HeroSectionEdit = ({ dealer }) => {
   };
 
   const saveChanges = () => {
-    const updatedSections = sections.map(section =>
-      section.id === 'hero'
-        ? { ...section, content: { ...section.content, ...heroContent } }
-        : section
-    );
-
-    dispatch(updatePageSections(updatedSections));
+    // Update the section content in Redux
+    dispatch(updatePageSectionContent({
+      sectionId: 'hero',
+      content: heroContent,
+    }));
     setHasChanges(false);
-    alert('Hero section saved successfully!');
+    alert('Hero section changes tracked! Use sidebar to save/publish.');
   };
 
   const publishChanges = () => {
-    const updatedSections = sections.map(section =>
-      section.id === 'hero'
-        ? { ...section, content: { ...section.content, ...heroContent } }
-        : section
-    );
-
-    dispatch(publishPageContent(updatedSections));
+    // Update the section content in Redux
+    dispatch(updatePageSectionContent({
+      sectionId: 'hero',
+      content: heroContent,
+    }));
     setHasChanges(false);
-    alert('Hero section published successfully! Changes are now live.');
+    alert('Hero section changes tracked! Use sidebar to save/publish.');
   };
 
   if (loading) {
@@ -318,16 +320,7 @@ const HeroSectionEdit = ({ dealer }) => {
             color={theme.colors.blue500}
           >
             <FaSave />
-            Save Changes
-          </ActionButton>
-          <ActionButton
-            onClick={publishChanges}
-            disabled={!hasChanges}
-            filled
-            color={theme.colors.success}
-          >
-            <FaGlobe />
-            Save & Go Public
+            Apply Changes
           </ActionButton>
         </HeaderActions>
       </Header>
