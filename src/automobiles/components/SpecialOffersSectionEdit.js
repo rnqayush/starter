@@ -249,6 +249,7 @@ const SpecialOffersSectionEdit = ({ dealer }) => {
   const sections = useSelector(selectPageSections);
   const vehicles = useSelector(selectVehicles);
   const vendor = useSelector(selectVendor);
+  const loading = useSelector(selectLoading);
   
   const [sectionContent, setSectionContent] = useState({
     title: '🔥 Special Offers',
@@ -347,6 +348,16 @@ const SpecialOffersSectionEdit = ({ dealer }) => {
     setHasChanges(false);
     alert('Special offers section published successfully! Changes are now live.');
   };
+
+  if (loading) {
+    return (
+      <Container>
+        <Header>
+          <HeaderTitle>Loading Special Offers Section...</HeaderTitle>
+        </Header>
+      </Container>
+    );
+  }
 
   return (
     <Container>
