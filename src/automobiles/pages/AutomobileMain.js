@@ -650,20 +650,22 @@ const AutomobileMain = () => {
               );
 
             case 'categories':
+              const visibleCategories = categories.filter(category =>
+                sectionConfig.content?.visibleCategories?.includes(category.id) ?? true
+              );
               return (
                 <Section key="categories">
                   <Container>
                     <SectionHeader>
                       <SectionTitle textColor={dealerTheme.textColor}>
-                        Browse by Category
+                        {sectionConfig.content?.title || 'Browse by Category'}
                       </SectionTitle>
                       <SectionSubtitle>
-                        Explore our diverse range of vehicles across different
-                        categories
+                        {sectionConfig.content?.subtitle || 'Explore our diverse range of vehicles across different categories'}
                       </SectionSubtitle>
                     </SectionHeader>
                     <Grid minWidth="280px">
-                      {categories.map(category => (
+                      {visibleCategories.map(category => (
                         <CategoryCard
                           key={category.id}
                           category={category}
