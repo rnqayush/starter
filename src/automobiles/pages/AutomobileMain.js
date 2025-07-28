@@ -744,6 +744,7 @@ const AutomobileMain = () => {
                   dealerSlug={vendor.slug}
                   dealer={vendor}
                   theme={dealerTheme}
+                  content={sectionConfig.content || {}}
                 />
               );
 
