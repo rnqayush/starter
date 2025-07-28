@@ -226,6 +226,8 @@ const DealerDashboard = () => {
         return <CustomSectionEdit dealer={dealer} />;
       case 'inventory':
         return <VehicleInventoryTab dealer={dealer} />;
+      case 'categories':
+        return <CategoryManagement dealer={dealer} />;
       case 'add-vehicle':
         return <AddVehicleTab dealer={dealer} />;
       case 'bulk-import':
