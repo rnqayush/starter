@@ -175,7 +175,9 @@ const CardBadge = styled.span`
   font-weight: 500;
 `;
 
-const VisibilityButton = styled.button`
+const VisibilityButton = styled.button.withConfig({
+  shouldForwardProp: (prop) => prop !== 'visible',
+})`
   background: none;
   border: none;
   color: ${props => props.visible ? theme.colors.success : theme.colors.gray400};
