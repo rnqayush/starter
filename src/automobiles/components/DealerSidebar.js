@@ -17,7 +17,6 @@ import {
   FaWrench,
   FaTags,
   FaArrowLeft,
-  FaEdit,
   FaImage,
   FaList,
   FaAlignLeft,
