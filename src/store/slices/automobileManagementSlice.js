@@ -252,6 +252,33 @@ const automobileManagementSlice = createSlice({
       state.error = null;
     },
 
+    // Page content management actions
+    updatePageSections: (state, action) => {
+      state.pageContent.sections = action.payload;
+    },
+    publishPageContent: (state, action) => {
+      state.pageContent.sections = action.payload;
+      state.pageContent.lastPublished = new Date().toISOString();
+    },
+    addCustomSection: (state, action) => {
+      state.pageContent.sections.push(action.payload);
+    },
+    removeCustomSection: (state, action) => {
+      state.pageContent.sections = state.pageContent.sections.filter(
+        section => section.id !== action.payload
+      );
+    },
+    updateSectionVisibility: (state, action) => {
+      const { sectionId, visible } = action.payload;
+      const section = state.pageContent.sections.find(s => s.id === sectionId);
+      if (section) {
+        section.visible = visible;
+      }
+    },
+    reorderSections: (state, action) => {
+      state.pageContent.sections = action.payload;
+    },
+
     // Reset state
     resetAutomobileState: state => {
       return initialState;
