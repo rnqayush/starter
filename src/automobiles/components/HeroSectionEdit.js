@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { FaSave, FaGlobe, FaImage, FaUpload, FaTimes } from 'react-icons/fa';
+import { FaImage, FaUpload, FaTimes } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
 import {
-  selectPageSections,
-  selectVendor,
   selectLoading,
-  updatePageSections,
-  publishPageContent,
+  selectSectionContent,
+  updatePageSectionContent,
 } from '../../store/slices/automobileManagementSlice';
 
 const Container = styled.div`
@@ -55,36 +53,6 @@ const HeaderTitle = styled.h2`
 const HeaderActions = styled.div`
   display: flex;
   gap: ${theme.spacing.md};
-`;
-
-const ActionButton = styled.button.withConfig({
-  shouldForwardProp: prop => !['filled', 'color'].includes(prop),
-})`
-  padding: ${theme.spacing.sm} ${theme.spacing.md};
-  border: 2px solid ${props => props.color || theme.colors.primary};
-  background: ${props =>
-    props.filled ? props.color || theme.colors.primary : theme.colors.white};
-  color: ${props =>
-    props.filled ? theme.colors.white : props.color || theme.colors.primary};
-  border-radius: ${theme.borderRadius.md};
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  gap: ${theme.spacing.sm};
-
-  &:hover {
-    background: ${props => props.color || theme.colors.primary};
-    color: ${theme.colors.white};
-    transform: translateY(-1px);
-  }
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    transform: none;
-  }
 `;
 
 const Content = styled.div`
@@ -206,47 +174,20 @@ const UrlOption = styled.div`
 
 const HeroSectionEdit = ({ dealer }) => {
   const dispatch = useDispatch();
-  const sections = useSelector(selectPageSections);
-  const vendor = useSelector(selectVendor);
   const loading = useSelector(selectLoading);
+  const heroContent = useSelector(selectSectionContent('hero'));
 
-  const [heroContent, setHeroContent] = useState({
-    title: '',
-    subtitle: '',
-    backgroundImage: '',
-  });
+  const [localChanges, setLocalChanges] = useState({});
   const [hasChanges, setHasChanges] = useState(false);
 
-  // Initialize with data from Redux state and vendor
-  useEffect(() => {
-    const heroSection = sections.find(s => s.id === 'hero');
-
-    if (heroSection?.content && Object.keys(heroSection.content).length > 0) {
-      setHeroContent({
-        title:
-          heroSection.content.title ||
-          (vendor?.name ? `Welcome to ${vendor.name}` : ''),
-        subtitle:
-          heroSection.content.subtitle ||
-          vendor?.businessInfo?.description ||
-          '',
-        backgroundImage:
-          heroSection.content.backgroundImage ||
-          vendor?.businessInfo?.coverImage ||
-          '',
-      });
-    } else if (vendor) {
-      // Initialize with vendor data if no section content exists
-      setHeroContent({
-        title: vendor.name ? `Welcome to ${vendor.name}` : '',
-        subtitle: vendor.businessInfo?.description || '',
-        backgroundImage: vendor.businessInfo?.coverImage || '',
-      });
-    }
-  }, [sections, vendor]);
+  // Get current values (Redux + local changes)
+  const currentContent = {
+    ...heroContent,
+    ...localChanges,
+  };
 
   const updateContent = (field, value) => {
-    setHeroContent(prev => ({
+    setLocalChanges(prev => ({
       ...prev,
       [field]: value,
     }));
@@ -268,29 +209,23 @@ const HeroSectionEdit = ({ dealer }) => {
     updateContent('backgroundImage', '');
   };
 
-  const saveChanges = () => {
-    const updatedSections = sections.map(section =>
-      section.id === 'hero'
-        ? { ...section, content: { ...section.content, ...heroContent } }
-        : section
-    );
-
-    dispatch(updatePageSections(updatedSections));
-    setHasChanges(false);
-    alert('Hero section saved successfully!');
-  };
-
-  const publishChanges = () => {
-    const updatedSections = sections.map(section =>
-      section.id === 'hero'
-        ? { ...section, content: { ...section.content, ...heroContent } }
-        : section
-    );
-
-    dispatch(publishPageContent(updatedSections));
-    setHasChanges(false);
-    alert('Hero section published successfully! Changes are now live.');
-  };
+  // Apply changes automatically when user makes any change
+  useEffect(() => {
+    if (hasChanges) {
+      const timeout = setTimeout(() => {
+        if (Object.keys(localChanges).length > 0) {
+          dispatch(
+            updatePageSectionContent({
+              sectionId: 'hero',
+              content: localChanges,
+            })
+          );
+          setLocalChanges({});
+        }
+      }, 500); // Debounce
+      return () => clearTimeout(timeout);
+    }
+  }, [localChanges, hasChanges, dispatch]);
 
   if (loading) {
     return (
@@ -312,23 +247,7 @@ const HeroSectionEdit = ({ dealer }) => {
           <HeaderTitle>Hero Section</HeaderTitle>
         </HeaderLeft>
         <HeaderActions>
-          <ActionButton
-            onClick={saveChanges}
-            disabled={!hasChanges}
-            color={theme.colors.blue500}
-          >
-            <FaSave />
-            Save Changes
-          </ActionButton>
-          <ActionButton
-            onClick={publishChanges}
-            disabled={!hasChanges}
-            filled
-            color={theme.colors.success}
-          >
-            <FaGlobe />
-            Save & Go Public
-          </ActionButton>
+          {/* Save functionality moved to sidebar */}
         </HeaderActions>
       </Header>
 
@@ -336,10 +255,10 @@ const HeroSectionEdit = ({ dealer }) => {
         <FormGroup>
           <Label>Background Image</Label>
           <ImageUploadSection>
-            {heroContent.backgroundImage && (
+            {currentContent.backgroundImage && (
               <ImagePreview>
                 <PreviewImage
-                  src={heroContent.backgroundImage}
+                  src={currentContent.backgroundImage}
                   alt="Hero background preview"
                 />
                 <RemoveImageButton onClick={removeImage}>
@@ -362,7 +281,7 @@ const HeroSectionEdit = ({ dealer }) => {
               <Label>Or enter image URL:</Label>
               <Input
                 type="url"
-                value={heroContent.backgroundImage}
+                value={currentContent.backgroundImage || ''}
                 onChange={e => updateContent('backgroundImage', e.target.value)}
                 placeholder="https://example.com/image.jpg"
               />
@@ -374,7 +293,7 @@ const HeroSectionEdit = ({ dealer }) => {
           <Label>Hero Title</Label>
           <Input
             type="text"
-            value={heroContent.title}
+            value={currentContent.title || ''}
             onChange={e => updateContent('title', e.target.value)}
             placeholder="Enter hero section title"
           />
@@ -383,7 +302,7 @@ const HeroSectionEdit = ({ dealer }) => {
         <FormGroup>
           <Label>Hero Subtitle/Description</Label>
           <TextArea
-            value={heroContent.subtitle}
+            value={currentContent.subtitle || ''}
             onChange={e => updateContent('subtitle', e.target.value)}
             placeholder="Enter hero section description"
           />

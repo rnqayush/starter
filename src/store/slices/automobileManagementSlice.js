@@ -97,8 +97,75 @@ export const submitEnquiry = createAsyncThunk(
   }
 );
 
+const defaultPageSections = [
+  {
+    id: 'hero',
+    name: 'Hero Section',
+    description: 'Main banner with dealer branding and call-to-action',
+    type: 'default',
+    visible: true,
+    order: 1,
+    content: {
+      title: '',
+      subtitle: '',
+      backgroundImage: '',
+      primaryButtonText: 'Browse Vehicles',
+      secondaryButtonText: 'View Categories',
+    },
+  },
+  {
+    id: 'categories',
+    name: 'Browse by Category',
+    description: 'Display vehicle categories for easy browsing',
+    type: 'default',
+    visible: true,
+    order: 2,
+    content: {
+      title: 'Browse by Category',
+      subtitle:
+        'Explore our diverse range of vehicles across different categories',
+      visibleCategories: [],
+    },
+  },
+  {
+    id: 'featured',
+    name: 'Featured Vehicles',
+    description: 'Showcase handpicked vehicles from your inventory',
+    type: 'default',
+    visible: true,
+    order: 3,
+    content: {
+      title: 'Featured Vehicles',
+      subtitle: 'Handpicked vehicles that customers love the most',
+      vehicleIds: [],
+    },
+  },
+  {
+    id: 'special-offers',
+    name: 'Special Offers',
+    description: 'Highlight vehicles with special pricing or promotions',
+    type: 'default',
+    visible: true,
+    order: 4,
+    content: {
+      title: '🔥 Special Offers',
+      subtitle: "Limited time deals you don't want to miss",
+      vehicleIds: [],
+    },
+  },
+  {
+    id: 'footer',
+    name: 'Footer',
+    description: 'Contact information and dealership details',
+    type: 'default',
+    visible: true,
+    order: 5,
+    content: {},
+  },
+];
+
 const initialState = {
-  // Data state
+  // Data state - single source of truth
   vendor: null,
   categories: [],
   vehicles: [],
@@ -109,55 +176,13 @@ const initialState = {
 
   // Page content management
   pageContent: {
-    sections: [
-      {
-        id: 'hero',
-        name: 'Hero Section',
-        description: 'Main banner with dealer branding and call-to-action',
-        type: 'default',
-        visible: true,
-        order: 1,
-        content: {},
-      },
-      {
-        id: 'categories',
-        name: 'Browse by Category',
-        description: 'Display vehicle categories for easy browsing',
-        type: 'default',
-        visible: true,
-        order: 2,
-        content: {},
-      },
-      {
-        id: 'featured',
-        name: 'Featured Vehicles',
-        description: 'Showcase handpicked vehicles from your inventory',
-        type: 'default',
-        visible: true,
-        order: 3,
-        content: {},
-      },
-      {
-        id: 'special-offers',
-        name: 'Special Offers',
-        description: 'Highlight vehicles with special pricing or promotions',
-        type: 'default',
-        visible: true,
-        order: 4,
-        content: {},
-      },
-      {
-        id: 'footer',
-        name: 'Footer',
-        description: 'Contact information and dealership details',
-        type: 'default',
-        visible: true,
-        order: 5,
-        content: {},
-      },
-    ],
+    sections: [...defaultPageSections],
     lastPublished: null,
   },
+
+  // Admin editing state
+  tempChanges: {},
+  hasUnsavedChanges: false,
 
   // UI state
   loading: false,
@@ -205,6 +230,108 @@ const automobileManagementSlice = createSlice({
   name: 'automobileManagement',
   initialState,
   reducers: {
+    // Admin editing actions
+    setTempChange: (state, action) => {
+      const { path, value } = action.payload;
+      state.tempChanges[path] = value;
+      state.hasUnsavedChanges = true;
+    },
+
+    updatePageSectionContent: (state, action) => {
+      const { sectionId, content } = action.payload;
+      const sectionIndex = state.pageContent.sections.findIndex(
+        s => s.id === sectionId
+      );
+      if (sectionIndex !== -1) {
+        // Apply changes directly to main state for real-time updates
+        Object.entries(content).forEach(([key, value]) => {
+          state.pageContent.sections[sectionIndex].content[key] = value;
+        });
+
+        // Also store in temp changes for tracking
+        Object.entries(content).forEach(([key, value]) => {
+          const path = `pageContent.sections.${sectionIndex}.content.${key}`;
+          state.tempChanges[path] = value;
+        });
+        state.hasUnsavedChanges = true;
+      }
+    },
+
+    applyTempChanges: state => {
+      // Apply all temp changes to the main state
+      Object.entries(state.tempChanges).forEach(([path, value]) => {
+        const pathArray = path.split('.');
+        let target = state;
+
+        // Navigate to the nested object
+        for (let i = 0; i < pathArray.length - 1; i++) {
+          const key = pathArray[i];
+          if (key === 'sections' && Array.isArray(target.sections)) {
+            // Handle array index
+            const nextKey = pathArray[i + 1];
+            if (!isNaN(nextKey)) {
+              target = target.sections[parseInt(nextKey)];
+              i++; // Skip the index
+              continue;
+            }
+          }
+          if (!target[key]) {
+            target[key] = {};
+          }
+          target = target[key];
+        }
+
+        // Set the final value
+        const finalKey = pathArray[pathArray.length - 1];
+        target[finalKey] = value;
+      });
+
+      // Clear temp changes
+      state.tempChanges = {};
+      state.hasUnsavedChanges = false;
+    },
+
+    saveAndPublishChanges: state => {
+      // Apply all temp changes directly to main state (real-time update)
+      Object.entries(state.tempChanges).forEach(([path, value]) => {
+        const pathArray = path.split('.');
+        let target = state;
+
+        // Navigate to the nested object
+        for (let i = 0; i < pathArray.length - 1; i++) {
+          const key = pathArray[i];
+          if (key === 'sections' && Array.isArray(target.sections)) {
+            // Handle array index
+            const nextKey = pathArray[i + 1];
+            if (!isNaN(nextKey)) {
+              target = target.sections[parseInt(nextKey)];
+              i++; // Skip the index
+              continue;
+            }
+          }
+          if (!target[key]) {
+            target[key] = {};
+          }
+          target = target[key];
+        }
+
+        // Set the final value
+        const finalKey = pathArray[pathArray.length - 1];
+        target[finalKey] = value;
+      });
+
+      // Clear temp changes
+      state.tempChanges = {};
+      state.hasUnsavedChanges = false;
+
+      console.log('Changes published to main state');
+    },
+
+    discardTempChanges: state => {
+      state.tempChanges = {};
+      state.hasUnsavedChanges = false;
+    },
+
     // Filter actions
     setFilters: (state, action) => {
       state.filters = { ...state.filters, ...action.payload };
@@ -300,6 +427,7 @@ const automobileManagementSlice = createSlice({
         state.loading = false;
         const { data, meta } = action.payload;
 
+        // Update main state with fetched data
         state.vendor = data.vendor;
         state.categories = data.categories;
         state.vehicles = data.vehicles;
@@ -307,18 +435,65 @@ const automobileManagementSlice = createSlice({
         state.customerReviews = data.customerReviews;
         state.financing = data.financing;
 
-        // Update page content with data from API
+        // Initialize page content with vendor data
+        state.pageContent.sections = state.pageContent.sections.map(section => {
+          const sectionContent = { ...section.content };
+
+          // Initialize content based on vendor data
+          if (section.id === 'hero') {
+            sectionContent.title =
+              sectionContent.title || `Welcome to ${data.vendor.name}`;
+            sectionContent.subtitle =
+              sectionContent.subtitle ||
+              data.vendor.businessInfo?.description ||
+              '';
+            sectionContent.backgroundImage =
+              sectionContent.backgroundImage ||
+              data.vendor.businessInfo?.coverImage ||
+              '';
+          } else if (section.id === 'categories') {
+            sectionContent.visibleCategories =
+              sectionContent.visibleCategories.length > 0
+                ? sectionContent.visibleCategories
+                : data.categories.map(cat => cat.id);
+          } else if (section.id === 'featured') {
+            sectionContent.subtitle =
+              sectionContent.subtitle ||
+              `Handpicked vehicles from ${data.vendor.name} that customers love the most`;
+            sectionContent.vehicleIds =
+              sectionContent.vehicleIds.length > 0
+                ? sectionContent.vehicleIds
+                : data.vehicles
+                    .filter(v => v.featured)
+                    .slice(0, 4)
+                    .map(v => v.id);
+          } else if (section.id === 'special-offers') {
+            sectionContent.subtitle =
+              sectionContent.subtitle ||
+              `Limited time deals from ${data.vendor.name} you don't want to miss`;
+            sectionContent.vehicleIds =
+              sectionContent.vehicleIds.length > 0
+                ? sectionContent.vehicleIds
+                : data.vehicles
+                    .filter(v => v.pricing?.onSale)
+                    .slice(0, 4)
+                    .map(v => v.id);
+          }
+
+          return { ...section, content: sectionContent };
+        });
+
+        // Update page content with data from API if available
         if (data.pageContent) {
-          state.pageContent = {
-            ...state.pageContent,
-            sections: state.pageContent.sections.map(section => ({
+          state.pageContent.sections = state.pageContent.sections.map(
+            section => ({
               ...section,
               content: {
                 ...section.content,
                 ...data.pageContent[section.id],
               },
-            })),
-          };
+            })
+          );
         }
 
         // Update pagination
@@ -393,6 +568,11 @@ const automobileManagementSlice = createSlice({
 
 // Export actions
 export const {
+  setTempChange,
+  updatePageSectionContent,
+  applyTempChanges,
+  saveAndPublishChanges,
+  discardTempChanges,
   setFilters,
   clearFilters,
   setSearchQuery,
@@ -440,6 +620,18 @@ export const selectPageContent = state =>
   state.automobileManagement.pageContent;
 export const selectPageSections = state =>
   state.automobileManagement.pageContent.sections;
+export const selectHasUnsavedChanges = state =>
+  state.automobileManagement.hasUnsavedChanges;
+export const selectTempChanges = state =>
+  state.automobileManagement.tempChanges;
+
+// Helper selector to get current section content
+export const selectSectionContent = sectionId => state => {
+  const section = state.automobileManagement.pageContent.sections.find(
+    s => s.id === sectionId
+  );
+  return section ? section.content : {};
+};
 
 // Complex selectors
 export const selectFilteredVehicles = state => {

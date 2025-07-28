@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { theme } from '../../styles/GlobalStyle';
-import DealerSidebar from '../components/DealerSidebar';
+import EnhancedDealerSidebar from '../components/EnhancedDealerSidebar';
 import DashboardTab from '../components/DashboardTab';
 import SectionOrderEdit from '../components/SectionOrderEdit';
 import HeroSectionEdit from '../components/HeroSectionEdit';
@@ -265,7 +265,7 @@ const DealerDashboard = () => {
 
   return (
     <DashboardContainer>
-      <DealerSidebar
+      <EnhancedDealerSidebar
         activeTab={activeTab}
         onTabChange={setActiveTab}
         dealer={dealer}

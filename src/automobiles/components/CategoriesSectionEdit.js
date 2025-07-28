@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { FaSave, FaGlobe, FaList, FaEye, FaEyeSlash } from 'react-icons/fa';
+import { FaList, FaEye, FaEyeSlash } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
 import {
-  selectPageSections,
   selectCategories,
   selectLoading,
-  updatePageSections,
-  publishPageContent,
+  selectSectionContent,
+  updatePageSectionContent,
 } from '../../store/slices/automobileManagementSlice';
 
 const Container = styled.div`
@@ -55,36 +54,6 @@ const HeaderTitle = styled.h2`
 const HeaderActions = styled.div`
   display: flex;
   gap: ${theme.spacing.md};
-`;
-
-const ActionButton = styled.button.withConfig({
-  shouldForwardProp: prop => !['filled', 'color'].includes(prop),
-})`
-  padding: ${theme.spacing.sm} ${theme.spacing.md};
-  border: 2px solid ${props => props.color || theme.colors.primary};
-  background: ${props =>
-    props.filled ? props.color || theme.colors.primary : theme.colors.white};
-  color: ${props =>
-    props.filled ? theme.colors.white : props.color || theme.colors.primary};
-  border-radius: ${theme.borderRadius.md};
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  gap: ${theme.spacing.sm};
-
-  &:hover {
-    background: ${props => props.color || theme.colors.primary};
-    color: ${theme.colors.white};
-    transform: translateY(-1px);
-  }
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    transform: none;
-  }
 `;
 
 const Content = styled.div`
@@ -200,43 +169,21 @@ const VisibilityButton = styled.button.withConfig({
 
 const CategoriesSectionEdit = ({ dealer }) => {
   const dispatch = useDispatch();
-  const sections = useSelector(selectPageSections);
+  const categoriesContent = useSelector(selectSectionContent('categories'));
   const categories = useSelector(selectCategories);
   const loading = useSelector(selectLoading);
 
-  const [sectionContent, setSectionContent] = useState({
-    title: 'Browse by Category',
-    subtitle:
-      'Explore our diverse range of vehicles across different categories',
-    visibleCategories: [],
-  });
+  const [localChanges, setLocalChanges] = useState({});
   const [hasChanges, setHasChanges] = useState(false);
 
-  // Initialize with data from Redux state
-  useEffect(() => {
-    const categorySection = sections.find(s => s.id === 'categories');
-    if (categorySection?.content) {
-      setSectionContent({
-        title: categorySection.content.title || 'Browse by Category',
-        subtitle:
-          categorySection.content.subtitle ||
-          'Explore our diverse range of vehicles across different categories',
-        visibleCategories:
-          categorySection.content.visibleCategories ||
-          categories?.map(cat => cat.id) ||
-          [],
-      });
-    } else if (categories) {
-      // Initialize with all categories visible by default
-      setSectionContent(prev => ({
-        ...prev,
-        visibleCategories: categories.map(cat => cat.id),
-      }));
-    }
-  }, [sections, categories]);
+  // Get current values (Redux + local changes)
+  const currentContent = {
+    ...categoriesContent,
+    ...localChanges,
+  };
 
   const updateContent = (field, value) => {
-    setSectionContent(prev => ({
+    setLocalChanges(prev => ({
       ...prev,
       [field]: value,
     }));
@@ -244,7 +191,7 @@ const CategoriesSectionEdit = ({ dealer }) => {
   };
 
   const toggleCategoryVisibility = categoryId => {
-    const currentCategories = sectionContent.visibleCategories || [];
+    const currentCategories = currentContent.visibleCategories || [];
     const newCategories = currentCategories.includes(categoryId)
       ? currentCategories.filter(id => id !== categoryId)
       : [...currentCategories, categoryId];
@@ -252,29 +199,23 @@ const CategoriesSectionEdit = ({ dealer }) => {
     updateContent('visibleCategories', newCategories);
   };
 
-  const saveChanges = () => {
-    const updatedSections = sections.map(section =>
-      section.id === 'categories'
-        ? { ...section, content: { ...section.content, ...sectionContent } }
-        : section
-    );
-
-    dispatch(updatePageSections(updatedSections));
-    setHasChanges(false);
-    alert('Categories section saved successfully!');
-  };
-
-  const publishChanges = () => {
-    const updatedSections = sections.map(section =>
-      section.id === 'categories'
-        ? { ...section, content: { ...section.content, ...sectionContent } }
-        : section
-    );
-
-    dispatch(publishPageContent(updatedSections));
-    setHasChanges(false);
-    alert('Categories section published successfully! Changes are now live.');
-  };
+  // Apply changes automatically when user makes any change
+  useEffect(() => {
+    if (hasChanges) {
+      const timeout = setTimeout(() => {
+        if (Object.keys(localChanges).length > 0) {
+          dispatch(
+            updatePageSectionContent({
+              sectionId: 'categories',
+              content: localChanges,
+            })
+          );
+          setLocalChanges({});
+        }
+      }, 500); // Debounce
+      return () => clearTimeout(timeout);
+    }
+  }, [localChanges, hasChanges, dispatch]);
 
   if (loading) {
     return (
@@ -296,23 +237,7 @@ const CategoriesSectionEdit = ({ dealer }) => {
           <HeaderTitle>Categories Section</HeaderTitle>
         </HeaderLeft>
         <HeaderActions>
-          <ActionButton
-            onClick={saveChanges}
-            disabled={!hasChanges}
-            color={theme.colors.blue500}
-          >
-            <FaSave />
-            Save Changes
-          </ActionButton>
-          <ActionButton
-            onClick={publishChanges}
-            disabled={!hasChanges}
-            filled
-            color={theme.colors.success}
-          >
-            <FaGlobe />
-            Save & Go Public
-          </ActionButton>
+          {/* Save functionality moved to sidebar */}
         </HeaderActions>
       </Header>
 
@@ -321,7 +246,7 @@ const CategoriesSectionEdit = ({ dealer }) => {
           <Label>Section Title</Label>
           <Input
             type="text"
-            value={sectionContent.title}
+            value={currentContent.title || ''}
             onChange={e => updateContent('title', e.target.value)}
             placeholder="Enter section title"
           />
@@ -330,7 +255,7 @@ const CategoriesSectionEdit = ({ dealer }) => {
         <FormGroup>
           <Label>Section Subtitle</Label>
           <TextArea
-            value={sectionContent.subtitle}
+            value={currentContent.subtitle || ''}
             onChange={e => updateContent('subtitle', e.target.value)}
             placeholder="Enter section description"
           />
@@ -349,17 +274,17 @@ const CategoriesSectionEdit = ({ dealer }) => {
                   </CategoryDescription>
                 </CategoryInfo>
                 <VisibilityButton
-                  visible={sectionContent.visibleCategories?.includes(
+                  visible={currentContent.visibleCategories?.includes(
                     category.id
                   )}
                   onClick={() => toggleCategoryVisibility(category.id)}
                   title={
-                    sectionContent.visibleCategories?.includes(category.id)
+                    currentContent.visibleCategories?.includes(category.id)
                       ? 'Hide category'
                       : 'Show category'
                   }
                 >
-                  {sectionContent.visibleCategories?.includes(category.id) ? (
+                  {currentContent.visibleCategories?.includes(category.id) ? (
                     <FaEye />
                   ) : (
                     <FaEyeSlash />
