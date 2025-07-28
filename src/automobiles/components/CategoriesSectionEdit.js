@@ -12,6 +12,7 @@ import { theme } from '../../styles/GlobalStyle';
 import {
   selectPageSections,
   selectCategories,
+  selectLoading,
   updatePageSections,
   publishPageContent,
 } from '../../store/slices/automobileManagementSlice';
@@ -204,6 +205,7 @@ const CategoriesSectionEdit = ({ dealer }) => {
   const dispatch = useDispatch();
   const sections = useSelector(selectPageSections);
   const categories = useSelector(selectCategories);
+  const loading = useSelector(selectLoading);
   
   const [sectionContent, setSectionContent] = useState({
     title: 'Browse by Category',
@@ -270,6 +272,16 @@ const CategoriesSectionEdit = ({ dealer }) => {
     setHasChanges(false);
     alert('Categories section published successfully! Changes are now live.');
   };
+
+  if (loading) {
+    return (
+      <Container>
+        <Header>
+          <HeaderTitle>Loading Categories Section...</HeaderTitle>
+        </Header>
+      </Container>
+    );
+  }
 
   return (
     <Container>
