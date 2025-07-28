@@ -18,8 +18,7 @@ import {
   selectOnSaleVehicles,
   selectLoading,
   selectError,
-  selectLivePageSections,
-  selectLiveVendor,
+  selectPageSections,
   clearError,
 } from '../../store/slices/automobileManagementSlice';
 
@@ -472,17 +471,15 @@ const AutomobileMain = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // Redux selectors - use live data for public pages
-  const liveVendor = useSelector(selectLiveVendor);
-  const legacyVendor = useSelector(selectVendor);
-  const vendor = liveVendor || legacyVendor; // Use live data first, fallback to legacy
+  // Redux selectors - single source of truth
+  const vendor = useSelector(selectVendor);
   const categories = useSelector(selectCategories);
   const vehicles = useSelector(selectVehicles);
   const featuredVehicles = useSelector(selectFeaturedVehicles);
   const onSaleVehicles = useSelector(selectOnSaleVehicles);
   const loading = useSelector(selectLoading);
   const error = useSelector(selectError);
-  const pageSections = useSelector(selectLivePageSections);
+  const pageSections = useSelector(selectPageSections);
 
   const [vendorSlug, setVendorSlug] = useState(null);
 
@@ -609,10 +606,7 @@ const AutomobileMain = () => {
                   key="hero"
                   primaryColor={dealerTheme.primaryColor}
                   secondaryColor={dealerTheme.secondaryColor}
-                  heroImage={
-                    sectionConfig.content?.backgroundImage ||
-                    vendor.businessInfo.coverImage
-                  }
+                  heroImage={sectionConfig.content.backgroundImage}
                 >
                   <HeroContent>
                     <DealerHeader>
@@ -622,14 +616,12 @@ const AutomobileMain = () => {
                       />
                       <div>
                         <HeroTitle>
-                          {sectionConfig.content?.title ||
-                            `Welcome to ${vendor.name}`}
+                          {sectionConfig.content.title}
                         </HeroTitle>
                       </div>
                     </DealerHeader>
                     <HeroSubtitle>
-                      {sectionConfig.content?.subtitle ||
-                        vendor.businessInfo.description}
+                      {sectionConfig.content.subtitle}
                     </HeroSubtitle>
                     <HeroActions>
                       <HeroButton
@@ -637,8 +629,7 @@ const AutomobileMain = () => {
                         onClick={() => navigate(`${getBaseUrl()}/vehicles`)}
                       >
                         <FaCar />
-                        {sectionConfig.content?.primaryButtonText ||
-                          'Browse Vehicles'}
+                        {sectionConfig.content.primaryButtonText}
                       </HeroButton>
                       <HeroButton
                         className="secondary"
@@ -648,8 +639,7 @@ const AutomobileMain = () => {
                           )
                         }
                       >
-                        {sectionConfig.content?.secondaryButtonText ||
-                          'View Categories'}
+                        {sectionConfig.content.secondaryButtonText}
                         <FaArrowRight />
                       </HeroButton>
                     </HeroActions>
@@ -660,20 +650,19 @@ const AutomobileMain = () => {
             case 'categories':
               const visibleCategories = categories.filter(
                 category =>
-                  sectionConfig.content?.visibleCategories?.includes(
+                  sectionConfig.content.visibleCategories.includes(
                     category.id
-                  ) ?? true
+                  )
               );
               return (
                 <Section key="categories">
                   <Container>
                     <SectionHeader>
                       <SectionTitle textColor={dealerTheme.textColor}>
-                        {sectionConfig.content?.title || 'Browse by Category'}
+                        {sectionConfig.content.title}
                       </SectionTitle>
                       <SectionSubtitle>
-                        {sectionConfig.content?.subtitle ||
-                          'Explore our diverse range of vehicles across different categories'}
+                        {sectionConfig.content.subtitle}
                       </SectionSubtitle>
                     </SectionHeader>
                     <Grid minWidth="280px">
@@ -690,12 +679,11 @@ const AutomobileMain = () => {
               );
 
             case 'featured':
-              const featuredVehiclesToShow =
-                sectionConfig.content?.vehicleIds?.length > 0
-                  ? vehicles.filter(vehicle =>
-                      sectionConfig.content.vehicleIds.includes(vehicle.id)
-                    )
-                  : featuredVehicles.slice(0, 4);
+              const featuredVehiclesToShow = sectionConfig.content.vehicleIds.length > 0
+                ? vehicles.filter(vehicle =>
+                    sectionConfig.content.vehicleIds.includes(vehicle.id)
+                  )
+                : featuredVehicles.slice(0, 4);
               return (
                 <Section
                   key="featured"
@@ -706,11 +694,10 @@ const AutomobileMain = () => {
                   <Container>
                     <SectionHeader>
                       <SectionTitle textColor={dealerTheme.textColor}>
-                        {sectionConfig.content?.title || 'Featured Vehicles'}
+                        {sectionConfig.content.title}
                       </SectionTitle>
                       <SectionSubtitle>
-                        {sectionConfig.content?.subtitle ||
-                          `Handpicked vehicles from ${vendor.name} that customers love the most`}
+                        {sectionConfig.content.subtitle}
                       </SectionSubtitle>
                     </SectionHeader>
                     <Grid>
@@ -727,23 +714,21 @@ const AutomobileMain = () => {
               );
 
             case 'special-offers':
-              const specialOfferVehicles =
-                sectionConfig.content?.vehicleIds?.length > 0
-                  ? vehicles.filter(vehicle =>
-                      sectionConfig.content.vehicleIds.includes(vehicle.id)
-                    )
-                  : onSaleVehicles.slice(0, 4);
+              const specialOfferVehicles = sectionConfig.content.vehicleIds.length > 0
+                ? vehicles.filter(vehicle =>
+                    sectionConfig.content.vehicleIds.includes(vehicle.id)
+                  )
+                : onSaleVehicles.slice(0, 4);
               if (specialOfferVehicles.length === 0) return null;
               return (
                 <Section key="special-offers">
                   <Container>
                     <SectionHeader>
                       <SectionTitle textColor={dealerTheme.textColor}>
-                        {sectionConfig.content?.title || '🔥 Special Offers'}
+                        {sectionConfig.content.title}
                       </SectionTitle>
                       <SectionSubtitle>
-                        {sectionConfig.content?.subtitle ||
-                          `Limited time deals from ${vendor.name} you don't want to miss`}
+                        {sectionConfig.content.subtitle}
                       </SectionSubtitle>
                     </SectionHeader>
                     <Grid>
