@@ -18,7 +18,8 @@ import {
   selectOnSaleVehicles,
   selectLoading,
   selectError,
-  selectPageSections,
+  selectLivePageSections,
+  selectLiveVendor,
   clearError,
 } from '../../store/slices/automobileManagementSlice';
 
@@ -471,15 +472,15 @@ const AutomobileMain = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // Redux selectors
-  const vendor = useSelector(selectVendor);
+  // Redux selectors - use live data for public pages
+  const vendor = useSelector(selectLiveVendor) || useSelector(selectVendor); // Fallback to legacy selector
   const categories = useSelector(selectCategories);
   const vehicles = useSelector(selectVehicles);
   const featuredVehicles = useSelector(selectFeaturedVehicles);
   const onSaleVehicles = useSelector(selectOnSaleVehicles);
   const loading = useSelector(selectLoading);
   const error = useSelector(selectError);
-  const pageSections = useSelector(selectPageSections);
+  const pageSections = useSelector(selectLivePageSections);
 
   const [vendorSlug, setVendorSlug] = useState(null);
 
