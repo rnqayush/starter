@@ -384,6 +384,12 @@ export const {
   addToRecentlyViewed,
   clearError,
   resetAutomobileState,
+  updatePageSections,
+  publishPageContent,
+  addCustomSection,
+  removeCustomSection,
+  updateSectionVisibility,
+  reorderSections,
 } = automobileManagementSlice.actions;
 
 // Selectors
