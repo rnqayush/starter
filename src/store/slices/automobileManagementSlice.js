@@ -97,8 +97,91 @@ export const submitEnquiry = createAsyncThunk(
   }
 );
 
+const defaultPageSections = [
+  {
+    id: 'hero',
+    name: 'Hero Section',
+    description: 'Main banner with dealer branding and call-to-action',
+    type: 'default',
+    visible: true,
+    order: 1,
+    content: {},
+  },
+  {
+    id: 'categories',
+    name: 'Browse by Category',
+    description: 'Display vehicle categories for easy browsing',
+    type: 'default',
+    visible: true,
+    order: 2,
+    content: {},
+  },
+  {
+    id: 'featured',
+    name: 'Featured Vehicles',
+    description: 'Showcase handpicked vehicles from your inventory',
+    type: 'default',
+    visible: true,
+    order: 3,
+    content: {},
+  },
+  {
+    id: 'special-offers',
+    name: 'Special Offers',
+    description: 'Highlight vehicles with special pricing or promotions',
+    type: 'default',
+    visible: true,
+    order: 4,
+    content: {},
+  },
+  {
+    id: 'footer',
+    name: 'Footer',
+    description: 'Contact information and dealership details',
+    type: 'default',
+    visible: true,
+    order: 5,
+    content: {},
+  },
+];
+
 const initialState = {
-  // Data state
+  // Live data (what users see on public pages)
+  liveData: {
+    vendor: null,
+    categories: [],
+    vehicles: [],
+    promotions: [],
+    customerReviews: [],
+    financing: null,
+    pageContent: {
+      sections: [...defaultPageSections],
+      lastPublished: null,
+    },
+  },
+
+  // Draft data (admin changes before going live)
+  draftData: {
+    vendor: null,
+    categories: [],
+    vehicles: [],
+    promotions: [],
+    customerReviews: [],
+    financing: null,
+    pageContent: {
+      sections: [...defaultPageSections],
+      lastPublished: null,
+    },
+  },
+
+  // Editing state
+  editingVendor: null,
+  originalVendor: null,
+  changes: {},
+  hasUnsavedChanges: false,
+  activeVendorId: null,
+
+  // Legacy state for backward compatibility
   vendor: null,
   categories: [],
   vehicles: [],
@@ -107,57 +190,16 @@ const initialState = {
   customerReviews: [],
   financing: null,
 
-  // Page content management
+  // Page content management - kept for backward compatibility
   pageContent: {
-    sections: [
-      {
-        id: 'hero',
-        name: 'Hero Section',
-        description: 'Main banner with dealer branding and call-to-action',
-        type: 'default',
-        visible: true,
-        order: 1,
-        content: {},
-      },
-      {
-        id: 'categories',
-        name: 'Browse by Category',
-        description: 'Display vehicle categories for easy browsing',
-        type: 'default',
-        visible: true,
-        order: 2,
-        content: {},
-      },
-      {
-        id: 'featured',
-        name: 'Featured Vehicles',
-        description: 'Showcase handpicked vehicles from your inventory',
-        type: 'default',
-        visible: true,
-        order: 3,
-        content: {},
-      },
-      {
-        id: 'special-offers',
-        name: 'Special Offers',
-        description: 'Highlight vehicles with special pricing or promotions',
-        type: 'default',
-        visible: true,
-        order: 4,
-        content: {},
-      },
-      {
-        id: 'footer',
-        name: 'Footer',
-        description: 'Contact information and dealership details',
-        type: 'default',
-        visible: true,
-        order: 5,
-        content: {},
-      },
-    ],
+    sections: [...defaultPageSections],
     lastPublished: null,
   },
+
+  // Track which changes are pending publication
+  pendingChanges: {},
+  lastSaveTime: null,
+  lastPublishTime: null,
 
   // UI state
   loading: false,
@@ -205,6 +247,150 @@ const automobileManagementSlice = createSlice({
   name: 'automobileManagement',
   initialState,
   reducers: {
+    // Editing actions
+    setEditingVendor: (state, action) => {
+      const vendorId = action.payload;
+      // Get vendor from draft data for editing
+      let vendor = state.draftData.vendor?.id === vendorId ? state.draftData.vendor : null;
+
+      // If not found in draft, get from live data
+      if (!vendor && state.liveData.vendor?.id === vendorId) {
+        vendor = { ...state.liveData.vendor };
+        // Copy live vendor to draft for editing
+        state.draftData.vendor = vendor;
+        state.draftData.pageContent = { ...state.liveData.pageContent };
+      }
+
+      state.editingVendor = vendor ? { ...vendor } : null;
+      // Keep reference to original live version for comparison
+      state.originalVendor = state.liveData.vendor ? { ...state.liveData.vendor } : null;
+      state.activeVendorId = vendorId;
+      state.changes = {};
+      state.hasUnsavedChanges = false;
+    },
+
+    updateVendorField: (state, action) => {
+      const { field, value, section } = action.payload;
+      if (state.editingVendor) {
+        if (section) {
+          // Update nested section field
+          if (!state.editingVendor.sections) {
+            state.editingVendor.sections = {};
+          }
+          if (!state.editingVendor.sections[section]) {
+            state.editingVendor.sections[section] = {};
+          }
+          state.editingVendor.sections[section][field] = value;
+
+          // Track changes for nested sections
+          const changeKey = `sections.${section}.${field}`;
+          state.changes[changeKey] = {
+            old: state.originalVendor?.sections?.[section]?.[field],
+            new: value,
+          };
+        } else {
+          // Update top-level field
+          state.editingVendor[field] = value;
+          state.changes[field] = {
+            old: state.originalVendor?.[field],
+            new: value,
+          };
+        }
+        state.hasUnsavedChanges = true;
+        state.lastSaveTime = new Date().toISOString();
+      }
+    },
+
+    updatePageSectionContent: (state, action) => {
+      const { sectionId, content } = action.payload;
+      if (state.editingVendor) {
+        // Update draft page content
+        const sectionIndex = state.draftData.pageContent.sections.findIndex(
+          s => s.id === sectionId
+        );
+        if (sectionIndex !== -1) {
+          state.draftData.pageContent.sections[sectionIndex].content = {
+            ...state.draftData.pageContent.sections[sectionIndex].content,
+            ...content,
+          };
+
+          // Track changes
+          const changeKey = `pageContent.sections.${sectionId}.content`;
+          state.changes[changeKey] = {
+            old: state.liveData.pageContent.sections.find(s => s.id === sectionId)?.content || {},
+            new: state.draftData.pageContent.sections[sectionIndex].content,
+          };
+
+          state.hasUnsavedChanges = true;
+          state.lastSaveTime = new Date().toISOString();
+        }
+      }
+    },
+
+    saveChanges: (state) => {
+      // Save changes to draft only (for admin preview)
+      if (state.editingVendor && state.hasUnsavedChanges) {
+        // Update draft vendor
+        state.draftData.vendor = { ...state.editingVendor };
+
+        // Store pending changes for publication
+        if (state.editingVendor.id) {
+          state.pendingChanges[state.editingVendor.id] = { ...state.changes };
+        }
+
+        state.changes = {};
+        state.hasUnsavedChanges = false;
+        state.lastSaveTime = new Date().toISOString();
+      }
+    },
+
+    publishChanges: (state) => {
+      // Publish draft changes to live data (what users see)
+      if (state.editingVendor) {
+        console.log('Publishing changes for vendor:', state.editingVendor.name);
+
+        // Copy the current editing vendor (with all changes) to live data
+        state.liveData.vendor = { ...state.editingVendor };
+        state.liveData.pageContent = { ...state.draftData.pageContent };
+
+        // Also update the draft to match
+        state.draftData.vendor = { ...state.editingVendor };
+
+        // Update legacy state for backward compatibility
+        state.vendor = { ...state.editingVendor };
+        state.pageContent = { ...state.draftData.pageContent };
+
+        state.originalVendor = { ...state.editingVendor };
+
+        // Clear pending changes for this vendor
+        if (state.editingVendor.id) {
+          delete state.pendingChanges[state.editingVendor.id];
+        }
+        state.lastPublishTime = new Date().toISOString();
+
+        console.log('Published successfully at:', state.lastPublishTime);
+      }
+    },
+
+    discardChanges: (state) => {
+      if (state.originalVendor) {
+        state.editingVendor = { ...state.originalVendor };
+        // Restore draft data from live data
+        state.draftData.vendor = { ...state.liveData.vendor };
+        state.draftData.pageContent = { ...state.liveData.pageContent };
+        state.changes = {};
+        state.hasUnsavedChanges = false;
+      }
+    },
+
+    clearEditingVendor: (state) => {
+      state.editingVendor = null;
+      state.originalVendor = null;
+      state.changes = {};
+      state.hasUnsavedChanges = false;
+      state.activeVendorId = null;
+    },
+
     // Filter actions
     setFilters: (state, action) => {
       state.filters = { ...state.filters, ...action.payload };
@@ -260,28 +446,78 @@ const automobileManagementSlice = createSlice({
     // Page content management actions
     updatePageSections: (state, action) => {
       state.pageContent.sections = action.payload;
+      // Also update draft data
+      state.draftData.pageContent.sections = action.payload;
+      if (state.editingVendor) {
+        state.hasUnsavedChanges = true;
+        state.changes['pageContent.sections'] = {
+          old: state.liveData.pageContent.sections,
+          new: action.payload,
+        };
+      }
     },
     publishPageContent: (state, action) => {
       state.pageContent.sections = action.payload;
       state.pageContent.lastPublished = new Date().toISOString();
+      // Also update live data
+      state.liveData.pageContent.sections = action.payload;
+      state.liveData.pageContent.lastPublished = new Date().toISOString();
     },
     addCustomSection: (state, action) => {
       state.pageContent.sections.push(action.payload);
+      state.draftData.pageContent.sections.push(action.payload);
+      if (state.editingVendor) {
+        state.hasUnsavedChanges = true;
+        state.changes['pageContent.customSection'] = {
+          old: null,
+          new: action.payload,
+        };
+      }
     },
     removeCustomSection: (state, action) => {
+      const removedSection = state.pageContent.sections.find(s => s.id === action.payload);
       state.pageContent.sections = state.pageContent.sections.filter(
         section => section.id !== action.payload
       );
+      state.draftData.pageContent.sections = state.draftData.pageContent.sections.filter(
+        section => section.id !== action.payload
+      );
+      if (state.editingVendor && removedSection) {
+        state.hasUnsavedChanges = true;
+        state.changes[`pageContent.removeSection.${action.payload}`] = {
+          old: removedSection,
+          new: null,
+        };
+      }
     },
     updateSectionVisibility: (state, action) => {
       const { sectionId, visible } = action.payload;
       const section = state.pageContent.sections.find(s => s.id === sectionId);
+      const draftSection = state.draftData.pageContent.sections.find(s => s.id === sectionId);
       if (section) {
         section.visible = visible;
+      }
+      if (draftSection) {
+        draftSection.visible = visible;
+      }
+      if (state.editingVendor) {
+        state.hasUnsavedChanges = true;
+        state.changes[`pageContent.sections.${sectionId}.visible`] = {
+          old: state.liveData.pageContent.sections.find(s => s.id === sectionId)?.visible,
+          new: visible,
+        };
       }
     },
     reorderSections: (state, action) => {
       state.pageContent.sections = action.payload;
+      state.draftData.pageContent.sections = action.payload;
+      if (state.editingVendor) {
+        state.hasUnsavedChanges = true;
+        state.changes['pageContent.sectionsOrder'] = {
+          old: state.liveData.pageContent.sections,
+          new: action.payload,
+        };
+      }
     },
 
     // Reset state
@@ -300,6 +536,23 @@ const automobileManagementSlice = createSlice({
         state.loading = false;
         const { data, meta } = action.payload;
 
+        // Update live data
+        state.liveData.vendor = data.vendor;
+        state.liveData.categories = data.categories;
+        state.liveData.vehicles = data.vehicles;
+        state.liveData.promotions = data.promotions;
+        state.liveData.customerReviews = data.customerReviews;
+        state.liveData.financing = data.financing;
+
+        // Update draft data (initially same as live)
+        state.draftData.vendor = { ...data.vendor };
+        state.draftData.categories = [...data.categories];
+        state.draftData.vehicles = [...data.vehicles];
+        state.draftData.promotions = [...data.promotions];
+        state.draftData.customerReviews = [...data.customerReviews];
+        state.draftData.financing = data.financing ? { ...data.financing } : null;
+
+        // Update legacy state for backward compatibility
         state.vendor = data.vendor;
         state.categories = data.categories;
         state.vehicles = data.vehicles;
@@ -309,16 +562,17 @@ const automobileManagementSlice = createSlice({
 
         // Update page content with data from API
         if (data.pageContent) {
-          state.pageContent = {
-            ...state.pageContent,
-            sections: state.pageContent.sections.map(section => ({
-              ...section,
-              content: {
-                ...section.content,
-                ...data.pageContent[section.id],
-              },
-            })),
-          };
+          const updatedSections = state.pageContent.sections.map(section => ({
+            ...section,
+            content: {
+              ...section.content,
+              ...data.pageContent[section.id],
+            },
+          }));
+
+          state.pageContent.sections = updatedSections;
+          state.liveData.pageContent.sections = [...updatedSections];
+          state.draftData.pageContent.sections = [...updatedSections];
         }
 
         // Update pagination
@@ -393,6 +647,13 @@ const automobileManagementSlice = createSlice({
 
 // Export actions
 export const {
+  setEditingVendor,
+  updateVendorField,
+  updatePageSectionContent,
+  saveChanges,
+  publishChanges,
+  discardChanges,
+  clearEditingVendor,
   setFilters,
   clearFilters,
   setSearchQuery,
@@ -440,6 +701,20 @@ export const selectPageContent = state =>
   state.automobileManagement.pageContent;
 export const selectPageSections = state =>
   state.automobileManagement.pageContent.sections;
+export const selectLivePageSections = state =>
+  state.automobileManagement.liveData.pageContent.sections;
+export const selectDraftPageSections = state =>
+  state.automobileManagement.draftData.pageContent.sections;
+export const selectEditingVendor = state =>
+  state.automobileManagement.editingVendor;
+export const selectHasUnsavedChanges = state =>
+  state.automobileManagement.hasUnsavedChanges;
+export const selectChanges = state =>
+  state.automobileManagement.changes;
+export const selectLiveVendor = state =>
+  state.automobileManagement.liveData.vendor;
+export const selectDraftVendor = state =>
+  state.automobileManagement.draftData.vendor;
 
 // Complex selectors
 export const selectFilteredVehicles = state => {
