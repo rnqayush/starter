@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
@@ -33,7 +33,7 @@ import {
   saveChanges,
   publishChanges,
   discardChanges,
-  clearEditingVendor,
+
   selectEditingVendor,
   selectHasUnsavedChanges,
   selectChanges,
