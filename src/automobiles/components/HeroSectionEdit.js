@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { FaSave, FaImage, FaUpload, FaTimes } from 'react-icons/fa';
@@ -206,8 +206,6 @@ const UrlOption = styled.div`
 
 const HeroSectionEdit = ({ dealer }) => {
   const dispatch = useDispatch();
-  const sections = useSelector(selectPageSections);
-  const vendor = useSelector(selectVendor);
   const loading = useSelector(selectLoading);
   const heroContent = useSelector(selectSectionContent('hero'));
 
