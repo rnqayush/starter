@@ -678,6 +678,9 @@ const AutomobileMain = () => {
               );
 
             case 'featured':
+              const featuredVehiclesToShow = sectionConfig.content?.vehicleIds?.length > 0
+                ? vehicles.filter(vehicle => sectionConfig.content.vehicleIds.includes(vehicle.id))
+                : featuredVehicles.slice(0, 4);
               return (
                 <Section
                   key="featured"
@@ -686,15 +689,14 @@ const AutomobileMain = () => {
                   <Container>
                     <SectionHeader>
                       <SectionTitle textColor={dealerTheme.textColor}>
-                        Featured Vehicles
+                        {sectionConfig.content?.title || 'Featured Vehicles'}
                       </SectionTitle>
                       <SectionSubtitle>
-                        Handpicked vehicles from {vendor.name} that customers love the
-                        most
+                        {sectionConfig.content?.subtitle || `Handpicked vehicles from ${vendor.name} that customers love the most`}
                       </SectionSubtitle>
                     </SectionHeader>
                     <Grid>
-                      {featuredVehicles.slice(0, 4).map(vehicle => (
+                      {featuredVehiclesToShow.map(vehicle => (
                         <VehicleCard
                           key={vehicle.id}
                           vehicle={vehicle}
