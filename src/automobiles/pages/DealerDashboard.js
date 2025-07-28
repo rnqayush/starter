@@ -222,6 +222,8 @@ const DealerDashboard = () => {
         return <SpecialOffersSectionEdit dealer={dealer} />;
       case 'footer-section':
         return <FooterSectionEdit dealer={dealer} />;
+      case 'custom-section':
+        return <CustomSectionEdit dealer={dealer} />;
       case 'inventory':
         return <VehicleInventoryTab dealer={dealer} />;
       case 'add-vehicle':
