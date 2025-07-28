@@ -170,27 +170,67 @@ const Footer = ({
           )}
         </FooterSection>
 
-        <FooterSection>
-          <h3>Contact Info</h3>
-          {contact.phone && (
-            <a href={`tel:${contact.phone}`}>
-              <FaPhone />
-              {contact.phone}
-            </a>
-          )}
-          {contact.email && (
-            <a href={`mailto:${contact.email}`}>
-              <FaEnvelope />
-              {contact.email}
-            </a>
-          )}
-          {contact.address && (
-            <p>
-              <FaMapMarkerAlt />
-              {contact.address.street}, {contact.address.city}, {contact.address.state}
-            </p>
-          )}
-        </FooterSection>
+        {shouldShowSection('Contact') && (
+          <FooterSection>
+            <h3>Contact Info</h3>
+            {(content.contactInfo?.phone || contact.phone) && (
+              <a href={`tel:${content.contactInfo?.phone || contact.phone}`}>
+                <FaPhone />
+                {content.contactInfo?.phone || contact.phone}
+              </a>
+            )}
+            {(content.contactInfo?.email || contact.email) && (
+              <a href={`mailto:${content.contactInfo?.email || contact.email}`}>
+                <FaEnvelope />
+                {content.contactInfo?.email || contact.email}
+              </a>
+            )}
+            {(content.contactInfo?.address || contact.address) && (
+              <p>
+                <FaMapMarkerAlt />
+                {content.contactInfo?.address || (contact.address.street + ', ' + contact.address.city + ', ' + contact.address.state)}
+              </p>
+            )}
+            {content.contactCustomFields && content.contactCustomFields.map((field, index) => (
+              field.name && field.value && (
+                <p key={index}>
+                  {field.name}: {field.value}
+                </p>
+              )
+            ))}
+          </FooterSection>
+        )}
+
+        {shouldShowSection('Support') && (
+          <FooterSection>
+            <h3>Customer Support</h3>
+            {content.supportInfo?.supportPhone && (
+              <a href={`tel:${content.supportInfo.supportPhone}`}>
+                <FaPhone />
+                {content.supportInfo.supportPhone}
+              </a>
+            )}
+            {content.supportInfo?.supportEmail && (
+              <a href={`mailto:${content.supportInfo.supportEmail}`}>
+                <FaEnvelope />
+                {content.supportInfo.supportEmail}
+              </a>
+            )}
+            {content.supportInfo?.supportHours && (
+              <p>
+                <FaClock />
+                {content.supportInfo.supportHours}
+              </p>
+            )}
+            {content.supportCustomFields && content.supportCustomFields.map((field, index) => (
+              field.name && field.value && (
+                <p key={index}>
+                  {field.name}: {field.value}
+                </p>
+              )
+            ))}
+          </FooterSection>
+        )}
 
 
 
