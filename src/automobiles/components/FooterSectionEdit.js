@@ -191,6 +191,7 @@ const FooterSectionEdit = ({ dealer }) => {
   const dispatch = useDispatch();
   const sections = useSelector(selectPageSections);
   const vendor = useSelector(selectVendor);
+  const loading = useSelector(selectLoading);
   
   const [sectionContent, setSectionContent] = useState({
     showSocialMedia: true,
@@ -289,6 +290,16 @@ const FooterSectionEdit = ({ dealer }) => {
       description: 'Display certifications and awards',
     },
   ];
+
+  if (loading) {
+    return (
+      <Container>
+        <Header>
+          <HeaderTitle>Loading Footer Section...</HeaderTitle>
+        </Header>
+      </Container>
+    );
+  }
 
   return (
     <Container>
