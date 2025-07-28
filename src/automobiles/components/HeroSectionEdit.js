@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { FaSave, FaImage, FaUpload, FaTimes } from 'react-icons/fa';
+import { FaImage, FaUpload, FaTimes } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
 import {
   selectLoading,
@@ -253,10 +253,18 @@ const HeroSectionEdit = ({ dealer }) => {
   // Apply changes automatically when user makes any change
   React.useEffect(() => {
     if (hasChanges) {
-      const timeout = setTimeout(applyChangesToTemp, 500); // Debounce
+      const timeout = setTimeout(() => {
+        if (Object.keys(localChanges).length > 0) {
+          dispatch(updatePageSectionContent({
+            sectionId: 'hero',
+            content: localChanges,
+          }));
+          setLocalChanges({});
+        }
+      }, 500); // Debounce
       return () => clearTimeout(timeout);
     }
-  }, [localChanges, hasChanges]);
+  }, [localChanges, hasChanges, dispatch]);
 
 
 
