@@ -339,6 +339,16 @@ const FeaturedSectionEdit = ({ dealer }) => {
     alert('Featured vehicles section published successfully! Changes are now live.');
   };
 
+  if (loading) {
+    return (
+      <Container>
+        <Header>
+          <HeaderTitle>Loading Featured Vehicles Section...</HeaderTitle>
+        </Header>
+      </Container>
+    );
+  }
+
   return (
     <Container>
       <Header>
