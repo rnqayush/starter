@@ -473,7 +473,9 @@ const AutomobileMain = () => {
   const dispatch = useDispatch();
 
   // Redux selectors - use live data for public pages
-  const vendor = useSelector(selectLiveVendor) || useSelector(selectVendor); // Fallback to legacy selector
+  const liveVendor = useSelector(selectLiveVendor);
+  const legacyVendor = useSelector(selectVendor);
+  const vendor = liveVendor || legacyVendor; // Use live data first, fallback to legacy
   const categories = useSelector(selectCategories);
   const vehicles = useSelector(selectVehicles);
   const featuredVehicles = useSelector(selectFeaturedVehicles);
