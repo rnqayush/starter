@@ -55,35 +55,7 @@ const HeaderActions = styled.div`
   gap: ${theme.spacing.md};
 `;
 
-const ActionButton = styled.button.withConfig({
-  shouldForwardProp: prop => !['filled', 'color'].includes(prop),
-})`
-  padding: ${theme.spacing.sm} ${theme.spacing.md};
-  border: 2px solid ${props => props.color || theme.colors.primary};
-  background: ${props =>
-    props.filled ? props.color || theme.colors.primary : theme.colors.white};
-  color: ${props =>
-    props.filled ? theme.colors.white : props.color || theme.colors.primary};
-  border-radius: ${theme.borderRadius.md};
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  gap: ${theme.spacing.sm};
 
-  &:hover {
-    background: ${props => props.color || theme.colors.primary};
-    color: ${theme.colors.white};
-    transform: translateY(-1px);
-  }
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    transform: none;
-  }
-`;
 
 const Content = styled.div`
   padding: ${theme.spacing.xl};
