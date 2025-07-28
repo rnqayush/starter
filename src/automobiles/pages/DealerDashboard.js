@@ -110,6 +110,8 @@ const DealerDashboard = () => {
     switch (activeTab) {
       case 'dashboard':
         return 'Dealership Overview';
+      case 'section-order':
+        return 'Section Order Management';
       case 'hero-section':
         return 'Hero Section';
       case 'categories-section':
@@ -153,6 +155,8 @@ const DealerDashboard = () => {
     switch (activeTab) {
       case 'dashboard':
         return 'Monitor your dealership performance and key metrics';
+      case 'section-order':
+        return 'Manage the order and visibility of sections on your dealership page';
       case 'hero-section':
         return 'Customize your hero section with title, description, and background image';
       case 'categories-section':
@@ -196,6 +200,8 @@ const DealerDashboard = () => {
     switch (activeTab) {
       case 'dashboard':
         return <DashboardTab dealer={dealer} />;
+      case 'section-order':
+        return <SectionOrderEdit dealer={dealer} />;
       case 'hero-section':
         return <HeroSectionEdit dealer={dealer} />;
       case 'categories-section':
