@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { theme } from '../../styles/GlobalStyle';
 import DealerSidebar from '../components/DealerSidebar';
@@ -22,6 +23,7 @@ import PromotionsTab from '../components/PromotionsTab';
 import DealerSettingsTab from '../components/DealerSettingsTab';
 import AnalyticsTab from '../components/AnalyticsTab';
 import { getAutomobileVendorByIdOrSlug as getVendorByIdOrSlug } from '../../DummyData';
+import { fetchAutomobileData } from '../../store/slices/automobileManagementSlice';
 
 const DashboardContainer = styled.div`
   display: flex;
@@ -79,6 +81,7 @@ const LoadingContainer = styled.div`
 const DealerDashboard = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState('dashboard');
   const [dealer, setDealer] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -93,12 +96,14 @@ const DealerDashboard = () => {
 
     if (dealerData) {
       setDealer(dealerData);
+      // Fetch automobile data to populate Redux store
+      dispatch(fetchAutomobileData(dealerSlug));
       setLoading(false);
     } else {
       // If no dealer found, redirect to dealer listing
       navigate('/auto-dealers');
     }
-  }, [location.pathname, navigate]);
+  }, [location.pathname, navigate, dispatch]);
 
   const getPageTitle = () => {
     switch (activeTab) {
