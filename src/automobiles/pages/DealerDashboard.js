@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { theme } from '../../styles/GlobalStyle';
-import DealerSidebar from '../components/DealerSidebar';
+import EnhancedDealerSidebar from '../components/EnhancedDealerSidebar';
 import DashboardTab from '../components/DashboardTab';
 import SectionOrderEdit from '../components/SectionOrderEdit';
 import HeroSectionEdit from '../components/HeroSectionEdit';
@@ -26,7 +26,7 @@ import PromotionsTab from '../components/PromotionsTab';
 import DealerSettingsTab from '../components/DealerSettingsTab';
 import AnalyticsTab from '../components/AnalyticsTab';
 import { getAutomobileVendorByIdOrSlug as getVendorByIdOrSlug } from '../../DummyData';
-import { fetchAutomobileData } from '../../store/slices/automobileManagementSlice';
+import { fetchAutomobileData, setEditingVendor } from '../../store/slices/automobileManagementSlice';
 
 const DashboardContainer = styled.div`
   display: flex;
@@ -101,6 +101,8 @@ const DealerDashboard = () => {
       setDealer(dealerData);
       // Fetch automobile data to populate Redux store
       dispatch(fetchAutomobileData(dealerSlug));
+      // Set the dealer as editing vendor to enable change tracking
+      dispatch(setEditingVendor(dealerData.id));
       setLoading(false);
     } else {
       // If no dealer found, redirect to dealer listing
@@ -265,7 +267,7 @@ const DealerDashboard = () => {
 
   return (
     <DashboardContainer>
-      <DealerSidebar
+      <EnhancedDealerSidebar
         activeTab={activeTab}
         onTabChange={setActiveTab}
         dealer={dealer}
