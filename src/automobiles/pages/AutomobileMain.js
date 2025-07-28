@@ -760,7 +760,7 @@ const AutomobileMain = () => {
                       </SectionHeader>
                       {/* Render selected vehicles for custom section */}
                       {sectionConfig.content?.vehicleIds && sectionConfig.content.vehicleIds.length > 0 ? (
-                        <VehicleGrid>
+                        <Grid>
                           {sectionConfig.content.vehicleIds
                             .map(vehicleId => vehicles.find(v => v.id === vehicleId))
                             .filter(Boolean)
@@ -768,11 +768,10 @@ const AutomobileMain = () => {
                               <VehicleCard
                                 key={vehicle.id}
                                 vehicle={vehicle}
-                                vendor={vendor}
-                                onViewDetails={() => navigate(`/${vendor.slug}/vehicles/${vehicle.id}`)}
+                                dealerSlug={vendor.slug}
                               />
                             ))}
-                        </VehicleGrid>
+                        </Grid>
                       ) : (
                         <div style={{
                           padding: theme.spacing.xl,
