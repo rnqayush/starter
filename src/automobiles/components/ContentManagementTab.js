@@ -131,7 +131,9 @@ const SectionCard = styled.div.withConfig({
   }
 `;
 
-const CardIcon = styled.div`
+const CardIcon = styled.div.withConfig({
+  shouldForwardProp: (prop) => !['color', 'textColor'].includes(prop),
+})`
   width: 48px;
   height: 48px;
   border-radius: ${theme.borderRadius.md};
