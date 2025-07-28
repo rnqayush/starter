@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { FaImage, FaUpload, FaTimes } from 'react-icons/fa';
@@ -239,16 +239,7 @@ const HeroSectionEdit = ({ dealer }) => {
     updateContent('backgroundImage', '');
   };
 
-  // Auto-apply changes to temp state on every change
-  const applyChangesToTemp = () => {
-    if (Object.keys(localChanges).length > 0) {
-      dispatch(updatePageSectionContent({
-        sectionId: 'hero',
-        content: localChanges,
-      }));
-      setLocalChanges({});
-    }
-  };
+
 
   // Apply changes automatically when user makes any change
   React.useEffect(() => {
