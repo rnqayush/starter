@@ -599,116 +599,176 @@ const AutomobileMain = () => {
           </BreadcrumbNav>
         </Breadcrumb>
 
-        <HeroSection
-          primaryColor={dealerTheme.primaryColor}
-          secondaryColor={dealerTheme.secondaryColor}
-          heroImage={vendor.businessInfo.coverImage}
-        >
-          <HeroContent>
-            <DealerHeader>
-              <DealerLogo
-                src={vendor.businessInfo.logo}
-                alt={`${vendor.name} logo`}
-              />
-              <div>
-                <HeroTitle>Welcome to {vendor.name}</HeroTitle>
-              </div>
-            </DealerHeader>
-            <HeroSubtitle>{vendor.businessInfo.description}</HeroSubtitle>
-            <HeroActions>
-              <HeroButton
-                primaryColor={dealerTheme.primaryColor}
-                onClick={() => navigate(`${getBaseUrl()}/vehicles`)}
-              >
-                <FaCar />
-                Browse Vehicles
-              </HeroButton>
-              <HeroButton
-                className="secondary"
-                onClick={() =>
-                  navigate(`${getBaseUrl()}/vehicles?category=luxury-cars`)
-                }
-              >
-                View Categories
-                <FaArrowRight />
-              </HeroButton>
-            </HeroActions>
-          </HeroContent>
-        </HeroSection>
+        {/* Render sections dynamically based on content management settings */}
+        {getSortedSections().map(sectionConfig => {
+          if (!sectionConfig.visible) return null;
 
-        <Section>
-          <Container>
-            <SectionHeader>
-              <SectionTitle textColor={dealerTheme.textColor}>
-                Browse by Category
-              </SectionTitle>
-              <SectionSubtitle>
-                Explore our diverse range of vehicles across different
-                categories
-              </SectionSubtitle>
-            </SectionHeader>
-            <Grid minWidth="280px">
-              {categories.map(category => (
-                <CategoryCard
-                  key={category.id}
-                  category={category}
+          switch (sectionConfig.id) {
+            case 'hero':
+              return (
+                <HeroSection
+                  key="hero"
+                  primaryColor={dealerTheme.primaryColor}
+                  secondaryColor={dealerTheme.secondaryColor}
+                  heroImage={vendor.businessInfo.coverImage}
+                >
+                  <HeroContent>
+                    <DealerHeader>
+                      <DealerLogo
+                        src={vendor.businessInfo.logo}
+                        alt={`${vendor.name} logo`}
+                      />
+                      <div>
+                        <HeroTitle>Welcome to {vendor.name}</HeroTitle>
+                      </div>
+                    </DealerHeader>
+                    <HeroSubtitle>{vendor.businessInfo.description}</HeroSubtitle>
+                    <HeroActions>
+                      <HeroButton
+                        primaryColor={dealerTheme.primaryColor}
+                        onClick={() => navigate(`${getBaseUrl()}/vehicles`)}
+                      >
+                        <FaCar />
+                        Browse Vehicles
+                      </HeroButton>
+                      <HeroButton
+                        className="secondary"
+                        onClick={() =>
+                          navigate(`${getBaseUrl()}/vehicles?category=luxury-cars`)
+                        }
+                      >
+                        View Categories
+                        <FaArrowRight />
+                      </HeroButton>
+                    </HeroActions>
+                  </HeroContent>
+                </HeroSection>
+              );
+
+            case 'categories':
+              return (
+                <Section key="categories">
+                  <Container>
+                    <SectionHeader>
+                      <SectionTitle textColor={dealerTheme.textColor}>
+                        Browse by Category
+                      </SectionTitle>
+                      <SectionSubtitle>
+                        Explore our diverse range of vehicles across different
+                        categories
+                      </SectionSubtitle>
+                    </SectionHeader>
+                    <Grid minWidth="280px">
+                      {categories.map(category => (
+                        <CategoryCard
+                          key={category.id}
+                          category={category}
+                          dealerSlug={vendor.slug}
+                        />
+                      ))}
+                    </Grid>
+                  </Container>
+                </Section>
+              );
+
+            case 'featured':
+              return (
+                <Section
+                  key="featured"
+                  background={dealerTheme.backgroundColor || theme.colors.gray50}
+                >
+                  <Container>
+                    <SectionHeader>
+                      <SectionTitle textColor={dealerTheme.textColor}>
+                        Featured Vehicles
+                      </SectionTitle>
+                      <SectionSubtitle>
+                        Handpicked vehicles from {vendor.name} that customers love the
+                        most
+                      </SectionSubtitle>
+                    </SectionHeader>
+                    <Grid>
+                      {featuredVehicles.slice(0, 4).map(vehicle => (
+                        <VehicleCard
+                          key={vehicle.id}
+                          vehicle={vehicle}
+                          dealerSlug={vendor.slug}
+                        />
+                      ))}
+                    </Grid>
+                  </Container>
+                </Section>
+              );
+
+            case 'special-offers':
+              if (onSaleVehicles.length === 0) return null;
+              return (
+                <Section key="special-offers">
+                  <Container>
+                    <SectionHeader>
+                      <SectionTitle textColor={dealerTheme.textColor}>
+                        🔥 Special Offers
+                      </SectionTitle>
+                      <SectionSubtitle>
+                        Limited time deals from {vendor.name} you don't want to miss
+                      </SectionSubtitle>
+                    </SectionHeader>
+                    <Grid>
+                      {onSaleVehicles.slice(0, 4).map(vehicle => (
+                        <VehicleCard
+                          key={vehicle.id}
+                          vehicle={vehicle}
+                          dealerSlug={vendor.slug}
+                        />
+                      ))}
+                    </Grid>
+                  </Container>
+                </Section>
+              );
+
+            case 'footer':
+              return (
+                <Footer
+                  key="footer"
                   dealerSlug={vendor.slug}
+                  dealer={vendor}
+                  theme={dealerTheme}
                 />
-              ))}
-            </Grid>
-          </Container>
-        </Section>
+              );
 
-        <Section
-          background={dealerTheme.backgroundColor || theme.colors.gray50}
-        >
-          <Container>
-            <SectionHeader>
-              <SectionTitle textColor={dealerTheme.textColor}>
-                Featured Vehicles
-              </SectionTitle>
-              <SectionSubtitle>
-                Handpicked vehicles from {vendor.name} that customers love the
-                most
-              </SectionSubtitle>
-            </SectionHeader>
-            <Grid>
-              {featuredVehicles.slice(0, 4).map(vehicle => (
-                <VehicleCard
-                  key={vehicle.id}
-                  vehicle={vehicle}
-                  dealerSlug={vendor.slug}
-                />
-              ))}
-            </Grid>
-          </Container>
-        </Section>
-
-        {onSaleVehicles.length > 0 && (
-          <Section>
-            <Container>
-              <SectionHeader>
-                <SectionTitle textColor={dealerTheme.textColor}>
-                  🔥 Special Offers
-                </SectionTitle>
-                <SectionSubtitle>
-                  Limited time deals from {vendor.name} you don't want to miss
-                </SectionSubtitle>
-              </SectionHeader>
-              <Grid>
-                {onSaleVehicles.slice(0, 4).map(vehicle => (
-                  <VehicleCard
-                    key={vehicle.id}
-                    vehicle={vehicle}
-                    dealerSlug={vendor.slug}
-                  />
-                ))}
-              </Grid>
-            </Container>
-          </Section>
-        )}
-
-        <Footer dealerSlug={vendor.slug} dealer={vendor} theme={dealerTheme} />
+            default:
+              // Handle custom sections
+              if (sectionConfig.type === 'custom') {
+                return (
+                  <Section key={sectionConfig.id}>
+                    <Container>
+                      <SectionHeader>
+                        <SectionTitle textColor={dealerTheme.textColor}>
+                          {sectionConfig.name}
+                        </SectionTitle>
+                        <SectionSubtitle>
+                          {sectionConfig.description}
+                        </SectionSubtitle>
+                      </SectionHeader>
+                      {/* Custom section content would be rendered here based on customType */}
+                      <div style={{
+                        padding: theme.spacing.xl,
+                        background: theme.colors.gray100,
+                        borderRadius: theme.borderRadius.md,
+                        textAlign: 'center',
+                        color: theme.colors.gray600
+                      }}>
+                        <p>Custom section: {sectionConfig.name}</p>
+                        <p>Type: {sectionConfig.customType}</p>
+                        <p>This is a placeholder for custom content.</p>
+                      </div>
+                    </Container>
+                  </Section>
+                );
+              }
+              return null;
+          }
+        })}
         <BackToTop />
       </PageContainer>
     </>
