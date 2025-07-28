@@ -134,6 +134,8 @@ const DealerDashboard = () => {
     switch (activeTab) {
       case 'dashboard':
         return 'Monitor your dealership performance and key metrics';
+      case 'content-management':
+        return 'Customize your dealership page layout and content sections';
       case 'inventory':
         return 'Manage your vehicle inventory and stock levels';
       case 'add-vehicle':
