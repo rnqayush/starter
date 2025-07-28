@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { FaSave, FaList, FaEye, FaEyeSlash } from 'react-icons/fa';
@@ -200,7 +200,6 @@ const VisibilityButton = styled.button.withConfig({
 
 const CategoriesSectionEdit = ({ dealer }) => {
   const dispatch = useDispatch();
-  const sections = useSelector(selectPageSections);
   const categoriesContent = useSelector(selectSectionContent('categories'));
   const categories = useSelector(selectCategories);
   const loading = useSelector(selectLoading);
