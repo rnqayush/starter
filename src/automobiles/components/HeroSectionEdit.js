@@ -317,7 +317,7 @@ const HeroSectionEdit = ({ dealer }) => {
               <Label>Or enter image URL:</Label>
               <Input
                 type="url"
-                value={heroContent.backgroundImage}
+                value={currentContent.backgroundImage || ''}
                 onChange={e => updateContent('backgroundImage', e.target.value)}
                 placeholder="https://example.com/image.jpg"
               />
