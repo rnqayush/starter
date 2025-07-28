@@ -239,16 +239,24 @@ const HeroSectionEdit = ({ dealer }) => {
     updateContent('backgroundImage', '');
   };
 
-  const saveChanges = () => {
-    // Update the section content in Redux temp changes
-    dispatch(updatePageSectionContent({
-      sectionId: 'hero',
-      content: localChanges,
-    }));
-    setLocalChanges({});
-    setHasChanges(false);
-    alert('Hero section changes tracked! Use sidebar to save/publish.');
+  // Auto-apply changes to temp state on every change
+  const applyChangesToTemp = () => {
+    if (Object.keys(localChanges).length > 0) {
+      dispatch(updatePageSectionContent({
+        sectionId: 'hero',
+        content: localChanges,
+      }));
+      setLocalChanges({});
+    }
   };
+
+  // Apply changes automatically when user makes any change
+  React.useEffect(() => {
+    if (hasChanges) {
+      const timeout = setTimeout(applyChangesToTemp, 500); // Debounce
+      return () => clearTimeout(timeout);
+    }
+  }, [localChanges, hasChanges]);
 
 
 
@@ -272,14 +280,7 @@ const HeroSectionEdit = ({ dealer }) => {
           <HeaderTitle>Hero Section</HeaderTitle>
         </HeaderLeft>
         <HeaderActions>
-          <ActionButton
-            onClick={saveChanges}
-            disabled={!hasChanges}
-            color={theme.colors.blue500}
-          >
-            <FaSave />
-            Apply Changes
-          </ActionButton>
+          {/* Save functionality moved to sidebar */}
         </HeaderActions>
       </Header>
 
