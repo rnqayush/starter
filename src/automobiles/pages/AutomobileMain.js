@@ -758,18 +758,32 @@ const AutomobileMain = () => {
                           {sectionConfig.description}
                         </SectionSubtitle>
                       </SectionHeader>
-                      {/* Custom section content would be rendered here based on customType */}
-                      <div style={{
-                        padding: theme.spacing.xl,
-                        background: theme.colors.gray100,
-                        borderRadius: theme.borderRadius.md,
-                        textAlign: 'center',
-                        color: theme.colors.gray600
-                      }}>
-                        <p>Custom section: {sectionConfig.name}</p>
-                        <p>Type: {sectionConfig.customType}</p>
-                        <p>This is a placeholder for custom content.</p>
-                      </div>
+                      {/* Render selected vehicles for custom section */}
+                      {sectionConfig.content?.vehicleIds && sectionConfig.content.vehicleIds.length > 0 ? (
+                        <VehicleGrid>
+                          {sectionConfig.content.vehicleIds
+                            .map(vehicleId => vehicles.find(v => v.id === vehicleId))
+                            .filter(Boolean)
+                            .map(vehicle => (
+                              <VehicleCard
+                                key={vehicle.id}
+                                vehicle={vehicle}
+                                vendor={vendor}
+                                onViewDetails={() => navigate(`/${vendor.slug}/vehicles/${vehicle.id}`)}
+                              />
+                            ))}
+                        </VehicleGrid>
+                      ) : (
+                        <div style={{
+                          padding: theme.spacing.xl,
+                          background: theme.colors.gray100,
+                          borderRadius: theme.borderRadius.md,
+                          textAlign: 'center',
+                          color: theme.colors.gray600
+                        }}>
+                          <p>No vehicles selected for this custom section.</p>
+                        </div>
+                      )}
                     </Container>
                   </Section>
                 );
