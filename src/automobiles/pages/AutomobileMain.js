@@ -477,6 +477,7 @@ const AutomobileMain = () => {
   const onSaleVehicles = useSelector(selectOnSaleVehicles);
   const loading = useSelector(selectLoading);
   const error = useSelector(selectError);
+  const pageSections = useSelector(selectPageSections);
 
   const [vendorSlug, setVendorSlug] = useState(null);
 
