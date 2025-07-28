@@ -307,6 +307,12 @@ const DealerSidebar = ({ activeTab, onTabChange, dealer }) => {
       items: [{ id: 'dashboard', label: 'Dashboard', icon: FaHome }],
     },
     {
+      section: 'Content Management',
+      items: [
+        { id: 'content-management', label: 'Page Content', icon: FaEdit },
+      ],
+    },
+    {
       section: 'Inventory Management',
       items: [
         { id: 'inventory', label: 'Vehicle Inventory', icon: FaCar },
