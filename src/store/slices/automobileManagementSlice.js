@@ -602,23 +602,10 @@ export const selectHasUnsavedChanges = state =>
 export const selectTempChanges = state =>
   state.automobileManagement.tempChanges;
 
-// Helper selector to get current section content (including temp changes)
+// Helper selector to get current section content
 export const selectSectionContent = (sectionId) => (state) => {
   const section = state.automobileManagement.pageContent.sections.find(s => s.id === sectionId);
-  if (!section) return {};
-  
-  // Apply temp changes to the content
-  const content = { ...section.content };
-  const sectionIndex = state.automobileManagement.pageContent.sections.findIndex(s => s.id === sectionId);
-  
-  Object.entries(state.automobileManagement.tempChanges).forEach(([path, value]) => {
-    if (path.startsWith(`pageContent.sections.${sectionIndex}.content.`)) {
-      const contentKey = path.split('.').pop();
-      content[contentKey] = value;
-    }
-  });
-  
-  return content;
+  return section ? section.content : {};
 };
 
 // Complex selectors
