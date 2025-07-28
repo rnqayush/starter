@@ -128,6 +128,8 @@ const DealerDashboard = () => {
         return 'Custom Sections';
       case 'inventory':
         return 'Vehicle Inventory';
+      case 'categories':
+        return 'Category Management';
       case 'add-vehicle':
         return 'Add New Vehicle';
       case 'bulk-import':
