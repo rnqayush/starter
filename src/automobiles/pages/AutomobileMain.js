@@ -619,25 +619,29 @@ const AutomobileMain = () => {
                         alt={`${vendor.name} logo`}
                       />
                       <div>
-                        <HeroTitle>Welcome to {vendor.name}</HeroTitle>
+                        <HeroTitle>
+                          {sectionConfig.content?.title || `Welcome to ${vendor.name}`}
+                        </HeroTitle>
                       </div>
                     </DealerHeader>
-                    <HeroSubtitle>{vendor.businessInfo.description}</HeroSubtitle>
+                    <HeroSubtitle>
+                      {sectionConfig.content?.subtitle || vendor.businessInfo.description}
+                    </HeroSubtitle>
                     <HeroActions>
                       <HeroButton
                         primaryColor={dealerTheme.primaryColor}
                         onClick={() => navigate(`${getBaseUrl()}/vehicles`)}
                       >
                         <FaCar />
-                        Browse Vehicles
+                        {sectionConfig.content?.primaryButtonText || 'Browse Vehicles'}
                       </HeroButton>
                       <HeroButton
                         className="secondary"
                         onClick={() =>
-                          navigate(`${getBaseUrl()}/vehicles?category=luxury-cars`)
+                          navigate(`${getBaseUrl()}/vehicles?category=${categories[0]?.slug || 'all'}`)
                         }
                       >
-                        View Categories
+                        {sectionConfig.content?.secondaryButtonText || 'View Categories'}
                         <FaArrowRight />
                       </HeroButton>
                     </HeroActions>
