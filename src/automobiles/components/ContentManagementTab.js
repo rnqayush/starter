@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import {
   FaGripVertical,
@@ -17,6 +18,11 @@ import {
   FaArrowDown,
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
+import {
+  selectPageSections,
+  updatePageSections,
+  publishPageContent,
+} from '../../store/slices/automobileManagementSlice';
 
 const ContentContainer = styled.div`
   background: ${theme.colors.white};
