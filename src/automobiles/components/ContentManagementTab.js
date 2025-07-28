@@ -393,7 +393,9 @@ const VehiclePrice = styled.div`
   margin-right: ${theme.spacing.md};
 `;
 
-const IconButton = styled.button`
+const IconButton = styled.button.withConfig({
+  shouldForwardProp: (prop) => !['color', 'hoverColor'].includes(prop),
+})`
   background: none;
   border: none;
   color: ${props => props.color || theme.colors.gray500};
