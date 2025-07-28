@@ -311,6 +311,7 @@ const DealerSidebar = ({ activeTab, onTabChange, dealer }) => {
     {
       section: 'Content Management',
       items: [
+        { id: 'section-order', label: 'Section Order', icon: FaSort },
         { id: 'hero-section', label: 'Hero Section', icon: FaImage },
         { id: 'categories-section', label: 'Categories', icon: FaList },
         { id: 'featured-section', label: 'Featured Vehicles', icon: FaCar },
