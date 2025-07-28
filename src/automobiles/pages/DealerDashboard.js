@@ -147,8 +147,16 @@ const DealerDashboard = () => {
     switch (activeTab) {
       case 'dashboard':
         return 'Monitor your dealership performance and key metrics';
-      case 'content-management':
-        return 'Customize your dealership page layout and content sections';
+      case 'hero-section':
+        return 'Customize your hero section with title, description, and background image';
+      case 'categories-section':
+        return 'Manage category visibility and section content';
+      case 'featured-section':
+        return 'Select and manage featured vehicles for your homepage';
+      case 'offers-section':
+        return 'Manage special offers and promotional vehicles';
+      case 'footer-section':
+        return 'Configure footer components and content';
       case 'inventory':
         return 'Manage your vehicle inventory and stock levels';
       case 'add-vehicle':
