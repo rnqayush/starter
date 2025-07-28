@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { FaSave, FaGlobe, FaList, FaEye, FaEyeSlash } from 'react-icons/fa';
+import { FaSave, FaList, FaEye, FaEyeSlash } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
 import {
   selectDraftPageSections,
@@ -268,15 +268,7 @@ const CategoriesSectionEdit = ({ dealer }) => {
     alert('Categories section changes tracked! Use sidebar to save/publish.');
   };
 
-  const publishChanges = () => {
-    // Update the section content in Redux
-    dispatch(updatePageSectionContent({
-      sectionId: 'categories',
-      content: sectionContent,
-    }));
-    setHasChanges(false);
-    alert('Categories section changes tracked! Use sidebar to save/publish.');
-  };
+
 
   if (loading) {
     return (
