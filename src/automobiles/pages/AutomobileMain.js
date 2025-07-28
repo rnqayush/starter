@@ -610,7 +610,7 @@ const AutomobileMain = () => {
                   key="hero"
                   primaryColor={dealerTheme.primaryColor}
                   secondaryColor={dealerTheme.secondaryColor}
-                  heroImage={vendor.businessInfo.coverImage}
+                  heroImage={sectionConfig.content?.backgroundImage || vendor.businessInfo.coverImage}
                 >
                   <HeroContent>
                     <DealerHeader>
