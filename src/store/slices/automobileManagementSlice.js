@@ -242,7 +242,12 @@ const automobileManagementSlice = createSlice({
         s => s.id === sectionId
       );
       if (sectionIndex !== -1) {
-        // Store in temp changes first
+        // Apply changes directly to main state for real-time updates
+        Object.entries(content).forEach(([key, value]) => {
+          state.pageContent.sections[sectionIndex].content[key] = value;
+        });
+
+        // Also store in temp changes for tracking
         Object.entries(content).forEach(([key, value]) => {
           const path = `pageContent.sections.${sectionIndex}.content.${key}`;
           state.tempChanges[path] = value;
