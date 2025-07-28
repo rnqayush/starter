@@ -533,17 +533,37 @@ const ContentManagementTab = ({ dealer }) => {
     };
   };
 
-  // Load saved sections on component mount
+  // Load sections from Redux on component mount
   useEffect(() => {
-    const saved = localStorage.getItem(`dealership-content-${dealer.slug}`);
-    if (saved) {
-      try {
-        setSections(JSON.parse(saved));
-      } catch (error) {
-        console.error('Failed to load saved sections:', error);
+    if (reduxSections && reduxSections.length > 0) {
+      setSections(initializeSections(reduxSections));
+    } else {
+      // Fallback to localStorage if Redux state is empty
+      const saved = localStorage.getItem(`dealership-content-${dealer.slug}`);
+      if (saved) {
+        try {
+          const savedSections = JSON.parse(saved);
+          setSections(initializeSections(savedSections));
+          // Update Redux with localStorage data
+          dispatch(updatePageSections(savedSections));
+        } catch (error) {
+          console.error('Failed to load saved sections:', error);
+        }
+      } else {
+        // Initialize with default sections if nothing is saved
+        setSections(initializeSections(reduxSections));
       }
     }
-  }, [dealer.slug]);
+  }, [reduxSections, dealer.slug, dispatch]);
+
+  // Reset hasChanges when sections match Redux state
+  useEffect(() => {
+    if (reduxSections && sections.length > 0) {
+      const currentSectionsData = sections.map(({ icon, ...section }) => section);
+      const hasChangedData = JSON.stringify(currentSectionsData) !== JSON.stringify(reduxSections);
+      setHasChanges(hasChangedData);
+    }
+  }, [sections, reduxSections]);
 
   return (
     <ContentContainer>
