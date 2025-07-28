@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { FaSave, FaGlobe, FaImage, FaUpload, FaTimes } from 'react-icons/fa';
+import { FaSave, FaImage, FaUpload, FaTimes } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
 import {
   selectDraftPageSections,
@@ -284,15 +284,7 @@ const HeroSectionEdit = ({ dealer }) => {
     alert('Hero section changes tracked! Use sidebar to save/publish.');
   };
 
-  const publishChanges = () => {
-    // Update the section content in Redux
-    dispatch(updatePageSectionContent({
-      sectionId: 'hero',
-      content: heroContent,
-    }));
-    setHasChanges(false);
-    alert('Hero section changes tracked! Use sidebar to save/publish.');
-  };
+
 
   if (loading) {
     return (
