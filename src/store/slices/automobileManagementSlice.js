@@ -117,6 +117,7 @@ const initialState = {
         type: 'default',
         visible: true,
         order: 1,
+        content: {},
       },
       {
         id: 'categories',
@@ -125,6 +126,7 @@ const initialState = {
         type: 'default',
         visible: true,
         order: 2,
+        content: {},
       },
       {
         id: 'featured',
@@ -133,6 +135,7 @@ const initialState = {
         type: 'default',
         visible: true,
         order: 3,
+        content: {},
       },
       {
         id: 'special-offers',
@@ -141,6 +144,7 @@ const initialState = {
         type: 'default',
         visible: true,
         order: 4,
+        content: {},
       },
       {
         id: 'footer',
@@ -149,6 +153,7 @@ const initialState = {
         type: 'default',
         visible: true,
         order: 5,
+        content: {},
       },
     ],
     lastPublished: null,
