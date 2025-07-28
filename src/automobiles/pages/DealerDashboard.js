@@ -173,6 +173,8 @@ const DealerDashboard = () => {
         return 'Manage special offers and promotional vehicles';
       case 'footer-section':
         return 'Configure footer components and content';
+      case 'custom-section':
+        return 'Create and manage custom sections for your dealership page';
       case 'inventory':
         return 'Manage your vehicle inventory and stock levels';
       case 'add-vehicle':
