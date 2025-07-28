@@ -609,7 +609,6 @@ const EnhancedDealerSidebar = ({ activeTab, onTabChange, dealer }) => {
               </Button>
             </ActionsContainer>
           </ChangesPanel>
-        )}
       </SidebarContainer>
     </>
   );
