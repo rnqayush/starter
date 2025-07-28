@@ -751,11 +751,10 @@
       "footer": {
         "showSocialMedia": true,
         "showHours": true,
-        "showMap": true,
-        "showServices": true,
-        "showCertifications": true,
-        "customText": "Your trusted automotive partner since 2019. We pride ourselves on exceptional customer service and premium vehicle selection.",
-        "backgroundColor": "#1f2937"
+        "showQuickLinks": true,
+        "showContact": true,
+        "showSupport": true,
+        "customText": "Your trusted automotive partner since 2019. We pride ourselves on exceptional customer service and premium vehicle selection."
       }
     }
   },
