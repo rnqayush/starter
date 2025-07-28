@@ -497,7 +497,7 @@ const ContentManagementTab = ({ dealer }) => {
   // Initialize sections from Redux
   useEffect(() => {
     if (reduxSections && reduxSections.length > 0) {
-      setSections(reduxSections);
+      setSections([...reduxSections]);
     } else {
       // Initialize with default sections
       const defaultSections = [
