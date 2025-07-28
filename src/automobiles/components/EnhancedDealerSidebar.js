@@ -545,8 +545,7 @@ const EnhancedDealerSidebar = ({ activeTab, onTabChange, dealer }) => {
           ))}
         </Navigation>
 
-        {hasUnsavedChanges && (
-          <ChangesPanel>
+        <ChangesPanel>
             <ChangesPanelHeader>
               <FaSave />
               Changes Tracker
