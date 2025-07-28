@@ -16,7 +16,6 @@ import {
   selectLoading,
   addCustomSection,
   updatePageSections,
-  publishPageContent,
   removeCustomSection,
 } from '../../store/slices/automobileManagementSlice';
 
