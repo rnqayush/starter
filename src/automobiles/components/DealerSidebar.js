@@ -318,6 +318,7 @@ const DealerSidebar = ({ activeTab, onTabChange, dealer }) => {
         { id: 'featured-section', label: 'Featured Vehicles', icon: FaCar },
         { id: 'offers-section', label: 'Special Offers', icon: FaTags },
         { id: 'footer-section', label: 'Footer', icon: FaAlignLeft },
+        { id: 'custom-section', label: 'Custom Section', icon: FaPlus },
       ],
     },
     {
