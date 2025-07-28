@@ -17,6 +17,7 @@ import {
   selectOnSaleVehicles,
   selectLoading,
   selectError,
+  selectPageSections,
   clearError,
 } from '../../store/slices/automobileManagementSlice';
 
