@@ -249,7 +249,6 @@ const HeroSectionEdit = ({ dealer }) => {
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
-      setImageFile(file);
       const reader = new FileReader();
       reader.onload = (e) => {
         updateContent('backgroundImage', e.target.result);
@@ -259,7 +258,6 @@ const HeroSectionEdit = ({ dealer }) => {
   };
 
   const removeImage = () => {
-    setImageFile(null);
     updateContent('backgroundImage', '');
   };
 
