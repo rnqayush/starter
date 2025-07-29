@@ -79,6 +79,33 @@ const PageContainer = styled.div.withConfig({
   display: flex;
   flex-direction: column;
   background: ${props => props.backgroundColor || theme.colors.gray50};
+  animation: ${fadeInUp} 0.8s ease-out;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(
+      circle at 20% 80%,
+      rgba(30, 64, 175, 0.02) 0%,
+      transparent 50%
+    ), radial-gradient(
+      circle at 80% 20%,
+      rgba(59, 130, 246, 0.02) 0%,
+      transparent 50%
+    );
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  & > * {
+    position: relative;
+    z-index: 1;
+  }
 `;
 
 const LoadingContainer = styled.div`
