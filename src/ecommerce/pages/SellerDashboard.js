@@ -27,11 +27,11 @@ import ShopSettingsTab from '../components/ShopSettingsTab';
 
 // Section edit components (will need to create these)
 import HeroSectionEdit from '../components/HeroSectionEdit';
-import CategoriesSectionEdit from '../components/CategoriesSectionEdit';
-import FeaturedSectionEdit from '../components/FeaturedSectionEdit';
+import CategoriesSectionEdit from '../components/CategoriesSectionEditNew';
+import FeaturedSectionEdit from '../components/FeaturedSectionEditNew';
 import HotDealsSectionEdit from '../components/HotDealsSectionEdit';
-import FooterSectionEdit from '../components/FooterSectionEdit';
-import CustomSectionEdit from '../components/CustomSectionEdit';
+import FooterSectionEdit from '../components/FooterSectionEditNew';
+import CustomSectionEdit from '../components/CustomSectionEditNew';
 import SectionOrderEdit from '../components/SectionOrderEdit';
 
 import {
