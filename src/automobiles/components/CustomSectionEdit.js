@@ -444,20 +444,34 @@ const CustomSectionEdit = ({ dealer }) => {
     setSearchQuery('');
   };
 
-  const toggleVehicleSelection = vehicleId => {
+  const updateLocalContent = (field, value) => {
     setSectionData(prev => ({
       ...prev,
-      vehicleIds: prev.vehicleIds.includes(vehicleId)
-        ? prev.vehicleIds.filter(id => id !== vehicleId)
-        : [...prev.vehicleIds, vehicleId],
+      [field]: value,
     }));
+
+    // If we're editing an existing section, update Redux state in real-time
+    if (isEditing && editingSectionId) {
+      dispatch(
+        updateSectionContent({
+          sectionId: editingSectionId,
+          content: { [field]: value },
+        })
+      );
+    }
+  };
+
+  const toggleVehicleSelection = vehicleId => {
+    const newVehicleIds = sectionData.vehicleIds.includes(vehicleId)
+      ? sectionData.vehicleIds.filter(id => id !== vehicleId)
+      : [...sectionData.vehicleIds, vehicleId];
+
+    updateLocalContent('vehicleIds', newVehicleIds);
   };
 
   const removeSelectedVehicle = vehicleId => {
-    setSectionData(prev => ({
-      ...prev,
-      vehicleIds: prev.vehicleIds.filter(id => id !== vehicleId),
-    }));
+    const newVehicleIds = sectionData.vehicleIds.filter(id => id !== vehicleId);
+    updateLocalContent('vehicleIds', newVehicleIds);
   };
 
   const handleSave = () => {
