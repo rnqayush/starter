@@ -744,24 +744,10 @@ const Navbar = ({
             <div style={{ display: 'flex', gap: '0.5rem' }}>
               <LoginButton
                 onClick={() => {
-                  setAuthModalTab('login');
-                  setShowAuthModal(true);
+                  navigate(`${getBaseUrl()}/seller-dashboard`);
                 }}
               >
-                Sign In
-              </LoginButton>
-              <LoginButton
-                style={{
-                  background: 'transparent',
-                  color: vendorTheme?.primaryColor || theme.colors.primary,
-                  border: `2px solid ${vendorTheme?.primaryColor || theme.colors.primary}`,
-                }}
-                onClick={() => {
-                  setAuthModalTab('register');
-                  setShowAuthModal(true);
-                }}
-              >
-                Sign Up
+                Seller Dashboard
               </LoginButton>
             </div>
           )}
