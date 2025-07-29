@@ -4,7 +4,7 @@
 import {
   getBusinessWebsiteData,
   updateBusinessWebsiteData,
-} from '../DummyData/businessWebsiteData';
+} from '../DummyData';
 
 // Simulate network delay for realistic API behavior
 const simulateDelay = (ms = 500) => {
