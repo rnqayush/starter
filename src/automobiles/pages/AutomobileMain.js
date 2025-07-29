@@ -816,24 +816,47 @@ const BackButton = styled.button`
   position: fixed;
   top: ${theme.spacing.xl};
   left: ${theme.spacing.xl};
-  background: ${theme.colors.white};
-  border: 2px solid ${theme.colors.gray200};
+  background: linear-gradient(
+    135deg,
+    ${theme.colors.white} 0%,
+    rgba(255, 255, 255, 0.95) 100%
+  );
+  border: 2px solid rgba(30, 64, 175, 0.1);
   color: ${theme.colors.gray700};
   padding: ${theme.spacing.sm} ${theme.spacing.md};
-  border-radius: ${theme.borderRadius.md};
-  font-weight: 500;
+  border-radius: ${theme.borderRadius.lg};
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   align-items: center;
   gap: ${theme.spacing.sm};
   z-index: 1000;
-  box-shadow: ${theme.shadows.md};
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(10px);
+  font-size: 0.9rem;
 
   &:hover {
     border-color: ${theme.colors.primary};
     color: ${theme.colors.primary};
-    transform: translateY(-1px);
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 8px 25px rgba(30, 64, 175, 0.15);
+    background: linear-gradient(
+      135deg,
+      ${theme.colors.white} 0%,
+      rgba(248, 250, 252, 1) 100%
+    );
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    top: ${theme.spacing.md};
+    left: ${theme.spacing.md};
+    padding: ${theme.spacing.xs} ${theme.spacing.sm};
+    font-size: 0.85rem;
+
+    &:hover {
+      transform: translateY(-1px) scale(1.01);
+    }
   }
 `;
 
