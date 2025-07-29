@@ -1,0 +1,1500 @@
+{
+  "status": "success",
+  "statusCode": 200,
+  "message": "Business website data retrieved successfully",
+  "timestamp": "2024-01-20T12:00:00Z",
+  "data": {
+    "businesses": {
+      "salon": {
+        "id": "salon",
+        "name": "Beauty Salon",
+        "slug": "salon",
+        "category": "Beauty & Wellness",
+        "primaryColor": "#e91e63",
+        "secondaryColor": "#f8bbd9",
+        "logo": "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=200&q=80",
+        "image": "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800&q=80",
+        "tagline": "Transform your look with our expert stylists",
+        "rating": 4.8,
+        "reviewCount": 156,
+        "address": "123 Beauty Street, Salon City",
+        "city": "San Francisco",
+        "state": "CA",
+        "zipCode": "94104",
+        "coordinates": { "lat": 37.7749, "lng": -122.4194 },
+        "description": "Professional salon website with booking system and service gallery",
+        "features": [
+          "Online Booking",
+          "Service Gallery", 
+          "Staff Profiles",
+          "Client Reviews"
+        ],
+        "hero": {
+          "title": "Luxury Beauty Salon & Spa",
+          "subtitle": "Transform your look with our expert stylists and premium beauty treatments in a relaxing atmosphere.",
+          "backgroundImage": "https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-4.0.3&w=1200&q=80",
+          "ctaText": "Book Appointment"
+        },
+        "about": {
+          "title": "About Our Salon",
+          "description": "With over 15 years of experience, our luxury salon combines traditional techniques with modern innovation to deliver exceptional beauty services.",
+          "extendedDescription": "We pride ourselves on delivering exceptional service and creating memorable experiences for all our clients. Our commitment to excellence has made us a trusted choice in the community.",
+          "experience": "15+ years",
+          "completedServices": "850+",
+          "satisfiedClients": "500+",
+          "averageRating": "4.8",
+          "stats": [
+            { "number": "850+", "label": "Services Completed" },
+            { "number": "15+", "label": "Years Experience" },
+            { "number": "4.8", "label": "★ Average Rating" },
+            { "number": "500+", "label": "Happy Clients" }
+          ]
+        },
+        "services": [
+          {
+            "id": "hair-styling",
+            "name": "Hair Styling",
+            "description": "Professional cuts, colors, and treatments for all hair types",
+            "icon": "✂️",
+            "image": "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=300&q=80",
+            "price": "From $45"
+          },
+          {
+            "id": "nail-care",
+            "name": "Nail Care", 
+            "description": "Manicures, pedicures, and nail art by certified technicians",
+            "icon": "💅",
+            "image": "https://images.unsplash.com/photo-1604654894610-df63bc536371?w=300&q=80",
+            "price": "From $25"
+          },
+          {
+            "id": "spa-treatments",
+            "name": "Spa Treatments",
+            "description": "Relaxing facials, massages, and body treatments",
+            "icon": "🧴",
+            "image": "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=300&q=80",
+            "price": "From $65"
+          },
+          {
+            "id": "makeup-services",
+            "name": "Makeup Services",
+            "description": "Professional makeup for special occasions and events",
+            "icon": "💄",
+            "image": "https://images.unsplash.com/photo-1487412912498-0447578fcca8?w=300&q=80",
+            "price": "From $50"
+          }
+        ],
+        "team": [
+          {
+            "id": "sarah-johnson",
+            "name": "Sarah Johnson",
+            "role": "Senior Stylist",
+            "bio": "15+ years experience in color and cutting",
+            "specialties": ["Color Specialist", "Bridal Hair"],
+            "image": "https://images.unsplash.com/photo-1494790108755-2616b2e13c0f?w=300&q=80"
+          },
+          {
+            "id": "maria-garcia",
+            "name": "Maria Garcia", 
+            "role": "Nail Specialist",
+            "bio": "Expert in nail art and luxury manicures",
+            "specialties": ["Nail Art", "Gel Manicures"],
+            "image": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&q=80"
+          },
+          {
+            "id": "emily-chen",
+            "name": "Emily Chen",
+            "role": "Spa Therapist", 
+            "bio": "Licensed massage therapist and esthetician",
+            "specialties": ["Deep Tissue", "Facials"],
+            "image": "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300&q=80"
+          }
+        ],
+        "gallery": {
+          "hair-styling": {
+            "title": "Hair Styling",
+            "images": [
+              "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=400&q=80",
+              "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=400&q=80",
+              "https://images.unsplash.com/photo-1633681926022-84c23e8cb2d6?w=400&q=80"
+            ]
+          },
+          "nail-art": {
+            "title": "Nail Art",
+            "images": [
+              "https://images.unsplash.com/photo-1604654894610-df63bc536371?w=400&q=80",
+              "https://images.unsplash.com/photo-1610992015732-2449b76344bc?w=400&q=80"
+            ]
+          },
+          "spa-treatments": {
+            "title": "Spa Treatments",
+            "images": [
+              "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=400&q=80",
+              "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=400&q=80"
+            ]
+          }
+        },
+        "packages": [
+          {
+            "id": "bridal-package",
+            "name": "Bridal Package",
+            "description": "Complete bridal beauty package including hair, makeup, and nails",
+            "price": "$299",
+            "duration": "4 hours",
+            "features": [
+              "Bridal hair styling",
+              "Professional makeup",
+              "Manicure & pedicure",
+              "Trial session included"
+            ],
+            "featured": true
+          },
+          {
+            "id": "spa-day",
+            "name": "Spa Day",
+            "description": "Full day relaxation with massage, facial, and beauty treatments",
+            "price": "$199", 
+            "duration": "6 hours",
+            "features": [
+              "Full body massage",
+              "Facial treatment",
+              "Manicure & pedicure",
+              "Relaxation time"
+            ],
+            "featured": false
+          }
+        ],
+        "testimonials": [
+          {
+            "id": "testimonial-1",
+            "name": "Emma Wilson",
+            "text": "Amazing service! The team is professional and the results are outstanding.",
+            "rating": 5,
+            "date": "2024-01-15",
+            "service": "Hair Styling & Color"
+          },
+          {
+            "id": "testimonial-2", 
+            "name": "Jessica Brown",
+            "text": "Highly recommend! Great experience and excellent customer service.",
+            "rating": 5,
+            "date": "2024-01-10",
+            "service": "Bridal Package"
+          }
+        ],
+        "faq": [
+          {
+            "id": "faq-1",
+            "question": "What are your hours?",
+            "answer": "We are open Monday through Saturday from 9 AM to 6 PM, and Sunday from 10 AM to 4 PM."
+          },
+          {
+            "id": "faq-2",
+            "question": "Do you accept walk-ins?",
+            "answer": "We accept walk-ins based on availability, but appointments are recommended for guaranteed service."
+          },
+          {
+            "id": "faq-3",
+            "question": "What payment methods do you accept?", 
+            "answer": "We accept cash, credit cards, debit cards, and mobile payment apps like Apple Pay and Google Pay."
+          }
+        ],
+        "contact": {
+          "title": "Get In Touch",
+          "description": "Ready to book your appointment? Contact us today and let us help you look and feel your best.",
+          "phone": "(555) 123-4567",
+          "email": "hello@beautysalon.com",
+          "address": "123 Beauty Street, Salon City, SC 12345",
+          "website": "www.beautysalon.com",
+          "socialLinks": {
+            "instagram": "https://instagram.com/beautysalon",
+            "facebook": "https://facebook.com/beautysalon",
+            "twitter": "https://twitter.com/beautysalon"
+          }
+        },
+        "businessHours": {
+          "title": "Business Hours",
+          "hours": {
+            "monday": "9:00 AM - 6:00 PM",
+            "tuesday": "9:00 AM - 6:00 PM", 
+            "wednesday": "9:00 AM - 6:00 PM",
+            "thursday": "9:00 AM - 6:00 PM",
+            "friday": "9:00 AM - 6:00 PM",
+            "saturday": "10:00 AM - 4:00 PM",
+            "sunday": "Closed"
+          }
+        },
+        "navigation": {
+          "logo": "Beauty Salon",
+          "menuItems": [
+            { "name": "Home", "href": "#hero" },
+            { "name": "About", "href": "#about" },
+            { "name": "Services", "href": "#services" },
+            { "name": "Team", "href": "#team" },
+            { "name": "Gallery", "href": "#gallery" },
+            { "name": "Packages", "href": "#packages" },
+            { "name": "Contact", "href": "#contact" }
+          ]
+        },
+        "sectionOrder": [
+          "hero",
+          "about-us", 
+          "services-offered",
+          "team",
+          "gallery",
+          "packages-pricing",
+          "testimonials",
+          "faq",
+          "contact",
+          "footer"
+        ],
+        "sectionVisibility": {
+          "hero": true,
+          "about-us": true,
+          "services-offered": true,
+          "team": true,
+          "gallery": true,
+          "packages-pricing": true,
+          "testimonials": true,
+          "faq": true,
+          "contact": true,
+          "footer": true
+        },
+        "theme": {
+          "primaryColor": "#e91e63",
+          "secondaryColor": "#f8bbd9",
+          "backgroundColor": "#fdf2f8",
+          "textColor": "#1f2937"
+        }
+      },
+      "gym": {
+        "id": "gym",
+        "name": "Elite Fitness Center",
+        "slug": "gym",
+        "category": "Health & Fitness",
+        "primaryColor": "#ff5722",
+        "secondaryColor": "#ffab91",
+        "logo": "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=200&q=80",
+        "image": "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80",
+        "tagline": "Achieve your fitness goals with expert guidance",
+        "rating": 4.9,
+        "reviewCount": 243,
+        "address": "456 Fitness Boulevard, Gym City",
+        "city": "San Francisco",
+        "state": "CA",
+        "zipCode": "94104",
+        "coordinates": { "lat": 37.7849, "lng": -122.4094 },
+        "description": "Modern gym website with membership plans and class schedules",
+        "features": [
+          "Membership Plans",
+          "Class Schedule",
+          "Trainer Profiles", 
+          "Progress Tracking"
+        ],
+        "hero": {
+          "title": "Elite Fitness Center",
+          "subtitle": "Achieve your fitness goals with state-of-the-art equipment, expert trainers, and motivating group classes.",
+          "backgroundImage": "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?ixlib=rb-4.0.3&w=1200&q=80",
+          "ctaText": "Start Free Trial"
+        },
+        "about": {
+          "title": "About Our Gym",
+          "description": "We're committed to helping you reach your fitness potential with personalized training programs and a supportive community.",
+          "extendedDescription": "We pride ourselves on delivering exceptional service and creating memorable experiences for all our members. Our commitment to excellence has made us a trusted choice in the community.",
+          "experience": "10+ years",
+          "activeMembers": "500+",
+          "expertTrainers": "20+",
+          "averageRating": "4.9",
+          "stats": [
+            { "number": "500+", "label": "Active Members" },
+            { "number": "10+", "label": "Years Experience" },
+            { "number": "4.9", "label": "★ Average Rating" },
+            { "number": "20+", "label": "Expert Trainers" }
+          ]
+        },
+        "services": [
+          {
+            "id": "personal-training",
+            "name": "Personal Training",
+            "description": "One-on-one sessions with certified fitness professionals",
+            "icon": "🏋️",
+            "image": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=300&q=80",
+            "price": "From $65/session"
+          },
+          {
+            "id": "group-classes",
+            "name": "Group Classes",
+            "description": "High-energy classes including HIIT, yoga, and spin",
+            "icon": "🤸",
+            "image": "https://images.unsplash.com/photo-1518611012118-696072aa579a?w=300&q=80",
+            "price": "$20/class"
+          },
+          {
+            "id": "strength-training",
+            "name": "Strength Training",
+            "description": "Complete weight room with modern equipment",
+            "icon": "💪", 
+            "image": "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=300&q=80",
+            "price": "Included"
+          },
+          {
+            "id": "yoga-pilates",
+            "name": "Yoga & Pilates",
+            "description": "Mind-body classes for flexibility and core strength",
+            "icon": "🧘",
+            "image": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=300&q=80",
+            "price": "$18/class"
+          }
+        ],
+        "team": [
+          {
+            "id": "mike-thompson",
+            "name": "Mike Thompson",
+            "role": "Head Trainer",
+            "bio": "Former athlete with 10+ years training experience",
+            "specialties": ["Strength Training", "Athletic Performance"],
+            "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&q=80"
+          },
+          {
+            "id": "lisa-park",
+            "name": "Lisa Park",
+            "role": "Yoga Instructor",
+            "bio": "Certified in multiple yoga disciplines",
+            "specialties": ["Vinyasa Yoga", "Meditation"],
+            "image": "https://images.unsplash.com/photo-1494790108755-2616b2e13c0f?w=300&q=80"
+          },
+          {
+            "id": "david-wilson",
+            "name": "David Wilson",
+            "role": "Nutritionist",
+            "bio": "Sports nutrition specialist and wellness coach",
+            "specialties": ["Meal Planning", "Weight Management"],
+            "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&q=80"
+          }
+        ],
+        "gallery": {
+          "gym-equipment": {
+            "title": "Gym Equipment",
+            "images": [
+              "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400&q=80",
+              "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&q=80",
+              "https://images.unsplash.com/photo-1558618047-3c8c51b426ae?w=400&q=80"
+            ]
+          },
+          "group-classes": {
+            "title": "Group Classes",
+            "images": [
+              "https://images.unsplash.com/photo-1518611012118-696072aa579a?w=400&q=80",
+              "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&q=80"
+            ]
+          },
+          "facilities": {
+            "title": "Facilities",
+            "images": [
+              "https://images.unsplash.com/photo-1540496905036-5937c10647cc?w=400&q=80",
+              "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400&q=80"
+            ]
+          }
+        },
+        "packages": [
+          {
+            "id": "premium-membership",
+            "name": "Premium Membership",
+            "description": "Full access to all facilities and unlimited classes",
+            "price": "$89/month",
+            "duration": "Monthly",
+            "features": [
+              "Unlimited gym access",
+              "All group classes included",
+              "Guest passes (2/month)",
+              "Personal training discount"
+            ],
+            "featured": true
+          },
+          {
+            "id": "basic-membership",
+            "name": "Basic Membership",
+            "description": "Gym access with limited class participation",
+            "price": "$49/month",
+            "duration": "Monthly",
+            "features": [
+              "Gym access 24/7",
+              "Limited classes (3/month)",
+              "Locker access",
+              "Fitness assessment"
+            ],
+            "featured": false
+          }
+        ],
+        "testimonials": [
+          {
+            "id": "testimonial-1",
+            "name": "John Smith",
+            "text": "Amazing gym with excellent trainers. Lost 20 pounds in 3 months!",
+            "rating": 5,
+            "date": "2024-01-12",
+            "service": "Personal Training"
+          },
+          {
+            "id": "testimonial-2",
+            "name": "Maria Rodriguez",
+            "text": "The yoga classes are fantastic and the facility is always clean.",
+            "rating": 5,
+            "date": "2024-01-08",
+            "service": "Yoga Classes"
+          }
+        ],
+        "faq": [
+          {
+            "id": "faq-1",
+            "question": "What are your operating hours?",
+            "answer": "We are open Monday through Friday 5 AM to 11 PM, Saturday 6 AM to 10 PM, and Sunday 7 AM to 9 PM."
+          },
+          {
+            "id": "faq-2",
+            "question": "Do you offer trial memberships?",
+            "answer": "Yes! We offer a 7-day free trial for new members to experience all our facilities and classes."
+          },
+          {
+            "id": "faq-3",
+            "question": "Are personal trainers included?",
+            "answer": "Personal training sessions are available for an additional fee. All our trainers are certified professionals."
+          }
+        ],
+        "contact": {
+          "title": "Get Started Today",
+          "description": "Ready to begin your fitness journey? Contact us to schedule a tour and start your free trial.",
+          "phone": "(555) 987-6543",
+          "email": "info@elitefitness.com",
+          "address": "456 Fitness Boulevard, Gym City, GC 54321",
+          "website": "www.elitefitness.com",
+          "socialLinks": {
+            "instagram": "https://instagram.com/elitefitness",
+            "facebook": "https://facebook.com/elitefitness",
+            "twitter": "https://twitter.com/elitefitness"
+          }
+        },
+        "businessHours": {
+          "title": "Gym Hours",
+          "hours": {
+            "monday": "5:00 AM - 11:00 PM",
+            "tuesday": "5:00 AM - 11:00 PM",
+            "wednesday": "5:00 AM - 11:00 PM",
+            "thursday": "5:00 AM - 11:00 PM",
+            "friday": "5:00 AM - 11:00 PM",
+            "saturday": "6:00 AM - 10:00 PM",
+            "sunday": "7:00 AM - 9:00 PM"
+          }
+        },
+        "navigation": {
+          "logo": "Elite Fitness",
+          "menuItems": [
+            { "name": "Home", "href": "#hero" },
+            { "name": "About", "href": "#about" },
+            { "name": "Services", "href": "#services" },
+            { "name": "Team", "href": "#team" },
+            { "name": "Classes", "href": "#classes" },
+            { "name": "Membership", "href": "#packages" },
+            { "name": "Contact", "href": "#contact" }
+          ]
+        },
+        "sectionOrder": [
+          "hero",
+          "about-us",
+          "services-offered", 
+          "team",
+          "gallery",
+          "packages-pricing",
+          "testimonials",
+          "faq",
+          "contact",
+          "footer"
+        ],
+        "sectionVisibility": {
+          "hero": true,
+          "about-us": true,
+          "services-offered": true,
+          "team": true,
+          "gallery": true,
+          "packages-pricing": true,
+          "testimonials": true,
+          "faq": true,
+          "contact": true,
+          "footer": true
+        },
+        "theme": {
+          "primaryColor": "#ff5722",
+          "secondaryColor": "#ffab91",
+          "backgroundColor": "#fff3e0",
+          "textColor": "#1f2937"
+        }
+      },
+      "restaurant": {
+        "id": "restaurant",
+        "name": "Bella Vista Restaurant",
+        "slug": "restaurant",
+        "category": "Food & Dining",
+        "primaryColor": "#8bc34a",
+        "secondaryColor": "#c8e6c9",
+        "logo": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80",
+        "image": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=80",
+        "tagline": "Authentic Italian cuisine in elegant setting",
+        "rating": 4.7,
+        "reviewCount": 189,
+        "address": "789 Italian Way, Little Italy",
+        "city": "San Francisco",
+        "state": "CA",
+        "zipCode": "94104",
+        "coordinates": { "lat": 37.7649, "lng": -122.4294 },
+        "description": "Elegant restaurant website with menu and table reservations",
+        "features": [
+          "Digital Menu",
+          "Table Reservations",
+          "Chef Profiles",
+          "Photo Gallery"
+        ],
+        "hero": {
+          "title": "Bella Vista Restaurant",
+          "subtitle": "Experience authentic Italian cuisine crafted with fresh ingredients and traditional recipes in an elegant setting.",
+          "backgroundImage": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&w=1200&q=80",
+          "ctaText": "Reserve Table"
+        },
+        "about": {
+          "title": "Our Story",
+          "description": "Family-owned for three generations, we bring authentic Italian flavors to your table using recipes passed down through our family.",
+          "extendedDescription": "We pride ourselves on delivering exceptional service and creating memorable experiences for all our guests. Our commitment to excellence has made us a trusted choice in the community.",
+          "experience": "25+ years",
+          "mealsServed": "2500+",
+          "menuItems": "150+",
+          "averageRating": "4.7",
+          "stats": [
+            { "number": "2500+", "label": "Meals Served" },
+            { "number": "25+", "label": "Years Experience" },
+            { "number": "4.7", "label": "★ Average Rating" },
+            { "number": "150+", "label": "Menu Items" }
+          ]
+        },
+        "services": [
+          {
+            "id": "fine-dining",
+            "name": "Fine Dining",
+            "description": "Authentic Italian dishes made with imported ingredients",
+            "icon": "🍝",
+            "image": "https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=300&q=80",
+            "price": "$25-45"
+          },
+          {
+            "id": "wine-selection",
+            "name": "Wine Selection",
+            "description": "Curated collection of Italian and international wines",
+            "icon": "🍷",
+            "image": "https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?w=300&q=80", 
+            "price": "$8-25/glass"
+          },
+          {
+            "id": "private-events",
+            "name": "Private Events",
+            "description": "Special occasions and corporate events catering",
+            "icon": "🎉",
+            "image": "https://images.unsplash.com/photo-1529543730872-2825d3763595?w=300&q=80",
+            "price": "Custom pricing"
+          },
+          {
+            "id": "wood-fired-pizza",
+            "name": "Wood-Fired Pizza",
+            "description": "Traditional Neapolitan pizzas from our wood-fired oven",
+            "icon": "🍕",
+            "image": "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=300&q=80",
+            "price": "$18-28"
+          }
+        ],
+        "team": [
+          {
+            "id": "chef-antonio",
+            "name": "Chef Antonio",
+            "role": "Executive Chef",
+            "bio": "Third-generation chef from Tuscany",
+            "specialties": ["Pasta Making", "Traditional Recipes"],
+            "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&q=80"
+          },
+          {
+            "id": "isabella-rosa",
+            "name": "Isabella Rosa",
+            "role": "Sommelier",
+            "bio": "Wine expert with 12+ years experience",
+            "specialties": ["Italian Wines", "Food Pairing"],
+            "image": "https://images.unsplash.com/photo-1494790108755-2616b2e13c0f?w=300&q=80"
+          },
+          {
+            "id": "marco-bianchi",
+            "name": "Marco Bianchi",
+            "role": "Pastry Chef",
+            "bio": "Specializes in traditional Italian desserts",
+            "specialties": ["Tiramisu", "Cannoli"],
+            "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&q=80"
+          }
+        ],
+        "gallery": {
+          "signature-dishes": {
+            "title": "Signature Dishes",
+            "images": [
+              "https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=400&q=80",
+              "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&q=80",
+              "https://images.unsplash.com/photo-1571997478779-2adcbbe9ab2f?w=400&q=80"
+            ]
+          },
+          "restaurant-interior": {
+            "title": "Restaurant Interior",
+            "images": [
+              "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&q=80",
+              "https://images.unsplash.com/photo-1529543730872-2825d3763595?w=400&q=80"
+            ]
+          },
+          "wine-collection": {
+            "title": "Wine Collection",
+            "images": [
+              "https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?w=400&q=80",
+              "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=400&q=80"
+            ]
+          }
+        },
+        "packages": [
+          {
+            "id": "chefs-tasting-menu",
+            "name": "Chef's Tasting Menu",
+            "description": "7-course tasting menu with wine pairings",
+            "price": "$95/person",
+            "duration": "2.5 hours",
+            "features": [
+              "7-course meal",
+              "Wine pairings",
+              "Chef's selection",
+              "Dessert included"
+            ],
+            "featured": true
+          },
+          {
+            "id": "family-style-dinner",
+            "name": "Family Style Dinner",
+            "description": "Traditional family-style Italian dinner for groups",
+            "price": "$45/person",
+            "duration": "2 hours",
+            "features": [
+              "Shared appetizers",
+              "Family-style entrees",
+              "Dessert & coffee",
+              "Group friendly"
+            ],
+            "featured": false
+          }
+        ],
+        "testimonials": [
+          {
+            "id": "testimonial-1",
+            "name": "Robert Williams",
+            "text": "Exceptional authentic Italian cuisine. The pasta is made fresh daily and the wine selection is outstanding.",
+            "rating": 5,
+            "date": "2024-01-18",
+            "service": "Fine Dining"
+          },
+          {
+            "id": "testimonial-2",
+            "name": "Sophie Anderson",
+            "text": "Feels like dining in Italy! The atmosphere and food transport you to the heart of Tuscany.",
+            "rating": 5,
+            "date": "2024-01-14",
+            "service": "Chef's Tasting Menu"
+          }
+        ],
+        "faq": [
+          {
+            "id": "faq-1",
+            "question": "Do you accept reservations?",
+            "answer": "Yes, we highly recommend making reservations, especially for dinner service and weekends. You can book online or call us directly."
+          },
+          {
+            "id": "faq-2",
+            "question": "Do you accommodate dietary restrictions?",
+            "answer": "Absolutely! We offer vegetarian, vegan, and gluten-free options. Please inform us of any allergies when making your reservation."
+          },
+          {
+            "id": "faq-3",
+            "question": "Is there parking available?",
+            "answer": "We offer complimentary valet parking in the evenings and have a public parking structure nearby."
+          }
+        ],
+        "contact": {
+          "title": "Make a Reservation",
+          "description": "Experience authentic Italian dining at its finest. Reserve your table today for an unforgettable culinary journey.",
+          "phone": "(555) 456-7890",
+          "email": "reservations@bellavista.com",
+          "address": "789 Italian Way, Little Italy, LI 67890",
+          "website": "www.bellavista.com",
+          "socialLinks": {
+            "instagram": "https://instagram.com/bellavistarestaurant",
+            "facebook": "https://facebook.com/bellavistarestaurant",
+            "twitter": "https://twitter.com/bellavistarestaurant"
+          }
+        },
+        "businessHours": {
+          "title": "Restaurant Hours",
+          "hours": {
+            "monday": "Closed",
+            "tuesday": "5:00 PM - 10:00 PM",
+            "wednesday": "5:00 PM - 10:00 PM",
+            "thursday": "5:00 PM - 10:00 PM",
+            "friday": "5:00 PM - 11:00 PM",
+            "saturday": "12:00 PM - 11:00 PM",
+            "sunday": "12:00 PM - 9:00 PM"
+          }
+        },
+        "navigation": {
+          "logo": "Bella Vista",
+          "menuItems": [
+            { "name": "Home", "href": "#hero" },
+            { "name": "About", "href": "#about" },
+            { "name": "Menu", "href": "#services" },
+            { "name": "Chefs", "href": "#team" },
+            { "name": "Gallery", "href": "#gallery" },
+            { "name": "Events", "href": "#packages" },
+            { "name": "Reservations", "href": "#contact" }
+          ]
+        },
+        "sectionOrder": [
+          "hero",
+          "about-us",
+          "services-offered",
+          "team",
+          "gallery",
+          "packages-pricing",
+          "testimonials",
+          "faq",
+          "contact",
+          "footer"
+        ],
+        "sectionVisibility": {
+          "hero": true,
+          "about-us": true,
+          "services-offered": true,
+          "team": true,
+          "gallery": true,
+          "packages-pricing": true,
+          "testimonials": true,
+          "faq": true,
+          "contact": true,
+          "footer": true
+        },
+        "theme": {
+          "primaryColor": "#8bc34a",
+          "secondaryColor": "#c8e6c9",
+          "backgroundColor": "#f1f8e9",
+          "textColor": "#1f2937"
+        }
+      },
+      "freelancer": {
+        "id": "freelancer",
+        "name": "Creative Freelancer Portfolio",
+        "slug": "freelancer",
+        "category": "Creative",
+        "primaryColor": "#ff9800",
+        "secondaryColor": "#ffcc80",
+        "logo": "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=200&q=80",
+        "image": "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&q=80",
+        "tagline": "Transforming ideas into stunning visual experiences",
+        "rating": 4.9,
+        "reviewCount": 87,
+        "address": "Remote & Available Worldwide",
+        "city": "San Francisco",
+        "state": "CA",
+        "zipCode": "94104",
+        "coordinates": { "lat": 37.7749, "lng": -122.4194 },
+        "description": "Creative portfolio website for freelancers and artists",
+        "features": [
+          "Project Portfolio",
+          "Skills Showcase",
+          "Client Testimonials",
+          "Contact Form"
+        ],
+        "hero": {
+          "title": "Creative Freelancer Portfolio",
+          "subtitle": "Transforming ideas into stunning visual experiences. Specialized in design, development, and creative solutions for modern businesses.",
+          "backgroundImage": "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-4.0.3&w=1200&q=80",
+          "ctaText": "Hire Me"
+        },
+        "about": {
+          "title": "About Me",
+          "description": "I'm a passionate creative professional with 8+ years of experience helping businesses and individuals bring their visions to life through innovative design and development.",
+          "extendedDescription": "I pride myself on delivering exceptional service and creating memorable experiences for all my clients. My commitment to excellence has made me a trusted choice for businesses worldwide.",
+          "experience": "8+ years",
+          "projectsCompleted": "150+",
+          "clientSatisfaction": "95%",
+          "averageRating": "4.9",
+          "stats": [
+            { "number": "150+", "label": "Projects Completed" },
+            { "number": "8+", "label": "Years Experience" },
+            { "number": "4.9", "label": "★ Average Rating" },
+            { "number": "95%", "label": "Client Satisfaction" }
+          ]
+        },
+        "skills": [
+          { "id": "web-design", "name": "Web Design", "level": 95, "icon": "🎨" },
+          { "id": "ui-ux-design", "name": "UI/UX Design", "level": 90, "icon": "📱" },
+          { "id": "frontend-development", "name": "Frontend Development", "level": 88, "icon": "💻" },
+          { "id": "graphic-design", "name": "Graphic Design", "level": 92, "icon": "🖼️" },
+          { "id": "branding", "name": "Branding", "level": 85, "icon": "🏷️" },
+          { "id": "motion-graphics", "name": "Motion Graphics", "level": 80, "icon": "🎬" }
+        ],
+        "portfolio": [
+          {
+            "id": "ecommerce-platform",
+            "title": "E-commerce Platform",
+            "category": "Web Development",
+            "description": "Modern e-commerce platform with custom design and seamless user experience",
+            "image": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&q=80",
+            "technologies": ["React", "Node.js", "MongoDB"]
+          },
+          {
+            "id": "brand-identity-design",
+            "title": "Brand Identity Design",
+            "category": "Branding",
+            "description": "Complete brand identity including logo, color palette, and brand guidelines",
+            "image": "https://images.unsplash.com/photo-1558655146-364adafbdade?w=600&q=80",
+            "technologies": ["Illustrator", "Photoshop", "Figma"]
+          },
+          {
+            "id": "mobile-app-ui",
+            "title": "Mobile App UI",
+            "category": "UI/UX Design",
+            "description": "Clean and intuitive mobile app interface for fitness tracking application",
+            "image": "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=600&q=80",
+            "technologies": ["Figma", "Principle", "Sketch"]
+          },
+          {
+            "id": "corporate-website",
+            "title": "Corporate Website",
+            "category": "Web Design",
+            "description": "Professional corporate website with custom animations and responsive design",
+            "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80",
+            "technologies": ["HTML/CSS", "JavaScript", "GSAP"]
+          }
+        ],
+        "services": [
+          {
+            "id": "web-design",
+            "name": "Web Design",
+            "description": "Custom website design tailored to your brand and business goals",
+            "icon": "🎨",
+            "image": "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=300&q=80",
+            "price": "From $1,200"
+          },
+          {
+            "id": "ui-ux-design",
+            "name": "UI/UX Design",
+            "description": "User-centered design for web and mobile applications",
+            "icon": "📱",
+            "image": "https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?w=300&q=80",
+            "price": "From $800"
+          },
+          {
+            "id": "frontend-development",
+            "name": "Frontend Development",
+            "description": "Modern, responsive websites built with latest technologies",
+            "icon": "💻",
+            "image": "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=300&q=80",
+            "price": "From $1,500"
+          },
+          {
+            "id": "branding-identity",
+            "name": "Branding & Identity",
+            "description": "Complete brand identity design including logo and guidelines",
+            "icon": "🏷️",
+            "image": "https://images.unsplash.com/photo-1558655146-364adafbdade?w=300&q=80",
+            "price": "From $900"
+          }
+        ],
+        "experience": [
+          {
+            "id": "digital-agency-inc",
+            "company": "Digital Agency Inc.",
+            "role": "Senior Creative Designer",
+            "period": "2020 - Present",
+            "description": "Lead designer for major client projects, specializing in web design and branding solutions."
+          },
+          {
+            "id": "freelance",
+            "company": "Freelance",
+            "role": "Independent Designer & Developer",
+            "period": "2018 - Present",
+            "description": "Providing creative solutions for startups and established businesses across various industries."
+          },
+          {
+            "id": "tech-startup-co",
+            "company": "Tech Startup Co.",
+            "role": "UI/UX Designer",
+            "period": "2018 - 2020",
+            "description": "Designed user interfaces for mobile and web applications, improving user engagement by 40%."
+          }
+        ],
+        "testimonials": [
+          {
+            "id": "testimonial-1",
+            "name": "Sarah Johnson",
+            "text": "Outstanding work! The website design exceeded our expectations and perfectly captured our brand vision.",
+            "rating": 5,
+            "date": "2024-01-20",
+            "service": "Web Design"
+          },
+          {
+            "id": "testimonial-2",
+            "name": "Michael Chen",
+            "text": "Professional, creative, and delivers on time. The branding work has significantly improved our market presence.",
+            "rating": 5,
+            "date": "2024-01-16",
+            "service": "Branding"
+          }
+        ],
+        "packages": [
+          {
+            "id": "starter-package",
+            "name": "Starter Package",
+            "description": "Perfect for small businesses getting started online",
+            "price": "$1,499",
+            "duration": "2-3 weeks",
+            "features": [
+              "Custom Web Design",
+              "Responsive Layout",
+              "Basic SEO",
+              "Contact Forms"
+            ],
+            "featured": false
+          },
+          {
+            "id": "professional-package",
+            "name": "Professional Package",
+            "description": "Comprehensive solution for growing businesses",
+            "price": "$2,999",
+            "duration": "4-6 weeks",
+            "features": [
+              "Custom Design & Development",
+              "CMS Integration",
+              "Advanced SEO",
+              "Analytics Setup",
+              "Social Media Integration"
+            ],
+            "featured": true
+          }
+        ],
+        "faq": [
+          {
+            "id": "faq-1",
+            "question": "What is your typical project timeline?",
+            "answer": "Project timelines vary based on scope, typically 1-6 weeks for most projects. I provide detailed timelines during our initial consultation."
+          },
+          {
+            "id": "faq-2",
+            "question": "Do you provide ongoing support?",
+            "answer": "Yes, I offer ongoing support and maintenance packages for all projects. This includes updates, bug fixes, and content changes."
+          },
+          {
+            "id": "faq-3",
+            "question": "What are your payment terms?",
+            "answer": "I typically require 50% upfront and 50% upon completion. For larger projects, we can arrange milestone-based payments."
+          }
+        ],
+        "contact": {
+          "title": "Let's Work Together",
+          "description": "Have a project in mind? I'd love to hear about it. Let's discuss how we can bring your vision to life.",
+          "phone": "(555) 234-5678",
+          "email": "hello@creativefreelancer.com",
+          "address": "Remote & Available Worldwide",
+          "website": "www.creativefreelancer.com",
+          "socialLinks": {
+            "instagram": "https://instagram.com/creativefreelancer",
+            "twitter": "https://twitter.com/creativefreelancer",
+            "linkedin": "https://linkedin.com/in/creativefreelancer"
+          }
+        },
+        "businessHours": {
+          "title": "Availability",
+          "hours": {
+            "monday": "9:00 AM - 6:00 PM",
+            "tuesday": "9:00 AM - 6:00 PM",
+            "wednesday": "9:00 AM - 6:00 PM",
+            "thursday": "9:00 AM - 6:00 PM",
+            "friday": "9:00 AM - 5:00 PM",
+            "saturday": "By Appointment",
+            "sunday": "Closed"
+          }
+        },
+        "navigation": {
+          "logo": "Creative Portfolio",
+          "menuItems": [
+            { "name": "Home", "href": "#hero" },
+            { "name": "About", "href": "#about" },
+            { "name": "Portfolio", "href": "#portfolio" },
+            { "name": "Skills", "href": "#skills" },
+            { "name": "Services", "href": "#services" },
+            { "name": "Experience", "href": "#experience" },
+            { "name": "Contact", "href": "#contact" }
+          ]
+        },
+        "sectionOrder": [
+          "hero",
+          "about-us",
+          "portfolio",
+          "skills",
+          "services-offered",
+          "experience",
+          "testimonials",
+          "packages-pricing",
+          "faq",
+          "contact",
+          "footer"
+        ],
+        "sectionVisibility": {
+          "hero": true,
+          "about-us": true,
+          "portfolio": true,
+          "skills": true,
+          "services-offered": true,
+          "experience": true,
+          "testimonials": true,
+          "packages-pricing": true,
+          "faq": true,
+          "contact": true,
+          "footer": true
+        },
+        "theme": {
+          "primaryColor": "#ff9800",
+          "secondaryColor": "#ffcc80",
+          "backgroundColor": "#fff8e1",
+          "textColor": "#1f2937"
+        }
+      }
+    },
+    "sections": {
+      "hero": {
+        "title": "Hero Section",
+        "description": "Main banner section with business name, tagline, and call-to-action",
+        "editable": true,
+        "required": true,
+        "fields": {
+          "name": {
+            "type": "text",
+            "label": "Business Name",
+            "required": true
+          },
+          "tagline": {
+            "type": "textarea",
+            "label": "Tagline",
+            "required": true
+          },
+          "backgroundImage": {
+            "type": "image",
+            "label": "Background Image",
+            "required": false
+          },
+          "ctaText": {
+            "type": "text",
+            "label": "Call to Action Text",
+            "default": "Get Started"
+          }
+        }
+      },
+      "about-us": {
+        "title": "About Us",
+        "description": "Business description, mission, and statistics",
+        "editable": true,
+        "required": false,
+        "fields": {
+          "description": {
+            "type": "textarea",
+            "label": "Business Description",
+            "required": true
+          },
+          "extendedDescription": {
+            "type": "textarea",
+            "label": "Extended Description",
+            "required": false
+          },
+          "experience": {
+            "type": "text",
+            "label": "Years of Experience",
+            "default": "10+ years"
+          },
+          "stats": {
+            "type": "array",
+            "label": "Statistics",
+            "itemType": "object",
+            "fields": {
+              "number": {
+                "type": "text",
+                "label": "Statistic Number",
+                "required": true
+              },
+              "label": {
+                "type": "text",
+                "label": "Statistic Label",
+                "required": true
+              }
+            }
+          }
+        }
+      },
+      "services-offered": {
+        "title": "Services Offered",
+        "description": "List of services provided by the business",
+        "editable": true,
+        "required": false,
+        "fields": {
+          "subtitle": {
+            "type": "text",
+            "label": "Section Subtitle",
+            "default": "We provide comprehensive services to meet your needs"
+          },
+          "services": {
+            "type": "array",
+            "label": "Services",
+            "itemType": "object",
+            "fields": {
+              "name": {
+                "type": "text",
+                "label": "Service Name",
+                "required": true
+              },
+              "description": {
+                "type": "textarea",
+                "label": "Service Description",
+                "required": true
+              },
+              "price": {
+                "type": "text",
+                "label": "Starting Price",
+                "required": false
+              },
+              "icon": {
+                "type": "text",
+                "label": "Service Icon (emoji)",
+                "required": false
+              },
+              "image": {
+                "type": "image",
+                "label": "Service Image",
+                "required": false
+              }
+            }
+          }
+        }
+      },
+      "team": {
+        "title": "Team",
+        "description": "Team members and staff profiles",
+        "editable": true,
+        "required": false,
+        "fields": {
+          "subtitle": {
+            "type": "text",
+            "label": "Section Subtitle",
+            "default": "Meet our experienced professionals"
+          },
+          "members": {
+            "type": "array",
+            "label": "Team Members",
+            "itemType": "object",
+            "fields": {
+              "name": {
+                "type": "text",
+                "label": "Member Name",
+                "required": true
+              },
+              "role": {
+                "type": "text",
+                "label": "Role/Position",
+                "required": true
+              },
+              "bio": {
+                "type": "textarea",
+                "label": "Biography",
+                "required": true
+              },
+              "specialties": {
+                "type": "array",
+                "itemType": "text",
+                "label": "Specialties"
+              },
+              "image": {
+                "type": "image",
+                "label": "Profile Image",
+                "required": false
+              }
+            }
+          }
+        }
+      },
+      "gallery": {
+        "title": "Gallery",
+        "description": "Image gallery organized by categories",
+        "editable": true,
+        "required": false,
+        "fields": {
+          "subtitle": {
+            "type": "text",
+            "label": "Section Subtitle",
+            "default": "Browse through our portfolio and work"
+          },
+          "categories": {
+            "type": "object",
+            "label": "Gallery Categories",
+            "dynamic": true,
+            "fields": {
+              "title": {
+                "type": "text",
+                "label": "Category Title",
+                "required": true
+              },
+              "images": {
+                "type": "array",
+                "itemType": "image",
+                "label": "Category Images"
+              }
+            }
+          }
+        }
+      },
+      "packages-pricing": {
+        "title": "Packages & Pricing",
+        "description": "Service packages and pricing information",
+        "editable": true,
+        "required": false,
+        "fields": {
+          "subtitle": {
+            "type": "text",
+            "label": "Section Subtitle",
+            "default": "Choose the perfect package for your needs"
+          },
+          "packages": {
+            "type": "array",
+            "label": "Packages",
+            "itemType": "object",
+            "fields": {
+              "name": {
+                "type": "text",
+                "label": "Package Name",
+                "required": true
+              },
+              "description": {
+                "type": "textarea",
+                "label": "Package Description",
+                "required": true
+              },
+              "price": {
+                "type": "text",
+                "label": "Package Price",
+                "required": true
+              },
+              "duration": {
+                "type": "text",
+                "label": "Duration",
+                "required": false
+              },
+              "features": {
+                "type": "array",
+                "itemType": "text",
+                "label": "Package Features"
+              },
+              "featured": {
+                "type": "boolean",
+                "label": "Featured Package",
+                "default": false
+              }
+            }
+          }
+        }
+      },
+      "testimonials": {
+        "title": "Testimonials",
+        "description": "Customer reviews and testimonials",
+        "editable": true,
+        "required": false,
+        "fields": {
+          "subtitle": {
+            "type": "text",
+            "label": "Section Subtitle",
+            "default": "Real testimonials from satisfied customers"
+          },
+          "testimonials": {
+            "type": "array",
+            "label": "Testimonials",
+            "itemType": "object",
+            "fields": {
+              "name": {
+                "type": "text",
+                "label": "Client Name",
+                "required": true
+              },
+              "text": {
+                "type": "textarea",
+                "label": "Testimonial Text",
+                "required": true
+              },
+              "rating": {
+                "type": "number",
+                "label": "Rating (1-5)",
+                "min": 1,
+                "max": 5,
+                "default": 5
+              },
+              "service": {
+                "type": "text",
+                "label": "Service Used",
+                "required": false
+              },
+              "date": {
+                "type": "date",
+                "label": "Review Date",
+                "required": false
+              }
+            }
+          }
+        }
+      },
+      "faq": {
+        "title": "FAQ",
+        "description": "Frequently asked questions section",
+        "editable": true,
+        "required": false,
+        "fields": {
+          "subtitle": {
+            "type": "text",
+            "label": "Section Subtitle",
+            "default": "Find answers to common questions about our services"
+          },
+          "faqs": {
+            "type": "array",
+            "label": "FAQs",
+            "itemType": "object",
+            "fields": {
+              "question": {
+                "type": "text",
+                "label": "Question",
+                "required": true
+              },
+              "answer": {
+                "type": "textarea",
+                "label": "Answer",
+                "required": true
+              }
+            }
+          }
+        }
+      },
+      "contact": {
+        "title": "Contact",
+        "description": "Contact information and enquiry form",
+        "editable": true,
+        "required": true,
+        "fields": {
+          "subtitle": {
+            "type": "text",
+            "label": "Section Subtitle",
+            "default": "Ready to get started? Contact us today!"
+          },
+          "phone": {
+            "type": "text",
+            "label": "Phone Number",
+            "required": true
+          },
+          "email": {
+            "type": "email",
+            "label": "Email Address",
+            "required": true
+          },
+          "address": {
+            "type": "text",
+            "label": "Business Address",
+            "required": true
+          },
+          "website": {
+            "type": "text",
+            "label": "Website URL",
+            "required": false
+          },
+          "socialLinks": {
+            "type": "object",
+            "label": "Social Media Links",
+            "fields": {
+              "instagram": { "type": "text", "label": "Instagram URL" },
+              "facebook": { "type": "text", "label": "Facebook URL" },
+              "twitter": { "type": "text", "label": "Twitter URL" },
+              "linkedin": { "type": "text", "label": "LinkedIn URL" }
+            }
+          }
+        }
+      }
+    },
+    "defaultSectionOrder": [
+      "hero",
+      "about-us",
+      "services-offered",
+      "team",
+      "gallery",
+      "packages-pricing",
+      "testimonials",
+      "faq",
+      "contact",
+      "footer"
+    ],
+    "defaultSectionVisibility": {
+      "hero": true,
+      "about-us": true,
+      "services-offered": true,
+      "team": true,
+      "gallery": true,
+      "packages-pricing": true,
+      "testimonials": true,
+      "faq": true,
+      "contact": true,
+      "footer": true
+    },
+    "businessTemplates": [
+      {
+        "id": "salon",
+        "name": "Beauty Salon",
+        "category": "Beauty & Wellness",
+        "description": "Professional salon website with booking system and service gallery",
+        "image": "https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-4.0.3&w=600",
+        "features": ["Online Booking", "Service Gallery", "Staff Profiles", "Client Reviews"]
+      },
+      {
+        "id": "gym",
+        "name": "Fitness Gym",
+        "category": "Health & Fitness",
+        "description": "Modern gym website with membership plans and class schedules",
+        "image": "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?ixlib=rb-4.0.3&w=600",
+        "features": ["Membership Plans", "Class Schedule", "Trainer Profiles", "Progress Tracking"]
+      },
+      {
+        "id": "restaurant",
+        "name": "Restaurant",
+        "category": "Food & Dining",
+        "description": "Elegant restaurant website with menu and table reservations",
+        "image": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&w=600",
+        "features": ["Digital Menu", "Table Reservations", "Chef Profiles", "Photo Gallery"]
+      },
+      {
+        "id": "freelancer",
+        "name": "Freelancer Portfolio",
+        "category": "Creative",
+        "description": "Creative portfolio website for freelancers and artists",
+        "image": "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-4.0.3&w=600",
+        "features": ["Project Portfolio", "Skills Showcase", "Client Testimonials", "Contact Form"]
+      }
+    ]
+  },
+  "meta": {
+    "totalBusinesses": 4,
+    "requestId": "req_business_12345",
+    "version": "2.0",
+    "responseTime": "120ms"
+  }
+}
