@@ -527,6 +527,9 @@ export const selectOnSaleProducts = (state) =>
 export const selectProductsByCategory = (categorySlug) => (state) =>
   state.ecommerceManagement.products.filter(product => product.category === categorySlug);
 
+export const selectSectionById = (sectionId) => (state) =>
+  state.ecommerceManagement.pageContent.sections.find(section => section.id === sectionId);
+
 export const selectIsInWishlist = (productId) => (state) =>
   state.ecommerceManagement.wishlist.includes(productId);
 
