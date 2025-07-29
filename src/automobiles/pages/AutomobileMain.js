@@ -19,6 +19,7 @@ import {
   selectLoading,
   selectError,
   selectPageSections,
+  selectHasUnsavedChanges,
   clearError,
 } from '../../store/slices/automobileManagementSlice';
 
@@ -505,7 +506,9 @@ const AutomobileMain = () => {
 
     // Only fetch automobile data if we don't have vendor data or if slug changed
     // This prevents overriding real-time updates from dealer dashboard
-    if (!vendor || vendor.slug !== slug) {
+    // Also check if we have unsaved changes to avoid overriding
+    const hasUnsavedChanges = useSelector(selectHasUnsavedChanges);
+    if (!vendor || (vendor.slug !== slug && !hasUnsavedChanges)) {
       dispatch(fetchAutomobileData(slug));
     }
   }, [location.pathname, navigate, dispatch, vendor]);
