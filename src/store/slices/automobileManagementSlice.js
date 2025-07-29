@@ -417,10 +417,17 @@ const automobileManagementSlice = createSlice({
 
       if (sectionIndex !== -1) {
         // Update section content by creating a new object reference for proper React re-rendering
-        state.pageContent.sections[sectionIndex] = {
+        const updatedSection = {
           ...state.pageContent.sections[sectionIndex],
           ...content
         };
+
+        // Create new sections array with updated section for proper React re-rendering
+        state.pageContent.sections = [
+          ...state.pageContent.sections.slice(0, sectionIndex),
+          updatedSection,
+          ...state.pageContent.sections.slice(sectionIndex + 1)
+        ];
 
         // Smart sync with global data based on section type
         if (sectionId === 'categories' && content.categories) {
