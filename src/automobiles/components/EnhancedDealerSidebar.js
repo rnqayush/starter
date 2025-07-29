@@ -433,7 +433,7 @@ const EnhancedDealerSidebar = ({
   };
 
   const renderChangesList = () => {
-    return Object.entries(changes).map(([field, change]) => (
+    return Object.entries(changes).map(([field, value]) => (
       <ChangeItem key={field}>
         <span className="field">{field}:</span>
         <div
@@ -443,9 +443,9 @@ const EnhancedDealerSidebar = ({
             marginTop: '2px',
           }}
         >
-          {typeof change.new === 'string' && change.new.length > 30
-            ? `${change.new.substring(0, 30)}...`
-            : String(change.new)}
+          {typeof value === 'string' && value.length > 30
+            ? `${value.substring(0, 30)}...`
+            : String(value)}
         </div>
       </ChangeItem>
     ));
