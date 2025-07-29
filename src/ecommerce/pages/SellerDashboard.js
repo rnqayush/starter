@@ -369,6 +369,8 @@ const SellerDashboard = () => {
       categories: 'Category Management',
       orders: 'Order Management',
       enquiries: 'Customer Enquiries',
+      discounts: 'Discounts & Coupons',
+      'bulk-import': 'Bulk Product Import',
       insights: 'Analytics & Insights',
       settings: 'Store Settings',
       'section-hero': 'Hero Section',
