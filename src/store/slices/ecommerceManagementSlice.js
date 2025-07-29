@@ -585,9 +585,6 @@ export const selectFilteredProducts = (state) => {
   return filtered;
 };
 
-export const selectSectionById = (sectionId) => (state) =>
-  state.ecommerceManagement.pageContent.sections.find(section => section.id === sectionId);
-
 export const selectSectionContent = (sectionId) => (state) => {
   const section = state.ecommerceManagement.pageContent.sections.find(s => s.id === sectionId);
   return section?.content || {};
