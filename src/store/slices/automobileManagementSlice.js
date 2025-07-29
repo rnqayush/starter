@@ -816,9 +816,6 @@ export const {
   reorderSections,
 } = automobileManagementSlice.actions;
 
-// Export async thunks
-export { fetchAutomobileData, saveCompleteData, fetchVehicleDetails, addToWishlist, removeFromWishlist, submitEnquiry };
-
 // Selectors
 export const selectAutomobileData = state => state.automobileManagement;
 export const selectVendor = state => state.automobileManagement.vendor;
