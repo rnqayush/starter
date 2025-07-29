@@ -822,6 +822,8 @@ const automobileManagementSlice = createSlice({
         state.hasUnsavedChanges = false;
         state.tempChanges = {};
         state.pageContent.lastPublished = new Date().toISOString();
+        state.isDataPersisted = true;
+        state.lastSaveTimestamp = new Date().toISOString();
       })
       .addCase(saveCompleteData.rejected, (state, action) => {
         state.loading = false;
