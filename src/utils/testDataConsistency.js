@@ -2,7 +2,7 @@
 // This simulates the API calls that both pages make to ensure data consistency
 
 import { fetchBusinessData } from './businessAPI';
-import { getBusinessWebsiteData } from '../DummyData/businessWebsiteData';
+import { getBusinessWebsiteData } from '../DummyData';
 
 /**
  * Test function to verify data consistency between BusinessWebsitePage and AdminDashboard
