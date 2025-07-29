@@ -1,30 +1,55 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import BusinessWebsitePage from './pages/BusinessWebsitePage';
 import FreelancerPortfolioPage from './pages/FreelancerPortfolioPage';
-import businessData from '../DummyData/business.json';
+import { detectBusinessType } from '../utils/businessAPI';
 
 const BusinessModule = () => {
   const [isPersonalPortfolio, setIsPersonalPortfolio] = useState(false);
   const [loading, setLoading] = useState(true);
+  const { slug } = useParams();
+  const location = useLocation();
 
   useEffect(() => {
-    // Fetch the isPersonalPortfolio flag from JSON data
+    // Determine business type based on URL slug
     const fetchBusinessConfig = () => {
       try {
-        const config = businessData.data?.isPersonalPortfolio || false;
-        setIsPersonalPortfolio(config);
-        console.log('[BusinessModule] isPersonalPortfolio:', config);
+        // Get the slug from URL params
+        const currentSlug = slug || 'salon'; // Default to salon if no slug
+        console.log('[BusinessModule] Current slug:', currentSlug);
+
+        // Use the detectBusinessType function to determine the type
+        const businessInfo = detectBusinessType(currentSlug);
+
+        if (businessInfo) {
+          const isFreelancer = businessInfo.isFreelancer;
+          setIsPersonalPortfolio(isFreelancer);
+          console.log('[BusinessModule] Business type detected:', {
+            slug: currentSlug,
+            isFreelancer,
+            businessType: businessInfo.businessType
+          });
+        } else {
+          // Fallback: check for freelancer/personal keywords in slug
+          const isFreelancerSlug = currentSlug === 'freelancer' || currentSlug === 'personal';
+          setIsPersonalPortfolio(isFreelancerSlug);
+          console.log('[BusinessModule] Fallback detection:', {
+            slug: currentSlug,
+            isFreelancer: isFreelancerSlug
+          });
+        }
       } catch (error) {
         console.error('[BusinessModule] Error fetching business config:', error);
-        setIsPersonalPortfolio(false); // Default to business
+        // Fallback: check slug directly
+        const isFreelancerSlug = slug === 'freelancer' || slug === 'personal';
+        setIsPersonalPortfolio(isFreelancerSlug);
       } finally {
         setLoading(false);
       }
     };
 
     fetchBusinessConfig();
-  }, []);
+  }, [slug, location.pathname]);
 
   if (loading) {
     return (
@@ -40,7 +65,7 @@ const BusinessModule = () => {
     );
   }
 
-  // Render different pages based on the isPersonalPortfolio flag
+  // Render different pages based on the business type detected from slug
   if (isPersonalPortfolio) {
     return <FreelancerPortfolioPage />;
   } else {
