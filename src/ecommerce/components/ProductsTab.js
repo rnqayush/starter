@@ -9,8 +9,7 @@ import {
   FaEye,
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
-import { sellerDashboardData } from '../../DummyData';
-const { sellerProducts } = sellerDashboardData;
+import { ecommerceProducts } from '../../DummyData';
 
 const ProductsContainer = styled.div`
   background: ${theme.colors.white};
@@ -290,7 +289,7 @@ const ActionButton = styled.button.withConfig({
 
 const ProductsTab = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [products] = useState(sellerProducts);
+  const [products] = useState(ecommerceProducts || []);
 
   const formatCurrency = value => {
     return new Intl.NumberFormat('en-US', {
@@ -299,7 +298,7 @@ const ProductsTab = () => {
     }).format(value);
   };
 
-  const filteredProducts = products.filter(
+  const filteredProducts = (products || []).filter(
     product =>
       product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       product.category.toLowerCase().includes(searchTerm.toLowerCase())
@@ -369,7 +368,18 @@ const ProductsTab = () => {
               <TableRow key={product.id}>
                 <TableCell>
                   <ProductInfo>
-                    <ProductImage src={product.image} alt={product.name} />
+                    <ProductImage
+                      src={
+                        product.media?.mainImage ||
+                        product.image ||
+                        'https://via.placeholder.com/80x80?text=No+Image'
+                      }
+                      alt={product.name}
+                      onError={e => {
+                        e.target.src =
+                          'https://via.placeholder.com/80x80?text=No+Image';
+                      }}
+                    />
                     <ProductDetails>
                       <ProductName>{product.name}</ProductName>
                       <ProductCategory>{product.category}</ProductCategory>
@@ -377,24 +387,45 @@ const ProductsTab = () => {
                   </ProductInfo>
                 </TableCell>
                 <TableCell>
-                  <Price>{formatCurrency(product.price)}</Price>
+                  <Price>
+                    {formatCurrency(
+                      product.pricing?.price || product.price || 0
+                    )}
+                  </Price>
                 </TableCell>
                 <TableCell>
                   <StockInfo>
-                    <StockNumber low={product.stock < 10}>
-                      {product.stock}
+                    <StockNumber
+                      low={
+                        (product.availability?.quantity || product.stock || 0) <
+                        10
+                      }
+                    >
+                      {product.availability?.quantity || product.stock || 0}
                     </StockNumber>
                     <StockLabel>in stock</StockLabel>
                   </StockInfo>
                 </TableCell>
-                <TableCell>{product.sold}</TableCell>
+                <TableCell>{product.sold || 0}</TableCell>
                 <TableCell>
-                  <StatusBadge status={product.status}>
-                    {getStatusText(product.status)}
+                  <StatusBadge
+                    status={
+                      product.availability?.status || product.status || 'active'
+                    }
+                  >
+                    {getStatusText(
+                      product.availability?.status || product.status || 'active'
+                    )}
                   </StatusBadge>
                 </TableCell>
                 <TableCell>
-                  <Price>{formatCurrency(product.revenue)}</Price>
+                  <Price>
+                    {formatCurrency(
+                      product.revenue ||
+                        (product.pricing?.price || product.price || 0) *
+                          (product.sold || 0)
+                    )}
+                  </Price>
                 </TableCell>
                 <TableCell>
                   <ActionButtons>

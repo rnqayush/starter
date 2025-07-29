@@ -379,7 +379,10 @@ const DashboardTabEnhanced = () => {
           </StatsHeader>
           <StatsContent>
             <StatsValue>
-              {formatCurrency(dashboardStats.totalSales.value)}
+              {formatCurrency(
+                dashboardStats.totalSales.value || 0,
+                dashboardStats.totalSales.currency || 'USD'
+              )}
             </StatsValue>
             <StatsLabel>Total Sales</StatsLabel>
             <StatsChange positive={dashboardStats.totalSales.change > 0}>
@@ -492,7 +495,17 @@ const DashboardTabEnhanced = () => {
           <AlertsList>
             {lowStockAlerts.map(alert => (
               <AlertItem key={alert.id}>
-                <AlertImage src={alert.image} alt={alert.productName} />
+                <AlertImage
+                  src={
+                    alert.image ||
+                    'https://via.placeholder.com/64x64?text=No+Image'
+                  }
+                  alt={alert.productName}
+                  onError={e => {
+                    e.target.src =
+                      'https://via.placeholder.com/64x64?text=No+Image';
+                  }}
+                />
                 <AlertContent>
                   <AlertTitle>{alert.productName}</AlertTitle>
                   <AlertMessage>
@@ -516,13 +529,23 @@ const DashboardTabEnhanced = () => {
           <ProductsList>
             {topPerformingProducts.map((product, index) => (
               <ProductItem key={product.id}>
-                <ProductImage src={product.image} alt={product.name} />
+                <ProductImage
+                  src={
+                    product.image ||
+                    'https://via.placeholder.com/80x80?text=No+Image'
+                  }
+                  alt={product.name}
+                  onError={e => {
+                    e.target.src =
+                      'https://via.placeholder.com/80x80?text=No+Image';
+                  }}
+                />
                 <ProductInfo>
                   <ProductName>{product.name}</ProductName>
                   <ProductStats>
-                    {product.sales} sold • {formatCurrency(product.revenue)}{' '}
-                    revenue
-                    <ProductGrowth> (+{product.growth}%)</ProductGrowth>
+                    {product.sales || 0} sold •{' '}
+                    {formatCurrency(product.revenue || 0)} revenue
+                    <ProductGrowth> (+{product.growth || 0}%)</ProductGrowth>
                   </ProductStats>
                 </ProductInfo>
               </ProductItem>

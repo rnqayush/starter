@@ -13,8 +13,7 @@ import {
 import { theme } from '../../styles/GlobalStyle';
 import FormField from './shared/FormField';
 import { Button } from '../../components/shared/Button';
-import { sellerDashboardData } from '../../DummyData';
-const { productCategories } = sellerDashboardData;
+import { ecommerceCategories } from '../../DummyData';
 
 const FormContainer = styled.div`
   max-width: 1000px;
@@ -366,9 +365,9 @@ const AddProductTabEnhanced = () => {
                 name="category"
                 value={formData.category}
                 onChange={handleInputChange}
-                options={productCategories.map(cat => ({
-                  value: cat,
-                  label: cat,
+                options={(ecommerceCategories || []).map(cat => ({
+                  value: cat.slug || cat.name || cat,
+                  label: cat.name || cat,
                 }))}
                 required
               />

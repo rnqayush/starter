@@ -297,6 +297,10 @@ const HeroButton = styled.button.withConfig({
     padding: ${theme.spacing.md} ${theme.spacing.xl};
     min-width: 180px;
     font-size: 1rem;
+
+    &:hover {
+      transform: none;
+    }
   }
 `;
 

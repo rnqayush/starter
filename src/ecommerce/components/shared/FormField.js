@@ -190,6 +190,7 @@ const FormField = ({
   disabled = false,
   options = [],
   rows,
+  multiline = false,
   children,
   ...props
 }) => {
@@ -199,12 +200,12 @@ const FormField = ({
       return children;
     }
 
-    if (type === 'textarea') {
+    if (type === 'textarea' || multiline) {
       return (
         <Textarea
           name={name}
           value={value}
-          onChange={onChange}
+          onChange={e => onChange(e.target.value)}
           placeholder={placeholder}
           required={required}
           disabled={disabled}
@@ -220,7 +221,7 @@ const FormField = ({
         <Select
           name={name}
           value={value}
-          onChange={onChange}
+          onChange={e => onChange(e.target.value)}
           required={required}
           disabled={disabled}
           hasError={!!error}
@@ -241,7 +242,7 @@ const FormField = ({
         type={type}
         name={name}
         value={value}
-        onChange={onChange}
+        onChange={e => onChange(e.target.value)}
         placeholder={placeholder}
         required={required}
         disabled={disabled}

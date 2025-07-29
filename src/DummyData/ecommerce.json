@@ -1,0 +1,768 @@
+{
+  "vendor": {
+    "id": "techmart-downtown",
+    "slug": "techmart-downtown",
+    "name": "TechMart Downtown",
+    "category": "ecommerce",
+    "businessInfo": {
+      "logo": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=200&q=80",
+      "description": "Your premier destination for cutting-edge electronics and gadgets. From smartphones to smart home devices.",
+      "phone": "+1 (555) 123-TECH",
+      "email": "info@techmart-downtown.com",
+      "website": "www.techmart-downtown.com",
+      "address": {
+        "street": "123 Tech Street",
+        "city": "San Francisco",
+        "state": "CA",
+        "zipCode": "94102",
+        "coordinates": { "lat": 37.7749, "lng": -122.4194 }
+      },
+      "hours": {
+        "monday": "9:00 AM - 9:00 PM",
+        "tuesday": "9:00 AM - 9:00 PM",
+        "wednesday": "9:00 AM - 9:00 PM",
+        "thursday": "9:00 AM - 9:00 PM",
+        "friday": "9:00 AM - 10:00 PM",
+        "saturday": "10:00 AM - 10:00 PM",
+        "sunday": "11:00 AM - 8:00 PM"
+      }
+    },
+    "ownerInfo": {
+      "name": "Michael Chen",
+      "email": "michael@techmart-downtown.com",
+      "phone": "+1 (555) 123-TECH",
+      "since": "2020"
+    },
+    "rating": 4.8,
+    "reviewCount": 1245,
+    "theme": {
+      "primaryColor": "#1e40af",
+      "secondaryColor": "#3b82f6",
+      "backgroundColor": "#f8fafc",
+      "textColor": "#1f2937"
+    },
+    "featured": true,
+    "verified": true,
+    "lastUpdated": "2024-01-15T10:30:00Z"
+  },
+  "pageContent": {
+    "sections": [
+      {
+        "id": "hero",
+        "name": "Hero Section",
+        "type": "hero",
+        "visible": true,
+        "order": 1,
+        "title": "Welcome to TechMart Downtown",
+        "subtitle": "Discover the latest in technology and electronics. From cutting-edge smartphones to smart home innovations.",
+        "backgroundImage": "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1920&q=80",
+        "primaryButtonText": "Shop Products",
+        "secondaryButtonText": "Browse Categories",
+        "content": {
+          "title": "Welcome to TechMart Downtown",
+          "subtitle": "Discover the latest in technology and electronics. From cutting-edge smartphones to smart home innovations.",
+          "backgroundImage": "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1920&q=80",
+          "primaryButtonText": "Shop Products",
+          "secondaryButtonText": "Browse Categories"
+        }
+      },
+      {
+        "id": "categories",
+        "name": "Product Categories",
+        "type": "categories",
+        "visible": true,
+        "order": 2,
+        "title": "Shop by Category",
+        "subtitle": "Explore our diverse range of products across different categories",
+        "visibleCategories": [1, 2, 3, 4],
+        "content": {
+          "title": "Shop by Category",
+          "subtitle": "Explore our diverse range of products across different categories",
+          "visibleCategories": [1, 2, 3, 4]
+        }
+      },
+      {
+        "id": "featured",
+        "name": "Featured Products",
+        "type": "featured",
+        "visible": true,
+        "order": 3,
+        "title": "Featured Products",
+        "subtitle": "Handpicked items that customers love the most",
+        "productIds": [1, 2, 4, 7],
+        "content": {
+          "title": "Featured Products",
+          "subtitle": "Handpicked items that customers love the most",
+          "productIds": [1, 2, 4, 7]
+        }
+      },
+      {
+        "id": "special-offers",
+        "name": "Special Offers",
+        "type": "special-offers",
+        "visible": true,
+        "order": 4,
+        "title": "🔥 Hot Deals",
+        "subtitle": "Limited time offers you don't want to miss",
+        "productIds": [1, 5],
+        "content": {
+          "title": "🔥 Hot Deals",
+          "subtitle": "Limited time offers you don't want to miss",
+          "productIds": [1, 5]
+        }
+      },
+      {
+        "id": "footer",
+        "name": "Footer",
+        "type": "footer",
+        "visible": true,
+        "order": 5,
+        "content": {
+          "companyDescription": "TechMart Downtown - Your trusted technology partner since 2020.",
+          "socialLinks": {
+            "facebook": "https://facebook.com/techmart-downtown",
+            "instagram": "https://instagram.com/techmart_downtown",
+            "twitter": "https://twitter.com/techmartdt"
+          },
+          "quickLinks": [
+            { "label": "About Us", "url": "/about" },
+            { "label": "Contact", "url": "/contact" },
+            { "label": "Privacy Policy", "url": "/privacy" },
+            { "label": "Terms of Service", "url": "/terms" }
+          ]
+        }
+      }
+    ],
+    "lastSaved": "2024-01-15T10:30:00Z",
+    "lastPublished": "2024-01-15T10:30:00Z"
+  },
+  "categories": [
+    {
+      "id": 1,
+      "name": "Electronics",
+      "slug": "electronics",
+      "image": "https://images.unsplash.com/photo-1498049794561-7780e7231661?w=500&q=80",
+      "description": "Latest gadgets and electronic devices",
+      "count": 156,
+      "featured": true,
+      "seo": {
+        "title": "Electronics - TechMart Downtown",
+        "description": "Discover the latest electronics and gadgets at TechMart Downtown",
+        "keywords": ["electronics", "gadgets", "technology", "smartphones"]
+      }
+    },
+    {
+      "id": 2,
+      "name": "Fashion",
+      "slug": "fashion",
+      "image": "https://images.unsplash.com/photo-1445205170230-053b83016050?w=500&q=80",
+      "description": "Trendy clothing and accessories",
+      "count": 89,
+      "featured": true,
+      "seo": {
+        "title": "Fashion - TechMart Downtown",
+        "description": "Trendy fashion and accessories",
+        "keywords": ["fashion", "clothing", "accessories", "style"]
+      }
+    },
+    {
+      "id": 3,
+      "name": "Home & Garden",
+      "slug": "home-garden",
+      "image": "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=500&q=80",
+      "description": "Everything for your home and garden",
+      "count": 67,
+      "featured": true,
+      "seo": {
+        "title": "Home & Garden - TechMart Downtown",
+        "description": "Home decor and garden essentials",
+        "keywords": ["home", "garden", "decor", "furniture"]
+      }
+    },
+    {
+      "id": 4,
+      "name": "Sports",
+      "slug": "sports",
+      "image": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&q=80",
+      "description": "Sports equipment and activewear",
+      "count": 43,
+      "featured": false,
+      "seo": {
+        "title": "Sports - TechMart Downtown",
+        "description": "Sports equipment and fitness gear",
+        "keywords": ["sports", "fitness", "equipment", "activewear"]
+      }
+    }
+  ],
+  "products": [
+    {
+      "id": 1,
+      "name": "Premium Wireless Headphones",
+      "slug": "premium-wireless-headphones",
+      "description": "Experience premium sound quality with our top-of-the-line wireless headphones featuring noise cancellation and 30-hour battery life.",
+      "categoryId": 1,
+      "category": "electronics",
+      "pricing": {
+        "price": 299.99,
+        "originalPrice": 399.99,
+        "onSale": true,
+        "currency": "USD"
+      },
+      "media": {
+        "mainImage": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80",
+        "images": [
+          "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80",
+          "https://images.unsplash.com/photo-1484704849700-f032a568e944?w=500&q=80",
+          "https://images.unsplash.com/photo-1583394838336-acd977736f90?w=500&q=80"
+        ]
+      },
+      "specifications": {
+        "brand": "TechMart",
+        "model": "TWH-300",
+        "features": [
+          "Active Noise Cancellation",
+          "30-hour battery life",
+          "Quick charge - 5 min for 3 hours playback",
+          "Premium comfort fit",
+          "Bluetooth 5.0"
+        ],
+        "dimensions": "18.5 x 15.2 x 7.3 cm",
+        "weight": "350g"
+      },
+      "reviews": {
+        "rating": 4.8,
+        "totalReviews": 245,
+        "averageRating": 4.8
+      },
+      "availability": {
+        "status": "in_stock",
+        "quantity": 15
+      },
+      "featured": true,
+      "condition": "new",
+      "createdAt": "2024-01-10T08:00:00Z",
+      "updatedAt": "2024-01-15T10:30:00Z",
+      "seo": {
+        "title": "Premium Wireless Headphones - TechMart Downtown",
+        "description": "Premium wireless headphones with noise cancellation",
+        "keywords": [
+          "headphones",
+          "wireless",
+          "bluetooth",
+          "noise cancellation"
+        ]
+      }
+    },
+    {
+      "id": 2,
+      "name": "Smart Fitness Watch",
+      "slug": "smart-fitness-watch",
+      "description": "Track your fitness goals with this advanced smartwatch featuring heart rate monitoring, GPS, and water resistance.",
+      "categoryId": 1,
+      "category": "electronics",
+      "pricing": {
+        "price": 199.99,
+        "currency": "USD"
+      },
+      "media": {
+        "mainImage": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&q=80",
+        "images": [
+          "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&q=80",
+          "https://images.unsplash.com/photo-1434494878577-86c23bcb06b9?w=500&q=80"
+        ]
+      },
+      "specifications": {
+        "brand": "TechMart",
+        "model": "SFW-200",
+        "features": [
+          "Heart rate monitoring",
+          "Built-in GPS",
+          "Water resistant up to 50m",
+          "7-day battery life",
+          "Sleep tracking"
+        ],
+        "dimensions": "4.4 x 3.8 x 1.2 cm",
+        "weight": "45g"
+      },
+      "reviews": {
+        "rating": 4.6,
+        "totalReviews": 189
+      },
+      "availability": {
+        "status": "in_stock",
+        "quantity": 23
+      },
+      "featured": true,
+      "condition": "new",
+      "createdAt": "2024-01-08T08:00:00Z",
+      "updatedAt": "2024-01-15T10:30:00Z"
+    },
+    {
+      "id": 3,
+      "name": "Wireless Charging Pad",
+      "slug": "wireless-charging-pad",
+      "description": "Fast wireless charging for all Qi-compatible devices with sleek design and LED indicator.",
+      "categoryId": 1,
+      "category": "electronics",
+      "pricing": {
+        "price": 49.99,
+        "currency": "USD"
+      },
+      "media": {
+        "mainImage": "https://images.unsplash.com/photo-1609592706372-7b2b88277d99?w=500&q=80",
+        "images": [
+          "https://images.unsplash.com/photo-1609592706372-7b2b88277d99?w=500&q=80"
+        ]
+      },
+      "specifications": {
+        "brand": "TechMart",
+        "features": [
+          "Qi wireless charging",
+          "Fast charging up to 15W",
+          "LED charging indicator",
+          "Non-slip design",
+          "Universal compatibility"
+        ]
+      },
+      "reviews": {
+        "rating": 4.4,
+        "totalReviews": 76
+      },
+      "availability": {
+        "status": "in_stock",
+        "quantity": 45
+      },
+      "featured": false,
+      "condition": "new"
+    },
+    {
+      "id": 4,
+      "name": "Classic Denim Jacket",
+      "slug": "classic-denim-jacket",
+      "description": "Timeless denim jacket crafted from premium cotton denim. Perfect for layering and casual wear.",
+      "categoryId": 2,
+      "category": "fashion",
+      "pricing": {
+        "price": 89.99,
+        "currency": "USD"
+      },
+      "media": {
+        "mainImage": "https://images.unsplash.com/photo-1544022613-e87ca75a784a?w=500&q=80",
+        "images": [
+          "https://images.unsplash.com/photo-1544022613-e87ca75a784a?w=500&q=80",
+          "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=500&q=80"
+        ]
+      },
+      "specifications": {
+        "material": "100% cotton denim",
+        "features": [
+          "Classic fit",
+          "Multiple pockets",
+          "Durable construction",
+          "Machine washable"
+        ],
+        "sizes": ["XS", "S", "M", "L", "XL", "XXL"]
+      },
+      "reviews": {
+        "rating": 4.7,
+        "totalReviews": 134
+      },
+      "availability": {
+        "status": "in_stock",
+        "quantity": 28
+      },
+      "featured": true,
+      "condition": "new"
+    },
+    {
+      "id": 5,
+      "name": "Luxury Leather Handbag",
+      "slug": "luxury-leather-handbag",
+      "description": "Elegant leather handbag with spacious interior and premium finishing. Perfect for work or evening out.",
+      "categoryId": 2,
+      "category": "fashion",
+      "pricing": {
+        "price": 249.99,
+        "originalPrice": 349.99,
+        "onSale": true,
+        "currency": "USD"
+      },
+      "media": {
+        "mainImage": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500&q=80",
+        "images": [
+          "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500&q=80",
+          "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=500&q=80"
+        ]
+      },
+      "specifications": {
+        "material": "Genuine leather",
+        "features": [
+          "Multiple compartments",
+          "Adjustable strap",
+          "Gold-tone hardware",
+          "Dust bag included"
+        ]
+      },
+      "reviews": {
+        "rating": 4.9,
+        "totalReviews": 87
+      },
+      "availability": {
+        "status": "limited_stock",
+        "quantity": 12
+      },
+      "featured": false,
+      "condition": "new"
+    },
+    {
+      "id": 6,
+      "name": "Comfortable Sneakers",
+      "slug": "comfortable-sneakers",
+      "description": "Ultra-comfortable sneakers with memory foam insole and breathable mesh upper. Perfect for daily wear.",
+      "categoryId": 2,
+      "category": "fashion",
+      "pricing": {
+        "price": 129.99,
+        "currency": "USD"
+      },
+      "media": {
+        "mainImage": "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=500&q=80",
+        "images": [
+          "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=500&q=80",
+          "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=500&q=80"
+        ]
+      },
+      "specifications": {
+        "features": [
+          "Memory foam insole",
+          "Breathable mesh upper",
+          "Lightweight design",
+          "Slip-resistant sole",
+          "Available in multiple colors"
+        ],
+        "sizes": ["6", "7", "8", "9", "10", "11", "12"]
+      },
+      "reviews": {
+        "rating": 4.5,
+        "totalReviews": 203
+      },
+      "availability": {
+        "status": "in_stock",
+        "quantity": 34
+      },
+      "featured": false,
+      "condition": "new"
+    },
+    {
+      "id": 7,
+      "name": "Modern Table Lamp",
+      "slug": "modern-table-lamp",
+      "description": "Sleek modern table lamp with adjustable brightness and USB charging port. Perfect for any workspace.",
+      "categoryId": 3,
+      "category": "home-garden",
+      "pricing": {
+        "price": 79.99,
+        "currency": "USD"
+      },
+      "media": {
+        "mainImage": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&q=80",
+        "images": [
+          "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&q=80",
+          "https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?w=500&q=80"
+        ]
+      },
+      "specifications": {
+        "features": [
+          "Adjustable brightness",
+          "Built-in USB port",
+          "Touch control",
+          "LED bulb included",
+          "Modern design"
+        ]
+      },
+      "reviews": {
+        "rating": 4.6,
+        "totalReviews": 98
+      },
+      "availability": {
+        "status": "in_stock",
+        "quantity": 19
+      },
+      "featured": true,
+      "condition": "new"
+    },
+    {
+      "id": 8,
+      "name": "Ceramic Plant Pot Set",
+      "slug": "ceramic-plant-pot-set",
+      "description": "Beautiful set of 3 ceramic plant pots with drainage holes and saucers. Perfect for indoor plants.",
+      "categoryId": 3,
+      "category": "home-garden",
+      "pricing": {
+        "price": 39.99,
+        "currency": "USD"
+      },
+      "media": {
+        "mainImage": "https://images.unsplash.com/photo-1485955900006-10f4d324d411?w=500&q=80",
+        "images": [
+          "https://images.unsplash.com/photo-1485955900006-10f4d324d411?w=500&q=80",
+          "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=500&q=80"
+        ]
+      },
+      "specifications": {
+        "features": [
+          "Set of 3 pots",
+          "Drainage holes",
+          "Matching saucers",
+          "Easy to clean",
+          "Various sizes"
+        ]
+      },
+      "reviews": {
+        "rating": 4.3,
+        "totalReviews": 156
+      },
+      "availability": {
+        "status": "in_stock",
+        "quantity": 41
+      },
+      "featured": false,
+      "condition": "new"
+    },
+    {
+      "id": 9,
+      "name": "Yoga Exercise Mat",
+      "slug": "yoga-exercise-mat",
+      "description": "Premium yoga mat with excellent grip and cushioning. Non-slip surface for safe practice.",
+      "categoryId": 4,
+      "category": "sports",
+      "pricing": {
+        "price": 34.99,
+        "currency": "USD"
+      },
+      "media": {
+        "mainImage": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=500&q=80",
+        "images": [
+          "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=500&q=80",
+          "https://images.unsplash.com/photo-1518611012118-696072aa579a?w=500&q=80"
+        ]
+      },
+      "specifications": {
+        "features": [
+          "Non-slip surface",
+          "6mm thickness",
+          "Eco-friendly material",
+          "Carrying strap included",
+          "Easy to clean"
+        ]
+      },
+      "reviews": {
+        "rating": 4.7,
+        "totalReviews": 267
+      },
+      "availability": {
+        "status": "in_stock",
+        "quantity": 52
+      },
+      "featured": true,
+      "condition": "new"
+    },
+    {
+      "id": 10,
+      "name": "Resistance Bands Set",
+      "slug": "resistance-bands-set",
+      "description": "Complete set of resistance bands for strength training and rehabilitation. Multiple resistance levels.",
+      "categoryId": 4,
+      "category": "sports",
+      "pricing": {
+        "price": 24.99,
+        "currency": "USD"
+      },
+      "media": {
+        "mainImage": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&q=80",
+        "images": [
+          "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&q=80"
+        ]
+      },
+      "specifications": {
+        "features": [
+          "5 resistance levels",
+          "Door anchor included",
+          "Comfortable handles",
+          "Ankle straps",
+          "Carrying bag"
+        ]
+      },
+      "reviews": {
+        "rating": 4.4,
+        "totalReviews": 189
+      },
+      "availability": {
+        "status": "in_stock",
+        "quantity": 67
+      },
+      "featured": false,
+      "condition": "new"
+    }
+  ],
+  "analytics": {
+    "dashboardStats": {
+      "totalSales": {
+        "value": 45280,
+        "currency": "USD",
+        "change": 12.5,
+        "period": "vs last month"
+      },
+      "totalOrders": {
+        "value": 342,
+        "change": 8.2,
+        "period": "vs last month"
+      },
+      "totalProducts": {
+        "value": 156,
+        "change": 5.1,
+        "period": "vs last month"
+      },
+      "totalCustomers": {
+        "value": 1248,
+        "change": 15.3,
+        "period": "vs last month"
+      },
+      "storeViews": {
+        "value": 8542,
+        "change": 22.1,
+        "period": "vs last month"
+      }
+    },
+    "salesTrendData": [
+      { "date": "2024-01-01", "sales": 1200, "orders": 15 },
+      { "date": "2024-01-02", "sales": 1850, "orders": 22 },
+      { "date": "2024-01-03", "sales": 980, "orders": 12 },
+      { "date": "2024-01-04", "sales": 2100, "orders": 28 },
+      { "date": "2024-01-05", "sales": 1600, "orders": 18 },
+      { "date": "2024-01-06", "sales": 2350, "orders": 31 },
+      { "date": "2024-01-07", "sales": 1900, "orders": 24 }
+    ],
+    "storeStatus": {
+      "isLive": true,
+      "lastToggled": "2024-01-15 09:30 AM"
+    },
+    "recentActivity": [
+      {
+        "id": 1,
+        "type": "order",
+        "message": "New order #ORD-2024-001 received",
+        "time": "2 minutes ago"
+      },
+      {
+        "id": 2,
+        "type": "product",
+        "message": "Wireless Headphones stock updated",
+        "time": "15 minutes ago"
+      },
+      {
+        "id": 3,
+        "type": "payment",
+        "message": "Payment received for order #ORD-2024-002",
+        "time": "1 hour ago"
+      },
+      {
+        "id": 4,
+        "type": "review",
+        "message": "New 5-star review for Smart Watch",
+        "time": "3 hours ago"
+      }
+    ],
+    "lowStockAlerts": [
+      {
+        "id": 1,
+        "productName": "Wireless Earbuds",
+        "currentStock": 3,
+        "threshold": 10,
+        "image": "https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?w=80&q=80"
+      },
+      {
+        "id": 2,
+        "productName": "Gaming Mouse",
+        "currentStock": 5,
+        "threshold": 15,
+        "image": "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=80&q=80"
+      }
+    ],
+    "topPerformingProducts": [
+      {
+        "id": 1,
+        "name": "Premium Wireless Headphones",
+        "sales": 125,
+        "revenue": 37475,
+        "growth": 18.5,
+        "image": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=80&q=80"
+      },
+      {
+        "id": 2,
+        "name": "Smart Watch Pro",
+        "sales": 89,
+        "revenue": 35511,
+        "growth": 12.3,
+        "image": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=80&q=80"
+      },
+      {
+        "id": 3,
+        "name": "Gaming Mouse",
+        "sales": 156,
+        "revenue": 15288,
+        "growth": 25.8,
+        "image": "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=80&q=80"
+      }
+    ]
+  },
+  "orders": [
+    {
+      "id": "ORD-2024-001",
+      "customerName": "Sarah Johnson",
+      "customerEmail": "sarah.j@email.com",
+      "products": [
+        {
+          "name": "Premium Wireless Headphones",
+          "quantity": 1,
+          "price": 299.99
+        }
+      ],
+      "total": 299.99,
+      "status": "completed",
+      "paymentStatus": "paid",
+      "orderDate": "2024-01-15",
+      "shippingAddress": "123 Main St, New York, NY 10001"
+    }
+  ],
+  "enquiries": [
+    {
+      "id": "ENQ-2024-001",
+      "customerName": "John Smith",
+      "customerEmail": "john@email.com",
+      "phone": "+1 (555) 123-4567",
+      "productId": 1,
+      "productName": "Premium Wireless Headphones",
+      "message": "Interested in bulk purchase for corporate gifts",
+      "date": "2024-01-15T09:30:00Z",
+      "status": "pending"
+    }
+  ],
+  "wishlist": [1, 4, 7],
+  "recentlyViewed": [1, 2, 3],
+  "filters": {
+    "category": null,
+    "priceRange": [0, 1000],
+    "availability": "all",
+    "sortBy": "featured"
+  },
+  "pagination": {
+    "currentPage": 1,
+    "itemsPerPage": 12,
+    "totalItems": 10,
+    "totalPages": 1
+  },
+  "hasUnsavedChanges": false,
+  "isDataPersisted": true,
+  "tempChanges": {}
+}

@@ -17,6 +17,13 @@ import {
   FaPalette,
   FaBars,
   FaTimes,
+  FaSave,
+  FaUndo,
+  FaExclamationTriangle,
+  FaCheckCircle,
+  FaEye,
+  FaList,
+  FaSort,
 } from 'react-icons/fa';
 import { theme, media } from '../../styles/GlobalStyle';
 
@@ -262,84 +269,6 @@ const NavItem = styled.button.withConfig({
   }
 `;
 
-const SidebarFooter = styled.div`
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: ${theme.spacing.lg} ${theme.spacing.xl};
-  border-top: 1px solid ${theme.colors.gray200};
-  background: ${theme.colors.white};
-
-  ${media.mobile} {
-    padding: ${theme.spacing.md} ${theme.spacing.lg};
-  }
-`;
-
-const UpgradeCard = styled.div`
-  background: linear-gradient(
-    135deg,
-    ${theme.colors.primary},
-    ${theme.colors.secondary}
-  );
-  padding: ${theme.spacing.lg};
-  border-radius: ${theme.borderRadius.lg};
-  color: ${theme.colors.white};
-  text-align: center;
-
-  ${media.mobile} {
-    padding: ${theme.spacing.md};
-  }
-`;
-
-const UpgradeTitle = styled.h4`
-  font-size: 0.9rem;
-  font-weight: 600;
-  margin: 0 0 ${theme.spacing.sm} 0;
-
-  ${media.mobile} {
-    font-size: 0.85rem;
-  }
-`;
-
-const UpgradeText = styled.p`
-  font-size: 0.8rem;
-  opacity: 0.9;
-  margin: 0 0 ${theme.spacing.md} 0;
-
-  ${media.mobile} {
-    font-size: 0.75rem;
-    margin-bottom: ${theme.spacing.sm};
-  }
-`;
-
-const UpgradeButton = styled.button`
-  background: ${theme.colors.white};
-  color: ${theme.colors.primary};
-  border: none;
-  padding: ${theme.spacing.sm} ${theme.spacing.md};
-  border-radius: ${theme.borderRadius.md};
-  font-size: 0.8rem;
-  font-weight: 600;
-  cursor: pointer;
-  width: 100%;
-  transition: all 0.2s ease;
-
-  &:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  }
-
-  ${media.mobile} {
-    padding: ${theme.spacing.xs} ${theme.spacing.sm};
-    font-size: 0.75rem;
-
-    &:hover {
-      transform: none;
-    }
-  }
-`;
-
 const MobileToggle = styled.button`
   position: fixed;
   top: ${theme.spacing.lg};
@@ -401,7 +330,14 @@ const Overlay = styled.div.withConfig({
   }
 `;
 
-const SellerSidebar = ({ activeTab, onTabChange }) => {
+const SellerSidebar = ({
+  activeTab,
+  onTabChange,
+  vendor,
+  hasUnsavedChanges,
+  onSave,
+  onDiscard,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleSidebar = () => setIsOpen(!isOpen);
@@ -417,32 +353,43 @@ const SellerSidebar = ({ activeTab, onTabChange }) => {
       items: [{ id: 'dashboard', label: 'Dashboard', icon: FaHome }],
     },
     {
+      section: 'Website Sections',
+      items: [
+        { id: 'section-order', label: 'Section Order', icon: FaHome },
+        { id: 'section-hero', label: 'Hero Section', icon: FaHome },
+        { id: 'section-categories', label: 'Categories Section', icon: FaTags },
+        { id: 'section-featured', label: 'Featured Products', icon: FaBox },
+        { id: 'section-special-offers', label: 'Hot Deals', icon: FaPercent },
+        { id: 'section-footer', label: 'Footer Section', icon: FaCog },
+        { id: 'section-custom', label: 'Custom Section', icon: FaPalette },
+      ],
+    },
+    {
       section: 'Catalog',
       items: [
-        { id: 'products', label: 'Products', icon: FaBox },
-        { id: 'add-product', label: 'Add Product', icon: FaPlus },
-        { id: 'categories', label: 'Categories', icon: FaTags },
+        { id: 'products', label: 'Product Inventory', icon: FaBox },
+        { id: 'categories', label: 'Category Management', icon: FaTags },
+        { id: 'add-product', label: 'Add New Product', icon: FaPlus },
         { id: 'bulk-import', label: 'Bulk Import', icon: FaFileImport },
       ],
     },
     {
-      section: 'Sales',
+      section: 'Sales & Orders',
       items: [
-        { id: 'orders', label: 'Orders', icon: FaShoppingCart },
-        { id: 'enquiries', label: 'Enquiries', icon: FaEnvelope },
+        { id: 'orders', label: 'Sales & Orders', icon: FaShoppingCart },
+        { id: 'enquiries', label: 'Customer Enquiries', icon: FaEnvelope },
         { id: 'discounts', label: 'Discounts & Coupons', icon: FaPercent },
       ],
     },
     {
       section: 'Customers',
-      items: [{ id: 'customers', label: 'Customer List', icon: FaUsers }],
+      items: [{ id: 'customers', label: 'Customer Management', icon: FaUsers }],
     },
     {
-      section: 'Store Management',
+      section: 'Settings & Analytics',
       items: [
-        { id: 'store-settings', label: 'Store Settings', icon: FaCog },
-        { id: 'appearance', label: 'Appearance', icon: FaPalette },
-        { id: 'analytics', label: 'Analytics', icon: FaChartLine },
+        { id: 'settings', label: 'Store Settings', icon: FaCog },
+        { id: 'insights', label: 'Analytics & Reports', icon: FaChartLine },
       ],
     },
   ];
@@ -459,11 +406,28 @@ const SellerSidebar = ({ activeTab, onTabChange }) => {
         <SidebarHeader>
           <StoreBranding>
             <StoreLogo>
-              <FaStore />
+              {vendor?.businessInfo?.logo ? (
+                <img
+                  src={vendor.businessInfo.logo}
+                  alt={vendor?.name || 'Store'}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    borderRadius: 'inherit',
+                  }}
+                />
+              ) : (
+                <FaStore />
+              )}
             </StoreLogo>
             <StoreInfo>
-              <StoreName>My Store</StoreName>
-              <StoreType>Premium Seller</StoreType>
+              <StoreName>{vendor?.name || 'My Store'}</StoreName>
+              <StoreType>
+                {vendor?.category === 'ecommerce'
+                  ? 'Ecommerce Store'
+                  : 'Premium Seller'}
+              </StoreType>
             </StoreInfo>
           </StoreBranding>
 
@@ -472,10 +436,83 @@ const SellerSidebar = ({ activeTab, onTabChange }) => {
               <FaUser />
             </ProfileAvatar>
             <ProfileInfo>
-              <ProfileName>John Doe</ProfileName>
-              <ProfileRole>Store Owner</ProfileRole>
+              <ProfileName>
+                {vendor?.ownerInfo?.name || 'Store Owner'}
+              </ProfileName>
+              <ProfileRole>Store Manager</ProfileRole>
             </ProfileInfo>
           </SellerProfile>
+
+          {hasUnsavedChanges && (
+            <div
+              style={{
+                marginTop: '1rem',
+                padding: '0.75rem',
+                background: '#fef3c7',
+                borderRadius: '0.5rem',
+                borderLeft: '4px solid #f59e0b',
+              }}
+            >
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  marginBottom: '0.75rem',
+                  color: '#92400e',
+                  fontSize: '0.875rem',
+                  fontWeight: '500',
+                }}
+              >
+                <FaExclamationTriangle />
+                Unsaved Changes
+              </div>
+              <div style={{ display: 'flex', gap: '0.5rem' }}>
+                <button
+                  onClick={onSave}
+                  style={{
+                    flex: 1,
+                    padding: '0.5rem',
+                    background: '#10b981',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '0.375rem',
+                    fontSize: '0.75rem',
+                    fontWeight: '500',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '0.25rem',
+                  }}
+                >
+                  <FaSave />
+                  Save
+                </button>
+                <button
+                  onClick={onDiscard}
+                  style={{
+                    flex: 1,
+                    padding: '0.5rem',
+                    background: 'transparent',
+                    color: '#6b7280',
+                    border: '1px solid #d1d5db',
+                    borderRadius: '0.375rem',
+                    fontSize: '0.75rem',
+                    fontWeight: '500',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '0.25rem',
+                  }}
+                >
+                  <FaUndo />
+                  Discard
+                </button>
+              </div>
+            </div>
+          )}
         </SidebarHeader>
 
         <Navigation>
@@ -495,16 +532,6 @@ const SellerSidebar = ({ activeTab, onTabChange }) => {
             </NavSection>
           ))}
         </Navigation>
-
-        <SidebarFooter>
-          <UpgradeCard>
-            <UpgradeTitle>Upgrade to Pro</UpgradeTitle>
-            <UpgradeText>
-              Get advanced analytics and unlimited products
-            </UpgradeText>
-            <UpgradeButton>Upgrade Now</UpgradeButton>
-          </UpgradeCard>
-        </SidebarFooter>
       </SidebarContainer>
     </>
   );

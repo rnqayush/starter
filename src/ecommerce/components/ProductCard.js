@@ -395,7 +395,18 @@ const ProductCard = ({
     <Link to={`/${storeSlug}/productdetail/${product.id}`}>
       <Card>
         <ImageContainer>
-          <ProductImage src={product.image} alt={product.name} />
+          <ProductImage
+            src={
+              product.media?.mainImage ||
+              product.image ||
+              'https://via.placeholder.com/500x400?text=No+Image'
+            }
+            alt={product.name}
+            onError={e => {
+              e.target.src =
+                'https://via.placeholder.com/500x400?text=No+Image';
+            }}
+          />
 
           {product.onSale && product.originalPrice && (
             <Badge type="sale">Sale</Badge>
@@ -423,28 +434,42 @@ const ProductCard = ({
           <Description>{product.description}</Description>
 
           <RatingContainer>
-            <StarRating>{renderStars(product.rating)}</StarRating>
-            <ReviewCount>({product.reviews} reviews)</ReviewCount>
+            <StarRating>{renderStars(product.reviews?.rating || 0)}</StarRating>
+            <ReviewCount>
+              ({product.reviews?.totalReviews || 0} reviews)
+            </ReviewCount>
           </RatingContainer>
 
           <PriceContainer>
-            <CurrentPrice>${product.price}</CurrentPrice>
-            {product.originalPrice && product.originalPrice > product.price && (
-              <>
-                <OriginalPrice>${product.originalPrice}</OriginalPrice>
-                <Discount>
-                  -{calculateDiscount(product.originalPrice, product.price)}%
-                </Discount>
-              </>
-            )}
+            <CurrentPrice>
+              ${product.pricing?.price || product.price}
+            </CurrentPrice>
+            {(product.pricing?.originalPrice || product.originalPrice) &&
+              (product.pricing?.originalPrice || product.originalPrice) >
+                (product.pricing?.price || product.price) && (
+                <>
+                  <OriginalPrice>
+                    ${product.pricing?.originalPrice || product.originalPrice}
+                  </OriginalPrice>
+                  <Discount>
+                    -
+                    {calculateDiscount(
+                      product.pricing?.originalPrice || product.originalPrice,
+                      product.pricing?.price || product.price
+                    )}
+                    %
+                  </Discount>
+                </>
+              )}
           </PriceContainer>
 
           <StockIndicator
             availability={availabilityStatus}
             color={availabilityColor}
           >
-            {availabilityStatus === 'in_stock' && product.stock > 0
-              ? `${product.stock} in stock`
+            {availabilityStatus === 'in_stock' &&
+            (product.availability?.quantity || product.stock) > 0
+              ? `${product.availability?.quantity || product.stock} in stock`
               : availabilityLabel}
           </StockIndicator>
 
