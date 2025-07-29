@@ -26,7 +26,6 @@ import ServiceAppointmentsTab from '../components/ServiceAppointmentsTab';
 import PromotionsTab from '../components/PromotionsTab';
 import DealerSettingsTab from '../components/DealerSettingsTab';
 import AnalyticsTab from '../components/AnalyticsTab';
-import { getAutomobileVendorByIdOrSlug as getVendorByIdOrSlug } from '../../DummyData';
 import {
   fetchAutomobileData,
   saveCompleteData,
@@ -36,7 +35,6 @@ import {
   selectHasUnsavedChanges,
   selectApiReadyData,
   selectNeedsSyncCheck,
-  saveAndPublishChanges,
   discardTempChanges
 } from '../../store/slices/automobileManagementSlice';
 
