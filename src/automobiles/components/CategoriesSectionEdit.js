@@ -212,23 +212,16 @@ const CategoriesSectionEdit = ({ dealer }) => {
     updateContent('visibleCategories', newCategories);
   };
 
-  // Apply changes automatically when user makes any change
+  // Clear local changes when they're successfully applied
   useEffect(() => {
-    if (hasChanges) {
+    if (hasChanges && Object.keys(localChanges).length > 0) {
       const timeout = setTimeout(() => {
-        if (Object.keys(localChanges).length > 0) {
-          dispatch(
-            updateSectionContent({
-              sectionId: 'categories',
-              content: localChanges,
-            })
-          );
-          setLocalChanges({});
-        }
-      }, 500); // Debounce
+        setLocalChanges({});
+        setHasChanges(false);
+      }, 100);
       return () => clearTimeout(timeout);
     }
-  }, [localChanges, hasChanges, dispatch]);
+  }, [localChanges, hasChanges]);
 
   if (loading) {
     return (
