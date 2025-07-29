@@ -24,12 +24,11 @@ export const automobileVendors = [automobileData.data.vendor]; // Wrap in array 
 
 export const { businessTemplates } = BusinessData;
 
-export const {
-  ecommerceCategories,
-  ecommerceProducts,
-  ecommerceVendors,
-  sellerDashboardData,
-} = EcommerceData;
+// Export ecommerce data from JSON
+export const ecommerceCategories = ecommerceData.categories || [];
+export const ecommerceProducts = ecommerceData.products || [];
+export const ecommerceVendors = [ecommerceData.vendor]; // Wrap in array for consistency
+export const sellerDashboardData = ecommerceData.analytics || {};
 
 export const hotels = getStaticHotelData();
 export const hotelBookings = getStaticBookingsData();
