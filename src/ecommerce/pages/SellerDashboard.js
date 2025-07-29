@@ -376,7 +376,7 @@ const SellerDashboard = () => {
       'section-hero': 'Hero Section',
       'section-categories': 'Categories Section',
       'section-featured': 'Featured Products',
-      'section-special-offers': 'Special Offers',
+      'section-special-offers': 'Hot Deals',
       'section-footer': 'Footer Section',
       'section-custom': 'Custom Section',
       'section-order': 'Section Management'
