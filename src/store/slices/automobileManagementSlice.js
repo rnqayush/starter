@@ -5,13 +5,33 @@ export const fetchAutomobileData = createAsyncThunk(
   'automobile/fetchAutomobileData',
   async (vendorSlug, { rejectWithValue }) => {
     try {
-      // Simulate API call - in real app, this would be an actual API call
+      // TODO: Replace with actual API call using automobileAPI.getVendorBySlug(vendorSlug)
+      // For now, use local JSON data
       const response = await import('../../DummyData/automobiles.json');
 
       // Simulate network delay
       await new Promise(resolve => setTimeout(resolve, 500));
 
       return response.default;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+// Async thunk for saving complete dealer data to API
+export const saveCompleteData = createAsyncThunk(
+  'automobile/saveCompleteData',
+  async ({ vendorSlug, data }, { rejectWithValue }) => {
+    try {
+      // TODO: Implement API call
+      // const response = await automobileAPI.syncCompleteData(vendorSlug, data);
+
+      // For now, simulate successful save
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      console.log('Data saved to API:', data);
+
+      return { success: true, message: 'Data saved successfully' };
     } catch (error) {
       return rejectWithValue(error.message);
     }
