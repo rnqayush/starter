@@ -511,7 +511,7 @@ const AutomobileMain = () => {
     // This prevents overriding real-time updates from dealer dashboard
     // Also check if we have unsaved changes to avoid overriding
     if (!vendor || (vendor.slug !== slug && !hasUnsavedChanges)) {
-      dispatch(fetchAutomobileData(slug));
+      dispatch(fetchAutomobileData({ vendorSlug: slug }));
     }
   }, [location.pathname, navigate, dispatch, vendor, hasUnsavedChanges]);
 
