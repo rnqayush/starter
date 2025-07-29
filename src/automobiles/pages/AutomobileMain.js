@@ -606,7 +606,7 @@ const AutomobileMain = () => {
                   key="hero"
                   primaryColor={dealerTheme.primaryColor}
                   secondaryColor={dealerTheme.secondaryColor}
-                  heroImage={sectionConfig.content.backgroundImage}
+                  heroImage={sectionConfig.backgroundImage || sectionConfig.content?.backgroundImage}
                 >
                   <HeroContent>
                     <DealerHeader>
@@ -615,11 +615,11 @@ const AutomobileMain = () => {
                         alt={`${vendor.name} logo`}
                       />
                       <div>
-                        <HeroTitle>{sectionConfig.content.title}</HeroTitle>
+                        <HeroTitle>{sectionConfig.title || sectionConfig.content?.title}</HeroTitle>
                       </div>
                     </DealerHeader>
                     <HeroSubtitle>
-                      {sectionConfig.content.subtitle}
+                      {sectionConfig.subtitle || sectionConfig.content?.subtitle}
                     </HeroSubtitle>
                     <HeroActions>
                       <HeroButton
@@ -627,7 +627,7 @@ const AutomobileMain = () => {
                         onClick={() => navigate(`${getBaseUrl()}/vehicles`)}
                       >
                         <FaCar />
-                        {sectionConfig.content.primaryButtonText}
+                        {sectionConfig.primaryButtonText || sectionConfig.content?.primaryButtonText || 'Browse Vehicles'}
                       </HeroButton>
                       <HeroButton
                         className="secondary"
@@ -637,7 +637,7 @@ const AutomobileMain = () => {
                           )
                         }
                       >
-                        {sectionConfig.content.secondaryButtonText}
+                        {sectionConfig.secondaryButtonText || sectionConfig.content?.secondaryButtonText || 'View Categories'}
                         <FaArrowRight />
                       </HeroButton>
                     </HeroActions>
@@ -646,22 +646,25 @@ const AutomobileMain = () => {
               );
 
             case 'categories':
-              const visibleCategories = categories.filter(category =>
-                sectionConfig.content.visibleCategories.includes(category.id)
-              );
+              // Use embedded categories if available, otherwise use global categories
+              const categoriesToShow = sectionConfig.categories ||
+                (sectionConfig.content?.visibleCategories ?
+                  categories.filter(category =>
+                    sectionConfig.content.visibleCategories.includes(category.id)
+                  ) : categories);
               return (
                 <Section key="categories">
                   <Container>
                     <SectionHeader>
                       <SectionTitle textColor={dealerTheme.textColor}>
-                        {sectionConfig.content.title}
+                        {sectionConfig.title || sectionConfig.content?.title || 'Browse by Category'}
                       </SectionTitle>
                       <SectionSubtitle>
-                        {sectionConfig.content.subtitle}
+                        {sectionConfig.subtitle || sectionConfig.content?.subtitle || 'Explore our diverse range of vehicles'}
                       </SectionSubtitle>
                     </SectionHeader>
                     <Grid minWidth="280px">
-                      {visibleCategories.map(category => (
+                      {categoriesToShow.map(category => (
                         <CategoryCard
                           key={category.id}
                           category={category}
@@ -674,12 +677,13 @@ const AutomobileMain = () => {
               );
 
             case 'featured':
-              const featuredVehiclesToShow =
-                sectionConfig.content.vehicleIds.length > 0
+              // Use embedded vehicles if available, otherwise use global vehicles
+              const featuredVehiclesToShow = sectionConfig.vehicles ||
+                (sectionConfig.content?.vehicleIds?.length > 0
                   ? vehicles.filter(vehicle =>
                       sectionConfig.content.vehicleIds.includes(vehicle.id)
                     )
-                  : featuredVehicles.slice(0, 4);
+                  : featuredVehicles.slice(0, 4));
               return (
                 <Section
                   key="featured"
@@ -690,10 +694,10 @@ const AutomobileMain = () => {
                   <Container>
                     <SectionHeader>
                       <SectionTitle textColor={dealerTheme.textColor}>
-                        {sectionConfig.content.title}
+                        {sectionConfig.title || sectionConfig.content?.title || 'Featured Vehicles'}
                       </SectionTitle>
                       <SectionSubtitle>
-                        {sectionConfig.content.subtitle}
+                        {sectionConfig.subtitle || sectionConfig.content?.subtitle || 'Handpicked vehicles that customers love the most'}
                       </SectionSubtitle>
                     </SectionHeader>
                     <Grid>
@@ -710,22 +714,23 @@ const AutomobileMain = () => {
               );
 
             case 'special-offers':
-              const specialOfferVehicles =
-                sectionConfig.content.vehicleIds.length > 0
+              // Use embedded vehicles if available, otherwise use global vehicles
+              const specialOfferVehicles = sectionConfig.vehicles ||
+                (sectionConfig.content?.vehicleIds?.length > 0
                   ? vehicles.filter(vehicle =>
                       sectionConfig.content.vehicleIds.includes(vehicle.id)
                     )
-                  : onSaleVehicles.slice(0, 4);
+                  : onSaleVehicles.slice(0, 4));
               if (specialOfferVehicles.length === 0) return null;
               return (
                 <Section key="special-offers">
                   <Container>
                     <SectionHeader>
                       <SectionTitle textColor={dealerTheme.textColor}>
-                        {sectionConfig.content.title}
+                        {sectionConfig.title || sectionConfig.content?.title || '🔥 Special Offers'}
                       </SectionTitle>
                       <SectionSubtitle>
-                        {sectionConfig.content.subtitle}
+                        {sectionConfig.subtitle || sectionConfig.content?.subtitle || 'Limited time deals you don\'t want to miss'}
                       </SectionSubtitle>
                     </SectionHeader>
                     <Grid>
