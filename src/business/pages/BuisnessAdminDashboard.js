@@ -936,7 +936,7 @@ const BuisnessAdminDashboard = () => {
       icon: FaServicestack,
       section: 'Content Management',
     },
-    ...(business?.slug === 'freelancer'
+    ...(businessType === 'freelancer'
       ? [
           {
             id: 'portfolio',
