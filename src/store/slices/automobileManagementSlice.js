@@ -456,6 +456,8 @@ const automobileManagementSlice = createSlice({
 
         // Mark as having unsaved changes
         state.hasUnsavedChanges = true;
+        // Mark data as modified (not persisted until saved)
+        state.isDataPersisted = false;
 
         // Smart sync with global data based on section type
         if (sectionId === 'categories' && content.categories) {
