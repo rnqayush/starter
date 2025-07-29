@@ -607,6 +607,7 @@ export const selectCategories = state => state.automobileManagement.categories;
 export const selectVehicles = state => state.automobileManagement.vehicles;
 export const selectSelectedVehicle = state =>
   state.automobileManagement.selectedVehicle;
+export const selectPageSections = state => state.automobileManagement.pageContent.sections;
 export const selectPromotions = state => state.automobileManagement.promotions;
 export const selectCustomerReviews = state =>
   state.automobileManagement.customerReviews;
