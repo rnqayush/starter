@@ -281,7 +281,7 @@ const HotDealsSectionEdit = () => {
       <SectionHeader>
         <SectionTitle>
           <FaFire />
-          Special Offers Section
+          Hot Deals Section
         </SectionTitle>
         <PreviewButton onClick={handlePreview}>
           <FaEye />
