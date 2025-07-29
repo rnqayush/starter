@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { FaArrowLeft, FaSearch, FaEye, FaCheck } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
 import Header from '../../components/shared/Header';
-import { businessTemplates } from '../data/businessTemplates';
+import { businessTemplates } from '../../DummyData';
 
 const PageContainer = styled.div`
   min-height: 100vh;
