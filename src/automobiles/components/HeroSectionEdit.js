@@ -193,11 +193,20 @@ const HeroSectionEdit = ({ vendor, onSave, hasUnsavedChanges }) => {
   };
 
   const updateContent = (field, value) => {
+    // Update local changes for immediate UI update
     setLocalChanges(prev => ({
       ...prev,
       [field]: value,
     }));
     setHasChanges(true);
+
+    // Immediately update Redux state for real-time updates
+    dispatch(
+      updateSectionContent({
+        sectionId: 'hero',
+        content: { [field]: value },
+      })
+    );
   };
 
   const handleImageUpload = event => {
