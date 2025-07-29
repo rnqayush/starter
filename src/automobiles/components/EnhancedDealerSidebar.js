@@ -381,9 +381,10 @@ const EnhancedDealerSidebar = ({
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
   const changes = useSelector(selectTempChanges);
+  const hasUnsavedChangesFromRedux = useSelector(selectHasUnsavedChanges);
 
   const handleTabChange = tab => {
-    if (hasUnsavedChanges) {
+    if (hasUnsavedChangesFromRedux) {
       if (window.confirm('You have unsaved changes. Discard them?')) {
         dispatch(discardTempChanges());
         onTabChange(tab);
