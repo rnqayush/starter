@@ -406,6 +406,7 @@ const EnquireButton = styled.button`
   background: linear-gradient(
     135deg,
     ${theme.colors.primary} 0%,
+    ${theme.colors.primaryLight} 50%,
     ${theme.colors.primaryDark} 100%
   );
   color: ${theme.colors.white};
@@ -416,28 +417,57 @@ const EnquireButton = styled.button`
   align-items: center;
   justify-content: center;
   gap: ${theme.spacing.sm};
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   border: none;
   cursor: pointer;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   font-size: 0.9rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(30, 64, 175, 0.3);
+  z-index: 2;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.3),
+      transparent
+    );
+    transition: left 0.5s ease;
+  }
 
   &:hover {
     background: linear-gradient(
       135deg,
       ${theme.colors.primaryDark} 0%,
-      ${theme.colors.primary} 100%
+      ${theme.colors.primary} 50%,
+      ${theme.colors.primaryLight} 100%
     );
-    transform: translateY(-3px);
-    box-shadow: ${theme.shadows.lg};
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 8px 25px rgba(30, 64, 175, 0.4);
+
+    &::before {
+      left: 100%;
+    }
   }
 
   &:disabled {
-    background: ${theme.colors.gray400};
+    background: linear-gradient(135deg, ${theme.colors.gray400}, ${theme.colors.gray500});
     cursor: not-allowed;
     transform: none;
     box-shadow: none;
+
+    &::before {
+      display: none;
+    }
   }
 
   ${media.mobile} {
@@ -446,7 +476,7 @@ const EnquireButton = styled.button`
     font-size: 0.875rem;
 
     &:hover {
-      transform: none;
+      transform: translateY(-1px) scale(1.01);
     }
   }
 `;
