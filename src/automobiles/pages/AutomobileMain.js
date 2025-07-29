@@ -390,11 +390,45 @@ const HeroActions = styled.div`
   gap: ${theme.spacing.lg};
   justify-content: center;
   flex-wrap: wrap;
+  animation: ${fadeInUp} 1s ease-out 0.9s both;
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     flex-direction: column;
     align-items: center;
     gap: ${theme.spacing.md};
+  }
+`;
+
+const TrustIndicators = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: ${theme.spacing.xl};
+  margin-top: ${theme.spacing.xxl};
+  animation: ${fadeInUp} 1s ease-out 1.2s both;
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    flex-direction: column;
+    gap: ${theme.spacing.md};
+    margin-top: ${theme.spacing.xl};
+  }
+`;
+
+const TrustIndicator = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.sm};
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.9rem;
+  font-weight: 500;
+
+  .icon {
+    color: #fbbf24;
+    font-size: 1.2rem;
+    animation: ${pulse} 2s ease-in-out infinite;
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    justify-content: center;
   }
 `;
 
