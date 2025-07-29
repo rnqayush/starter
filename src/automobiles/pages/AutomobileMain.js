@@ -303,23 +303,52 @@ const DealerLogo = styled.img`
 `;
 
 const HeroTitle = styled.h1`
-  font-size: 4rem;
-  font-weight: 800;
+  font-size: 4.5rem;
+  font-weight: 900;
   margin-bottom: ${theme.spacing.lg};
-  background: linear-gradient(45deg, #ffffff, #f0f8ff);
+  background: linear-gradient(
+    45deg,
+    #ffffff 0%,
+    #f0f8ff 25%,
+    #ffffff 50%,
+    #e6f3ff 75%,
+    #ffffff 100%
+  );
+  background-size: 200% 200%;
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-  letter-spacing: -1px;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+  letter-spacing: -2px;
   line-height: 1.1;
+  position: relative;
+  animation: ${fadeInUp} 1s ease-out 0.3s both;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.4),
+      transparent
+    );
+    transform: translateX(-100%);
+    animation: ${shine} 3s ease-in-out infinite;
+  }
 
   @media (max-width: ${theme.breakpoints.tablet}) {
-    font-size: 3rem;
+    font-size: 3.5rem;
+    letter-spacing: -1px;
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    font-size: 2.2rem;
+    font-size: 2.5rem;
+    letter-spacing: -0.5px;
   }
 `;
 
