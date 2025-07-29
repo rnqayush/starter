@@ -1076,6 +1076,63 @@
         }
       }
     },
+    "businessTypes": {
+      "freelancer": {
+        "name": "Freelancer Portfolio",
+        "description": "Portfolio website for individual creative professionals",
+        "defaultSections": [
+          "hero",
+          "about-us",
+          "portfolio",
+          "skills",
+          "services-offered",
+          "experience",
+          "testimonials",
+          "packages-pricing",
+          "faq",
+          "contact",
+          "footer"
+        ],
+        "uniqueSections": ["portfolio", "skills", "experience"],
+        "hiddenSections": ["team", "gallery"],
+        "features": {
+          "showPortfolio": true,
+          "showSkills": true,
+          "showExperience": true,
+          "showTeam": false,
+          "showGallery": false,
+          "showPackages": true,
+          "personalBranding": true
+        }
+      },
+      "business": {
+        "name": "Business Website",
+        "description": "Professional website for companies and businesses",
+        "defaultSections": [
+          "hero",
+          "about-us",
+          "services-offered",
+          "team",
+          "gallery",
+          "packages-pricing",
+          "testimonials",
+          "faq",
+          "contact",
+          "footer"
+        ],
+        "uniqueSections": ["team", "gallery"],
+        "hiddenSections": ["portfolio", "skills", "experience"],
+        "features": {
+          "showPortfolio": false,
+          "showSkills": false,
+          "showExperience": false,
+          "showTeam": true,
+          "showGallery": true,
+          "showPackages": true,
+          "personalBranding": false
+        }
+      }
+    },
     "sections": {
       "hero": {
         "title": "Hero Section",
