@@ -28,7 +28,33 @@ const createAPIResponse = (data, success = true, message = '') => {
  * @returns {object} - Business type configuration
  */
 export const getBusinessTypeConfig = (businessType) => {
-  return businessData.data.businessTypes[businessType] || null;
+  // Create configuration based on the business type
+  const configs = {
+    freelancer: {
+      features: {
+        showPortfolio: true,
+        showSkills: true,
+        showExperience: true,
+        showTeam: false,
+        showGallery: false,
+        showPackages: true,
+      },
+      hiddenSections: ['team', 'gallery'],
+    },
+    business: {
+      features: {
+        showPortfolio: false,
+        showSkills: false,
+        showExperience: false,
+        showTeam: true,
+        showGallery: true,
+        showPackages: true,
+      },
+      hiddenSections: ['portfolio', 'skills', 'experience'],
+    },
+  };
+
+  return configs[businessType] || configs.business;
 };
 
 /**
@@ -40,7 +66,14 @@ export const detectBusinessType = (businessSlug) => {
   const business = getBusinessWebsiteData(businessSlug);
   if (!business) return null;
 
-  const businessType = business.type || 'business'; // Default to 'business'
+  // Map slug to business type
+  let businessType = business.type || 'business';
+  if (businessSlug === 'freelancer' || businessSlug === 'personal') {
+    businessType = 'freelancer';
+  } else if (businessSlug === 'salon' || businessSlug === 'business') {
+    businessType = 'business';
+  }
+
   const businessTypeConfig = getBusinessTypeConfig(businessType);
 
   return {
