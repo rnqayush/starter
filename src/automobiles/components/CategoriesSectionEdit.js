@@ -7,7 +7,7 @@ import {
   selectCategories,
   selectLoading,
   selectSectionContent,
-  updatePageSectionContent,
+  updateSectionContent,
 } from '../../store/slices/automobileManagementSlice';
 
 const Container = styled.div`
