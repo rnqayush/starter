@@ -20,6 +20,8 @@ import ProductsTab from '../components/ProductsTab';
 import CategoriesTab from '../components/CategoriesTab';
 import OrdersTabEnhanced from '../components/OrdersTabEnhanced';
 import EnquiriesTab from '../components/EnquiriesTab';
+import DiscountsTab from '../components/DiscountsTab';
+import BulkImportTab from '../components/BulkImportTab';
 import InsightsTab from '../components/InsightsTab';
 import ShopSettingsTab from '../components/ShopSettingsTab';
 
