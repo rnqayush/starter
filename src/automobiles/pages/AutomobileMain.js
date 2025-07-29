@@ -230,6 +230,43 @@ const HeroContent = styled.div`
   position: relative;
   z-index: 2;
   width: 100%;
+  animation: ${fadeInUp} 1s ease-out;
+`;
+
+const FloatingElement = styled.div`
+  position: absolute;
+  color: rgba(255, 255, 255, 0.1);
+  font-size: 2rem;
+  animation: ${float} 6s ease-in-out infinite;
+  z-index: 1;
+
+  &.floating-icon-1 {
+    top: 15%;
+    left: 10%;
+    animation-delay: -2s;
+  }
+
+  &.floating-icon-2 {
+    top: 25%;
+    right: 15%;
+    animation-delay: -4s;
+  }
+
+  &.floating-icon-3 {
+    bottom: 30%;
+    left: 15%;
+    animation-delay: -6s;
+  }
+
+  &.floating-icon-4 {
+    bottom: 20%;
+    right: 10%;
+    animation-delay: -1s;
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    display: none;
+  }
 `;
 
 const DealerHeader = styled.div`
