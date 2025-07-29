@@ -747,11 +747,12 @@ const AutomobileMain = () => {
 
             case 'special-offers':
               // Use embedded vehicles if available, otherwise use global vehicles
+              const specialOfferVehicleIds = sectionConfig.vehicleIds || sectionConfig.content?.vehicleIds || [];
               const specialOfferVehicles =
                 sectionConfig.vehicles ||
-                (sectionConfig.content?.vehicleIds?.length > 0
+                (specialOfferVehicleIds.length > 0
                   ? vehicles.filter(vehicle =>
-                      sectionConfig.content.vehicleIds.includes(vehicle.id)
+                      specialOfferVehicleIds.includes(vehicle.id)
                     )
                   : onSaleVehicles.slice(0, 4));
               if (specialOfferVehicles.length === 0) return null;
