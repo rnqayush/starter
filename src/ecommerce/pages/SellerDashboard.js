@@ -394,6 +394,10 @@ const SellerDashboard = () => {
         return <OrdersTabEnhanced />;
       case 'enquiries':
         return <EnquiriesTab />;
+      case 'discounts':
+        return <DiscountsTab />;
+      case 'bulk-import':
+        return <BulkImportTab />;
       case 'insights':
         return <InsightsTab />;
       case 'settings':
