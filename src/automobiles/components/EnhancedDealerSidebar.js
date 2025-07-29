@@ -397,7 +397,7 @@ const EnhancedDealerSidebar = ({
   };
 
   const handleBackToDealership = () => {
-    if (hasUnsavedChanges) {
+    if (hasUnsavedChangesFromRedux) {
       if (window.confirm('You have unsaved changes. Discard them?')) {
         onDiscard();
         navigate(`/${vendor.slug}`);
