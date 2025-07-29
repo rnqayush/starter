@@ -315,18 +315,48 @@ const DealerLogo = styled.img`
   width: 120px;
   height: 120px;
   border-radius: ${theme.borderRadius.xl};
-  border: 4px solid ${theme.colors.white};
+  border: 4px solid rgba(255, 255, 255, 0.9);
   object-fit: cover;
-  box-shadow: ${theme.shadows.xl};
-  transition: transform 0.3s ease;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  animation: ${fadeInUp} 1s ease-out 0.2s both;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    background: linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.6),
+      rgba(255, 255, 255, 0.2)
+    );
+    border-radius: ${theme.borderRadius.xl};
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
 
   &:hover {
-    transform: scale(1.05);
+    transform: scale(1.08) rotateY(5deg);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25), 0 10px 25px rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 1);
+
+    &::before {
+      opacity: 1;
+    }
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     width: 100px;
     height: 100px;
+
+    &:hover {
+      transform: scale(1.05);
+    }
   }
 `;
 
