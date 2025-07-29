@@ -289,7 +289,7 @@ const ActionButton = styled.button.withConfig({
 
 const ProductsTab = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [products] = useState(sellerProducts || []);
+  const [products] = useState(ecommerceProducts || []);
 
   const formatCurrency = value => {
     return new Intl.NumberFormat('en-US', {
