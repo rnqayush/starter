@@ -261,6 +261,19 @@ const SectionOrderEdit = ({ dealer }) => {
 
     setOrderedSections(updatedSections);
     setHasChanges(true);
+
+    // Immediately update Redux state for real-time tracking and main page updates
+    dispatch(reorderSections(updatedSections));
+
+    // Track the section order change for change tracker
+    const movedSectionName = movedSection.name || movedSection.id;
+    dispatch(updateSectionContent({
+      sectionId: 'section-order',
+      content: {
+        lastChange: `Moved "${movedSectionName}" ${direction}`,
+        timestamp: new Date().toISOString()
+      }
+    }));
   };
 
   const handleVisibilityToggle = sectionId => {
