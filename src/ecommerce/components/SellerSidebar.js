@@ -483,11 +483,19 @@ const SellerSidebar = ({
         <SidebarHeader>
           <StoreBranding>
             <StoreLogo>
-              <FaStore />
+              {vendor?.businessInfo?.logo ? (
+                <img
+                  src={vendor.businessInfo.logo}
+                  alt={vendor?.name || 'Store'}
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 'inherit' }}
+                />
+              ) : (
+                <FaStore />
+              )}
             </StoreLogo>
             <StoreInfo>
-              <StoreName>My Store</StoreName>
-              <StoreType>Premium Seller</StoreType>
+              <StoreName>{vendor?.name || 'My Store'}</StoreName>
+              <StoreType>{vendor?.category === 'ecommerce' ? 'Ecommerce Store' : 'Premium Seller'}</StoreType>
             </StoreInfo>
           </StoreBranding>
 
@@ -496,10 +504,63 @@ const SellerSidebar = ({
               <FaUser />
             </ProfileAvatar>
             <ProfileInfo>
-              <ProfileName>John Doe</ProfileName>
-              <ProfileRole>Store Owner</ProfileRole>
+              <ProfileName>{vendor?.ownerInfo?.name || 'Store Owner'}</ProfileName>
+              <ProfileRole>Store Manager</ProfileRole>
             </ProfileInfo>
           </SellerProfile>
+
+          {hasUnsavedChanges && (
+            <div style={{ marginTop: '1rem', padding: '0.75rem', background: '#fef3c7', borderRadius: '0.5rem', borderLeft: '4px solid #f59e0b' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem', color: '#92400e', fontSize: '0.875rem', fontWeight: '500' }}>
+                <FaExclamationTriangle />
+                Unsaved Changes
+              </div>
+              <div style={{ display: 'flex', gap: '0.5rem' }}>
+                <button
+                  onClick={onSave}
+                  style={{
+                    flex: 1,
+                    padding: '0.5rem',
+                    background: '#10b981',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '0.375rem',
+                    fontSize: '0.75rem',
+                    fontWeight: '500',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '0.25rem'
+                  }}
+                >
+                  <FaSave />
+                  Save
+                </button>
+                <button
+                  onClick={onDiscard}
+                  style={{
+                    flex: 1,
+                    padding: '0.5rem',
+                    background: 'transparent',
+                    color: '#6b7280',
+                    border: '1px solid #d1d5db',
+                    borderRadius: '0.375rem',
+                    fontSize: '0.75rem',
+                    fontWeight: '500',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '0.25rem'
+                  }}
+                >
+                  <FaUndo />
+                  Discard
+                </button>
+              </div>
+            </div>
+          )}
         </SidebarHeader>
 
         <Navigation>
