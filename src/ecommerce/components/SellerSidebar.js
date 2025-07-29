@@ -456,6 +456,7 @@ const SellerSidebar = ({
       items: [
         { id: 'orders', label: 'Sales & Orders', icon: FaShoppingCart },
         { id: 'enquiries', label: 'Customer Enquiries', icon: FaEnvelope },
+        { id: 'discounts', label: 'Discounts & Coupons', icon: FaPercent },
       ],
     },
     {
