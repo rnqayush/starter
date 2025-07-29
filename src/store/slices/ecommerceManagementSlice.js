@@ -216,13 +216,12 @@ const ecommerceManagementSlice = createSlice({
     },
 
     reorderSections: (state, action) => {
-      const { sections } = action.payload;
-      state.pageContent.sections = sections.map((section, index) => ({
-        ...section,
-        order: index + 1
-      }));
+      state.pageContent.sections = action.payload;
       state.hasUnsavedChanges = true;
       state.isDataPersisted = false;
+
+      // Track the change
+      state.tempChanges['sections.order'] = 'Section order changed';
     },
 
     // Product management
