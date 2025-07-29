@@ -315,6 +315,80 @@ const ecommerceManagementSlice = createSlice({
       state.recentlyViewed = state.recentlyViewed.slice(0, 10); // Keep only last 10
     },
 
+    // Section management
+    updatePageSections: (state, action) => {
+      state.pageContent.sections = action.payload;
+      state.hasUnsavedChanges = true;
+      state.isDataPersisted = false;
+    },
+
+    publishPageContent: (state, action) => {
+      state.pageContent.sections = action.payload || state.pageContent.sections;
+      state.pageContent.lastPublished = new Date().toISOString();
+      state.hasUnsavedChanges = false;
+      state.isDataPersisted = true;
+    },
+
+    updateSectionVisibility: (state, action) => {
+      const { sectionId, visible } = action.payload;
+      const section = state.pageContent.sections.find(s => s.id === sectionId);
+      if (section) {
+        section.visible = visible;
+        state.hasUnsavedChanges = true;
+        state.isDataPersisted = false;
+
+        // Track the change
+        const path = `sections.${sectionId}.visible`;
+        state.tempChanges[path] = visible ? 'Section shown' : 'Section hidden';
+      }
+    },
+
+    addCustomSection: (state, action) => {
+      const newSection = action.payload;
+
+      // Insert the section before footer or at the end
+      const footerIndex = state.pageContent.sections.findIndex(
+        s => s.id === 'footer'
+      );
+      if (footerIndex !== -1) {
+        state.pageContent.sections.splice(footerIndex, 0, newSection);
+
+        // Update orders to maintain proper sequence
+        state.pageContent.sections.forEach((section, index) => {
+          section.order = index + 1;
+        });
+      } else {
+        state.pageContent.sections.push(newSection);
+      }
+
+      state.hasUnsavedChanges = true;
+      state.isDataPersisted = false;
+
+      // Track the change
+      const path = `sections.${newSection.id}`;
+      state.tempChanges[path] = 'Added custom section';
+    },
+
+    removeCustomSection: (state, action) => {
+      const sectionId = action.payload;
+
+      state.pageContent.sections = state.pageContent.sections.filter(
+        section => section.id !== sectionId
+      );
+
+      // Update orders to maintain proper sequence
+      state.pageContent.sections.forEach((section, index) => {
+        section.order = index + 1;
+      });
+
+      state.hasUnsavedChanges = true;
+      state.isDataPersisted = false;
+
+      // Track the change
+      const path = `sections.${sectionId}`;
+      state.tempChanges[path] = 'Removed custom section';
+    },
+
     // Reset changes
     discardChanges: (state) => {
       // This would need to restore from a backup or refetch data
