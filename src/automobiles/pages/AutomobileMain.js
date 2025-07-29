@@ -165,12 +165,14 @@ const HeroSection = styled.section.withConfig({
   background:
     linear-gradient(
       135deg,
-      ${props => props.primaryColor || '#1f2937'}dd 0%,
-      ${props => props.secondaryColor || '#374151'}dd 100%
+      ${props => props.primaryColor || '#1e40af'}ee 0%,
+      ${props => props.secondaryColor || '#3b82f6'}dd 25%,
+      ${props => props.primaryColor || '#1d4ed8'}ee 75%,
+      ${props => props.secondaryColor || '#2563eb'}dd 100%
     ),
-    ${props => (props.heroImage ? `url("${props.heroImage}")` : 'none')};
-  background-size: cover;
-  background-position: center;
+    ${props => (props.heroImage ? `url("${props.heroImage}")` : 'radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.1) 0%, transparent 50%), radial-gradient(circle at 75% 75%, rgba(255, 255, 255, 0.05) 0%, transparent 50%)')};
+  background-size: cover, 400px 400px, 600px 600px;
+  background-position: center, 0% 0%, 100% 100%;
   background-attachment: fixed;
   color: ${theme.colors.white};
   padding: ${theme.spacing.xxl} 0;
@@ -188,8 +190,31 @@ const HeroSection = styled.section.withConfig({
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.3);
+    background: linear-gradient(
+      135deg,
+      rgba(0, 0, 0, 0.3) 0%,
+      rgba(0, 0, 0, 0.1) 50%,
+      rgba(0, 0, 0, 0.3) 100%
+    );
     z-index: 1;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(
+      from 0deg,
+      transparent,
+      rgba(255, 255, 255, 0.03),
+      transparent,
+      rgba(255, 255, 255, 0.03)
+    );
+    animation: ${float} 8s ease-in-out infinite;
+    z-index: 0;
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
