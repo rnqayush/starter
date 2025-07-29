@@ -1031,42 +1031,37 @@ const BuisnessAdminDashboard = () => {
   useEffect(() => {
     const fetchBusinessDataForAdmin = async () => {
       try {
-        setApiLoading(true);
-        setApiError(null);
+        dispatch(setLoading(true));
+        dispatch(clearError());
 
         console.log(
           `[AdminDashboard] Making API call for business: ${businessId}`
         );
         const response = await fetchBusinessData(businessId);
 
-        let businessData;
-
         if (response.success && response.data) {
+          const { businessData, businessType, businessTypeConfig } = response.data;
           console.log('[AdminDashboard] API call successful:', response.data);
-          businessData = response.data;
-        } else {
-          console.log(
-            '[AdminDashboard] API call failed, using template fallback'
-          );
-          businessData = getBusinessTemplate(businessId);
-          if (!businessData) {
-            setApiError('Business not found');
-            setLoading(false);
-            setApiLoading(false);
-            return;
-          }
-        }
 
-        setBusiness(businessData);
+          setBusiness(businessData);
 
-        // Initialize business in Redux state if it doesn't exist, then set as editing
-        try {
-          // Create a sanitized version for Redux
-          const sanitizedBusiness = JSON.parse(JSON.stringify(businessData));
-          dispatch(initializeBusiness(sanitizedBusiness));
+          // Initialize Redux state with business data and type config
+          dispatch(initializeBusinessData({
+            businessData,
+            businessTypeConfig,
+          }));
+
+          dispatch(setBusinessType({
+            businessType,
+            businessTypeConfig,
+          }));
+
           dispatch(setEditingBusiness(businessId));
-        } catch (error) {
-          console.error('Error setting editing business:', error);
+        } else {
+          dispatch(setError('Business not found'));
+          setLoading(false);
+          setApiLoading(false);
+          return;
         }
 
         // Pre-fill all form data from business data (using API data structure)
