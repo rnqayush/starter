@@ -175,13 +175,17 @@ const DealerDashboard = () => {
 
     if (slug) {
       setDealerSlug(slug);
-      // Fetch automobile data to populate Redux store
-      dispatch(fetchAutomobileData(slug));
+
+      // Only fetch initial data if we don't have vendor data for this slug
+      // This preserves saved changes and prevents overriding user's work
+      if (!vendor || vendor.slug !== slug) {
+        dispatch(fetchAutomobileData(slug));
+      }
     } else {
       // If no dealer found, redirect to dealer listing
       navigate('/auto-dealers');
     }
-  }, [location.pathname, navigate, dispatch]);
+  }, [location.pathname, navigate, dispatch, vendor]);
 
   // Handle save changes - publish to main state and save to API
   const handleSaveChanges = async () => {
