@@ -503,9 +503,12 @@ const AutomobileMain = () => {
 
     setVendorSlug(slug);
 
-    // Fetch automobile data for this vendor
-    dispatch(fetchAutomobileData(slug));
-  }, [location.pathname, navigate, dispatch]);
+    // Only fetch automobile data if we don't have vendor data or if slug changed
+    // This prevents overriding real-time updates from dealer dashboard
+    if (!vendor || vendor.slug !== slug) {
+      dispatch(fetchAutomobileData(slug));
+    }
+  }, [location.pathname, navigate, dispatch, vendor]);
 
   const handleBackToDealers = () => {
     navigate('/auto-dealers');
