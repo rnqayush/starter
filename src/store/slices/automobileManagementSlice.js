@@ -953,4 +953,84 @@ export const selectIsInWishlist = vehicleId => state => {
   return state.automobileManagement.wishlist.includes(parseInt(vehicleId));
 };
 
+// API-ready data selectors for sending to backend
+export const selectApiReadyData = state => {
+  const { vendor, pageContent, categories, vehicles, promotions, customerReviews, financing } = state.automobileManagement;
+
+  return {
+    success: true,
+    timestamp: new Date().toISOString(),
+    data: {
+      vendor,
+      pageSections: pageContent.sections,
+      allCategories: categories,
+      allVehicles: vehicles,
+      promotions: promotions || [],
+      customerReviews: customerReviews || [],
+      financing: financing || {},
+      dashboard: {
+        analytics: {},
+        inventory: {
+          totalVehicles: vehicles.length,
+          totalValue: vehicles.reduce((sum, v) => sum + (v.pricing?.price || 0), 0),
+          lastUpdated: new Date().toISOString()
+        }
+      }
+    },
+    meta: {
+      pagination: {
+        currentPage: 1,
+        totalPages: 1,
+        totalItems: vehicles.length,
+        itemsPerPage: 50
+      },
+      filters: {
+        availableCategories: categories.map(c => c.slug),
+        availableMakes: [...new Set(vehicles.map(v => v.make))],
+        availableYears: [...new Set(vehicles.map(v => v.year))],
+        availableConditions: [...new Set(vehicles.map(v => v.condition))],
+        priceRange: {
+          min: Math.min(...vehicles.map(v => v.pricing?.price || 0)),
+          max: Math.max(...vehicles.map(v => v.pricing?.price || 0))
+        }
+      },
+      lastUpdated: new Date().toISOString(),
+      dataVersion: "2.1.0"
+    }
+  };
+};
+
+// Selector for getting section by ID with embedded data
+export const selectSectionById = sectionId => state => {
+  return state.automobileManagement.pageContent.sections.find(s => s.id === sectionId);
+};
+
+// Selector for checking if data needs sync between sections and global arrays
+export const selectNeedsSyncCheck = state => {
+  const sections = state.automobileManagement.pageContent.sections;
+  const globalCategories = state.automobileManagement.categories;
+  const globalVehicles = state.automobileManagement.vehicles;
+
+  // Check if categories section has different data than global
+  const categoriesSection = sections.find(s => s.id === 'categories');
+  const categoriesNeedSync = categoriesSection?.categories &&
+    categoriesSection.categories.length !== globalCategories.length;
+
+  // Check if vehicle sections have different data than global
+  const featuredSection = sections.find(s => s.id === 'featured');
+  const offersSection = sections.find(s => s.id === 'special-offers');
+
+  const vehiclesNeedSync = (featuredSection?.vehicles || offersSection?.vehicles) &&
+    !sections.every(section => {
+      if (!section.vehicles) return true;
+      return section.vehicles.every(v => globalVehicles.find(gv => gv.id === v.id));
+    });
+
+  return {
+    categoriesNeedSync,
+    vehiclesNeedSync,
+    needsSync: categoriesNeedSync || vehiclesNeedSync
+  };
+};
+
 export default automobileManagementSlice.reducer;
