@@ -535,6 +535,7 @@
         "id": "restaurant",
         "name": "Bella Vista Restaurant",
         "slug": "restaurant",
+        "type": "business",
         "category": "Food & Dining",
         "primaryColor": "#8bc34a",
         "secondaryColor": "#c8e6c9",
