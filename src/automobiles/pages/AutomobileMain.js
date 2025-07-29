@@ -839,6 +839,19 @@ const AutomobileMain = () => {
                     sectionConfig.content?.backgroundImage
                   }
                 >
+                  <FloatingElement className="floating-icon-1">
+                    <FaCar />
+                  </FloatingElement>
+                  <FloatingElement className="floating-icon-2">
+                    <FaStar />
+                  </FloatingElement>
+                  <FloatingElement className="floating-icon-3">
+                    <FaShieldAlt />
+                  </FloatingElement>
+                  <FloatingElement className="floating-icon-4">
+                    <FaAward />
+                  </FloatingElement>
+
                   <HeroContent>
                     <DealerHeader>
                       <DealerLogo
@@ -879,6 +892,21 @@ const AutomobileMain = () => {
                         <FaArrowRight />
                       </HeroButton>
                     </HeroActions>
+
+                    <TrustIndicators>
+                      <TrustIndicator>
+                        <FaStar className="icon" />
+                        <span>Premium Quality</span>
+                      </TrustIndicator>
+                      <TrustIndicator>
+                        <FaShieldAlt className="icon" />
+                        <span>Verified Dealers</span>
+                      </TrustIndicator>
+                      <TrustIndicator>
+                        <FaAward className="icon" />
+                        <span>Award Winning</span>
+                      </TrustIndicator>
+                    </TrustIndicators>
                   </HeroContent>
                 </HeroSection>
               );
