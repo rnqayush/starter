@@ -1,10 +1,32 @@
 // Fake API service to simulate API calls for business data
 // This mimics what would be real API calls to a backend service
 
-import {
-  getBusinessWebsiteData,
-  updateBusinessWebsiteData,
-} from '../DummyData/businessWebsiteData';
+// Import the business data directly
+import businessData from '../DummyData/business.json';
+
+// Helper function to get business data by slug
+const getBusinessWebsiteData = slug => {
+  // Map common slugs to the correct data
+  if (slug === 'salon' || slug === 'business') {
+    return businessData.data?.portfolio?.buisness || null;
+  }
+  if (slug === 'freelancer' || slug === 'personal') {
+    return businessData.data?.portfolio?.personal || null;
+  }
+  return null;
+};
+
+// Helper function to update business data (for demo purposes)
+const updateBusinessWebsiteData = (slug, updatedData) => {
+  const business = getBusinessWebsiteData(slug);
+  if (business) {
+    return {
+      ...business,
+      ...updatedData,
+    };
+  }
+  return null;
+};
 
 // Simulate network delay for realistic API behavior
 const simulateDelay = (ms = 500) => {
@@ -22,6 +44,69 @@ const createAPIResponse = (data, success = true, message = '') => {
 };
 
 /**
+ * Get business type configuration from JSON
+ * @param {string} businessType - 'freelancer' or 'business'
+ * @returns {object} - Business type configuration
+ */
+export const getBusinessTypeConfig = businessType => {
+  // Create configuration based on the business type
+  const configs = {
+    freelancer: {
+      features: {
+        showPortfolio: true,
+        showSkills: true,
+        showExperience: true,
+        showTeam: false,
+        showGallery: false,
+        showPackages: true,
+      },
+      hiddenSections: ['team', 'gallery'],
+    },
+    business: {
+      features: {
+        showPortfolio: false,
+        showSkills: false,
+        showExperience: false,
+        showTeam: true,
+        showGallery: true,
+        showPackages: true,
+      },
+      hiddenSections: ['portfolio', 'skills', 'experience'],
+    },
+  };
+
+  return configs[businessType] || configs.business;
+};
+
+/**
+ * Detect business type from slug and return enhanced data
+ * @param {string} businessSlug - The business slug/identifier
+ * @returns {object} - Enhanced business data with type info
+ */
+export const detectBusinessType = businessSlug => {
+  const business = getBusinessWebsiteData(businessSlug);
+  if (!business) return null;
+
+  // Map slug to business type
+  let businessType = business.type || 'business';
+  if (businessSlug === 'freelancer' || businessSlug === 'personal') {
+    businessType = 'freelancer';
+  } else if (businessSlug === 'salon' || businessSlug === 'business') {
+    businessType = 'business';
+  }
+
+  const businessTypeConfig = getBusinessTypeConfig(businessType);
+
+  return {
+    businessData: business,
+    businessType,
+    businessTypeConfig,
+    isFreelancer: businessType === 'freelancer',
+    isBusiness: businessType === 'business',
+  };
+};
+
+/**
  * Fake API to fetch business website data
  * @param {string} businessSlug - The business slug/identifier
  * @returns {Promise} - Promise that resolves to business data
@@ -33,19 +118,19 @@ export const fetchBusinessData = async businessSlug => {
     // Simulate network delay
     await simulateDelay(300);
 
-    const businessData = getBusinessWebsiteData(businessSlug);
+    const businessInfo = detectBusinessType(businessSlug);
 
-    if (!businessData) {
+    if (!businessInfo) {
       throw new Error(`Business with slug "${businessSlug}" not found`);
     }
 
     console.log(
       `[FAKE API] Successfully fetched data for: ${businessSlug}`,
-      businessData
+      businessInfo
     );
 
     return createAPIResponse(
-      businessData,
+      businessInfo,
       true,
       'Business data fetched successfully'
     );
@@ -303,6 +388,8 @@ export const BusinessAPI = {
   fetchMultipleBusinessData,
   validateBusinessData,
   checkAPIStatus,
+  detectBusinessType,
+  getBusinessTypeConfig,
 };
 
 // Default export

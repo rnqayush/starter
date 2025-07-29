@@ -52,12 +52,13 @@ import {
   FaRandom,
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
-import { getBusinessTemplate } from '../../DummyData';
 import { fetchBusinessData } from '../../utils/businessAPI';
 import { useAuth } from '../../context/AuthContext';
 import {
   setEditingBusiness,
   initializeBusiness,
+  initializeBusinessData,
+  setBusinessType,
   updateBusinessField,
   updateBusinessImage,
   updateBusinessGallery,
@@ -72,6 +73,9 @@ import {
   saveBusinessChanges,
   discardBusinessChanges,
   toggleBusinessSectionVisibility,
+  setLoading,
+  setError,
+  clearError,
 } from '../../store/slices/businessManagementSlice';
 
 const DashboardContainer = styled.div`
@@ -715,9 +719,16 @@ const BuisnessAdminDashboard = () => {
   const actualSlug = businessSlug || slug;
 
   // Redux state
-  const { editingBusiness, hasUnsavedChanges, originalBusiness } = useSelector(
-    state => state.businessManagement
-  );
+  const {
+    editingBusiness,
+    hasUnsavedChanges,
+    originalBusiness,
+    businessType,
+    businessTypeConfig,
+    sectionVisibility,
+    loading: reduxLoading,
+    error: reduxError,
+  } = useSelector(state => state.businessManagement);
 
   // Get business ID from URL path
   const currentPath = window.location.pathname;
@@ -800,24 +811,6 @@ const BuisnessAdminDashboard = () => {
   });
   const [statisticsData, setStatisticsData] = useState([]);
 
-  // Section visibility state
-  const [sectionVisibility, setSectionVisibility] = useState({
-    hero: true,
-    'about-us': true,
-    'services-offered': true,
-    portfolio: true,
-    skills: true,
-    experience: true,
-    team: true,
-    gallery: true,
-    packages: true,
-    testimonials: true,
-    reviews: true,
-    faq: true,
-    'business-hours': true,
-    contact: true,
-  });
-
   // Track changes in a section and update Redux editing business for real-time preview
   const trackSectionChange = sectionId => {
     setChangedSections(prev => new Set([...prev, sectionId]));
@@ -827,12 +820,9 @@ const BuisnessAdminDashboard = () => {
     updateEditingBusinessInRedux();
   };
 
-  // Handle section visibility toggle
+  // Handle section visibility toggle - using Redux action
   const toggleSectionVisibility = sectionId => {
-    setSectionVisibility(prev => ({
-      ...prev,
-      [sectionId]: !prev[sectionId],
-    }));
+    dispatch(toggleBusinessSectionVisibility({ section: sectionId }));
     trackSectionChange(sectionId);
   };
 
@@ -925,7 +915,7 @@ const BuisnessAdminDashboard = () => {
       icon: FaServicestack,
       section: 'Content Management',
     },
-    ...(business?.slug === 'freelancer'
+    ...(businessType === 'freelancer'
       ? [
           {
             id: 'portfolio',
@@ -1020,176 +1010,193 @@ const BuisnessAdminDashboard = () => {
   useEffect(() => {
     const fetchBusinessDataForAdmin = async () => {
       try {
-        setApiLoading(true);
-        setApiError(null);
+        // dispatch(setLoading(true)); // Temporarily disabled to fix Redux error
+        dispatch(clearError());
 
         console.log(
           `[AdminDashboard] Making API call for business: ${businessId}`
         );
         const response = await fetchBusinessData(businessId);
 
-        let businessData;
-
         if (response.success && response.data) {
+          const { businessData, businessType, businessTypeConfig } =
+            response.data;
           console.log('[AdminDashboard] API call successful:', response.data);
-          businessData = response.data;
-        } else {
           console.log(
-            '[AdminDashboard] API call failed, using template fallback'
+            '[AdminDashboard] businessData type:',
+            typeof businessData
           );
-          businessData = getBusinessTemplate(businessId);
-          if (!businessData) {
-            setApiError('Business not found');
-            setLoading(false);
-            setApiLoading(false);
-            return;
-          }
-        }
+          console.log(
+            '[AdminDashboard] businessType type:',
+            typeof businessType
+          );
+          console.log(
+            '[AdminDashboard] businessTypeConfig type:',
+            typeof businessTypeConfig
+          );
 
-        setBusiness(businessData);
+          setBusiness(businessData);
 
-        // Initialize business in Redux state if it doesn't exist, then set as editing
-        try {
-          // Create a sanitized version for Redux
-          const sanitizedBusiness = JSON.parse(JSON.stringify(businessData));
-          dispatch(initializeBusiness(sanitizedBusiness));
+          // Simplified Redux actions - dispatch only essential actions
+          console.log(
+            '[AdminDashboard] Dispatching simplified Redux actions...'
+          );
+
+          dispatch(clearError());
           dispatch(setEditingBusiness(businessId));
-        } catch (error) {
-          console.error('Error setting editing business:', error);
-        }
 
-        // Pre-fill all form data from business data (using API data structure)
-        setHeroData({
-          title: businessData.hero?.title || `${businessData.name}`,
-          subtitle:
-            businessData.hero?.subtitle || `Welcome to ${businessData.name}`,
-          backgroundImage:
-            businessData.hero?.backgroundImage || businessData.image || '',
-        });
+          console.log('[AdminDashboard] Redux actions dispatched successfully');
 
-        setAboutData({
-          title: businessData.about?.title || 'About Us',
-          description:
-            businessData.about?.description ||
-            `Learn more about ${businessData.name}`,
-          profileImage: businessData.about?.profileImage || '',
-        });
+          // try {
+          //   console.log('[AdminDashboard] About to dispatch setBusinessType');
+          //   console.log('Action creator setBusinessType:', setBusinessType);
+          //   const action2 = setBusinessType({
+          //     businessType,
+          //     businessTypeConfig: serializableBusinessTypeConfig,
+          //   });
+          //   console.log('Generated action2:', action2);
+          //   dispatch(action2);
+          //   console.log('[AdminDashboard] setBusinessType dispatched successfully');
+          // } catch (error) {
+          //   console.error('[AdminDashboard] Error dispatching setBusinessType:', error);
+          //   throw error;
+          // }
 
-        // Use API data directly instead of getSampleContent
-        setServicesData(businessData.services || []);
-        setTeamData(businessData.team || []);
-        setPortfolioData(businessData.portfolio || []);
-        setSkillsData(businessData.skills || []);
-        setExperienceData(businessData.experience || []);
-        setGalleryData(businessData.gallery || []);
-        setPackagesData(businessData.packages || []);
-        setTestimonialsData(businessData.testimonials || []);
-        setReviewsData(businessData.reviews || []);
-        setFaqData(businessData.faq || []);
+          // Pre-fill all form data from business data (using API data structure)
+          setHeroData({
+            title: businessData.hero?.title || `${businessData.name}`,
+            subtitle:
+              businessData.hero?.subtitle || `Welcome to ${businessData.name}`,
+            backgroundImage:
+              businessData.hero?.backgroundImage || businessData.image || '',
+          });
 
-        // Initialize business hours from API data
-        setBusinessHoursData(
-          businessData.businessHours || {
-            title: 'Business Hours',
-            hours: {
-              monday: '9:00 AM - 6:00 PM',
-              tuesday: '9:00 AM - 6:00 PM',
-              wednesday: '9:00 AM - 6:00 PM',
-              thursday: '9:00 AM - 6:00 PM',
-              friday: '9:00 AM - 6:00 PM',
-              saturday: '10:00 AM - 4:00 PM',
-              sunday: 'Closed',
-            },
-          }
-        );
+          setAboutData({
+            title: businessData.about?.title || 'About Us',
+            description:
+              businessData.about?.description ||
+              `Learn more about ${businessData.name}`,
+            profileImage: businessData.about?.profileImage || '',
+          });
 
-        // Initialize section order
-        setSectionOrderData([
-          'hero',
-          'about-us',
-          'services-offered',
-          'portfolio',
-          'skills',
-          'experience',
-          'team',
-          'gallery',
-          'packages',
-          'testimonials',
-          'reviews',
-          'faq',
-          'business-hours',
-          'contact',
-        ]);
+          // Use API data directly instead of getSampleContent
+          setServicesData(businessData.services || []);
+          setTeamData(businessData.team || []);
+          setPortfolioData(businessData.portfolio || []);
+          setSkillsData(businessData.skills || []);
+          setExperienceData(businessData.experience || []);
+          setGalleryData(businessData.gallery || []);
+          setPackagesData(businessData.packages || []);
+          setTestimonialsData(businessData.testimonials || []);
+          setReviewsData(businessData.reviews || []);
+          setFaqData(businessData.faq || []);
 
-        // Initialize contact data from API data
-        setContactData(
-          businessData.contact || {
-            title: 'Get In Touch',
-            description: `Contact us to learn more about ${businessData.name}`,
-            email: `hello@${businessData.slug}.com`,
-            phone: '+1 (555) 123-4567',
-            address: '123 Business Street, City, State 12345',
-            hours: {
-              monday: '9:00 AM - 6:00 PM',
-              tuesday: '9:00 AM - 6:00 PM',
-              wednesday: '9:00 AM - 6:00 PM',
-              thursday: '9:00 AM - 6:00 PM',
-              friday: '9:00 AM - 6:00 PM',
-              saturday: '10:00 AM - 4:00 PM',
-              sunday: 'Closed',
-            },
-            socialMedia: {
-              facebook: '',
-              twitter: '',
-              instagram: '',
-              linkedin: '',
-            },
-          }
-        );
-
-        // Initialize UI content data from API data
-        setUiContentData(
-          businessData.ui || {
-            sections: businessData.sections || {},
-            buttons: {
-              bookNow: 'Book Now',
-              learnMore: 'Learn More',
-              sendMessage: 'Send Message',
-              contactUs: 'Contact Us',
-            },
-            contactForm: {
-              placeholders: {
-                name: 'Your Name',
-                email: 'Your Email',
-                phone: 'Your Phone',
-                message: 'Your Message',
-              },
-            },
-            businessHours: {
+          // Initialize business hours from API data
+          setBusinessHoursData(
+            businessData.businessHours || {
               title: 'Business Hours',
-              contactInfoTitle: 'Contact Information',
-            },
-          }
-        );
+              hours: {
+                monday: '9:00 AM - 6:00 PM',
+                tuesday: '9:00 AM - 6:00 PM',
+                wednesday: '9:00 AM - 6:00 PM',
+                thursday: '9:00 AM - 6:00 PM',
+                friday: '9:00 AM - 6:00 PM',
+                saturday: '10:00 AM - 4:00 PM',
+                sunday: 'Closed',
+              },
+            }
+          );
 
-        // Initialize statistics data from API data
-        setStatisticsData(
-          businessData.about?.stats || [
-            { number: '100+', label: 'Services' },
-            { number: '5+', label: 'Years Experience' },
-            { number: '4.9', label: '★ Average Rating' },
-            { number: '200+', label: 'Happy Clients' },
-          ]
-        );
+          // Initialize section order
+          setSectionOrderData([
+            'hero',
+            'about-us',
+            'services-offered',
+            'portfolio',
+            'skills',
+            'experience',
+            'team',
+            'gallery',
+            'packages',
+            'testimonials',
+            'reviews',
+            'faq',
+            'business-hours',
+            'contact',
+          ]);
+
+          // Initialize contact data from API data
+          setContactData(
+            businessData.contact || {
+              title: 'Get In Touch',
+              description: `Contact us to learn more about ${businessData.name}`,
+              email: `hello@${businessData.slug}.com`,
+              phone: '+1 (555) 123-4567',
+              address: '123 Business Street, City, State 12345',
+              hours: {
+                monday: '9:00 AM - 6:00 PM',
+                tuesday: '9:00 AM - 6:00 PM',
+                wednesday: '9:00 AM - 6:00 PM',
+                thursday: '9:00 AM - 6:00 PM',
+                friday: '9:00 AM - 6:00 PM',
+                saturday: '10:00 AM - 4:00 PM',
+                sunday: 'Closed',
+              },
+              socialMedia: {
+                facebook: '',
+                twitter: '',
+                instagram: '',
+                linkedin: '',
+              },
+            }
+          );
+
+          // Initialize UI content data from API data
+          setUiContentData(
+            businessData.ui || {
+              sections: businessData.sections || {},
+              buttons: {
+                bookNow: 'Book Now',
+                learnMore: 'Learn More',
+                sendMessage: 'Send Message',
+                contactUs: 'Contact Us',
+              },
+              contactForm: {
+                placeholders: {
+                  name: 'Your Name',
+                  email: 'Your Email',
+                  phone: 'Your Phone',
+                  message: 'Your Message',
+                },
+              },
+              businessHours: {
+                title: 'Business Hours',
+                contactInfoTitle: 'Contact Information',
+              },
+            }
+          );
+
+          // Initialize statistics data from API data
+          setStatisticsData(
+            businessData.about?.stats || [
+              { number: '100+', label: 'Services' },
+              { number: '5+', label: 'Years Experience' },
+              { number: '4.9', label: '★ Average Rating' },
+              { number: '200+', label: 'Happy Clients' },
+            ]
+          );
+        } else {
+          // dispatch(setError('Business not found')); // Temporarily disabled to fix Redux error
+          setLoading(false);
+          setApiLoading(false);
+          return;
+        }
       } catch (error) {
         console.error('[AdminDashboard] Error fetching business data:', error);
         setApiError(error.message);
 
-        // Fallback to template data on error
-        const businessData = getBusinessTemplate(businessId);
-        if (businessData) {
-          setBusiness(businessData);
-        }
+        // Set error state
+        // dispatch(setError('Failed to fetch business data')); // Temporarily disabled to fix Redux error
       } finally {
         setLoading(false);
         setApiLoading(false);
@@ -1392,7 +1399,7 @@ const BuisnessAdminDashboard = () => {
       id: Date.now(),
       name: 'New Skill',
       level: 70,
-      icon: '🔧',
+      icon: '����',
     };
     setSkillsData(prev => [...prev, newSkill]);
     trackSectionChange('skills');
@@ -4309,7 +4316,7 @@ const BuisnessAdminDashboard = () => {
                     skills: '🎯',
                     experience: '📄',
                     team: '👨‍👩‍👧‍👦',
-                    gallery: '📸',
+                    gallery: '����',
                     packages: '💰',
                     testimonials: '💬',
                     reviews: '⭐',
