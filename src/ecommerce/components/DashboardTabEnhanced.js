@@ -379,7 +379,7 @@ const DashboardTabEnhanced = () => {
           </StatsHeader>
           <StatsContent>
             <StatsValue>
-              {formatCurrency(dashboardStats.totalSales.value)}
+              {formatCurrency(dashboardStats.totalSales.value || 0, dashboardStats.totalSales.currency || 'USD')}
             </StatsValue>
             <StatsLabel>Total Sales</StatsLabel>
             <StatsChange positive={dashboardStats.totalSales.change > 0}>
@@ -520,9 +520,9 @@ const DashboardTabEnhanced = () => {
                 <ProductInfo>
                   <ProductName>{product.name}</ProductName>
                   <ProductStats>
-                    {product.sales} sold • {formatCurrency(product.revenue)}{' '}
+                    {product.sales || 0} sold • {formatCurrency(product.revenue || 0)}{' '}
                     revenue
-                    <ProductGrowth> (+{product.growth}%)</ProductGrowth>
+                    <ProductGrowth> (+{product.growth || 0}%)</ProductGrowth>
                   </ProductStats>
                 </ProductInfo>
               </ProductItem>

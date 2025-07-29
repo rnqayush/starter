@@ -395,7 +395,7 @@ const ProductCard = ({
     <Link to={`/${storeSlug}/productdetail/${product.id}`}>
       <Card>
         <ImageContainer>
-          <ProductImage src={product.image} alt={product.name} />
+          <ProductImage src={product.media?.mainImage || product.image} alt={product.name} />
 
           {product.onSale && product.originalPrice && (
             <Badge type="sale">Sale</Badge>
@@ -428,12 +428,12 @@ const ProductCard = ({
           </RatingContainer>
 
           <PriceContainer>
-            <CurrentPrice>${product.price}</CurrentPrice>
-            {product.originalPrice && product.originalPrice > product.price && (
+            <CurrentPrice>${product.pricing?.price || product.price}</CurrentPrice>
+            {(product.pricing?.originalPrice || product.originalPrice) && (product.pricing?.originalPrice || product.originalPrice) > (product.pricing?.price || product.price) && (
               <>
-                <OriginalPrice>${product.originalPrice}</OriginalPrice>
+                <OriginalPrice>${product.pricing?.originalPrice || product.originalPrice}</OriginalPrice>
                 <Discount>
-                  -{calculateDiscount(product.originalPrice, product.price)}%
+                  -{calculateDiscount(product.pricing?.originalPrice || product.originalPrice, product.pricing?.price || product.price)}%
                 </Discount>
               </>
             )}
@@ -443,8 +443,8 @@ const ProductCard = ({
             availability={availabilityStatus}
             color={availabilityColor}
           >
-            {availabilityStatus === 'in_stock' && product.stock > 0
-              ? `${product.stock} in stock`
+            {availabilityStatus === 'in_stock' && (product.availability?.quantity || product.stock) > 0
+              ? `${product.availability?.quantity || product.stock} in stock`
               : availabilityLabel}
           </StockIndicator>
 
