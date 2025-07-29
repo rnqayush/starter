@@ -13,6 +13,7 @@ export const store = configureStore({
     weddingManagement: weddingManagementReducer,
     businessManagement: businessManagementReducer,
     automobileManagement: automobileManagementReducer,
+    ecommerceManagement: ecommerceManagementReducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
