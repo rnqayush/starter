@@ -413,7 +413,7 @@ const SellerDashboard = () => {
       case 'section-featured':
         return <FeaturedSectionEdit />;
       case 'section-special-offers':
-        return <SpecialOffersSectionEdit />;
+        return <HotDealsSectionEdit />;
       case 'section-footer':
         return <FooterSectionEdit />;
       case 'section-custom':
