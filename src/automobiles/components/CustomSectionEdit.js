@@ -17,6 +17,7 @@ import {
   addCustomSection,
   updatePageSections,
   removeCustomSection,
+  updateSectionContent,
 } from '../../store/slices/automobileManagementSlice';
 
 const Container = styled.div`
