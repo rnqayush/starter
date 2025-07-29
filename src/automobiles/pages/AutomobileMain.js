@@ -91,21 +91,49 @@ const LoadingContainer = styled.div`
   gap: ${theme.spacing.lg};
 `;
 
+const spinLoader = keyframes`
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+`;
+
 const LoadingSpinner = styled.div`
   width: 60px;
   height: 60px;
-  border: 4px solid ${theme.colors.gray200};
+  border: 4px solid transparent;
   border-top: 4px solid ${theme.colors.primary};
+  border-right: 4px solid ${theme.colors.primaryLight};
   border-radius: 50%;
-  animation: spin 1s linear infinite;
+  animation: ${spinLoader} 1s linear infinite;
+  position: relative;
 
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
+  &::before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    border: 2px solid transparent;
+    border-top: 2px solid ${theme.colors.primaryLight};
+    border-radius: 50%;
+    animation: ${spinLoader} 1.5s linear infinite reverse;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    border: 2px solid transparent;
+    border-top: 2px solid ${theme.colors.primary};
+    border-radius: 50%;
+    animation: ${spinLoader} 0.8s linear infinite;
   }
 `;
 
