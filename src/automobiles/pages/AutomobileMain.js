@@ -581,18 +581,45 @@ const SectionHeader = styled.div`
 const SectionTitle = styled.h2.withConfig({
   shouldForwardProp: prop => prop !== 'textColor',
 })`
-  font-size: 2.5rem;
-  font-weight: 600;
-  color: ${props => props.textColor || theme.colors.gray900};
+  font-size: 2.8rem;
+  font-weight: 700;
+  background: linear-gradient(
+    135deg,
+    ${props => props.textColor || theme.colors.gray900} 0%,
+    ${props => props.textColor || theme.colors.primary} 50%,
+    ${props => props.textColor || theme.colors.gray800} 100%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   margin-bottom: ${theme.spacing.md};
+  position: relative;
+  letter-spacing: -1px;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(
+      90deg,
+      ${theme.colors.primary},
+      ${theme.colors.primaryLight}
+    );
+    border-radius: 2px;
+  }
 
   @media (max-width: ${theme.breakpoints.tablet}) {
-    font-size: 2rem;
+    font-size: 2.3rem;
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    font-size: 1.75rem;
+    font-size: 2rem;
     margin-bottom: ${theme.spacing.sm};
+    letter-spacing: -0.5px;
   }
 `;
 
