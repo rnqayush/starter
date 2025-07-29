@@ -334,6 +334,8 @@ export const BusinessAPI = {
   fetchMultipleBusinessData,
   validateBusinessData,
   checkAPIStatus,
+  detectBusinessType,
+  getBusinessTypeConfig,
 };
 
 // Default export
