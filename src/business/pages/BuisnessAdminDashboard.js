@@ -1010,7 +1010,7 @@ const BuisnessAdminDashboard = () => {
   useEffect(() => {
     const fetchBusinessDataForAdmin = async () => {
       try {
-        dispatch(setLoading(true));
+        // dispatch(setLoading(true)); // Temporarily disabled to fix Redux error
         dispatch(clearError());
 
         console.log(
@@ -1387,7 +1387,7 @@ const BuisnessAdminDashboard = () => {
       id: Date.now(),
       name: 'New Skill',
       level: 70,
-      icon: '🔧',
+      icon: '����',
     };
     setSkillsData(prev => [...prev, newSkill]);
     trackSectionChange('skills');
