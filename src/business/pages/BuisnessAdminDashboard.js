@@ -1031,38 +1031,9 @@ const BuisnessAdminDashboard = () => {
           const serializableBusinessData = JSON.parse(JSON.stringify(businessData));
           const serializableBusinessTypeConfig = JSON.parse(JSON.stringify(businessTypeConfig));
 
+          // Test one action at a time
           try {
-            console.log('[AdminDashboard] About to dispatch initializeBusinessData');
-            console.log('Action creator initializeBusinessData:', initializeBusinessData);
-            const action1 = initializeBusinessData({
-              businessData: serializableBusinessData,
-              businessTypeConfig: serializableBusinessTypeConfig,
-            });
-            console.log('Generated action1:', action1);
-            dispatch(action1);
-            console.log('[AdminDashboard] initializeBusinessData dispatched successfully');
-          } catch (error) {
-            console.error('[AdminDashboard] Error dispatching initializeBusinessData:', error);
-            throw error;
-          }
-
-          try {
-            console.log('[AdminDashboard] About to dispatch setBusinessType');
-            console.log('Action creator setBusinessType:', setBusinessType);
-            const action2 = setBusinessType({
-              businessType,
-              businessTypeConfig: serializableBusinessTypeConfig,
-            });
-            console.log('Generated action2:', action2);
-            dispatch(action2);
-            console.log('[AdminDashboard] setBusinessType dispatched successfully');
-          } catch (error) {
-            console.error('[AdminDashboard] Error dispatching setBusinessType:', error);
-            throw error;
-          }
-
-          try {
-            console.log('About to dispatch setEditingBusiness with:', businessId);
+            console.log('[AdminDashboard] About to dispatch setEditingBusiness with:', businessId);
             console.log('Action creator setEditingBusiness:', setEditingBusiness);
             const action3 = setEditingBusiness(businessId);
             console.log('Generated action3:', action3);
@@ -1072,6 +1043,37 @@ const BuisnessAdminDashboard = () => {
             console.error('[AdminDashboard] Error dispatching setEditingBusiness:', error);
             throw error;
           }
+
+          // Comment out other dispatches temporarily
+          // try {
+          //   console.log('[AdminDashboard] About to dispatch initializeBusinessData');
+          //   console.log('Action creator initializeBusinessData:', initializeBusinessData);
+          //   const action1 = initializeBusinessData({
+          //     businessData: serializableBusinessData,
+          //     businessTypeConfig: serializableBusinessTypeConfig,
+          //   });
+          //   console.log('Generated action1:', action1);
+          //   dispatch(action1);
+          //   console.log('[AdminDashboard] initializeBusinessData dispatched successfully');
+          // } catch (error) {
+          //   console.error('[AdminDashboard] Error dispatching initializeBusinessData:', error);
+          //   throw error;
+          // }
+
+          // try {
+          //   console.log('[AdminDashboard] About to dispatch setBusinessType');
+          //   console.log('Action creator setBusinessType:', setBusinessType);
+          //   const action2 = setBusinessType({
+          //     businessType,
+          //     businessTypeConfig: serializableBusinessTypeConfig,
+          //   });
+          //   console.log('Generated action2:', action2);
+          //   dispatch(action2);
+          //   console.log('[AdminDashboard] setBusinessType dispatched successfully');
+          // } catch (error) {
+          //   console.error('[AdminDashboard] Error dispatching setBusinessType:', error);
+          //   throw error;
+          // }
 
           // Pre-fill all form data from business data (using API data structure)
           setHeroData({
@@ -1410,7 +1412,7 @@ const BuisnessAdminDashboard = () => {
       id: Date.now(),
       name: 'New Skill',
       level: 70,
-      icon: '🔧',
+      icon: '����',
     };
     setSkillsData(prev => [...prev, newSkill]);
     trackSectionChange('skills');
