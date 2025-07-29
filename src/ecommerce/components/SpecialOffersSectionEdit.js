@@ -199,7 +199,7 @@ const SaveButton = styled.button`
   }
 `;
 
-const SpecialOffersSectionEdit = () => {
+const HotDealsSectionEdit = () => {
   const dispatch = useDispatch();
   const vendor = useSelector(selectVendor);
   const products = useSelector(selectProducts);
@@ -211,6 +211,8 @@ const SpecialOffersSectionEdit = () => {
     visible: true,
     productIds: []
   });
+
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     if (section) {
