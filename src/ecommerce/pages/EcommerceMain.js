@@ -625,10 +625,12 @@ const EcommerceMain = () => {
                 >
                   <HeroContent>
                     <StoreHeader>
-                      <StoreLogo
-                        src={vendor.businessInfo?.logo}
-                        alt={`${vendor.name} logo`}
-                      />
+                      {vendor.businessInfo?.logo && (
+                        <StoreLogo
+                          src={vendor.businessInfo?.logo}
+                          alt={`${vendor.name} logo`}
+                        />
+                      )}
                       <div>
                         <HeroTitle>
                           {sectionConfig.title || sectionConfig.content?.title}
