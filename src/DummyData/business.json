@@ -4,6 +4,7 @@
   "message": "Business website data retrieved successfully",
   "timestamp": "2024-01-20T12:00:00Z",
   "data": {
+    "isPersonalPortfolio": false,
     "portfolio": {
       "buisness": {
         "id": "salon",
