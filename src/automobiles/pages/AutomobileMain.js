@@ -353,22 +353,35 @@ const HeroTitle = styled.h1`
 `;
 
 const HeroSubtitle = styled.p`
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   margin-bottom: ${theme.spacing.xl};
   opacity: 0.95;
-  max-width: 700px;
+  max-width: 800px;
   margin-left: auto;
   margin-right: auto;
-  font-weight: 300;
-  line-height: 1.6;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  font-weight: 400;
+  line-height: 1.7;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+  animation: ${fadeInUp} 1s ease-out 0.6s both;
+
+  &::after {
+    content: '';
+    display: block;
+    width: 100px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+    margin: ${theme.spacing.lg} auto 0;
+    border-radius: 2px;
+  }
 
   @media (max-width: ${theme.breakpoints.tablet}) {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
+    max-width: 600px;
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    font-size: 1rem;
+    font-size: 1.1rem;
+    max-width: 100%;
   }
 `;
 
