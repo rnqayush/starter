@@ -467,7 +467,19 @@ const CustomSectionEdit = ({ dealer }) => {
     }
 
     if (isEditing) {
-      // Update existing custom section
+      // Update existing custom section with real-time updates
+      dispatch(
+        updateSectionContent({
+          sectionId: editingSectionId,
+          content: {
+            title: sectionData.title,
+            subtitle: sectionData.description,
+            vehicleIds: sectionData.vehicleIds,
+          },
+        })
+      );
+
+      // Also update section metadata
       const updatedSections = sections.map(section =>
         section.id === editingSectionId
           ? {
@@ -476,6 +488,8 @@ const CustomSectionEdit = ({ dealer }) => {
               description: sectionData.description,
               content: {
                 ...section.content,
+                title: sectionData.title,
+                subtitle: sectionData.description,
                 vehicleIds: sectionData.vehicleIds,
               },
             }
@@ -484,14 +498,17 @@ const CustomSectionEdit = ({ dealer }) => {
       dispatch(updatePageSections(updatedSections));
       alert('Custom section updated successfully!');
     } else {
-      // Create new custom section
+      // Create new custom section - position it before footer
+      const footerSection = sections.find(s => s.id === 'footer');
+      const footerOrder = footerSection ? footerSection.order : sections.length + 1;
+
       const newSection = {
         id: `custom-${Date.now()}`,
         name: sectionData.title,
         description: sectionData.description,
         type: 'custom',
         visible: true,
-        order: sections.length + 1,
+        order: footerOrder - 0.5, // Place before footer
         content: {
           title: sectionData.title,
           subtitle: sectionData.description,
