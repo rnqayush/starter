@@ -187,22 +187,17 @@ const DealerDashboard = () => {
   // Handle auto-save functionality for API calls
   const handleSaveChanges = async () => {
     try {
-      // Here you would make API call with apiReadyData
-      console.log('Saving to API:', apiReadyData);
+      // Use the new saveCompleteData action for API integration
+      await dispatch(saveCompleteData({
+        vendorSlug: dealerSlug,
+        data: apiReadyData
+      })).unwrap();
 
-      // For now, just dispatch the save action
-      dispatch(saveAndPublishChanges());
-
-      // TODO: Replace with actual API call
-      // await fetch(`/api/dealers/${dealerSlug}`, {
-      //   method: 'PUT',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify(apiReadyData)
-      // });
-
-      console.log('Changes saved successfully!');
+      console.log('Changes saved successfully to API!');
     } catch (error) {
       console.error('Failed to save changes:', error);
+      // Optionally show user-friendly error message
+      alert('Failed to save changes. Please try again.');
     }
   };
 
