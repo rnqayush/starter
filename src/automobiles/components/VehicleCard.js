@@ -19,63 +19,35 @@ import {
 } from '../../store/slices/automobileManagementSlice';
 
 const Card = styled.div`
-  background: linear-gradient(
-    145deg,
-    ${theme.colors.white} 0%,
-    rgba(255, 255, 255, 0.98) 100%
-  );
+  background: ${theme.colors.white};
   border-radius: ${theme.borderRadius.xl};
   overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: ${theme.shadows.sm};
+  transition: all 0.4s ease;
   position: relative;
   height: 100%;
   display: flex;
   flex-direction: column;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(
-      135deg,
-      rgba(30, 64, 175, 0.02) 0%,
-      transparent 50%,
-      rgba(59, 130, 246, 0.02) 100%
-    );
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    pointer-events: none;
-    z-index: 1;
-  }
+  border: 1px solid ${theme.colors.gray100};
 
   &:hover {
-    transform: translateY(-12px) rotateX(2deg);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12), 0 8px 20px rgba(30, 64, 175, 0.08);
-    border-color: rgba(30, 64, 175, 0.2);
-
-    &::before {
-      opacity: 1;
-    }
+    transform: translateY(-8px);
+    box-shadow: ${theme.shadows.xl};
+    border-color: ${theme.colors.primary}20;
   }
 
   ${media.mobile} {
-    border-radius: ${theme.borderRadius.lg};
+    border-radius: ${theme.borderRadius.md};
 
     &:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      transform: translateY(-2px);
+      box-shadow: ${theme.shadows.md};
     }
   }
 
   ${media.tablet} {
     &:hover {
-      transform: translateY(-8px) rotateX(1deg);
+      transform: translateY(-3px);
     }
   }
 `;
@@ -406,7 +378,6 @@ const EnquireButton = styled.button`
   background: linear-gradient(
     135deg,
     ${theme.colors.primary} 0%,
-    ${theme.colors.primaryLight} 50%,
     ${theme.colors.primaryDark} 100%
   );
   color: ${theme.colors.white};
@@ -417,57 +388,28 @@ const EnquireButton = styled.button`
   align-items: center;
   justify-content: center;
   gap: ${theme.spacing.sm};
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s ease;
   border: none;
   cursor: pointer;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   font-size: 0.9rem;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 4px 15px rgba(30, 64, 175, 0.3);
-  z-index: 2;
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(255, 255, 255, 0.3),
-      transparent
-    );
-    transition: left 0.5s ease;
-  }
 
   &:hover {
     background: linear-gradient(
       135deg,
       ${theme.colors.primaryDark} 0%,
-      ${theme.colors.primary} 50%,
-      ${theme.colors.primaryLight} 100%
+      ${theme.colors.primary} 100%
     );
-    transform: translateY(-2px) scale(1.02);
-    box-shadow: 0 8px 25px rgba(30, 64, 175, 0.4);
-
-    &::before {
-      left: 100%;
-    }
+    transform: translateY(-3px);
+    box-shadow: ${theme.shadows.lg};
   }
 
   &:disabled {
-    background: linear-gradient(135deg, ${theme.colors.gray400}, ${theme.colors.gray500});
+    background: ${theme.colors.gray400};
     cursor: not-allowed;
     transform: none;
     box-shadow: none;
-
-    &::before {
-      display: none;
-    }
   }
 
   ${media.mobile} {
@@ -476,7 +418,7 @@ const EnquireButton = styled.button`
     font-size: 0.875rem;
 
     &:hover {
-      transform: translateY(-1px) scale(1.01);
+      transform: none;
     }
   }
 `;
