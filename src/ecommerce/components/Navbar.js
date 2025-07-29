@@ -853,25 +853,10 @@ const Navbar = ({
         ) : (
           <>
             <MobileNavLink
-              to="#"
-              onClick={() => {
-                setAuthModalTab('login');
-                setShowAuthModal(true);
-                setIsMenuOpen(false);
-              }}
+              to={`${getBaseUrl()}/seller-dashboard`}
+              onClick={() => setIsMenuOpen(false)}
             >
-              🔑 Sign In
-            </MobileNavLink>
-
-            <MobileNavLink
-              to="#"
-              onClick={() => {
-                setAuthModalTab('register');
-                setShowAuthModal(true);
-                setIsMenuOpen(false);
-              }}
-            >
-              📝 Sign Up
+              🏪 Seller Dashboard
             </MobileNavLink>
           </>
         )}
