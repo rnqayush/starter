@@ -82,6 +82,66 @@ const PageSubtitle = styled.p`
   font-size: 1rem;
 `;
 
+const SaveControls = styled.div`
+  display: flex;
+  gap: ${theme.spacing.md};
+  align-items: center;
+  margin-top: ${theme.spacing.md};
+`;
+
+const SaveButton = styled.button`
+  background: ${theme.colors.primary};
+  color: white;
+  border: none;
+  border-radius: ${theme.borderRadius.md};
+  padding: ${theme.spacing.sm} ${theme.spacing.lg};
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: ${theme.colors.primaryDark};
+  }
+
+  &:disabled {
+    background: ${theme.colors.gray300};
+    cursor: not-allowed;
+  }
+`;
+
+const DiscardButton = styled.button`
+  background: transparent;
+  color: ${theme.colors.gray600};
+  border: 1px solid ${theme.colors.gray300};
+  border-radius: ${theme.borderRadius.md};
+  padding: ${theme.spacing.sm} ${theme.spacing.lg};
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: ${theme.colors.gray400};
+    color: ${theme.colors.gray700};
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+`;
+
+const SyncWarning = styled.div`
+  background: ${theme.colors.yellow50};
+  border: 1px solid ${theme.colors.yellow200};
+  border-radius: ${theme.borderRadius.md};
+  padding: ${theme.spacing.sm} ${theme.spacing.md};
+  color: ${theme.colors.yellow800};
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.sm};
+`;
+
 const LoadingContainer = styled.div`
   display: flex;
   justify-content: center;
