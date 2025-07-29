@@ -23,6 +23,36 @@ const createAPIResponse = (data, success = true, message = '') => {
 };
 
 /**
+ * Get business type configuration from JSON
+ * @param {string} businessType - 'freelancer' or 'business'
+ * @returns {object} - Business type configuration
+ */
+export const getBusinessTypeConfig = (businessType) => {
+  return businessData.data.businessTypes[businessType] || null;
+};
+
+/**
+ * Detect business type from slug and return enhanced data
+ * @param {string} businessSlug - The business slug/identifier
+ * @returns {object} - Enhanced business data with type info
+ */
+export const detectBusinessType = (businessSlug) => {
+  const business = getBusinessWebsiteData(businessSlug);
+  if (!business) return null;
+
+  const businessType = business.type || 'business'; // Default to 'business'
+  const businessTypeConfig = getBusinessTypeConfig(businessType);
+
+  return {
+    businessData: business,
+    businessType,
+    businessTypeConfig,
+    isFreelancer: businessType === 'freelancer',
+    isBusiness: businessType === 'business',
+  };
+};
+
+/**
  * Fake API to fetch business website data
  * @param {string} businessSlug - The business slug/identifier
  * @returns {Promise} - Promise that resolves to business data
