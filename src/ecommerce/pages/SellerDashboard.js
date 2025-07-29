@@ -467,6 +467,8 @@ const SellerDashboard = () => {
         onTabChange={setActiveTab}
         vendor={vendor}
         hasUnsavedChanges={hasUnsavedChanges}
+        onSave={handleSaveChanges}
+        onDiscard={handleDiscardChanges}
       />
 
       <MainContent>
