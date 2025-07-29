@@ -5,8 +5,8 @@ import { FaImage, FaUpload, FaTimes } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
 import {
   selectLoading,
-  selectSectionContent,
-  updatePageSectionContent,
+  selectSectionById,
+  updateSectionContent,
 } from '../../store/slices/automobileManagementSlice';
 
 const Container = styled.div`
