@@ -290,7 +290,7 @@ const ActionButton = styled.button.withConfig({
 
 const ProductsTab = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [products] = useState(sellerProducts);
+  const [products] = useState(sellerProducts || []);
 
   const formatCurrency = value => {
     return new Intl.NumberFormat('en-US', {
@@ -299,7 +299,7 @@ const ProductsTab = () => {
     }).format(value);
   };
 
-  const filteredProducts = products.filter(
+  const filteredProducts = (products || []).filter(
     product =>
       product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       product.category.toLowerCase().includes(searchTerm.toLowerCase())
