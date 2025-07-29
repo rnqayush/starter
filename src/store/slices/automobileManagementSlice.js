@@ -264,6 +264,11 @@ const automobileManagementSlice = createSlice({
         s => s.id === sectionId
       );
       if (sectionIndex !== -1) {
+        // Ensure content object exists (for backward compatibility)
+        if (!state.pageContent.sections[sectionIndex].content) {
+          state.pageContent.sections[sectionIndex].content = {};
+        }
+
         // Apply changes directly to main state for real-time updates
         Object.entries(content).forEach(([key, value]) => {
           state.pageContent.sections[sectionIndex].content[key] = value;
