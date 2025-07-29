@@ -680,6 +680,10 @@ const automobileManagementSlice = createSlice({
         state.loading = false;
         const { data, meta } = action.payload;
 
+        // If this is returning persisted data, don't mark as not persisted
+        const returningPersistedData = state.isDataPersisted &&
+          data.vendor?.slug === state.vendor?.slug;
+
         // Update main state with fetched data
         state.vendor = data.vendor;
         state.categories = data.allCategories || data.categories || [];
@@ -687,6 +691,12 @@ const automobileManagementSlice = createSlice({
         state.promotions = data.promotions || [];
         state.customerReviews = data.customerReviews || [];
         state.financing = data.financing;
+
+        // Only mark as not persisted if we're loading fresh data from JSON
+        if (!returningPersistedData) {
+          state.isDataPersisted = false;
+          state.lastSaveTimestamp = null;
+        }
 
         // Use pageSections from API if available, otherwise initialize with vendor data
         if (data.pageSections && Array.isArray(data.pageSections)) {
