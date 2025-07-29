@@ -359,7 +359,7 @@ const SellerSidebar = ({
         { id: 'section-hero', label: 'Hero Section', icon: FaHome },
         { id: 'section-categories', label: 'Categories Section', icon: FaTags },
         { id: 'section-featured', label: 'Featured Products', icon: FaBox },
-        { id: 'section-special-offers', label: 'Special Offers', icon: FaPercent },
+        { id: 'section-special-offers', label: 'Hot Deals', icon: FaPercent },
         { id: 'section-footer', label: 'Footer Section', icon: FaCog },
         { id: 'section-custom', label: 'Custom Section', icon: FaPalette },
       ],
