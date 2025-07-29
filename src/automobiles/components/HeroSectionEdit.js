@@ -172,17 +172,22 @@ const UrlOption = styled.div`
   border-top: 1px solid ${theme.colors.gray200};
 `;
 
-const HeroSectionEdit = ({ dealer }) => {
+const HeroSectionEdit = ({ vendor, onSave, hasUnsavedChanges }) => {
   const dispatch = useDispatch();
   const loading = useSelector(selectLoading);
-  const heroContent = useSelector(selectSectionContent('hero'));
+  const heroSection = useSelector(selectSectionById('hero'));
 
   const [localChanges, setLocalChanges] = useState({});
   const [hasChanges, setHasChanges] = useState(false);
 
   // Get current values (Redux + local changes)
   const currentContent = {
-    ...heroContent,
+    title: '',
+    subtitle: '',
+    backgroundImage: '',
+    primaryButtonText: 'Browse Vehicles',
+    secondaryButtonText: 'View Categories',
+    ...heroSection,
     ...localChanges,
   };
 
@@ -215,7 +220,7 @@ const HeroSectionEdit = ({ dealer }) => {
       const timeout = setTimeout(() => {
         if (Object.keys(localChanges).length > 0) {
           dispatch(
-            updatePageSectionContent({
+            updateSectionContent({
               sectionId: 'hero',
               content: localChanges,
             })
