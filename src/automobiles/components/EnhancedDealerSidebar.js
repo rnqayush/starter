@@ -525,7 +525,7 @@ const EnhancedDealerSidebar = ({
             <DealerInfo>
               <DealerName>{vendor.name}</DealerName>
               <DealerRole>Dealer Dashboard</DealerRole>
-              {hasUnsavedChanges && (
+              {hasUnsavedChangesFromRedux && (
                 <div
                   style={{
                     fontSize: '0.7rem',
