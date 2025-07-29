@@ -265,7 +265,7 @@ const SpecialOffersSectionEdit = () => {
   const saleProducts = products?.filter(product => product.onSale) || [];
 
   // Memoize the original data to prevent infinite re-renders
-  const originalData = React.useMemo(() => ({
+  const originalData = useMemo(() => ({
     title: section?.content?.title || '🔥 Hot Deals',
     subtitle: section?.content?.subtitle || 'Limited time offers on our best products',
     visible: section?.visible !== false,
