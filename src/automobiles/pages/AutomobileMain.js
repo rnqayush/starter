@@ -505,7 +505,7 @@ const AutomobileMain = () => {
 
     // Fetch automobile data for this vendor
     dispatch(fetchAutomobileData(slug));
-  }, [location.pathname, navigate, dispatch]);
+  }, [navigate, dispatch]);
 
   const handleBackToDealers = () => {
     navigate('/auto-dealers');
