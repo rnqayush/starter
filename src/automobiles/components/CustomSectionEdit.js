@@ -660,12 +660,7 @@ const CustomSectionEdit = ({ dealer }) => {
               <Label>Section Description</Label>
               <TextArea
                 value={sectionData.description}
-                onChange={e =>
-                  setSectionData(prev => ({
-                    ...prev,
-                    description: e.target.value,
-                  }))
-                }
+                onChange={e => updateLocalContent('description', e.target.value)}
                 placeholder="Enter section description"
               />
             </FormGroup>
