@@ -648,19 +648,35 @@ const Grid = styled.div.withConfig({
   display: grid;
   grid-template-columns: repeat(
     auto-fit,
-    minmax(${props => props.minWidth || '280px'}, 1fr)
+    minmax(${props => props.minWidth || '300px'}, 1fr)
   );
   gap: ${theme.spacing.xl};
+  position: relative;
+
+  & > * {
+    animation: ${fadeInUp} 0.6s ease-out;
+  }
+
+  & > *:nth-child(1) { animation-delay: 0.1s; }
+  & > *:nth-child(2) { animation-delay: 0.2s; }
+  & > *:nth-child(3) { animation-delay: 0.3s; }
+  & > *:nth-child(4) { animation-delay: 0.4s; }
+  & > *:nth-child(5) { animation-delay: 0.5s; }
+  & > *:nth-child(6) { animation-delay: 0.6s; }
 
   @media (max-width: ${theme.breakpoints.tablet}) {
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: ${theme.spacing.lg};
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: ${theme.spacing.md};
+    gap: ${theme.spacing.lg};
     padding: 0 ${theme.spacing.sm};
+
+    & > * {
+      animation-delay: 0s !important;
+    }
   }
 
   @media (max-width: 320px) {
