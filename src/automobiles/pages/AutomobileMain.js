@@ -890,31 +890,45 @@ const Breadcrumb = styled.div`
 const BreadcrumbNav = styled.nav`
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 ${theme.spacing.md};
+  padding: 0 ${theme.spacing.lg};
   display: flex;
   align-items: center;
-  gap: ${theme.spacing.sm};
-  font-size: 0.9rem;
+  gap: ${theme.spacing.md};
+  font-size: 0.95rem;
   color: ${theme.colors.gray600};
+  font-weight: 500;
 
   a {
     color: ${theme.colors.primary};
     text-decoration: none;
-    transition: color 0.2s ease;
+    transition: all 0.2s ease;
+    padding: ${theme.spacing.xs} ${theme.spacing.sm};
+    border-radius: ${theme.borderRadius.sm};
 
     &:hover {
       color: ${theme.colors.primaryDark};
-      text-decoration: underline;
+      background: rgba(30, 64, 175, 0.05);
+      transform: translateY(-1px);
     }
   }
 
   .separator {
     color: ${theme.colors.gray400};
+    font-weight: 400;
   }
 
   .current {
     color: ${theme.colors.gray900};
-    font-weight: 600;
+    font-weight: 700;
+    background: rgba(30, 64, 175, 0.08);
+    padding: ${theme.spacing.xs} ${theme.spacing.sm};
+    border-radius: ${theme.borderRadius.sm};
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: 0 ${theme.spacing.md};
+    font-size: 0.9rem;
+    gap: ${theme.spacing.sm};
   }
 `;
 
