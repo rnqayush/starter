@@ -118,19 +118,49 @@ const Overlay = styled.div`
 `;
 
 const ViewButton = styled.div`
-  background: ${theme.colors.white};
+  background: linear-gradient(
+    135deg,
+    ${theme.colors.white} 0%,
+    rgba(255, 255, 255, 0.95) 100%
+  );
   color: ${theme.colors.primary};
   padding: ${theme.spacing.sm} ${theme.spacing.lg};
   border-radius: ${theme.borderRadius.lg};
-  font-weight: 600;
+  font-weight: 700;
   display: flex;
   align-items: center;
   gap: ${theme.spacing.sm};
   transform: translateY(20px);
-  transition: transform 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(30, 64, 175, 0.1);
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(30, 64, 175, 0.1),
+      transparent
+    );
+    transition: left 0.4s ease;
+  }
 
   ${Card}:hover & {
-    transform: translateY(0);
+    transform: translateY(0) scale(1.05);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    border-color: rgba(30, 64, 175, 0.2);
+
+    &::before {
+      left: 100%;
+    }
   }
 
   ${media.mobile} {
@@ -139,6 +169,10 @@ const ViewButton = styled.div`
     border-radius: ${theme.borderRadius.md};
     transform: translateY(0);
     gap: ${theme.spacing.xs};
+
+    ${Card}:hover & {
+      transform: scale(1.02);
+    }
   }
 
   ${media.tablet} {
