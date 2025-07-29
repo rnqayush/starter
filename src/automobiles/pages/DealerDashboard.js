@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { theme } from '../../styles/GlobalStyle';
 import EnhancedDealerSidebar from '../components/EnhancedDealerSidebar';
@@ -26,7 +26,17 @@ import PromotionsTab from '../components/PromotionsTab';
 import DealerSettingsTab from '../components/DealerSettingsTab';
 import AnalyticsTab from '../components/AnalyticsTab';
 import { getAutomobileVendorByIdOrSlug as getVendorByIdOrSlug } from '../../DummyData';
-import { fetchAutomobileData } from '../../store/slices/automobileManagementSlice';
+import {
+  fetchAutomobileData,
+  selectVendor,
+  selectLoading,
+  selectError,
+  selectHasUnsavedChanges,
+  selectApiReadyData,
+  selectNeedsSyncCheck,
+  saveAndPublishChanges,
+  discardTempChanges
+} from '../../store/slices/automobileManagementSlice';
 
 const DashboardContainer = styled.div`
   display: flex;
@@ -86,27 +96,57 @@ const DealerDashboard = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState('dashboard');
-  const [dealer, setDealer] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [dealerSlug, setDealerSlug] = useState(null);
+
+  // Redux selectors
+  const vendor = useSelector(selectVendor);
+  const loading = useSelector(selectLoading);
+  const error = useSelector(selectError);
+  const hasUnsavedChanges = useSelector(selectHasUnsavedChanges);
+  const apiReadyData = useSelector(selectApiReadyData);
+  const syncCheck = useSelector(selectNeedsSyncCheck);
 
   useEffect(() => {
     // Get dealer data from URL
     const path = location.pathname;
     const pathSegments = path.split('/').filter(Boolean);
-    const dealerSlug = pathSegments[0];
+    const slug = pathSegments[0];
 
-    const dealerData = getVendorByIdOrSlug(dealerSlug);
-
-    if (dealerData) {
-      setDealer(dealerData);
+    if (slug) {
+      setDealerSlug(slug);
       // Fetch automobile data to populate Redux store
-      dispatch(fetchAutomobileData(dealerSlug));
-      setLoading(false);
+      dispatch(fetchAutomobileData(slug));
     } else {
       // If no dealer found, redirect to dealer listing
       navigate('/auto-dealers');
     }
   }, [location.pathname, navigate, dispatch]);
+
+  // Handle auto-save functionality for API calls
+  const handleSaveChanges = async () => {
+    try {
+      // Here you would make API call with apiReadyData
+      console.log('Saving to API:', apiReadyData);
+
+      // For now, just dispatch the save action
+      dispatch(saveAndPublishChanges());
+
+      // TODO: Replace with actual API call
+      // await fetch(`/api/dealers/${dealerSlug}`, {
+      //   method: 'PUT',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify(apiReadyData)
+      // });
+
+      console.log('Changes saved successfully!');
+    } catch (error) {
+      console.error('Failed to save changes:', error);
+    }
+  };
+
+  const handleDiscardChanges = () => {
+    dispatch(discardTempChanges());
+  };
 
   const getPageTitle = () => {
     switch (activeTab) {
@@ -207,51 +247,59 @@ const DealerDashboard = () => {
   };
 
   const renderContent = () => {
+    const commonProps = {
+      vendor,
+      dealerSlug,
+      onSave: handleSaveChanges,
+      hasUnsavedChanges,
+      syncCheck
+    };
+
     switch (activeTab) {
       case 'dashboard':
-        return <DashboardTab dealer={dealer} />;
+        return <DashboardTab {...commonProps} />;
       case 'section-order':
-        return <SectionOrderEdit dealer={dealer} />;
+        return <SectionOrderEdit {...commonProps} />;
       case 'hero-section':
-        return <HeroSectionEdit dealer={dealer} />;
+        return <HeroSectionEdit {...commonProps} />;
       case 'categories-section':
-        return <CategoriesSectionEdit dealer={dealer} />;
+        return <CategoriesSectionEdit {...commonProps} />;
       case 'featured-section':
-        return <FeaturedSectionEdit dealer={dealer} />;
+        return <FeaturedSectionEdit {...commonProps} />;
       case 'offers-section':
-        return <SpecialOffersSectionEdit dealer={dealer} />;
+        return <SpecialOffersSectionEdit {...commonProps} />;
       case 'footer-section':
-        return <FooterSectionEdit dealer={dealer} />;
+        return <FooterSectionEdit {...commonProps} />;
       case 'custom-section':
-        return <CustomSectionEdit dealer={dealer} />;
+        return <CustomSectionEdit {...commonProps} />;
       case 'inventory':
-        return <VehicleInventoryTab dealer={dealer} />;
+        return <VehicleInventoryTab {...commonProps} />;
       case 'categories':
-        return <CategoryManagement dealer={dealer} />;
+        return <CategoryManagement {...commonProps} />;
       case 'add-vehicle':
-        return <AddVehicleTab dealer={dealer} />;
+        return <AddVehicleTab {...commonProps} />;
       case 'bulk-import':
-        return <BulkImportTab dealer={dealer} />;
+        return <BulkImportTab {...commonProps} />;
       case 'orders':
-        return <SalesOrdersTab dealer={dealer} />;
+        return <SalesOrdersTab {...commonProps} />;
       case 'enquiries':
-        return <EnquiriesTab dealer={dealer} />;
+        return <EnquiriesTab {...commonProps} />;
       case 'customers':
-        return <CustomersTab dealer={dealer} />;
+        return <CustomersTab {...commonProps} />;
       case 'financing':
-        return <FinancingTab dealer={dealer} />;
+        return <FinancingTab {...commonProps} />;
       case 'trade-ins':
-        return <TradeInsTab dealer={dealer} />;
+        return <TradeInsTab {...commonProps} />;
       case 'service':
-        return <ServiceAppointmentsTab dealer={dealer} />;
+        return <ServiceAppointmentsTab {...commonProps} />;
       case 'promotions':
-        return <PromotionsTab dealer={dealer} />;
+        return <PromotionsTab {...commonProps} />;
       case 'dealer-settings':
-        return <DealerSettingsTab dealer={dealer} />;
+        return <DealerSettingsTab {...commonProps} />;
       case 'analytics':
-        return <AnalyticsTab dealer={dealer} />;
+        return <AnalyticsTab {...commonProps} />;
       default:
-        return <DashboardTab dealer={dealer} />;
+        return <DashboardTab {...commonProps} />;
     }
   };
 
@@ -259,7 +307,21 @@ const DealerDashboard = () => {
     return <LoadingContainer>Loading dealership dashboard...</LoadingContainer>;
   }
 
-  if (!dealer) {
+  if (error) {
+    return (
+      <LoadingContainer>
+        <div style={{ textAlign: 'center', color: '#ef4444' }}>
+          <h3>Error loading dashboard</h3>
+          <p>{error}</p>
+          <button onClick={() => dispatch(fetchAutomobileData(dealerSlug))}>
+            Retry
+          </button>
+        </div>
+      </LoadingContainer>
+    );
+  }
+
+  if (!vendor) {
     return null; // Will redirect
   }
 
@@ -268,7 +330,11 @@ const DealerDashboard = () => {
       <EnhancedDealerSidebar
         activeTab={activeTab}
         onTabChange={setActiveTab}
-        dealer={dealer}
+        vendor={vendor}
+        hasUnsavedChanges={hasUnsavedChanges}
+        onSave={handleSaveChanges}
+        onDiscard={handleDiscardChanges}
+        syncCheck={syncCheck}
       />
       <MainContent>
         <ContentWrapper>
