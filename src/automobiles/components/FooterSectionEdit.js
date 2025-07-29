@@ -504,29 +504,7 @@ const FooterSectionEdit = ({ dealer }) => {
     updateContent('supportCustomFields', newFields);
   };
 
-  const saveChanges = () => {
-    const updatedSections = sections.map(section =>
-      section.id === 'footer'
-        ? { ...section, content: { ...section.content, ...sectionContent } }
-        : section
-    );
-
-    dispatch(updatePageSections(updatedSections));
-    setHasChanges(false);
-    alert('Footer section saved successfully!');
-  };
-
-  const publishChanges = () => {
-    const updatedSections = sections.map(section =>
-      section.id === 'footer'
-        ? { ...section, content: { ...section.content, ...sectionContent } }
-        : section
-    );
-
-    dispatch(publishPageContent(updatedSections));
-    setHasChanges(false);
-    alert('Footer section published successfully! Changes are now live.');
-  };
+  // Save functions removed - using real-time updates through sidebar
 
   if (loading) {
     return (
