@@ -927,6 +927,10 @@ export const selectHasUnsavedChanges = state =>
   state.automobileManagement.hasUnsavedChanges;
 export const selectTempChanges = state =>
   state.automobileManagement.tempChanges;
+export const selectIsDataPersisted = state =>
+  state.automobileManagement.isDataPersisted;
+export const selectLastSaveTimestamp = state =>
+  state.automobileManagement.lastSaveTimestamp;
 
 // Helper selector to get current section content
 export const selectSectionContent = sectionId => state => {
