@@ -486,6 +486,9 @@ const AutomobileMain = () => {
 
   const getBaseUrl = () => (vendor ? `/${vendor.slug}` : '/automobiles');
 
+  // Get hasUnsavedChanges outside the useEffect
+  const hasUnsavedChanges = useSelector(selectHasUnsavedChanges);
+
   useEffect(() => {
     // Get vendor slug from URL
     const path = location.pathname;
@@ -507,11 +510,10 @@ const AutomobileMain = () => {
     // Only fetch automobile data if we don't have vendor data or if slug changed
     // This prevents overriding real-time updates from dealer dashboard
     // Also check if we have unsaved changes to avoid overriding
-    const hasUnsavedChanges = useSelector(selectHasUnsavedChanges);
     if (!vendor || (vendor.slug !== slug && !hasUnsavedChanges)) {
       dispatch(fetchAutomobileData(slug));
     }
-  }, [location.pathname, navigate, dispatch, vendor]);
+  }, [location.pathname, navigate, dispatch, vendor, hasUnsavedChanges]);
 
   const handleBackToDealers = () => {
     navigate('/auto-dealers');
