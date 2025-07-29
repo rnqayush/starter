@@ -1174,7 +1174,7 @@ const BuisnessAdminDashboard = () => {
             ]
           );
         } else {
-          dispatch(setError('Business not found'));
+          // dispatch(setError('Business not found')); // Temporarily disabled to fix Redux error
           setLoading(false);
           setApiLoading(false);
           return;
@@ -1184,7 +1184,7 @@ const BuisnessAdminDashboard = () => {
         setApiError(error.message);
 
         // Set error state
-        dispatch(setError('Failed to fetch business data'));
+        // dispatch(setError('Failed to fetch business data')); // Temporarily disabled to fix Redux error
       } finally {
         setLoading(false);
         setApiLoading(false);
