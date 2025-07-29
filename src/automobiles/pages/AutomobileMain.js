@@ -666,9 +666,13 @@ const AutomobileMain = () => {
             case 'categories':
               // Use embedded categories if available, otherwise use global categories
               // Check for visibility in both root level and content level
-              const visibleCategoryIds = sectionConfig.visibleCategories || sectionConfig.content?.visibleCategories;
+              const visibleCategoryIds =
+                sectionConfig.visibleCategories ||
+                sectionConfig.content?.visibleCategories;
               const categoriesToShow = visibleCategoryIds
-                ? categories.filter(category => visibleCategoryIds.includes(category.id))
+                ? categories.filter(category =>
+                    visibleCategoryIds.includes(category.id)
+                  )
                 : categories;
               return (
                 <Section key="categories">
@@ -700,10 +704,16 @@ const AutomobileMain = () => {
 
             case 'featured':
               // Use embedded vehicles if available, otherwise use global vehicles
-              const featuredVehicleIds = sectionConfig.vehicleIds || sectionConfig.content?.vehicleIds || [];
-              const featuredVehiclesToShow = featuredVehicleIds.length > 0
-                ? vehicles.filter(vehicle => featuredVehicleIds.includes(vehicle.id))
-                : featuredVehicles.slice(0, 4);
+              const featuredVehicleIds =
+                sectionConfig.vehicleIds ||
+                sectionConfig.content?.vehicleIds ||
+                [];
+              const featuredVehiclesToShow =
+                featuredVehicleIds.length > 0
+                  ? vehicles.filter(vehicle =>
+                      featuredVehicleIds.includes(vehicle.id)
+                    )
+                  : featuredVehicles.slice(0, 4);
               return (
                 <Section
                   key="featured"
@@ -739,10 +749,16 @@ const AutomobileMain = () => {
 
             case 'special-offers':
               // Use embedded vehicles if available, otherwise use global vehicles
-              const specialOfferVehicleIds = sectionConfig.vehicleIds || sectionConfig.content?.vehicleIds || [];
-              const specialOfferVehicles = specialOfferVehicleIds.length > 0
-                ? vehicles.filter(vehicle => specialOfferVehicleIds.includes(vehicle.id))
-                : onSaleVehicles.slice(0, 4);
+              const specialOfferVehicleIds =
+                sectionConfig.vehicleIds ||
+                sectionConfig.content?.vehicleIds ||
+                [];
+              const specialOfferVehicles =
+                specialOfferVehicleIds.length > 0
+                  ? vehicles.filter(vehicle =>
+                      specialOfferVehicleIds.includes(vehicle.id)
+                    )
+                  : onSaleVehicles.slice(0, 4);
               if (specialOfferVehicles.length === 0) return null;
               return (
                 <Section key="special-offers">
@@ -794,7 +810,8 @@ const AutomobileMain = () => {
                           {sectionConfig.name || sectionConfig.content?.title}
                         </SectionTitle>
                         <SectionSubtitle>
-                          {sectionConfig.description || sectionConfig.content?.subtitle}
+                          {sectionConfig.description ||
+                            sectionConfig.content?.subtitle}
                         </SectionSubtitle>
                       </SectionHeader>
                       {/* Render selected vehicles for custom section */}

@@ -514,7 +514,9 @@ const CustomSectionEdit = ({ dealer }) => {
     } else {
       // Create new custom section - position it before footer
       const footerSection = sections.find(s => s.id === 'footer');
-      const footerOrder = footerSection ? footerSection.order : sections.length + 1;
+      const footerOrder = footerSection
+        ? footerSection.order
+        : sections.length + 1;
 
       const newSection = {
         id: `custom-${Date.now()}`,
@@ -660,7 +662,9 @@ const CustomSectionEdit = ({ dealer }) => {
               <Label>Section Description</Label>
               <TextArea
                 value={sectionData.description}
-                onChange={e => updateLocalContent('description', e.target.value)}
+                onChange={e =>
+                  updateLocalContent('description', e.target.value)
+                }
                 placeholder="Enter section description"
               />
             </FormGroup>

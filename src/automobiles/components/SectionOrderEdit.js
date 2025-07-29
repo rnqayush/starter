@@ -267,13 +267,15 @@ const SectionOrderEdit = ({ dealer }) => {
 
     // Track the section order change for change tracker
     const movedSectionName = movedSection.name || movedSection.id;
-    dispatch(updateSectionContent({
-      sectionId: 'section-order',
-      content: {
-        lastChange: `Moved "${movedSectionName}" ${direction}`,
-        timestamp: new Date().toISOString()
-      }
-    }));
+    dispatch(
+      updateSectionContent({
+        sectionId: 'section-order',
+        content: {
+          lastChange: `Moved "${movedSectionName}" ${direction}`,
+          timestamp: new Date().toISOString(),
+        },
+      })
+    );
   };
 
   const handleVisibilityToggle = sectionId => {
@@ -294,13 +296,15 @@ const SectionOrderEdit = ({ dealer }) => {
 
     // Track the visibility change for change tracker
     const sectionName = targetSection.name || targetSection.id;
-    dispatch(updateSectionContent({
-      sectionId: 'section-order',
-      content: {
-        lastChange: `${newVisibility ? 'Showed' : 'Hid'} "${sectionName}" section`,
-        timestamp: new Date().toISOString()
-      }
-    }));
+    dispatch(
+      updateSectionContent({
+        sectionId: 'section-order',
+        content: {
+          lastChange: `${newVisibility ? 'Showed' : 'Hid'} "${sectionName}" section`,
+          timestamp: new Date().toISOString(),
+        },
+      })
+    );
   };
 
   const saveChanges = () => {

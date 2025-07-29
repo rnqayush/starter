@@ -201,7 +201,9 @@ const DealerDashboard = () => {
         })
       ).unwrap();
 
-      console.log('Changes saved successfully to API and published to main state!');
+      console.log(
+        'Changes saved successfully to API and published to main state!'
+      );
     } catch (error) {
       console.error('Failed to save changes:', error);
       // Optionally show user-friendly error message
@@ -378,7 +380,16 @@ const DealerDashboard = () => {
         <div style={{ textAlign: 'center', color: '#ef4444' }}>
           <h3>Error loading dashboard</h3>
           <p>{error}</p>
-          <button onClick={() => dispatch(fetchAutomobileData({ vendorSlug: dealerSlug, forceRefresh: true }))}>
+          <button
+            onClick={() =>
+              dispatch(
+                fetchAutomobileData({
+                  vendorSlug: dealerSlug,
+                  forceRefresh: true,
+                })
+              )
+            }
+          >
             Retry
           </button>
         </div>

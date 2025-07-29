@@ -3,13 +3,19 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 // Async thunk for fetching automobile data
 export const fetchAutomobileData = createAsyncThunk(
   'automobile/fetchAutomobileData',
-  async ({ vendorSlug, forceRefresh = false }, { rejectWithValue, getState }) => {
+  async (
+    { vendorSlug, forceRefresh = false },
+    { rejectWithValue, getState }
+  ) => {
     try {
       const state = getState();
 
       // If data is already persisted and we're not forcing refresh, return current data
-      if (state.automobileManagement.isDataPersisted && !forceRefresh &&
-          state.automobileManagement.vendor?.slug === vendorSlug) {
+      if (
+        state.automobileManagement.isDataPersisted &&
+        !forceRefresh &&
+        state.automobileManagement.vendor?.slug === vendorSlug
+      ) {
         return {
           data: {
             vendor: state.automobileManagement.vendor,
@@ -20,7 +26,7 @@ export const fetchAutomobileData = createAsyncThunk(
             financing: state.automobileManagement.financing,
             pageSections: state.automobileManagement.pageContent.sections,
           },
-          meta: state.automobileManagement.meta || {}
+          meta: state.automobileManagement.meta || {},
         };
       }
 
@@ -297,7 +303,8 @@ const automobileManagementSlice = createSlice({
           if (key === 'content') {
             // Handle nested content updates
             Object.entries(value).forEach(([nestedKey, nestedValue]) => {
-              state.pageContent.sections[sectionIndex].content[nestedKey] = nestedValue;
+              state.pageContent.sections[sectionIndex].content[nestedKey] =
+                nestedValue;
             });
           } else {
             // Handle direct property updates (title, subtitle, etc.)
@@ -651,7 +658,9 @@ const automobileManagementSlice = createSlice({
       const newSection = action.payload;
 
       // Insert the section before footer or at the end
-      const footerIndex = state.pageContent.sections.findIndex(s => s.id === 'footer');
+      const footerIndex = state.pageContent.sections.findIndex(
+        s => s.id === 'footer'
+      );
       if (footerIndex !== -1) {
         state.pageContent.sections.splice(footerIndex, 0, newSection);
 
@@ -735,8 +744,8 @@ const automobileManagementSlice = createSlice({
         const { data, meta } = action.payload;
 
         // If this is returning persisted data, don't mark as not persisted
-        const returningPersistedData = state.isDataPersisted &&
-          data.vendor?.slug === state.vendor?.slug;
+        const returningPersistedData =
+          state.isDataPersisted && data.vendor?.slug === state.vendor?.slug;
 
         // Update main state with fetched data
         state.vendor = data.vendor;
