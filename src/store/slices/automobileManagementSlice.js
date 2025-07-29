@@ -672,9 +672,24 @@ const automobileManagementSlice = createSlice({
       state.tempChanges[path] = 'Added custom section';
     },
     removeCustomSection: (state, action) => {
+      const sectionId = action.payload;
+
       state.pageContent.sections = state.pageContent.sections.filter(
-        section => section.id !== action.payload
+        section => section.id !== sectionId
       );
+
+      // Update orders to maintain proper sequence
+      state.pageContent.sections.forEach((section, index) => {
+        section.order = index + 1;
+      });
+
+      // Mark as having changes for change tracker
+      state.hasUnsavedChanges = true;
+      state.isDataPersisted = false;
+
+      // Track the change
+      const path = `sections.${sectionId}`;
+      state.tempChanges[path] = 'Removed custom section';
     },
     updateSectionVisibility: (state, action) => {
       const { sectionId, visible } = action.payload;
