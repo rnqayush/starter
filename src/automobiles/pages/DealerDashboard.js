@@ -378,7 +378,7 @@ const DealerDashboard = () => {
         <div style={{ textAlign: 'center', color: '#ef4444' }}>
           <h3>Error loading dashboard</h3>
           <p>{error}</p>
-          <button onClick={() => dispatch(fetchAutomobileData(dealerSlug))}>
+          <button onClick={() => dispatch(fetchAutomobileData({ vendorSlug: dealerSlug, forceRefresh: true }))}>
             Retry
           </button>
         </div>
