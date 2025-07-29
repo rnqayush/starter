@@ -277,14 +277,30 @@ const SectionOrderEdit = ({ dealer }) => {
   };
 
   const handleVisibilityToggle = sectionId => {
+    const targetSection = orderedSections.find(s => s.id === sectionId);
+    const newVisibility = !targetSection.visible;
+
     const updatedSections = orderedSections.map(section =>
       section.id === sectionId
-        ? { ...section, visible: !section.visible }
+        ? { ...section, visible: newVisibility }
         : section
     );
 
     setOrderedSections(updatedSections);
     setHasChanges(true);
+
+    // Immediately update Redux state for real-time tracking and main page updates
+    dispatch(updateSectionVisibility({ sectionId, visible: newVisibility }));
+
+    // Track the visibility change for change tracker
+    const sectionName = targetSection.name || targetSection.id;
+    dispatch(updateSectionContent({
+      sectionId: 'section-order',
+      content: {
+        lastChange: `${newVisibility ? 'Showed' : 'Hid'} "${sectionName}" section`,
+        timestamp: new Date().toISOString()
+      }
+    }));
   };
 
   const saveChanges = () => {
