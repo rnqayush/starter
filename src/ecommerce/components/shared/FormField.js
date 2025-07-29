@@ -205,7 +205,7 @@ const FormField = ({
         <Textarea
           name={name}
           value={value}
-          onChange={onChange}
+          onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
           required={required}
           disabled={disabled}
