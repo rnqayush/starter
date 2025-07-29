@@ -1035,10 +1035,11 @@ const BuisnessAdminDashboard = () => {
             businessTypeConfig,
           }));
 
+          console.log('About to dispatch setEditingBusiness with:', businessId);
           dispatch(setEditingBusiness(businessId));
 
           // Pre-fill all form data from business data (using API data structure)
-        setHeroData({
+          setHeroData({
           title: businessData.hero?.title || `${businessData.name}`,
           subtitle:
             businessData.hero?.subtitle || `Welcome to ${businessData.name}`,
