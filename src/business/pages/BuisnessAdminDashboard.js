@@ -1031,21 +1031,47 @@ const BuisnessAdminDashboard = () => {
           const serializableBusinessData = JSON.parse(JSON.stringify(businessData));
           const serializableBusinessTypeConfig = JSON.parse(JSON.stringify(businessTypeConfig));
 
-          console.log('[AdminDashboard] About to dispatch initializeBusinessData');
-          // Initialize Redux state with business data and type config
-          dispatch(initializeBusinessData({
-            businessData: serializableBusinessData,
-            businessTypeConfig: serializableBusinessTypeConfig,
-          }));
+          try {
+            console.log('[AdminDashboard] About to dispatch initializeBusinessData');
+            console.log('Action creator initializeBusinessData:', initializeBusinessData);
+            const action1 = initializeBusinessData({
+              businessData: serializableBusinessData,
+              businessTypeConfig: serializableBusinessTypeConfig,
+            });
+            console.log('Generated action1:', action1);
+            dispatch(action1);
+            console.log('[AdminDashboard] initializeBusinessData dispatched successfully');
+          } catch (error) {
+            console.error('[AdminDashboard] Error dispatching initializeBusinessData:', error);
+            throw error;
+          }
 
-          console.log('[AdminDashboard] About to dispatch setBusinessType');
-          dispatch(setBusinessType({
-            businessType,
-            businessTypeConfig: serializableBusinessTypeConfig,
-          }));
+          try {
+            console.log('[AdminDashboard] About to dispatch setBusinessType');
+            console.log('Action creator setBusinessType:', setBusinessType);
+            const action2 = setBusinessType({
+              businessType,
+              businessTypeConfig: serializableBusinessTypeConfig,
+            });
+            console.log('Generated action2:', action2);
+            dispatch(action2);
+            console.log('[AdminDashboard] setBusinessType dispatched successfully');
+          } catch (error) {
+            console.error('[AdminDashboard] Error dispatching setBusinessType:', error);
+            throw error;
+          }
 
-          console.log('About to dispatch setEditingBusiness with:', businessId);
-          dispatch(setEditingBusiness(businessId));
+          try {
+            console.log('About to dispatch setEditingBusiness with:', businessId);
+            console.log('Action creator setEditingBusiness:', setEditingBusiness);
+            const action3 = setEditingBusiness(businessId);
+            console.log('Generated action3:', action3);
+            dispatch(action3);
+            console.log('[AdminDashboard] setEditingBusiness dispatched successfully');
+          } catch (error) {
+            console.error('[AdminDashboard] Error dispatching setEditingBusiness:', error);
+            throw error;
+          }
 
           // Pre-fill all form data from business data (using API data structure)
           setHeroData({
