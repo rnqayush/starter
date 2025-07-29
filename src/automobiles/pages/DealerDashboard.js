@@ -29,6 +29,7 @@ import AnalyticsTab from '../components/AnalyticsTab';
 import {
   fetchAutomobileData,
   saveCompleteData,
+  saveAndPublishChanges,
   selectVendor,
   selectLoading,
   selectError,
@@ -182,10 +183,13 @@ const DealerDashboard = () => {
     }
   }, [location.pathname, navigate, dispatch]);
 
-  // Handle auto-save functionality for API calls
+  // Handle save changes - publish to main state and save to API
   const handleSaveChanges = async () => {
     try {
-      // Use the new saveCompleteData action for API integration
+      // First, publish changes to main state for real-time updates
+      dispatch(saveAndPublishChanges());
+
+      // Then save to API for persistence
       await dispatch(
         saveCompleteData({
           vendorSlug: dealerSlug,
@@ -193,7 +197,7 @@ const DealerDashboard = () => {
         })
       ).unwrap();
 
-      console.log('Changes saved successfully to API!');
+      console.log('Changes saved successfully to API and published to main state!');
     } catch (error) {
       console.error('Failed to save changes:', error);
       // Optionally show user-friendly error message
