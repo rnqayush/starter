@@ -784,17 +784,17 @@ const AutomobileMain = () => {
               );
 
             default:
-              // Handle custom sections
+              // Handle custom sections - they should appear before footer
               if (sectionConfig.type === 'custom') {
                 return (
                   <Section key={sectionConfig.id}>
                     <Container>
                       <SectionHeader>
                         <SectionTitle textColor={dealerTheme.textColor}>
-                          {sectionConfig.name}
+                          {sectionConfig.name || sectionConfig.content?.title}
                         </SectionTitle>
                         <SectionSubtitle>
-                          {sectionConfig.description}
+                          {sectionConfig.description || sectionConfig.content?.subtitle}
                         </SectionSubtitle>
                       </SectionHeader>
                       {/* Render selected vehicles for custom section */}
