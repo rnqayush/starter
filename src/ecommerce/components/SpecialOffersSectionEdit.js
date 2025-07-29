@@ -263,12 +263,16 @@ const SpecialOffersSectionEdit = () => {
   };
 
   const saleProducts = products?.filter(product => product.onSale) || [];
-  const hasChanges = JSON.stringify(sectionData) !== JSON.stringify({
+
+  // Memoize the original data to prevent infinite re-renders
+  const originalData = React.useMemo(() => ({
     title: section?.content?.title || '🔥 Hot Deals',
     subtitle: section?.content?.subtitle || 'Limited time offers on our best products',
     visible: section?.visible !== false,
     productIds: section?.content?.productIds || []
-  });
+  }), [section]);
+
+  const hasChanges = JSON.stringify(sectionData) !== JSON.stringify(originalData);
 
   return (
     <SectionContainer>
