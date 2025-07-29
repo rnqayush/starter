@@ -365,9 +365,9 @@ const AddProductTabEnhanced = () => {
                 name="category"
                 value={formData.category}
                 onChange={handleInputChange}
-                options={productCategories.map(cat => ({
-                  value: cat,
-                  label: cat,
+                options={(ecommerceCategories || []).map(cat => ({
+                  value: cat.slug || cat.name || cat,
+                  label: cat.name || cat,
                 }))}
                 required
               />
