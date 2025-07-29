@@ -413,20 +413,22 @@ const automobileManagementSlice = createSlice({
     // Smart section update with embedded data sync
     updateSectionContent: (state, action) => {
       const { sectionId, content } = action.payload;
-      const sectionIndex = state.pageContent.sections.findIndex(s => s.id === sectionId);
+      const sectionIndex = state.pageContent.sections.findIndex(
+        s => s.id === sectionId
+      );
 
       if (sectionIndex !== -1) {
         // Update section content by creating a new object reference for proper React re-rendering
         const updatedSection = {
           ...state.pageContent.sections[sectionIndex],
-          ...content
+          ...content,
         };
 
         // Create new sections array with updated section for proper React re-rendering
         state.pageContent.sections = [
           ...state.pageContent.sections.slice(0, sectionIndex),
           updatedSection,
-          ...state.pageContent.sections.slice(sectionIndex + 1)
+          ...state.pageContent.sections.slice(sectionIndex + 1),
         ];
 
         // Track changes for sidebar
@@ -442,7 +444,9 @@ const automobileManagementSlice = createSlice({
         if (sectionId === 'categories' && content.categories) {
           // Sync embedded categories with global categories
           content.categories.forEach(category => {
-            const existingIndex = state.categories.findIndex(c => c.id === category.id);
+            const existingIndex = state.categories.findIndex(
+              c => c.id === category.id
+            );
             if (existingIndex !== -1) {
               // Update existing category
               state.categories[existingIndex] = category;
@@ -453,10 +457,15 @@ const automobileManagementSlice = createSlice({
           });
         }
 
-        if ((sectionId === 'featured' || sectionId === 'special-offers') && content.vehicles) {
+        if (
+          (sectionId === 'featured' || sectionId === 'special-offers') &&
+          content.vehicles
+        ) {
           // Sync embedded vehicles with global vehicles
           content.vehicles.forEach(vehicle => {
-            const existingIndex = state.vehicles.findIndex(v => v.id === vehicle.id);
+            const existingIndex = state.vehicles.findIndex(
+              v => v.id === vehicle.id
+            );
             if (existingIndex !== -1) {
               // Update existing vehicle
               state.vehicles[existingIndex] = vehicle;
@@ -479,7 +488,9 @@ const automobileManagementSlice = createSlice({
       state.categories.push(newCategory);
 
       // Add to categories section if it exists
-      const categoriesSection = state.pageContent.sections.find(s => s.id === 'categories');
+      const categoriesSection = state.pageContent.sections.find(
+        s => s.id === 'categories'
+      );
       if (categoriesSection && categoriesSection.categories) {
         categoriesSection.categories.push(newCategory);
       }
@@ -498,9 +509,13 @@ const automobileManagementSlice = createSlice({
       }
 
       // Update in categories section if it exists
-      const categoriesSection = state.pageContent.sections.find(s => s.id === 'categories');
+      const categoriesSection = state.pageContent.sections.find(
+        s => s.id === 'categories'
+      );
       if (categoriesSection && categoriesSection.categories) {
-        const sectionIndex = categoriesSection.categories.findIndex(c => c.id === categoryId);
+        const sectionIndex = categoriesSection.categories.findIndex(
+          c => c.id === categoryId
+        );
         if (sectionIndex !== -1) {
           Object.assign(categoriesSection.categories[sectionIndex], updates);
         }
@@ -517,9 +532,13 @@ const automobileManagementSlice = createSlice({
       state.categories = state.categories.filter(c => c.id !== categoryId);
 
       // Remove from categories section if it exists
-      const categoriesSection = state.pageContent.sections.find(s => s.id === 'categories');
+      const categoriesSection = state.pageContent.sections.find(
+        s => s.id === 'categories'
+      );
       if (categoriesSection && categoriesSection.categories) {
-        categoriesSection.categories = categoriesSection.categories.filter(c => c.id !== categoryId);
+        categoriesSection.categories = categoriesSection.categories.filter(
+          c => c.id !== categoryId
+        );
       }
 
       state.hasUnsavedChanges = true;
@@ -534,7 +553,9 @@ const automobileManagementSlice = createSlice({
 
       // If it's featured, add to featured section
       if (newVehicle.featured) {
-        const featuredSection = state.pageContent.sections.find(s => s.id === 'featured');
+        const featuredSection = state.pageContent.sections.find(
+          s => s.id === 'featured'
+        );
         if (featuredSection && featuredSection.vehicles) {
           featuredSection.vehicles.push(newVehicle);
         }
@@ -542,7 +563,9 @@ const automobileManagementSlice = createSlice({
 
       // If it's on sale, add to special offers section
       if (newVehicle.pricing?.onSale) {
-        const offersSection = state.pageContent.sections.find(s => s.id === 'special-offers');
+        const offersSection = state.pageContent.sections.find(
+          s => s.id === 'special-offers'
+        );
         if (offersSection && offersSection.vehicles) {
           offersSection.vehicles.push(newVehicle);
         }
@@ -564,7 +587,9 @@ const automobileManagementSlice = createSlice({
       // Update in all sections that contain this vehicle
       state.pageContent.sections.forEach(section => {
         if (section.vehicles) {
-          const sectionIndex = section.vehicles.findIndex(v => v.id === vehicleId);
+          const sectionIndex = section.vehicles.findIndex(
+            v => v.id === vehicleId
+          );
           if (sectionIndex !== -1) {
             Object.assign(section.vehicles[sectionIndex], updates);
           }
@@ -638,7 +663,6 @@ const automobileManagementSlice = createSlice({
         state.loading = false;
         const { data, meta } = action.payload;
 
-
         // Update main state with fetched data
         state.vendor = data.vendor;
         state.categories = data.allCategories || data.categories || [];
@@ -655,52 +679,54 @@ const automobileManagementSlice = createSlice({
           const vehicleData = data.allVehicles || data.vehicles || [];
           const categoryData = data.allCategories || data.categories || [];
 
-          state.pageContent.sections = state.pageContent.sections.map(section => {
-            const sectionContent = { ...section.content };
+          state.pageContent.sections = state.pageContent.sections.map(
+            section => {
+              const sectionContent = { ...section.content };
 
-            // Initialize content based on vendor data
-            if (section.id === 'hero') {
-              sectionContent.title =
-                sectionContent.title || `Welcome to ${data.vendor.name}`;
-              sectionContent.subtitle =
-                sectionContent.subtitle ||
-                data.vendor.businessInfo?.description ||
-                '';
-              sectionContent.backgroundImage =
-                sectionContent.backgroundImage ||
-                data.vendor.businessInfo?.coverImage ||
-                '';
-            } else if (section.id === 'categories') {
-              sectionContent.visibleCategories =
-                sectionContent.visibleCategories.length > 0
-                  ? sectionContent.visibleCategories
-                  : categoryData.map(cat => cat.id);
-            } else if (section.id === 'featured') {
-              sectionContent.subtitle =
-                sectionContent.subtitle ||
-                `Handpicked vehicles from ${data.vendor.name} that customers love the most`;
-              sectionContent.vehicleIds =
-                sectionContent.vehicleIds.length > 0
-                  ? sectionContent.vehicleIds
-                  : vehicleData
-                      .filter(v => v.featured)
-                      .slice(0, 4)
-                      .map(v => v.id);
-            } else if (section.id === 'special-offers') {
-              sectionContent.subtitle =
-                sectionContent.subtitle ||
-                `Limited time deals from ${data.vendor.name} you don't want to miss`;
-              sectionContent.vehicleIds =
-                sectionContent.vehicleIds.length > 0
-                  ? sectionContent.vehicleIds
-                  : vehicleData
-                      .filter(v => v.pricing?.onSale)
-                      .slice(0, 4)
-                      .map(v => v.id);
+              // Initialize content based on vendor data
+              if (section.id === 'hero') {
+                sectionContent.title =
+                  sectionContent.title || `Welcome to ${data.vendor.name}`;
+                sectionContent.subtitle =
+                  sectionContent.subtitle ||
+                  data.vendor.businessInfo?.description ||
+                  '';
+                sectionContent.backgroundImage =
+                  sectionContent.backgroundImage ||
+                  data.vendor.businessInfo?.coverImage ||
+                  '';
+              } else if (section.id === 'categories') {
+                sectionContent.visibleCategories =
+                  sectionContent.visibleCategories.length > 0
+                    ? sectionContent.visibleCategories
+                    : categoryData.map(cat => cat.id);
+              } else if (section.id === 'featured') {
+                sectionContent.subtitle =
+                  sectionContent.subtitle ||
+                  `Handpicked vehicles from ${data.vendor.name} that customers love the most`;
+                sectionContent.vehicleIds =
+                  sectionContent.vehicleIds.length > 0
+                    ? sectionContent.vehicleIds
+                    : vehicleData
+                        .filter(v => v.featured)
+                        .slice(0, 4)
+                        .map(v => v.id);
+              } else if (section.id === 'special-offers') {
+                sectionContent.subtitle =
+                  sectionContent.subtitle ||
+                  `Limited time deals from ${data.vendor.name} you don't want to miss`;
+                sectionContent.vehicleIds =
+                  sectionContent.vehicleIds.length > 0
+                    ? sectionContent.vehicleIds
+                    : vehicleData
+                        .filter(v => v.pricing?.onSale)
+                        .slice(0, 4)
+                        .map(v => v.id);
+              }
+
+              return { ...section, content: sectionContent };
             }
-
-            return { ...section, content: sectionContent };
-          });
+          );
         }
 
         // Legacy support: Update page content with data from API if available
@@ -738,7 +764,6 @@ const automobileManagementSlice = createSlice({
       .addCase(fetchAutomobileData.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || 'Failed to fetch automobile data';
-
       })
 
       // Fetch vehicle details
@@ -847,7 +872,8 @@ export const selectCategories = state => state.automobileManagement.categories;
 export const selectVehicles = state => state.automobileManagement.vehicles;
 export const selectSelectedVehicle = state =>
   state.automobileManagement.selectedVehicle;
-export const selectPageSections = state => state.automobileManagement.pageContent.sections;
+export const selectPageSections = state =>
+  state.automobileManagement.pageContent.sections;
 export const selectPromotions = state => state.automobileManagement.promotions;
 export const selectCustomerReviews = state =>
   state.automobileManagement.customerReviews;
@@ -1015,7 +1041,15 @@ export const selectIsInWishlist = vehicleId => state => {
 
 // API-ready data selectors for sending to backend
 export const selectApiReadyData = state => {
-  const { vendor, pageContent, categories, vehicles, promotions, customerReviews, financing } = state.automobileManagement;
+  const {
+    vendor,
+    pageContent,
+    categories,
+    vehicles,
+    promotions,
+    customerReviews,
+    financing,
+  } = state.automobileManagement;
 
   return {
     success: true,
@@ -1032,17 +1066,20 @@ export const selectApiReadyData = state => {
         analytics: {},
         inventory: {
           totalVehicles: vehicles.length,
-          totalValue: vehicles.reduce((sum, v) => sum + (v.pricing?.price || 0), 0),
-          lastUpdated: new Date().toISOString()
-        }
-      }
+          totalValue: vehicles.reduce(
+            (sum, v) => sum + (v.pricing?.price || 0),
+            0
+          ),
+          lastUpdated: new Date().toISOString(),
+        },
+      },
     },
     meta: {
       pagination: {
         currentPage: 1,
         totalPages: 1,
         totalItems: vehicles.length,
-        itemsPerPage: 50
+        itemsPerPage: 50,
       },
       filters: {
         availableCategories: categories.map(c => c.slug),
@@ -1051,18 +1088,20 @@ export const selectApiReadyData = state => {
         availableConditions: [...new Set(vehicles.map(v => v.condition))],
         priceRange: {
           min: Math.min(...vehicles.map(v => v.pricing?.price || 0)),
-          max: Math.max(...vehicles.map(v => v.pricing?.price || 0))
-        }
+          max: Math.max(...vehicles.map(v => v.pricing?.price || 0)),
+        },
       },
       lastUpdated: new Date().toISOString(),
-      dataVersion: "2.1.0"
-    }
+      dataVersion: '2.1.0',
+    },
   };
 };
 
 // Selector for getting section by ID with embedded data
 export const selectSectionById = sectionId => state => {
-  return state.automobileManagement.pageContent.sections.find(s => s.id === sectionId);
+  return state.automobileManagement.pageContent.sections.find(
+    s => s.id === sectionId
+  );
 };
 
 // Selector for checking if data needs sync between sections and global arrays
@@ -1073,23 +1112,27 @@ export const selectNeedsSyncCheck = state => {
 
   // Check if categories section has different data than global
   const categoriesSection = sections.find(s => s.id === 'categories');
-  const categoriesNeedSync = categoriesSection?.categories &&
+  const categoriesNeedSync =
+    categoriesSection?.categories &&
     categoriesSection.categories.length !== globalCategories.length;
 
   // Check if vehicle sections have different data than global
   const featuredSection = sections.find(s => s.id === 'featured');
   const offersSection = sections.find(s => s.id === 'special-offers');
 
-  const vehiclesNeedSync = (featuredSection?.vehicles || offersSection?.vehicles) &&
+  const vehiclesNeedSync =
+    (featuredSection?.vehicles || offersSection?.vehicles) &&
     !sections.every(section => {
       if (!section.vehicles) return true;
-      return section.vehicles.every(v => globalVehicles.find(gv => gv.id === v.id));
+      return section.vehicles.every(v =>
+        globalVehicles.find(gv => gv.id === v.id)
+      );
     });
 
   return {
     categoriesNeedSync,
     vehiclesNeedSync,
-    needsSync: categoriesNeedSync || vehiclesNeedSync
+    needsSync: categoriesNeedSync || vehiclesNeedSync,
   };
 };
 

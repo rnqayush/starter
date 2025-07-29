@@ -18,7 +18,12 @@
         "businessLicense": "DEALER-LIC-2024-001",
         "joinedDate": "2019-03-15",
         "verified": true,
-        "permissions": ["manage_inventory", "manage_content", "view_analytics", "manage_orders"]
+        "permissions": [
+          "manage_inventory",
+          "manage_content",
+          "view_analytics",
+          "manage_orders"
+        ]
       },
       "businessInfo": {
         "logo": "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=200&q=80",
@@ -30,17 +35,47 @@
         "website": "www.luxuryautogallery.com",
         "socialMedia": {
           "facebook": "https://facebook.com/luxuryautogallery",
-          "instagram": "https://instagram.com/luxuryautogallery", 
+          "instagram": "https://instagram.com/luxuryautogallery",
           "twitter": "https://twitter.com/luxuryautogallery",
           "youtube": "https://youtube.com/luxuryautogallery",
           "linkedin": "https://linkedin.com/company/luxuryautogallery"
         },
         "quickLinks": [
-          { "id": 1, "name": "Browse Vehicles", "url": "/vehicles", "visible": true, "order": 1 },
-          { "id": 2, "name": "Luxury Cars", "url": "/vehicles?category=luxury-cars", "visible": true, "order": 2 },
-          { "id": 3, "name": "Electric Vehicles", "url": "/vehicles?category=electric-vehicles", "visible": true, "order": 3 },
-          { "id": 4, "name": "Financing", "url": "/financing", "visible": true, "order": 4 },
-          { "id": 5, "name": "Trade-In", "url": "/trade-in", "visible": true, "order": 5 }
+          {
+            "id": 1,
+            "name": "Browse Vehicles",
+            "url": "/vehicles",
+            "visible": true,
+            "order": 1
+          },
+          {
+            "id": 2,
+            "name": "Luxury Cars",
+            "url": "/vehicles?category=luxury-cars",
+            "visible": true,
+            "order": 2
+          },
+          {
+            "id": 3,
+            "name": "Electric Vehicles",
+            "url": "/vehicles?category=electric-vehicles",
+            "visible": true,
+            "order": 3
+          },
+          {
+            "id": 4,
+            "name": "Financing",
+            "url": "/financing",
+            "visible": true,
+            "order": 4
+          },
+          {
+            "id": 5,
+            "name": "Trade-In",
+            "url": "/trade-in",
+            "visible": true,
+            "order": 5
+          }
         ]
       },
       "contact": {
@@ -71,12 +106,31 @@
         "totalReviews": 523,
         "breakdown": { "5": 412, "4": 89, "3": 15, "2": 5, "1": 2 }
       },
-      "specialties": ["Luxury Cars", "Sports Cars", "Electric Vehicles", "Custom Modifications"],
-      "certifications": ["BMW Authorized Dealer", "Mercedes-Benz Certified", "Tesla Approved Service Center", "ASE Certified Technicians"],
-      "services": ["Vehicle Sales", "Financing & Leasing", "Trade-In Appraisal", "Service & Maintenance", "Parts & Accessories", "Extended Warranties", "Insurance Services", "Vehicle Delivery"],
+      "specialties": [
+        "Luxury Cars",
+        "Sports Cars",
+        "Electric Vehicles",
+        "Custom Modifications"
+      ],
+      "certifications": [
+        "BMW Authorized Dealer",
+        "Mercedes-Benz Certified",
+        "Tesla Approved Service Center",
+        "ASE Certified Technicians"
+      ],
+      "services": [
+        "Vehicle Sales",
+        "Financing & Leasing",
+        "Trade-In Appraisal",
+        "Service & Maintenance",
+        "Parts & Accessories",
+        "Extended Warranties",
+        "Insurance Services",
+        "Vehicle Delivery"
+      ],
       "theme": {
         "primaryColor": "#1f2937",
-        "secondaryColor": "#374151", 
+        "secondaryColor": "#374151",
         "backgroundColor": "#f9fafb",
         "textColor": "#1f2937",
         "accentColor": "#3b82f6",
@@ -91,7 +145,13 @@
         "warranty": true,
         "language": "en",
         "currency": "USD",
-        "paymentMethods": ["cash", "financing", "lease", "credit_card", "bank_transfer"]
+        "paymentMethods": [
+          "cash",
+          "financing",
+          "lease",
+          "credit_card",
+          "bank_transfer"
+        ]
       }
     },
 
@@ -107,7 +167,7 @@
         "backgroundImage": "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1200&q=80",
         "primaryButtonText": "Browse Vehicles",
         "primaryButtonAction": "/vehicles",
-        "secondaryButtonText": "View Categories", 
+        "secondaryButtonText": "View Categories",
         "secondaryButtonAction": "/vehicles?category=luxury-cars",
         "showDealerLogo": true,
         "overlayOpacity": 0.3,
@@ -174,7 +234,7 @@
       },
       {
         "id": "featured",
-        "type": "featured", 
+        "type": "featured",
         "name": "Featured Vehicles",
         "order": 3,
         "visible": true,
@@ -191,7 +251,11 @@
             "name": "2024 Mercedes-Benz S-Class",
             "slug": "2024-mercedes-benz-s-class",
             "sku": "MB-S500-2024-001",
-            "category": { "id": 1, "name": "Luxury Cars", "slug": "luxury-cars" },
+            "category": {
+              "id": 1,
+              "name": "Luxury Cars",
+              "slug": "luxury-cars"
+            },
             "make": "Mercedes-Benz",
             "model": "S-Class",
             "year": 2024,
@@ -226,9 +290,27 @@
             "media": {
               "mainImage": "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=500&q=80",
               "images": [
-                { "id": 1, "url": "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=800&q=80", "alt": "2024 Mercedes-Benz S-Class exterior front view", "type": "exterior", "primary": true },
-                { "id": 2, "url": "https://images.unsplash.com/photo-1563720223185-11003d516935?w=800&q=80", "alt": "2024 Mercedes-Benz S-Class interior dashboard", "type": "interior", "primary": false },
-                { "id": 3, "url": "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=800&q=80", "alt": "2024 Mercedes-Benz S-Class side profile", "type": "exterior", "primary": false }
+                {
+                  "id": 1,
+                  "url": "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=800&q=80",
+                  "alt": "2024 Mercedes-Benz S-Class exterior front view",
+                  "type": "exterior",
+                  "primary": true
+                },
+                {
+                  "id": 2,
+                  "url": "https://images.unsplash.com/photo-1563720223185-11003d516935?w=800&q=80",
+                  "alt": "2024 Mercedes-Benz S-Class interior dashboard",
+                  "type": "interior",
+                  "primary": false
+                },
+                {
+                  "id": 3,
+                  "url": "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=800&q=80",
+                  "alt": "2024 Mercedes-Benz S-Class side profile",
+                  "type": "exterior",
+                  "primary": false
+                }
               ],
               "video": {
                 "url": "https://example.com/videos/mercedes-s-class-2024.mp4",
@@ -240,7 +322,7 @@
             "keyFeatures": [
               "MBUX Hyperscreen with AI assistance",
               "Executive rear seating package with massage",
-              "Air suspension with adaptive damping", 
+              "Air suspension with adaptive damping",
               "Burmester 4D surround sound system",
               "Level 3 autonomous driving capability"
             ],
@@ -266,7 +348,7 @@
               },
               "dimensions": {
                 "length": "206.5 inches",
-                "width": "74.8 inches", 
+                "width": "74.8 inches",
                 "height": "58.9 inches",
                 "wheelbase": "124.6 inches",
                 "curbWeight": "4,630 lbs",
@@ -292,7 +374,14 @@
               "corrosion": { "years": 4, "miles": "unlimited" },
               "roadside": { "years": 4, "miles": "unlimited" }
             },
-            "tags": ["luxury", "sedan", "new", "featured", "on-sale", "financing-available"],
+            "tags": [
+              "luxury",
+              "sedan",
+              "new",
+              "featured",
+              "on-sale",
+              "financing-available"
+            ],
             "featured": true,
             "createdAt": "2024-01-10T09:00:00.000Z",
             "updatedAt": "2024-01-15T10:30:00.000Z"
@@ -302,7 +391,11 @@
             "name": "2024 BMW X5 M50i",
             "slug": "2024-bmw-x5-m50i",
             "sku": "BMW-X5-2024-002",
-            "category": { "id": 1, "name": "Luxury Cars", "slug": "luxury-cars" },
+            "category": {
+              "id": 1,
+              "name": "Luxury Cars",
+              "slug": "luxury-cars"
+            },
             "make": "BMW",
             "model": "X5",
             "year": 2024,
@@ -336,9 +429,27 @@
             "media": {
               "mainImage": "https://images.unsplash.com/photo-1555215695-3004980ad54e?w=500&q=80",
               "images": [
-                { "id": 1, "url": "https://images.unsplash.com/photo-1555215695-3004980ad54e?w=800&q=80", "alt": "2024 BMW X5 M50i exterior", "type": "exterior", "primary": true },
-                { "id": 2, "url": "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=800&q=80", "alt": "2024 BMW X5 M50i interior", "type": "interior", "primary": false },
-                { "id": 3, "url": "https://images.unsplash.com/photo-1570294752112-27ac5df09ba9?w=800&q=80", "alt": "2024 BMW X5 M50i rear view", "type": "exterior", "primary": false }
+                {
+                  "id": 1,
+                  "url": "https://images.unsplash.com/photo-1555215695-3004980ad54e?w=800&q=80",
+                  "alt": "2024 BMW X5 M50i exterior",
+                  "type": "exterior",
+                  "primary": true
+                },
+                {
+                  "id": 2,
+                  "url": "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=800&q=80",
+                  "alt": "2024 BMW X5 M50i interior",
+                  "type": "interior",
+                  "primary": false
+                },
+                {
+                  "id": 3,
+                  "url": "https://images.unsplash.com/photo-1570294752112-27ac5df09ba9?w=800&q=80",
+                  "alt": "2024 BMW X5 M50i rear view",
+                  "type": "exterior",
+                  "primary": false
+                }
               ]
             },
             "description": "The ultimate luxury SUV combining performance, comfort, and cutting-edge technology for the modern driver. The BMW X5 M50i delivers exceptional driving dynamics with its powerful engine and advanced chassis systems.",
@@ -406,7 +517,11 @@
             "name": "2024 Tesla Model S Plaid",
             "slug": "2024-tesla-model-s-plaid",
             "sku": "TSL-MS-2024-003",
-            "category": { "id": 2, "name": "Electric Vehicles", "slug": "electric-vehicles" },
+            "category": {
+              "id": 2,
+              "name": "Electric Vehicles",
+              "slug": "electric-vehicles"
+            },
             "make": "Tesla",
             "model": "Model S",
             "year": 2024,
@@ -440,9 +555,27 @@
             "media": {
               "mainImage": "https://images.unsplash.com/photo-1617788138017-80ad40651399?w=500&q=80",
               "images": [
-                { "id": 1, "url": "https://images.unsplash.com/photo-1617788138017-80ad40651399?w=800&q=80", "alt": "2024 Tesla Model S Plaid exterior", "type": "exterior", "primary": true },
-                { "id": 2, "url": "https://images.unsplash.com/photo-1571068316344-75bc76f77890?w=800&q=80", "alt": "2024 Tesla Model S Plaid interior", "type": "interior", "primary": false },
-                { "id": 3, "url": "https://images.unsplash.com/photo-1560958089-b8a1929cea89?w=800&q=80", "alt": "2024 Tesla Model S Plaid charging", "type": "lifestyle", "primary": false }
+                {
+                  "id": 1,
+                  "url": "https://images.unsplash.com/photo-1617788138017-80ad40651399?w=800&q=80",
+                  "alt": "2024 Tesla Model S Plaid exterior",
+                  "type": "exterior",
+                  "primary": true
+                },
+                {
+                  "id": 2,
+                  "url": "https://images.unsplash.com/photo-1571068316344-75bc76f77890?w=800&q=80",
+                  "alt": "2024 Tesla Model S Plaid interior",
+                  "type": "interior",
+                  "primary": false
+                },
+                {
+                  "id": 3,
+                  "url": "https://images.unsplash.com/photo-1560958089-b8a1929cea89?w=800&q=80",
+                  "alt": "2024 Tesla Model S Plaid charging",
+                  "type": "lifestyle",
+                  "primary": false
+                }
               ]
             },
             "description": "The fastest production sedan ever built with tri-motor all-wheel drive and revolutionary technology. The Model S Plaid represents the pinnacle of electric vehicle performance and innovation.",
@@ -499,7 +632,14 @@
               "battery": { "years": 8, "miles": 150000 },
               "drivetrain": { "years": 8, "miles": 150000 }
             },
-            "tags": ["electric", "sedan", "new", "featured", "performance", "luxury"],
+            "tags": [
+              "electric",
+              "sedan",
+              "new",
+              "featured",
+              "performance",
+              "luxury"
+            ],
             "featured": true,
             "createdAt": "2024-01-05T11:15:00.000Z",
             "updatedAt": "2024-01-15T10:30:00.000Z"
@@ -524,7 +664,11 @@
             "name": "2024 Mercedes-Benz S-Class",
             "slug": "2024-mercedes-benz-s-class",
             "sku": "MB-S500-2024-001",
-            "category": { "id": 1, "name": "Luxury Cars", "slug": "luxury-cars" },
+            "category": {
+              "id": 1,
+              "name": "Luxury Cars",
+              "slug": "luxury-cars"
+            },
             "make": "Mercedes-Benz",
             "model": "S-Class",
             "year": 2024,
@@ -559,14 +703,20 @@
             "media": {
               "mainImage": "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=500&q=80",
               "images": [
-                { "id": 1, "url": "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=800&q=80", "alt": "2024 Mercedes-Benz S-Class exterior front view", "type": "exterior", "primary": true }
+                {
+                  "id": 1,
+                  "url": "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=800&q=80",
+                  "alt": "2024 Mercedes-Benz S-Class exterior front view",
+                  "type": "exterior",
+                  "primary": true
+                }
               ]
             },
             "description": "Experience ultimate luxury with the latest Mercedes-Benz S-Class featuring cutting-edge technology and unparalleled comfort.",
             "keyFeatures": [
               "MBUX Hyperscreen with AI assistance",
               "Executive rear seating package with massage",
-              "Air suspension with adaptive damping", 
+              "Air suspension with adaptive damping",
               "Burmester 4D surround sound system"
             ],
             "availability": {
@@ -580,12 +730,23 @@
               "id": "promo_001",
               "title": "New Year Special - Save $10,000",
               "description": "Save up to $10,000 on select luxury vehicles. Limited time offer until February 29th.",
-              "discount": { "type": "fixed", "amount": 10000, "currency": "USD" },
+              "discount": {
+                "type": "fixed",
+                "amount": 10000,
+                "currency": "USD"
+              },
               "validUntil": "2024-02-29T23:59:59.000Z",
               "terms": "Cannot be combined with other offers. Valid on select vehicles only.",
               "bannerImage": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80"
             },
-            "tags": ["luxury", "sedan", "new", "featured", "on-sale", "financing-available"],
+            "tags": [
+              "luxury",
+              "sedan",
+              "new",
+              "featured",
+              "on-sale",
+              "financing-available"
+            ],
             "featured": true
           }
         ]
@@ -614,7 +775,10 @@
         "quickLinks": [
           { "name": "Browse Vehicles", "url": "/vehicles" },
           { "name": "Luxury Cars", "url": "/vehicles?category=luxury-cars" },
-          { "name": "Electric Vehicles", "url": "/vehicles?category=electric-vehicles" },
+          {
+            "name": "Electric Vehicles",
+            "url": "/vehicles?category=electric-vehicles"
+          },
           { "name": "Financing", "url": "/financing" },
           { "name": "Trade-In", "url": "/trade-in" }
         ],
@@ -636,8 +800,18 @@
         "customerSatisfaction": 4.8,
         "yearlyGrowth": 0.23,
         "monthlyStats": [
-          { "month": "January", "sales": 23, "revenue": 2750000, "enquiries": 89 },
-          { "month": "December", "sales": 18, "revenue": 2100000, "enquiries": 67 }
+          {
+            "month": "January",
+            "sales": 23,
+            "revenue": 2750000,
+            "enquiries": 89
+          },
+          {
+            "month": "December",
+            "sales": 18,
+            "revenue": 2100000,
+            "enquiries": 67
+          }
         ]
       },
       "inventory": {
@@ -708,9 +882,27 @@
         "media": {
           "mainImage": "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=500&q=80",
           "images": [
-            { "id": 1, "url": "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=800&q=80", "alt": "2024 Mercedes-Benz S-Class exterior front view", "type": "exterior", "primary": true },
-            { "id": 2, "url": "https://images.unsplash.com/photo-1563720223185-11003d516935?w=800&q=80", "alt": "2024 Mercedes-Benz S-Class interior dashboard", "type": "interior", "primary": false },
-            { "id": 3, "url": "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=800&q=80", "alt": "2024 Mercedes-Benz S-Class side profile", "type": "exterior", "primary": false }
+            {
+              "id": 1,
+              "url": "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=800&q=80",
+              "alt": "2024 Mercedes-Benz S-Class exterior front view",
+              "type": "exterior",
+              "primary": true
+            },
+            {
+              "id": 2,
+              "url": "https://images.unsplash.com/photo-1563720223185-11003d516935?w=800&q=80",
+              "alt": "2024 Mercedes-Benz S-Class interior dashboard",
+              "type": "interior",
+              "primary": false
+            },
+            {
+              "id": 3,
+              "url": "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=800&q=80",
+              "alt": "2024 Mercedes-Benz S-Class side profile",
+              "type": "exterior",
+              "primary": false
+            }
           ],
           "video": {
             "url": "https://example.com/videos/mercedes-s-class-2024.mp4",
@@ -774,7 +966,14 @@
           "corrosion": { "years": 4, "miles": "unlimited" },
           "roadside": { "years": 4, "miles": "unlimited" }
         },
-        "tags": ["luxury", "sedan", "new", "featured", "on-sale", "financing-available"],
+        "tags": [
+          "luxury",
+          "sedan",
+          "new",
+          "featured",
+          "on-sale",
+          "financing-available"
+        ],
         "featured": true,
         "createdAt": "2024-01-10T09:00:00.000Z",
         "updatedAt": "2024-01-15T10:30:00.000Z"
@@ -818,9 +1017,27 @@
         "media": {
           "mainImage": "https://images.unsplash.com/photo-1555215695-3004980ad54e?w=500&q=80",
           "images": [
-            { "id": 1, "url": "https://images.unsplash.com/photo-1555215695-3004980ad54e?w=800&q=80", "alt": "2024 BMW X5 M50i exterior", "type": "exterior", "primary": true },
-            { "id": 2, "url": "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=800&q=80", "alt": "2024 BMW X5 M50i interior", "type": "interior", "primary": false },
-            { "id": 3, "url": "https://images.unsplash.com/photo-1570294752112-27ac5df09ba9?w=800&q=80", "alt": "2024 BMW X5 M50i rear view", "type": "exterior", "primary": false }
+            {
+              "id": 1,
+              "url": "https://images.unsplash.com/photo-1555215695-3004980ad54e?w=800&q=80",
+              "alt": "2024 BMW X5 M50i exterior",
+              "type": "exterior",
+              "primary": true
+            },
+            {
+              "id": 2,
+              "url": "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=800&q=80",
+              "alt": "2024 BMW X5 M50i interior",
+              "type": "interior",
+              "primary": false
+            },
+            {
+              "id": 3,
+              "url": "https://images.unsplash.com/photo-1570294752112-27ac5df09ba9?w=800&q=80",
+              "alt": "2024 BMW X5 M50i rear view",
+              "type": "exterior",
+              "primary": false
+            }
           ]
         },
         "description": "The ultimate luxury SUV combining performance, comfort, and cutting-edge technology for the modern driver. The BMW X5 M50i delivers exceptional driving dynamics with its powerful engine and advanced chassis systems.",
@@ -888,7 +1105,11 @@
         "name": "2024 Tesla Model S Plaid",
         "slug": "2024-tesla-model-s-plaid",
         "sku": "TSL-MS-2024-003",
-        "category": { "id": 2, "name": "Electric Vehicles", "slug": "electric-vehicles" },
+        "category": {
+          "id": 2,
+          "name": "Electric Vehicles",
+          "slug": "electric-vehicles"
+        },
         "make": "Tesla",
         "model": "Model S",
         "year": 2024,
@@ -922,9 +1143,27 @@
         "media": {
           "mainImage": "https://images.unsplash.com/photo-1617788138017-80ad40651399?w=500&q=80",
           "images": [
-            { "id": 1, "url": "https://images.unsplash.com/photo-1617788138017-80ad40651399?w=800&q=80", "alt": "2024 Tesla Model S Plaid exterior", "type": "exterior", "primary": true },
-            { "id": 2, "url": "https://images.unsplash.com/photo-1571068316344-75bc76f77890?w=800&q=80", "alt": "2024 Tesla Model S Plaid interior", "type": "interior", "primary": false },
-            { "id": 3, "url": "https://images.unsplash.com/photo-1560958089-b8a1929cea89?w=800&q=80", "alt": "2024 Tesla Model S Plaid charging", "type": "lifestyle", "primary": false }
+            {
+              "id": 1,
+              "url": "https://images.unsplash.com/photo-1617788138017-80ad40651399?w=800&q=80",
+              "alt": "2024 Tesla Model S Plaid exterior",
+              "type": "exterior",
+              "primary": true
+            },
+            {
+              "id": 2,
+              "url": "https://images.unsplash.com/photo-1571068316344-75bc76f77890?w=800&q=80",
+              "alt": "2024 Tesla Model S Plaid interior",
+              "type": "interior",
+              "primary": false
+            },
+            {
+              "id": 3,
+              "url": "https://images.unsplash.com/photo-1560958089-b8a1929cea89?w=800&q=80",
+              "alt": "2024 Tesla Model S Plaid charging",
+              "type": "lifestyle",
+              "primary": false
+            }
           ]
         },
         "description": "The fastest production sedan ever built with tri-motor all-wheel drive and revolutionary technology. The Model S Plaid represents the pinnacle of electric vehicle performance and innovation.",
@@ -981,7 +1220,14 @@
           "battery": { "years": 8, "miles": 150000 },
           "drivetrain": { "years": 8, "miles": 150000 }
         },
-        "tags": ["electric", "sedan", "new", "featured", "performance", "luxury"],
+        "tags": [
+          "electric",
+          "sedan",
+          "new",
+          "featured",
+          "performance",
+          "luxury"
+        ],
         "featured": true,
         "createdAt": "2024-01-05T11:15:00.000Z",
         "updatedAt": "2024-01-15T10:30:00.000Z"
@@ -1007,7 +1253,13 @@
         "seo": {
           "metaTitle": "Luxury Cars - Premium Vehicles | Luxury Auto Gallery",
           "metaDescription": "Explore our collection of luxury cars featuring the latest models from Mercedes-Benz, BMW, Audi, and more premium brands.",
-          "keywords": ["luxury cars", "premium vehicles", "Mercedes-Benz", "BMW", "Audi"]
+          "keywords": [
+            "luxury cars",
+            "premium vehicles",
+            "Mercedes-Benz",
+            "BMW",
+            "Audi"
+          ]
         }
       },
       {
@@ -1028,7 +1280,13 @@
         "seo": {
           "metaTitle": "Electric Vehicles - Eco-Friendly Cars | Luxury Auto Gallery",
           "metaDescription": "Discover our range of electric and hybrid vehicles from Tesla, BMW, Mercedes-Benz, and other leading EV manufacturers.",
-          "keywords": ["electric vehicles", "EVs", "Tesla", "hybrid cars", "eco-friendly"]
+          "keywords": [
+            "electric vehicles",
+            "EVs",
+            "Tesla",
+            "hybrid cars",
+            "eco-friendly"
+          ]
         }
       },
       {
@@ -1049,7 +1307,13 @@
         "seo": {
           "metaTitle": "SUVs & Trucks - Family & Utility Vehicles | Luxury Auto Gallery",
           "metaDescription": "Browse our selection of luxury SUVs and trucks perfect for families and outdoor adventures.",
-          "keywords": ["SUVs", "trucks", "family vehicles", "BMW X5", "Mercedes SUV"]
+          "keywords": [
+            "SUVs",
+            "trucks",
+            "family vehicles",
+            "BMW X5",
+            "Mercedes SUV"
+          ]
         }
       },
       {
@@ -1070,7 +1334,12 @@
         "seo": {
           "metaTitle": "Classic Cars - Vintage Automobiles | Luxury Auto Gallery",
           "metaDescription": "Explore our curated collection of classic and vintage automobiles for collectors and enthusiasts.",
-          "keywords": ["classic cars", "vintage automobiles", "collector cars", "restored vehicles"]
+          "keywords": [
+            "classic cars",
+            "vintage automobiles",
+            "collector cars",
+            "restored vehicles"
+          ]
         }
       }
     ],
@@ -1085,7 +1354,10 @@
           "maxLoanAmount": 200000,
           "minAPR": 3.5,
           "maxTerm": 84,
-          "specialOffers": ["0% APR for qualified buyers", "No payments for 90 days"]
+          "specialOffers": [
+            "0% APR for qualified buyers",
+            "No payments for 90 days"
+          ]
         }
       ],
       "leaseOptions": {
@@ -1112,9 +1384,21 @@
       "itemsPerPage": 50
     },
     "filters": {
-      "availableCategories": ["luxury-cars", "electric-vehicles", "suvs-trucks", "classic-cars"],
+      "availableCategories": [
+        "luxury-cars",
+        "electric-vehicles",
+        "suvs-trucks",
+        "classic-cars"
+      ],
       "priceRange": { "min": 35000, "max": 300000 },
-      "availableMakes": ["Mercedes-Benz", "BMW", "Tesla", "Ford", "Jeep", "Chevrolet"],
+      "availableMakes": [
+        "Mercedes-Benz",
+        "BMW",
+        "Tesla",
+        "Ford",
+        "Jeep",
+        "Chevrolet"
+      ],
       "availableYears": [2024, 2023, 2022, 1969, 1967],
       "availableConditions": ["new", "used", "certified", "restored"]
     },

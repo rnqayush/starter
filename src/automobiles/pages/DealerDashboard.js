@@ -35,7 +35,7 @@ import {
   selectHasUnsavedChanges,
   selectApiReadyData,
   selectNeedsSyncCheck,
-  discardTempChanges
+  discardTempChanges,
 } from '../../store/slices/automobileManagementSlice';
 
 const DashboardContainer = styled.div`
@@ -186,10 +186,12 @@ const DealerDashboard = () => {
   const handleSaveChanges = async () => {
     try {
       // Use the new saveCompleteData action for API integration
-      await dispatch(saveCompleteData({
-        vendorSlug: dealerSlug,
-        data: apiReadyData
-      })).unwrap();
+      await dispatch(
+        saveCompleteData({
+          vendorSlug: dealerSlug,
+          data: apiReadyData,
+        })
+      ).unwrap();
 
       console.log('Changes saved successfully to API!');
     } catch (error) {
@@ -307,7 +309,7 @@ const DealerDashboard = () => {
       dealerSlug,
       onSave: handleSaveChanges,
       hasUnsavedChanges,
-      syncCheck
+      syncCheck,
     };
 
     switch (activeTab) {

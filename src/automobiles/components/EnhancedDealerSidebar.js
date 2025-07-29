@@ -374,7 +374,7 @@ const EnhancedDealerSidebar = ({
   hasUnsavedChanges,
   onSave,
   onDiscard,
-  syncCheck
+  syncCheck,
 }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -514,7 +514,10 @@ const EnhancedDealerSidebar = ({
         <SidebarHeader>
           <DealerBranding>
             {vendor.businessInfo?.logo ? (
-              <DealerLogoImage src={vendor.businessInfo.logo} alt={vendor.name} />
+              <DealerLogoImage
+                src={vendor.businessInfo.logo}
+                alt={vendor.name}
+              />
             ) : (
               <DealerLogo>{vendor.name.charAt(0)}</DealerLogo>
             )}
@@ -522,12 +525,24 @@ const EnhancedDealerSidebar = ({
               <DealerName>{vendor.name}</DealerName>
               <DealerRole>Dealer Dashboard</DealerRole>
               {hasUnsavedChanges && (
-                <div style={{ fontSize: '0.7rem', color: theme.colors.yellow600, marginTop: '2px' }}>
+                <div
+                  style={{
+                    fontSize: '0.7rem',
+                    color: theme.colors.yellow600,
+                    marginTop: '2px',
+                  }}
+                >
                   • {Object.keys(changes).length} unsaved changes
                 </div>
               )}
               {syncCheck?.needsSync && (
-                <div style={{ fontSize: '0.7rem', color: theme.colors.orange600, marginTop: '2px' }}>
+                <div
+                  style={{
+                    fontSize: '0.7rem',
+                    color: theme.colors.orange600,
+                    marginTop: '2px',
+                  }}
+                >
                   • Sync required
                 </div>
               )}

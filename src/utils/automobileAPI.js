@@ -23,7 +23,7 @@ class AutomobileAPI {
       const response = await fetch(`${API_BASE_URL}/dealers/${slug}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
       });
       if (!response.ok) throw new Error('Failed to update vendor data');
       return await response.json();
@@ -40,7 +40,7 @@ class AutomobileAPI {
       const response = await fetch(`${API_BASE_URL}/dealers/${slug}/sections`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sections })
+        body: JSON.stringify({ sections }),
       });
       if (!response.ok) throw new Error('Failed to update page sections');
       return await response.json();
@@ -53,11 +53,14 @@ class AutomobileAPI {
   async updateSection(slug, sectionId, content) {
     try {
       // TODO: Replace with actual API call
-      const response = await fetch(`${API_BASE_URL}/dealers/${slug}/sections/${sectionId}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(content)
-      });
+      const response = await fetch(
+        `${API_BASE_URL}/dealers/${slug}/sections/${sectionId}`,
+        {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(content),
+        }
+      );
       if (!response.ok) throw new Error('Failed to update section');
       return await response.json();
     } catch (error) {
@@ -71,7 +74,7 @@ class AutomobileAPI {
     try {
       const queryParams = new URLSearchParams(filters).toString();
       const url = `${API_BASE_URL}/dealers/${slug}/vehicles${queryParams ? `?${queryParams}` : ''}`;
-      
+
       // TODO: Replace with actual API call
       const response = await fetch(url);
       if (!response.ok) throw new Error('Failed to fetch vehicles');
@@ -88,7 +91,7 @@ class AutomobileAPI {
       const response = await fetch(`${API_BASE_URL}/dealers/${slug}/vehicles`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(vehicleData)
+        body: JSON.stringify(vehicleData),
       });
       if (!response.ok) throw new Error('Failed to add vehicle');
       return await response.json();
@@ -101,11 +104,14 @@ class AutomobileAPI {
   async updateVehicle(slug, vehicleId, updates) {
     try {
       // TODO: Replace with actual API call
-      const response = await fetch(`${API_BASE_URL}/dealers/${slug}/vehicles/${vehicleId}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updates)
-      });
+      const response = await fetch(
+        `${API_BASE_URL}/dealers/${slug}/vehicles/${vehicleId}`,
+        {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updates),
+        }
+      );
       if (!response.ok) throw new Error('Failed to update vehicle');
       return await response.json();
     } catch (error) {
@@ -117,9 +123,12 @@ class AutomobileAPI {
   async deleteVehicle(slug, vehicleId) {
     try {
       // TODO: Replace with actual API call
-      const response = await fetch(`${API_BASE_URL}/dealers/${slug}/vehicles/${vehicleId}`, {
-        method: 'DELETE'
-      });
+      const response = await fetch(
+        `${API_BASE_URL}/dealers/${slug}/vehicles/${vehicleId}`,
+        {
+          method: 'DELETE',
+        }
+      );
       if (!response.ok) throw new Error('Failed to delete vehicle');
       return await response.json();
     } catch (error) {
@@ -132,11 +141,14 @@ class AutomobileAPI {
   async addCategory(slug, categoryData) {
     try {
       // TODO: Replace with actual API call
-      const response = await fetch(`${API_BASE_URL}/dealers/${slug}/categories`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(categoryData)
-      });
+      const response = await fetch(
+        `${API_BASE_URL}/dealers/${slug}/categories`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(categoryData),
+        }
+      );
       if (!response.ok) throw new Error('Failed to add category');
       return await response.json();
     } catch (error) {
@@ -148,11 +160,14 @@ class AutomobileAPI {
   async updateCategory(slug, categoryId, updates) {
     try {
       // TODO: Replace with actual API call
-      const response = await fetch(`${API_BASE_URL}/dealers/${slug}/categories/${categoryId}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updates)
-      });
+      const response = await fetch(
+        `${API_BASE_URL}/dealers/${slug}/categories/${categoryId}`,
+        {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updates),
+        }
+      );
       if (!response.ok) throw new Error('Failed to update category');
       return await response.json();
     } catch (error) {
@@ -164,9 +179,12 @@ class AutomobileAPI {
   async deleteCategory(slug, categoryId) {
     try {
       // TODO: Replace with actual API call
-      const response = await fetch(`${API_BASE_URL}/dealers/${slug}/categories/${categoryId}`, {
-        method: 'DELETE'
-      });
+      const response = await fetch(
+        `${API_BASE_URL}/dealers/${slug}/categories/${categoryId}`,
+        {
+          method: 'DELETE',
+        }
+      );
       if (!response.ok) throw new Error('Failed to delete category');
       return await response.json();
     } catch (error) {
@@ -179,7 +197,9 @@ class AutomobileAPI {
   async getAnalytics(slug, timeRange = '30d') {
     try {
       // TODO: Replace with actual API call
-      const response = await fetch(`${API_BASE_URL}/dealers/${slug}/analytics?range=${timeRange}`);
+      const response = await fetch(
+        `${API_BASE_URL}/dealers/${slug}/analytics?range=${timeRange}`
+      );
       if (!response.ok) throw new Error('Failed to fetch analytics');
       return await response.json();
     } catch (error) {
@@ -194,11 +214,14 @@ class AutomobileAPI {
       // TODO: Replace with actual API call
       const formData = new FormData();
       formData.append('file', csvData);
-      
-      const response = await fetch(`${API_BASE_URL}/dealers/${slug}/vehicles/bulk-import`, {
-        method: 'POST',
-        body: formData
-      });
+
+      const response = await fetch(
+        `${API_BASE_URL}/dealers/${slug}/vehicles/bulk-import`,
+        {
+          method: 'POST',
+          body: formData,
+        }
+      );
       if (!response.ok) throw new Error('Failed to import vehicles');
       return await response.json();
     } catch (error) {
@@ -214,7 +237,7 @@ class AutomobileAPI {
       const response = await fetch(`${API_BASE_URL}/dealers/${slug}/sync`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(completeData)
+        body: JSON.stringify(completeData),
       });
       if (!response.ok) throw new Error('Failed to sync data');
       return await response.json();
@@ -241,31 +264,40 @@ class AutomobileAPI {
           analytics: reduxData.analytics || {},
           inventory: {
             totalVehicles: reduxData.vehicles.length,
-            totalValue: reduxData.vehicles.reduce((sum, v) => sum + (v.pricing?.price || 0), 0),
-            lastUpdated: new Date().toISOString()
-          }
-        }
+            totalValue: reduxData.vehicles.reduce(
+              (sum, v) => sum + (v.pricing?.price || 0),
+              0
+            ),
+            lastUpdated: new Date().toISOString(),
+          },
+        },
       },
       meta: {
         pagination: {
           currentPage: 1,
           totalPages: 1,
           totalItems: reduxData.vehicles.length,
-          itemsPerPage: 50
+          itemsPerPage: 50,
         },
         filters: {
           availableCategories: reduxData.categories.map(c => c.slug),
           availableMakes: [...new Set(reduxData.vehicles.map(v => v.make))],
           availableYears: [...new Set(reduxData.vehicles.map(v => v.year))],
-          availableConditions: [...new Set(reduxData.vehicles.map(v => v.condition))],
+          availableConditions: [
+            ...new Set(reduxData.vehicles.map(v => v.condition)),
+          ],
           priceRange: {
-            min: Math.min(...reduxData.vehicles.map(v => v.pricing?.price || 0)),
-            max: Math.max(...reduxData.vehicles.map(v => v.pricing?.price || 0))
-          }
+            min: Math.min(
+              ...reduxData.vehicles.map(v => v.pricing?.price || 0)
+            ),
+            max: Math.max(
+              ...reduxData.vehicles.map(v => v.pricing?.price || 0)
+            ),
+          },
         },
         lastUpdated: new Date().toISOString(),
-        dataVersion: "2.1.0"
-      }
+        dataVersion: '2.1.0',
+      },
     };
   }
 }
@@ -290,19 +322,19 @@ export const {
   deleteCategory,
   getAnalytics,
   bulkImportVehicles,
-  syncCompleteData
+  syncCompleteData,
 } = automobileAPI;
 
 // Mock API responses for development
 export const MockResponses = {
-  success: (data) => ({
+  success: data => ({
     success: true,
     data,
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   }),
-  error: (message) => ({
+  error: message => ({
     success: false,
     error: message,
-    timestamp: new Date().toISOString()
-  })
+    timestamp: new Date().toISOString(),
+  }),
 };
