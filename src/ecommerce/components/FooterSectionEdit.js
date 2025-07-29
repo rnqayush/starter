@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { FaFootball } from 'react-icons/fa';
+import { FaCog } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
 
 const SectionContainer = styled.div`
@@ -30,7 +30,7 @@ const FooterSectionEdit = () => {
   return (
     <SectionContainer>
       <SectionTitle>
-        <FaFootball />
+        <FaCog />
         Footer Section Settings
       </SectionTitle>
       <PlaceholderText>

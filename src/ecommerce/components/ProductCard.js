@@ -423,8 +423,8 @@ const ProductCard = ({
           <Description>{product.description}</Description>
 
           <RatingContainer>
-            <StarRating>{renderStars(product.rating)}</StarRating>
-            <ReviewCount>({product.reviews} reviews)</ReviewCount>
+            <StarRating>{renderStars(product.reviews?.rating || 0)}</StarRating>
+            <ReviewCount>({product.reviews?.totalReviews || 0} reviews)</ReviewCount>
           </RatingContainer>
 
           <PriceContainer>
