@@ -651,9 +651,7 @@ const CustomSectionEdit = ({ dealer }) => {
               <Input
                 type="text"
                 value={sectionData.title}
-                onChange={e =>
-                  setSectionData(prev => ({ ...prev, title: e.target.value }))
-                }
+                onChange={e => updateLocalContent('title', e.target.value)}
                 placeholder="Enter section title"
               />
             </FormGroup>
