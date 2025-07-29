@@ -32,6 +32,7 @@ import {
 import {
   discardTempChanges,
   selectTempChanges,
+  selectHasUnsavedChanges,
 } from '../../store/slices/automobileManagementSlice';
 import { theme, media } from '../../styles/GlobalStyle';
 import { Button } from '../../components/shared/Button';
