@@ -16,6 +16,9 @@ import {
   selectLoading,
   updatePageSections,
   publishPageContent,
+  updateSectionContent,
+  reorderSections,
+  updateSectionVisibility,
 } from '../../store/slices/automobileManagementSlice';
 
 const Container = styled.div`
@@ -258,17 +261,50 @@ const SectionOrderEdit = ({ dealer }) => {
 
     setOrderedSections(updatedSections);
     setHasChanges(true);
+
+    // Immediately update Redux state for real-time tracking and main page updates
+    dispatch(reorderSections(updatedSections));
+
+    // Track the section order change for change tracker
+    const movedSectionName = movedSection.name || movedSection.id;
+    dispatch(
+      updateSectionContent({
+        sectionId: 'section-order',
+        content: {
+          lastChange: `Moved "${movedSectionName}" ${direction}`,
+          timestamp: new Date().toISOString(),
+        },
+      })
+    );
   };
 
   const handleVisibilityToggle = sectionId => {
+    const targetSection = orderedSections.find(s => s.id === sectionId);
+    const newVisibility = !targetSection.visible;
+
     const updatedSections = orderedSections.map(section =>
       section.id === sectionId
-        ? { ...section, visible: !section.visible }
+        ? { ...section, visible: newVisibility }
         : section
     );
 
     setOrderedSections(updatedSections);
     setHasChanges(true);
+
+    // Immediately update Redux state for real-time tracking and main page updates
+    dispatch(updateSectionVisibility({ sectionId, visible: newVisibility }));
+
+    // Track the visibility change for change tracker
+    const sectionName = targetSection.name || targetSection.id;
+    dispatch(
+      updateSectionContent({
+        sectionId: 'section-order',
+        content: {
+          lastChange: `${newVisibility ? 'Showed' : 'Hid'} "${sectionName}" section`,
+          timestamp: new Date().toISOString(),
+        },
+      })
+    );
   };
 
   const saveChanges = () => {
@@ -303,23 +339,7 @@ const SectionOrderEdit = ({ dealer }) => {
           <HeaderTitle>Section Order Management</HeaderTitle>
         </HeaderLeft>
         <HeaderActions>
-          <ActionButton
-            onClick={saveChanges}
-            disabled={!hasChanges}
-            color={theme.colors.blue500}
-          >
-            <FaSave />
-            Save Changes
-          </ActionButton>
-          <ActionButton
-            onClick={publishChanges}
-            disabled={!hasChanges}
-            filled
-            color={theme.colors.success}
-          >
-            <FaGlobe />
-            Save & Go Public
-          </ActionButton>
+          {/* Save functionality moved to sidebar - changes are now real-time */}
         </HeaderActions>
       </Header>
 
@@ -332,7 +352,8 @@ const SectionOrderEdit = ({ dealer }) => {
             <li>Use the up/down arrows to reorder sections on your website</li>
             <li>Click the eye icon to show/hide sections</li>
             <li>The order number shows the current position</li>
-            <li>Don't forget to "Save & Go Public" to make changes live</li>
+            <li>Changes are tracked in real-time and reflected immediately</li>
+            <li>Use the sidebar "Save Changes" to publish all modifications</li>
           </InstructionsList>
         </Instructions>
 

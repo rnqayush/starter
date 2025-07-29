@@ -3,8 +3,33 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 // Async thunk for fetching automobile data
 export const fetchAutomobileData = createAsyncThunk(
   'automobile/fetchAutomobileData',
-  async (vendorSlug, { rejectWithValue }) => {
+  async (
+    { vendorSlug, forceRefresh = false },
+    { rejectWithValue, getState }
+  ) => {
     try {
+      const state = getState();
+
+      // If data is already persisted and we're not forcing refresh, return current data
+      if (
+        state.automobileManagement.isDataPersisted &&
+        !forceRefresh &&
+        state.automobileManagement.vendor?.slug === vendorSlug
+      ) {
+        return {
+          data: {
+            vendor: state.automobileManagement.vendor,
+            allCategories: state.automobileManagement.categories,
+            allVehicles: state.automobileManagement.vehicles,
+            promotions: state.automobileManagement.promotions,
+            customerReviews: state.automobileManagement.customerReviews,
+            financing: state.automobileManagement.financing,
+            pageSections: state.automobileManagement.pageContent.sections,
+          },
+          meta: state.automobileManagement.meta || {},
+        };
+      }
+
       // TODO: Replace with actual API call using automobileAPI.getVendorBySlug(vendorSlug)
       // For now, use local JSON data
       const response = await import('../../DummyData/automobiles.json');
@@ -205,6 +230,10 @@ const initialState = {
   tempChanges: {},
   hasUnsavedChanges: false,
 
+  // Data persistence tracking
+  isDataPersisted: false, // Track if current data has been saved
+  lastSaveTimestamp: null,
+
   // UI state
   loading: false,
   vehicleLoading: false,
@@ -271,13 +300,33 @@ const automobileManagementSlice = createSlice({
 
         // Apply changes directly to main state for real-time updates
         Object.entries(content).forEach(([key, value]) => {
-          state.pageContent.sections[sectionIndex].content[key] = value;
+          if (key === 'content') {
+            // Handle nested content updates
+            Object.entries(value).forEach(([nestedKey, nestedValue]) => {
+              state.pageContent.sections[sectionIndex].content[nestedKey] =
+                nestedValue;
+            });
+          } else {
+            // Handle direct property updates (title, subtitle, etc.)
+            state.pageContent.sections[sectionIndex][key] = value;
+            // Also update content for backward compatibility
+            if (!state.pageContent.sections[sectionIndex].content[key]) {
+              state.pageContent.sections[sectionIndex].content[key] = value;
+            }
+          }
         });
 
-        // Also store in temp changes for tracking
+        // Store in temp changes for tracking
         Object.entries(content).forEach(([key, value]) => {
-          const path = `pageContent.sections.${sectionIndex}.content.${key}`;
-          state.tempChanges[path] = value;
+          if (key === 'content') {
+            Object.entries(value).forEach(([nestedKey, nestedValue]) => {
+              const path = `pageContent.sections.${sectionIndex}.content.${nestedKey}`;
+              state.tempChanges[path] = nestedValue;
+            });
+          } else {
+            const path = `pageContent.sections.${sectionIndex}.${key}`;
+            state.tempChanges[path] = value;
+          }
         });
         state.hasUnsavedChanges = true;
       }
@@ -318,38 +367,11 @@ const automobileManagementSlice = createSlice({
     },
 
     saveAndPublishChanges: state => {
-      // Apply all temp changes directly to main state (real-time update)
-      Object.entries(state.tempChanges).forEach(([path, value]) => {
-        const pathArray = path.split('.');
-        let target = state;
-
-        // Navigate to the nested object
-        for (let i = 0; i < pathArray.length - 1; i++) {
-          const key = pathArray[i];
-          if (key === 'sections' && Array.isArray(target.sections)) {
-            // Handle array index
-            const nextKey = pathArray[i + 1];
-            if (!isNaN(nextKey)) {
-              target = target.sections[parseInt(nextKey)];
-              i++; // Skip the index
-              continue;
-            }
-          }
-          if (!target[key]) {
-            target[key] = {};
-          }
-          target = target[key];
-        }
-
-        // Set the final value
-        const finalKey = pathArray[pathArray.length - 1];
-        target[finalKey] = value;
-      });
-
-      // Clear temp changes
+      // Changes are already applied to main state in real-time
+      // This action just clears the tracking and publishes
       state.tempChanges = {};
       state.hasUnsavedChanges = false;
-
+      state.pageContent.lastPublished = new Date().toISOString();
       console.log('Changes published to main state');
     },
 
@@ -418,18 +440,20 @@ const automobileManagementSlice = createSlice({
       );
 
       if (sectionIndex !== -1) {
-        // Update section content by creating a new object reference for proper React re-rendering
-        const updatedSection = {
-          ...state.pageContent.sections[sectionIndex],
-          ...content,
-        };
+        const section = state.pageContent.sections[sectionIndex];
 
-        // Create new sections array with updated section for proper React re-rendering
-        state.pageContent.sections = [
-          ...state.pageContent.sections.slice(0, sectionIndex),
-          updatedSection,
-          ...state.pageContent.sections.slice(sectionIndex + 1),
-        ];
+        // Ensure content object exists
+        if (!section.content) {
+          section.content = {};
+        }
+
+        // Update both root level and content properties for dual compatibility
+        Object.entries(content).forEach(([key, value]) => {
+          // Update root level property
+          section[key] = value;
+          // Also update in content object for backward compatibility
+          section.content[key] = value;
+        });
 
         // Track changes for sidebar
         Object.keys(content).forEach(key => {
@@ -439,6 +463,8 @@ const automobileManagementSlice = createSlice({
 
         // Mark as having unsaved changes
         state.hasUnsavedChanges = true;
+        // Mark data as modified (not persisted until saved)
+        state.isDataPersisted = false;
 
         // Smart sync with global data based on section type
         if (sectionId === 'categories' && content.categories) {
@@ -629,22 +655,76 @@ const automobileManagementSlice = createSlice({
       state.hasUnsavedChanges = false;
     },
     addCustomSection: (state, action) => {
-      state.pageContent.sections.push(action.payload);
+      const newSection = action.payload;
+
+      // Insert the section before footer or at the end
+      const footerIndex = state.pageContent.sections.findIndex(
+        s => s.id === 'footer'
+      );
+      if (footerIndex !== -1) {
+        state.pageContent.sections.splice(footerIndex, 0, newSection);
+
+        // Update orders to maintain proper sequence
+        state.pageContent.sections.forEach((section, index) => {
+          section.order = index + 1;
+        });
+      } else {
+        state.pageContent.sections.push(newSection);
+      }
+
+      // Mark as having changes for change tracker
+      state.hasUnsavedChanges = true;
+      state.isDataPersisted = false;
+
+      // Track the change
+      const path = `sections.${newSection.id}`;
+      state.tempChanges[path] = 'Added custom section';
     },
     removeCustomSection: (state, action) => {
+      const sectionId = action.payload;
+
       state.pageContent.sections = state.pageContent.sections.filter(
-        section => section.id !== action.payload
+        section => section.id !== sectionId
       );
+
+      // Update orders to maintain proper sequence
+      state.pageContent.sections.forEach((section, index) => {
+        section.order = index + 1;
+      });
+
+      // Mark as having changes for change tracker
+      state.hasUnsavedChanges = true;
+      state.isDataPersisted = false;
+
+      // Track the change
+      const path = `sections.${sectionId}`;
+      state.tempChanges[path] = 'Removed custom section';
     },
     updateSectionVisibility: (state, action) => {
       const { sectionId, visible } = action.payload;
       const section = state.pageContent.sections.find(s => s.id === sectionId);
       if (section) {
         section.visible = visible;
+
+        // Mark as having changes for change tracker
+        state.hasUnsavedChanges = true;
+        state.isDataPersisted = false;
+
+        // Track the change
+        const path = `sections.${sectionId}.visible`;
+        state.tempChanges[path] = visible ? 'Section shown' : 'Section hidden';
       }
     },
     reorderSections: (state, action) => {
       state.pageContent.sections = action.payload;
+
+      // Mark as having changes for change tracker
+      state.hasUnsavedChanges = true;
+      state.isDataPersisted = false;
+
+      // Track the change
+      const path = 'sections.order';
+      state.tempChanges[path] = 'Section order changed';
     },
 
     // Reset state
@@ -663,6 +743,10 @@ const automobileManagementSlice = createSlice({
         state.loading = false;
         const { data, meta } = action.payload;
 
+        // If this is returning persisted data, don't mark as not persisted
+        const returningPersistedData =
+          state.isDataPersisted && data.vendor?.slug === state.vendor?.slug;
+
         // Update main state with fetched data
         state.vendor = data.vendor;
         state.categories = data.allCategories || data.categories || [];
@@ -670,6 +754,12 @@ const automobileManagementSlice = createSlice({
         state.promotions = data.promotions || [];
         state.customerReviews = data.customerReviews || [];
         state.financing = data.financing;
+
+        // Only mark as not persisted if we're loading fresh data from JSON
+        if (!returningPersistedData) {
+          state.isDataPersisted = false;
+          state.lastSaveTimestamp = null;
+        }
 
         // Use pageSections from API if available, otherwise initialize with vendor data
         if (data.pageSections && Array.isArray(data.pageSections)) {
@@ -824,6 +914,8 @@ const automobileManagementSlice = createSlice({
         state.hasUnsavedChanges = false;
         state.tempChanges = {};
         state.pageContent.lastPublished = new Date().toISOString();
+        state.isDataPersisted = true;
+        state.lastSaveTimestamp = new Date().toISOString();
       })
       .addCase(saveCompleteData.rejected, (state, action) => {
         state.loading = false;
@@ -898,6 +990,10 @@ export const selectHasUnsavedChanges = state =>
   state.automobileManagement.hasUnsavedChanges;
 export const selectTempChanges = state =>
   state.automobileManagement.tempChanges;
+export const selectIsDataPersisted = state =>
+  state.automobileManagement.isDataPersisted;
+export const selectLastSaveTimestamp = state =>
+  state.automobileManagement.lastSaveTimestamp;
 
 // Helper selector to get current section content
 export const selectSectionContent = sectionId => state => {

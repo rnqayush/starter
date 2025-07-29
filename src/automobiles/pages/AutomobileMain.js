@@ -19,6 +19,7 @@ import {
   selectLoading,
   selectError,
   selectPageSections,
+  selectHasUnsavedChanges,
   clearError,
 } from '../../store/slices/automobileManagementSlice';
 
@@ -485,6 +486,9 @@ const AutomobileMain = () => {
 
   const getBaseUrl = () => (vendor ? `/${vendor.slug}` : '/automobiles');
 
+  // Get hasUnsavedChanges outside the useEffect
+  const hasUnsavedChanges = useSelector(selectHasUnsavedChanges);
+
   useEffect(() => {
     // Get vendor slug from URL
     const path = location.pathname;
@@ -505,10 +509,11 @@ const AutomobileMain = () => {
 
     // Only fetch automobile data if we don't have vendor data or if slug changed
     // This prevents overriding real-time updates from dealer dashboard
-    if (!vendor || vendor.slug !== slug) {
-      dispatch(fetchAutomobileData(slug));
+    // Also check if we have unsaved changes to avoid overriding
+    if (!vendor || (vendor.slug !== slug && !hasUnsavedChanges)) {
+      dispatch(fetchAutomobileData({ vendorSlug: slug }));
     }
-  }, [location.pathname, navigate, dispatch, vendor]);
+  }, [location.pathname, navigate, dispatch, vendor, hasUnsavedChanges]);
 
   const handleBackToDealers = () => {
     navigate('/auto-dealers');
@@ -517,7 +522,7 @@ const AutomobileMain = () => {
   const handleRetry = () => {
     if (vendorSlug) {
       dispatch(clearError());
-      dispatch(fetchAutomobileData(vendorSlug));
+      dispatch(fetchAutomobileData({ vendorSlug, forceRefresh: true }));
     }
   };
 
@@ -660,15 +665,15 @@ const AutomobileMain = () => {
 
             case 'categories':
               // Use embedded categories if available, otherwise use global categories
-              const categoriesToShow =
-                sectionConfig.categories ||
-                (sectionConfig.content?.visibleCategories
-                  ? categories.filter(category =>
-                      sectionConfig.content.visibleCategories.includes(
-                        category.id
-                      )
-                    )
-                  : categories);
+              // Check for visibility in both root level and content level
+              const visibleCategoryIds =
+                sectionConfig.visibleCategories ||
+                sectionConfig.content?.visibleCategories;
+              const categoriesToShow = visibleCategoryIds
+                ? categories.filter(category =>
+                    visibleCategoryIds.includes(category.id)
+                  )
+                : categories;
               return (
                 <Section key="categories">
                   <Container>
@@ -699,13 +704,16 @@ const AutomobileMain = () => {
 
             case 'featured':
               // Use embedded vehicles if available, otherwise use global vehicles
+              const featuredVehicleIds =
+                sectionConfig.vehicleIds ||
+                sectionConfig.content?.vehicleIds ||
+                [];
               const featuredVehiclesToShow =
-                sectionConfig.vehicles ||
-                (sectionConfig.content?.vehicleIds?.length > 0
+                featuredVehicleIds.length > 0
                   ? vehicles.filter(vehicle =>
-                      sectionConfig.content.vehicleIds.includes(vehicle.id)
+                      featuredVehicleIds.includes(vehicle.id)
                     )
-                  : featuredVehicles.slice(0, 4));
+                  : featuredVehicles.slice(0, 4);
               return (
                 <Section
                   key="featured"
@@ -741,13 +749,16 @@ const AutomobileMain = () => {
 
             case 'special-offers':
               // Use embedded vehicles if available, otherwise use global vehicles
+              const specialOfferVehicleIds =
+                sectionConfig.vehicleIds ||
+                sectionConfig.content?.vehicleIds ||
+                [];
               const specialOfferVehicles =
-                sectionConfig.vehicles ||
-                (sectionConfig.content?.vehicleIds?.length > 0
+                specialOfferVehicleIds.length > 0
                   ? vehicles.filter(vehicle =>
-                      sectionConfig.content.vehicleIds.includes(vehicle.id)
+                      specialOfferVehicleIds.includes(vehicle.id)
                     )
-                  : onSaleVehicles.slice(0, 4));
+                  : onSaleVehicles.slice(0, 4);
               if (specialOfferVehicles.length === 0) return null;
               return (
                 <Section key="special-offers">
@@ -789,17 +800,18 @@ const AutomobileMain = () => {
               );
 
             default:
-              // Handle custom sections
+              // Handle custom sections - they should appear before footer
               if (sectionConfig.type === 'custom') {
                 return (
                   <Section key={sectionConfig.id}>
                     <Container>
                       <SectionHeader>
                         <SectionTitle textColor={dealerTheme.textColor}>
-                          {sectionConfig.name}
+                          {sectionConfig.name || sectionConfig.content?.title}
                         </SectionTitle>
                         <SectionSubtitle>
-                          {sectionConfig.description}
+                          {sectionConfig.description ||
+                            sectionConfig.content?.subtitle}
                         </SectionSubtitle>
                       </SectionHeader>
                       {/* Render selected vehicles for custom section */}

@@ -29,6 +29,7 @@ import AnalyticsTab from '../components/AnalyticsTab';
 import {
   fetchAutomobileData,
   saveCompleteData,
+  saveAndPublishChanges,
   selectVendor,
   selectLoading,
   selectError,
@@ -174,18 +175,25 @@ const DealerDashboard = () => {
 
     if (slug) {
       setDealerSlug(slug);
-      // Fetch automobile data to populate Redux store
-      dispatch(fetchAutomobileData(slug));
+
+      // Only fetch initial data if we don't have vendor data for this slug
+      // This preserves saved changes and prevents overriding user's work
+      if (!vendor || vendor.slug !== slug) {
+        dispatch(fetchAutomobileData({ vendorSlug: slug }));
+      }
     } else {
       // If no dealer found, redirect to dealer listing
       navigate('/auto-dealers');
     }
-  }, [location.pathname, navigate, dispatch]);
+  }, [location.pathname, navigate, dispatch, vendor]);
 
-  // Handle auto-save functionality for API calls
+  // Handle save changes - publish to main state and save to API
   const handleSaveChanges = async () => {
     try {
-      // Use the new saveCompleteData action for API integration
+      // First, publish changes to main state for real-time updates
+      dispatch(saveAndPublishChanges());
+
+      // Then save to API for persistence
       await dispatch(
         saveCompleteData({
           vendorSlug: dealerSlug,
@@ -193,7 +201,9 @@ const DealerDashboard = () => {
         })
       ).unwrap();
 
-      console.log('Changes saved successfully to API!');
+      console.log(
+        'Changes saved successfully to API and published to main state!'
+      );
     } catch (error) {
       console.error('Failed to save changes:', error);
       // Optionally show user-friendly error message
@@ -370,7 +380,16 @@ const DealerDashboard = () => {
         <div style={{ textAlign: 'center', color: '#ef4444' }}>
           <h3>Error loading dashboard</h3>
           <p>{error}</p>
-          <button onClick={() => dispatch(fetchAutomobileData(dealerSlug))}>
+          <button
+            onClick={() =>
+              dispatch(
+                fetchAutomobileData({
+                  vendorSlug: dealerSlug,
+                  forceRefresh: true,
+                })
+              )
+            }
+          >
             Retry
           </button>
         </div>

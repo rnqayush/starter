@@ -15,8 +15,7 @@ import {
   selectVehicles,
   selectVendor,
   selectLoading,
-  updatePageSections,
-  publishPageContent,
+  updateSectionContent,
 } from '../../store/slices/automobileManagementSlice';
 
 const Container = styled.div`
@@ -299,11 +298,20 @@ const FeaturedSectionEdit = ({ dealer }) => {
   }, [sections, vehicles, vendor]);
 
   const updateContent = (field, value) => {
+    // Update local state for immediate UI update
     setSectionContent(prev => ({
       ...prev,
       [field]: value,
     }));
     setHasChanges(true);
+
+    // Immediately update Redux state for real-time updates
+    dispatch(
+      updateSectionContent({
+        sectionId: 'featured',
+        content: { [field]: value },
+      })
+    );
   };
 
   const addVehicleToSection = vehicleId => {
@@ -332,32 +340,6 @@ const FeaturedSectionEdit = ({ dealer }) => {
     }).format(price);
   };
 
-  const saveChanges = () => {
-    const updatedSections = sections.map(section =>
-      section.id === 'featured'
-        ? { ...section, content: { ...section.content, ...sectionContent } }
-        : section
-    );
-
-    dispatch(updatePageSections(updatedSections));
-    setHasChanges(false);
-    alert('Featured vehicles section saved successfully!');
-  };
-
-  const publishChanges = () => {
-    const updatedSections = sections.map(section =>
-      section.id === 'featured'
-        ? { ...section, content: { ...section.content, ...sectionContent } }
-        : section
-    );
-
-    dispatch(publishPageContent(updatedSections));
-    setHasChanges(false);
-    alert(
-      'Featured vehicles section published successfully! Changes are now live.'
-    );
-  };
-
   if (loading) {
     return (
       <Container>
@@ -378,23 +360,7 @@ const FeaturedSectionEdit = ({ dealer }) => {
           <HeaderTitle>Featured Vehicles</HeaderTitle>
         </HeaderLeft>
         <HeaderActions>
-          <ActionButton
-            onClick={saveChanges}
-            disabled={!hasChanges}
-            color={theme.colors.blue500}
-          >
-            <FaSave />
-            Save Changes
-          </ActionButton>
-          <ActionButton
-            onClick={publishChanges}
-            disabled={!hasChanges}
-            filled
-            color={theme.colors.success}
-          >
-            <FaGlobe />
-            Save & Go Public
-          </ActionButton>
+          {/* Save functionality moved to sidebar */}
         </HeaderActions>
       </Header>
 

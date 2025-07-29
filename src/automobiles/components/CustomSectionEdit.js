@@ -17,6 +17,7 @@ import {
   addCustomSection,
   updatePageSections,
   removeCustomSection,
+  updateSectionContent,
 } from '../../store/slices/automobileManagementSlice';
 
 const Container = styled.div`
@@ -443,20 +444,34 @@ const CustomSectionEdit = ({ dealer }) => {
     setSearchQuery('');
   };
 
-  const toggleVehicleSelection = vehicleId => {
+  const updateLocalContent = (field, value) => {
     setSectionData(prev => ({
       ...prev,
-      vehicleIds: prev.vehicleIds.includes(vehicleId)
-        ? prev.vehicleIds.filter(id => id !== vehicleId)
-        : [...prev.vehicleIds, vehicleId],
+      [field]: value,
     }));
+
+    // If we're editing an existing section, update Redux state in real-time
+    if (isEditing && editingSectionId) {
+      dispatch(
+        updateSectionContent({
+          sectionId: editingSectionId,
+          content: { [field]: value },
+        })
+      );
+    }
+  };
+
+  const toggleVehicleSelection = vehicleId => {
+    const newVehicleIds = sectionData.vehicleIds.includes(vehicleId)
+      ? sectionData.vehicleIds.filter(id => id !== vehicleId)
+      : [...sectionData.vehicleIds, vehicleId];
+
+    updateLocalContent('vehicleIds', newVehicleIds);
   };
 
   const removeSelectedVehicle = vehicleId => {
-    setSectionData(prev => ({
-      ...prev,
-      vehicleIds: prev.vehicleIds.filter(id => id !== vehicleId),
-    }));
+    const newVehicleIds = sectionData.vehicleIds.filter(id => id !== vehicleId);
+    updateLocalContent('vehicleIds', newVehicleIds);
   };
 
   const handleSave = () => {
@@ -466,7 +481,19 @@ const CustomSectionEdit = ({ dealer }) => {
     }
 
     if (isEditing) {
-      // Update existing custom section
+      // Update existing custom section with real-time updates
+      dispatch(
+        updateSectionContent({
+          sectionId: editingSectionId,
+          content: {
+            title: sectionData.title,
+            subtitle: sectionData.description,
+            vehicleIds: sectionData.vehicleIds,
+          },
+        })
+      );
+
+      // Also update section metadata
       const updatedSections = sections.map(section =>
         section.id === editingSectionId
           ? {
@@ -475,6 +502,8 @@ const CustomSectionEdit = ({ dealer }) => {
               description: sectionData.description,
               content: {
                 ...section.content,
+                title: sectionData.title,
+                subtitle: sectionData.description,
                 vehicleIds: sectionData.vehicleIds,
               },
             }
@@ -483,14 +512,19 @@ const CustomSectionEdit = ({ dealer }) => {
       dispatch(updatePageSections(updatedSections));
       alert('Custom section updated successfully!');
     } else {
-      // Create new custom section
+      // Create new custom section - position it before footer
+      const footerSection = sections.find(s => s.id === 'footer');
+      const footerOrder = footerSection
+        ? footerSection.order
+        : sections.length + 1;
+
       const newSection = {
         id: `custom-${Date.now()}`,
         name: sectionData.title,
         description: sectionData.description,
         type: 'custom',
         visible: true,
-        order: sections.length + 1,
+        order: footerOrder - 0.5, // Place before footer
         content: {
           title: sectionData.title,
           subtitle: sectionData.description,
@@ -619,9 +653,7 @@ const CustomSectionEdit = ({ dealer }) => {
               <Input
                 type="text"
                 value={sectionData.title}
-                onChange={e =>
-                  setSectionData(prev => ({ ...prev, title: e.target.value }))
-                }
+                onChange={e => updateLocalContent('title', e.target.value)}
                 placeholder="Enter section title"
               />
             </FormGroup>
@@ -631,10 +663,7 @@ const CustomSectionEdit = ({ dealer }) => {
               <TextArea
                 value={sectionData.description}
                 onChange={e =>
-                  setSectionData(prev => ({
-                    ...prev,
-                    description: e.target.value,
-                  }))
+                  updateLocalContent('description', e.target.value)
                 }
                 placeholder="Enter section description"
               />

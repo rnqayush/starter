@@ -15,8 +15,7 @@ import {
   selectPageSections,
   selectVendor,
   selectLoading,
-  updatePageSections,
-  publishPageContent,
+  updateSectionContent,
 } from '../../store/slices/automobileManagementSlice';
 
 const Container = styled.div`
@@ -405,17 +404,35 @@ const FooterSectionEdit = ({ dealer }) => {
       [field]: value,
     }));
     setHasChanges(true);
+
+    // Immediately update Redux state for real-time updates
+    dispatch(
+      updateSectionContent({
+        sectionId: 'footer',
+        content: { [field]: value },
+      })
+    );
   };
 
   const updateNestedContent = (parent, field, value) => {
+    const newParentValue = {
+      ...sectionContent[parent],
+      [field]: value,
+    };
+
     setSectionContent(prev => ({
       ...prev,
-      [parent]: {
-        ...prev[parent],
-        [field]: value,
-      },
+      [parent]: newParentValue,
     }));
     setHasChanges(true);
+
+    // Immediately update Redux state for real-time updates
+    dispatch(
+      updateSectionContent({
+        sectionId: 'footer',
+        content: { [parent]: newParentValue },
+      })
+    );
   };
 
   const updateBusinessHours = (index, field, value) => {
@@ -487,29 +504,7 @@ const FooterSectionEdit = ({ dealer }) => {
     updateContent('supportCustomFields', newFields);
   };
 
-  const saveChanges = () => {
-    const updatedSections = sections.map(section =>
-      section.id === 'footer'
-        ? { ...section, content: { ...section.content, ...sectionContent } }
-        : section
-    );
-
-    dispatch(updatePageSections(updatedSections));
-    setHasChanges(false);
-    alert('Footer section saved successfully!');
-  };
-
-  const publishChanges = () => {
-    const updatedSections = sections.map(section =>
-      section.id === 'footer'
-        ? { ...section, content: { ...section.content, ...sectionContent } }
-        : section
-    );
-
-    dispatch(publishPageContent(updatedSections));
-    setHasChanges(false);
-    alert('Footer section published successfully! Changes are now live.');
-  };
+  // Save functions removed - using real-time updates through sidebar
 
   if (loading) {
     return (
@@ -531,23 +526,7 @@ const FooterSectionEdit = ({ dealer }) => {
           <HeaderTitle>Footer Section</HeaderTitle>
         </HeaderLeft>
         <HeaderActions>
-          <ActionButton
-            onClick={saveChanges}
-            disabled={!hasChanges}
-            color={theme.colors.blue500}
-          >
-            <FaSave />
-            Save Changes
-          </ActionButton>
-          <ActionButton
-            onClick={publishChanges}
-            disabled={!hasChanges}
-            filled
-            color={theme.colors.success}
-          >
-            <FaGlobe />
-            Save & Go Public
-          </ActionButton>
+          {/* Save functionality moved to sidebar */}
         </HeaderActions>
       </Header>
 
