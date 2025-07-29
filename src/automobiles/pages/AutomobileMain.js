@@ -435,7 +435,11 @@ const TrustIndicator = styled.div`
 const HeroButton = styled.button.withConfig({
   shouldForwardProp: prop => prop !== 'primaryColor',
 })`
-  background: ${theme.colors.white};
+  background: linear-gradient(
+    135deg,
+    ${theme.colors.white} 0%,
+    rgba(255, 255, 255, 0.95) 100%
+  );
   color: ${props => props.primaryColor || theme.colors.primary};
   padding: ${theme.spacing.lg} ${theme.spacing.xxl};
   border: none;
@@ -446,34 +450,73 @@ const HeroButton = styled.button.withConfig({
   display: flex;
   align-items: center;
   gap: ${theme.spacing.md};
-  transition: all 0.3s ease;
-  box-shadow: ${theme.shadows.xl};
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15), 0 4px 10px rgba(0, 0, 0, 0.1);
   cursor: pointer;
-  min-width: 200px;
+  min-width: 220px;
   justify-content: center;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.4),
+      transparent
+    );
+    transition: left 0.5s ease;
+  }
 
   &:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    background: ${theme.colors.gray50};
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2), 0 8px 15px rgba(0, 0, 0, 0.15);
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.98) 0%,
+      ${theme.colors.gray50} 100%
+    );
+
+    &::before {
+      left: 100%;
+    }
   }
 
   &.secondary {
-    background: rgba(255, 255, 255, 0.1);
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.15) 0%,
+      rgba(255, 255, 255, 0.1) 100%
+    );
     color: ${theme.colors.white};
-    border: 2px solid ${theme.colors.white};
-    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(15px);
 
     &:hover {
-      background: rgba(255, 255, 255, 0.2);
-      transform: translateY(-3px);
+      background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.25) 0%,
+        rgba(255, 255, 255, 0.2) 100%
+      );
+      border-color: rgba(255, 255, 255, 0.5);
+      transform: translateY(-4px) scale(1.02);
     }
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     padding: ${theme.spacing.md} ${theme.spacing.xl};
-    min-width: 180px;
+    min-width: 200px;
     font-size: 1rem;
+
+    &:hover {
+      transform: translateY(-2px) scale(1.01);
+    }
   }
 `;
 
