@@ -523,6 +523,23 @@ const HeroButton = styled.button.withConfig({
 const Section = styled.section`
   padding: ${theme.spacing.xxl} 0;
   background: ${props => props.background || theme.colors.white};
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      135deg,
+      transparent 0%,
+      rgba(30, 64, 175, 0.02) 50%,
+      transparent 100%
+    );
+    pointer-events: none;
+  }
 
   @media (max-width: ${theme.breakpoints.tablet}) {
     padding: ${theme.spacing.xl} 0;
