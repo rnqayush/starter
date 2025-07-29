@@ -408,7 +408,14 @@ const Overlay = styled.div.withConfig({
   }
 `;
 
-const SellerSidebar = ({ activeTab, onTabChange }) => {
+const SellerSidebar = ({
+  activeTab,
+  onTabChange,
+  vendor,
+  hasUnsavedChanges,
+  onSave,
+  onDiscard
+}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleSidebar = () => setIsOpen(!isOpen);
