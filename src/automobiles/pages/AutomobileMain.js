@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import styled, { createGlobalStyle, keyframes } from 'styled-components';
-import { FaArrowRight, FaCar, FaHome, FaSpinner, FaStar, FaShieldAlt, FaAward } from 'react-icons/fa';
+import styled, { createGlobalStyle } from 'styled-components';
+import { FaArrowRight, FaCar, FaHome, FaSpinner } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -23,45 +23,6 @@ import {
   clearError,
 } from '../../store/slices/automobileManagementSlice';
 
-// Modern animations
-const fadeInUp = keyframes`
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-`;
-
-const float = keyframes`
-  0%, 100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-`;
-
-const shine = keyframes`
-  0% {
-    transform: translateX(-100%);
-  }
-  100% {
-    transform: translateX(100%);
-  }
-`;
-
-const pulse = keyframes`
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.05);
-  }
-`;
-
 // Dynamic theme styles that override global styles
 const DynamicGlobalStyle = createGlobalStyle`
   :root {
@@ -79,33 +40,6 @@ const PageContainer = styled.div.withConfig({
   display: flex;
   flex-direction: column;
   background: ${props => props.backgroundColor || theme.colors.gray50};
-  animation: ${fadeInUp} 0.8s ease-out;
-  position: relative;
-
-  &::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: radial-gradient(
-      circle at 20% 80%,
-      rgba(30, 64, 175, 0.02) 0%,
-      transparent 50%
-    ), radial-gradient(
-      circle at 80% 20%,
-      rgba(59, 130, 246, 0.02) 0%,
-      transparent 50%
-    );
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  & > * {
-    position: relative;
-    z-index: 1;
-  }
 `;
 
 const LoadingContainer = styled.div`
@@ -118,49 +52,21 @@ const LoadingContainer = styled.div`
   gap: ${theme.spacing.lg};
 `;
 
-const spinLoader = keyframes`
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-`;
-
 const LoadingSpinner = styled.div`
   width: 60px;
   height: 60px;
-  border: 4px solid transparent;
+  border: 4px solid ${theme.colors.gray200};
   border-top: 4px solid ${theme.colors.primary};
-  border-right: 4px solid ${theme.colors.primaryLight};
   border-radius: 50%;
-  animation: ${spinLoader} 1s linear infinite;
-  position: relative;
+  animation: spin 1s linear infinite;
 
-  &::before {
-    content: '';
-    position: absolute;
-    top: -4px;
-    left: -4px;
-    right: -4px;
-    bottom: -4px;
-    border: 2px solid transparent;
-    border-top: 2px solid ${theme.colors.primaryLight};
-    border-radius: 50%;
-    animation: ${spinLoader} 1.5s linear infinite reverse;
-  }
-
-  &::after {
-    content: '';
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    right: 10px;
-    bottom: 10px;
-    border: 2px solid transparent;
-    border-top: 2px solid ${theme.colors.primary};
-    border-radius: 50%;
-    animation: ${spinLoader} 0.8s linear infinite;
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
   }
 `;
 
@@ -220,14 +126,12 @@ const HeroSection = styled.section.withConfig({
   background:
     linear-gradient(
       135deg,
-      ${props => props.primaryColor || '#1e40af'}ee 0%,
-      ${props => props.secondaryColor || '#3b82f6'}dd 25%,
-      ${props => props.primaryColor || '#1d4ed8'}ee 75%,
-      ${props => props.secondaryColor || '#2563eb'}dd 100%
+      ${props => props.primaryColor || '#1f2937'}dd 0%,
+      ${props => props.secondaryColor || '#374151'}dd 100%
     ),
-    ${props => (props.heroImage ? `url("${props.heroImage}")` : 'radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.1) 0%, transparent 50%), radial-gradient(circle at 75% 75%, rgba(255, 255, 255, 0.05) 0%, transparent 50%)')};
-  background-size: cover, 400px 400px, 600px 600px;
-  background-position: center, 0% 0%, 100% 100%;
+    ${props => (props.heroImage ? `url("${props.heroImage}")` : 'none')};
+  background-size: cover;
+  background-position: center;
   background-attachment: fixed;
   color: ${theme.colors.white};
   padding: ${theme.spacing.xxl} 0;
@@ -245,31 +149,8 @@ const HeroSection = styled.section.withConfig({
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(
-      135deg,
-      rgba(0, 0, 0, 0.3) 0%,
-      rgba(0, 0, 0, 0.1) 50%,
-      rgba(0, 0, 0, 0.3) 100%
-    );
+    background: rgba(0, 0, 0, 0.3);
     z-index: 1;
-  }
-
-  &::after {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: conic-gradient(
-      from 0deg,
-      transparent,
-      rgba(255, 255, 255, 0.03),
-      transparent,
-      rgba(255, 255, 255, 0.03)
-    );
-    animation: ${float} 8s ease-in-out infinite;
-    z-index: 0;
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
@@ -285,43 +166,6 @@ const HeroContent = styled.div`
   position: relative;
   z-index: 2;
   width: 100%;
-  animation: ${fadeInUp} 1s ease-out;
-`;
-
-const FloatingElement = styled.div`
-  position: absolute;
-  color: rgba(255, 255, 255, 0.1);
-  font-size: 2rem;
-  animation: ${float} 6s ease-in-out infinite;
-  z-index: 1;
-
-  &.floating-icon-1 {
-    top: 15%;
-    left: 10%;
-    animation-delay: -2s;
-  }
-
-  &.floating-icon-2 {
-    top: 25%;
-    right: 15%;
-    animation-delay: -4s;
-  }
-
-  &.floating-icon-3 {
-    bottom: 30%;
-    left: 15%;
-    animation-delay: -6s;
-  }
-
-  &.floating-icon-4 {
-    bottom: 20%;
-    right: 10%;
-    animation-delay: -1s;
-  }
-
-  @media (max-width: ${theme.breakpoints.mobile}) {
-    display: none;
-  }
 `;
 
 const DealerHeader = styled.div`
@@ -342,131 +186,59 @@ const DealerLogo = styled.img`
   width: 120px;
   height: 120px;
   border-radius: ${theme.borderRadius.xl};
-  border: 4px solid rgba(255, 255, 255, 0.9);
+  border: 4px solid ${theme.colors.white};
   object-fit: cover;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.1);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  animation: ${fadeInUp} 1s ease-out 0.2s both;
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: -4px;
-    left: -4px;
-    right: -4px;
-    bottom: -4px;
-    background: linear-gradient(
-      45deg,
-      rgba(255, 255, 255, 0.6),
-      rgba(255, 255, 255, 0.2)
-    );
-    border-radius: ${theme.borderRadius.xl};
-    z-index: -1;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
+  box-shadow: ${theme.shadows.xl};
+  transition: transform 0.3s ease;
 
   &:hover {
-    transform: scale(1.08) rotateY(5deg);
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25), 0 10px 25px rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 1);
-
-    &::before {
-      opacity: 1;
-    }
+    transform: scale(1.05);
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     width: 100px;
     height: 100px;
-
-    &:hover {
-      transform: scale(1.05);
-    }
   }
 `;
 
 const HeroTitle = styled.h1`
-  font-size: 4.5rem;
-  font-weight: 900;
+  font-size: 4rem;
+  font-weight: 800;
   margin-bottom: ${theme.spacing.lg};
-  background: linear-gradient(
-    45deg,
-    #ffffff 0%,
-    #f0f8ff 25%,
-    #ffffff 50%,
-    #e6f3ff 75%,
-    #ffffff 100%
-  );
-  background-size: 200% 200%;
+  background: linear-gradient(45deg, #ffffff, #f0f8ff);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
-  letter-spacing: -2px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  letter-spacing: -1px;
   line-height: 1.1;
-  position: relative;
-  animation: ${fadeInUp} 1s ease-out 0.3s both;
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(255, 255, 255, 0.4),
-      transparent
-    );
-    transform: translateX(-100%);
-    animation: ${shine} 3s ease-in-out infinite;
-  }
 
   @media (max-width: ${theme.breakpoints.tablet}) {
-    font-size: 3.5rem;
-    letter-spacing: -1px;
+    font-size: 3rem;
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    font-size: 2.5rem;
-    letter-spacing: -0.5px;
+    font-size: 2.2rem;
   }
 `;
 
 const HeroSubtitle = styled.p`
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   margin-bottom: ${theme.spacing.xl};
   opacity: 0.95;
-  max-width: 800px;
+  max-width: 700px;
   margin-left: auto;
   margin-right: auto;
-  font-weight: 400;
-  line-height: 1.7;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
-  animation: ${fadeInUp} 1s ease-out 0.6s both;
-
-  &::after {
-    content: '';
-    display: block;
-    width: 100px;
-    height: 3px;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
-    margin: ${theme.spacing.lg} auto 0;
-    border-radius: 2px;
-  }
+  font-weight: 300;
+  line-height: 1.6;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 
   @media (max-width: ${theme.breakpoints.tablet}) {
-    font-size: 1.3rem;
-    max-width: 600px;
+    font-size: 1.2rem;
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    font-size: 1.1rem;
-    max-width: 100%;
+    font-size: 1rem;
   }
 `;
 
@@ -475,7 +247,6 @@ const HeroActions = styled.div`
   gap: ${theme.spacing.lg};
   justify-content: center;
   flex-wrap: wrap;
-  animation: ${fadeInUp} 1s ease-out 0.9s both;
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     flex-direction: column;
@@ -484,47 +255,10 @@ const HeroActions = styled.div`
   }
 `;
 
-const TrustIndicators = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: ${theme.spacing.xl};
-  margin-top: ${theme.spacing.xxl};
-  animation: ${fadeInUp} 1s ease-out 1.2s both;
-
-  @media (max-width: ${theme.breakpoints.mobile}) {
-    flex-direction: column;
-    gap: ${theme.spacing.md};
-    margin-top: ${theme.spacing.xl};
-  }
-`;
-
-const TrustIndicator = styled.div`
-  display: flex;
-  align-items: center;
-  gap: ${theme.spacing.sm};
-  color: rgba(255, 255, 255, 0.9);
-  font-size: 0.9rem;
-  font-weight: 500;
-
-  .icon {
-    color: #fbbf24;
-    font-size: 1.2rem;
-    animation: ${pulse} 2s ease-in-out infinite;
-  }
-
-  @media (max-width: ${theme.breakpoints.mobile}) {
-    justify-content: center;
-  }
-`;
-
 const HeroButton = styled.button.withConfig({
   shouldForwardProp: prop => prop !== 'primaryColor',
 })`
-  background: linear-gradient(
-    135deg,
-    ${theme.colors.white} 0%,
-    rgba(255, 255, 255, 0.95) 100%
-  );
+  background: ${theme.colors.white};
   color: ${props => props.primaryColor || theme.colors.primary};
   padding: ${theme.spacing.lg} ${theme.spacing.xxl};
   border: none;
@@ -535,72 +269,37 @@ const HeroButton = styled.button.withConfig({
   display: flex;
   align-items: center;
   gap: ${theme.spacing.md};
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15), 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  box-shadow: ${theme.shadows.xl};
   cursor: pointer;
-  min-width: 220px;
+  min-width: 200px;
   justify-content: center;
-  position: relative;
-  overflow: hidden;
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(255, 255, 255, 0.4),
-      transparent
-    );
-    transition: left 0.5s ease;
-  }
 
   &:hover {
-    transform: translateY(-4px) scale(1.02);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2), 0 8px 15px rgba(0, 0, 0, 0.15);
-    background: linear-gradient(
-      135deg,
-      rgba(255, 255, 255, 0.98) 0%,
-      ${theme.colors.gray50} 100%
-    );
-
-    &::before {
-      left: 100%;
-    }
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    background: ${theme.colors.gray50};
   }
 
   &.secondary {
-    background: linear-gradient(
-      135deg,
-      rgba(255, 255, 255, 0.15) 0%,
-      rgba(255, 255, 255, 0.1) 100%
-    );
+    background: rgba(255, 255, 255, 0.1);
     color: ${theme.colors.white};
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    backdrop-filter: blur(15px);
+    border: 2px solid ${theme.colors.white};
+    backdrop-filter: blur(10px);
 
     &:hover {
-      background: linear-gradient(
-        135deg,
-        rgba(255, 255, 255, 0.25) 0%,
-        rgba(255, 255, 255, 0.2) 100%
-      );
-      border-color: rgba(255, 255, 255, 0.5);
-      transform: translateY(-4px) scale(1.02);
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-3px);
     }
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     padding: ${theme.spacing.md} ${theme.spacing.xl};
-    min-width: 200px;
+    min-width: 180px;
     font-size: 1rem;
 
     &:hover {
-      transform: translateY(-2px) scale(1.01);
+      transform: none;
     }
   }
 `;
@@ -608,23 +307,6 @@ const HeroButton = styled.button.withConfig({
 const Section = styled.section`
   padding: ${theme.spacing.xxl} 0;
   background: ${props => props.background || theme.colors.white};
-  position: relative;
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(
-      135deg,
-      transparent 0%,
-      rgba(30, 64, 175, 0.02) 50%,
-      transparent 100%
-    );
-    pointer-events: none;
-  }
 
   @media (max-width: ${theme.breakpoints.tablet}) {
     padding: ${theme.spacing.xl} 0;
@@ -638,40 +320,20 @@ const Section = styled.section`
 const Container = styled.div`
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 ${theme.spacing.lg};
-  position: relative;
+  padding: 0 ${theme.spacing.md};
 
   @media (max-width: ${theme.breakpoints.tablet}) {
     padding: 0 ${theme.spacing.md};
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    padding: 0 ${theme.spacing.md};
+    padding: 0 ${theme.spacing.sm};
   }
 `;
 
 const SectionHeader = styled.div`
   text-align: center;
   margin-bottom: ${theme.spacing.xxl};
-  animation: ${fadeInUp} 0.8s ease-out;
-  position: relative;
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 200px;
-    height: 200px;
-    background: radial-gradient(
-      circle,
-      rgba(30, 64, 175, 0.03) 0%,
-      transparent 70%
-    );
-    border-radius: 50%;
-    z-index: -1;
-  }
 
   @media (max-width: ${theme.breakpoints.tablet}) {
     margin-bottom: ${theme.spacing.xl};
@@ -680,92 +342,43 @@ const SectionHeader = styled.div`
   @media (max-width: ${theme.breakpoints.mobile}) {
     margin-bottom: ${theme.spacing.lg};
     padding: 0 ${theme.spacing.sm};
-
-    &::before {
-      width: 150px;
-      height: 150px;
-    }
   }
 `;
 
 const SectionTitle = styled.h2.withConfig({
   shouldForwardProp: prop => prop !== 'textColor',
 })`
-  font-size: 2.8rem;
-  font-weight: 700;
-  background: linear-gradient(
-    135deg,
-    ${props => props.textColor || theme.colors.gray900} 0%,
-    ${props => props.textColor || theme.colors.primary} 50%,
-    ${props => props.textColor || theme.colors.gray800} 100%
-  );
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: ${props => props.textColor || theme.colors.gray900};
   margin-bottom: ${theme.spacing.md};
-  position: relative;
-  letter-spacing: -1px;
-
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 60px;
-    height: 4px;
-    background: linear-gradient(
-      90deg,
-      ${theme.colors.primary},
-      ${theme.colors.primaryLight}
-    );
-    border-radius: 2px;
-  }
 
   @media (max-width: ${theme.breakpoints.tablet}) {
-    font-size: 2.3rem;
+    font-size: 2rem;
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    font-size: 2rem;
+    font-size: 1.75rem;
     margin-bottom: ${theme.spacing.sm};
-    letter-spacing: -0.5px;
   }
 `;
 
 const SectionSubtitle = styled.p`
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   color: ${theme.colors.gray600};
-  max-width: 700px;
-  margin: ${theme.spacing.lg} auto 0;
-  line-height: 1.7;
-  font-weight: 400;
-  opacity: 0.9;
-
-  &::before {
-    content: '';
-    display: block;
-    width: 80px;
-    height: 2px;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      ${theme.colors.primary}40,
-      transparent
-    );
-    margin: 0 auto ${theme.spacing.md};
-  }
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
 
   @media (max-width: ${theme.breakpoints.tablet}) {
-    font-size: 1.1rem;
-    max-width: 600px;
+    font-size: 1rem;
+    max-width: 500px;
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    font-size: 1rem;
+    font-size: 0.95rem;
     max-width: 100%;
     padding: 0 ${theme.spacing.sm};
-    margin-top: ${theme.spacing.md};
   }
 `;
 
@@ -775,35 +388,19 @@ const Grid = styled.div.withConfig({
   display: grid;
   grid-template-columns: repeat(
     auto-fit,
-    minmax(${props => props.minWidth || '300px'}, 1fr)
+    minmax(${props => props.minWidth || '280px'}, 1fr)
   );
   gap: ${theme.spacing.xl};
-  position: relative;
-
-  & > * {
-    animation: ${fadeInUp} 0.6s ease-out;
-  }
-
-  & > *:nth-child(1) { animation-delay: 0.1s; }
-  & > *:nth-child(2) { animation-delay: 0.2s; }
-  & > *:nth-child(3) { animation-delay: 0.3s; }
-  & > *:nth-child(4) { animation-delay: 0.4s; }
-  & > *:nth-child(5) { animation-delay: 0.5s; }
-  & > *:nth-child(6) { animation-delay: 0.6s; }
 
   @media (max-width: ${theme.breakpoints.tablet}) {
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: ${theme.spacing.lg};
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: ${theme.spacing.lg};
+    gap: ${theme.spacing.md};
     padding: 0 ${theme.spacing.sm};
-
-    & > * {
-      animation-delay: 0s !important;
-    }
   }
 
   @media (max-width: 320px) {
@@ -816,119 +413,61 @@ const BackButton = styled.button`
   position: fixed;
   top: ${theme.spacing.xl};
   left: ${theme.spacing.xl};
-  background: linear-gradient(
-    135deg,
-    ${theme.colors.white} 0%,
-    rgba(255, 255, 255, 0.95) 100%
-  );
-  border: 2px solid rgba(30, 64, 175, 0.1);
+  background: ${theme.colors.white};
+  border: 2px solid ${theme.colors.gray200};
   color: ${theme.colors.gray700};
   padding: ${theme.spacing.sm} ${theme.spacing.md};
-  border-radius: ${theme.borderRadius.lg};
-  font-weight: 600;
+  border-radius: ${theme.borderRadius.md};
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.2s ease;
   display: flex;
   align-items: center;
   gap: ${theme.spacing.sm};
   z-index: 1000;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05);
-  backdrop-filter: blur(10px);
-  font-size: 0.9rem;
+  box-shadow: ${theme.shadows.md};
 
   &:hover {
     border-color: ${theme.colors.primary};
     color: ${theme.colors.primary};
-    transform: translateY(-2px) scale(1.02);
-    box-shadow: 0 8px 25px rgba(30, 64, 175, 0.15);
-    background: linear-gradient(
-      135deg,
-      ${theme.colors.white} 0%,
-      rgba(248, 250, 252, 1) 100%
-    );
-  }
-
-  @media (max-width: ${theme.breakpoints.mobile}) {
-    top: ${theme.spacing.md};
-    left: ${theme.spacing.md};
-    padding: ${theme.spacing.xs} ${theme.spacing.sm};
-    font-size: 0.85rem;
-
-    &:hover {
-      transform: translateY(-1px) scale(1.01);
-    }
+    transform: translateY(-1px);
   }
 `;
 
 const Breadcrumb = styled.div`
-  background: linear-gradient(
-    135deg,
-    ${theme.colors.white} 0%,
-    rgba(248, 250, 252, 0.8) 100%
-  );
-  padding: ${theme.spacing.lg} 0;
-  border-bottom: 1px solid rgba(30, 64, 175, 0.08);
-  backdrop-filter: blur(10px);
-  position: relative;
-
-  &::before {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(30, 64, 175, 0.2),
-      transparent
-    );
-  }
+  background: ${theme.colors.white};
+  padding: ${theme.spacing.md} 0;
+  border-bottom: 1px solid ${theme.colors.gray100};
 `;
 
 const BreadcrumbNav = styled.nav`
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 ${theme.spacing.lg};
+  padding: 0 ${theme.spacing.md};
   display: flex;
   align-items: center;
-  gap: ${theme.spacing.md};
-  font-size: 0.95rem;
+  gap: ${theme.spacing.sm};
+  font-size: 0.9rem;
   color: ${theme.colors.gray600};
-  font-weight: 500;
 
   a {
     color: ${theme.colors.primary};
     text-decoration: none;
-    transition: all 0.2s ease;
-    padding: ${theme.spacing.xs} ${theme.spacing.sm};
-    border-radius: ${theme.borderRadius.sm};
+    transition: color 0.2s ease;
 
     &:hover {
       color: ${theme.colors.primaryDark};
-      background: rgba(30, 64, 175, 0.05);
-      transform: translateY(-1px);
+      text-decoration: underline;
     }
   }
 
   .separator {
     color: ${theme.colors.gray400};
-    font-weight: 400;
   }
 
   .current {
     color: ${theme.colors.gray900};
-    font-weight: 700;
-    background: rgba(30, 64, 175, 0.08);
-    padding: ${theme.spacing.xs} ${theme.spacing.sm};
-    border-radius: ${theme.borderRadius.sm};
-  }
-
-  @media (max-width: ${theme.breakpoints.mobile}) {
-    padding: 0 ${theme.spacing.md};
-    font-size: 0.9rem;
-    gap: ${theme.spacing.sm};
+    font-weight: 600;
   }
 `;
 
@@ -1084,19 +623,6 @@ const AutomobileMain = () => {
                     sectionConfig.content?.backgroundImage
                   }
                 >
-                  <FloatingElement className="floating-icon-1">
-                    <FaCar />
-                  </FloatingElement>
-                  <FloatingElement className="floating-icon-2">
-                    <FaStar />
-                  </FloatingElement>
-                  <FloatingElement className="floating-icon-3">
-                    <FaShieldAlt />
-                  </FloatingElement>
-                  <FloatingElement className="floating-icon-4">
-                    <FaAward />
-                  </FloatingElement>
-
                   <HeroContent>
                     <DealerHeader>
                       <DealerLogo
@@ -1137,21 +663,6 @@ const AutomobileMain = () => {
                         <FaArrowRight />
                       </HeroButton>
                     </HeroActions>
-
-                    <TrustIndicators>
-                      <TrustIndicator>
-                        <FaStar className="icon" />
-                        <span>Premium Quality</span>
-                      </TrustIndicator>
-                      <TrustIndicator>
-                        <FaShieldAlt className="icon" />
-                        <span>Verified Dealers</span>
-                      </TrustIndicator>
-                      <TrustIndicator>
-                        <FaAward className="icon" />
-                        <span>Award Winning</span>
-                      </TrustIndicator>
-                    </TrustIndicators>
                   </HeroContent>
                 </HeroSection>
               );
