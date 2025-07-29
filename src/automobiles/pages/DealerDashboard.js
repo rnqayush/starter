@@ -402,6 +402,31 @@ const DealerDashboard = () => {
           <PageHeader>
             <PageTitle>{getPageTitle()}</PageTitle>
             <PageSubtitle>{getPageSubtitle()}</PageSubtitle>
+
+            {/* Save Controls */}
+            {hasUnsavedChanges && (
+              <SaveControls>
+                <SaveButton onClick={handleSaveChanges}>
+                  <FaSave style={{ marginRight: '8px' }} />
+                  Save Changes
+                </SaveButton>
+                <DiscardButton onClick={handleDiscardChanges}>
+                  <FaUndo style={{ marginRight: '8px' }} />
+                  Discard
+                </DiscardButton>
+              </SaveControls>
+            )}
+
+            {/* Sync Warning */}
+            {syncCheck.needsSync && (
+              <SyncWarning>
+                <FaExclamationTriangle />
+                Data sync required: Section data differs from global data.
+                {syncCheck.categoriesNeedSync && ' Categories'}
+                {syncCheck.vehiclesNeedSync && ' Vehicles'}
+                need synchronization.
+              </SyncWarning>
+            )}
           </PageHeader>
           {renderContent()}
         </ContentWrapper>
