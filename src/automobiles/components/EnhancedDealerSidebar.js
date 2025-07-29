@@ -515,14 +515,24 @@ const EnhancedDealerSidebar = ({
       <SidebarContainer isOpen={isMobileOpen}>
         <SidebarHeader>
           <DealerBranding>
-            {dealer.logo ? (
-              <DealerLogoImage src={dealer.logo} alt={dealer.name} />
+            {vendor.businessInfo?.logo ? (
+              <DealerLogoImage src={vendor.businessInfo.logo} alt={vendor.name} />
             ) : (
-              <DealerLogo>{dealer.name.charAt(0)}</DealerLogo>
+              <DealerLogo>{vendor.name.charAt(0)}</DealerLogo>
             )}
             <DealerInfo>
-              <DealerName>{dealer.name}</DealerName>
+              <DealerName>{vendor.name}</DealerName>
               <DealerRole>Dealer Dashboard</DealerRole>
+              {hasUnsavedChanges && (
+                <div style={{ fontSize: '0.7rem', color: theme.colors.yellow600, marginTop: '2px' }}>
+                  • {Object.keys(changes).length} unsaved changes
+                </div>
+              )}
+              {syncCheck?.needsSync && (
+                <div style={{ fontSize: '0.7rem', color: theme.colors.orange600, marginTop: '2px' }}>
+                  • Sync required
+                </div>
+              )}
             </DealerInfo>
           </DealerBranding>
 
