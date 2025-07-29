@@ -417,32 +417,42 @@ const SellerSidebar = ({ activeTab, onTabChange }) => {
       items: [{ id: 'dashboard', label: 'Dashboard', icon: FaHome }],
     },
     {
+      section: 'Website Sections',
+      items: [
+        { id: 'section-order', label: 'Section Order', icon: FaHome },
+        { id: 'section-hero', label: 'Hero Section', icon: FaHome },
+        { id: 'section-categories', label: 'Categories Section', icon: FaTags },
+        { id: 'section-featured', label: 'Featured Products', icon: FaBox },
+        { id: 'section-special-offers', label: 'Special Offers', icon: FaPercent },
+        { id: 'section-footer', label: 'Footer Section', icon: FaCog },
+        { id: 'section-custom', label: 'Custom Section', icon: FaPalette },
+      ],
+    },
+    {
       section: 'Catalog',
       items: [
-        { id: 'products', label: 'Products', icon: FaBox },
-        { id: 'add-product', label: 'Add Product', icon: FaPlus },
-        { id: 'categories', label: 'Categories', icon: FaTags },
+        { id: 'products', label: 'Product Inventory', icon: FaBox },
+        { id: 'categories', label: 'Category Management', icon: FaTags },
+        { id: 'add-product', label: 'Add New Product', icon: FaPlus },
         { id: 'bulk-import', label: 'Bulk Import', icon: FaFileImport },
       ],
     },
     {
-      section: 'Sales',
+      section: 'Sales & Orders',
       items: [
-        { id: 'orders', label: 'Orders', icon: FaShoppingCart },
-        { id: 'enquiries', label: 'Enquiries', icon: FaEnvelope },
-        { id: 'discounts', label: 'Discounts & Coupons', icon: FaPercent },
+        { id: 'orders', label: 'Sales & Orders', icon: FaShoppingCart },
+        { id: 'enquiries', label: 'Customer Enquiries', icon: FaEnvelope },
       ],
     },
     {
       section: 'Customers',
-      items: [{ id: 'customers', label: 'Customer List', icon: FaUsers }],
+      items: [{ id: 'customers', label: 'Customer Management', icon: FaUsers }],
     },
     {
-      section: 'Store Management',
+      section: 'Settings & Analytics',
       items: [
-        { id: 'store-settings', label: 'Store Settings', icon: FaCog },
-        { id: 'appearance', label: 'Appearance', icon: FaPalette },
-        { id: 'analytics', label: 'Analytics', icon: FaChartLine },
+        { id: 'settings', label: 'Store Settings', icon: FaCog },
+        { id: 'insights', label: 'Analytics & Reports', icon: FaChartLine },
       ],
     },
   ];
