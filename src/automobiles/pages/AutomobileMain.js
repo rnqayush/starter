@@ -665,15 +665,11 @@ const AutomobileMain = () => {
 
             case 'categories':
               // Use embedded categories if available, otherwise use global categories
-              const categoriesToShow =
-                sectionConfig.categories ||
-                (sectionConfig.visibleCategories || sectionConfig.content?.visibleCategories
-                  ? categories.filter(category =>
-                      (sectionConfig.visibleCategories || sectionConfig.content.visibleCategories).includes(
-                        category.id
-                      )
-                    )
-                  : categories);
+              // Check for visibility in both root level and content level
+              const visibleCategoryIds = sectionConfig.visibleCategories || sectionConfig.content?.visibleCategories;
+              const categoriesToShow = visibleCategoryIds
+                ? categories.filter(category => visibleCategoryIds.includes(category.id))
+                : categories;
               return (
                 <Section key="categories">
                   <Container>
