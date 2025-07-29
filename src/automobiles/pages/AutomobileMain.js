@@ -861,9 +861,30 @@ const BackButton = styled.button`
 `;
 
 const Breadcrumb = styled.div`
-  background: ${theme.colors.white};
-  padding: ${theme.spacing.md} 0;
-  border-bottom: 1px solid ${theme.colors.gray100};
+  background: linear-gradient(
+    135deg,
+    ${theme.colors.white} 0%,
+    rgba(248, 250, 252, 0.8) 100%
+  );
+  padding: ${theme.spacing.lg} 0;
+  border-bottom: 1px solid rgba(30, 64, 175, 0.08);
+  backdrop-filter: blur(10px);
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(30, 64, 175, 0.2),
+      transparent
+    );
+  }
 `;
 
 const BreadcrumbNav = styled.nav`
