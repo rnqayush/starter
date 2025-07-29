@@ -164,24 +164,100 @@ export const searchAutomobileVendors = searchTerm => {
 // Business functions
 export const { getBusinessTemplate } = BusinessData;
 
-// Ecommerce functions
-export const {
-  getProductsByCategory,
-  getProductById,
-  getFeaturedProducts,
-  getOnSaleProducts,
-  getProductsByAvailability,
-  updateProductAvailability,
-  getAvailabilityStatus: getProductAvailabilityStatus,
-  getAvailabilityLabel: getProductAvailabilityLabel,
-  getAvailabilityColor: getProductAvailabilityColor,
-  getVendorsByLocation: getEcommerceVendorsByLocation,
-  getVendorById: getEcommerceVendorById,
-  getVendorBySlug: getEcommerceVendorBySlug,
-  getVendorByIdOrSlug: getEcommerceVendorByIdOrSlug,
-  getFeaturedVendors: getEcommerceFeaturedVendors,
-  searchVendors: searchEcommerceVendors,
-} = EcommerceData;
+// Ecommerce functions - using JSON data directly
+export const getProductsByCategory = categorySlug => {
+  return ecommerceProducts.filter(product => product.category === categorySlug);
+};
+
+export const getProductById = id => {
+  return ecommerceProducts.find(product => product.id === parseInt(id));
+};
+
+export const getFeaturedProducts = () => {
+  return ecommerceProducts.filter(product => product.featured);
+};
+
+export const getOnSaleProducts = () => {
+  return ecommerceProducts.filter(product => product.pricing?.onSale);
+};
+
+export const getProductsByAvailability = availability => {
+  return ecommerceProducts.filter(
+    product => product.availability?.status === availability
+  );
+};
+
+export const getProductAvailabilityStatus = product => {
+  if (!product?.availability) return 'unknown';
+  const { status, quantity } = product.availability;
+
+  if (status === 'out_of_stock' || quantity === 0) {
+    return 'out_of_stock';
+  } else if (status === 'limited_stock' || quantity <= 5) {
+    return 'limited_stock';
+  } else if (status === 'pre_order') {
+    return 'pre_order';
+  } else {
+    return 'in_stock';
+  }
+};
+
+export const getProductAvailabilityLabel = status => {
+  const labels = {
+    in_stock: 'In Stock',
+    out_of_stock: 'Out of Stock',
+    limited_stock: 'Limited Stock',
+    pre_order: 'Pre Order',
+    unknown: 'Unknown'
+  };
+  return labels[status] || 'Unknown';
+};
+
+export const getProductAvailabilityColor = status => {
+  const colors = {
+    in_stock: '#10b981',
+    out_of_stock: '#ef4444',
+    limited_stock: '#f59e0b',
+    pre_order: '#3b82f6',
+    unknown: '#6b7280'
+  };
+  return colors[status] || '#6b7280';
+};
+
+export const getEcommerceVendorsByLocation = (city, state) => {
+  return ecommerceVendors.filter(
+    vendor =>
+      vendor.businessInfo?.address?.city?.toLowerCase() === city.toLowerCase() &&
+      vendor.businessInfo?.address?.state?.toLowerCase() === state.toLowerCase()
+  );
+};
+
+export const getEcommerceVendorById = id => {
+  return ecommerceVendors.find(vendor => vendor.id === id);
+};
+
+export const getEcommerceVendorBySlug = slug => {
+  return ecommerceVendors.find(vendor => vendor.slug === slug);
+};
+
+export const getEcommerceVendorByIdOrSlug = identifier => {
+  const vendorBySlug = getEcommerceVendorBySlug(identifier);
+  if (vendorBySlug) return vendorBySlug;
+  return getEcommerceVendorById(identifier);
+};
+
+export const getEcommerceFeaturedVendors = () => {
+  return ecommerceVendors.filter(vendor => vendor.featured);
+};
+
+export const searchEcommerceVendors = query => {
+  const searchTerm = query.toLowerCase();
+  return ecommerceVendors.filter(
+    vendor =>
+      vendor.name.toLowerCase().includes(searchTerm) ||
+      vendor.businessInfo?.description?.toLowerCase().includes(searchTerm)
+  );
+};
 
 // Hotel functions - now from hotelAPI
 export const { getHotelById, getHotelBySlug, getHotelByIdOrSlug, getRoomById } =
