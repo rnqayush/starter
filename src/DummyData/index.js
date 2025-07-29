@@ -3,7 +3,7 @@
 // Import all data and utility functions with namespaced aliases to avoid conflicts
 import automobileData from './automobiles.json';
 import ecommerceData from './ecommerce.json';
-import * as BusinessData from './business';
+import businessData from './business.json';
 import * as WeddingData from '../utils/weddingAPI';
 import * as PlatformData from './platform';
 // Hotel data now comes from hotels.json via hotelAPI
@@ -22,7 +22,9 @@ export const automobileVehicles =
   automobileData.data.allVehicles || automobileData.data.vehicles || [];
 export const automobileVendors = [automobileData.data.vendor]; // Wrap in array for consistency
 
-export const { businessTemplates } = BusinessData;
+// Export business data from new JSON structure
+export const businessTemplates = businessData.data.businessTemplates || [];
+export const businesses = businessData.data.businesses || {};
 
 // Export ecommerce data from JSON
 export const ecommerceCategories = ecommerceData.categories || [];
@@ -161,8 +163,29 @@ export const searchAutomobileVendors = searchTerm => {
   );
 };
 
-// Business functions
-export const { getBusinessTemplate } = BusinessData;
+// Business functions - updated to use new JSON structure
+export const getBusinessTemplate = slug => {
+  return businesses[slug] || null;
+};
+
+export const getBusinessWebsiteData = slug => {
+  return businesses[slug] || null;
+};
+
+export const getAllBusinessTypes = () => {
+  return Object.keys(businesses);
+};
+
+export const updateBusinessWebsiteData = (slug, updatedData) => {
+  if (businesses[slug]) {
+    businesses[slug] = {
+      ...businesses[slug],
+      ...updatedData,
+    };
+    return businesses[slug];
+  }
+  return null;
+};
 
 // Ecommerce functions - using JSON data directly
 export const getProductsByCategory = categorySlug => {
