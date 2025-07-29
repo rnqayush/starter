@@ -187,11 +187,20 @@ const CategoriesSectionEdit = ({ dealer }) => {
   };
 
   const updateContent = (field, value) => {
+    // Update local changes for immediate UI update
     setLocalChanges(prev => ({
       ...prev,
       [field]: value,
     }));
     setHasChanges(true);
+
+    // Immediately update Redux state for real-time updates
+    dispatch(
+      updateSectionContent({
+        sectionId: 'categories',
+        content: { [field]: value },
+      })
+    );
   };
 
   const toggleCategoryVisibility = categoryId => {
