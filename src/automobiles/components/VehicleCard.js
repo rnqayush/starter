@@ -19,35 +19,63 @@ import {
 } from '../../store/slices/automobileManagementSlice';
 
 const Card = styled.div`
-  background: ${theme.colors.white};
+  background: linear-gradient(
+    145deg,
+    ${theme.colors.white} 0%,
+    rgba(255, 255, 255, 0.98) 100%
+  );
   border-radius: ${theme.borderRadius.xl};
   overflow: hidden;
-  box-shadow: ${theme.shadows.sm};
-  transition: all 0.4s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   height: 100%;
   display: flex;
   flex-direction: column;
-  border: 1px solid ${theme.colors.gray100};
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      135deg,
+      rgba(30, 64, 175, 0.02) 0%,
+      transparent 50%,
+      rgba(59, 130, 246, 0.02) 100%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    z-index: 1;
+  }
 
   &:hover {
-    transform: translateY(-8px);
-    box-shadow: ${theme.shadows.xl};
-    border-color: ${theme.colors.primary}20;
+    transform: translateY(-12px) rotateX(2deg);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12), 0 8px 20px rgba(30, 64, 175, 0.08);
+    border-color: rgba(30, 64, 175, 0.2);
+
+    &::before {
+      opacity: 1;
+    }
   }
 
   ${media.mobile} {
-    border-radius: ${theme.borderRadius.md};
+    border-radius: ${theme.borderRadius.lg};
 
     &:hover {
-      transform: translateY(-2px);
-      box-shadow: ${theme.shadows.md};
+      transform: translateY(-4px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
     }
   }
 
   ${media.tablet} {
     &:hover {
-      transform: translateY(-3px);
+      transform: translateY(-8px) rotateX(1deg);
     }
   }
 `;
