@@ -26,6 +26,9 @@ export const automobileVendors = [automobileData.data.vendor]; // Wrap in array 
 export const businessTemplates = businessData.data.businessTemplates || [];
 export const businesses = businessData.data.businesses || {};
 
+// Export the raw business data for template lookups
+export { businessData };
+
 // Export ecommerce data from JSON
 export const ecommerceCategories = ecommerceData.categories || [];
 export const ecommerceProducts = ecommerceData.products || [];
