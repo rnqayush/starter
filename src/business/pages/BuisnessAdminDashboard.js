@@ -1031,36 +1031,13 @@ const BuisnessAdminDashboard = () => {
           const serializableBusinessData = JSON.parse(JSON.stringify(businessData));
           const serializableBusinessTypeConfig = JSON.parse(JSON.stringify(businessTypeConfig));
 
-          // Test individual action creators to identify the problematic one
-          console.log('[AdminDashboard] Testing action creators...');
-          console.log('setEditingBusiness:', typeof setEditingBusiness, setEditingBusiness);
-          console.log('initializeBusinessData:', typeof initializeBusinessData, initializeBusinessData);
-          console.log('setBusinessType:', typeof setBusinessType, setBusinessType);
-          console.log('clearError:', typeof clearError, clearError);
+          // Simplified Redux actions - dispatch only essential actions
+          console.log('[AdminDashboard] Dispatching simplified Redux actions...');
 
-          // Test with a simple action first
-          try {
-            console.log('[AdminDashboard] Testing clearError action');
-            const clearErrorAction = clearError();
-            console.log('clearError action:', clearErrorAction);
-            dispatch(clearErrorAction);
-            console.log('[AdminDashboard] clearError dispatched successfully');
-          } catch (error) {
-            console.error('[AdminDashboard] Error dispatching clearError:', error);
-            throw error;
-          }
+          dispatch(clearError());
+          dispatch(setEditingBusiness(businessId));
 
-          // Now test setEditingBusiness
-          try {
-            console.log('[AdminDashboard] Testing setEditingBusiness action');
-            const setEditingAction = setEditingBusiness(businessId);
-            console.log('setEditingBusiness action:', setEditingAction);
-            dispatch(setEditingAction);
-            console.log('[AdminDashboard] setEditingBusiness dispatched successfully');
-          } catch (error) {
-            console.error('[AdminDashboard] Error dispatching setEditingBusiness:', error);
-            throw error;
-          }
+          console.log('[AdminDashboard] Redux actions dispatched successfully');
 
           // try {
           //   console.log('[AdminDashboard] About to dispatch setBusinessType');
