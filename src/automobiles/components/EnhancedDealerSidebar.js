@@ -400,39 +400,37 @@ const EnhancedDealerSidebar = ({
   const handleBackToDealership = () => {
     if (hasUnsavedChanges) {
       if (window.confirm('You have unsaved changes. Discard them?')) {
-        dispatch(discardTempChanges());
-        navigate(`/${dealer.slug}`);
+        onDiscard();
+        navigate(`/${vendor.slug}`);
       }
     } else {
-      navigate(`/${dealer.slug}`);
+      navigate(`/${vendor.slug}`);
     }
   };
 
   const handleSaveAndGoLive = () => {
-    // Apply all temp changes to live state
-    dispatch(saveAndPublishChanges());
-    console.log('Published changes to live data from dealer sidebar');
-
+    // Use the parent's save handler for API calls
+    onSave();
     alert('Changes published to live dealership page successfully!');
 
     // Navigate to the dealer page with updated data
-    navigate(`/${dealer.slug}`);
+    navigate(`/${vendor.slug}`);
   };
 
   const handleSaveChanges = () => {
-    dispatch(applyTempChanges());
+    onSave();
     alert('Changes saved successfully!');
   };
 
   const handleDiscardChanges = () => {
     if (window.confirm('Are you sure you want to discard all changes?')) {
-      dispatch(discardTempChanges());
+      onDiscard();
     }
   };
 
   const handlePreviewChanges = () => {
     // Open dealer page in new tab to preview changes
-    window.open(`/${dealer.slug}`, '_blank');
+    window.open(`/${vendor.slug}`, '_blank');
   };
 
   const renderChangesList = () => {
