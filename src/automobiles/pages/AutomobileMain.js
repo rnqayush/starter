@@ -522,7 +522,7 @@ const AutomobileMain = () => {
   const handleRetry = () => {
     if (vendorSlug) {
       dispatch(clearError());
-      dispatch(fetchAutomobileData(vendorSlug));
+      dispatch(fetchAutomobileData({ vendorSlug, forceRefresh: true }));
     }
   };
 
