@@ -1,10 +1,32 @@
 // Fake API service to simulate API calls for business data
 // This mimics what would be real API calls to a backend service
 
-import {
-  getBusinessWebsiteData,
-  updateBusinessWebsiteData,
-} from '../DummyData';
+// Import the business data directly
+import businessData from '../DummyData/business.json';
+
+// Helper function to get business data by slug
+const getBusinessWebsiteData = (slug) => {
+  // Map common slugs to the correct data
+  if (slug === 'salon' || slug === 'business') {
+    return businessData.data?.portfolio?.buisness || null;
+  }
+  if (slug === 'freelancer' || slug === 'personal') {
+    return businessData.data?.portfolio?.personal || null;
+  }
+  return null;
+};
+
+// Helper function to update business data (for demo purposes)
+const updateBusinessWebsiteData = (slug, updatedData) => {
+  const business = getBusinessWebsiteData(slug);
+  if (business) {
+    return {
+      ...business,
+      ...updatedData,
+    };
+  }
+  return null;
+};
 import businessData from '../DummyData/business.json';
 
 // Simulate network delay for realistic API behavior
