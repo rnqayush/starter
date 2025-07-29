@@ -410,18 +410,20 @@ const automobileManagementSlice = createSlice({
       );
 
       if (sectionIndex !== -1) {
-        // Update section content by creating a new object reference for proper React re-rendering
-        const updatedSection = {
-          ...state.pageContent.sections[sectionIndex],
-          ...content,
-        };
+        const section = state.pageContent.sections[sectionIndex];
 
-        // Create new sections array with updated section for proper React re-rendering
-        state.pageContent.sections = [
-          ...state.pageContent.sections.slice(0, sectionIndex),
-          updatedSection,
-          ...state.pageContent.sections.slice(sectionIndex + 1),
-        ];
+        // Ensure content object exists
+        if (!section.content) {
+          section.content = {};
+        }
+
+        // Update both root level and content properties for dual compatibility
+        Object.entries(content).forEach(([key, value]) => {
+          // Update root level property
+          section[key] = value;
+          // Also update in content object for backward compatibility
+          section.content[key] = value;
+        });
 
         // Track changes for sidebar
         Object.keys(content).forEach(key => {
