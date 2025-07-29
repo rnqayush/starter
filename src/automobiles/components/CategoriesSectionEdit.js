@@ -170,7 +170,9 @@ const VisibilityButton = styled.button.withConfig({
 const CategoriesSectionEdit = ({ dealer }) => {
   const dispatch = useDispatch();
   const categoriesSection = useSelector(state =>
-    state.automobileManagement.pageContent.sections.find(s => s.id === 'categories')
+    state.automobileManagement.pageContent.sections.find(
+      s => s.id === 'categories'
+    )
   );
   const categories = useSelector(selectCategories);
   const loading = useSelector(selectLoading);
@@ -181,8 +183,10 @@ const CategoriesSectionEdit = ({ dealer }) => {
   // Get current values from Redux section data + local changes
   const currentContent = {
     title: categoriesSection?.title || 'Browse by Category',
-    subtitle: categoriesSection?.subtitle || 'Explore our diverse range of vehicles',
-    visibleCategories: categoriesSection?.visibleCategories || categories.map(c => c.id),
+    subtitle:
+      categoriesSection?.subtitle || 'Explore our diverse range of vehicles',
+    visibleCategories:
+      categoriesSection?.visibleCategories || categories.map(c => c.id),
     ...localChanges,
   };
 

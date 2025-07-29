@@ -185,7 +185,9 @@ const HeroSectionEdit = ({ vendor, onSave, hasUnsavedChanges }) => {
   // Get current values from Redux section data + local changes
   const currentContent = {
     title: heroSection?.title || 'Welcome to Luxury Auto Gallery',
-    subtitle: heroSection?.subtitle || 'Premium luxury vehicles from world-renowned brands. Experience excellence in automotive craftsmanship with our curated selection of luxury cars, sports cars, and electric vehicles.',
+    subtitle:
+      heroSection?.subtitle ||
+      'Premium luxury vehicles from world-renowned brands. Experience excellence in automotive craftsmanship with our curated selection of luxury cars, sports cars, and electric vehicles.',
     backgroundImage: heroSection?.backgroundImage || '',
     primaryButtonText: heroSection?.primaryButtonText || 'Browse Vehicles',
     secondaryButtonText: heroSection?.secondaryButtonText || 'View Categories',
