@@ -177,9 +177,12 @@ const CategoryCard = ({ category, storeSlug = '' }) => {
     <Card to={`${getBaseUrl()}/products?category=${category.slug}`}>
       <ImageContainer>
         <CategoryImage
-          src={category.image || 'https://via.placeholder.com/400x300?text=No+Image'}
+          src={
+            category.image ||
+            'https://via.placeholder.com/400x300?text=No+Image'
+          }
           alt={category.name}
-          onError={(e) => {
+          onError={e => {
             e.target.src = 'https://via.placeholder.com/400x300?text=No+Image';
           }}
         />

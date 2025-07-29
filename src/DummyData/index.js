@@ -208,7 +208,7 @@ export const getProductAvailabilityLabel = status => {
     out_of_stock: 'Out of Stock',
     limited_stock: 'Limited Stock',
     pre_order: 'Pre Order',
-    unknown: 'Unknown'
+    unknown: 'Unknown',
   };
   return labels[status] || 'Unknown';
 };
@@ -219,7 +219,7 @@ export const getProductAvailabilityColor = status => {
     out_of_stock: '#ef4444',
     limited_stock: '#f59e0b',
     pre_order: '#3b82f6',
-    unknown: '#6b7280'
+    unknown: '#6b7280',
   };
   return colors[status] || '#6b7280';
 };
@@ -227,7 +227,8 @@ export const getProductAvailabilityColor = status => {
 export const getEcommerceVendorsByLocation = (city, state) => {
   return ecommerceVendors.filter(
     vendor =>
-      vendor.businessInfo?.address?.city?.toLowerCase() === city.toLowerCase() &&
+      vendor.businessInfo?.address?.city?.toLowerCase() ===
+        city.toLowerCase() &&
       vendor.businessInfo?.address?.state?.toLowerCase() === state.toLowerCase()
   );
 };

@@ -396,10 +396,15 @@ const ProductCard = ({
       <Card>
         <ImageContainer>
           <ProductImage
-            src={product.media?.mainImage || product.image || 'https://via.placeholder.com/500x400?text=No+Image'}
+            src={
+              product.media?.mainImage ||
+              product.image ||
+              'https://via.placeholder.com/500x400?text=No+Image'
+            }
             alt={product.name}
-            onError={(e) => {
-              e.target.src = 'https://via.placeholder.com/500x400?text=No+Image';
+            onError={e => {
+              e.target.src =
+                'https://via.placeholder.com/500x400?text=No+Image';
             }}
           />
 
@@ -430,26 +435,40 @@ const ProductCard = ({
 
           <RatingContainer>
             <StarRating>{renderStars(product.reviews?.rating || 0)}</StarRating>
-            <ReviewCount>({product.reviews?.totalReviews || 0} reviews)</ReviewCount>
+            <ReviewCount>
+              ({product.reviews?.totalReviews || 0} reviews)
+            </ReviewCount>
           </RatingContainer>
 
           <PriceContainer>
-            <CurrentPrice>${product.pricing?.price || product.price}</CurrentPrice>
-            {(product.pricing?.originalPrice || product.originalPrice) && (product.pricing?.originalPrice || product.originalPrice) > (product.pricing?.price || product.price) && (
-              <>
-                <OriginalPrice>${product.pricing?.originalPrice || product.originalPrice}</OriginalPrice>
-                <Discount>
-                  -{calculateDiscount(product.pricing?.originalPrice || product.originalPrice, product.pricing?.price || product.price)}%
-                </Discount>
-              </>
-            )}
+            <CurrentPrice>
+              ${product.pricing?.price || product.price}
+            </CurrentPrice>
+            {(product.pricing?.originalPrice || product.originalPrice) &&
+              (product.pricing?.originalPrice || product.originalPrice) >
+                (product.pricing?.price || product.price) && (
+                <>
+                  <OriginalPrice>
+                    ${product.pricing?.originalPrice || product.originalPrice}
+                  </OriginalPrice>
+                  <Discount>
+                    -
+                    {calculateDiscount(
+                      product.pricing?.originalPrice || product.originalPrice,
+                      product.pricing?.price || product.price
+                    )}
+                    %
+                  </Discount>
+                </>
+              )}
           </PriceContainer>
 
           <StockIndicator
             availability={availabilityStatus}
             color={availabilityColor}
           >
-            {availabilityStatus === 'in_stock' && (product.availability?.quantity || product.stock) > 0
+            {availabilityStatus === 'in_stock' &&
+            (product.availability?.quantity || product.stock) > 0
               ? `${product.availability?.quantity || product.stock} in stock`
               : availabilityLabel}
           </StockIndicator>

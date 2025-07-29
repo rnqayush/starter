@@ -379,7 +379,10 @@ const DashboardTabEnhanced = () => {
           </StatsHeader>
           <StatsContent>
             <StatsValue>
-              {formatCurrency(dashboardStats.totalSales.value || 0, dashboardStats.totalSales.currency || 'USD')}
+              {formatCurrency(
+                dashboardStats.totalSales.value || 0,
+                dashboardStats.totalSales.currency || 'USD'
+              )}
             </StatsValue>
             <StatsLabel>Total Sales</StatsLabel>
             <StatsChange positive={dashboardStats.totalSales.change > 0}>
@@ -493,10 +496,14 @@ const DashboardTabEnhanced = () => {
             {lowStockAlerts.map(alert => (
               <AlertItem key={alert.id}>
                 <AlertImage
-                  src={alert.image || 'https://via.placeholder.com/64x64?text=No+Image'}
+                  src={
+                    alert.image ||
+                    'https://via.placeholder.com/64x64?text=No+Image'
+                  }
                   alt={alert.productName}
-                  onError={(e) => {
-                    e.target.src = 'https://via.placeholder.com/64x64?text=No+Image';
+                  onError={e => {
+                    e.target.src =
+                      'https://via.placeholder.com/64x64?text=No+Image';
                   }}
                 />
                 <AlertContent>
@@ -523,17 +530,21 @@ const DashboardTabEnhanced = () => {
             {topPerformingProducts.map((product, index) => (
               <ProductItem key={product.id}>
                 <ProductImage
-                  src={product.image || 'https://via.placeholder.com/80x80?text=No+Image'}
+                  src={
+                    product.image ||
+                    'https://via.placeholder.com/80x80?text=No+Image'
+                  }
                   alt={product.name}
-                  onError={(e) => {
-                    e.target.src = 'https://via.placeholder.com/80x80?text=No+Image';
+                  onError={e => {
+                    e.target.src =
+                      'https://via.placeholder.com/80x80?text=No+Image';
                   }}
                 />
                 <ProductInfo>
                   <ProductName>{product.name}</ProductName>
                   <ProductStats>
-                    {product.sales || 0} sold • {formatCurrency(product.revenue || 0)}{' '}
-                    revenue
+                    {product.sales || 0} sold •{' '}
+                    {formatCurrency(product.revenue || 0)} revenue
                     <ProductGrowth> (+{product.growth || 0}%)</ProductGrowth>
                   </ProductStats>
                 </ProductInfo>

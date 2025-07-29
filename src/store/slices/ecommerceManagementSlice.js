@@ -5,10 +5,13 @@ import { ecommerceAPI } from '../../utils/ecommerceAPI';
 // Async thunks for API operations
 export const fetchEcommerceData = createAsyncThunk(
   'ecommerceManagement/fetchData',
-  async ({ vendorSlug, forceRefresh = false }, { getState, rejectWithValue }) => {
+  async (
+    { vendorSlug, forceRefresh = false },
+    { getState, rejectWithValue }
+  ) => {
     try {
       const state = getState().ecommerceManagement;
-      
+
       // If we already have data for this vendor and not forcing refresh, return current data
       if (state.vendor?.slug === vendorSlug && !forceRefresh) {
         return state;
@@ -16,10 +19,10 @@ export const fetchEcommerceData = createAsyncThunk(
 
       // For demo purposes, simulate API call with static data
       await new Promise(resolve => setTimeout(resolve, 500));
-      
+
       // In a real app, this would fetch from API
       // const response = await ecommerceAPI.getVendorData(vendorSlug);
-      
+
       return ecommerceData;
     } catch (error) {
       return rejectWithValue(error.message || 'Failed to fetch ecommerce data');
@@ -32,17 +35,17 @@ export const saveEcommerceData = createAsyncThunk(
   async (dataToSave, { getState, rejectWithValue }) => {
     try {
       const state = getState().ecommerceManagement;
-      
+
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
-      
+
       // In a real app, this would save to API
       // const response = await ecommerceAPI.saveVendorData(state.vendor.slug, dataToSave);
-      
+
       return {
         ...dataToSave,
         lastSaved: new Date().toISOString(),
-        isDataPersisted: true
+        isDataPersisted: true,
       };
     } catch (error) {
       return rejectWithValue(error.message || 'Failed to save ecommerce data');
@@ -55,16 +58,16 @@ export const publishChanges = createAsyncThunk(
   async (_, { getState, rejectWithValue }) => {
     try {
       const state = getState().ecommerceManagement;
-      
+
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 800));
-      
+
       // In a real app, this would publish to API
       // const response = await ecommerceAPI.publishChanges(state.vendor.slug);
-      
+
       return {
         lastPublished: new Date().toISOString(),
-        isDataPersisted: true
+        isDataPersisted: true,
       };
     } catch (error) {
       return rejectWithValue(error.message || 'Failed to publish changes');
@@ -105,47 +108,47 @@ const initialState = {
   vendor: null,
   categories: [],
   products: [],
-  
+
   // Page content management
   pageContent: {
     sections: [],
     lastSaved: null,
-    lastPublished: null
+    lastPublished: null,
   },
-  
+
   // Temporary changes tracking
   tempChanges: {},
   hasUnsavedChanges: false,
   isDataPersisted: true,
-  
+
   // User interactions
   wishlist: [],
   recentlyViewed: [],
-  
+
   // UI state
   filters: {
     category: null,
     priceRange: [0, 1000],
     availability: 'all',
-    sortBy: 'featured'
+    sortBy: 'featured',
   },
   pagination: {
     currentPage: 1,
     itemsPerPage: 12,
     totalItems: 0,
-    totalPages: 0
+    totalPages: 0,
   },
-  
+
   // API state
   loading: false,
   error: null,
   saving: false,
   publishing: false,
-  
+
   // Analytics
   analytics: null,
   orders: [],
-  enquiries: []
+  enquiries: [],
 };
 
 const ecommerceManagementSlice = createSlice({
@@ -153,19 +156,21 @@ const ecommerceManagementSlice = createSlice({
   initialState,
   reducers: {
     // Clear error
-    clearError: (state) => {
+    clearError: state => {
       state.error = null;
     },
 
     // Section management
     updateSection: (state, action) => {
       const { sectionId, updates } = action.payload;
-      const sectionIndex = state.pageContent.sections.findIndex(s => s.id === sectionId);
-      
+      const sectionIndex = state.pageContent.sections.findIndex(
+        s => s.id === sectionId
+      );
+
       if (sectionIndex !== -1) {
         // Update the section
         Object.assign(state.pageContent.sections[sectionIndex], updates);
-        
+
         // Track changes
         if (!state.tempChanges.sections) {
           state.tempChanges.sections = {};
@@ -178,18 +183,23 @@ const ecommerceManagementSlice = createSlice({
 
     updateSectionContent: (state, action) => {
       const { sectionId, contentUpdates } = action.payload;
-      const sectionIndex = state.pageContent.sections.findIndex(s => s.id === sectionId);
-      
+      const sectionIndex = state.pageContent.sections.findIndex(
+        s => s.id === sectionId
+      );
+
       if (sectionIndex !== -1) {
         // Update the section content
         if (!state.pageContent.sections[sectionIndex].content) {
           state.pageContent.sections[sectionIndex].content = {};
         }
-        Object.assign(state.pageContent.sections[sectionIndex].content, contentUpdates);
-        
+        Object.assign(
+          state.pageContent.sections[sectionIndex].content,
+          contentUpdates
+        );
+
         // Also update root level properties for backward compatibility
         Object.assign(state.pageContent.sections[sectionIndex], contentUpdates);
-        
+
         // Track changes
         if (!state.tempChanges.sections) {
           state.tempChanges.sections = {};
@@ -198,7 +208,7 @@ const ecommerceManagementSlice = createSlice({
           state.tempChanges.sections[sectionId] = {};
         }
         Object.assign(state.tempChanges.sections[sectionId], contentUpdates);
-        
+
         state.hasUnsavedChanges = true;
         state.isDataPersisted = false;
       }
@@ -206,8 +216,10 @@ const ecommerceManagementSlice = createSlice({
 
     toggleSectionVisibility: (state, action) => {
       const { sectionId, visible } = action.payload;
-      const sectionIndex = state.pageContent.sections.findIndex(s => s.id === sectionId);
-      
+      const sectionIndex = state.pageContent.sections.findIndex(
+        s => s.id === sectionId
+      );
+
       if (sectionIndex !== -1) {
         state.pageContent.sections[sectionIndex].visible = visible;
         state.hasUnsavedChanges = true;
@@ -230,7 +242,7 @@ const ecommerceManagementSlice = createSlice({
         ...action.payload,
         id: Date.now(), // In real app, this would be handled by backend
         createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
+        updatedAt: new Date().toISOString(),
       };
       state.products.push(newProduct);
       state.hasUnsavedChanges = true;
@@ -240,12 +252,12 @@ const ecommerceManagementSlice = createSlice({
     updateProduct: (state, action) => {
       const { productId, updates } = action.payload;
       const productIndex = state.products.findIndex(p => p.id === productId);
-      
+
       if (productIndex !== -1) {
         state.products[productIndex] = {
           ...state.products[productIndex],
           ...updates,
-          updatedAt: new Date().toISOString()
+          updatedAt: new Date().toISOString(),
         };
         state.hasUnsavedChanges = true;
         state.isDataPersisted = false;
@@ -263,7 +275,7 @@ const ecommerceManagementSlice = createSlice({
     addCategory: (state, action) => {
       const newCategory = {
         ...action.payload,
-        id: Date.now()
+        id: Date.now(),
       };
       state.categories.push(newCategory);
       state.hasUnsavedChanges = true;
@@ -272,8 +284,10 @@ const ecommerceManagementSlice = createSlice({
 
     updateCategory: (state, action) => {
       const { categoryId, updates } = action.payload;
-      const categoryIndex = state.categories.findIndex(c => c.id === categoryId);
-      
+      const categoryIndex = state.categories.findIndex(
+        c => c.id === categoryId
+      );
+
       if (categoryIndex !== -1) {
         Object.assign(state.categories[categoryIndex], updates);
         state.hasUnsavedChanges = true;
@@ -309,7 +323,9 @@ const ecommerceManagementSlice = createSlice({
     // Recently viewed
     addToRecentlyViewed: (state, action) => {
       const productId = action.payload;
-      state.recentlyViewed = state.recentlyViewed.filter(id => id !== productId);
+      state.recentlyViewed = state.recentlyViewed.filter(
+        id => id !== productId
+      );
       state.recentlyViewed.unshift(productId);
       state.recentlyViewed = state.recentlyViewed.slice(0, 10); // Keep only last 10
     },
@@ -389,17 +405,17 @@ const ecommerceManagementSlice = createSlice({
     },
 
     // Reset changes
-    discardChanges: (state) => {
+    discardChanges: state => {
       // This would need to restore from a backup or refetch data
       state.tempChanges = {};
       state.hasUnsavedChanges = false;
       state.isDataPersisted = true;
-    }
+    },
   },
-  extraReducers: (builder) => {
+  extraReducers: builder => {
     builder
       // Fetch ecommerce data
-      .addCase(fetchEcommerceData.pending, (state) => {
+      .addCase(fetchEcommerceData.pending, state => {
         state.loading = true;
         state.error = null;
       })
@@ -427,7 +443,7 @@ const ecommerceManagementSlice = createSlice({
       })
 
       // Save ecommerce data
-      .addCase(saveEcommerceData.pending, (state) => {
+      .addCase(saveEcommerceData.pending, state => {
         state.saving = true;
         state.error = null;
       })
@@ -446,7 +462,7 @@ const ecommerceManagementSlice = createSlice({
       })
 
       // Publish changes
-      .addCase(publishChanges.pending, (state) => {
+      .addCase(publishChanges.pending, state => {
         state.publishing = true;
         state.error = null;
       })
@@ -470,7 +486,7 @@ const ecommerceManagementSlice = createSlice({
         const productId = action.payload;
         state.wishlist = state.wishlist.filter(id => id !== productId);
       });
-  }
+  },
 });
 
 // Export actions
@@ -495,51 +511,61 @@ export const {
   setFilters,
   setPagination,
   addToRecentlyViewed,
-  discardChanges
+  discardChanges,
 } = ecommerceManagementSlice.actions;
 
 // Selectors
-export const selectVendor = (state) => state.ecommerceManagement.vendor;
-export const selectCategories = (state) => state.ecommerceManagement.categories;
-export const selectProducts = (state) => state.ecommerceManagement.products;
-export const selectPageSections = (state) => state.ecommerceManagement.pageContent.sections;
-export const selectLoading = (state) => state.ecommerceManagement.loading;
-export const selectError = (state) => state.ecommerceManagement.error;
-export const selectSaving = (state) => state.ecommerceManagement.saving;
-export const selectPublishing = (state) => state.ecommerceManagement.publishing;
-export const selectHasUnsavedChanges = (state) => state.ecommerceManagement.hasUnsavedChanges;
-export const selectIsDataPersisted = (state) => state.ecommerceManagement.isDataPersisted;
-export const selectWishlist = (state) => state.ecommerceManagement.wishlist;
-export const selectRecentlyViewed = (state) => state.ecommerceManagement.recentlyViewed;
-export const selectFilters = (state) => state.ecommerceManagement.filters;
-export const selectPagination = (state) => state.ecommerceManagement.pagination;
-export const selectAnalytics = (state) => state.ecommerceManagement.analytics;
-export const selectOrders = (state) => state.ecommerceManagement.orders;
-export const selectEnquiries = (state) => state.ecommerceManagement.enquiries;
+export const selectVendor = state => state.ecommerceManagement.vendor;
+export const selectCategories = state => state.ecommerceManagement.categories;
+export const selectProducts = state => state.ecommerceManagement.products;
+export const selectPageSections = state =>
+  state.ecommerceManagement.pageContent.sections;
+export const selectLoading = state => state.ecommerceManagement.loading;
+export const selectError = state => state.ecommerceManagement.error;
+export const selectSaving = state => state.ecommerceManagement.saving;
+export const selectPublishing = state => state.ecommerceManagement.publishing;
+export const selectHasUnsavedChanges = state =>
+  state.ecommerceManagement.hasUnsavedChanges;
+export const selectIsDataPersisted = state =>
+  state.ecommerceManagement.isDataPersisted;
+export const selectWishlist = state => state.ecommerceManagement.wishlist;
+export const selectRecentlyViewed = state =>
+  state.ecommerceManagement.recentlyViewed;
+export const selectFilters = state => state.ecommerceManagement.filters;
+export const selectPagination = state => state.ecommerceManagement.pagination;
+export const selectAnalytics = state => state.ecommerceManagement.analytics;
+export const selectOrders = state => state.ecommerceManagement.orders;
+export const selectEnquiries = state => state.ecommerceManagement.enquiries;
 
 // Complex selectors
-export const selectFeaturedProducts = (state) => 
+export const selectFeaturedProducts = state =>
   state.ecommerceManagement.products.filter(product => product.featured);
 
-export const selectOnSaleProducts = (state) => 
+export const selectOnSaleProducts = state =>
   state.ecommerceManagement.products.filter(product => product.pricing?.onSale);
 
-export const selectProductsByCategory = (categorySlug) => (state) =>
-  state.ecommerceManagement.products.filter(product => product.category === categorySlug);
+export const selectProductsByCategory = categorySlug => state =>
+  state.ecommerceManagement.products.filter(
+    product => product.category === categorySlug
+  );
 
-export const selectSectionById = (sectionId) => (state) =>
-  state.ecommerceManagement.pageContent.sections.find(section => section.id === sectionId);
+export const selectSectionById = sectionId => state =>
+  state.ecommerceManagement.pageContent.sections.find(
+    section => section.id === sectionId
+  );
 
-export const selectIsInWishlist = (productId) => (state) =>
+export const selectIsInWishlist = productId => state =>
   state.ecommerceManagement.wishlist.includes(productId);
 
-export const selectFilteredProducts = (state) => {
+export const selectFilteredProducts = state => {
   const { products, filters } = state.ecommerceManagement;
   let filtered = [...products];
 
   // Apply category filter
   if (filters.category && filters.category !== 'all') {
-    filtered = filtered.filter(product => product.category === filters.category);
+    filtered = filtered.filter(
+      product => product.category === filters.category
+    );
   }
 
   // Apply price filter
@@ -553,21 +579,27 @@ export const selectFilteredProducts = (state) => {
 
   // Apply availability filter
   if (filters.availability && filters.availability !== 'all') {
-    filtered = filtered.filter(product => 
-      product.availability?.status === filters.availability
+    filtered = filtered.filter(
+      product => product.availability?.status === filters.availability
     );
   }
 
   // Apply sorting
   switch (filters.sortBy) {
     case 'price_low':
-      filtered.sort((a, b) => (a.pricing?.price || 0) - (b.pricing?.price || 0));
+      filtered.sort(
+        (a, b) => (a.pricing?.price || 0) - (b.pricing?.price || 0)
+      );
       break;
     case 'price_high':
-      filtered.sort((a, b) => (b.pricing?.price || 0) - (a.pricing?.price || 0));
+      filtered.sort(
+        (a, b) => (b.pricing?.price || 0) - (a.pricing?.price || 0)
+      );
       break;
     case 'rating':
-      filtered.sort((a, b) => (b.reviews?.rating || 0) - (a.reviews?.rating || 0));
+      filtered.sort(
+        (a, b) => (b.reviews?.rating || 0) - (a.reviews?.rating || 0)
+      );
       break;
     case 'newest':
       filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
@@ -585,8 +617,10 @@ export const selectFilteredProducts = (state) => {
   return filtered;
 };
 
-export const selectSectionContent = (sectionId) => (state) => {
-  const section = state.ecommerceManagement.pageContent.sections.find(s => s.id === sectionId);
+export const selectSectionContent = sectionId => state => {
+  const section = state.ecommerceManagement.pageContent.sections.find(
+    s => s.id === sectionId
+  );
   return section?.content || {};
 };
 

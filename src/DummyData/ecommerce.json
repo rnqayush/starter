@@ -1,7 +1,7 @@
 {
   "vendor": {
     "id": "techmart-downtown",
-    "slug": "techmart-downtown", 
+    "slug": "techmart-downtown",
     "name": "TechMart Downtown",
     "category": "ecommerce",
     "businessInfo": {
@@ -13,13 +13,13 @@
       "address": {
         "street": "123 Tech Street",
         "city": "San Francisco",
-        "state": "CA", 
+        "state": "CA",
         "zipCode": "94102",
         "coordinates": { "lat": 37.7749, "lng": -122.4194 }
       },
       "hours": {
         "monday": "9:00 AM - 9:00 PM",
-        "tuesday": "9:00 AM - 9:00 PM", 
+        "tuesday": "9:00 AM - 9:00 PM",
         "wednesday": "9:00 AM - 9:00 PM",
         "thursday": "9:00 AM - 9:00 PM",
         "friday": "9:00 AM - 10:00 PM",
@@ -37,7 +37,7 @@
     "reviewCount": 1245,
     "theme": {
       "primaryColor": "#1e40af",
-      "secondaryColor": "#3b82f6", 
+      "secondaryColor": "#3b82f6",
       "backgroundColor": "#f8fafc",
       "textColor": "#1f2937"
     },
@@ -59,7 +59,7 @@
         "primaryButtonText": "Shop Products",
         "secondaryButtonText": "Browse Categories",
         "content": {
-          "title": "Welcome to TechMart Downtown", 
+          "title": "Welcome to TechMart Downtown",
           "subtitle": "Discover the latest in technology and electronics. From cutting-edge smartphones to smart home innovations.",
           "backgroundImage": "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1920&q=80",
           "primaryButtonText": "Shop Products",
@@ -69,7 +69,7 @@
       {
         "id": "categories",
         "name": "Product Categories",
-        "type": "categories", 
+        "type": "categories",
         "visible": true,
         "order": 2,
         "title": "Shop by Category",
@@ -82,7 +82,7 @@
         }
       },
       {
-        "id": "featured", 
+        "id": "featured",
         "name": "Featured Products",
         "type": "featured",
         "visible": true,
@@ -92,7 +92,7 @@
         "productIds": [1, 2, 4, 7],
         "content": {
           "title": "Featured Products",
-          "subtitle": "Handpicked items that customers love the most", 
+          "subtitle": "Handpicked items that customers love the most",
           "productIds": [1, 2, 4, 7]
         }
       },
@@ -102,7 +102,7 @@
         "type": "special-offers",
         "visible": true,
         "order": 4,
-        "title": "🔥 Hot Deals", 
+        "title": "🔥 Hot Deals",
         "subtitle": "Limited time offers you don't want to miss",
         "productIds": [1, 5],
         "content": {
@@ -121,7 +121,7 @@
           "companyDescription": "TechMart Downtown - Your trusted technology partner since 2020.",
           "socialLinks": {
             "facebook": "https://facebook.com/techmart-downtown",
-            "instagram": "https://instagram.com/techmart_downtown", 
+            "instagram": "https://instagram.com/techmart_downtown",
             "twitter": "https://twitter.com/techmartdt"
           },
           "quickLinks": [
@@ -154,7 +154,7 @@
     {
       "id": 2,
       "name": "Fashion",
-      "slug": "fashion", 
+      "slug": "fashion",
       "image": "https://images.unsplash.com/photo-1445205170230-053b83016050?w=500&q=80",
       "description": "Trendy clothing and accessories",
       "count": 89,
@@ -167,14 +167,14 @@
     },
     {
       "id": 3,
-      "name": "Home & Garden", 
+      "name": "Home & Garden",
       "slug": "home-garden",
       "image": "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=500&q=80",
       "description": "Everything for your home and garden",
       "count": 67,
       "featured": true,
       "seo": {
-        "title": "Home & Garden - TechMart Downtown", 
+        "title": "Home & Garden - TechMart Downtown",
         "description": "Home decor and garden essentials",
         "keywords": ["home", "garden", "decor", "furniture"]
       }
@@ -221,7 +221,7 @@
         "model": "TWH-300",
         "features": [
           "Active Noise Cancellation",
-          "30-hour battery life", 
+          "30-hour battery life",
           "Quick charge - 5 min for 3 hours playback",
           "Premium comfort fit",
           "Bluetooth 5.0"
@@ -245,7 +245,12 @@
       "seo": {
         "title": "Premium Wireless Headphones - TechMart Downtown",
         "description": "Premium wireless headphones with noise cancellation",
-        "keywords": ["headphones", "wireless", "bluetooth", "noise cancellation"]
+        "keywords": [
+          "headphones",
+          "wireless",
+          "bluetooth",
+          "noise cancellation"
+        ]
       }
     },
     {
@@ -272,7 +277,7 @@
         "features": [
           "Heart rate monitoring",
           "Built-in GPS",
-          "Water resistant up to 50m", 
+          "Water resistant up to 50m",
           "7-day battery life",
           "Sleep tracking"
         ],
@@ -717,7 +722,11 @@
       "customerName": "Sarah Johnson",
       "customerEmail": "sarah.j@email.com",
       "products": [
-        { "name": "Premium Wireless Headphones", "quantity": 1, "price": 299.99 }
+        {
+          "name": "Premium Wireless Headphones",
+          "quantity": 1,
+          "price": 299.99
+        }
       ],
       "total": 299.99,
       "status": "completed",

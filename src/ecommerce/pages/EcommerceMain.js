@@ -723,9 +723,7 @@ const EcommerceMain = () => {
               return (
                 <Section
                   key="featured"
-                  background={
-                    storeTheme.backgroundColor || theme.colors.gray50
-                  }
+                  background={storeTheme.backgroundColor || theme.colors.gray50}
                 >
                   <Container>
                     <SectionHeader>

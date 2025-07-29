@@ -645,9 +645,12 @@ const ProductDetail = () => {
             <ProductName>{product.name}</ProductName>
 
             <RatingContainer>
-              <StarRating>{renderStars(product.reviews?.rating || 0)}</StarRating>
+              <StarRating>
+                {renderStars(product.reviews?.rating || 0)}
+              </StarRating>
               <ReviewInfo>
-                {product.reviews?.rating || 0} ({product.reviews?.totalReviews || 0} reviews)
+                {product.reviews?.rating || 0} (
+                {product.reviews?.totalReviews || 0} reviews)
               </ReviewInfo>
             </RatingContainer>
 

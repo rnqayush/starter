@@ -205,7 +205,7 @@ const FormField = ({
         <Textarea
           name={name}
           value={value}
-          onChange={(e) => onChange(e.target.value)}
+          onChange={e => onChange(e.target.value)}
           placeholder={placeholder}
           required={required}
           disabled={disabled}
@@ -221,7 +221,7 @@ const FormField = ({
         <Select
           name={name}
           value={value}
-          onChange={(e) => onChange(e.target.value)}
+          onChange={e => onChange(e.target.value)}
           required={required}
           disabled={disabled}
           hasError={!!error}
@@ -242,7 +242,7 @@ const FormField = ({
         type={type}
         name={name}
         value={value}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={e => onChange(e.target.value)}
         placeholder={placeholder}
         required={required}
         disabled={disabled}

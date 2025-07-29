@@ -34,7 +34,9 @@ const CategoriesSectionEdit = () => {
         Categories Section Settings
       </SectionTitle>
       <PlaceholderText>
-        Categories section management will be implemented here. This will allow you to configure which product categories are displayed, their order, and section content.
+        Categories section management will be implemented here. This will allow
+        you to configure which product categories are displayed, their order,
+        and section content.
       </PlaceholderText>
     </SectionContainer>
   );

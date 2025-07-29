@@ -123,12 +123,14 @@ const ToggleButton = styled.button.withConfig({
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
-  background: ${props => (props.active ? theme.colors.success : theme.colors.gray400)};
+  background: ${props =>
+    props.active ? theme.colors.success : theme.colors.gray400};
   color: ${theme.colors.white};
   font-size: 0.8rem;
 
   &:hover {
-    background: ${props => (props.active ? theme.colors.successDark : theme.colors.gray500)};
+    background: ${props =>
+      props.active ? theme.colors.successDark : theme.colors.gray500};
   }
 `;
 
@@ -307,14 +309,16 @@ const ProductCard = styled.div.withConfig({
   shouldForwardProp: prop => prop !== 'selected',
 })`
   background: ${theme.colors.white};
-  border: 2px solid ${props => (props.selected ? theme.colors.success : theme.colors.gray200)};
+  border: 2px solid
+    ${props => (props.selected ? theme.colors.success : theme.colors.gray200)};
   border-radius: ${theme.borderRadius.md};
   padding: ${theme.spacing.sm};
   cursor: pointer;
   transition: all 0.2s ease;
 
   &:hover {
-    border-color: ${props => (props.selected ? theme.colors.successDark : theme.colors.primary)};
+    border-color: ${props =>
+      props.selected ? theme.colors.successDark : theme.colors.primary};
   }
 `;
 
@@ -345,7 +349,7 @@ const CustomSectionEdit = () => {
     name: '',
     title: '',
     subtitle: '',
-    productIds: []
+    productIds: [],
   });
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -371,53 +375,59 @@ const CustomSectionEdit = () => {
       content: {
         title: 'Custom Section',
         subtitle: 'Add your custom content here',
-        productIds: []
-      }
+        productIds: [],
+      },
     };
 
     dispatch(addCustomSection(newSection));
   };
 
-  const handleEditSection = (section) => {
+  const handleEditSection = section => {
     setEditingSection(section);
     setEditFormData({
       name: section.name || 'Custom Section',
       title: section.content?.title || section.title || 'Custom Section',
       subtitle: section.content?.subtitle || section.subtitle || '',
-      productIds: section.content?.productIds || []
+      productIds: section.content?.productIds || [],
     });
     setSearchTerm('');
   };
 
   const handleSaveEdit = () => {
-    dispatch(updateSectionContent({
-      sectionId: editingSection.id,
-      contentUpdates: {
-        name: editFormData.name,
-        title: editFormData.title,
-        subtitle: editFormData.subtitle,
-        productIds: editFormData.productIds
-      }
-    }));
+    dispatch(
+      updateSectionContent({
+        sectionId: editingSection.id,
+        contentUpdates: {
+          name: editFormData.name,
+          title: editFormData.title,
+          subtitle: editFormData.subtitle,
+          productIds: editFormData.productIds,
+        },
+      })
+    );
     setEditingSection(null);
   };
 
   const handleToggleVisibility = (sectionId, currentVisibility) => {
-    dispatch(updateSectionContent({
-      sectionId,
-      contentUpdates: {
-        visible: !currentVisibility
-      }
-    }));
+    dispatch(
+      updateSectionContent({
+        sectionId,
+        contentUpdates: {
+          visible: !currentVisibility,
+        },
+      })
+    );
   };
 
-  const handleRemoveSection = (sectionId) => {
-    if (window.confirm('Are you sure you want to remove this custom section?')) {
+  const handleRemoveSection = sectionId => {
+    if (
+      window.confirm('Are you sure you want to remove this custom section?')
+    ) {
       dispatch(removeCustomSection(sectionId));
     }
   };
 
-  const handleProductToggle = (productId) => {
+  const handleProductToggle = productId => {
     const isSelected = editFormData.productIds.includes(productId);
     const newProductIds = isSelected
       ? editFormData.productIds.filter(id => id !== productId)
@@ -425,18 +435,19 @@ const CustomSectionEdit = () => {
 
     setEditFormData(prev => ({
       ...prev,
-      productIds: newProductIds
+      productIds: newProductIds,
     }));
   };
 
   // Filter products based on search term
   const filteredProducts = useMemo(() => {
     if (!searchTerm.trim()) return products || [];
-    
+
     const search = searchTerm.toLowerCase();
-    return (products || []).filter(product => 
-      product.name.toLowerCase().includes(search) ||
-      product.category?.toLowerCase().includes(search)
+    return (products || []).filter(
+      product =>
+        product.name.toLowerCase().includes(search) ||
+        product.category?.toLowerCase().includes(search)
     );
   }, [products, searchTerm]);
 
@@ -455,12 +466,15 @@ const CustomSectionEdit = () => {
 
       <ContentWrapper>
         <SectionSubtitle>Manage Custom Sections</SectionSubtitle>
-        <p style={{ 
-          color: theme.colors.gray600, 
-          fontSize: '0.9rem', 
-          marginBottom: theme.spacing.lg 
-        }}>
-          Create custom sections to showcase specific products or content on your store page.
+        <p
+          style={{
+            color: theme.colors.gray600,
+            fontSize: '0.9rem',
+            marginBottom: theme.spacing.lg,
+          }}
+        >
+          Create custom sections to showcase specific products or content on
+          your store page.
         </p>
 
         <AddSectionButton onClick={handleAddSection}>
@@ -470,39 +484,60 @@ const CustomSectionEdit = () => {
 
         <CustomSectionsList>
           {customSections.length === 0 ? (
-            <div style={{
-              textAlign: 'center',
-              padding: theme.spacing.xl,
-              color: theme.colors.gray500,
-              fontStyle: 'italic'
-            }}>
-              No custom sections created yet. Click "Add New Custom Section" to create one.
+            <div
+              style={{
+                textAlign: 'center',
+                padding: theme.spacing.xl,
+                color: theme.colors.gray500,
+                fontStyle: 'italic',
+              }}
+            >
+              No custom sections created yet. Click "Add New Custom Section" to
+              create one.
             </div>
           ) : (
             customSections.map(section => (
               <CustomSectionItem key={section.id}>
                 <CustomSectionHeader>
-                  <CustomSectionName>{section.name || 'Unnamed Section'}</CustomSectionName>
+                  <CustomSectionName>
+                    {section.name || 'Unnamed Section'}
+                  </CustomSectionName>
                   <CustomSectionControls>
                     <ToggleButton
                       active={section.visible !== false}
-                      onClick={() => handleToggleVisibility(section.id, section.visible !== false)}
+                      onClick={() =>
+                        handleToggleVisibility(
+                          section.id,
+                          section.visible !== false
+                        )
+                      }
                     >
-                      {section.visible !== false ? <FaToggleOn /> : <FaToggleOff />}
+                      {section.visible !== false ? (
+                        <FaToggleOn />
+                      ) : (
+                        <FaToggleOff />
+                      )}
                       {section.visible !== false ? 'Visible' : 'Hidden'}
                     </ToggleButton>
                     <EditButton onClick={() => handleEditSection(section)}>
                       <FaEdit />
                       Edit
                     </EditButton>
-                    <RemoveButton onClick={() => handleRemoveSection(section.id)}>
+                    <RemoveButton
+                      onClick={() => handleRemoveSection(section.id)}
+                    >
                       <FaTrash />
                     </RemoveButton>
                   </CustomSectionControls>
                 </CustomSectionHeader>
-                <div style={{ color: theme.colors.gray600, fontSize: '0.9rem' }}>
-                  <strong>Title:</strong> {section.content?.title || section.title || 'No title'}<br />
-                  <strong>Products:</strong> {section.content?.productIds?.length || 0} selected
+                <div
+                  style={{ color: theme.colors.gray600, fontSize: '0.9rem' }}
+                >
+                  <strong>Title:</strong>{' '}
+                  {section.content?.title || section.title || 'No title'}
+                  <br />
+                  <strong>Products:</strong>{' '}
+                  {section.content?.productIds?.length || 0} selected
                 </div>
               </CustomSectionItem>
             ))
@@ -511,47 +546,59 @@ const CustomSectionEdit = () => {
       </ContentWrapper>
 
       {editingSection && (
-        <EditModal onClick={(e) => e.target === e.currentTarget && setEditingSection(null)}>
+        <EditModal
+          onClick={e => e.target === e.currentTarget && setEditingSection(null)}
+        >
           <EditModalContent>
             <EditModalHeader>
               <EditModalTitle>Edit Custom Section</EditModalTitle>
-              <CloseButton onClick={() => setEditingSection(null)}>×</CloseButton>
+              <CloseButton onClick={() => setEditingSection(null)}>
+                ×
+              </CloseButton>
             </EditModalHeader>
 
             <FormGrid>
               <FormField
                 label="Section Name (Internal)"
                 value={editFormData.name}
-                onChange={(value) => setEditFormData(prev => ({ ...prev, name: value }))}
+                onChange={value =>
+                  setEditFormData(prev => ({ ...prev, name: value }))
+                }
                 placeholder="Custom Section"
               />
 
               <FormField
                 label="Section Title (Displayed)"
                 value={editFormData.title}
-                onChange={(value) => setEditFormData(prev => ({ ...prev, title: value }))}
+                onChange={value =>
+                  setEditFormData(prev => ({ ...prev, title: value }))
+                }
                 placeholder="Section Title"
               />
 
               <FormField
                 label="Section Subtitle"
                 value={editFormData.subtitle}
-                onChange={(value) => setEditFormData(prev => ({ ...prev, subtitle: value }))}
+                onChange={value =>
+                  setEditFormData(prev => ({ ...prev, subtitle: value }))
+                }
                 placeholder="Section description..."
                 multiline
                 rows={2}
               />
             </FormGrid>
 
-            <SectionSubtitle>Select Products ({editFormData.productIds.length} selected)</SectionSubtitle>
-            
+            <SectionSubtitle>
+              Select Products ({editFormData.productIds.length} selected)
+            </SectionSubtitle>
+
             <SearchInputContainer>
               <FaSearch />
               <SearchInput
                 type="text"
                 placeholder="Search products..."
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={e => setSearchTerm(e.target.value)}
               />
             </SearchInputContainer>
 
@@ -564,9 +611,9 @@ const CustomSectionEdit = () => {
                     selected={isSelected}
                     onClick={() => handleProductToggle(product.id)}
                   >
-                    <ProductImage 
-                      src={product.images?.[0] || '/placeholder-product.jpg'} 
-                      alt={product.name} 
+                    <ProductImage
+                      src={product.images?.[0] || '/placeholder-product.jpg'}
+                      alt={product.name}
                     />
                     <ProductName>{product.name}</ProductName>
                   </ProductCard>
@@ -575,9 +622,7 @@ const CustomSectionEdit = () => {
             </ProductsGrid>
 
             <div style={{ marginTop: theme.spacing.lg, textAlign: 'right' }}>
-              <SaveButton onClick={handleSaveEdit}>
-                Save Changes
-              </SaveButton>
+              <SaveButton onClick={handleSaveEdit}>Save Changes</SaveButton>
             </div>
           </EditModalContent>
         </EditModal>

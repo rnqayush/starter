@@ -34,7 +34,9 @@ const CustomSectionEdit = () => {
         Custom Section Management
       </SectionTitle>
       <PlaceholderText>
-        Custom section management will be implemented here. This will allow you to create and configure custom content sections with your own products and content.
+        Custom section management will be implemented here. This will allow you
+        to create and configure custom content sections with your own products
+        and content.
       </PlaceholderText>
     </SectionContainer>
   );

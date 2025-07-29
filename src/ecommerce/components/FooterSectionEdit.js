@@ -34,7 +34,9 @@ const FooterSectionEdit = () => {
         Footer Section Settings
       </SectionTitle>
       <PlaceholderText>
-        Footer section management will be implemented here. This will allow you to configure footer links, contact information, social media links, and legal pages.
+        Footer section management will be implemented here. This will allow you
+        to configure footer links, contact information, social media links, and
+        legal pages.
       </PlaceholderText>
     </SectionContainer>
   );

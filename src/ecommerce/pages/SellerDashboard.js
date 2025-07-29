@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { 
-  FaSave, 
-  FaEye, 
-  FaSpinner, 
+import {
+  FaSave,
+  FaEye,
+  FaSpinner,
   FaExclamationTriangle,
   FaShoppingBag,
-  FaHome
+  FaHome,
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
 
@@ -46,7 +46,7 @@ import {
   selectHasUnsavedChanges,
   selectIsDataPersisted,
   clearError,
-  discardChanges
+  discardChanges,
 } from '../../store/slices/ecommerceManagementSlice';
 
 const DashboardContainer = styled.div`
@@ -60,7 +60,7 @@ const MainContent = styled.div`
   margin-left: 280px;
   min-height: 100vh;
   background: ${theme.colors.gray50};
-  
+
   @media (max-width: ${theme.breakpoints.tablet}) {
     margin-left: 0;
   }
@@ -77,7 +77,7 @@ const Header = styled.div`
   position: sticky;
   top: 0;
   z-index: 100;
-  
+
   @media (max-width: ${theme.breakpoints.mobile}) {
     padding: ${theme.spacing.md};
     flex-direction: column;
@@ -98,7 +98,7 @@ const HeaderTitle = styled.h1`
   font-weight: 700;
   color: ${theme.colors.gray900};
   margin: 0;
-  
+
   @media (max-width: ${theme.breakpoints.mobile}) {
     font-size: 1.25rem;
   }
@@ -108,10 +108,10 @@ const HeaderRight = styled.div`
   display: flex;
   align-items: center;
   gap: ${theme.spacing.sm};
-  
+
   @media (max-width: ${theme.breakpoints.mobile}) {
     justify-content: stretch;
-    
+
     & > * {
       flex: 1;
     }
@@ -136,7 +136,7 @@ const ActionButton = styled.button`
     opacity: 0.6;
     cursor: not-allowed;
   }
-  
+
   @media (max-width: ${theme.breakpoints.mobile}) {
     padding: ${theme.spacing.xs} ${theme.spacing.sm};
     font-size: 0.8rem;
@@ -183,7 +183,7 @@ const UnsavedChangesIndicator = styled.div`
   color: ${theme.colors.warning};
   font-size: 0.9rem;
   font-weight: 500;
-  
+
   @media (max-width: ${theme.breakpoints.mobile}) {
     font-size: 0.8rem;
   }
@@ -191,7 +191,7 @@ const UnsavedChangesIndicator = styled.div`
 
 const ContentArea = styled.div`
   padding: ${theme.spacing.xl};
-  
+
   @media (max-width: ${theme.breakpoints.mobile}) {
     padding: ${theme.spacing.md};
   }
@@ -215,8 +215,12 @@ const LoadingSpinner = styled.div`
   animation: spin 1s linear infinite;
 
   @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
   }
 `;
 
@@ -273,7 +277,7 @@ const BackToStoreButton = styled.button`
     color: ${theme.colors.primary};
     transform: translateY(-1px);
   }
-  
+
   @media (max-width: ${theme.breakpoints.mobile}) {
     top: ${theme.spacing.md};
     right: ${theme.spacing.md};
@@ -318,11 +322,13 @@ const SellerDashboard = () => {
 
   const handleSaveChanges = async () => {
     try {
-      const result = await dispatch(saveEcommerceData({
-        vendor,
-        hasUnsavedChanges: false
-      }));
-      
+      const result = await dispatch(
+        saveEcommerceData({
+          vendor,
+          hasUnsavedChanges: false,
+        })
+      );
+
       if (saveEcommerceData.fulfilled.match(result)) {
         // Success feedback could be added here
       }
@@ -341,7 +347,9 @@ const SellerDashboard = () => {
   };
 
   const handleDiscardChanges = () => {
-    if (window.confirm('Are you sure you want to discard all unsaved changes?')) {
+    if (
+      window.confirm('Are you sure you want to discard all unsaved changes?')
+    ) {
       dispatch(discardChanges());
     }
   };
@@ -379,7 +387,7 @@ const SellerDashboard = () => {
       'section-special-offers': 'Hot Deals',
       'section-footer': 'Footer Section',
       'section-custom': 'Custom Section',
-      'section-order': 'Section Management'
+      'section-order': 'Section Management',
     };
     return titles[activeTab] || 'Dashboard';
   };
@@ -457,7 +465,8 @@ const SellerDashboard = () => {
         <ErrorContainer>
           <ErrorTitle>Store Not Found</ErrorTitle>
           <ErrorText>
-            The store you're trying to access doesn't exist or you don't have permission to view it.
+            The store you're trying to access doesn't exist or you don't have
+            permission to view it.
           </ErrorText>
           <PreviewButton onClick={() => navigate('/ecommerce-stores')}>
             <FaShoppingBag />
@@ -493,14 +502,14 @@ const SellerDashboard = () => {
 
           <HeaderRight>
             {hasUnsavedChanges && (
-              <DiscardButton 
+              <DiscardButton
                 onClick={handleDiscardChanges}
                 disabled={saving || publishing}
               >
                 Discard
               </DiscardButton>
             )}
-            
+
             <SaveButton
               onClick={handleSaveChanges}
               disabled={!hasUnsavedChanges || saving || publishing}
@@ -519,9 +528,7 @@ const SellerDashboard = () => {
           </HeaderRight>
         </Header>
 
-        <ContentArea>
-          {renderTabContent()}
-        </ContentArea>
+        <ContentArea>{renderTabContent()}</ContentArea>
       </MainContent>
 
       <BackToStoreButton onClick={handleBackToStore}>

@@ -10,7 +10,7 @@ import {
   FaImage,
   FaSave,
   FaToggleOn,
-  FaToggleOff
+  FaToggleOff,
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
 import FormField from './shared/FormField';
@@ -18,7 +18,7 @@ import {
   selectSectionById,
   updateSectionContent,
   selectVendor,
-  selectProducts
+  selectProducts,
 } from '../../store/slices/ecommerceManagementSlice';
 
 const SectionContainer = styled.div`
@@ -111,7 +111,8 @@ const ToggleButton = styled.button.withConfig({
   cursor: pointer;
   transition: all 0.2s ease;
 
-  background: ${props => props.active ? theme.colors.success : theme.colors.gray400};
+  background: ${props =>
+    props.active ? theme.colors.success : theme.colors.gray400};
   color: ${theme.colors.white};
 
   &:hover {
@@ -136,12 +137,14 @@ const ProductGrid = styled.div`
 const ProductCard = styled.div.withConfig({
   shouldForwardProp: prop => prop !== 'selected',
 })`
-  border: 2px solid ${props => props.selected ? theme.colors.primary : theme.colors.gray200};
+  border: 2px solid
+    ${props => (props.selected ? theme.colors.primary : theme.colors.gray200)};
   border-radius: ${theme.borderRadius.md};
   padding: ${theme.spacing.md};
   cursor: pointer;
   transition: all 0.2s ease;
-  background: ${props => props.selected ? theme.colors.primary + '10' : theme.colors.white};
+  background: ${props =>
+    props.selected ? theme.colors.primary + '10' : theme.colors.white};
 
   &:hover {
     border-color: ${theme.colors.primary};
@@ -209,7 +212,7 @@ const HotDealsSectionEdit = () => {
     title: '🔥 Hot Deals',
     subtitle: 'Limited time offers on our best products',
     visible: true,
-    productIds: []
+    productIds: [],
   });
 
   const [searchTerm, setSearchTerm] = useState('');
@@ -218,9 +221,11 @@ const HotDealsSectionEdit = () => {
     if (section) {
       setSectionData({
         title: section.content?.title || '🔥 Hot Deals',
-        subtitle: section.content?.subtitle || 'Limited time offers on our best products',
+        subtitle:
+          section.content?.subtitle ||
+          'Limited time offers on our best products',
         visible: section.visible !== false,
-        productIds: section.content?.productIds || []
+        productIds: section.content?.productIds || [],
       });
     }
   }, [section]);
@@ -228,16 +233,16 @@ const HotDealsSectionEdit = () => {
   const handleInputChange = (field, value) => {
     setSectionData(prev => ({
       ...prev,
-      [field]: value
+      [field]: value,
     }));
   };
 
-  const handleProductToggle = (productId) => {
+  const handleProductToggle = productId => {
     setSectionData(prev => ({
       ...prev,
       productIds: prev.productIds.includes(productId)
         ? prev.productIds.filter(id => id !== productId)
-        : [...prev.productIds, productId]
+        : [...prev.productIds, productId],
     }));
   };
 
@@ -251,8 +256,8 @@ const HotDealsSectionEdit = () => {
       content: {
         title: sectionData.title,
         subtitle: sectionData.subtitle,
-        productIds: sectionData.productIds
-      }
+        productIds: sectionData.productIds,
+      },
     };
 
     dispatch(updateSectionContent(updatedSection));
@@ -267,14 +272,20 @@ const HotDealsSectionEdit = () => {
   const saleProducts = products?.filter(product => product.onSale) || [];
 
   // Memoize the original data to prevent infinite re-renders
-  const originalData = useMemo(() => ({
-    title: section?.content?.title || '🔥 Hot Deals',
-    subtitle: section?.content?.subtitle || 'Limited time offers on our best products',
-    visible: section?.visible !== false,
-    productIds: section?.content?.productIds || []
-  }), [section]);
+  const originalData = useMemo(
+    () => ({
+      title: section?.content?.title || '🔥 Hot Deals',
+      subtitle:
+        section?.content?.subtitle ||
+        'Limited time offers on our best products',
+      visible: section?.visible !== false,
+      productIds: section?.content?.productIds || [],
+    }),
+    [section]
+  );
 
-  const hasChanges = JSON.stringify(sectionData) !== JSON.stringify(originalData);
+  const hasChanges =
+    JSON.stringify(sectionData) !== JSON.stringify(originalData);
 
   return (
     <SectionContainer>
@@ -305,14 +316,14 @@ const HotDealsSectionEdit = () => {
           <FormField
             label="Section Title"
             value={sectionData.title}
-            onChange={(value) => handleInputChange('title', value)}
+            onChange={value => handleInputChange('title', value)}
             placeholder="🔥 Hot Deals"
           />
 
           <FormField
             label="Section Subtitle"
             value={sectionData.subtitle}
-            onChange={(value) => handleInputChange('subtitle', value)}
+            onChange={value => handleInputChange('subtitle', value)}
             placeholder="Limited time offers on our best products"
             multiline
             rows={3}
@@ -321,22 +332,37 @@ const HotDealsSectionEdit = () => {
 
         <FormSection>
           <div>
-            <h4 style={{ margin: `0 0 ${theme.spacing.md} 0`, color: theme.colors.gray900 }}>
+            <h4
+              style={{
+                margin: `0 0 ${theme.spacing.md} 0`,
+                color: theme.colors.gray900,
+              }}
+            >
               Quick Stats
             </h4>
-            <div style={{
-              background: theme.colors.gray50,
-              padding: theme.spacing.md,
-              borderRadius: theme.borderRadius.md
-            }}>
+            <div
+              style={{
+                background: theme.colors.gray50,
+                padding: theme.spacing.md,
+                borderRadius: theme.borderRadius.md,
+              }}
+            >
               <p style={{ margin: '0 0 8px 0', color: theme.colors.gray600 }}>
                 Products on Sale: <strong>{saleProducts.length}</strong>
               </p>
               <p style={{ margin: '0 0 8px 0', color: theme.colors.gray600 }}>
-                Selected for Display: <strong>{sectionData.productIds.length}</strong>
+                Selected for Display:{' '}
+                <strong>{sectionData.productIds.length}</strong>
               </p>
               <p style={{ margin: 0, color: theme.colors.gray600 }}>
-                Section Status: <strong style={{ color: sectionData.visible ? theme.colors.success : theme.colors.warning }}>
+                Section Status:{' '}
+                <strong
+                  style={{
+                    color: sectionData.visible
+                      ? theme.colors.success
+                      : theme.colors.warning,
+                  }}
+                >
                   {sectionData.visible ? 'Visible' : 'Hidden'}
                 </strong>
               </p>
@@ -346,11 +372,23 @@ const HotDealsSectionEdit = () => {
       </FormGrid>
 
       <ProductSelector>
-        <h3 style={{ margin: `0 0 ${theme.spacing.md} 0`, color: theme.colors.gray900 }}>
-          Select Products for Special Offers ({sectionData.productIds.length} selected)
+        <h3
+          style={{
+            margin: `0 0 ${theme.spacing.md} 0`,
+            color: theme.colors.gray900,
+          }}
+        >
+          Select Products for Special Offers ({sectionData.productIds.length}{' '}
+          selected)
         </h3>
-        <p style={{ margin: `0 0 ${theme.spacing.md} 0`, color: theme.colors.gray600 }}>
-          Choose which products to feature in your special offers section. Products on sale are recommended.
+        <p
+          style={{
+            margin: `0 0 ${theme.spacing.md} 0`,
+            color: theme.colors.gray600,
+          }}
+        >
+          Choose which products to feature in your special offers section.
+          Products on sale are recommended.
         </p>
 
         <ProductGrid>
@@ -365,27 +403,31 @@ const HotDealsSectionEdit = () => {
               <ProductPrice>
                 ${product.price}
                 {product.onSale && product.originalPrice && (
-                  <span style={{
-                    textDecoration: 'line-through',
-                    color: theme.colors.gray500,
-                    marginLeft: theme.spacing.xs,
-                    fontSize: '0.8rem'
-                  }}>
+                  <span
+                    style={{
+                      textDecoration: 'line-through',
+                      color: theme.colors.gray500,
+                      marginLeft: theme.spacing.xs,
+                      fontSize: '0.8rem',
+                    }}
+                  >
                     ${product.originalPrice}
                   </span>
                 )}
               </ProductPrice>
               {product.onSale && (
-                <div style={{
-                  background: theme.colors.error,
-                  color: theme.colors.white,
-                  padding: '2px 6px',
-                  borderRadius: theme.borderRadius.sm,
-                  fontSize: '0.7rem',
-                  fontWeight: 600,
-                  marginTop: theme.spacing.xs,
-                  textAlign: 'center'
-                }}>
+                <div
+                  style={{
+                    background: theme.colors.error,
+                    color: theme.colors.white,
+                    padding: '2px 6px',
+                    borderRadius: theme.borderRadius.sm,
+                    fontSize: '0.7rem',
+                    fontWeight: 600,
+                    marginTop: theme.spacing.xs,
+                    textAlign: 'center',
+                  }}
+                >
                   ON SALE
                 </div>
               )}
@@ -394,11 +436,13 @@ const HotDealsSectionEdit = () => {
         </ProductGrid>
 
         {(!products || products.length === 0) && (
-          <div style={{
-            textAlign: 'center',
-            padding: theme.spacing.xl,
-            color: theme.colors.gray500
-          }}>
+          <div
+            style={{
+              textAlign: 'center',
+              padding: theme.spacing.xl,
+              color: theme.colors.gray500,
+            }}
+          >
             <FaImage size={48} style={{ marginBottom: theme.spacing.md }} />
             <p>No products available. Add some products first.</p>
           </div>

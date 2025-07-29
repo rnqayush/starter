@@ -336,7 +336,7 @@ const SellerSidebar = ({
   vendor,
   hasUnsavedChanges,
   onSave,
-  onDiscard
+  onDiscard,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -410,7 +410,12 @@ const SellerSidebar = ({
                 <img
                   src={vendor.businessInfo.logo}
                   alt={vendor?.name || 'Store'}
-                  style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 'inherit' }}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    borderRadius: 'inherit',
+                  }}
                 />
               ) : (
                 <FaStore />
@@ -418,7 +423,11 @@ const SellerSidebar = ({
             </StoreLogo>
             <StoreInfo>
               <StoreName>{vendor?.name || 'My Store'}</StoreName>
-              <StoreType>{vendor?.category === 'ecommerce' ? 'Ecommerce Store' : 'Premium Seller'}</StoreType>
+              <StoreType>
+                {vendor?.category === 'ecommerce'
+                  ? 'Ecommerce Store'
+                  : 'Premium Seller'}
+              </StoreType>
             </StoreInfo>
           </StoreBranding>
 
@@ -427,14 +436,34 @@ const SellerSidebar = ({
               <FaUser />
             </ProfileAvatar>
             <ProfileInfo>
-              <ProfileName>{vendor?.ownerInfo?.name || 'Store Owner'}</ProfileName>
+              <ProfileName>
+                {vendor?.ownerInfo?.name || 'Store Owner'}
+              </ProfileName>
               <ProfileRole>Store Manager</ProfileRole>
             </ProfileInfo>
           </SellerProfile>
 
           {hasUnsavedChanges && (
-            <div style={{ marginTop: '1rem', padding: '0.75rem', background: '#fef3c7', borderRadius: '0.5rem', borderLeft: '4px solid #f59e0b' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem', color: '#92400e', fontSize: '0.875rem', fontWeight: '500' }}>
+            <div
+              style={{
+                marginTop: '1rem',
+                padding: '0.75rem',
+                background: '#fef3c7',
+                borderRadius: '0.5rem',
+                borderLeft: '4px solid #f59e0b',
+              }}
+            >
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  marginBottom: '0.75rem',
+                  color: '#92400e',
+                  fontSize: '0.875rem',
+                  fontWeight: '500',
+                }}
+              >
                 <FaExclamationTriangle />
                 Unsaved Changes
               </div>
@@ -454,7 +483,7 @@ const SellerSidebar = ({
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    gap: '0.25rem'
+                    gap: '0.25rem',
                   }}
                 >
                   <FaSave />
@@ -475,7 +504,7 @@ const SellerSidebar = ({
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    gap: '0.25rem'
+                    gap: '0.25rem',
                   }}
                 >
                   <FaUndo />
@@ -503,8 +532,6 @@ const SellerSidebar = ({
             </NavSection>
           ))}
         </Navigation>
-
-
       </SidebarContainer>
     </>
   );

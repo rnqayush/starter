@@ -34,7 +34,9 @@ const FeaturedSectionEdit = () => {
         Featured Products Section
       </SectionTitle>
       <PlaceholderText>
-        Featured products section management will be implemented here. This will allow you to select specific products to feature and configure the section appearance.
+        Featured products section management will be implemented here. This will
+        allow you to select specific products to feature and configure the
+        section appearance.
       </PlaceholderText>
     </SectionContainer>
   );

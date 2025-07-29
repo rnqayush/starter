@@ -349,7 +349,9 @@ const SectionOrderEdit = ({ store }) => {
             How to use Section Order Management:
           </InstructionsTitle>
           <InstructionsList>
-            <li>Use the up/down arrows to reorder sections on your store page</li>
+            <li>
+              Use the up/down arrows to reorder sections on your store page
+            </li>
             <li>Click the eye icon to show/hide sections</li>
             <li>The order number shows the current position</li>
             <li>Changes are tracked in real-time and reflected immediately</li>

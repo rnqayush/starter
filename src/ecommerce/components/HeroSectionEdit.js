@@ -7,7 +7,7 @@ import FormField from './shared/FormField';
 import {
   selectSectionById,
   updateSectionContent,
-  selectVendor
+  selectVendor,
 } from '../../store/slices/ecommerceManagementSlice';
 
 const SectionContainer = styled.div`
@@ -94,7 +94,7 @@ const ImageUploadText = styled.p`
 
 const CurrentImagePreview = styled.div`
   margin-top: ${theme.spacing.md};
-  
+
   img {
     max-width: 100%;
     max-height: 200px;
@@ -113,7 +113,7 @@ const HeroSectionEdit = () => {
     subtitle: '',
     backgroundImage: '',
     primaryButtonText: '',
-    secondaryButtonText: ''
+    secondaryButtonText: '',
   });
 
   useEffect(() => {
@@ -121,9 +121,18 @@ const HeroSectionEdit = () => {
       setFormData({
         title: heroSection.title || heroSection.content?.title || '',
         subtitle: heroSection.subtitle || heroSection.content?.subtitle || '',
-        backgroundImage: heroSection.backgroundImage || heroSection.content?.backgroundImage || '',
-        primaryButtonText: heroSection.primaryButtonText || heroSection.content?.primaryButtonText || 'Shop Products',
-        secondaryButtonText: heroSection.secondaryButtonText || heroSection.content?.secondaryButtonText || 'Browse Categories'
+        backgroundImage:
+          heroSection.backgroundImage ||
+          heroSection.content?.backgroundImage ||
+          '',
+        primaryButtonText:
+          heroSection.primaryButtonText ||
+          heroSection.content?.primaryButtonText ||
+          'Shop Products',
+        secondaryButtonText:
+          heroSection.secondaryButtonText ||
+          heroSection.content?.secondaryButtonText ||
+          'Browse Categories',
       });
     }
   }, [heroSection]);
@@ -131,19 +140,21 @@ const HeroSectionEdit = () => {
   const handleInputChange = (field, value) => {
     setFormData(prev => ({
       ...prev,
-      [field]: value
+      [field]: value,
     }));
 
     // Update Redux state
-    dispatch(updateSectionContent({
-      sectionId: 'hero',
-      contentUpdates: {
-        [field]: value
-      }
-    }));
+    dispatch(
+      updateSectionContent({
+        sectionId: 'hero',
+        contentUpdates: {
+          [field]: value,
+        },
+      })
+    );
   };
 
-  const handleImageUpload = (event) => {
+  const handleImageUpload = event => {
     const file = event.target.files[0];
     if (file) {
       // In a real app, this would upload to a cloud service
@@ -177,7 +188,7 @@ const HeroSectionEdit = () => {
           label="Hero Title"
           type="text"
           value={formData.title}
-          onChange={(value) => handleInputChange('title', value)}
+          onChange={value => handleInputChange('title', value)}
           placeholder="Welcome to Your Store"
           required
         />
@@ -195,7 +206,7 @@ const HeroSectionEdit = () => {
             label="Hero Subtitle"
             type="textarea"
             value={formData.subtitle}
-            onChange={(value) => handleInputChange('subtitle', value)}
+            onChange={value => handleInputChange('subtitle', value)}
             placeholder="Brief description of your store and what you offer..."
             rows={3}
           />
@@ -205,7 +216,7 @@ const HeroSectionEdit = () => {
           label="Primary Button Text"
           type="text"
           value={formData.primaryButtonText}
-          onChange={(value) => handleInputChange('primaryButtonText', value)}
+          onChange={value => handleInputChange('primaryButtonText', value)}
           placeholder="Shop Products"
         />
 
@@ -213,13 +224,17 @@ const HeroSectionEdit = () => {
           label="Secondary Button Text"
           type="text"
           value={formData.secondaryButtonText}
-          onChange={(value) => handleInputChange('secondaryButtonText', value)}
+          onChange={value => handleInputChange('secondaryButtonText', value)}
           placeholder="Browse Categories"
         />
 
         <FullWidthField>
           <FormField label="Background Image" required>
-            <ImageUploadContainer onClick={() => document.getElementById('hero-image-upload').click()}>
+            <ImageUploadContainer
+              onClick={() =>
+                document.getElementById('hero-image-upload').click()
+              }
+            >
               <FaImage size={24} color={theme.colors.gray400} />
               <ImageUploadText>
                 Click to upload hero background image
@@ -232,11 +247,11 @@ const HeroSectionEdit = () => {
                 style={{ display: 'none' }}
               />
             </ImageUploadContainer>
-            
+
             {formData.backgroundImage && (
               <CurrentImagePreview>
-                <img 
-                  src={formData.backgroundImage} 
+                <img
+                  src={formData.backgroundImage}
                   alt="Hero background preview"
                 />
               </CurrentImagePreview>

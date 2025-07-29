@@ -96,11 +96,13 @@ const ToggleButton = styled.button.withConfig({
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
-  background: ${props => (props.active ? theme.colors.success : theme.colors.gray300)};
+  background: ${props =>
+    props.active ? theme.colors.success : theme.colors.gray300};
   color: ${props => (props.active ? theme.colors.white : theme.colors.gray600)};
 
   &:hover {
-    background: ${props => (props.active ? theme.colors.successDark : theme.colors.gray400)};
+    background: ${props =>
+      props.active ? theme.colors.successDark : theme.colors.gray400};
   }
 `;
 
@@ -250,14 +252,16 @@ const ProductCard = styled.div.withConfig({
   shouldForwardProp: prop => prop !== 'selected',
 })`
   background: ${theme.colors.white};
-  border: 2px solid ${props => (props.selected ? theme.colors.success : theme.colors.gray200)};
+  border: 2px solid
+    ${props => (props.selected ? theme.colors.success : theme.colors.gray200)};
   border-radius: ${theme.borderRadius.md};
   padding: ${theme.spacing.md};
   cursor: pointer;
   transition: all 0.2s ease;
 
   &:hover {
-    border-color: ${props => (props.selected ? theme.colors.successDark : theme.colors.primary)};
+    border-color: ${props =>
+      props.selected ? theme.colors.successDark : theme.colors.primary};
     transform: translateY(-2px);
     box-shadow: ${theme.shadows.md};
   }
@@ -305,7 +309,7 @@ const HotDealsSectionEdit = () => {
     title: '🔥 Hot Deals',
     subtitle: 'Limited time offers on our best products',
     visible: true,
-    productIds: []
+    productIds: [],
   });
 
   const [searchTerm, setSearchTerm] = useState('');
@@ -314,9 +318,11 @@ const HotDealsSectionEdit = () => {
     if (section) {
       setSectionData({
         title: section.content?.title || '🔥 Hot Deals',
-        subtitle: section.content?.subtitle || 'Limited time offers on our best products',
+        subtitle:
+          section.content?.subtitle ||
+          'Limited time offers on our best products',
         visible: section.visible !== false,
-        productIds: section.content?.productIds || []
+        productIds: section.content?.productIds || [],
       });
     }
   }, [section]);
@@ -324,19 +330,21 @@ const HotDealsSectionEdit = () => {
   const handleInputChange = (field, value) => {
     setSectionData(prev => ({
       ...prev,
-      [field]: value
+      [field]: value,
     }));
 
     // Update Redux state immediately for change tracking
-    dispatch(updateSectionContent({
-      sectionId: 'special-offers',
-      contentUpdates: {
-        [field]: value
-      }
-    }));
+    dispatch(
+      updateSectionContent({
+        sectionId: 'special-offers',
+        contentUpdates: {
+          [field]: value,
+        },
+      })
+    );
   };
 
-  const handleProductToggle = (productId) => {
+  const handleProductToggle = productId => {
     const isSelected = sectionData.productIds.includes(productId);
     const newProductIds = isSelected
       ? sectionData.productIds.filter(id => id !== productId)
@@ -354,20 +362,21 @@ const HotDealsSectionEdit = () => {
   // Filter products based on search term
   const filteredProducts = useMemo(() => {
     if (!searchTerm.trim()) return products || [];
-    
+
     const search = searchTerm.toLowerCase();
-    return (products || []).filter(product => 
-      product.name.toLowerCase().includes(search) ||
-      product.category?.toLowerCase().includes(search) ||
-      product.pricing?.price?.toString().includes(search)
+    return (products || []).filter(
+      product =>
+        product.name.toLowerCase().includes(search) ||
+        product.category?.toLowerCase().includes(search) ||
+        product.pricing?.price?.toString().includes(search)
     );
   }, [products, searchTerm]);
 
   // Get selected products for display
   const selectedProducts = useMemo(() => {
-    return sectionData.productIds.map(id => 
-      products?.find(p => p.id === id)
-    ).filter(Boolean);
+    return sectionData.productIds
+      .map(id => products?.find(p => p.id === id))
+      .filter(Boolean);
   }, [sectionData.productIds, products]);
 
   return (
@@ -399,14 +408,14 @@ const HotDealsSectionEdit = () => {
           <FormField
             label="Section Title"
             value={sectionData.title}
-            onChange={(value) => handleInputChange('title', value)}
+            onChange={value => handleInputChange('title', value)}
             placeholder="🔥 Hot Deals"
           />
 
           <FormField
             label="Section Subtitle"
             value={sectionData.subtitle}
-            onChange={(value) => handleInputChange('subtitle', value)}
+            onChange={value => handleInputChange('subtitle', value)}
             placeholder="Limited time offers on our best products"
             multiline
             rows={3}
@@ -423,9 +432,9 @@ const HotDealsSectionEdit = () => {
               {selectedProducts.map(product => (
                 <SelectedProductItem key={product.id}>
                   <ProductInfo>
-                    <ProductImage 
-                      src={product.images?.[0] || '/placeholder-product.jpg'} 
-                      alt={product.name} 
+                    <ProductImage
+                      src={product.images?.[0] || '/placeholder-product.jpg'}
+                      alt={product.name}
                     />
                     <ProductDetails>
                       <ProductName>{product.name}</ProductName>
@@ -453,7 +462,7 @@ const HotDealsSectionEdit = () => {
               type="text"
               placeholder="Search products by name, category, or price..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={e => setSearchTerm(e.target.value)}
             />
           </SearchInputContainer>
 
@@ -466,14 +475,16 @@ const HotDealsSectionEdit = () => {
                   selected={isSelected}
                   onClick={() => handleProductToggle(product.id)}
                 >
-                  <ProductCardImage 
-                    src={product.images?.[0] || '/placeholder-product.jpg'} 
-                    alt={product.name} 
+                  <ProductCardImage
+                    src={product.images?.[0] || '/placeholder-product.jpg'}
+                    alt={product.name}
                   />
                   <ProductCardName>{product.name}</ProductCardName>
                   <ProductCardPrice>${product.pricing?.price}</ProductCardPrice>
                   {product.category && (
-                    <ProductCardCategory>{product.category}</ProductCardCategory>
+                    <ProductCardCategory>
+                      {product.category}
+                    </ProductCardCategory>
                   )}
                 </ProductCard>
               );
@@ -481,11 +492,13 @@ const HotDealsSectionEdit = () => {
           </ProductsGrid>
 
           {filteredProducts.length === 0 && searchTerm && (
-            <div style={{
-              textAlign: 'center',
-              padding: theme.spacing.xl,
-              color: theme.colors.gray500
-            }}>
+            <div
+              style={{
+                textAlign: 'center',
+                padding: theme.spacing.xl,
+                color: theme.colors.gray500,
+              }}
+            >
               No products found matching "{searchTerm}"
             </div>
           )}

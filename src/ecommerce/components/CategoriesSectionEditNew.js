@@ -95,11 +95,13 @@ const ToggleButton = styled.button.withConfig({
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
-  background: ${props => (props.active ? theme.colors.success : theme.colors.gray300)};
+  background: ${props =>
+    props.active ? theme.colors.success : theme.colors.gray300};
   color: ${props => (props.active ? theme.colors.white : theme.colors.gray600)};
 
   &:hover {
-    background: ${props => (props.active ? theme.colors.successDark : theme.colors.gray400)};
+    background: ${props =>
+      props.active ? theme.colors.successDark : theme.colors.gray400};
   }
 `;
 
@@ -143,13 +145,16 @@ const CategoryItem = styled.div.withConfig({
   align-items: center;
   justify-content: space-between;
   padding: ${theme.spacing.md};
-  background: ${props => (props.visible ? theme.colors.white : theme.colors.gray50)};
-  border: 2px solid ${props => (props.visible ? theme.colors.success : theme.colors.gray200)};
+  background: ${props =>
+    props.visible ? theme.colors.white : theme.colors.gray50};
+  border: 2px solid
+    ${props => (props.visible ? theme.colors.success : theme.colors.gray200)};
   border-radius: ${theme.borderRadius.md};
   transition: all 0.2s ease;
 
   &:hover {
-    border-color: ${props => (props.visible ? theme.colors.successDark : theme.colors.gray300)};
+    border-color: ${props =>
+      props.visible ? theme.colors.successDark : theme.colors.gray300};
   }
 `;
 
@@ -199,15 +204,17 @@ const OrderButton = styled.button.withConfig({
   justify-content: center;
   width: 32px;
   height: 32px;
-  background: ${props => (props.disabled ? theme.colors.gray200 : theme.colors.primary)};
-  color: ${props => (props.disabled ? theme.colors.gray400 : theme.colors.white)};
+  background: ${props =>
+    props.disabled ? theme.colors.gray200 : theme.colors.primary};
+  color: ${props =>
+    props.disabled ? theme.colors.gray400 : theme.colors.white};
   border: none;
   border-radius: ${theme.borderRadius.sm};
   cursor: ${props => (props.disabled ? 'not-allowed' : 'pointer')};
   transition: all 0.2s ease;
 
   &:hover {
-    background: ${props => 
+    background: ${props =>
       props.disabled ? theme.colors.gray200 : theme.colors.primaryDark};
   }
 `;
@@ -224,12 +231,14 @@ const VisibilityButton = styled.button.withConfig({
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
-  background: ${props => (props.visible ? theme.colors.success : theme.colors.gray400)};
+  background: ${props =>
+    props.visible ? theme.colors.success : theme.colors.gray400};
   color: ${theme.colors.white};
   font-size: 0.8rem;
 
   &:hover {
-    background: ${props => (props.visible ? theme.colors.successDark : theme.colors.gray500)};
+    background: ${props =>
+      props.visible ? theme.colors.successDark : theme.colors.gray500};
   }
 `;
 
@@ -243,22 +252,26 @@ const CategoriesSectionEdit = () => {
     title: 'Shop by Category',
     subtitle: 'Explore our diverse range of products',
     visible: true,
-    visibleCategories: []
+    visibleCategories: [],
   });
 
   useEffect(() => {
     if (section) {
       setSectionData({
         title: section.content?.title || 'Shop by Category',
-        subtitle: section.content?.subtitle || 'Explore our diverse range of products',
+        subtitle:
+          section.content?.subtitle || 'Explore our diverse range of products',
         visible: section.visible !== false,
-        visibleCategories: section.content?.visibleCategories || categories?.map(cat => cat.id) || []
+        visibleCategories:
+          section.content?.visibleCategories ||
+          categories?.map(cat => cat.id) ||
+          [],
       });
     } else if (categories?.length > 0) {
       // Initialize with all categories visible if no section data exists
       setSectionData(prev => ({
         ...prev,
-        visibleCategories: categories.map(cat => cat.id)
+        visibleCategories: categories.map(cat => cat.id),
       }));
     }
   }, [section, categories]);
@@ -266,19 +279,21 @@ const CategoriesSectionEdit = () => {
   const handleInputChange = (field, value) => {
     setSectionData(prev => ({
       ...prev,
-      [field]: value
+      [field]: value,
     }));
 
     // Update Redux state immediately for change tracking
-    dispatch(updateSectionContent({
-      sectionId: 'categories',
-      contentUpdates: {
-        [field]: value
-      }
-    }));
+    dispatch(
+      updateSectionContent({
+        sectionId: 'categories',
+        contentUpdates: {
+          [field]: value,
+        },
+      })
+    );
   };
 
-  const handleCategoryVisibilityToggle = (categoryId) => {
+  const handleCategoryVisibilityToggle = categoryId => {
     const isVisible = sectionData.visibleCategories.includes(categoryId);
     const newVisibleCategories = isVisible
       ? sectionData.visibleCategories.filter(id => id !== categoryId)
@@ -292,10 +307,14 @@ const CategoriesSectionEdit = () => {
     if (currentIndex === -1) return;
 
     const newIndex = direction === 'up' ? currentIndex - 1 : currentIndex + 1;
-    if (newIndex < 0 || newIndex >= sectionData.visibleCategories.length) return;
+    if (newIndex < 0 || newIndex >= sectionData.visibleCategories.length)
+      return;
 
     const newOrder = [...sectionData.visibleCategories];
-    [newOrder[currentIndex], newOrder[newIndex]] = [newOrder[newIndex], newOrder[currentIndex]];
+    [newOrder[currentIndex], newOrder[newIndex]] = [
+      newOrder[newIndex],
+      newOrder[currentIndex],
+    ];
 
     handleInputChange('visibleCategories', newOrder);
   };
@@ -311,7 +330,9 @@ const CategoriesSectionEdit = () => {
     .map(id => categories?.find(cat => cat.id === id))
     .filter(Boolean)
     .concat(
-      (categories || []).filter(cat => !sectionData.visibleCategories.includes(cat.id))
+      (categories || []).filter(
+        cat => !sectionData.visibleCategories.includes(cat.id)
+      )
     );
 
   return (
@@ -343,14 +364,14 @@ const CategoriesSectionEdit = () => {
           <FormField
             label="Section Title"
             value={sectionData.title}
-            onChange={(value) => handleInputChange('title', value)}
+            onChange={value => handleInputChange('title', value)}
             placeholder="Shop by Category"
           />
 
           <FormField
             label="Section Subtitle"
             value={sectionData.subtitle}
-            onChange={(value) => handleInputChange('subtitle', value)}
+            onChange={value => handleInputChange('subtitle', value)}
             placeholder="Explore our diverse range of products"
           />
         </FormGrid>
@@ -359,26 +380,32 @@ const CategoriesSectionEdit = () => {
           <SectionSubtitle>
             Category Management ({sectionData.visibleCategories.length} visible)
           </SectionSubtitle>
-          <p style={{ 
-            color: theme.colors.gray600, 
-            fontSize: '0.9rem', 
-            marginBottom: theme.spacing.md 
-          }}>
-            Manage which categories appear in your store and their display order. 
-            Drag categories to reorder them or toggle visibility.
+          <p
+            style={{
+              color: theme.colors.gray600,
+              fontSize: '0.9rem',
+              marginBottom: theme.spacing.md,
+            }}
+          >
+            Manage which categories appear in your store and their display
+            order. Drag categories to reorder them or toggle visibility.
           </p>
 
           <CategoriesList>
             {orderedCategories.map((category, index) => {
-              const isVisible = sectionData.visibleCategories.includes(category.id);
-              const visibleIndex = sectionData.visibleCategories.indexOf(category.id);
-              
+              const isVisible = sectionData.visibleCategories.includes(
+                category.id
+              );
+              const visibleIndex = sectionData.visibleCategories.indexOf(
+                category.id
+              );
+
               return (
                 <CategoryItem key={category.id} visible={isVisible}>
                   <CategoryInfo>
-                    <CategoryImage 
-                      src={category.image || '/placeholder-category.jpg'} 
-                      alt={category.name} 
+                    <CategoryImage
+                      src={category.image || '/placeholder-category.jpg'}
+                      alt={category.name}
                     />
                     <CategoryDetails>
                       <CategoryName>{category.name}</CategoryName>
@@ -400,7 +427,10 @@ const CategoriesSectionEdit = () => {
                         </OrderButton>
                         <OrderButton
                           onClick={() => moveCategoryOrder(category.id, 'down')}
-                          disabled={visibleIndex === sectionData.visibleCategories.length - 1}
+                          disabled={
+                            visibleIndex ===
+                            sectionData.visibleCategories.length - 1
+                          }
                           title="Move down"
                         >
                           <FaArrowDown />
@@ -409,7 +439,9 @@ const CategoriesSectionEdit = () => {
                     )}
                     <VisibilityButton
                       visible={isVisible}
-                      onClick={() => handleCategoryVisibilityToggle(category.id)}
+                      onClick={() =>
+                        handleCategoryVisibilityToggle(category.id)
+                      }
                     >
                       {isVisible ? 'Hide' : 'Show'}
                     </VisibilityButton>
@@ -420,13 +452,16 @@ const CategoriesSectionEdit = () => {
           </CategoriesList>
 
           {(!categories || categories.length === 0) && (
-            <div style={{
-              textAlign: 'center',
-              padding: theme.spacing.xl,
-              color: theme.colors.gray500,
-              fontStyle: 'italic'
-            }}>
-              No categories found. Add categories in the Category Management section first.
+            <div
+              style={{
+                textAlign: 'center',
+                padding: theme.spacing.xl,
+                color: theme.colors.gray500,
+                fontStyle: 'italic',
+              }}
+            >
+              No categories found. Add categories in the Category Management
+              section first.
             </div>
           )}
         </CategoriesSection>

@@ -258,7 +258,7 @@ const ResultCard = styled.div.withConfig({
   border-radius: ${theme.borderRadius.md};
   text-align: center;
   border: 1px solid;
-  
+
   ${props => {
     switch (props.type) {
       case 'success':
@@ -321,7 +321,7 @@ const InfoList = styled.ul`
   margin: 0;
   padding-left: ${theme.spacing.lg};
   color: ${theme.colors.gray700};
-  
+
   li {
     margin-bottom: ${theme.spacing.xs};
     line-height: 1.5;
@@ -336,7 +336,7 @@ const BulkImportTab = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const fileInputRef = useRef(null);
 
-  const handleFileSelect = (file) => {
+  const handleFileSelect = file => {
     if (file && file.type === 'text/csv') {
       setSelectedFile(file);
     } else {
@@ -344,19 +344,19 @@ const BulkImportTab = () => {
     }
   };
 
-  const handleDrop = (e) => {
+  const handleDrop = e => {
     e.preventDefault();
     e.stopPropagation();
     const file = e.dataTransfer.files[0];
     handleFileSelect(file);
   };
 
-  const handleDragOver = (e) => {
+  const handleDragOver = e => {
     e.preventDefault();
     e.stopPropagation();
   };
 
-  const handleFileInputChange = (e) => {
+  const handleFileInputChange = e => {
     const file = e.target.files[0];
     handleFileSelect(file);
   };
@@ -376,7 +376,7 @@ const BulkImportTab = () => {
             total: 150,
             successful: 145,
             failed: 3,
-            skipped: 2
+            skipped: 2,
           });
           return 100;
         }
@@ -398,7 +398,7 @@ const BulkImportTab = () => {
     const csvContent = [
       'name,description,price,category,sku,stock,image_url',
       'Sample Product 1,High-quality product description,29.99,electronics,SKU001,100,https://example.com/image1.jpg',
-      'Sample Product 2,Another great product,49.99,fashion,SKU002,50,https://example.com/image2.jpg'
+      'Sample Product 2,Another great product,49.99,fashion,SKU002,50,https://example.com/image2.jpg',
     ].join('\n');
 
     const blob = new Blob([csvContent], { type: 'text/csv' });
@@ -474,7 +474,13 @@ const BulkImportTab = () => {
             </ResultCard>
           </ResultsContainer>
 
-          <div style={{ marginTop: theme.spacing.xl, display: 'flex', gap: theme.spacing.md }}>
+          <div
+            style={{
+              marginTop: theme.spacing.xl,
+              display: 'flex',
+              gap: theme.spacing.md,
+            }}
+          >
             <ActionButton variant="primary" onClick={resetUpload}>
               <FaUpload />
               Import More Products
@@ -497,7 +503,8 @@ const BulkImportTab = () => {
           Bulk Product Import
         </Title>
         <Description>
-          Import multiple products at once using a CSV file. Save time by uploading hundreds of products in seconds.
+          Import multiple products at once using a CSV file. Save time by
+          uploading hundreds of products in seconds.
         </Description>
       </Header>
 
@@ -509,7 +516,9 @@ const BulkImportTab = () => {
           </InfoHeader>
           <InfoList>
             <li>Download the CSV template to see the required format</li>
-            <li>Include all required fields: name, price, category, and stock</li>
+            <li>
+              Include all required fields: name, price, category, and stock
+            </li>
             <li>Image URLs should be publicly accessible</li>
             <li>Maximum file size: 10MB</li>
             <li>Maximum products per import: 1000</li>
@@ -566,14 +575,19 @@ const BulkImportTab = () => {
             {selectedFile ? selectedFile.name : 'Drop your CSV file here'}
           </UploadText>
           <UploadSubtext>
-            {selectedFile 
+            {selectedFile
               ? `File size: ${(selectedFile.size / 1024).toFixed(1)} KB`
-              : 'or click to browse and select a file'
-            }
+              : 'or click to browse and select a file'}
           </UploadSubtext>
-          
-          <div style={{ display: 'flex', gap: theme.spacing.md, justifyContent: 'center' }}>
-            <ActionButton 
+
+          <div
+            style={{
+              display: 'flex',
+              gap: theme.spacing.md,
+              justifyContent: 'center',
+            }}
+          >
+            <ActionButton
               variant="primary"
               onClick={() => fileInputRef.current?.click()}
               style={{ maxWidth: '200px' }}
@@ -581,9 +595,9 @@ const BulkImportTab = () => {
               <FaUpload />
               Choose File
             </ActionButton>
-            
+
             {selectedFile && (
-              <ActionButton 
+              <ActionButton
                 variant="primary"
                 onClick={simulateImport}
                 style={{ maxWidth: '200px' }}
@@ -593,7 +607,7 @@ const BulkImportTab = () => {
               </ActionButton>
             )}
           </div>
-          
+
           <FileInput
             ref={fileInputRef}
             type="file"
@@ -609,10 +623,20 @@ const BulkImportTab = () => {
               File Ready for Import
             </InfoHeader>
             <InfoList>
-              <li><strong>File:</strong> {selectedFile.name}</li>
-              <li><strong>Size:</strong> {(selectedFile.size / 1024).toFixed(1)} KB</li>
-              <li><strong>Type:</strong> {selectedFile.type}</li>
-              <li><strong>Modified:</strong> {new Date(selectedFile.lastModified).toLocaleDateString()}</li>
+              <li>
+                <strong>File:</strong> {selectedFile.name}
+              </li>
+              <li>
+                <strong>Size:</strong> {(selectedFile.size / 1024).toFixed(1)}{' '}
+                KB
+              </li>
+              <li>
+                <strong>Type:</strong> {selectedFile.type}
+              </li>
+              <li>
+                <strong>Modified:</strong>{' '}
+                {new Date(selectedFile.lastModified).toLocaleDateString()}
+              </li>
             </InfoList>
           </InfoCard>
         )}

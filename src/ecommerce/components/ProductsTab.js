@@ -369,10 +369,15 @@ const ProductsTab = () => {
                 <TableCell>
                   <ProductInfo>
                     <ProductImage
-                      src={product.media?.mainImage || product.image || 'https://via.placeholder.com/80x80?text=No+Image'}
+                      src={
+                        product.media?.mainImage ||
+                        product.image ||
+                        'https://via.placeholder.com/80x80?text=No+Image'
+                      }
                       alt={product.name}
-                      onError={(e) => {
-                        e.target.src = 'https://via.placeholder.com/80x80?text=No+Image';
+                      onError={e => {
+                        e.target.src =
+                          'https://via.placeholder.com/80x80?text=No+Image';
                       }}
                     />
                     <ProductDetails>
@@ -382,11 +387,20 @@ const ProductsTab = () => {
                   </ProductInfo>
                 </TableCell>
                 <TableCell>
-                  <Price>{formatCurrency(product.pricing?.price || product.price || 0)}</Price>
+                  <Price>
+                    {formatCurrency(
+                      product.pricing?.price || product.price || 0
+                    )}
+                  </Price>
                 </TableCell>
                 <TableCell>
                   <StockInfo>
-                    <StockNumber low={(product.availability?.quantity || product.stock || 0) < 10}>
+                    <StockNumber
+                      low={
+                        (product.availability?.quantity || product.stock || 0) <
+                        10
+                      }
+                    >
                       {product.availability?.quantity || product.stock || 0}
                     </StockNumber>
                     <StockLabel>in stock</StockLabel>
@@ -394,12 +408,24 @@ const ProductsTab = () => {
                 </TableCell>
                 <TableCell>{product.sold || 0}</TableCell>
                 <TableCell>
-                  <StatusBadge status={product.availability?.status || product.status || 'active'}>
-                    {getStatusText(product.availability?.status || product.status || 'active')}
+                  <StatusBadge
+                    status={
+                      product.availability?.status || product.status || 'active'
+                    }
+                  >
+                    {getStatusText(
+                      product.availability?.status || product.status || 'active'
+                    )}
                   </StatusBadge>
                 </TableCell>
                 <TableCell>
-                  <Price>{formatCurrency(product.revenue || (product.pricing?.price || product.price || 0) * (product.sold || 0))}</Price>
+                  <Price>
+                    {formatCurrency(
+                      product.revenue ||
+                        (product.pricing?.price || product.price || 0) *
+                          (product.sold || 0)
+                    )}
+                  </Price>
                 </TableCell>
                 <TableCell>
                   <ActionButtons>
