@@ -348,7 +348,8 @@ const SectionOrderEdit = ({ dealer }) => {
             <li>Use the up/down arrows to reorder sections on your website</li>
             <li>Click the eye icon to show/hide sections</li>
             <li>The order number shows the current position</li>
-            <li>Don't forget to "Save & Go Public" to make changes live</li>
+            <li>Changes are tracked in real-time and reflected immediately</li>
+            <li>Use the sidebar "Save Changes" to publish all modifications</li>
           </InstructionsList>
         </Instructions>
 
