@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation, useNavigate, Link, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import styled, { createGlobalStyle } from 'styled-components';
-import { FaArrowRight, FaShoppingBag, FaHome } from 'react-icons/fa';
+import { FaArrowRight, FaShoppingBag, FaHome, FaSpinner } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -9,19 +10,26 @@ import ProductCard from '../components/ProductCard';
 import CategoryCard from '../components/CategoryCard';
 import BackToTop from '../components/BackToTop';
 import {
-  ecommerceCategories as categories,
-  getFeaturedProducts,
-  getOnSaleProducts,
-  getEcommerceVendorByIdOrSlug as getVendorByIdOrSlug,
-} from '../../DummyData';
+  fetchEcommerceData,
+  selectVendor,
+  selectCategories,
+  selectProducts,
+  selectFeaturedProducts,
+  selectOnSaleProducts,
+  selectLoading,
+  selectError,
+  selectPageSections,
+  selectHasUnsavedChanges,
+  clearError,
+} from '../../store/slices/ecommerceManagementSlice';
 
 // Dynamic theme styles that override global styles
 const DynamicGlobalStyle = createGlobalStyle`
   :root {
-    --vendor-primary: ${props => props.primaryColor || theme.colors.primary};
-    --vendor-secondary: ${props => props.secondaryColor || theme.colors.secondary};
-    --vendor-background: ${props => props.backgroundColor || theme.colors.gray50};
-    --vendor-text: ${props => props.textColor || theme.colors.gray900};
+    --store-primary: ${props => props.primaryColor || theme.colors.primary};
+    --store-secondary: ${props => props.secondaryColor || theme.colors.secondary};
+    --store-background: ${props => props.backgroundColor || theme.colors.gray50};
+    --store-text: ${props => props.textColor || theme.colors.gray900};
   }
 `;
 
@@ -32,6 +40,83 @@ const PageContainer = styled.div.withConfig({
   display: flex;
   flex-direction: column;
   background: ${props => props.backgroundColor || theme.colors.gray50};
+`;
+
+const LoadingContainer = styled.div`
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: ${theme.colors.gray50};
+  gap: ${theme.spacing.lg};
+`;
+
+const LoadingSpinner = styled.div`
+  width: 60px;
+  height: 60px;
+  border: 4px solid ${theme.colors.gray200};
+  border-top: 4px solid ${theme.colors.primary};
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+`;
+
+const LoadingText = styled.p`
+  font-size: 1.2rem;
+  color: ${theme.colors.gray600};
+  text-align: center;
+`;
+
+const ErrorContainer = styled.div`
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: ${theme.colors.gray50};
+  padding: ${theme.spacing.xl};
+  text-align: center;
+`;
+
+const ErrorTitle = styled.h1`
+  font-size: 2.5rem;
+  color: ${theme.colors.red600};
+  margin-bottom: ${theme.spacing.md};
+`;
+
+const ErrorText = styled.p`
+  font-size: 1.1rem;
+  color: ${theme.colors.gray600};
+  margin-bottom: ${theme.spacing.xl};
+  max-width: 500px;
+`;
+
+const ErrorButton = styled.button`
+  background: ${theme.colors.primary};
+  color: ${theme.colors.white};
+  padding: ${theme.spacing.md} ${theme.spacing.xl};
+  border: none;
+  border-radius: ${theme.borderRadius.md};
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.sm};
+
+  &:hover {
+    background: ${theme.colors.primaryDark};
+    transform: translateY(-1px);
+  }
 `;
 
 const HeroSection = styled.section.withConfig({
@@ -49,7 +134,7 @@ const HeroSection = styled.section.withConfig({
   background-position: center;
   background-attachment: fixed;
   color: ${theme.colors.white};
-  padding: ${theme.spacing.xl} 0;
+  padding: ${theme.spacing.xxl} 0;
   text-align: center;
   position: relative;
   overflow: hidden;
@@ -71,7 +156,6 @@ const HeroSection = styled.section.withConfig({
   @media (max-width: ${theme.breakpoints.mobile}) {
     min-height: 100vh;
     background-attachment: scroll;
-    padding: ${theme.spacing.lg} 0;
   }
 `;
 
@@ -99,10 +183,10 @@ const StoreHeader = styled.div`
 `;
 
 const StoreLogo = styled.img`
-  width: 80px;
-  height: 80px;
+  width: 120px;
+  height: 120px;
   border-radius: ${theme.borderRadius.xl};
-  border: 3px solid ${theme.colors.white};
+  border: 4px solid ${theme.colors.white};
   object-fit: cover;
   box-shadow: ${theme.shadows.xl};
   transition: transform 0.3s ease;
@@ -112,15 +196,15 @@ const StoreLogo = styled.img`
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    width: 70px;
-    height: 70px;
+    width: 100px;
+    height: 100px;
   }
 `;
 
 const HeroTitle = styled.h1`
-  font-size: 2.75rem;
+  font-size: 4rem;
   font-weight: 800;
-  margin-bottom: ${theme.spacing.md};
+  margin-bottom: ${theme.spacing.lg};
   background: linear-gradient(45deg, #ffffff, #f0f8ff);
   background-clip: text;
   -webkit-background-clip: text;
@@ -130,17 +214,17 @@ const HeroTitle = styled.h1`
   line-height: 1.1;
 
   @media (max-width: ${theme.breakpoints.tablet}) {
-    font-size: 2.25rem;
+    font-size: 3rem;
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    font-size: 1.875rem;
+    font-size: 2.2rem;
   }
 `;
 
 const HeroSubtitle = styled.p`
-  font-size: 1.125rem;
-  margin-bottom: ${theme.spacing.lg};
+  font-size: 1.4rem;
+  margin-bottom: ${theme.spacing.xl};
   opacity: 0.95;
   max-width: 700px;
   margin-left: auto;
@@ -150,7 +234,7 @@ const HeroSubtitle = styled.p`
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 
   @media (max-width: ${theme.breakpoints.tablet}) {
-    font-size: 1rem;
+    font-size: 1.2rem;
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
@@ -213,6 +297,10 @@ const HeroButton = styled.button.withConfig({
     padding: ${theme.spacing.md} ${theme.spacing.xl};
     min-width: 180px;
     font-size: 1rem;
+
+    &:hover {
+      transform: none;
+    }
   }
 `;
 
@@ -346,49 +434,6 @@ const BackButton = styled.button`
   }
 `;
 
-const FallbackContainer = styled.div`
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: ${theme.spacing.xl};
-  background: ${theme.colors.gray50};
-`;
-
-const FallbackTitle = styled.h1`
-  font-size: 2.5rem;
-  color: ${theme.colors.gray900};
-  margin-bottom: ${theme.spacing.md};
-`;
-
-const FallbackText = styled.p`
-  font-size: 1.1rem;
-  color: ${theme.colors.gray600};
-  margin-bottom: ${theme.spacing.xl};
-  max-width: 500px;
-`;
-
-const FallbackButton = styled.button`
-  background: ${theme.colors.primary};
-  color: ${theme.colors.white};
-  padding: ${theme.spacing.md} ${theme.spacing.xl};
-  border: none;
-  border-radius: ${theme.borderRadius.md};
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  gap: ${theme.spacing.sm};
-
-  &:hover {
-    background: ${theme.colors.primaryDark};
-    transform: translateY(-1px);
-  }
-`;
-
 const Breadcrumb = styled.div`
   background: ${theme.colors.white};
   padding: ${theme.spacing.md} 0;
@@ -427,190 +472,389 @@ const BreadcrumbNav = styled.nav`
 `;
 
 const EcommerceMain = () => {
-  const { slug } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const [featuredProducts, setFeaturedProducts] = useState([]);
-  const [saleProducts, setSaleProducts] = useState([]);
-  const [selectedVendor, setSelectedVendor] = useState(null);
+  // Redux selectors - single source of truth
+  const vendor = useSelector(selectVendor);
+  const categories = useSelector(selectCategories);
+  const products = useSelector(selectProducts);
+  const featuredProducts = useSelector(selectFeaturedProducts);
+  const onSaleProducts = useSelector(selectOnSaleProducts);
+  const loading = useSelector(selectLoading);
+  const error = useSelector(selectError);
+  const pageSections = useSelector(selectPageSections);
+
+  const [vendorSlug, setVendorSlug] = useState(null);
+
+  const getBaseUrl = () => (vendor ? `/${vendor.slug}` : '/ecommerce');
+
+  // Get hasUnsavedChanges outside the useEffect
+  const hasUnsavedChanges = useSelector(selectHasUnsavedChanges);
 
   useEffect(() => {
-    // Get vendor data from URL slug or navigation state (fallback)
+    // Get vendor slug from URL
+    const path = location.pathname;
+    let slug = null;
 
-    let vendor = getVendorByIdOrSlug(slug);
-    // Fallback to location state if no vendor found by slug
-    if (vendor) {
-      setSelectedVendor(vendor);
+    if (path !== '/ecommerce') {
+      const pathSegments = path.split('/').filter(Boolean);
+      slug = pathSegments[0];
     }
 
-    // Load products (these would be filtered by vendor in a real app)
-    setFeaturedProducts(getFeaturedProducts());
-    setSaleProducts(getOnSaleProducts());
-  }, [location.pathname, location.state, navigate, slug]);
+    // If no vendor slug found, redirect to store listing
+    if (!slug) {
+      navigate('/ecommerce-stores');
+      return;
+    }
+
+    setVendorSlug(slug);
+
+    // Only fetch ecommerce data if we don't have vendor data or if slug changed
+    // This prevents overriding real-time updates from seller dashboard
+    // Also check if we have unsaved changes to avoid overriding
+    if (!vendor || (vendor.slug !== slug && !hasUnsavedChanges)) {
+      dispatch(fetchEcommerceData({ vendorSlug: slug }));
+    }
+  }, [location.pathname, navigate, dispatch, vendor, hasUnsavedChanges]);
 
   const handleBackToStores = () => {
     navigate('/ecommerce-stores');
   };
 
-  // Show fallback if no vendor is selected
-  if (!selectedVendor) {
+  const handleRetry = () => {
+    if (vendorSlug) {
+      dispatch(clearError());
+      dispatch(fetchEcommerceData({ vendorSlug, forceRefresh: true }));
+    }
+  };
+
+  // Helper function to get sections in order
+  const getSortedSections = () => {
+    return [...pageSections].sort((a, b) => a.order - b.order);
+  };
+
+  // Show loading state
+  if (loading) {
     return (
-      <FallbackContainer>
-        <FallbackTitle>Please Select a Store</FallbackTitle>
-        <FallbackText>
-          You need to select a store first to view its products and continue
-          shopping.
-        </FallbackText>
-        <FallbackButton onClick={handleBackToStores}>
-          <FaShoppingBag />
-          Browse Stores
-        </FallbackButton>
-      </FallbackContainer>
+      <LoadingContainer>
+        <LoadingSpinner />
+        <LoadingText>Loading store information...</LoadingText>
+      </LoadingContainer>
     );
   }
 
-  const vendorTheme = selectedVendor.theme || {};
+  // Show error state
+  if (error) {
+    return (
+      <ErrorContainer>
+        <ErrorTitle>Something went wrong</ErrorTitle>
+        <ErrorText>{error}</ErrorText>
+        <ErrorButton onClick={handleRetry}>
+          <FaSpinner />
+          Try Again
+        </ErrorButton>
+      </ErrorContainer>
+    );
+  }
+
+  // Show fallback if no vendor data
+  if (!vendor) {
+    return (
+      <ErrorContainer>
+        <ErrorTitle>Store Not Found</ErrorTitle>
+        <ErrorText>
+          The store you're looking for doesn't exist or may have been removed.
+        </ErrorText>
+        <ErrorButton onClick={handleBackToStores}>
+          <FaShoppingBag />
+          Browse Stores
+        </ErrorButton>
+      </ErrorContainer>
+    );
+  }
+
+  const storeTheme = vendor.theme || {};
 
   return (
     <>
       <DynamicGlobalStyle
-        primaryColor={vendorTheme.primaryColor}
-        secondaryColor={vendorTheme.secondaryColor}
-        backgroundColor={vendorTheme.backgroundColor}
-        textColor={vendorTheme.textColor}
+        primaryColor={storeTheme.primaryColor}
+        secondaryColor={storeTheme.secondaryColor}
+        backgroundColor={storeTheme.backgroundColor}
+        textColor={storeTheme.textColor}
       />
 
-      <PageContainer backgroundColor={vendorTheme.backgroundColor}>
+      <PageContainer backgroundColor={storeTheme.backgroundColor}>
         <BackButton onClick={handleBackToStores}>
           <FaHome />
           Back to Stores
         </BackButton>
 
         <Navbar
-          storeName={selectedVendor.name}
-          storeLogo={selectedVendor.logo}
-          storeSlug={selectedVendor.slug}
-          theme={vendorTheme}
+          storeName={vendor.name}
+          storeLogo={vendor.businessInfo?.logo}
+          storeSlug={vendor.slug}
+          theme={storeTheme}
         />
 
         <Breadcrumb>
           <BreadcrumbNav>
             <Link to="/ecommerce-stores">All Stores</Link>
             <span className="separator">›</span>
-            <span className="current">{selectedVendor.name}</span>
+            <span className="current">{vendor.name}</span>
           </BreadcrumbNav>
         </Breadcrumb>
 
-        <HeroSection
-          primaryColor={vendorTheme.primaryColor}
-          secondaryColor={vendorTheme.secondaryColor}
-          heroImage={selectedVendor.image}
-        >
-          <HeroContent>
-            <StoreHeader>
-              <StoreLogo
-                src={selectedVendor.logo}
-                alt={`${selectedVendor.name} logo`}
-              />
-              <div>
-                <HeroTitle>Welcome to {selectedVendor.name}</HeroTitle>
-              </div>
-            </StoreHeader>
-            <HeroSubtitle>{selectedVendor.description}</HeroSubtitle>
-            <HeroActions>
-              <HeroButton
-                primaryColor={vendorTheme.primaryColor}
-                onClick={() => navigate(`products`)}
-              >
-                <FaShoppingBag />
-                Shop Now
-              </HeroButton>
-              <HeroButton
-                className="secondary"
-                onClick={() => navigate(`products?category=electronics`)}
-              >
-                View Categories
-                <FaArrowRight />
-              </HeroButton>
-            </HeroActions>
-          </HeroContent>
-        </HeroSection>
+        {/* Render sections dynamically based on content management settings */}
+        {getSortedSections().map(sectionConfig => {
+          if (!sectionConfig.visible) return null;
 
-        <Section>
-          <Container>
-            <SectionHeader>
-              <SectionTitle textColor={vendorTheme.textColor}>
-                Shop by Category
-              </SectionTitle>
-              <SectionSubtitle>
-                Explore our diverse range of products across different
-                categories
-              </SectionSubtitle>
-            </SectionHeader>
-            <Grid minWidth="280px">
-              {categories.map(category => (
-                <CategoryCard
-                  key={category.id}
-                  category={category}
-                  storeSlug={selectedVendor.slug}
+          switch (sectionConfig.id) {
+            case 'hero':
+              return (
+                <HeroSection
+                  key="hero"
+                  primaryColor={storeTheme.primaryColor}
+                  secondaryColor={storeTheme.secondaryColor}
+                  heroImage={
+                    sectionConfig.backgroundImage ||
+                    sectionConfig.content?.backgroundImage
+                  }
+                >
+                  <HeroContent>
+                    <StoreHeader>
+                      <StoreLogo
+                        src={vendor.businessInfo?.logo}
+                        alt={`${vendor.name} logo`}
+                      />
+                      <div>
+                        <HeroTitle>
+                          {sectionConfig.title || sectionConfig.content?.title}
+                        </HeroTitle>
+                      </div>
+                    </StoreHeader>
+                    <HeroSubtitle>
+                      {sectionConfig.subtitle ||
+                        sectionConfig.content?.subtitle}
+                    </HeroSubtitle>
+                    <HeroActions>
+                      <HeroButton
+                        primaryColor={storeTheme.primaryColor}
+                        onClick={() => navigate(`${getBaseUrl()}/products`)}
+                      >
+                        <FaShoppingBag />
+                        {sectionConfig.primaryButtonText ||
+                          sectionConfig.content?.primaryButtonText ||
+                          'Shop Products'}
+                      </HeroButton>
+                      <HeroButton
+                        className="secondary"
+                        onClick={() =>
+                          navigate(
+                            `${getBaseUrl()}/products?category=${categories[0]?.slug || 'all'}`
+                          )
+                        }
+                      >
+                        {sectionConfig.secondaryButtonText ||
+                          sectionConfig.content?.secondaryButtonText ||
+                          'Browse Categories'}
+                        <FaArrowRight />
+                      </HeroButton>
+                    </HeroActions>
+                  </HeroContent>
+                </HeroSection>
+              );
+
+            case 'categories':
+              // Use embedded categories if available, otherwise use global categories
+              // Check for visibility in both root level and content level
+              const visibleCategoryIds =
+                sectionConfig.visibleCategories ||
+                sectionConfig.content?.visibleCategories;
+              const categoriesToShow = visibleCategoryIds
+                ? categories.filter(category =>
+                    visibleCategoryIds.includes(category.id)
+                  )
+                : categories;
+              return (
+                <Section key="categories">
+                  <Container>
+                    <SectionHeader>
+                      <SectionTitle textColor={storeTheme.textColor}>
+                        {sectionConfig.title ||
+                          sectionConfig.content?.title ||
+                          'Shop by Category'}
+                      </SectionTitle>
+                      <SectionSubtitle>
+                        {sectionConfig.subtitle ||
+                          sectionConfig.content?.subtitle ||
+                          'Explore our diverse range of products'}
+                      </SectionSubtitle>
+                    </SectionHeader>
+                    <Grid minWidth="280px">
+                      {categoriesToShow.map(category => (
+                        <CategoryCard
+                          key={category.id}
+                          category={category}
+                          storeSlug={vendor.slug}
+                        />
+                      ))}
+                    </Grid>
+                  </Container>
+                </Section>
+              );
+
+            case 'featured':
+              // Use embedded products if available, otherwise use global products
+              const featuredProductIds =
+                sectionConfig.productIds ||
+                sectionConfig.content?.productIds ||
+                [];
+              const featuredProductsToShow =
+                featuredProductIds.length > 0
+                  ? products.filter(product =>
+                      featuredProductIds.includes(product.id)
+                    )
+                  : featuredProducts.slice(0, 4);
+              return (
+                <Section
+                  key="featured"
+                  background={
+                    storeTheme.backgroundColor || theme.colors.gray50
+                  }
+                >
+                  <Container>
+                    <SectionHeader>
+                      <SectionTitle textColor={storeTheme.textColor}>
+                        {sectionConfig.title ||
+                          sectionConfig.content?.title ||
+                          'Featured Products'}
+                      </SectionTitle>
+                      <SectionSubtitle>
+                        {sectionConfig.subtitle ||
+                          sectionConfig.content?.subtitle ||
+                          'Handpicked products that customers love the most'}
+                      </SectionSubtitle>
+                    </SectionHeader>
+                    <Grid>
+                      {featuredProductsToShow.map(product => (
+                        <ProductCard
+                          key={product.id}
+                          product={product}
+                          storeSlug={vendor.slug}
+                        />
+                      ))}
+                    </Grid>
+                  </Container>
+                </Section>
+              );
+
+            case 'special-offers':
+              // Use embedded products if available, otherwise use global products
+              const specialOfferProductIds =
+                sectionConfig.productIds ||
+                sectionConfig.content?.productIds ||
+                [];
+              const specialOfferProducts =
+                specialOfferProductIds.length > 0
+                  ? products.filter(product =>
+                      specialOfferProductIds.includes(product.id)
+                    )
+                  : onSaleProducts.slice(0, 4);
+              if (specialOfferProducts.length === 0) return null;
+              return (
+                <Section key="special-offers">
+                  <Container>
+                    <SectionHeader>
+                      <SectionTitle textColor={storeTheme.textColor}>
+                        {sectionConfig.title ||
+                          sectionConfig.content?.title ||
+                          '🔥 Hot Deals'}
+                      </SectionTitle>
+                      <SectionSubtitle>
+                        {sectionConfig.subtitle ||
+                          sectionConfig.content?.subtitle ||
+                          "Limited time deals you don't want to miss"}
+                      </SectionSubtitle>
+                    </SectionHeader>
+                    <Grid>
+                      {specialOfferProducts.map(product => (
+                        <ProductCard
+                          key={product.id}
+                          product={product}
+                          storeSlug={vendor.slug}
+                        />
+                      ))}
+                    </Grid>
+                  </Container>
+                </Section>
+              );
+
+            case 'footer':
+              return (
+                <Footer
+                  key="footer"
+                  storeSlug={vendor.slug}
+                  store={vendor}
+                  theme={storeTheme}
+                  content={sectionConfig.content || sectionConfig}
                 />
-              ))}
-            </Grid>
-          </Container>
-        </Section>
+              );
 
-        <Section
-          background={vendorTheme.backgroundColor || theme.colors.gray50}
-        >
-          <Container>
-            <SectionHeader>
-              <SectionTitle textColor={vendorTheme.textColor}>
-                Featured Products
-              </SectionTitle>
-              <SectionSubtitle>
-                Handpicked items from {selectedVendor.name} that customers love
-                the most
-              </SectionSubtitle>
-            </SectionHeader>
-            <Grid>
-              {featuredProducts.slice(0, 4).map(product => (
-                <ProductCard
-                  key={product.id}
-                  product={product}
-                  storeSlug={selectedVendor.slug}
-                />
-              ))}
-            </Grid>
-          </Container>
-        </Section>
-
-        {saleProducts.length > 0 && (
-          <Section>
-            <Container>
-              <SectionHeader>
-                <SectionTitle textColor={vendorTheme.textColor}>
-                  🔥 Hot Deals
-                </SectionTitle>
-                <SectionSubtitle>
-                  Limited time offers from {selectedVendor.name} you don't want
-                  to miss
-                </SectionSubtitle>
-              </SectionHeader>
-              <Grid>
-                {saleProducts.slice(0, 4).map(product => (
-                  <ProductCard
-                    key={product.id}
-                    product={product}
-                    storeSlug={selectedVendor.slug}
-                  />
-                ))}
-              </Grid>
-            </Container>
-          </Section>
-        )}
-
-        <Footer storeSlug={selectedVendor.slug} theme={vendorTheme} />
+            default:
+              // Handle custom sections - they should appear before footer
+              if (sectionConfig.type === 'custom') {
+                return (
+                  <Section key={sectionConfig.id}>
+                    <Container>
+                      <SectionHeader>
+                        <SectionTitle textColor={storeTheme.textColor}>
+                          {sectionConfig.name || sectionConfig.content?.title}
+                        </SectionTitle>
+                        <SectionSubtitle>
+                          {sectionConfig.description ||
+                            sectionConfig.content?.subtitle}
+                        </SectionSubtitle>
+                      </SectionHeader>
+                      {/* Render selected products for custom section */}
+                      {sectionConfig.content?.productIds &&
+                      sectionConfig.content.productIds.length > 0 ? (
+                        <Grid>
+                          {sectionConfig.content.productIds
+                            .map(productId =>
+                              products.find(p => p.id === productId)
+                            )
+                            .filter(Boolean)
+                            .map(product => (
+                              <ProductCard
+                                key={product.id}
+                                product={product}
+                                storeSlug={vendor.slug}
+                              />
+                            ))}
+                        </Grid>
+                      ) : (
+                        <div
+                          style={{
+                            padding: theme.spacing.xl,
+                            background: theme.colors.gray100,
+                            borderRadius: theme.borderRadius.md,
+                            textAlign: 'center',
+                            color: theme.colors.gray600,
+                          }}
+                        >
+                          <p>No products selected for this custom section.</p>
+                        </div>
+                      )}
+                    </Container>
+                  </Section>
+                );
+              }
+              return null;
+          }
+        })}
         <BackToTop />
       </PageContainer>
     </>
