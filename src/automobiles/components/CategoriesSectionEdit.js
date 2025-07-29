@@ -207,7 +207,7 @@ const CategoriesSectionEdit = ({ dealer }) => {
           dispatch(
             updateSectionContent({
               sectionId: 'categories',
-              updates: localChanges,
+              content: localChanges,
             })
           );
           setLocalChanges({});
