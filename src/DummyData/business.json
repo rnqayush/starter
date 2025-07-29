@@ -272,6 +272,7 @@
         "id": "gym",
         "name": "Elite Fitness Center",
         "slug": "gym",
+        "type": "business",
         "category": "Health & Fitness",
         "primaryColor": "#ff5722",
         "secondaryColor": "#ffab91",
