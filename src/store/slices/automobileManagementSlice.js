@@ -648,7 +648,28 @@ const automobileManagementSlice = createSlice({
       state.hasUnsavedChanges = false;
     },
     addCustomSection: (state, action) => {
-      state.pageContent.sections.push(action.payload);
+      const newSection = action.payload;
+
+      // Insert the section before footer or at the end
+      const footerIndex = state.pageContent.sections.findIndex(s => s.id === 'footer');
+      if (footerIndex !== -1) {
+        state.pageContent.sections.splice(footerIndex, 0, newSection);
+
+        // Update orders to maintain proper sequence
+        state.pageContent.sections.forEach((section, index) => {
+          section.order = index + 1;
+        });
+      } else {
+        state.pageContent.sections.push(newSection);
+      }
+
+      // Mark as having changes for change tracker
+      state.hasUnsavedChanges = true;
+      state.isDataPersisted = false;
+
+      // Track the change
+      const path = `sections.${newSection.id}`;
+      state.tempChanges[path] = 'Added custom section';
     },
     removeCustomSection: (state, action) => {
       state.pageContent.sections = state.pageContent.sections.filter(
