@@ -427,7 +427,7 @@ const automobileManagementSlice = createSlice({
       .addCase(fetchAutomobileData.fulfilled, (state, action) => {
         state.loading = false;
         const { data, meta } = action.payload;
-        console.log('fetchAutomobileData.fulfilled:', { data, meta });
+
 
         // Update main state with fetched data
         state.vendor = data.vendor;
@@ -528,7 +528,7 @@ const automobileManagementSlice = createSlice({
       .addCase(fetchAutomobileData.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || 'Failed to fetch automobile data';
-        console.log('fetchAutomobileData.rejected:', action.payload);
+
       })
 
       // Fetch vehicle details
