@@ -17,6 +17,13 @@ import {
   FaPalette,
   FaBars,
   FaTimes,
+  FaSave,
+  FaUndo,
+  FaExclamationTriangle,
+  FaCheckCircle,
+  FaEye,
+  FaList,
+  FaSort,
 } from 'react-icons/fa';
 import { theme, media } from '../../styles/GlobalStyle';
 
