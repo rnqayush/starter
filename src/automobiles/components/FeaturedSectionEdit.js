@@ -298,11 +298,20 @@ const FeaturedSectionEdit = ({ dealer }) => {
   }, [sections, vehicles, vendor]);
 
   const updateContent = (field, value) => {
+    // Update local state for immediate UI update
     setSectionContent(prev => ({
       ...prev,
       [field]: value,
     }));
     setHasChanges(true);
+
+    // Immediately update Redux state for real-time updates
+    dispatch(
+      updateSectionContent({
+        sectionId: 'featured',
+        content: { [field]: value },
+      })
+    );
   };
 
   const addVehicleToSection = vehicleId => {
@@ -329,23 +338,6 @@ const FeaturedSectionEdit = ({ dealer }) => {
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(price);
-  };
-
-  const updateContent = (field, value) => {
-    // Update local state for immediate UI update
-    setSectionContent(prev => ({
-      ...prev,
-      [field]: value,
-    }));
-    setHasChanges(true);
-
-    // Immediately update Redux state for real-time updates
-    dispatch(
-      updateSectionContent({
-        sectionId: 'featured',
-        content: { [field]: value },
-      })
-    );
   };
 
   if (loading) {
