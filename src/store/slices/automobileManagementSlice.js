@@ -763,6 +763,22 @@ const automobileManagementSlice = createSlice({
       .addCase(submitEnquiry.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || 'Failed to submit enquiry';
+      })
+
+      // Save complete data to API
+      .addCase(saveCompleteData.pending, state => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(saveCompleteData.fulfilled, (state, action) => {
+        state.loading = false;
+        state.hasUnsavedChanges = false;
+        state.tempChanges = {};
+        state.pageContent.lastPublished = new Date().toISOString();
+      })
+      .addCase(saveCompleteData.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || 'Failed to save data to API';
       });
   },
 });
