@@ -175,19 +175,20 @@ const UrlOption = styled.div`
 const HeroSectionEdit = ({ vendor, onSave, hasUnsavedChanges }) => {
   const dispatch = useDispatch();
   const loading = useSelector(selectLoading);
-  const heroSection = useSelector(selectSectionById('hero'));
+  const heroSection = useSelector(state =>
+    state.automobileManagement.pageContent.sections.find(s => s.id === 'hero')
+  );
 
   const [localChanges, setLocalChanges] = useState({});
   const [hasChanges, setHasChanges] = useState(false);
 
-  // Get current values (Redux + local changes)
+  // Get current values from Redux section data + local changes
   const currentContent = {
-    title: '',
-    subtitle: '',
-    backgroundImage: '',
-    primaryButtonText: 'Browse Vehicles',
-    secondaryButtonText: 'View Categories',
-    ...heroSection,
+    title: heroSection?.title || 'Welcome to Luxury Auto Gallery',
+    subtitle: heroSection?.subtitle || 'Premium luxury vehicles from world-renowned brands. Experience excellence in automotive craftsmanship with our curated selection of luxury cars, sports cars, and electric vehicles.',
+    backgroundImage: heroSection?.backgroundImage || '',
+    primaryButtonText: heroSection?.primaryButtonText || 'Browse Vehicles',
+    secondaryButtonText: heroSection?.secondaryButtonText || 'View Categories',
     ...localChanges,
   };
 
