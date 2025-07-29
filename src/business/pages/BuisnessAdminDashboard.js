@@ -1044,21 +1044,21 @@ const BuisnessAdminDashboard = () => {
             throw error;
           }
 
-          // Comment out other dispatches temporarily
-          // try {
-          //   console.log('[AdminDashboard] About to dispatch initializeBusinessData');
-          //   console.log('Action creator initializeBusinessData:', initializeBusinessData);
-          //   const action1 = initializeBusinessData({
-          //     businessData: serializableBusinessData,
-          //     businessTypeConfig: serializableBusinessTypeConfig,
-          //   });
-          //   console.log('Generated action1:', action1);
-          //   dispatch(action1);
-          //   console.log('[AdminDashboard] initializeBusinessData dispatched successfully');
-          // } catch (error) {
-          //   console.error('[AdminDashboard] Error dispatching initializeBusinessData:', error);
-          //   throw error;
-          // }
+          // Test initializeBusinessData action
+          try {
+            console.log('[AdminDashboard] About to dispatch initializeBusinessData');
+            console.log('Action creator initializeBusinessData:', initializeBusinessData);
+            const action1 = initializeBusinessData({
+              businessData: serializableBusinessData,
+              businessTypeConfig: serializableBusinessTypeConfig,
+            });
+            console.log('Generated action1:', action1);
+            dispatch(action1);
+            console.log('[AdminDashboard] initializeBusinessData dispatched successfully');
+          } catch (error) {
+            console.error('[AdminDashboard] Error dispatching initializeBusinessData:', error);
+            throw error;
+          }
 
           // try {
           //   console.log('[AdminDashboard] About to dispatch setBusinessType');
@@ -1412,7 +1412,7 @@ const BuisnessAdminDashboard = () => {
       id: Date.now(),
       name: 'New Skill',
       level: 70,
-      icon: '����',
+      icon: '🔧',
     };
     setSkillsData(prev => [...prev, newSkill]);
     trackSectionChange('skills');
