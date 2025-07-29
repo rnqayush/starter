@@ -734,21 +734,38 @@ const SectionTitle = styled.h2.withConfig({
 `;
 
 const SectionSubtitle = styled.p`
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   color: ${theme.colors.gray600};
-  max-width: 600px;
-  margin: 0 auto;
-  line-height: 1.6;
+  max-width: 700px;
+  margin: ${theme.spacing.lg} auto 0;
+  line-height: 1.7;
+  font-weight: 400;
+  opacity: 0.9;
+
+  &::before {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 2px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      ${theme.colors.primary}40,
+      transparent
+    );
+    margin: 0 auto ${theme.spacing.md};
+  }
 
   @media (max-width: ${theme.breakpoints.tablet}) {
-    font-size: 1rem;
-    max-width: 500px;
+    font-size: 1.1rem;
+    max-width: 600px;
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    font-size: 0.95rem;
+    font-size: 1rem;
     max-width: 100%;
     padding: 0 ${theme.spacing.sm};
+    margin-top: ${theme.spacing.md};
   }
 `;
 
