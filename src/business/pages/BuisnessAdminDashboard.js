@@ -52,12 +52,13 @@ import {
   FaRandom,
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
-import { getBusinessTemplate } from '../../DummyData';
 import { fetchBusinessData } from '../../utils/businessAPI';
 import { useAuth } from '../../context/AuthContext';
 import {
   setEditingBusiness,
   initializeBusiness,
+  initializeBusinessData,
+  setBusinessType,
   updateBusinessField,
   updateBusinessImage,
   updateBusinessGallery,
@@ -72,6 +73,9 @@ import {
   saveBusinessChanges,
   discardBusinessChanges,
   toggleBusinessSectionVisibility,
+  setLoading,
+  setError,
+  clearError,
 } from '../../store/slices/businessManagementSlice';
 
 const DashboardContainer = styled.div`
