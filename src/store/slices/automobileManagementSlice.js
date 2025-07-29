@@ -205,6 +205,10 @@ const initialState = {
   tempChanges: {},
   hasUnsavedChanges: false,
 
+  // Data persistence tracking
+  isDataPersisted: false, // Track if current data has been saved
+  lastSaveTimestamp: null,
+
   // UI state
   loading: false,
   vehicleLoading: false,
