@@ -4,6 +4,7 @@ import vendorManagementReducer from './slices/vendorManagementSlice';
 import weddingManagementReducer from './slices/weddingManagementSlice';
 import businessManagementReducer from './slices/businessManagementSlice';
 import automobileManagementReducer from './slices/automobileManagementSlice';
+import ecommerceManagementReducer from './slices/ecommerceManagementSlice';
 
 export const store = configureStore({
   reducer: {
