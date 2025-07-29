@@ -29,7 +29,7 @@ import ShopSettingsTab from '../components/ShopSettingsTab';
 import HeroSectionEdit from '../components/HeroSectionEdit';
 import CategoriesSectionEdit from '../components/CategoriesSectionEdit';
 import FeaturedSectionEdit from '../components/FeaturedSectionEdit';
-import SpecialOffersSectionEdit from '../components/SpecialOffersSectionEdit';
+import HotDealsSectionEdit from '../components/HotDealsSectionEdit';
 import FooterSectionEdit from '../components/FooterSectionEdit';
 import CustomSectionEdit from '../components/CustomSectionEdit';
 import SectionOrderEdit from '../components/SectionOrderEdit';
