@@ -1157,24 +1157,21 @@ const BuisnessAdminDashboard = () => {
           }
         );
 
-        // Initialize statistics data from API data
-        setStatisticsData(
-          businessData.about?.stats || [
-            { number: '100+', label: 'Services' },
-            { number: '5+', label: 'Years Experience' },
-            { number: '4.9', label: '★ Average Rating' },
-            { number: '200+', label: 'Happy Clients' },
-          ]
-        );
+          // Initialize statistics data from API data
+          setStatisticsData(
+            businessData.about?.stats || [
+              { number: '100+', label: 'Services' },
+              { number: '5+', label: 'Years Experience' },
+              { number: '4.9', label: '★ Average Rating' },
+              { number: '200+', label: 'Happy Clients' },
+            ]
+          );
       } catch (error) {
         console.error('[AdminDashboard] Error fetching business data:', error);
         setApiError(error.message);
 
-        // Fallback to template data on error
-        const businessData = getBusinessTemplate(businessId);
-        if (businessData) {
-          setBusiness(businessData);
-        }
+        // Set error state
+        dispatch(setError('Failed to fetch business data'));
       } finally {
         setLoading(false);
         setApiLoading(false);
@@ -4294,7 +4291,7 @@ const BuisnessAdminDashboard = () => {
                     skills: '🎯',
                     experience: '📄',
                     team: '👨‍👩‍👧‍👦',
-                    gallery: '📸',
+                    gallery: '����',
                     packages: '💰',
                     testimonials: '💬',
                     reviews: '⭐',
