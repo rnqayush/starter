@@ -413,4 +413,4 @@ const HotDealsSectionEdit = () => {
   );
 };
 
-export default SpecialOffersSectionEdit;
+export default HotDealsSectionEdit;
