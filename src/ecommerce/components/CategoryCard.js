@@ -176,7 +176,13 @@ const CategoryCard = ({ category, storeSlug = '' }) => {
   return (
     <Card to={`${getBaseUrl()}/products?category=${category.slug}`}>
       <ImageContainer>
-        <CategoryImage src={category.image} alt={category.name} />
+        <CategoryImage
+          src={category.image || 'https://via.placeholder.com/400x300?text=No+Image'}
+          alt={category.name}
+          onError={(e) => {
+            e.target.src = 'https://via.placeholder.com/400x300?text=No+Image';
+          }}
+        />
         <Overlay>
           <ViewButton>
             Shop Now

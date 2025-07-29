@@ -395,7 +395,13 @@ const ProductCard = ({
     <Link to={`/${storeSlug}/productdetail/${product.id}`}>
       <Card>
         <ImageContainer>
-          <ProductImage src={product.media?.mainImage || product.image} alt={product.name} />
+          <ProductImage
+            src={product.media?.mainImage || product.image || 'https://via.placeholder.com/500x400?text=No+Image'}
+            alt={product.name}
+            onError={(e) => {
+              e.target.src = 'https://via.placeholder.com/500x400?text=No+Image';
+            }}
+          />
 
           {product.onSale && product.originalPrice && (
             <Badge type="sale">Sale</Badge>

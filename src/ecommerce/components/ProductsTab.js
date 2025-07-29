@@ -368,7 +368,13 @@ const ProductsTab = () => {
               <TableRow key={product.id}>
                 <TableCell>
                   <ProductInfo>
-                    <ProductImage src={product.media?.mainImage || product.image} alt={product.name} />
+                    <ProductImage
+                      src={product.media?.mainImage || product.image || 'https://via.placeholder.com/80x80?text=No+Image'}
+                      alt={product.name}
+                      onError={(e) => {
+                        e.target.src = 'https://via.placeholder.com/80x80?text=No+Image';
+                      }}
+                    />
                     <ProductDetails>
                       <ProductName>{product.name}</ProductName>
                       <ProductCategory>{product.category}</ProductCategory>
