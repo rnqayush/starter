@@ -33,7 +33,8 @@ export const fetchVehicleDetails = createAsyncThunk(
         // Simulate API call for specific vehicle
         const response = await import('../../DummyData/automobiles.json');
         const data = response.default;
-        vehicle = data.data.vehicles.find(v => v.id === parseInt(vehicleId));
+        const vehicleData = data.data.allVehicles || data.data.vehicles || [];
+        vehicle = vehicleData.find(v => v.id === parseInt(vehicleId));
       }
 
       if (!vehicle) {
@@ -429,62 +430,70 @@ const automobileManagementSlice = createSlice({
 
         // Update main state with fetched data
         state.vendor = data.vendor;
-        state.categories = data.categories;
-        state.vehicles = data.vehicles;
-        state.promotions = data.promotions;
-        state.customerReviews = data.customerReviews;
+        state.categories = data.allCategories || data.categories || [];
+        state.vehicles = data.allVehicles || data.vehicles || [];
+        state.promotions = data.promotions || [];
+        state.customerReviews = data.customerReviews || [];
         state.financing = data.financing;
 
-        // Initialize page content with vendor data
-        state.pageContent.sections = state.pageContent.sections.map(section => {
-          const sectionContent = { ...section.content };
+        // Use pageSections from API if available, otherwise initialize with vendor data
+        if (data.pageSections && Array.isArray(data.pageSections)) {
+          state.pageContent.sections = data.pageSections;
+        } else {
+          // Fallback: Initialize page content with vendor data
+          const vehicleData = data.allVehicles || data.vehicles || [];
+          const categoryData = data.allCategories || data.categories || [];
 
-          // Initialize content based on vendor data
-          if (section.id === 'hero') {
-            sectionContent.title =
-              sectionContent.title || `Welcome to ${data.vendor.name}`;
-            sectionContent.subtitle =
-              sectionContent.subtitle ||
-              data.vendor.businessInfo?.description ||
-              '';
-            sectionContent.backgroundImage =
-              sectionContent.backgroundImage ||
-              data.vendor.businessInfo?.coverImage ||
-              '';
-          } else if (section.id === 'categories') {
-            sectionContent.visibleCategories =
-              sectionContent.visibleCategories.length > 0
-                ? sectionContent.visibleCategories
-                : data.categories.map(cat => cat.id);
-          } else if (section.id === 'featured') {
-            sectionContent.subtitle =
-              sectionContent.subtitle ||
-              `Handpicked vehicles from ${data.vendor.name} that customers love the most`;
-            sectionContent.vehicleIds =
-              sectionContent.vehicleIds.length > 0
-                ? sectionContent.vehicleIds
-                : data.vehicles
-                    .filter(v => v.featured)
-                    .slice(0, 4)
-                    .map(v => v.id);
-          } else if (section.id === 'special-offers') {
-            sectionContent.subtitle =
-              sectionContent.subtitle ||
-              `Limited time deals from ${data.vendor.name} you don't want to miss`;
-            sectionContent.vehicleIds =
-              sectionContent.vehicleIds.length > 0
-                ? sectionContent.vehicleIds
-                : data.vehicles
-                    .filter(v => v.pricing?.onSale)
-                    .slice(0, 4)
-                    .map(v => v.id);
-          }
+          state.pageContent.sections = state.pageContent.sections.map(section => {
+            const sectionContent = { ...section.content };
 
-          return { ...section, content: sectionContent };
-        });
+            // Initialize content based on vendor data
+            if (section.id === 'hero') {
+              sectionContent.title =
+                sectionContent.title || `Welcome to ${data.vendor.name}`;
+              sectionContent.subtitle =
+                sectionContent.subtitle ||
+                data.vendor.businessInfo?.description ||
+                '';
+              sectionContent.backgroundImage =
+                sectionContent.backgroundImage ||
+                data.vendor.businessInfo?.coverImage ||
+                '';
+            } else if (section.id === 'categories') {
+              sectionContent.visibleCategories =
+                sectionContent.visibleCategories.length > 0
+                  ? sectionContent.visibleCategories
+                  : categoryData.map(cat => cat.id);
+            } else if (section.id === 'featured') {
+              sectionContent.subtitle =
+                sectionContent.subtitle ||
+                `Handpicked vehicles from ${data.vendor.name} that customers love the most`;
+              sectionContent.vehicleIds =
+                sectionContent.vehicleIds.length > 0
+                  ? sectionContent.vehicleIds
+                  : vehicleData
+                      .filter(v => v.featured)
+                      .slice(0, 4)
+                      .map(v => v.id);
+            } else if (section.id === 'special-offers') {
+              sectionContent.subtitle =
+                sectionContent.subtitle ||
+                `Limited time deals from ${data.vendor.name} you don't want to miss`;
+              sectionContent.vehicleIds =
+                sectionContent.vehicleIds.length > 0
+                  ? sectionContent.vehicleIds
+                  : vehicleData
+                      .filter(v => v.pricing?.onSale)
+                      .slice(0, 4)
+                      .map(v => v.id);
+            }
 
-        // Update page content with data from API if available
-        if (data.pageContent) {
+            return { ...section, content: sectionContent };
+          });
+        }
+
+        // Legacy support: Update page content with data from API if available
+        if (data.pageContent && !data.pageSections) {
           state.pageContent.sections = state.pageContent.sections.map(
             section => ({
               ...section,
