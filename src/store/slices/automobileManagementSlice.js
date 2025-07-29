@@ -628,8 +628,6 @@ export const selectAvailableFilters = state =>
   state.automobileManagement.meta.availableFilters;
 export const selectPageContent = state =>
   state.automobileManagement.pageContent;
-export const selectPageSections = state =>
-  state.automobileManagement.pageContent.sections;
 export const selectHasUnsavedChanges = state =>
   state.automobileManagement.hasUnsavedChanges;
 export const selectTempChanges = state =>
