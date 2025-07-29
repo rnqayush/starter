@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import {
   FaEdit,
@@ -18,8 +18,14 @@ import {
   FaTimes,
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
-import { getBusinessTemplate } from '../../DummyData';
 import { fetchBusinessData } from '../../utils/businessAPI';
+import {
+  initializeBusinessData,
+  setBusinessType,
+  setLoading,
+  setError,
+  clearError,
+} from '../../store/slices/businessManagementSlice';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -121,80 +127,6 @@ const NavLinks = styled.div.withConfig({
   }
 `;
 
-const MobileMenuButton = styled.button.withConfig({
-  shouldForwardProp: prop => prop !== 'primaryColor',
-})`
-  display: none;
-  background: transparent;
-  border: none;
-  color: ${theme.colors.gray700};
-  font-size: 1.5rem;
-  cursor: pointer;
-  padding: ${theme.spacing.sm};
-  border-radius: ${theme.borderRadius.sm};
-  transition: all 0.2s ease;
-
-  &:hover {
-    background: ${theme.colors.gray100};
-    color: ${props => props.primaryColor || theme.colors.primary};
-  }
-
-  @media (max-width: ${theme.breakpoints.tablet}) {
-    display: block;
-  }
-`;
-
-const MobileMenu = styled.div.withConfig({
-  shouldForwardProp: prop => prop !== 'isOpen' && prop !== 'primaryColor',
-})`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  background: ${theme.colors.white};
-  z-index: 50;
-  transform: translateX(${props => (props.isOpen ? '0' : '-100%')});
-  transition: transform 0.3s ease;
-  display: flex;
-  flex-direction: column;
-
-  @media (min-width: ${theme.breakpoints.desktop}) {
-    display: none;
-  }
-`;
-
-const MobileMenuHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: ${theme.spacing.lg};
-  border-bottom: 1px solid ${theme.colors.gray200};
-`;
-
-const MobileMenuLinks = styled.div.withConfig({
-  shouldForwardProp: prop => prop !== 'primaryColor',
-})`
-  flex: 1;
-  padding: ${theme.spacing.lg};
-
-  a {
-    display: block;
-    padding: ${theme.spacing.lg};
-    text-decoration: none;
-    color: ${theme.colors.gray700};
-    font-weight: 500;
-    font-size: 1.1rem;
-    border-bottom: 1px solid ${theme.colors.gray100};
-    transition: all 0.2s ease;
-
-    &:hover {
-      background: ${theme.colors.gray50};
-      color: ${props => props.primaryColor || theme.colors.primary};
-    }
-  }
-`;
-
 const OwnerLink = styled.button`
   background: transparent;
   color: ${theme.colors.gray700};
@@ -245,21 +177,60 @@ const BackToListButton = styled.button`
   }
 `;
 
-// Hero Section Styles
+// Section Styles
+const Section = styled.section.withConfig({
+  shouldForwardProp: prop => prop !== 'isVisible',
+})`
+  padding: ${theme.spacing.xxl} 0;
+  background: ${props => props.background || theme.colors.white};
+  display: ${props => (props.isVisible === false ? 'none' : 'block')};
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    padding: ${theme.spacing.xl} 0;
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.lg} 0;
+  }
+`;
+
+const SectionContainer = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 ${theme.spacing.md};
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    padding: 0 ${theme.spacing.sm};
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: 0 ${theme.spacing.sm};
+  }
+`;
+
+const SectionTitle = styled.h2`
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: ${theme.spacing.md};
+  color: ${theme.colors.gray900};
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    font-size: 2.2rem;
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    font-size: 1.8rem;
+    margin-bottom: ${theme.spacing.sm};
+  }
+`;
+
 const HeroSection = styled.section.withConfig({
-  shouldForwardProp: prop => prop !== 'primaryColor' && prop !== 'businessType',
+  shouldForwardProp: prop => prop !== 'primaryColor' && prop !== 'backgroundImage',
 })`
   height: 100vh;
-  background:
-    linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)),
-    url(${props =>
-      props.businessType === 'gym'
-        ? 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?ixlib=rb-4.0.3&w=1200&q=80'
-        : props.businessType === 'restaurant'
-          ? 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&w=1200&q=80'
-          : props.businessType === 'salon'
-            ? 'https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-4.0.3&w=1200&q=80'
-            : 'https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&w=1200&q=80'});
+  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)),
+    url(${props => props.backgroundImage || 'https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&w=1200&q=80'});
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -312,1093 +283,37 @@ const HeroSubtitle = styled.p`
   opacity: 0.95;
 `;
 
-const HeroCTA = styled.button.withConfig({
-  shouldForwardProp: prop => prop !== 'primaryColor',
-})`
-  background: ${props => props.primaryColor || theme.colors.primary};
-  color: ${theme.colors.white};
-  padding: ${theme.spacing.lg} ${theme.spacing.xxl};
-  border: none;
-  border-radius: ${theme.borderRadius.lg};
-  font-size: 1.2rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: ${theme.shadows.lg};
-  }
-`;
-
-// Section Styles
-const Section = styled.section`
-  padding: ${theme.spacing.xxl} 0;
-  background: ${props => props.background || theme.colors.white};
-
-  @media (max-width: ${theme.breakpoints.tablet}) {
-    padding: ${theme.spacing.xl} 0;
-  }
-
-  @media (max-width: ${theme.breakpoints.mobile}) {
-    padding: ${theme.spacing.lg} 0;
-  }
-`;
-
-const SectionContainer = styled.div`
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 ${theme.spacing.md};
-
-  @media (max-width: ${theme.breakpoints.tablet}) {
-    padding: 0 ${theme.spacing.sm};
-  }
-
-  @media (max-width: ${theme.breakpoints.mobile}) {
-    padding: 0 ${theme.spacing.sm};
-  }
-`;
-
-const SectionTitle = styled.h2`
-  font-size: 2.5rem;
-  font-weight: 700;
-  text-align: center;
-  margin-bottom: ${theme.spacing.md};
-  color: ${theme.colors.gray900};
-
-  @media (max-width: ${theme.breakpoints.tablet}) {
-    font-size: 2.2rem;
-  }
-
-  @media (max-width: ${theme.breakpoints.mobile}) {
-    font-size: 1.8rem;
-    margin-bottom: ${theme.spacing.sm};
-  }
-`;
-
-const SectionSubtitle = styled.p`
-  font-size: 1.1rem;
-  text-align: center;
-  color: ${theme.colors.gray600};
-  margin-bottom: ${theme.spacing.xxl};
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-  line-height: 1.6;
-
-  @media (max-width: ${theme.breakpoints.tablet}) {
-    font-size: 1rem;
-    margin-bottom: ${theme.spacing.xl};
-    max-width: 90%;
-  }
-
-  @media (max-width: ${theme.breakpoints.mobile}) {
-    font-size: 0.95rem;
-    margin-bottom: ${theme.spacing.lg};
-    max-width: 95%;
-  }
-`;
-
-// About Section Styles
-const AboutGrid = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: ${theme.spacing.xxl};
-  align-items: center;
-
-  @media (max-width: ${theme.breakpoints.tablet}) {
-    grid-template-columns: 1fr;
-    gap: ${theme.spacing.xl};
-  }
-`;
-
-const AboutContent = styled.div`
-  h3 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: ${theme.colors.gray900};
-    margin-bottom: ${theme.spacing.lg};
-  }
-
-  p {
-    font-size: 1.1rem;
-    line-height: 1.7;
-    color: ${theme.colors.gray600};
-    margin-bottom: ${theme.spacing.lg};
-  }
-`;
-
-const AboutImage = styled.div.withConfig({
-  shouldForwardProp: prop => prop !== 'primaryColor',
-})`
-  height: 400px;
-  background: ${props => props.primaryColor + '20'};
-  border-radius: ${theme.borderRadius.xl};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 4rem;
-  color: ${props => props.primaryColor || theme.colors.primary};
-`;
-
-const StatsGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: ${theme.spacing.lg};
-  margin-top: ${theme.spacing.xxl};
-`;
-
-const StatCard = styled.div.withConfig({
-  shouldForwardProp: prop => prop !== 'primaryColor',
-})`
-  text-align: center;
-  padding: ${theme.spacing.lg};
-  background: ${theme.colors.white};
-  border-radius: ${theme.borderRadius.lg};
-  box-shadow: ${theme.shadows.sm};
-
-  .number {
-    font-size: 2.5rem;
-    font-weight: 800;
-    color: ${props => props.primaryColor || theme.colors.primary};
-    margin-bottom: ${theme.spacing.sm};
-  }
-
-  .label {
-    color: ${theme.colors.gray600};
-    font-weight: 500;
-  }
-`;
-
-// Services Section Styles
-const ServicesGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: ${theme.spacing.xl};
-
-  @media (max-width: ${theme.breakpoints.tablet}) {
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: ${theme.spacing.lg};
-  }
-
-  @media (max-width: ${theme.breakpoints.mobile}) {
-    grid-template-columns: 1fr;
-    gap: ${theme.spacing.md};
-  }
-`;
-
-const ServiceCard = styled.div.withConfig({
-  shouldForwardProp: prop => prop !== 'primaryColor',
-})`
-  background: ${theme.colors.white};
-  padding: ${theme.spacing.xl};
-  border-radius: ${theme.borderRadius.xl};
-  box-shadow: ${theme.shadows.md};
-  text-align: center;
-  transition: all 0.3s ease;
-  border: 1px solid ${theme.colors.gray200};
-
-  &:hover {
-    transform: translateY(-4px);
-    box-shadow: ${theme.shadows.lg};
-  }
-
-  .icon {
-    width: 60px;
-    height: 60px;
-    margin: 0 auto ${theme.spacing.lg};
-    background: ${props => props.primaryColor || theme.colors.primary};
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    color: ${theme.colors.white};
-  }
-
-  h3 {
-    font-size: 1.3rem;
-    font-weight: 600;
-    color: ${theme.colors.gray900};
-    margin-bottom: ${theme.spacing.md};
-  }
-
-  p {
-    color: ${theme.colors.gray600};
-    line-height: 1.6;
-  }
-
-  @media (max-width: ${theme.breakpoints.tablet}) {
-    padding: ${theme.spacing.lg};
-
-    .icon {
-      width: 50px;
-      height: 50px;
-      font-size: 1.3rem;
-    }
-
-    h3 {
-      font-size: 1.2rem;
-    }
-  }
-
-  @media (max-width: ${theme.breakpoints.mobile}) {
-    padding: ${theme.spacing.md};
-
-    .icon {
-      width: 45px;
-      height: 45px;
-      font-size: 1.2rem;
-      margin-bottom: ${theme.spacing.md};
-    }
-
-    h3 {
-      font-size: 1.1rem;
-    }
-
-    p {
-      font-size: 0.9rem;
-    }
-  }
-`;
-
-// Team Section Styles
-const TeamGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: ${theme.spacing.xl};
-
-  @media (max-width: ${theme.breakpoints.tablet}) {
-    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-    gap: ${theme.spacing.lg};
-  }
-
-  @media (max-width: ${theme.breakpoints.mobile}) {
-    grid-template-columns: 1fr;
-    gap: ${theme.spacing.md};
-  }
-`;
-
-const TeamCard = styled.div`
-  background: ${theme.colors.white};
-  border-radius: ${theme.borderRadius.xl};
-  overflow: hidden;
-  box-shadow: ${theme.shadows.md};
-  text-align: center;
-  transition: all 0.3s ease;
-
-  &:hover {
-    transform: translateY(-4px);
-    box-shadow: ${theme.shadows.lg};
-  }
-`;
-
-const TeamPhoto = styled.div.withConfig({
-  shouldForwardProp: prop => prop !== 'primaryColor',
-})`
-  height: 250px;
-  background: ${props => props.primaryColor + '30'};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 3rem;
-  color: ${props => props.primaryColor || theme.colors.primary};
-`;
-
-const TeamInfo = styled.div.withConfig({
-  shouldForwardProp: prop => prop !== 'primaryColor',
-})`
-  padding: ${theme.spacing.xl};
-
-  h3 {
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: ${theme.colors.gray900};
-    margin-bottom: ${theme.spacing.sm};
-  }
-
-  .role {
-    color: ${props => props.primaryColor || theme.colors.primary};
-    font-weight: 500;
-    margin-bottom: ${theme.spacing.md};
-  }
-
-  p {
-    color: ${theme.colors.gray600};
-    font-size: 0.9rem;
-    line-height: 1.5;
-  }
-`;
-
-// Testimonials Section Styles
-const TestimonialsGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: ${theme.spacing.xl};
-`;
-
-// Gallery Section Styles
-const GalleryGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: ${theme.spacing.lg};
-`;
-
-const GalleryCategory = styled.div`
-  background: ${theme.colors.white};
-  border-radius: ${theme.borderRadius.xl};
-  overflow: hidden;
-  box-shadow: ${theme.shadows.md};
-  transition: all 0.3s ease;
-
-  &:hover {
-    transform: translateY(-4px);
-    box-shadow: ${theme.shadows.lg};
-  }
-`;
-
-const GalleryImage = styled.div.withConfig({
-  shouldForwardProp: prop => prop !== 'primaryColor',
-})`
-  height: 200px;
-  background: linear-gradient(
-    135deg,
-    ${props => props.primaryColor + '20'} 0%,
-    ${props => props.primaryColor + '40'} 100%
-  );
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 3rem;
-  color: ${props => props.primaryColor || theme.colors.primary};
-  position: relative;
-
-  &::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.1);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-
-  ${GalleryCategory}:hover &::after {
-    opacity: 1;
-  }
-`;
-
-const GalleryInfo = styled.div`
-  padding: ${theme.spacing.lg};
-  text-align: center;
-
-  h3 {
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: ${theme.colors.gray900};
-    margin-bottom: ${theme.spacing.sm};
-  }
-
-  p {
-    color: ${theme.colors.gray600};
-    font-size: 0.9rem;
-  }
-`;
-
-// Packages Section Styles
-const PackagesGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: ${theme.spacing.xl};
-`;
-
-const PackageCard = styled.div.withConfig({
-  shouldForwardProp: prop => prop !== 'primaryColor' && prop !== 'featured',
-})`
-  background: ${theme.colors.white};
-  padding: ${theme.spacing.xl};
-  border-radius: ${theme.borderRadius.xl};
-  box-shadow: ${theme.shadows.md};
-  text-align: center;
-  position: relative;
-  transition: all 0.3s ease;
-  border: 2px solid
-    ${props =>
-      props.featured
-        ? props.primaryColor || theme.colors.primary
-        : theme.colors.gray200};
-
-  &:hover {
-    transform: translateY(-6px);
-    box-shadow: ${theme.shadows.xl};
-  }
-
-  ${props =>
-    props.featured &&
-    `
-    &::before {
-      content: 'Most Popular';
-      position: absolute;
-      top: -12px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: ${props.primaryColor || theme.colors.primary};
-      color: white;
-      padding: 4px 16px;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      font-weight: 600;
-    }
-  `}
-
-  .package-name {
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: ${theme.colors.gray900};
-    margin-bottom: ${theme.spacing.md};
-  }
-
-  .package-price {
-    font-size: 2.5rem;
-    font-weight: 800;
-    color: ${props => props.primaryColor || theme.colors.primary};
-    margin-bottom: ${theme.spacing.sm};
-  }
-
-  .package-duration {
-    color: ${theme.colors.gray600};
-    margin-bottom: ${theme.spacing.lg};
-  }
-
-  .package-description {
-    color: ${theme.colors.gray700};
-    line-height: 1.6;
-    margin-bottom: ${theme.spacing.lg};
-  }
-
-  .package-button {
-    width: 100%;
-    background: ${props => props.primaryColor || theme.colors.primary};
-    color: white;
-    padding: ${theme.spacing.md} ${theme.spacing.lg};
-    border: none;
-    border-radius: ${theme.borderRadius.md};
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-
-    &:hover {
-      opacity: 0.9;
-      transform: translateY(-1px);
-    }
-  }
-`;
-
-// FAQ Section Styles
-const FAQContainer = styled.div`
-  max-width: 800px;
-  margin: 0 auto;
-`;
-
-const FAQItem = styled.div`
-  background: ${theme.colors.white};
-  border-radius: ${theme.borderRadius.lg};
-  margin-bottom: ${theme.spacing.md};
-  box-shadow: ${theme.shadows.sm};
-  overflow: hidden;
-  border: 1px solid ${theme.colors.gray200};
-`;
-
-const FAQQuestion = styled.button.withConfig({
-  shouldForwardProp: prop => prop !== 'primaryColor',
-})`
-  width: 100%;
-  padding: ${theme.spacing.lg};
-  background: none;
-  border: none;
-  text-align: left;
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: ${theme.colors.gray900};
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  &:hover {
-    background: ${theme.colors.gray50};
-    color: ${props => props.primaryColor || theme.colors.primary};
-  }
-`;
-
-const FAQAnswer = styled.div`
-  padding: 0 ${theme.spacing.lg} ${theme.spacing.lg};
-  color: ${theme.colors.gray700};
-  line-height: 1.6;
-  border-top: 1px solid ${theme.colors.gray200};
-`;
-
-// Reviews Section Styles
-const ReviewsGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: ${theme.spacing.lg};
-`;
-
-const ReviewCard = styled.div.withConfig({
-  shouldForwardProp: prop => prop !== 'primaryColor',
-})`
-  background: ${theme.colors.white};
-  padding: ${theme.spacing.lg};
-  border-radius: ${theme.borderRadius.lg};
-  box-shadow: ${theme.shadows.md};
-  position: relative;
-
-  .review-header {
-    display: flex;
-    align-items: center;
-    gap: ${theme.spacing.md};
-    margin-bottom: ${theme.spacing.md};
-
-    .avatar {
-      width: 50px;
-      height: 50px;
-      background: ${props => props.primaryColor + '20' || theme.colors.gray200};
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.2rem;
-      color: ${props => props.primaryColor || theme.colors.primary};
-    }
-
-    .review-info h4 {
-      font-weight: 600;
-      color: ${theme.colors.gray900};
-      margin-bottom: 2px;
-    }
-
-    .review-info .date {
-      font-size: 0.8rem;
-      color: ${theme.colors.gray500};
-    }
-  }
-
-  .review-rating {
-    display: flex;
-    gap: 2px;
-    margin-bottom: ${theme.spacing.sm};
-    color: #fbbf24;
-  }
-
-  .review-text {
-    color: ${theme.colors.gray700};
-    line-height: 1.6;
-    font-style: italic;
-  }
-`;
-
-// Hours Section Styles
-const HoursGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: ${theme.spacing.lg};
-  margin-top: ${theme.spacing.xl};
-`;
-
-// Portfolio Section Styles
-const PortfolioGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: ${theme.spacing.xl};
-`;
-
-const PortfolioCard = styled.div.withConfig({
-  shouldForwardProp: prop => prop !== 'primaryColor',
-})`
-  background: ${theme.colors.white};
-  border-radius: ${theme.borderRadius.xl};
-  overflow: hidden;
-  box-shadow: ${theme.shadows.md};
-  transition: all 0.3s ease;
-  cursor: pointer;
-
-  &:hover {
-    transform: translateY(-8px);
-    box-shadow: ${theme.shadows.xl};
-  }
-`;
-
-const PortfolioImage = styled.div.withConfig({
-  shouldForwardProp: prop => prop !== 'primaryColor',
-})`
-  height: 240px;
-  background: linear-gradient(
-    135deg,
-    ${props => props.primaryColor + '30'} 0%,
-    ${props => props.primaryColor + '60'} 100%
-  );
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 4rem;
-  color: ${props => props.primaryColor || theme.colors.primary};
-  position: relative;
-
-  &::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.1);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-
-  ${PortfolioCard}:hover &::after {
-    opacity: 1;
-  }
-`;
-
-const PortfolioContent = styled.div.withConfig({
-  shouldForwardProp: prop => prop !== 'primaryColor',
-})`
-  padding: ${theme.spacing.xl};
-
-  .portfolio-category {
-    color: ${props => props.primaryColor || theme.colors.primary};
-    font-size: 0.8rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: ${theme.spacing.sm};
-  }
-
-  h3 {
-    font-size: 1.3rem;
-    font-weight: 600;
-    color: ${theme.colors.gray900};
-    margin-bottom: ${theme.spacing.md};
-  }
-
-  p {
-    color: ${theme.colors.gray600};
-    line-height: 1.6;
-    margin-bottom: ${theme.spacing.lg};
-  }
-
-  .tech-stack {
-    display: flex;
-    flex-wrap: wrap;
-    gap: ${theme.spacing.sm};
-
-    .tech-tag {
-      background: ${theme.colors.gray100};
-      color: ${theme.colors.gray700};
-      padding: ${theme.spacing.xs} ${theme.spacing.sm};
-      border-radius: ${theme.borderRadius.sm};
-      font-size: 0.8rem;
-      font-weight: 500;
-    }
-  }
-`;
-
-// Skills Section Styles
-const SkillsGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: ${theme.spacing.lg};
-`;
-
-const SkillCard = styled.div.withConfig({
-  shouldForwardProp: prop => prop !== 'primaryColor',
-})`
-  background: ${theme.colors.white};
-  padding: ${theme.spacing.lg};
-  border-radius: ${theme.borderRadius.lg};
-  box-shadow: ${theme.shadows.sm};
-  border: 1px solid ${theme.colors.gray200};
-
-  .skill-header {
-    display: flex;
-    align-items: center;
-    gap: ${theme.spacing.md};
-    margin-bottom: ${theme.spacing.md};
-
-    .skill-icon {
-      font-size: 1.5rem;
-    }
-
-    .skill-info h4 {
-      font-weight: 600;
-      color: ${theme.colors.gray900};
-      margin-bottom: 2px;
-    }
-
-    .skill-info .percentage {
-      font-size: 0.9rem;
-      color: ${props => props.primaryColor || theme.colors.primary};
-      font-weight: 600;
-    }
-  }
-
-  .skill-bar {
-    height: 8px;
-    background: ${theme.colors.gray200};
-    border-radius: 4px;
-    overflow: hidden;
-    position: relative;
-
-    .skill-progress {
-      height: 100%;
-      background: linear-gradient(
-        90deg,
-        ${props => props.primaryColor || theme.colors.primary},
-        ${props => props.primaryColor + 'cc' || theme.colors.primary + 'cc'}
-      );
-      border-radius: 4px;
-      transition: width 2s ease;
-    }
-  }
-`;
-
-// Experience Section Styles
-const ExperienceTimeline = styled.div`
-  max-width: 800px;
-  margin: 0 auto;
-  position: relative;
-
-  &::before {
-    content: '';
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 2px;
-    height: 100%;
-    background: ${theme.colors.gray300};
-
-    @media (max-width: ${theme.breakpoints.tablet}) {
-      left: 20px;
-    }
-  }
-`;
-
-const ExperienceCard = styled.div.withConfig({
-  shouldForwardProp: prop => prop !== 'primaryColor' && prop !== 'isLeft',
-})`
-  position: relative;
-  width: calc(50% - 20px);
-  margin-bottom: ${theme.spacing.xl};
-  ${props => (props.isLeft ? 'margin-right: auto;' : 'margin-left: auto;')}
-
-  @media (max-width: ${theme.breakpoints.tablet}) {
-    width: calc(100% - 50px);
-    margin-left: 50px;
-  }
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 20px;
-    ${props => (props.isLeft ? 'right: -15px;' : 'left: -15px;')}
-    width: 12px;
-    height: 12px;
-    background: ${props => props.primaryColor || theme.colors.primary};
-    border-radius: 50%;
-    border: 3px solid ${theme.colors.white};
-    box-shadow: ${theme.shadows.sm};
-
-    @media (max-width: ${theme.breakpoints.tablet}) {
-      left: -35px;
-    }
-  }
-
-  .experience-content {
-    background: ${theme.colors.white};
-    padding: ${theme.spacing.xl};
-    border-radius: ${theme.borderRadius.lg};
-    box-shadow: ${theme.shadows.md};
-    border: 1px solid ${theme.colors.gray200};
-
-    .period {
-      color: ${props => props.primaryColor || theme.colors.primary};
-      font-size: 0.9rem;
-      font-weight: 600;
-      margin-bottom: ${theme.spacing.sm};
-    }
-
-    h4 {
-      font-size: 1.2rem;
-      font-weight: 600;
-      color: ${theme.colors.gray900};
-      margin-bottom: ${theme.spacing.xs};
-    }
-
-    .company {
-      color: ${theme.colors.gray600};
-      font-weight: 500;
-      margin-bottom: ${theme.spacing.md};
-    }
-
-    p {
-      color: ${theme.colors.gray700};
-      line-height: 1.6;
-    }
-  }
-`;
-
-const HoursCard = styled.div.withConfig({
-  shouldForwardProp: prop => prop !== 'primaryColor',
-})`
-  background: ${theme.colors.white};
-  padding: ${theme.spacing.lg};
-  border-radius: ${theme.borderRadius.lg};
-  box-shadow: ${theme.shadows.sm};
-  text-align: center;
-
-  h4 {
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: ${props => props.primaryColor || theme.colors.primary};
-    margin-bottom: ${theme.spacing.md};
-  }
-
-  .hours-list {
-    display: flex;
-    flex-direction: column;
-    gap: ${theme.spacing.sm};
-
-    .hours-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: ${theme.spacing.sm};
-      background: ${theme.colors.gray50};
-      border-radius: ${theme.borderRadius.sm};
-
-      .day {
-        font-weight: 500;
-        color: ${theme.colors.gray900};
-      }
-
-      .time {
-        color: ${theme.colors.gray600};
-        font-size: 0.9rem;
-      }
-    }
-  }
-`;
-
-const TestimonialCard = styled.div.withConfig({
-  shouldForwardProp: prop => prop !== 'primaryColor',
-})`
-  background: ${theme.colors.white};
-  padding: ${theme.spacing.xl};
-  border-radius: ${theme.borderRadius.xl};
-  box-shadow: ${theme.shadows.md};
-  position: relative;
-
-  .quote {
-    font-size: 2rem;
-    color: ${props => props.primaryColor || theme.colors.primary};
-    margin-bottom: ${theme.spacing.md};
-  }
-
-  .text {
-    font-size: 1.1rem;
-    line-height: 1.7;
-    color: ${theme.colors.gray700};
-    margin-bottom: ${theme.spacing.lg};
-    font-style: italic;
-  }
-
-  .author {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    .info h4 {
-      font-weight: 600;
-      color: ${theme.colors.gray900};
-      margin-bottom: ${theme.spacing.xs};
-    }
-
-    .info p {
-      color: ${theme.colors.gray600};
-      font-size: 0.9rem;
-    }
-
-    .rating {
-      display: flex;
-      gap: 2px;
-      color: #fbbf24;
-    }
-  }
-`;
-
-// Contact Section Styles
-const ContactGrid = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: ${theme.spacing.xxl};
-
-  @media (max-width: ${theme.breakpoints.tablet}) {
-    grid-template-columns: 1fr;
-  }
-`;
-
-const ContactForm = styled.form.withConfig({
-  shouldForwardProp: prop => prop !== 'primaryColor',
-})`
-  display: flex;
-  flex-direction: column;
-  gap: ${theme.spacing.lg};
-
-  input,
-  textarea {
-    padding: ${theme.spacing.md};
-    border: 2px solid ${theme.colors.gray200};
-    border-radius: ${theme.borderRadius.md};
-    font-size: 1rem;
-    transition: border-color 0.2s ease;
-
-    &:focus {
-      outline: none;
-      border-color: ${props => props.primaryColor || theme.colors.primary};
-    }
-  }
-
-  textarea {
-    min-height: 120px;
-    resize: vertical;
-  }
-
-  button {
-    background: ${props => props.primaryColor || theme.colors.primary};
-    color: ${theme.colors.white};
-    padding: ${theme.spacing.lg};
-    border: none;
-    border-radius: ${theme.borderRadius.md};
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-
-    &:hover {
-      opacity: 0.9;
-      transform: translateY(-1px);
-    }
-  }
-`;
-
-const ContactInfo = styled.div.withConfig({
-  shouldForwardProp: prop => prop !== 'primaryColor',
-})`
-  h3 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: ${theme.colors.gray900};
-    margin-bottom: ${theme.spacing.lg};
-  }
-
-  .contact-item {
-    display: flex;
-    align-items: center;
-    gap: ${theme.spacing.md};
-    margin-bottom: ${theme.spacing.lg};
-    padding: ${theme.spacing.md};
-    background: ${theme.colors.gray50};
-    border-radius: ${theme.borderRadius.md};
-
-    .icon {
-      width: 40px;
-      height: 40px;
-      background: ${props => props.primaryColor || theme.colors.primary};
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: ${theme.colors.white};
-    }
-
-    .text {
-      color: ${theme.colors.gray700};
-      font-weight: 500;
-    }
-  }
-`;
-
-// Footer Styles
-const Footer = styled.footer`
-  background: ${theme.colors.gray900};
-  color: ${theme.colors.white};
-  padding: ${theme.spacing.xxl} 0 ${theme.spacing.xl};
-`;
-
-const FooterContent = styled.div`
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 ${theme.spacing.md};
-  text-align: center;
-
-  h3 {
-    font-size: 1.5rem;
-    margin-bottom: ${theme.spacing.lg};
-  }
-
-  p {
-    color: ${theme.colors.gray300};
-    margin-bottom: ${theme.spacing.lg};
-  }
-`;
-
-const SocialLinks = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: ${theme.spacing.lg};
-  margin-bottom: ${theme.spacing.xl};
-`;
-
-const SocialLink = styled.a.withConfig({
-  shouldForwardProp: prop => prop !== 'primaryColor',
-})`
-  width: 40px;
-  height: 40px;
-  background: ${props => props.primaryColor || theme.colors.primary};
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: ${theme.colors.white};
-  transition: all 0.3s ease;
-
-  &:hover {
-    transform: translateY(-2px);
-    opacity: 0.9;
-  }
-`;
-
 const BusinessWebsitePage = () => {
   const { businessSlug, slug } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
-  const [businessData, setBusinessData] = useState(null);
+  const dispatch = useDispatch();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   // Support both businessSlug (legacy routes) and slug (new optimized routes)
   const actualSlug = businessSlug || slug;
 
-  // Get business data from Redux store for real-time updates
-  const { businesses, editingBusiness } = useSelector(
-    state => state.businessManagement
-  );
+  // Get business data from Redux store
+  const {
+    businesses,
+    editingBusiness,
+    businessType,
+    businessTypeConfig,
+    sectionVisibility,
+    loading,
+    error,
+  } = useSelector(state => state.businessManagement);
+
+  // Get the current business data (prioritize editing business for real-time updates)
+  const currentBusiness = editingBusiness && editingBusiness.slug === actualSlug
+    ? editingBusiness
+    : businesses.find(b => b.slug === actualSlug);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setLoading(true);
-        setError(null);
+        dispatch(setLoading(true));
+        dispatch(clearError());
 
         // Extract slug from URL - either from params or from pathname
         let extractedSlug = actualSlug;
@@ -1408,77 +323,55 @@ const BusinessWebsitePage = () => {
           extractedSlug = pathSegments[0];
         }
 
-        let businessTemplate = null;
-
-        // Priority 1: Use editing business data for real-time updates during editing
-        if (editingBusiness && editingBusiness.slug === extractedSlug) {
-          businessTemplate = editingBusiness;
-          console.log(
-            'Using editing business data for real-time updates:',
-            editingBusiness
-          );
-          setBusinessData(businessTemplate);
-          setLoading(false);
+        // Check if we already have business data in Redux
+        const existingBusiness = businesses.find(b => b.slug === extractedSlug);
+        if (existingBusiness) {
+          console.log('Using existing business data from Redux:', existingBusiness);
+          dispatch(setLoading(false));
           return;
         }
 
-        // Priority 2: Use saved business data from Redux businesses array
-        if (businesses && businesses.length > 0) {
-          businessTemplate = businesses.find(b => b.slug === extractedSlug);
-          if (businessTemplate) {
-            console.log(
-              'Using saved business data from Redux:',
-              businessTemplate
-            );
-            setBusinessData(businessTemplate);
-            setLoading(false);
-            return;
-          }
-        }
-
-        // Priority 3: Make fake API call to get business data
-        console.log(
-          `[BusinessWebsitePage] Making API call for business: ${extractedSlug}`
-        );
+        // Make API call to get business data with type detection
+        console.log(`[BusinessWebsitePage] Making API call for business: ${extractedSlug}`);
         const response = await fetchBusinessData(extractedSlug);
 
         if (response.success && response.data) {
-          console.log(
-            '[BusinessWebsitePage] API call successful:',
-            response.data
-          );
-          setBusinessData(response.data);
+          const { businessData, businessType, businessTypeConfig } = response.data;
+          
+          console.log('[BusinessWebsitePage] API call successful:', response.data);
+          
+          // Initialize Redux state with business data and type config
+          dispatch(initializeBusinessData({
+            businessData,
+            businessTypeConfig,
+          }));
+
+          dispatch(setBusinessType({
+            businessType,
+            businessTypeConfig,
+          }));
+
         } else {
-          // Priority 4: Fallback to template data if API fails
-          console.log(
-            '[BusinessWebsitePage] API call failed, using template fallback'
-          );
-          businessTemplate = getBusinessTemplate(extractedSlug);
-          if (businessTemplate) {
-            setBusinessData(businessTemplate);
-          } else {
-            setError('Business not found');
-          }
+          dispatch(setError('Business not found'));
         }
       } catch (err) {
-        console.error(
-          '[BusinessWebsitePage] Error fetching business data:',
-          err
-        );
-        setError(err.message);
-
-        // Fallback to template data on error
-        const businessTemplate = getBusinessTemplate(actualSlug);
-        if (businessTemplate) {
-          setBusinessData(businessTemplate);
-        }
+        console.error('[BusinessWebsitePage] Error fetching business data:', err);
+        dispatch(setError(err.message));
       } finally {
-        setLoading(false);
+        dispatch(setLoading(false));
       }
     };
 
     fetchData();
-  }, [actualSlug, location.pathname, businesses, editingBusiness]);
+  }, [actualSlug, location.pathname, dispatch]);
+
+  const handleBackToList = () => {
+    navigate('/business-websites');
+  };
+
+  const handleOwnerClick = () => {
+    navigate(`/${actualSlug}/adminpanel`);
+  };
 
   if (loading) {
     return (
@@ -1491,40 +384,60 @@ const BusinessWebsitePage = () => {
     );
   }
 
-  if (error || !businessData) {
+  if (error || !currentBusiness) {
     return (
       <PageContainer>
         <div style={{ padding: '4rem', textAlign: 'center' }}>
           <h2>Business Website Not Found</h2>
-          <p>
-            {error || "The business website you're looking for doesn't exist."}
-          </p>
+          <p>{error || "The business website you're looking for doesn't exist."}</p>
+          <button 
+            onClick={handleBackToList}
+            style={{
+              marginTop: '1rem',
+              padding: '0.5rem 1rem',
+              background: theme.colors.primary,
+              color: 'white',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer'
+            }}
+          >
+            Back to Business Websites
+          </button>
         </div>
       </PageContainer>
     );
   }
 
-  const handleBackToList = () => {
-    navigate('/business-websites');
+  // Get the appropriate navigation items based on business type
+  const getNavigationItems = () => {
+    const baseItems = [
+      { name: 'Home', href: '#home' },
+      { name: 'About', href: '#about' },
+    ];
+
+    if (businessType === 'freelancer') {
+      return [
+        ...baseItems,
+        { name: 'Portfolio', href: '#portfolio' },
+        { name: 'Skills', href: '#skills' },
+        { name: 'Services', href: '#services' },
+        { name: 'Experience', href: '#experience' },
+        { name: 'Contact', href: '#contact' },
+      ];
+    } else {
+      return [
+        ...baseItems,
+        { name: 'Services', href: '#services' },
+        { name: 'Team', href: '#team' },
+        { name: 'Gallery', href: '#gallery' },
+        { name: 'Packages', href: '#packages' },
+        { name: 'Contact', href: '#contact' },
+      ];
+    }
   };
 
-  const handleOwnerClick = () => {
-    navigate(`/${businessData.slug}/adminpanel`);
-  };
-
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-  };
-
-  const closeMobileMenu = () => {
-    setIsMobileMenuOpen(false);
-  };
-
-  // Use business data directly from API (editing business takes priority for real-time updates)
-  const content =
-    editingBusiness && editingBusiness.slug === businessData.slug
-      ? editingBusiness
-      : businessData;
+  const navigationItems = currentBusiness.navigation?.menuItems || getNavigationItems();
 
   return (
     <PageContainer>
@@ -1534,765 +447,334 @@ const BusinessWebsitePage = () => {
           <BackToListButton onClick={handleBackToList}>
             <FaArrowLeft />
           </BackToListButton>
-          <Logo primaryColor={businessData.primaryColor}>
-            {businessData.navigation?.logo || businessData.name}
+          <Logo primaryColor={currentBusiness.primaryColor}>
+            {currentBusiness.navigation?.logo || currentBusiness.name}
           </Logo>
-          <NavLinks primaryColor={businessData.primaryColor}>
-            {businessData.navigation?.menuItems ? (
-              businessData.navigation.menuItems.map((item, index) => (
-                <a key={index} href={item.href}>
-                  {item.name}
-                </a>
-              ))
-            ) : (
-              <>
-                <a href="#home">Home</a>
-                <a href="#about">About</a>
-                {businessData.slug === 'freelancer' && (
-                  <a href="#portfolio">Portfolio</a>
-                )}
-                {businessData.slug === 'freelancer' && (
-                  <a href="#skills">Skills</a>
-                )}
-                <a href="#services">Services</a>
-                {businessData.slug !== 'freelancer' && <a href="#team">Team</a>}
-                {businessData.slug === 'freelancer' && (
-                  <a href="#experience">Experience</a>
-                )}
-                {businessData.slug !== 'freelancer' && (
-                  <a href="#gallery">Gallery</a>
-                )}
-                {businessData.slug !== 'freelancer' && (
-                  <a href="#packages">Packages</a>
-                )}
-                <a href="#contact">Contact</a>
-              </>
-            )}
+          <NavLinks primaryColor={currentBusiness.primaryColor}>
+            {navigationItems.map((item, index) => (
+              <a key={index} href={item.href}>
+                {item.name}
+              </a>
+            ))}
           </NavLinks>
-          <MobileMenuButton
-            primaryColor={businessData.primaryColor}
-            onClick={toggleMobileMenu}
-          >
-            <FaBars />
-          </MobileMenuButton>
           <OwnerLink onClick={handleOwnerClick}>
             <FaEdit />
-            {businessData.navigation?.ownerLinkText || 'Owner Dashboard'}
+            {businessType === 'freelancer' ? 'Admin Panel' : 'Owner Dashboard'}
           </OwnerLink>
         </NavContainer>
       </Navbar>
 
-      {/* Mobile Menu */}
-      <MobileMenu
-        isOpen={isMobileMenuOpen}
-        primaryColor={businessData.primaryColor}
-      >
-        <MobileMenuHeader>
-          <Logo primaryColor={businessData.primaryColor}>
-            {businessData.name}
-          </Logo>
-          <MobileMenuButton
-            primaryColor={businessData.primaryColor}
-            onClick={closeMobileMenu}
-          >
-            <FaTimes />
-          </MobileMenuButton>
-        </MobileMenuHeader>
-        <MobileMenuLinks primaryColor={businessData.primaryColor}>
-          <a href="#home" onClick={closeMobileMenu}>
-            Home
-          </a>
-          <a href="#about" onClick={closeMobileMenu}>
-            About
-          </a>
-          {businessData.slug === 'freelancer' && (
-            <a href="#portfolio" onClick={closeMobileMenu}>
-              Portfolio
-            </a>
-          )}
-          {businessData.slug === 'freelancer' && (
-            <a href="#skills" onClick={closeMobileMenu}>
-              Skills
-            </a>
-          )}
-          <a href="#services" onClick={closeMobileMenu}>
-            Services
-          </a>
-          {businessData.slug !== 'freelancer' && (
-            <a href="#team" onClick={closeMobileMenu}>
-              Team
-            </a>
-          )}
-          {businessData.slug === 'freelancer' && (
-            <a href="#experience" onClick={closeMobileMenu}>
-              Experience
-            </a>
-          )}
-          {businessData.slug !== 'freelancer' && (
-            <a href="#gallery" onClick={closeMobileMenu}>
-              Gallery
-            </a>
-          )}
-          {businessData.slug !== 'freelancer' && (
-            <a href="#packages" onClick={closeMobileMenu}>
-              Packages
-            </a>
-          )}
-          <a href="#contact" onClick={closeMobileMenu}>
-            Contact
-          </a>
-          <button
-            onClick={() => {
-              handleOwnerClick();
-              closeMobileMenu();
-            }}
-            style={{
-              cursor: 'pointer',
-              background: 'none',
-              border: 'none',
-              color: 'inherit',
-              font: 'inherit',
-              textDecoration: 'underline',
-            }}
-          >
-            Owner Dashboard
-          </button>
-        </MobileMenuLinks>
-      </MobileMenu>
-
       {/* Hero Section */}
-      <HeroSection
-        id="hero"
-        primaryColor={businessData.primaryColor}
-        businessType={businessData.slug}
-      >
-        <HeroContent>
-          <HeroTitle>{content.hero?.title || businessData.name}</HeroTitle>
-          <HeroSubtitle>
-            {content.hero?.subtitle || `Welcome to ${businessData.name}`}
-          </HeroSubtitle>
-          <div
-            style={{
-              display: 'flex',
-              gap: '1rem',
-              justifyContent: 'center',
-              flexWrap: 'wrap',
-              marginTop: '2rem',
-            }}
-          >
-            <HeroCTA primaryColor={businessData.primaryColor}>
-              {businessData.slug === 'restaurant'
-                ? 'Reserve Table'
-                : businessData.slug === 'gym'
-                  ? 'Start Free Trial'
-                  : businessData.slug === 'salon'
-                    ? 'Book Appointment'
-                    : 'Get Started'}
-            </HeroCTA>
-            <button
-              style={{
-                padding: '1rem 2rem',
-                fontSize: '1.2rem',
-                fontWeight: '600',
-                background: 'transparent',
-                color: theme.colors.white,
-                border: `2px solid ${theme.colors.white}`,
-                borderRadius: '8px',
-                cursor: 'pointer',
-                transition: 'all 0.3s ease',
-              }}
-            >
-              Learn More
-            </button>
-          </div>
-        </HeroContent>
-      </HeroSection>
+      {sectionVisibility.hero && (
+        <HeroSection
+          id="home"
+          primaryColor={currentBusiness.primaryColor}
+          backgroundImage={currentBusiness.hero?.backgroundImage}
+        >
+          <HeroContent>
+            <HeroTitle>{currentBusiness.hero?.title || currentBusiness.name}</HeroTitle>
+            <HeroSubtitle>
+              {currentBusiness.hero?.subtitle || `Welcome to ${currentBusiness.name}`}
+            </HeroSubtitle>
+            <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+              <button
+                style={{
+                  background: currentBusiness.primaryColor || theme.colors.primary,
+                  color: 'white',
+                  padding: '1rem 2rem',
+                  border: 'none',
+                  borderRadius: '8px',
+                  fontSize: '1.2rem',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease',
+                }}
+              >
+                {currentBusiness.hero?.ctaText || (businessType === 'freelancer' ? 'Hire Me' : 'Get Started')}
+              </button>
+            </div>
+          </HeroContent>
+        </HeroSection>
+      )}
 
       {/* About Section */}
-      <Section id="about" background={theme.colors.gray50}>
-        <SectionContainer>
-          <AboutGrid>
-            <AboutContent>
-              <h3>{content.about?.title || 'About Us'}</h3>
-              <p>
-                {content.about?.description ||
-                  `Learn more about ${businessData.name}`}
-              </p>
-              <p>
-                {content.about?.extendedDescription ||
-                  'We pride ourselves on delivering exceptional service and creating memorable experiences for all our clients.'}
-              </p>
-            </AboutContent>
-            <AboutImage primaryColor={businessData.primaryColor}>
-              {businessData.slug === 'salon' && '💇‍♀️'}
-              {businessData.slug === 'gym' && '��️‍♂��'}
-              {businessData.slug === 'restaurant' && '👨‍🍳'}
-              {!['salon', 'gym', 'restaurant'].includes(businessData.slug) &&
-                '🏢'}
-            </AboutImage>
-          </AboutGrid>
-
-          <StatsGrid>
-            <StatCard primaryColor={businessData.primaryColor}>
-              <div className="number">
-                {content.about?.stats?.[0]?.number || '100+'}
-              </div>
-              <div className="label">
-                {content.about?.stats?.[0]?.label || 'Services'}
-              </div>
-            </StatCard>
-            <StatCard primaryColor={businessData.primaryColor}>
-              <div className="number">
-                {content.about?.stats?.[1]?.number || '5+'}
-              </div>
-              <div className="label">
-                {content.about?.stats?.[1]?.label || 'Years Experience'}
-              </div>
-            </StatCard>
-            <StatCard primaryColor={businessData.primaryColor}>
-              <div className="number">
-                {content.about?.stats?.[2]?.number || '4.9'}
-              </div>
-              <div className="label">
-                {content.about?.stats?.[2]?.label || '★ Average Rating'}
-              </div>
-            </StatCard>
-            <StatCard primaryColor={businessData.primaryColor}>
-              <div className="number">
-                {content.about?.stats?.[3]?.number || '100+'}
-              </div>
-              <div className="label">
-                {content.about?.stats?.[3]?.label || 'Happy Clients'}
-              </div>
-            </StatCard>
-          </StatsGrid>
-        </SectionContainer>
-      </Section>
-
-      {/* Portfolio Section for Freelancers */}
-      {businessData.slug === 'freelancer' && content.portfolio ? (
-        <Section id="portfolio">
+      {sectionVisibility['about-us'] && (
+        <Section id="about" background={theme.colors.gray50}>
           <SectionContainer>
-            <SectionTitle>
-              {content.sections?.portfolio?.title || 'My Portfolio'}
-            </SectionTitle>
-            <SectionSubtitle>
-              {content.sections?.portfolio?.subtitle ||
-                'A showcase of my recent work and creative projects across various industries and technologies.'}
-            </SectionSubtitle>
-            <PortfolioGrid>
-              {(content.portfolio || []).map((project, index) => (
-                <PortfolioCard
-                  key={index}
-                  primaryColor={businessData.primaryColor}
-                >
-                  <PortfolioImage primaryColor={businessData.primaryColor}>
-                    🖼️
-                  </PortfolioImage>
-                  <PortfolioContent primaryColor={businessData.primaryColor}>
-                    <div className="portfolio-category">{project.category}</div>
-                    <h3>{project.title}</h3>
-                    <p>{project.description}</p>
-                    <div className="tech-stack">
-                      {(project.technologies || []).map((tech, i) => (
-                        <span key={i} className="tech-tag">
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-                  </PortfolioContent>
-                </PortfolioCard>
-              ))}
-            </PortfolioGrid>
-          </SectionContainer>
-        </Section>
-      ) : null}
-
-      {/* Skills Section for Freelancers */}
-      {businessData.slug === 'freelancer' && content.skills ? (
-        <Section id="skills" background={theme.colors.gray50}>
-          <SectionContainer>
-            <SectionTitle>
-              {content.sections?.skills?.title || 'My Skills'}
-            </SectionTitle>
-            <SectionSubtitle>
-              {content.sections?.skills?.subtitle ||
-                'Technical expertise and creative skills developed through years of professional experience.'}
-            </SectionSubtitle>
-            <SkillsGrid>
-              {(content.skills || []).map((skill, index) => (
-                <SkillCard key={index} primaryColor={businessData.primaryColor}>
-                  <div className="skill-header">
-                    <div className="skill-icon">{skill.icon}</div>
-                    <div className="skill-info">
-                      <h4>{skill.name}</h4>
-                      <div className="percentage">{skill.level}%</div>
-                    </div>
-                  </div>
-                  <div className="skill-bar">
-                    <div
-                      className="skill-progress"
-                      style={{ width: `${skill.level}%` }}
-                    ></div>
-                  </div>
-                </SkillCard>
-              ))}
-            </SkillsGrid>
-          </SectionContainer>
-        </Section>
-      ) : null}
-
-      {/* Services Section */}
-      <Section
-        id="services"
-        background={
-          businessData.slug === 'freelancer'
-            ? theme.colors.white
-            : theme.colors.white
-        }
-      >
-        <SectionContainer>
-          <SectionTitle>
-            {content.sections?.services?.title ||
-              (businessData.slug === 'freelancer'
-                ? 'My Services'
-                : 'Our Services')}
-          </SectionTitle>
-          <SectionSubtitle>
-            {content.sections?.services?.subtitle ||
-              'We offer a comprehensive range of professional services designed to meet your needs and exceed your expectations.'}
-          </SectionSubtitle>
-          <ServicesGrid>
-            {(content.services || []).map((service, index) => (
-              <ServiceCard
-                key={service.id || index}
-                primaryColor={businessData.primaryColor}
-              >
-                <div className="icon">{service.icon}</div>
-                <h3>{service.title}</h3>
-                <p>{service.description}</p>
-                {service.price && (
-                  <div
-                    style={{
-                      marginTop: theme.spacing.md,
-                      fontSize: '1.1rem',
-                      fontWeight: '600',
-                      color: businessData.primaryColor,
-                    }}
-                  >
-                    {service.price}
-                  </div>
-                )}
-              </ServiceCard>
-            ))}
-          </ServicesGrid>
-        </SectionContainer>
-      </Section>
-
-      {/* Team Section */}
-      <Section id="team" background={theme.colors.gray50}>
-        <SectionContainer>
-          <SectionTitle>
-            {content.sections?.team?.title || 'Meet Our Team'}
-          </SectionTitle>
-          <SectionSubtitle>
-            {content.sections?.team?.subtitle ||
-              'Our experienced professionals are passionate about delivering exceptional service and results.'}
-          </SectionSubtitle>
-          <TeamGrid>
-            {(content.team || []).map((member, index) => (
-              <TeamCard key={member.id || index}>
-                <TeamPhoto primaryColor={businessData.primaryColor}>
-                  {member.photo ? (
-                    <img
-                      src={member.photo}
-                      alt={member.name}
+            <SectionTitle>{currentBusiness.about?.title || 'About Us'}</SectionTitle>
+            <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
+              <p style={{ fontSize: '1.1rem', lineHeight: '1.7', color: theme.colors.gray600, marginBottom: '2rem' }}>
+                {currentBusiness.about?.description || `Learn more about ${currentBusiness.name}`}
+              </p>
+              
+              {/* Statistics */}
+              {currentBusiness.about?.stats && (
+                <div style={{ 
+                  display: 'grid', 
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', 
+                  gap: '1.5rem',
+                  marginTop: '3rem'
+                }}>
+                  {currentBusiness.about.stats.map((stat, index) => (
+                    <div 
+                      key={index}
                       style={{
-                        width: '100%',
-                        height: '100%',
-                        objectFit: 'cover',
+                        textAlign: 'center',
+                        padding: '1.5rem',
+                        background: theme.colors.white,
+                        borderRadius: '12px',
+                        boxShadow: theme.shadows.sm,
                       }}
-                    />
-                  ) : (
-                    '👤'
-                  )}
-                </TeamPhoto>
-                <TeamInfo primaryColor={businessData.primaryColor}>
-                  <h3>{member.name}</h3>
-                  <div className="role">{member.role}</div>
-                  <p>{member.bio}</p>
-                </TeamInfo>
-              </TeamCard>
-            ))}
-          </TeamGrid>
-        </SectionContainer>
-      </Section>
-
-      {/* Experience Section for Freelancers */}
-      {businessData.slug === 'freelancer' && content.experience ? (
-        <Section id="experience">
-          <SectionContainer>
-            <SectionTitle>
-              {content.sections?.experience?.title || 'Professional Experience'}
-            </SectionTitle>
-            <SectionSubtitle>
-              {content.sections?.experience?.subtitle ||
-                'My journey in the creative industry, working with diverse clients and challenging projects.'}
-            </SectionSubtitle>
-            <ExperienceTimeline>
-              {(content.experience || []).map((exp, index) => (
-                <ExperienceCard
-                  key={index}
-                  primaryColor={businessData.primaryColor}
-                  isLeft={index % 2 === 0}
-                >
-                  <div className="experience-content">
-                    <div className="period">{exp.period}</div>
-                    <h4>{exp.role}</h4>
-                    <div className="company">{exp.company}</div>
-                    <p>{exp.description}</p>
-                  </div>
-                </ExperienceCard>
-              ))}
-            </ExperienceTimeline>
-          </SectionContainer>
-        </Section>
-      ) : null}
-
-      {/* Testimonials Section */}
-      <Section id="testimonials">
-        <SectionContainer>
-          <SectionTitle>
-            {content.sections?.testimonials?.title || 'What Our Clients Say'}
-          </SectionTitle>
-          <SectionSubtitle>
-            {content.sections?.testimonials?.subtitle ||
-              "Don't just take our word for it - hear from our satisfied customers about their experiences."}
-          </SectionSubtitle>
-          <TestimonialsGrid>
-            {[1, 2, 3].map((_, index) => (
-              <TestimonialCard
-                key={index}
-                primaryColor={businessData.primaryColor}
-              >
-                <div className="quote">
-                  <FaQuoteLeft />
+                    >
+                      <div style={{
+                        fontSize: '2.5rem',
+                        fontWeight: '800',
+                        color: currentBusiness.primaryColor,
+                        marginBottom: '0.5rem'
+                      }}>
+                        {stat.number}
+                      </div>
+                      <div style={{ color: theme.colors.gray600, fontWeight: '500' }}>
+                        {stat.label}
+                      </div>
+                    </div>
+                  ))}
                 </div>
-                <div className="text">
-                  "
-                  {content.sections?.testimonials?.sampleTestimonial?.text ||
-                    "Outstanding service and professional staff. I couldn't be happier with the results!"}
-                  "
-                </div>
-                <div className="author">
-                  <div className="info">
-                    <h4>
-                      {content.sections?.testimonials?.sampleTestimonial
-                        ?.author || 'Client Name'}
-                    </h4>
-                    <p>
-                      {content.sections?.testimonials?.sampleTestimonial
-                        ?.role || 'Satisfied Customer'}
-                    </p>
-                  </div>
-                  <div className="rating">
-                    {[...Array(5)].map((_, i) => (
-                      <FaStar key={i} />
-                    ))}
-                  </div>
-                </div>
-              </TestimonialCard>
-            ))}
-          </TestimonialsGrid>
-        </SectionContainer>
-      </Section>
-
-      {/* Gallery Section */}
-      <Section id="gallery">
-        <SectionContainer>
-          <SectionTitle>
-            {content.sections?.gallery?.title || 'Our Gallery'}
-          </SectionTitle>
-          <SectionSubtitle>
-            {content.sections?.gallery?.subtitle ||
-              'Take a look at our work, facilities, and the experiences we create for our clients.'}
-          </SectionSubtitle>
-          <GalleryGrid>
-            {content.gallery?.map((category, index) => (
-              <GalleryCategory key={index}>
-                <GalleryImage primaryColor={businessData.primaryColor}>
-                  📸
-                </GalleryImage>
-                <GalleryInfo>
-                  <h3>{category.category}</h3>
-                  <p>{category.images} photos</p>
-                </GalleryInfo>
-              </GalleryCategory>
-            ))}
-          </GalleryGrid>
-        </SectionContainer>
-      </Section>
-
-      {/* Packages Section */}
-      {content.packages && (
-        <Section id="packages" background={theme.colors.gray50}>
-          <SectionContainer>
-            <SectionTitle>
-              {content.sections?.packages?.title || 'Our Packages'}
-            </SectionTitle>
-            <SectionSubtitle>
-              {content.sections?.packages?.subtitle ||
-                'Choose from our specially curated packages designed to give you the best value and experience.'}
-            </SectionSubtitle>
-            <PackagesGrid>
-              {(content.packages || []).map((pkg, index) => (
-                <PackageCard
-                  key={index}
-                  primaryColor={businessData.primaryColor}
-                  featured={index === 1}
-                >
-                  <div className="package-name">{pkg.name}</div>
-                  <div className="package-price">{pkg.price}</div>
-                  <div className="package-duration">{pkg.duration}</div>
-                  <div className="package-description">{pkg.description}</div>
-                  <button className="package-button">
-                    {content.ui?.buttons?.bookNow || 'Book Now'}
-                  </button>
-                </PackageCard>
-              ))}
-            </PackagesGrid>
+              )}
+            </div>
           </SectionContainer>
         </Section>
       )}
 
-      {/* FAQ Section */}
-      <Section id="faq">
-        <SectionContainer>
-          <SectionTitle>
-            {content.sections?.faq?.title || 'Frequently Asked Questions'}
-          </SectionTitle>
-          <SectionSubtitle>
-            {content.sections?.faq?.subtitle ||
-              'Find answers to common questions about our services, booking, and policies.'}
-          </SectionSubtitle>
-          <FAQContainer>
-            {(content.faq || []).map((faq, index) => (
-              <FAQItem key={index}>
-                <FAQQuestion primaryColor={businessData.primaryColor}>
-                  {faq.question}
-                  <span>+</span>
-                </FAQQuestion>
-                <FAQAnswer>{faq.answer}</FAQAnswer>
-              </FAQItem>
-            ))}
-          </FAQContainer>
-        </SectionContainer>
-      </Section>
-
-      {/* Reviews Section */}
-      <Section id="reviews" background={theme.colors.gray50}>
-        <SectionContainer>
-          <SectionTitle>
-            {content.sections?.reviews?.title || 'Recent Reviews'}
-          </SectionTitle>
-          <SectionSubtitle>
-            {content.sections?.reviews?.subtitle ||
-              'See what our recent customers are saying about their experiences with us.'}
-          </SectionSubtitle>
-          <ReviewsGrid>
-            {(content.reviews || []).map((review, index) => (
-              <ReviewCard key={index} primaryColor={businessData.primaryColor}>
-                <div className="review-header">
-                  <div className="avatar">
-                    {review.name
-                      .split(' ')
-                      .map(n => n[0])
-                      .join('')}
+      {/* Services Section */}
+      {sectionVisibility['services-offered'] && currentBusiness.services && (
+        <Section id="services">
+          <SectionContainer>
+            <SectionTitle>
+              {businessType === 'freelancer' ? 'My Services' : 'Our Services'}
+            </SectionTitle>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+              gap: '2rem',
+              marginTop: '3rem'
+            }}>
+              {currentBusiness.services.map((service, index) => (
+                <div
+                  key={service.id || index}
+                  style={{
+                    background: theme.colors.white,
+                    padding: '2rem',
+                    borderRadius: '12px',
+                    boxShadow: theme.shadows.md,
+                    textAlign: 'center',
+                    transition: 'transform 0.3s ease',
+                    border: `1px solid ${theme.colors.gray200}`,
+                  }}
+                >
+                  <div style={{
+                    width: '60px',
+                    height: '60px',
+                    margin: '0 auto 1.5rem',
+                    background: currentBusiness.primaryColor,
+                    borderRadius: '50%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '1.5rem',
+                    color: 'white'
+                  }}>
+                    {service.icon || '⚡'}
                   </div>
-                  <div className="review-info">
-                    <h4>{review.name}</h4>
-                    <div className="date">{review.date}</div>
-                  </div>
-                </div>
-                <div className="review-rating">
-                  {[...Array(review.rating)].map((_, i) => (
-                    <FaStar key={i} />
-                  ))}
-                </div>
-                <div className="review-text">"{review.review}"</div>
-              </ReviewCard>
-            ))}
-          </ReviewsGrid>
-        </SectionContainer>
-      </Section>
-
-      {/* Business Hours Section */}
-      <Section id="hours">
-        <SectionContainer>
-          <SectionTitle>
-            {content.ui?.businessHours?.title || 'Business Hours & Location'}
-          </SectionTitle>
-          <SectionSubtitle>
-            Visit us during our business hours or contact us anytime for
-            appointments and inquiries.
-          </SectionSubtitle>
-          <HoursGrid>
-            <HoursCard primaryColor={businessData.primaryColor}>
-              <h4>{content.ui?.businessHours?.title || 'Operating Hours'}</h4>
-              <div className="hours-list">
-                {Object.entries(content.businessHours?.hours || {}).map(
-                  ([day, time]) => (
-                    <div key={day} className="hours-item">
-                      <span className="day">
-                        {day.charAt(0).toUpperCase() + day.slice(1)}
-                      </span>
-                      <span className="time">{time}</span>
+                  <h3 style={{ fontSize: '1.3rem', fontWeight: '600', marginBottom: '1rem' }}>
+                    {service.name}
+                  </h3>
+                  <p style={{ color: theme.colors.gray600, lineHeight: '1.6', marginBottom: '1rem' }}>
+                    {service.description}
+                  </p>
+                  {service.price && (
+                    <div style={{
+                      fontSize: '1.1rem',
+                      fontWeight: '600',
+                      color: currentBusiness.primaryColor
+                    }}>
+                      {service.price}
                     </div>
-                  )
-                )}
-              </div>
-            </HoursCard>
+                  )}
+                </div>
+              ))}
+            </div>
+          </SectionContainer>
+        </Section>
+      )}
 
-            <HoursCard primaryColor={businessData.primaryColor}>
-              <h4>
-                {content.ui?.businessHours?.contactInfoTitle ||
-                  'Contact Information'}
-              </h4>
-              <div className="hours-list">
-                <div className="hours-item">
-                  <span className="day">Phone</span>
-                  <span className="time">
-                    {content.contact?.phone || '+1 (555) 123-4567'}
-                  </span>
+      {/* Portfolio Section - Only for Freelancers */}
+      {businessType === 'freelancer' && sectionVisibility.portfolio && currentBusiness.portfolio && (
+        <Section id="portfolio" background={theme.colors.gray50}>
+          <SectionContainer>
+            <SectionTitle>My Portfolio</SectionTitle>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
+              gap: '2rem',
+              marginTop: '3rem'
+            }}>
+              {currentBusiness.portfolio.map((project, index) => (
+                <div
+                  key={project.id || index}
+                  style={{
+                    background: theme.colors.white,
+                    borderRadius: '12px',
+                    overflow: 'hidden',
+                    boxShadow: theme.shadows.md,
+                    transition: 'transform 0.3s ease',
+                  }}
+                >
+                  <div style={{
+                    height: '200px',
+                    background: `linear-gradient(135deg, ${currentBusiness.primaryColor}30, ${currentBusiness.primaryColor}60)`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '3rem',
+                    color: currentBusiness.primaryColor
+                  }}>
+                    🖼️
+                  </div>
+                  <div style={{ padding: '1.5rem' }}>
+                    <div style={{
+                      fontSize: '0.8rem',
+                      fontWeight: '600',
+                      color: currentBusiness.primaryColor,
+                      textTransform: 'uppercase',
+                      letterSpacing: '1px',
+                      marginBottom: '0.5rem'
+                    }}>
+                      {project.category}
+                    </div>
+                    <h3 style={{ fontSize: '1.3rem', fontWeight: '600', marginBottom: '1rem' }}>
+                      {project.title}
+                    </h3>
+                    <p style={{ color: theme.colors.gray600, lineHeight: '1.6', marginBottom: '1rem' }}>
+                      {project.description}
+                    </p>
+                    {project.technologies && (
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                        {project.technologies.map((tech, i) => (
+                          <span
+                            key={i}
+                            style={{
+                              background: theme.colors.gray100,
+                              color: theme.colors.gray700,
+                              padding: '0.25rem 0.5rem',
+                              borderRadius: '4px',
+                              fontSize: '0.8rem',
+                              fontWeight: '500'
+                            }}
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 </div>
-                <div className="hours-item">
-                  <span className="day">Email</span>
-                  <span className="time">
-                    {content.contact?.email || `info@${businessData.slug}.com`}
-                  </span>
+              ))}
+            </div>
+          </SectionContainer>
+        </Section>
+      )}
+
+      {/* Skills Section - Only for Freelancers */}
+      {businessType === 'freelancer' && sectionVisibility.skills && currentBusiness.skills && (
+        <Section id="skills">
+          <SectionContainer>
+            <SectionTitle>My Skills</SectionTitle>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+              gap: '1.5rem',
+              marginTop: '3rem'
+            }}>
+              {currentBusiness.skills.map((skill, index) => (
+                <div
+                  key={skill.id || index}
+                  style={{
+                    background: theme.colors.white,
+                    padding: '1.5rem',
+                    borderRadius: '12px',
+                    boxShadow: theme.shadows.sm,
+                    border: `1px solid ${theme.colors.gray200}`,
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
+                    <div style={{ fontSize: '1.5rem' }}>{skill.icon}</div>
+                    <div style={{ flex: 1 }}>
+                      <h4 style={{ fontWeight: '600', marginBottom: '2px' }}>{skill.name}</h4>
+                      <div style={{ fontSize: '0.9rem', color: currentBusiness.primaryColor, fontWeight: '600' }}>
+                        {skill.level}%
+                      </div>
+                    </div>
+                  </div>
+                  <div style={{
+                    height: '8px',
+                    background: theme.colors.gray200,
+                    borderRadius: '4px',
+                    overflow: 'hidden'
+                  }}>
+                    <div
+                      style={{
+                        height: '100%',
+                        background: `linear-gradient(90deg, ${currentBusiness.primaryColor}, ${currentBusiness.primaryColor}cc)`,
+                        borderRadius: '4px',
+                        width: `${skill.level}%`,
+                        transition: 'width 2s ease'
+                      }}
+                    />
+                  </div>
                 </div>
-                <div className="hours-item">
-                  <span className="day">Address</span>
-                  <span className="time">
-                    {content.contact?.address ||
-                      '123 Business Street, City, State 12345'}
-                  </span>
-                </div>
-              </div>
-            </HoursCard>
-          </HoursGrid>
-        </SectionContainer>
-      </Section>
+              ))}
+            </div>
+          </SectionContainer>
+        </Section>
+      )}
 
       {/* Contact Section */}
-      <Section id="contact" background={theme.colors.gray50}>
-        <SectionContainer>
-          <SectionTitle>
-            {content.contact?.title || 'Get In Touch'}
-          </SectionTitle>
-          <SectionSubtitle>
-            {content.contact?.description ||
-              'Ready to get started? Contact us today to schedule a consultation or learn more about our services.'}
-          </SectionSubtitle>
-          <ContactGrid>
-            <ContactForm primaryColor={businessData.primaryColor}>
-              <input
-                type="text"
-                placeholder={
-                  content.ui?.contactForm?.placeholders?.name || 'Your Name'
-                }
-                required
-              />
-              <input
-                type="email"
-                placeholder={
-                  content.ui?.contactForm?.placeholders?.email || 'Your Email'
-                }
-                required
-              />
-              <input
-                type="tel"
-                placeholder={
-                  content.ui?.contactForm?.placeholders?.phone || 'Your Phone'
-                }
-              />
-              <textarea
-                placeholder={
-                  content.ui?.contactForm?.placeholders?.message ||
-                  'Your Message'
-                }
-                required
-              ></textarea>
-              <button type="submit">
-                {content.ui?.buttons?.sendMessage || 'Send Message'}
-              </button>
-            </ContactForm>
-
-            <ContactInfo primaryColor={businessData.primaryColor}>
-              <h3>{content.contact?.title || 'Send us a Message'}</h3>
-              <p
-                style={{
-                  marginBottom: theme.spacing.lg,
-                  color: theme.colors.gray600,
-                }}
-              >
-                {content.contact?.description ||
-                  "We'd love to hear from you! Whether you have questions about our services, want to book an appointment, or need a custom quote, don't hesitate to reach out."}
+      {sectionVisibility.contact && (
+        <Section id="contact" background={theme.colors.gray50}>
+          <SectionContainer>
+            <SectionTitle>{currentBusiness.contact?.title || 'Contact Us'}</SectionTitle>
+            <div style={{ maxWidth: '600px', margin: '0 auto', textAlign: 'center' }}>
+              <p style={{ fontSize: '1.1rem', color: theme.colors.gray600, marginBottom: '2rem' }}>
+                {currentBusiness.contact?.description || 'Get in touch with us today!'}
               </p>
-              <div className="contact-item">
-                <div className="icon">
-                  <FaPhone />
-                </div>
-                <div className="text">
-                  {content.contact?.phone || '+1 (555) 123-4567'}
-                </div>
+              
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'center' }}>
+                {currentBusiness.contact?.phone && (
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                    <FaPhone style={{ color: currentBusiness.primaryColor }} />
+                    <span>{currentBusiness.contact.phone}</span>
+                  </div>
+                )}
+                
+                {currentBusiness.contact?.email && (
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                    <FaEnvelope style={{ color: currentBusiness.primaryColor }} />
+                    <span>{currentBusiness.contact.email}</span>
+                  </div>
+                )}
+                
+                {currentBusiness.contact?.address && (
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                    <FaMapMarkerAlt style={{ color: currentBusiness.primaryColor }} />
+                    <span>{currentBusiness.contact.address}</span>
+                  </div>
+                )}
               </div>
-              <div className="contact-item">
-                <div className="icon">
-                  <FaEnvelope />
-                </div>
-                <div className="text">
-                  {content.contact?.email || `info@${businessData.slug}.com`}
-                </div>
-              </div>
-              <div className="contact-item">
-                <div className="icon">
-                  <FaMapMarkerAlt />
-                </div>
-                <div className="text">
-                  {content.contact?.address ||
-                    '123 Business Street, City, State 12345'}
-                </div>
-              </div>
-            </ContactInfo>
-          </ContactGrid>
-        </SectionContainer>
-      </Section>
-
-      {/* Footer */}
-      <Footer>
-        <FooterContent>
-          <h3>{businessData.name}</h3>
-          <p>
-            Follow us on social media for the latest updates and special offers.
-          </p>
-          <SocialLinks>
-            <SocialLink href="#" primaryColor={businessData.primaryColor}>
-              <FaFacebook />
-            </SocialLink>
-            <SocialLink href="#" primaryColor={businessData.primaryColor}>
-              <FaTwitter />
-            </SocialLink>
-            <SocialLink href="#" primaryColor={businessData.primaryColor}>
-              <FaInstagram />
-            </SocialLink>
-            <SocialLink href="#" primaryColor={businessData.primaryColor}>
-              <FaLinkedin />
-            </SocialLink>
-          </SocialLinks>
-          <p>&copy; 2024 {businessData.name}. All rights reserved.</p>
-        </FooterContent>
-      </Footer>
+            </div>
+          </SectionContainer>
+        </Section>
+      )}
     </PageContainer>
   );
 };
