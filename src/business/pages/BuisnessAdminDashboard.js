@@ -1036,14 +1036,8 @@ const BuisnessAdminDashboard = () => {
           }));
 
           dispatch(setEditingBusiness(businessId));
-        } else {
-          dispatch(setError('Business not found'));
-          setLoading(false);
-          setApiLoading(false);
-          return;
-        }
 
-        // Pre-fill all form data from business data (using API data structure)
+          // Pre-fill all form data from business data (using API data structure)
         setHeroData({
           title: businessData.hero?.title || `${businessData.name}`,
           subtitle:
@@ -1166,6 +1160,12 @@ const BuisnessAdminDashboard = () => {
               { number: '200+', label: 'Happy Clients' },
             ]
           );
+        } else {
+          dispatch(setError('Business not found'));
+          setLoading(false);
+          setApiLoading(false);
+          return;
+        }
       } catch (error) {
         console.error('[AdminDashboard] Error fetching business data:', error);
         setApiError(error.message);
