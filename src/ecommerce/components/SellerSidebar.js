@@ -581,15 +581,7 @@ const SellerSidebar = ({
           ))}
         </Navigation>
 
-        <SidebarFooter>
-          <UpgradeCard>
-            <UpgradeTitle>Upgrade to Pro</UpgradeTitle>
-            <UpgradeText>
-              Get advanced analytics and unlimited products
-            </UpgradeText>
-            <UpgradeButton>Upgrade Now</UpgradeButton>
-          </UpgradeCard>
-        </SidebarFooter>
+
       </SidebarContainer>
     </>
   );
