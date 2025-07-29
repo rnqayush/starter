@@ -429,6 +429,15 @@ const automobileManagementSlice = createSlice({
           ...state.pageContent.sections.slice(sectionIndex + 1)
         ];
 
+        // Track changes for sidebar
+        Object.keys(content).forEach(key => {
+          const path = `sections.${sectionId}.${key}`;
+          state.tempChanges[path] = content[key];
+        });
+
+        // Mark as having unsaved changes
+        state.hasUnsavedChanges = true;
+
         // Smart sync with global data based on section type
         if (sectionId === 'categories' && content.categories) {
           // Sync embedded categories with global categories
