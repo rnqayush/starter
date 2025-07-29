@@ -811,24 +811,6 @@ const BuisnessAdminDashboard = () => {
   });
   const [statisticsData, setStatisticsData] = useState([]);
 
-  // Section visibility state
-  const [sectionVisibility, setSectionVisibility] = useState({
-    hero: true,
-    'about-us': true,
-    'services-offered': true,
-    portfolio: true,
-    skills: true,
-    experience: true,
-    team: true,
-    gallery: true,
-    packages: true,
-    testimonials: true,
-    reviews: true,
-    faq: true,
-    'business-hours': true,
-    contact: true,
-  });
-
   // Track changes in a section and update Redux editing business for real-time preview
   const trackSectionChange = sectionId => {
     setChangedSections(prev => new Set([...prev, sectionId]));
@@ -838,12 +820,9 @@ const BuisnessAdminDashboard = () => {
     updateEditingBusinessInRedux();
   };
 
-  // Handle section visibility toggle
+  // Handle section visibility toggle - using Redux action
   const toggleSectionVisibility = sectionId => {
-    setSectionVisibility(prev => ({
-      ...prev,
-      [sectionId]: !prev[sectionId],
-    }));
+    dispatch(toggleBusinessSectionVisibility({ section: sectionId }));
     trackSectionChange(sectionId);
   };
 
