@@ -492,7 +492,13 @@ const DashboardTabEnhanced = () => {
           <AlertsList>
             {lowStockAlerts.map(alert => (
               <AlertItem key={alert.id}>
-                <AlertImage src={alert.image} alt={alert.productName} />
+                <AlertImage
+                  src={alert.image || 'https://via.placeholder.com/64x64?text=No+Image'}
+                  alt={alert.productName}
+                  onError={(e) => {
+                    e.target.src = 'https://via.placeholder.com/64x64?text=No+Image';
+                  }}
+                />
                 <AlertContent>
                   <AlertTitle>{alert.productName}</AlertTitle>
                   <AlertMessage>
@@ -516,7 +522,13 @@ const DashboardTabEnhanced = () => {
           <ProductsList>
             {topPerformingProducts.map((product, index) => (
               <ProductItem key={product.id}>
-                <ProductImage src={product.image} alt={product.name} />
+                <ProductImage
+                  src={product.image || 'https://via.placeholder.com/80x80?text=No+Image'}
+                  alt={product.name}
+                  onError={(e) => {
+                    e.target.src = 'https://via.placeholder.com/80x80?text=No+Image';
+                  }}
+                />
                 <ProductInfo>
                   <ProductName>{product.name}</ProductName>
                   <ProductStats>
