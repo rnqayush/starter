@@ -506,20 +506,24 @@ const automobileManagementSlice = createSlice({
           );
         }
 
-        // Update pagination
-        state.pagination = {
-          ...state.pagination,
-          ...meta.pagination,
-        };
+        // Update pagination if meta exists
+        if (meta && meta.pagination) {
+          state.pagination = {
+            ...state.pagination,
+            ...meta.pagination,
+          };
+        }
 
-        // Update meta filters
-        state.meta.availableFilters = {
-          categories: meta.filters.availableCategories,
-          makes: meta.filters.availableMakes,
-          years: meta.filters.availableYears,
-          conditions: meta.filters.availableConditions,
-          priceRange: meta.filters.priceRange,
-        };
+        // Update meta filters if meta exists
+        if (meta && meta.filters) {
+          state.meta.availableFilters = {
+            categories: meta.filters.availableCategories || [],
+            makes: meta.filters.availableMakes || [],
+            years: meta.filters.availableYears || [],
+            conditions: meta.filters.availableConditions || [],
+            priceRange: meta.filters.priceRange || { min: 0, max: 500000 },
+          };
+        }
       })
       .addCase(fetchAutomobileData.rejected, (state, action) => {
         state.loading = false;
