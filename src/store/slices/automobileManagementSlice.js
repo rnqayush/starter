@@ -271,13 +271,32 @@ const automobileManagementSlice = createSlice({
 
         // Apply changes directly to main state for real-time updates
         Object.entries(content).forEach(([key, value]) => {
-          state.pageContent.sections[sectionIndex].content[key] = value;
+          if (key === 'content') {
+            // Handle nested content updates
+            Object.entries(value).forEach(([nestedKey, nestedValue]) => {
+              state.pageContent.sections[sectionIndex].content[nestedKey] = nestedValue;
+            });
+          } else {
+            // Handle direct property updates (title, subtitle, etc.)
+            state.pageContent.sections[sectionIndex][key] = value;
+            // Also update content for backward compatibility
+            if (!state.pageContent.sections[sectionIndex].content[key]) {
+              state.pageContent.sections[sectionIndex].content[key] = value;
+            }
+          }
         });
 
-        // Also store in temp changes for tracking
+        // Store in temp changes for tracking
         Object.entries(content).forEach(([key, value]) => {
-          const path = `pageContent.sections.${sectionIndex}.content.${key}`;
-          state.tempChanges[path] = value;
+          if (key === 'content') {
+            Object.entries(value).forEach(([nestedKey, nestedValue]) => {
+              const path = `pageContent.sections.${sectionIndex}.content.${nestedKey}`;
+              state.tempChanges[path] = nestedValue;
+            });
+          } else {
+            const path = `pageContent.sections.${sectionIndex}.${key}`;
+            state.tempChanges[path] = value;
+          }
         });
         state.hasUnsavedChanges = true;
       }
@@ -318,38 +337,11 @@ const automobileManagementSlice = createSlice({
     },
 
     saveAndPublishChanges: state => {
-      // Apply all temp changes directly to main state (real-time update)
-      Object.entries(state.tempChanges).forEach(([path, value]) => {
-        const pathArray = path.split('.');
-        let target = state;
-
-        // Navigate to the nested object
-        for (let i = 0; i < pathArray.length - 1; i++) {
-          const key = pathArray[i];
-          if (key === 'sections' && Array.isArray(target.sections)) {
-            // Handle array index
-            const nextKey = pathArray[i + 1];
-            if (!isNaN(nextKey)) {
-              target = target.sections[parseInt(nextKey)];
-              i++; // Skip the index
-              continue;
-            }
-          }
-          if (!target[key]) {
-            target[key] = {};
-          }
-          target = target[key];
-        }
-
-        // Set the final value
-        const finalKey = pathArray[pathArray.length - 1];
-        target[finalKey] = value;
-      });
-
-      // Clear temp changes
+      // Changes are already applied to main state in real-time
+      // This action just clears the tracking and publishes
       state.tempChanges = {};
       state.hasUnsavedChanges = false;
-
+      state.pageContent.lastPublished = new Date().toISOString();
       console.log('Changes published to main state');
     },
 
