@@ -1027,10 +1027,6 @@ const BuisnessAdminDashboard = () => {
 
           setBusiness(businessData);
 
-          // Ensure data is serializable
-          const serializableBusinessData = JSON.parse(JSON.stringify(businessData));
-          const serializableBusinessTypeConfig = JSON.parse(JSON.stringify(businessTypeConfig));
-
           // Simplified Redux actions - dispatch only essential actions
           console.log('[AdminDashboard] Dispatching simplified Redux actions...');
 
