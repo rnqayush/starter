@@ -2,8 +2,8 @@
 
 // Import all data and utility functions with namespaced aliases to avoid conflicts
 import automobileData from './automobiles.json';
+import ecommerceData from './ecommerce.json';
 import * as BusinessData from './business';
-import * as EcommerceData from './ecommerce';
 import * as WeddingData from '../utils/weddingAPI';
 import * as PlatformData from './platform';
 // Hotel data now comes from hotels.json via hotelAPI
