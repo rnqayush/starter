@@ -653,6 +653,25 @@ const Container = styled.div`
 const SectionHeader = styled.div`
   text-align: center;
   margin-bottom: ${theme.spacing.xxl};
+  animation: ${fadeInUp} 0.8s ease-out;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(
+      circle,
+      rgba(30, 64, 175, 0.03) 0%,
+      transparent 70%
+    );
+    border-radius: 50%;
+    z-index: -1;
+  }
 
   @media (max-width: ${theme.breakpoints.tablet}) {
     margin-bottom: ${theme.spacing.xl};
@@ -661,6 +680,11 @@ const SectionHeader = styled.div`
   @media (max-width: ${theme.breakpoints.mobile}) {
     margin-bottom: ${theme.spacing.lg};
     padding: 0 ${theme.spacing.sm};
+
+    &::before {
+      width: 150px;
+      height: 150px;
+    }
   }
 `;
 
