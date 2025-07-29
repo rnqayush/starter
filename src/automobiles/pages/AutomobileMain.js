@@ -667,9 +667,9 @@ const AutomobileMain = () => {
               // Use embedded categories if available, otherwise use global categories
               const categoriesToShow =
                 sectionConfig.categories ||
-                (sectionConfig.content?.visibleCategories
+                (sectionConfig.visibleCategories || sectionConfig.content?.visibleCategories
                   ? categories.filter(category =>
-                      sectionConfig.content.visibleCategories.includes(
+                      (sectionConfig.visibleCategories || sectionConfig.content.visibleCategories).includes(
                         category.id
                       )
                     )
