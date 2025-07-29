@@ -1019,16 +1019,28 @@ const BuisnessAdminDashboard = () => {
         const response = await fetchBusinessData(businessId);
 
         if (response.success && response.data) {
-          const { businessData, businessType, businessTypeConfig } = response.data;
+          const { businessData, businessType, businessTypeConfig } =
+            response.data;
           console.log('[AdminDashboard] API call successful:', response.data);
-          console.log('[AdminDashboard] businessData type:', typeof businessData);
-          console.log('[AdminDashboard] businessType type:', typeof businessType);
-          console.log('[AdminDashboard] businessTypeConfig type:', typeof businessTypeConfig);
+          console.log(
+            '[AdminDashboard] businessData type:',
+            typeof businessData
+          );
+          console.log(
+            '[AdminDashboard] businessType type:',
+            typeof businessType
+          );
+          console.log(
+            '[AdminDashboard] businessTypeConfig type:',
+            typeof businessTypeConfig
+          );
 
           setBusiness(businessData);
 
           // Simplified Redux actions - dispatch only essential actions
-          console.log('[AdminDashboard] Dispatching simplified Redux actions...');
+          console.log(
+            '[AdminDashboard] Dispatching simplified Redux actions...'
+          );
 
           dispatch(clearError());
           dispatch(setEditingBusiness(businessId));
@@ -1052,117 +1064,117 @@ const BuisnessAdminDashboard = () => {
 
           // Pre-fill all form data from business data (using API data structure)
           setHeroData({
-          title: businessData.hero?.title || `${businessData.name}`,
-          subtitle:
-            businessData.hero?.subtitle || `Welcome to ${businessData.name}`,
-          backgroundImage:
-            businessData.hero?.backgroundImage || businessData.image || '',
-        });
+            title: businessData.hero?.title || `${businessData.name}`,
+            subtitle:
+              businessData.hero?.subtitle || `Welcome to ${businessData.name}`,
+            backgroundImage:
+              businessData.hero?.backgroundImage || businessData.image || '',
+          });
 
-        setAboutData({
-          title: businessData.about?.title || 'About Us',
-          description:
-            businessData.about?.description ||
-            `Learn more about ${businessData.name}`,
-          profileImage: businessData.about?.profileImage || '',
-        });
+          setAboutData({
+            title: businessData.about?.title || 'About Us',
+            description:
+              businessData.about?.description ||
+              `Learn more about ${businessData.name}`,
+            profileImage: businessData.about?.profileImage || '',
+          });
 
-        // Use API data directly instead of getSampleContent
-        setServicesData(businessData.services || []);
-        setTeamData(businessData.team || []);
-        setPortfolioData(businessData.portfolio || []);
-        setSkillsData(businessData.skills || []);
-        setExperienceData(businessData.experience || []);
-        setGalleryData(businessData.gallery || []);
-        setPackagesData(businessData.packages || []);
-        setTestimonialsData(businessData.testimonials || []);
-        setReviewsData(businessData.reviews || []);
-        setFaqData(businessData.faq || []);
+          // Use API data directly instead of getSampleContent
+          setServicesData(businessData.services || []);
+          setTeamData(businessData.team || []);
+          setPortfolioData(businessData.portfolio || []);
+          setSkillsData(businessData.skills || []);
+          setExperienceData(businessData.experience || []);
+          setGalleryData(businessData.gallery || []);
+          setPackagesData(businessData.packages || []);
+          setTestimonialsData(businessData.testimonials || []);
+          setReviewsData(businessData.reviews || []);
+          setFaqData(businessData.faq || []);
 
-        // Initialize business hours from API data
-        setBusinessHoursData(
-          businessData.businessHours || {
-            title: 'Business Hours',
-            hours: {
-              monday: '9:00 AM - 6:00 PM',
-              tuesday: '9:00 AM - 6:00 PM',
-              wednesday: '9:00 AM - 6:00 PM',
-              thursday: '9:00 AM - 6:00 PM',
-              friday: '9:00 AM - 6:00 PM',
-              saturday: '10:00 AM - 4:00 PM',
-              sunday: 'Closed',
-            },
-          }
-        );
-
-        // Initialize section order
-        setSectionOrderData([
-          'hero',
-          'about-us',
-          'services-offered',
-          'portfolio',
-          'skills',
-          'experience',
-          'team',
-          'gallery',
-          'packages',
-          'testimonials',
-          'reviews',
-          'faq',
-          'business-hours',
-          'contact',
-        ]);
-
-        // Initialize contact data from API data
-        setContactData(
-          businessData.contact || {
-            title: 'Get In Touch',
-            description: `Contact us to learn more about ${businessData.name}`,
-            email: `hello@${businessData.slug}.com`,
-            phone: '+1 (555) 123-4567',
-            address: '123 Business Street, City, State 12345',
-            hours: {
-              monday: '9:00 AM - 6:00 PM',
-              tuesday: '9:00 AM - 6:00 PM',
-              wednesday: '9:00 AM - 6:00 PM',
-              thursday: '9:00 AM - 6:00 PM',
-              friday: '9:00 AM - 6:00 PM',
-              saturday: '10:00 AM - 4:00 PM',
-              sunday: 'Closed',
-            },
-            socialMedia: {
-              facebook: '',
-              twitter: '',
-              instagram: '',
-              linkedin: '',
-            },
-          }
-        );
-
-        // Initialize UI content data from API data
-        setUiContentData(
-          businessData.ui || {
-            sections: businessData.sections || {},
-            buttons: {
-              bookNow: 'Book Now',
-              learnMore: 'Learn More',
-              sendMessage: 'Send Message',
-              contactUs: 'Contact Us',
-            },
-            contactForm: {
-              placeholders: {
-                name: 'Your Name',
-                email: 'Your Email',
-                phone: 'Your Phone',
-                message: 'Your Message',
-              },
-            },
-            businessHours: {
+          // Initialize business hours from API data
+          setBusinessHoursData(
+            businessData.businessHours || {
               title: 'Business Hours',
-              contactInfoTitle: 'Contact Information',
-            },
-          }
-        );
+              hours: {
+                monday: '9:00 AM - 6:00 PM',
+                tuesday: '9:00 AM - 6:00 PM',
+                wednesday: '9:00 AM - 6:00 PM',
+                thursday: '9:00 AM - 6:00 PM',
+                friday: '9:00 AM - 6:00 PM',
+                saturday: '10:00 AM - 4:00 PM',
+                sunday: 'Closed',
+              },
+            }
+          );
+
+          // Initialize section order
+          setSectionOrderData([
+            'hero',
+            'about-us',
+            'services-offered',
+            'portfolio',
+            'skills',
+            'experience',
+            'team',
+            'gallery',
+            'packages',
+            'testimonials',
+            'reviews',
+            'faq',
+            'business-hours',
+            'contact',
+          ]);
+
+          // Initialize contact data from API data
+          setContactData(
+            businessData.contact || {
+              title: 'Get In Touch',
+              description: `Contact us to learn more about ${businessData.name}`,
+              email: `hello@${businessData.slug}.com`,
+              phone: '+1 (555) 123-4567',
+              address: '123 Business Street, City, State 12345',
+              hours: {
+                monday: '9:00 AM - 6:00 PM',
+                tuesday: '9:00 AM - 6:00 PM',
+                wednesday: '9:00 AM - 6:00 PM',
+                thursday: '9:00 AM - 6:00 PM',
+                friday: '9:00 AM - 6:00 PM',
+                saturday: '10:00 AM - 4:00 PM',
+                sunday: 'Closed',
+              },
+              socialMedia: {
+                facebook: '',
+                twitter: '',
+                instagram: '',
+                linkedin: '',
+              },
+            }
+          );
+
+          // Initialize UI content data from API data
+          setUiContentData(
+            businessData.ui || {
+              sections: businessData.sections || {},
+              buttons: {
+                bookNow: 'Book Now',
+                learnMore: 'Learn More',
+                sendMessage: 'Send Message',
+                contactUs: 'Contact Us',
+              },
+              contactForm: {
+                placeholders: {
+                  name: 'Your Name',
+                  email: 'Your Email',
+                  phone: 'Your Phone',
+                  message: 'Your Message',
+                },
+              },
+              businessHours: {
+                title: 'Business Hours',
+                contactInfoTitle: 'Contact Information',
+              },
+            }
+          );
 
           // Initialize statistics data from API data
           setStatisticsData(

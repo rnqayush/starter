@@ -27,7 +27,7 @@
         "description": "Professional salon website with booking system and service gallery",
         "features": [
           "Online Booking",
-          "Service Gallery", 
+          "Service Gallery",
           "Staff Profiles",
           "Client Reviews"
         ],
@@ -63,7 +63,7 @@
           },
           {
             "id": "nail-care",
-            "name": "Nail Care", 
+            "name": "Nail Care",
             "description": "Manicures, pedicures, and nail art by certified technicians",
             "icon": "💅",
             "image": "https://images.unsplash.com/photo-1604654894610-df63bc536371?w=300&q=80",
@@ -97,7 +97,7 @@
           },
           {
             "id": "maria-garcia",
-            "name": "Maria Garcia", 
+            "name": "Maria Garcia",
             "role": "Nail Specialist",
             "bio": "Expert in nail art and luxury manicures",
             "specialties": ["Nail Art", "Gel Manicures"],
@@ -106,7 +106,7 @@
           {
             "id": "emily-chen",
             "name": "Emily Chen",
-            "role": "Spa Therapist", 
+            "role": "Spa Therapist",
             "bio": "Licensed massage therapist and esthetician",
             "specialties": ["Deep Tissue", "Facials"],
             "image": "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300&q=80"
@@ -155,7 +155,7 @@
             "id": "spa-day",
             "name": "Spa Day",
             "description": "Full day relaxation with massage, facial, and beauty treatments",
-            "price": "$199", 
+            "price": "$199",
             "duration": "6 hours",
             "features": [
               "Full body massage",
@@ -176,7 +176,7 @@
             "service": "Hair Styling & Color"
           },
           {
-            "id": "testimonial-2", 
+            "id": "testimonial-2",
             "name": "Jessica Brown",
             "text": "Highly recommend! Great experience and excellent customer service.",
             "rating": 5,
@@ -197,7 +197,7 @@
           },
           {
             "id": "faq-3",
-            "question": "What payment methods do you accept?", 
+            "question": "What payment methods do you accept?",
             "answer": "We accept cash, credit cards, debit cards, and mobile payment apps like Apple Pay and Google Pay."
           }
         ],
@@ -218,7 +218,7 @@
           "title": "Business Hours",
           "hours": {
             "monday": "9:00 AM - 6:00 PM",
-            "tuesday": "9:00 AM - 6:00 PM", 
+            "tuesday": "9:00 AM - 6:00 PM",
             "wednesday": "9:00 AM - 6:00 PM",
             "thursday": "9:00 AM - 6:00 PM",
             "friday": "9:00 AM - 6:00 PM",
@@ -240,7 +240,7 @@
         },
         "sectionOrder": [
           "hero",
-          "about-us", 
+          "about-us",
           "services-offered",
           "team",
           "gallery",
@@ -316,12 +316,37 @@
           ]
         },
         "skills": [
-          { "id": "web-design", "name": "Web Design", "level": 95, "icon": "🎨" },
-          { "id": "ui-ux-design", "name": "UI/UX Design", "level": 90, "icon": "📱" },
-          { "id": "frontend-development", "name": "Frontend Development", "level": 88, "icon": "💻" },
-          { "id": "graphic-design", "name": "Graphic Design", "level": 92, "icon": "🖼️" },
+          {
+            "id": "web-design",
+            "name": "Web Design",
+            "level": 95,
+            "icon": "🎨"
+          },
+          {
+            "id": "ui-ux-design",
+            "name": "UI/UX Design",
+            "level": 90,
+            "icon": "📱"
+          },
+          {
+            "id": "frontend-development",
+            "name": "Frontend Development",
+            "level": 88,
+            "icon": "💻"
+          },
+          {
+            "id": "graphic-design",
+            "name": "Graphic Design",
+            "level": 92,
+            "icon": "🖼️"
+          },
           { "id": "branding", "name": "Branding", "level": 85, "icon": "🏷️" },
-          { "id": "motion-graphics", "name": "Motion Graphics", "level": 80, "icon": "🎬" }
+          {
+            "id": "motion-graphics",
+            "name": "Motion Graphics",
+            "level": 80,
+            "icon": "🎬"
+          }
         ],
         "portfolio": [
           {

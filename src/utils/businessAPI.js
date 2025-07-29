@@ -5,7 +5,7 @@
 import businessData from '../DummyData/business.json';
 
 // Helper function to get business data by slug
-const getBusinessWebsiteData = (slug) => {
+const getBusinessWebsiteData = slug => {
   // Map common slugs to the correct data
   if (slug === 'salon' || slug === 'business') {
     return businessData.data?.portfolio?.buisness || null;
@@ -48,7 +48,7 @@ const createAPIResponse = (data, success = true, message = '') => {
  * @param {string} businessType - 'freelancer' or 'business'
  * @returns {object} - Business type configuration
  */
-export const getBusinessTypeConfig = (businessType) => {
+export const getBusinessTypeConfig = businessType => {
   // Create configuration based on the business type
   const configs = {
     freelancer: {
@@ -83,7 +83,7 @@ export const getBusinessTypeConfig = (businessType) => {
  * @param {string} businessSlug - The business slug/identifier
  * @returns {object} - Enhanced business data with type info
  */
-export const detectBusinessType = (businessSlug) => {
+export const detectBusinessType = businessSlug => {
   const business = getBusinessWebsiteData(businessSlug);
   if (!business) return null;
 

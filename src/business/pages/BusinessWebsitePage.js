@@ -226,11 +226,15 @@ const SectionTitle = styled.h2`
 `;
 
 const HeroSection = styled.section.withConfig({
-  shouldForwardProp: prop => prop !== 'primaryColor' && prop !== 'backgroundImage',
+  shouldForwardProp: prop =>
+    prop !== 'primaryColor' && prop !== 'backgroundImage',
 })`
   height: 100vh;
-  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)),
-    url(${props => props.backgroundImage || 'https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&w=1200&q=80'});
+  background:
+    linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)),
+    url(${props =>
+      props.backgroundImage ||
+      'https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&w=1200&q=80'});
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -305,9 +309,10 @@ const BusinessWebsitePage = () => {
   } = useSelector(state => state.businessManagement);
 
   // Get the current business data (prioritize editing business for real-time updates)
-  const currentBusiness = editingBusiness && editingBusiness.slug === actualSlug
-    ? editingBusiness
-    : businesses.find(b => b.slug === actualSlug);
+  const currentBusiness =
+    editingBusiness && editingBusiness.slug === actualSlug
+      ? editingBusiness
+      : businesses.find(b => b.slug === actualSlug);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -326,36 +331,51 @@ const BusinessWebsitePage = () => {
         // Check if we already have business data in Redux
         const existingBusiness = businesses.find(b => b.slug === extractedSlug);
         if (existingBusiness) {
-          console.log('Using existing business data from Redux:', existingBusiness);
+          console.log(
+            'Using existing business data from Redux:',
+            existingBusiness
+          );
           dispatch(setLoading(false));
           return;
         }
 
         // Make API call to get business data with type detection
-        console.log(`[BusinessWebsitePage] Making API call for business: ${extractedSlug}`);
+        console.log(
+          `[BusinessWebsitePage] Making API call for business: ${extractedSlug}`
+        );
         const response = await fetchBusinessData(extractedSlug);
 
         if (response.success && response.data) {
-          const { businessData, businessType, businessTypeConfig } = response.data;
-          
-          console.log('[BusinessWebsitePage] API call successful:', response.data);
-          
+          const { businessData, businessType, businessTypeConfig } =
+            response.data;
+
+          console.log(
+            '[BusinessWebsitePage] API call successful:',
+            response.data
+          );
+
           // Initialize Redux state with business data and type config
-          dispatch(initializeBusinessData({
-            businessData,
-            businessTypeConfig,
-          }));
+          dispatch(
+            initializeBusinessData({
+              businessData,
+              businessTypeConfig,
+            })
+          );
 
-          dispatch(setBusinessType({
-            businessType,
-            businessTypeConfig,
-          }));
-
+          dispatch(
+            setBusinessType({
+              businessType,
+              businessTypeConfig,
+            })
+          );
         } else {
           dispatch(setError('Business not found'));
         }
       } catch (err) {
-        console.error('[BusinessWebsitePage] Error fetching business data:', err);
+        console.error(
+          '[BusinessWebsitePage] Error fetching business data:',
+          err
+        );
         dispatch(setError(err.message));
       } finally {
         dispatch(setLoading(false));
@@ -389,8 +409,10 @@ const BusinessWebsitePage = () => {
       <PageContainer>
         <div style={{ padding: '4rem', textAlign: 'center' }}>
           <h2>Business Website Not Found</h2>
-          <p>{error || "The business website you're looking for doesn't exist."}</p>
-          <button 
+          <p>
+            {error || "The business website you're looking for doesn't exist."}
+          </p>
+          <button
             onClick={handleBackToList}
             style={{
               marginTop: '1rem',
@@ -399,7 +421,7 @@ const BusinessWebsitePage = () => {
               color: 'white',
               border: 'none',
               borderRadius: '4px',
-              cursor: 'pointer'
+              cursor: 'pointer',
             }}
           >
             Back to Business Websites
@@ -437,7 +459,8 @@ const BusinessWebsitePage = () => {
     }
   };
 
-  const navigationItems = currentBusiness.navigation?.menuItems || getNavigationItems();
+  const navigationItems =
+    currentBusiness.navigation?.menuItems || getNavigationItems();
 
   return (
     <PageContainer>
@@ -472,14 +495,25 @@ const BusinessWebsitePage = () => {
           backgroundImage={currentBusiness.hero?.backgroundImage}
         >
           <HeroContent>
-            <HeroTitle>{currentBusiness.hero?.title || currentBusiness.name}</HeroTitle>
+            <HeroTitle>
+              {currentBusiness.hero?.title || currentBusiness.name}
+            </HeroTitle>
             <HeroSubtitle>
-              {currentBusiness.hero?.subtitle || `Welcome to ${currentBusiness.name}`}
+              {currentBusiness.hero?.subtitle ||
+                `Welcome to ${currentBusiness.name}`}
             </HeroSubtitle>
-            <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+            <div
+              style={{
+                display: 'flex',
+                gap: '1rem',
+                justifyContent: 'center',
+                flexWrap: 'wrap',
+              }}
+            >
               <button
                 style={{
-                  background: currentBusiness.primaryColor || theme.colors.primary,
+                  background:
+                    currentBusiness.primaryColor || theme.colors.primary,
                   color: 'white',
                   padding: '1rem 2rem',
                   border: 'none',
@@ -490,7 +524,8 @@ const BusinessWebsitePage = () => {
                   transition: 'all 0.3s ease',
                 }}
               >
-                {currentBusiness.hero?.ctaText || (businessType === 'freelancer' ? 'Hire Me' : 'Get Started')}
+                {currentBusiness.hero?.ctaText ||
+                  (businessType === 'freelancer' ? 'Hire Me' : 'Get Started')}
               </button>
             </div>
           </HeroContent>
@@ -501,22 +536,40 @@ const BusinessWebsitePage = () => {
       {sectionVisibility['about-us'] && (
         <Section id="about" background={theme.colors.gray50}>
           <SectionContainer>
-            <SectionTitle>{currentBusiness.about?.title || 'About Us'}</SectionTitle>
-            <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
-              <p style={{ fontSize: '1.1rem', lineHeight: '1.7', color: theme.colors.gray600, marginBottom: '2rem' }}>
-                {currentBusiness.about?.description || `Learn more about ${currentBusiness.name}`}
+            <SectionTitle>
+              {currentBusiness.about?.title || 'About Us'}
+            </SectionTitle>
+            <div
+              style={{
+                maxWidth: '800px',
+                margin: '0 auto',
+                textAlign: 'center',
+              }}
+            >
+              <p
+                style={{
+                  fontSize: '1.1rem',
+                  lineHeight: '1.7',
+                  color: theme.colors.gray600,
+                  marginBottom: '2rem',
+                }}
+              >
+                {currentBusiness.about?.description ||
+                  `Learn more about ${currentBusiness.name}`}
               </p>
-              
+
               {/* Statistics */}
               {currentBusiness.about?.stats && (
-                <div style={{ 
-                  display: 'grid', 
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', 
-                  gap: '1.5rem',
-                  marginTop: '3rem'
-                }}>
+                <div
+                  style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
+                    gap: '1.5rem',
+                    marginTop: '3rem',
+                  }}
+                >
                   {currentBusiness.about.stats.map((stat, index) => (
-                    <div 
+                    <div
                       key={index}
                       style={{
                         textAlign: 'center',
@@ -526,15 +579,22 @@ const BusinessWebsitePage = () => {
                         boxShadow: theme.shadows.sm,
                       }}
                     >
-                      <div style={{
-                        fontSize: '2.5rem',
-                        fontWeight: '800',
-                        color: currentBusiness.primaryColor,
-                        marginBottom: '0.5rem'
-                      }}>
+                      <div
+                        style={{
+                          fontSize: '2.5rem',
+                          fontWeight: '800',
+                          color: currentBusiness.primaryColor,
+                          marginBottom: '0.5rem',
+                        }}
+                      >
                         {stat.number}
                       </div>
-                      <div style={{ color: theme.colors.gray600, fontWeight: '500' }}>
+                      <div
+                        style={{
+                          color: theme.colors.gray600,
+                          fontWeight: '500',
+                        }}
+                      >
                         {stat.label}
                       </div>
                     </div>
@@ -553,12 +613,14 @@ const BusinessWebsitePage = () => {
             <SectionTitle>
               {businessType === 'freelancer' ? 'My Services' : 'Our Services'}
             </SectionTitle>
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-              gap: '2rem',
-              marginTop: '3rem'
-            }}>
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+                gap: '2rem',
+                marginTop: '3rem',
+              }}
+            >
               {currentBusiness.services.map((service, index) => (
                 <div
                   key={service.id || index}
@@ -572,32 +634,48 @@ const BusinessWebsitePage = () => {
                     border: `1px solid ${theme.colors.gray200}`,
                   }}
                 >
-                  <div style={{
-                    width: '60px',
-                    height: '60px',
-                    margin: '0 auto 1.5rem',
-                    background: currentBusiness.primaryColor,
-                    borderRadius: '50%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '1.5rem',
-                    color: 'white'
-                  }}>
+                  <div
+                    style={{
+                      width: '60px',
+                      height: '60px',
+                      margin: '0 auto 1.5rem',
+                      background: currentBusiness.primaryColor,
+                      borderRadius: '50%',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '1.5rem',
+                      color: 'white',
+                    }}
+                  >
                     {service.icon || '⚡'}
                   </div>
-                  <h3 style={{ fontSize: '1.3rem', fontWeight: '600', marginBottom: '1rem' }}>
+                  <h3
+                    style={{
+                      fontSize: '1.3rem',
+                      fontWeight: '600',
+                      marginBottom: '1rem',
+                    }}
+                  >
                     {service.name}
                   </h3>
-                  <p style={{ color: theme.colors.gray600, lineHeight: '1.6', marginBottom: '1rem' }}>
+                  <p
+                    style={{
+                      color: theme.colors.gray600,
+                      lineHeight: '1.6',
+                      marginBottom: '1rem',
+                    }}
+                  >
                     {service.description}
                   </p>
                   {service.price && (
-                    <div style={{
-                      fontSize: '1.1rem',
-                      fontWeight: '600',
-                      color: currentBusiness.primaryColor
-                    }}>
+                    <div
+                      style={{
+                        fontSize: '1.1rem',
+                        fontWeight: '600',
+                        color: currentBusiness.primaryColor,
+                      }}
+                    >
                       {service.price}
                     </div>
                   )}
@@ -609,164 +687,255 @@ const BusinessWebsitePage = () => {
       )}
 
       {/* Portfolio Section - Only for Freelancers */}
-      {businessType === 'freelancer' && sectionVisibility.portfolio && currentBusiness.portfolio && (
-        <Section id="portfolio" background={theme.colors.gray50}>
-          <SectionContainer>
-            <SectionTitle>My Portfolio</SectionTitle>
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
-              gap: '2rem',
-              marginTop: '3rem'
-            }}>
-              {currentBusiness.portfolio.map((project, index) => (
-                <div
-                  key={project.id || index}
-                  style={{
-                    background: theme.colors.white,
-                    borderRadius: '12px',
-                    overflow: 'hidden',
-                    boxShadow: theme.shadows.md,
-                    transition: 'transform 0.3s ease',
-                  }}
-                >
-                  <div style={{
-                    height: '200px',
-                    background: `linear-gradient(135deg, ${currentBusiness.primaryColor}30, ${currentBusiness.primaryColor}60)`,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '3rem',
-                    color: currentBusiness.primaryColor
-                  }}>
-                    🖼️
-                  </div>
-                  <div style={{ padding: '1.5rem' }}>
-                    <div style={{
-                      fontSize: '0.8rem',
-                      fontWeight: '600',
-                      color: currentBusiness.primaryColor,
-                      textTransform: 'uppercase',
-                      letterSpacing: '1px',
-                      marginBottom: '0.5rem'
-                    }}>
-                      {project.category}
-                    </div>
-                    <h3 style={{ fontSize: '1.3rem', fontWeight: '600', marginBottom: '1rem' }}>
-                      {project.title}
-                    </h3>
-                    <p style={{ color: theme.colors.gray600, lineHeight: '1.6', marginBottom: '1rem' }}>
-                      {project.description}
-                    </p>
-                    {project.technologies && (
-                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-                        {project.technologies.map((tech, i) => (
-                          <span
-                            key={i}
-                            style={{
-                              background: theme.colors.gray100,
-                              color: theme.colors.gray700,
-                              padding: '0.25rem 0.5rem',
-                              borderRadius: '4px',
-                              fontSize: '0.8rem',
-                              fontWeight: '500'
-                            }}
-                          >
-                            {tech}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </SectionContainer>
-        </Section>
-      )}
-
-      {/* Skills Section - Only for Freelancers */}
-      {businessType === 'freelancer' && sectionVisibility.skills && currentBusiness.skills && (
-        <Section id="skills">
-          <SectionContainer>
-            <SectionTitle>My Skills</SectionTitle>
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-              gap: '1.5rem',
-              marginTop: '3rem'
-            }}>
-              {currentBusiness.skills.map((skill, index) => (
-                <div
-                  key={skill.id || index}
-                  style={{
-                    background: theme.colors.white,
-                    padding: '1.5rem',
-                    borderRadius: '12px',
-                    boxShadow: theme.shadows.sm,
-                    border: `1px solid ${theme.colors.gray200}`,
-                  }}
-                >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
-                    <div style={{ fontSize: '1.5rem' }}>{skill.icon}</div>
-                    <div style={{ flex: 1 }}>
-                      <h4 style={{ fontWeight: '600', marginBottom: '2px' }}>{skill.name}</h4>
-                      <div style={{ fontSize: '0.9rem', color: currentBusiness.primaryColor, fontWeight: '600' }}>
-                        {skill.level}%
-                      </div>
-                    </div>
-                  </div>
-                  <div style={{
-                    height: '8px',
-                    background: theme.colors.gray200,
-                    borderRadius: '4px',
-                    overflow: 'hidden'
-                  }}>
+      {businessType === 'freelancer' &&
+        sectionVisibility.portfolio &&
+        currentBusiness.portfolio && (
+          <Section id="portfolio" background={theme.colors.gray50}>
+            <SectionContainer>
+              <SectionTitle>My Portfolio</SectionTitle>
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
+                  gap: '2rem',
+                  marginTop: '3rem',
+                }}
+              >
+                {currentBusiness.portfolio.map((project, index) => (
+                  <div
+                    key={project.id || index}
+                    style={{
+                      background: theme.colors.white,
+                      borderRadius: '12px',
+                      overflow: 'hidden',
+                      boxShadow: theme.shadows.md,
+                      transition: 'transform 0.3s ease',
+                    }}
+                  >
                     <div
                       style={{
-                        height: '100%',
-                        background: `linear-gradient(90deg, ${currentBusiness.primaryColor}, ${currentBusiness.primaryColor}cc)`,
-                        borderRadius: '4px',
-                        width: `${skill.level}%`,
-                        transition: 'width 2s ease'
+                        height: '200px',
+                        background: `linear-gradient(135deg, ${currentBusiness.primaryColor}30, ${currentBusiness.primaryColor}60)`,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '3rem',
+                        color: currentBusiness.primaryColor,
                       }}
-                    />
+                    >
+                      🖼️
+                    </div>
+                    <div style={{ padding: '1.5rem' }}>
+                      <div
+                        style={{
+                          fontSize: '0.8rem',
+                          fontWeight: '600',
+                          color: currentBusiness.primaryColor,
+                          textTransform: 'uppercase',
+                          letterSpacing: '1px',
+                          marginBottom: '0.5rem',
+                        }}
+                      >
+                        {project.category}
+                      </div>
+                      <h3
+                        style={{
+                          fontSize: '1.3rem',
+                          fontWeight: '600',
+                          marginBottom: '1rem',
+                        }}
+                      >
+                        {project.title}
+                      </h3>
+                      <p
+                        style={{
+                          color: theme.colors.gray600,
+                          lineHeight: '1.6',
+                          marginBottom: '1rem',
+                        }}
+                      >
+                        {project.description}
+                      </p>
+                      {project.technologies && (
+                        <div
+                          style={{
+                            display: 'flex',
+                            flexWrap: 'wrap',
+                            gap: '0.5rem',
+                          }}
+                        >
+                          {project.technologies.map((tech, i) => (
+                            <span
+                              key={i}
+                              style={{
+                                background: theme.colors.gray100,
+                                color: theme.colors.gray700,
+                                padding: '0.25rem 0.5rem',
+                                borderRadius: '4px',
+                                fontSize: '0.8rem',
+                                fontWeight: '500',
+                              }}
+                            >
+                              {tech}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          </SectionContainer>
-        </Section>
-      )}
+                ))}
+              </div>
+            </SectionContainer>
+          </Section>
+        )}
+
+      {/* Skills Section - Only for Freelancers */}
+      {businessType === 'freelancer' &&
+        sectionVisibility.skills &&
+        currentBusiness.skills && (
+          <Section id="skills">
+            <SectionContainer>
+              <SectionTitle>My Skills</SectionTitle>
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+                  gap: '1.5rem',
+                  marginTop: '3rem',
+                }}
+              >
+                {currentBusiness.skills.map((skill, index) => (
+                  <div
+                    key={skill.id || index}
+                    style={{
+                      background: theme.colors.white,
+                      padding: '1.5rem',
+                      borderRadius: '12px',
+                      boxShadow: theme.shadows.sm,
+                      border: `1px solid ${theme.colors.gray200}`,
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '1rem',
+                        marginBottom: '1rem',
+                      }}
+                    >
+                      <div style={{ fontSize: '1.5rem' }}>{skill.icon}</div>
+                      <div style={{ flex: 1 }}>
+                        <h4 style={{ fontWeight: '600', marginBottom: '2px' }}>
+                          {skill.name}
+                        </h4>
+                        <div
+                          style={{
+                            fontSize: '0.9rem',
+                            color: currentBusiness.primaryColor,
+                            fontWeight: '600',
+                          }}
+                        >
+                          {skill.level}%
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      style={{
+                        height: '8px',
+                        background: theme.colors.gray200,
+                        borderRadius: '4px',
+                        overflow: 'hidden',
+                      }}
+                    >
+                      <div
+                        style={{
+                          height: '100%',
+                          background: `linear-gradient(90deg, ${currentBusiness.primaryColor}, ${currentBusiness.primaryColor}cc)`,
+                          borderRadius: '4px',
+                          width: `${skill.level}%`,
+                          transition: 'width 2s ease',
+                        }}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </SectionContainer>
+          </Section>
+        )}
 
       {/* Contact Section */}
       {sectionVisibility.contact && (
         <Section id="contact" background={theme.colors.gray50}>
           <SectionContainer>
-            <SectionTitle>{currentBusiness.contact?.title || 'Contact Us'}</SectionTitle>
-            <div style={{ maxWidth: '600px', margin: '0 auto', textAlign: 'center' }}>
-              <p style={{ fontSize: '1.1rem', color: theme.colors.gray600, marginBottom: '2rem' }}>
-                {currentBusiness.contact?.description || 'Get in touch with us today!'}
+            <SectionTitle>
+              {currentBusiness.contact?.title || 'Contact Us'}
+            </SectionTitle>
+            <div
+              style={{
+                maxWidth: '600px',
+                margin: '0 auto',
+                textAlign: 'center',
+              }}
+            >
+              <p
+                style={{
+                  fontSize: '1.1rem',
+                  color: theme.colors.gray600,
+                  marginBottom: '2rem',
+                }}
+              >
+                {currentBusiness.contact?.description ||
+                  'Get in touch with us today!'}
               </p>
-              
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'center' }}>
+
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '1rem',
+                  alignItems: 'center',
+                }}
+              >
                 {currentBusiness.contact?.phone && (
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '1rem',
+                    }}
+                  >
                     <FaPhone style={{ color: currentBusiness.primaryColor }} />
                     <span>{currentBusiness.contact.phone}</span>
                   </div>
                 )}
-                
+
                 {currentBusiness.contact?.email && (
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                    <FaEnvelope style={{ color: currentBusiness.primaryColor }} />
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '1rem',
+                    }}
+                  >
+                    <FaEnvelope
+                      style={{ color: currentBusiness.primaryColor }}
+                    />
                     <span>{currentBusiness.contact.email}</span>
                   </div>
                 )}
-                
+
                 {currentBusiness.contact?.address && (
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                    <FaMapMarkerAlt style={{ color: currentBusiness.primaryColor }} />
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '1rem',
+                    }}
+                  >
+                    <FaMapMarkerAlt
+                      style={{ color: currentBusiness.primaryColor }}
+                    />
                     <span>{currentBusiness.contact.address}</span>
                   </div>
                 )}

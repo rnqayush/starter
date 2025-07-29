@@ -43,7 +43,7 @@ const businessManagementSlice = createSlice({
     },
 
     // Clear error state
-    clearError: (state) => {
+    clearError: state => {
       state.error = null;
     },
 
@@ -53,7 +53,7 @@ const businessManagementSlice = createSlice({
       state.businesses = [businessData];
       state.businessType = businessData.type;
       state.businessTypeConfig = businessTypeConfig;
-      
+
       // Set section visibility based on business type
       if (businessData.type === 'freelancer') {
         state.sectionVisibility = {
@@ -123,7 +123,7 @@ const businessManagementSlice = createSlice({
       } else {
         state.editingBusiness = { ...business };
         state.originalBusiness = { ...business };
-        
+
         // Set business type when editing
         if (business.type) {
           state.businessType = business.type;
@@ -307,12 +307,15 @@ const businessManagementSlice = createSlice({
 
     toggleBusinessSectionVisibility: (state, action) => {
       const { section } = action.payload;
-      
+
       // Check if section is allowed for current business type
       if (state.businessTypeConfig) {
-        const isHiddenSection = state.businessTypeConfig.hiddenSections?.includes(section);
+        const isHiddenSection =
+          state.businessTypeConfig.hiddenSections?.includes(section);
         if (isHiddenSection) {
-          console.warn(`Section "${section}" is not available for business type "${state.businessType}"`);
+          console.warn(
+            `Section "${section}" is not available for business type "${state.businessType}"`
+          );
           return;
         }
       }
@@ -340,17 +343,18 @@ const businessManagementSlice = createSlice({
     // Helper to check if section should be visible for current business type
     isSectionAvailable: (state, action) => {
       const { section } = action.payload;
-      
+
       if (!state.businessTypeConfig) return true;
-      
-      const isHiddenSection = state.businessTypeConfig.hiddenSections?.includes(section);
+
+      const isHiddenSection =
+        state.businessTypeConfig.hiddenSections?.includes(section);
       return !isHiddenSection;
     },
 
     // Update entire section visibility based on business type
     updateSectionVisibilityByType: (state, action) => {
       const { businessType, businessTypeConfig } = action.payload;
-      
+
       state.businessType = businessType;
       state.businessTypeConfig = businessTypeConfig;
 

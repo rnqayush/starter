@@ -226,11 +226,15 @@ const SectionTitle = styled.h2`
 `;
 
 const HeroSection = styled.section.withConfig({
-  shouldForwardProp: prop => prop !== 'primaryColor' && prop !== 'backgroundImage',
+  shouldForwardProp: prop =>
+    prop !== 'primaryColor' && prop !== 'backgroundImage',
 })`
   height: 100vh;
-  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)),
-    url(${props => props.backgroundImage || 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-4.0.3&w=1200&q=80'});
+  background:
+    linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)),
+    url(${props =>
+      props.backgroundImage ||
+      'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-4.0.3&w=1200&q=80'});
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -305,9 +309,10 @@ const FreelancerPortfolioPage = () => {
   } = useSelector(state => state.businessManagement);
 
   // Get the current business data (prioritize editing business for real-time updates)
-  const currentBusiness = editingBusiness && editingBusiness.slug === actualSlug
-    ? editingBusiness
-    : businesses.find(b => b.slug === actualSlug);
+  const currentBusiness =
+    editingBusiness && editingBusiness.slug === actualSlug
+      ? editingBusiness
+      : businesses.find(b => b.slug === actualSlug);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -319,38 +324,55 @@ const FreelancerPortfolioPage = () => {
         const extractedSlug = 'personal'; // Always load personal/freelancer data
 
         // Check if we already have business data in Redux
-        const existingBusiness = businesses.find(b => b.slug === extractedSlug || b.type === 'freelancer');
+        const existingBusiness = businesses.find(
+          b => b.slug === extractedSlug || b.type === 'freelancer'
+        );
         if (existingBusiness) {
-          console.log('Using existing freelancer business data from Redux:', existingBusiness);
+          console.log(
+            'Using existing freelancer business data from Redux:',
+            existingBusiness
+          );
           dispatch(setLoading(false));
           return;
         }
 
         // Make API call to get freelancer business data
-        console.log(`[FreelancerPortfolioPage] Making API call for freelancer: ${extractedSlug}`);
+        console.log(
+          `[FreelancerPortfolioPage] Making API call for freelancer: ${extractedSlug}`
+        );
         const response = await fetchBusinessData(extractedSlug);
 
         if (response.success && response.data) {
-          const { businessData, businessType, businessTypeConfig } = response.data;
-          
-          console.log('[FreelancerPortfolioPage] API call successful:', response.data);
-          
+          const { businessData, businessType, businessTypeConfig } =
+            response.data;
+
+          console.log(
+            '[FreelancerPortfolioPage] API call successful:',
+            response.data
+          );
+
           // Initialize Redux state with business data and type config
-          dispatch(initializeBusinessData({
-            businessData,
-            businessTypeConfig,
-          }));
+          dispatch(
+            initializeBusinessData({
+              businessData,
+              businessTypeConfig,
+            })
+          );
 
-          dispatch(setBusinessType({
-            businessType,
-            businessTypeConfig,
-          }));
-
+          dispatch(
+            setBusinessType({
+              businessType,
+              businessTypeConfig,
+            })
+          );
         } else {
           dispatch(setError('Freelancer portfolio not found'));
         }
       } catch (err) {
-        console.error('[FreelancerPortfolioPage] Error fetching freelancer data:', err);
+        console.error(
+          '[FreelancerPortfolioPage] Error fetching freelancer data:',
+          err
+        );
         dispatch(setError(err.message));
       } finally {
         dispatch(setLoading(false));
@@ -384,8 +406,11 @@ const FreelancerPortfolioPage = () => {
       <PageContainer>
         <div style={{ padding: '4rem', textAlign: 'center' }}>
           <h2>Freelancer Portfolio Not Found</h2>
-          <p>{error || "The freelancer portfolio you're looking for doesn't exist."}</p>
-          <button 
+          <p>
+            {error ||
+              "The freelancer portfolio you're looking for doesn't exist."}
+          </p>
+          <button
             onClick={handleBackToList}
             style={{
               marginTop: '1rem',
@@ -394,7 +419,7 @@ const FreelancerPortfolioPage = () => {
               color: 'white',
               border: 'none',
               borderRadius: '4px',
-              cursor: 'pointer'
+              cursor: 'pointer',
             }}
           >
             Back to Business Websites
@@ -419,7 +444,8 @@ const FreelancerPortfolioPage = () => {
     ];
   };
 
-  const navigationItems = currentBusiness.navigation?.menuItems || getFreelancerNavigationItems();
+  const navigationItems =
+    currentBusiness.navigation?.menuItems || getFreelancerNavigationItems();
 
   return (
     <PageContainer>
@@ -454,14 +480,25 @@ const FreelancerPortfolioPage = () => {
           backgroundImage={currentBusiness.hero?.backgroundImage}
         >
           <HeroContent>
-            <HeroTitle>{currentBusiness.hero?.title || currentBusiness.name}</HeroTitle>
+            <HeroTitle>
+              {currentBusiness.hero?.title || currentBusiness.name}
+            </HeroTitle>
             <HeroSubtitle>
-              {currentBusiness.hero?.subtitle || `Welcome to ${currentBusiness.name}`}
+              {currentBusiness.hero?.subtitle ||
+                `Welcome to ${currentBusiness.name}`}
             </HeroSubtitle>
-            <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+            <div
+              style={{
+                display: 'flex',
+                gap: '1rem',
+                justifyContent: 'center',
+                flexWrap: 'wrap',
+              }}
+            >
               <button
                 style={{
-                  background: currentBusiness.primaryColor || theme.colors.primary,
+                  background:
+                    currentBusiness.primaryColor || theme.colors.primary,
                   color: 'white',
                   padding: '1rem 2rem',
                   border: 'none',
@@ -483,22 +520,40 @@ const FreelancerPortfolioPage = () => {
       {sectionVisibility['about-us'] && (
         <Section id="about" background={theme.colors.gray50}>
           <SectionContainer>
-            <SectionTitle>{currentBusiness.about?.title || 'About Me'}</SectionTitle>
-            <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
-              <p style={{ fontSize: '1.1rem', lineHeight: '1.7', color: theme.colors.gray600, marginBottom: '2rem' }}>
-                {currentBusiness.about?.description || `Learn more about ${currentBusiness.name}`}
+            <SectionTitle>
+              {currentBusiness.about?.title || 'About Me'}
+            </SectionTitle>
+            <div
+              style={{
+                maxWidth: '800px',
+                margin: '0 auto',
+                textAlign: 'center',
+              }}
+            >
+              <p
+                style={{
+                  fontSize: '1.1rem',
+                  lineHeight: '1.7',
+                  color: theme.colors.gray600,
+                  marginBottom: '2rem',
+                }}
+              >
+                {currentBusiness.about?.description ||
+                  `Learn more about ${currentBusiness.name}`}
               </p>
-              
+
               {/* Statistics */}
               {currentBusiness.about?.stats && (
-                <div style={{ 
-                  display: 'grid', 
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', 
-                  gap: '1.5rem',
-                  marginTop: '3rem'
-                }}>
+                <div
+                  style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
+                    gap: '1.5rem',
+                    marginTop: '3rem',
+                  }}
+                >
                   {currentBusiness.about.stats.map((stat, index) => (
-                    <div 
+                    <div
                       key={index}
                       style={{
                         textAlign: 'center',
@@ -508,15 +563,22 @@ const FreelancerPortfolioPage = () => {
                         boxShadow: theme.shadows.sm,
                       }}
                     >
-                      <div style={{
-                        fontSize: '2.5rem',
-                        fontWeight: '800',
-                        color: currentBusiness.primaryColor,
-                        marginBottom: '0.5rem'
-                      }}>
+                      <div
+                        style={{
+                          fontSize: '2.5rem',
+                          fontWeight: '800',
+                          color: currentBusiness.primaryColor,
+                          marginBottom: '0.5rem',
+                        }}
+                      >
                         {stat.number}
                       </div>
-                      <div style={{ color: theme.colors.gray600, fontWeight: '500' }}>
+                      <div
+                        style={{
+                          color: theme.colors.gray600,
+                          fontWeight: '500',
+                        }}
+                      >
                         {stat.label}
                       </div>
                     </div>
@@ -533,12 +595,14 @@ const FreelancerPortfolioPage = () => {
         <Section id="portfolio">
           <SectionContainer>
             <SectionTitle>My Portfolio</SectionTitle>
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
-              gap: '2rem',
-              marginTop: '3rem'
-            }}>
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
+                gap: '2rem',
+                marginTop: '3rem',
+              }}
+            >
               {currentBusiness.portfolio.map((project, index) => (
                 <div
                   key={project.id || index}
@@ -550,32 +614,54 @@ const FreelancerPortfolioPage = () => {
                     transition: 'transform 0.3s ease',
                   }}
                 >
-                  <div style={{
-                    height: '200px',
-                    backgroundImage: `url(${project.image})`,
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    backgroundColor: `${currentBusiness.primaryColor}20`,
-                  }} />
+                  <div
+                    style={{
+                      height: '200px',
+                      backgroundImage: `url(${project.image})`,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                      backgroundColor: `${currentBusiness.primaryColor}20`,
+                    }}
+                  />
                   <div style={{ padding: '1.5rem' }}>
-                    <div style={{
-                      fontSize: '0.8rem',
-                      fontWeight: '600',
-                      color: currentBusiness.primaryColor,
-                      textTransform: 'uppercase',
-                      letterSpacing: '1px',
-                      marginBottom: '0.5rem'
-                    }}>
+                    <div
+                      style={{
+                        fontSize: '0.8rem',
+                        fontWeight: '600',
+                        color: currentBusiness.primaryColor,
+                        textTransform: 'uppercase',
+                        letterSpacing: '1px',
+                        marginBottom: '0.5rem',
+                      }}
+                    >
                       {project.category}
                     </div>
-                    <h3 style={{ fontSize: '1.3rem', fontWeight: '600', marginBottom: '1rem' }}>
+                    <h3
+                      style={{
+                        fontSize: '1.3rem',
+                        fontWeight: '600',
+                        marginBottom: '1rem',
+                      }}
+                    >
                       {project.title}
                     </h3>
-                    <p style={{ color: theme.colors.gray600, lineHeight: '1.6', marginBottom: '1rem' }}>
+                    <p
+                      style={{
+                        color: theme.colors.gray600,
+                        lineHeight: '1.6',
+                        marginBottom: '1rem',
+                      }}
+                    >
                       {project.description}
                     </p>
                     {project.technologies && (
-                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                      <div
+                        style={{
+                          display: 'flex',
+                          flexWrap: 'wrap',
+                          gap: '0.5rem',
+                        }}
+                      >
                         {project.technologies.map((tech, i) => (
                           <span
                             key={i}
@@ -585,7 +671,7 @@ const FreelancerPortfolioPage = () => {
                               padding: '0.25rem 0.5rem',
                               borderRadius: '4px',
                               fontSize: '0.8rem',
-                              fontWeight: '500'
+                              fontWeight: '500',
                             }}
                           >
                             {tech}
@@ -606,12 +692,14 @@ const FreelancerPortfolioPage = () => {
         <Section id="skills" background={theme.colors.gray50}>
           <SectionContainer>
             <SectionTitle>My Skills</SectionTitle>
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-              gap: '1.5rem',
-              marginTop: '3rem'
-            }}>
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+                gap: '1.5rem',
+                marginTop: '3rem',
+              }}
+            >
               {currentBusiness.skills.map((skill, index) => (
                 <div
                   key={skill.id || index}
@@ -623,28 +711,45 @@ const FreelancerPortfolioPage = () => {
                     border: `1px solid ${theme.colors.gray200}`,
                   }}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '1rem',
+                      marginBottom: '1rem',
+                    }}
+                  >
                     <div style={{ fontSize: '1.5rem' }}>{skill.icon}</div>
                     <div style={{ flex: 1 }}>
-                      <h4 style={{ fontWeight: '600', marginBottom: '2px' }}>{skill.name}</h4>
-                      <div style={{ fontSize: '0.9rem', color: currentBusiness.primaryColor, fontWeight: '600' }}>
+                      <h4 style={{ fontWeight: '600', marginBottom: '2px' }}>
+                        {skill.name}
+                      </h4>
+                      <div
+                        style={{
+                          fontSize: '0.9rem',
+                          color: currentBusiness.primaryColor,
+                          fontWeight: '600',
+                        }}
+                      >
                         {skill.level}%
                       </div>
                     </div>
                   </div>
-                  <div style={{
-                    height: '8px',
-                    background: theme.colors.gray200,
-                    borderRadius: '4px',
-                    overflow: 'hidden'
-                  }}>
+                  <div
+                    style={{
+                      height: '8px',
+                      background: theme.colors.gray200,
+                      borderRadius: '4px',
+                      overflow: 'hidden',
+                    }}
+                  >
                     <div
                       style={{
                         height: '100%',
                         background: `linear-gradient(90deg, ${currentBusiness.primaryColor}, ${currentBusiness.primaryColor}cc)`,
                         borderRadius: '4px',
                         width: `${skill.level}%`,
-                        transition: 'width 2s ease'
+                        transition: 'width 2s ease',
                       }}
                     />
                   </div>
@@ -660,12 +765,14 @@ const FreelancerPortfolioPage = () => {
         <Section id="services">
           <SectionContainer>
             <SectionTitle>My Services</SectionTitle>
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-              gap: '2rem',
-              marginTop: '3rem'
-            }}>
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+                gap: '2rem',
+                marginTop: '3rem',
+              }}
+            >
               {currentBusiness.services.map((service, index) => (
                 <div
                   key={service.id || index}
@@ -679,32 +786,48 @@ const FreelancerPortfolioPage = () => {
                     border: `1px solid ${theme.colors.gray200}`,
                   }}
                 >
-                  <div style={{
-                    width: '60px',
-                    height: '60px',
-                    margin: '0 auto 1.5rem',
-                    background: currentBusiness.primaryColor,
-                    borderRadius: '50%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '1.5rem',
-                    color: 'white'
-                  }}>
+                  <div
+                    style={{
+                      width: '60px',
+                      height: '60px',
+                      margin: '0 auto 1.5rem',
+                      background: currentBusiness.primaryColor,
+                      borderRadius: '50%',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '1.5rem',
+                      color: 'white',
+                    }}
+                  >
                     {service.icon || '⚡'}
                   </div>
-                  <h3 style={{ fontSize: '1.3rem', fontWeight: '600', marginBottom: '1rem' }}>
+                  <h3
+                    style={{
+                      fontSize: '1.3rem',
+                      fontWeight: '600',
+                      marginBottom: '1rem',
+                    }}
+                  >
                     {service.name}
                   </h3>
-                  <p style={{ color: theme.colors.gray600, lineHeight: '1.6', marginBottom: '1rem' }}>
+                  <p
+                    style={{
+                      color: theme.colors.gray600,
+                      lineHeight: '1.6',
+                      marginBottom: '1rem',
+                    }}
+                  >
                     {service.description}
                   </p>
                   {service.price && (
-                    <div style={{
-                      fontSize: '1.1rem',
-                      fontWeight: '600',
-                      color: currentBusiness.primaryColor
-                    }}>
+                    <div
+                      style={{
+                        fontSize: '1.1rem',
+                        fontWeight: '600',
+                        color: currentBusiness.primaryColor,
+                      }}
+                    >
                       {service.price}
                     </div>
                   )}
@@ -733,21 +856,42 @@ const FreelancerPortfolioPage = () => {
                     border: `1px solid ${theme.colors.gray200}`,
                   }}
                 >
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '1rem' }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'start',
+                      marginBottom: '1rem',
+                    }}
+                  >
                     <div>
-                      <h3 style={{ fontSize: '1.3rem', fontWeight: '600', color: theme.colors.gray900 }}>
+                      <h3
+                        style={{
+                          fontSize: '1.3rem',
+                          fontWeight: '600',
+                          color: theme.colors.gray900,
+                        }}
+                      >
                         {job.role}
                       </h3>
-                      <div style={{ fontSize: '1.1rem', color: currentBusiness.primaryColor, fontWeight: '600' }}>
+                      <div
+                        style={{
+                          fontSize: '1.1rem',
+                          color: currentBusiness.primaryColor,
+                          fontWeight: '600',
+                        }}
+                      >
                         {job.company}
                       </div>
                     </div>
-                    <div style={{ 
-                      fontSize: '0.9rem', 
-                      color: theme.colors.gray600, 
-                      fontWeight: '500',
-                      textAlign: 'right'
-                    }}>
+                    <div
+                      style={{
+                        fontSize: '0.9rem',
+                        color: theme.colors.gray600,
+                        fontWeight: '500',
+                        textAlign: 'right',
+                      }}
+                    >
                       {job.period}
                     </div>
                   </div>
@@ -766,12 +910,14 @@ const FreelancerPortfolioPage = () => {
         <Section id="packages">
           <SectionContainer>
             <SectionTitle>Service Packages</SectionTitle>
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-              gap: '2rem',
-              marginTop: '3rem'
-            }}>
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+                gap: '2rem',
+                marginTop: '3rem',
+              }}
+            >
               {currentBusiness.packages.map((pkg, index) => (
                 <div
                   key={pkg.id || index}
@@ -779,51 +925,90 @@ const FreelancerPortfolioPage = () => {
                     background: theme.colors.white,
                     padding: '2rem',
                     borderRadius: '12px',
-                    boxShadow: pkg.featured ? theme.shadows.lg : theme.shadows.md,
+                    boxShadow: pkg.featured
+                      ? theme.shadows.lg
+                      : theme.shadows.md,
                     textAlign: 'center',
                     position: 'relative',
-                    border: pkg.featured ? `2px solid ${currentBusiness.primaryColor}` : `1px solid ${theme.colors.gray200}`,
+                    border: pkg.featured
+                      ? `2px solid ${currentBusiness.primaryColor}`
+                      : `1px solid ${theme.colors.gray200}`,
                     transform: pkg.featured ? 'scale(1.05)' : 'none',
                   }}
                 >
                   {pkg.featured && (
-                    <div style={{
-                      position: 'absolute',
-                      top: '-10px',
-                      left: '50%',
-                      transform: 'translateX(-50%)',
-                      background: currentBusiness.primaryColor,
-                      color: 'white',
-                      padding: '0.5rem 1rem',
-                      borderRadius: '20px',
-                      fontSize: '0.8rem',
-                      fontWeight: '600'
-                    }}>
+                    <div
+                      style={{
+                        position: 'absolute',
+                        top: '-10px',
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        background: currentBusiness.primaryColor,
+                        color: 'white',
+                        padding: '0.5rem 1rem',
+                        borderRadius: '20px',
+                        fontSize: '0.8rem',
+                        fontWeight: '600',
+                      }}
+                    >
                       MOST POPULAR
                     </div>
                   )}
-                  <h3 style={{ fontSize: '1.5rem', fontWeight: '700', marginBottom: '1rem' }}>
+                  <h3
+                    style={{
+                      fontSize: '1.5rem',
+                      fontWeight: '700',
+                      marginBottom: '1rem',
+                    }}
+                  >
                     {pkg.name}
                   </h3>
-                  <div style={{
-                    fontSize: '2.5rem',
-                    fontWeight: '800',
-                    color: currentBusiness.primaryColor,
-                    marginBottom: '0.5rem'
-                  }}>
+                  <div
+                    style={{
+                      fontSize: '2.5rem',
+                      fontWeight: '800',
+                      color: currentBusiness.primaryColor,
+                      marginBottom: '0.5rem',
+                    }}
+                  >
                     {pkg.price}
                   </div>
-                  <div style={{ color: theme.colors.gray600, marginBottom: '1.5rem' }}>
+                  <div
+                    style={{
+                      color: theme.colors.gray600,
+                      marginBottom: '1.5rem',
+                    }}
+                  >
                     {pkg.duration}
                   </div>
-                  <p style={{ color: theme.colors.gray600, lineHeight: '1.6', marginBottom: '2rem' }}>
+                  <p
+                    style={{
+                      color: theme.colors.gray600,
+                      lineHeight: '1.6',
+                      marginBottom: '2rem',
+                    }}
+                  >
                     {pkg.description}
                   </p>
                   {pkg.features && (
                     <ul style={{ textAlign: 'left', marginBottom: '2rem' }}>
                       {pkg.features.map((feature, i) => (
-                        <li key={i} style={{ marginBottom: '0.5rem', display: 'flex', alignItems: 'center' }}>
-                          <span style={{ color: currentBusiness.primaryColor, marginRight: '0.5rem' }}>✓</span>
+                        <li
+                          key={i}
+                          style={{
+                            marginBottom: '0.5rem',
+                            display: 'flex',
+                            alignItems: 'center',
+                          }}
+                        >
+                          <span
+                            style={{
+                              color: currentBusiness.primaryColor,
+                              marginRight: '0.5rem',
+                            }}
+                          >
+                            ✓
+                          </span>
                           {feature}
                         </li>
                       ))}
@@ -831,15 +1016,19 @@ const FreelancerPortfolioPage = () => {
                   )}
                   <button
                     style={{
-                      background: pkg.featured ? currentBusiness.primaryColor : 'transparent',
-                      color: pkg.featured ? 'white' : currentBusiness.primaryColor,
+                      background: pkg.featured
+                        ? currentBusiness.primaryColor
+                        : 'transparent',
+                      color: pkg.featured
+                        ? 'white'
+                        : currentBusiness.primaryColor,
                       border: `2px solid ${currentBusiness.primaryColor}`,
                       padding: '0.75rem 1.5rem',
                       borderRadius: '8px',
                       fontWeight: '600',
                       cursor: 'pointer',
                       width: '100%',
-                      transition: 'all 0.3s ease'
+                      transition: 'all 0.3s ease',
                     }}
                   >
                     Choose Plan
@@ -856,12 +1045,14 @@ const FreelancerPortfolioPage = () => {
         <Section id="testimonials" background={theme.colors.gray50}>
           <SectionContainer>
             <SectionTitle>Client Testimonials</SectionTitle>
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
-              gap: '2rem',
-              marginTop: '3rem'
-            }}>
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
+                gap: '2rem',
+                marginTop: '3rem',
+              }}
+            >
               {currentBusiness.testimonials.map((testimonial, index) => (
                 <div
                   key={testimonial.id || index}
@@ -874,20 +1065,56 @@ const FreelancerPortfolioPage = () => {
                     border: `1px solid ${theme.colors.gray200}`,
                   }}
                 >
-                  <FaQuoteLeft style={{ color: currentBusiness.primaryColor, fontSize: '1.5rem', marginBottom: '1rem' }} />
-                  <p style={{ color: theme.colors.gray700, lineHeight: '1.6', marginBottom: '1.5rem', fontStyle: 'italic' }}>
+                  <FaQuoteLeft
+                    style={{
+                      color: currentBusiness.primaryColor,
+                      fontSize: '1.5rem',
+                      marginBottom: '1rem',
+                    }}
+                  />
+                  <p
+                    style={{
+                      color: theme.colors.gray700,
+                      lineHeight: '1.6',
+                      marginBottom: '1.5rem',
+                      fontStyle: 'italic',
+                    }}
+                  >
                     "{testimonial.text}"
                   </p>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                    }}
+                  >
                     <div>
-                      <div style={{ fontWeight: '600', color: theme.colors.gray900 }}>{testimonial.name}</div>
+                      <div
+                        style={{
+                          fontWeight: '600',
+                          color: theme.colors.gray900,
+                        }}
+                      >
+                        {testimonial.name}
+                      </div>
                       {testimonial.service && (
-                        <div style={{ fontSize: '0.9rem', color: theme.colors.gray600 }}>{testimonial.service}</div>
+                        <div
+                          style={{
+                            fontSize: '0.9rem',
+                            color: theme.colors.gray600,
+                          }}
+                        >
+                          {testimonial.service}
+                        </div>
                       )}
                     </div>
                     <div style={{ display: 'flex', gap: '2px' }}>
                       {[...Array(testimonial.rating || 5)].map((_, i) => (
-                        <FaStar key={i} style={{ color: '#fbbf24', fontSize: '1rem' }} />
+                        <FaStar
+                          key={i}
+                          style={{ color: '#fbbf24', fontSize: '1rem' }}
+                        />
                       ))}
                     </div>
                   </div>
@@ -902,30 +1129,74 @@ const FreelancerPortfolioPage = () => {
       {sectionVisibility.contact && (
         <Section id="contact">
           <SectionContainer>
-            <SectionTitle>{currentBusiness.contact?.title || 'Let\'s Work Together'}</SectionTitle>
-            <div style={{ maxWidth: '600px', margin: '0 auto', textAlign: 'center' }}>
-              <p style={{ fontSize: '1.1rem', color: theme.colors.gray600, marginBottom: '2rem' }}>
-                {currentBusiness.contact?.description || 'Have a project in mind? I\'d love to hear about it!'}
+            <SectionTitle>
+              {currentBusiness.contact?.title || "Let's Work Together"}
+            </SectionTitle>
+            <div
+              style={{
+                maxWidth: '600px',
+                margin: '0 auto',
+                textAlign: 'center',
+              }}
+            >
+              <p
+                style={{
+                  fontSize: '1.1rem',
+                  color: theme.colors.gray600,
+                  marginBottom: '2rem',
+                }}
+              >
+                {currentBusiness.contact?.description ||
+                  "Have a project in mind? I'd love to hear about it!"}
               </p>
-              
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'center' }}>
+
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '1rem',
+                  alignItems: 'center',
+                }}
+              >
                 {currentBusiness.contact?.phone && (
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '1rem',
+                    }}
+                  >
                     <FaPhone style={{ color: currentBusiness.primaryColor }} />
                     <span>{currentBusiness.contact.phone}</span>
                   </div>
                 )}
-                
+
                 {currentBusiness.contact?.email && (
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                    <FaEnvelope style={{ color: currentBusiness.primaryColor }} />
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '1rem',
+                    }}
+                  >
+                    <FaEnvelope
+                      style={{ color: currentBusiness.primaryColor }}
+                    />
                     <span>{currentBusiness.contact.email}</span>
                   </div>
                 )}
-                
+
                 {currentBusiness.contact?.address && (
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                    <FaMapMarkerAlt style={{ color: currentBusiness.primaryColor }} />
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '1rem',
+                    }}
+                  >
+                    <FaMapMarkerAlt
+                      style={{ color: currentBusiness.primaryColor }}
+                    />
                     <span>{currentBusiness.contact.address}</span>
                   </div>
                 )}

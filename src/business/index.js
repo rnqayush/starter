@@ -27,19 +27,23 @@ const BusinessModule = () => {
           console.log('[BusinessModule] Business type detected:', {
             slug: currentSlug,
             isFreelancer,
-            businessType: businessInfo.businessType
+            businessType: businessInfo.businessType,
           });
         } else {
           // Fallback: check for freelancer/personal keywords in slug
-          const isFreelancerSlug = currentSlug === 'freelancer' || currentSlug === 'personal';
+          const isFreelancerSlug =
+            currentSlug === 'freelancer' || currentSlug === 'personal';
           setIsPersonalPortfolio(isFreelancerSlug);
           console.log('[BusinessModule] Fallback detection:', {
             slug: currentSlug,
-            isFreelancer: isFreelancerSlug
+            isFreelancer: isFreelancerSlug,
           });
         }
       } catch (error) {
-        console.error('[BusinessModule] Error fetching business config:', error);
+        console.error(
+          '[BusinessModule] Error fetching business config:',
+          error
+        );
         // Fallback: check slug directly
         const isFreelancerSlug = slug === 'freelancer' || slug === 'personal';
         setIsPersonalPortfolio(isFreelancerSlug);
@@ -53,13 +57,15 @@ const BusinessModule = () => {
 
   if (loading) {
     return (
-      <div style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh',
-        fontSize: '1.2rem'
-      }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh',
+          fontSize: '1.2rem',
+        }}
+      >
         Loading...
       </div>
     );
