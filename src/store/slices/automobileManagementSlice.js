@@ -3,8 +3,27 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 // Async thunk for fetching automobile data
 export const fetchAutomobileData = createAsyncThunk(
   'automobile/fetchAutomobileData',
-  async (vendorSlug, { rejectWithValue }) => {
+  async ({ vendorSlug, forceRefresh = false }, { rejectWithValue, getState }) => {
     try {
+      const state = getState();
+
+      // If data is already persisted and we're not forcing refresh, return current data
+      if (state.automobileManagement.isDataPersisted && !forceRefresh &&
+          state.automobileManagement.vendor?.slug === vendorSlug) {
+        return {
+          data: {
+            vendor: state.automobileManagement.vendor,
+            allCategories: state.automobileManagement.categories,
+            allVehicles: state.automobileManagement.vehicles,
+            promotions: state.automobileManagement.promotions,
+            customerReviews: state.automobileManagement.customerReviews,
+            financing: state.automobileManagement.financing,
+            pageSections: state.automobileManagement.pageContent.sections,
+          },
+          meta: state.automobileManagement.meta || {}
+        };
+      }
+
       // TODO: Replace with actual API call using automobileAPI.getVendorBySlug(vendorSlug)
       // For now, use local JSON data
       const response = await import('../../DummyData/automobiles.json');
