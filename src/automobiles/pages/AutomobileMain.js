@@ -495,11 +495,8 @@ const AutomobileMain = () => {
       slug = pathSegments[0];
     }
 
-    console.log('AutomobileMain useEffect:', { path, slug, loading, vendor });
-
     // If no vendor slug found, redirect to dealer listing
     if (!slug) {
-      console.log('No slug found, redirecting to auto-dealers');
       navigate('/auto-dealers');
       return;
     }
@@ -507,7 +504,6 @@ const AutomobileMain = () => {
     setVendorSlug(slug);
 
     // Fetch automobile data for this vendor
-    console.log('Dispatching fetchAutomobileData for slug:', slug);
     dispatch(fetchAutomobileData(slug));
   }, [location.pathname, navigate, dispatch]);
 
