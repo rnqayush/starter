@@ -638,14 +638,15 @@ const Section = styled.section`
 const Container = styled.div`
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 ${theme.spacing.md};
+  padding: 0 ${theme.spacing.lg};
+  position: relative;
 
   @media (max-width: ${theme.breakpoints.tablet}) {
     padding: 0 ${theme.spacing.md};
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    padding: 0 ${theme.spacing.sm};
+    padding: 0 ${theme.spacing.md};
   }
 `;
 
