@@ -696,6 +696,14 @@ const automobileManagementSlice = createSlice({
       const section = state.pageContent.sections.find(s => s.id === sectionId);
       if (section) {
         section.visible = visible;
+
+        // Mark as having changes for change tracker
+        state.hasUnsavedChanges = true;
+        state.isDataPersisted = false;
+
+        // Track the change
+        const path = `sections.${sectionId}.visible`;
+        state.tempChanges[path] = visible ? 'Section shown' : 'Section hidden';
       }
     },
     reorderSections: (state, action) => {
