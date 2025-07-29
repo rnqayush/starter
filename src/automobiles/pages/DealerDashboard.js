@@ -179,7 +179,7 @@ const DealerDashboard = () => {
       // Only fetch initial data if we don't have vendor data for this slug
       // This preserves saved changes and prevents overriding user's work
       if (!vendor || vendor.slug !== slug) {
-        dispatch(fetchAutomobileData(slug));
+        dispatch(fetchAutomobileData({ vendorSlug: slug }));
       }
     } else {
       // If no dealer found, redirect to dealer listing
