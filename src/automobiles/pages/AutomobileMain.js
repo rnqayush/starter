@@ -704,11 +704,12 @@ const AutomobileMain = () => {
 
             case 'featured':
               // Use embedded vehicles if available, otherwise use global vehicles
+              const featuredVehicleIds = sectionConfig.vehicleIds || sectionConfig.content?.vehicleIds || [];
               const featuredVehiclesToShow =
                 sectionConfig.vehicles ||
-                (sectionConfig.content?.vehicleIds?.length > 0
+                (featuredVehicleIds.length > 0
                   ? vehicles.filter(vehicle =>
-                      sectionConfig.content.vehicleIds.includes(vehicle.id)
+                      featuredVehicleIds.includes(vehicle.id)
                     )
                   : featuredVehicles.slice(0, 4));
               return (
