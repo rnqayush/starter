@@ -205,9 +205,9 @@ const CategoriesSectionEdit = ({ dealer }) => {
       const timeout = setTimeout(() => {
         if (Object.keys(localChanges).length > 0) {
           dispatch(
-            updatePageSectionContent({
+            updateSectionContent({
               sectionId: 'categories',
-              content: localChanges,
+              updates: localChanges,
             })
           );
           setLocalChanges({});
