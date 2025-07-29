@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { FaExclamationTriangle, FaSave, FaUndo } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
 import EnhancedDealerSidebar from '../components/EnhancedDealerSidebar';
 import DashboardTab from '../components/DashboardTab';
@@ -25,8 +26,17 @@ import ServiceAppointmentsTab from '../components/ServiceAppointmentsTab';
 import PromotionsTab from '../components/PromotionsTab';
 import DealerSettingsTab from '../components/DealerSettingsTab';
 import AnalyticsTab from '../components/AnalyticsTab';
-import { getAutomobileVendorByIdOrSlug as getVendorByIdOrSlug } from '../../DummyData';
-import { fetchAutomobileData } from '../../store/slices/automobileManagementSlice';
+import {
+  fetchAutomobileData,
+  saveCompleteData,
+  selectVendor,
+  selectLoading,
+  selectError,
+  selectHasUnsavedChanges,
+  selectApiReadyData,
+  selectNeedsSyncCheck,
+  discardTempChanges,
+} from '../../store/slices/automobileManagementSlice';
 
 const DashboardContainer = styled.div`
   display: flex;
@@ -72,6 +82,66 @@ const PageSubtitle = styled.p`
   font-size: 1rem;
 `;
 
+const SaveControls = styled.div`
+  display: flex;
+  gap: ${theme.spacing.md};
+  align-items: center;
+  margin-top: ${theme.spacing.md};
+`;
+
+const SaveButton = styled.button`
+  background: ${theme.colors.primary};
+  color: white;
+  border: none;
+  border-radius: ${theme.borderRadius.md};
+  padding: ${theme.spacing.sm} ${theme.spacing.lg};
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: ${theme.colors.primaryDark};
+  }
+
+  &:disabled {
+    background: ${theme.colors.gray300};
+    cursor: not-allowed;
+  }
+`;
+
+const DiscardButton = styled.button`
+  background: transparent;
+  color: ${theme.colors.gray600};
+  border: 1px solid ${theme.colors.gray300};
+  border-radius: ${theme.borderRadius.md};
+  padding: ${theme.spacing.sm} ${theme.spacing.lg};
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: ${theme.colors.gray400};
+    color: ${theme.colors.gray700};
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+`;
+
+const SyncWarning = styled.div`
+  background: ${theme.colors.yellow50};
+  border: 1px solid ${theme.colors.yellow200};
+  border-radius: ${theme.borderRadius.md};
+  padding: ${theme.spacing.sm} ${theme.spacing.md};
+  color: ${theme.colors.yellow800};
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.sm};
+`;
+
 const LoadingContainer = styled.div`
   display: flex;
   justify-content: center;
@@ -86,27 +156,54 @@ const DealerDashboard = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState('dashboard');
-  const [dealer, setDealer] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [dealerSlug, setDealerSlug] = useState(null);
+
+  // Redux selectors
+  const vendor = useSelector(selectVendor);
+  const loading = useSelector(selectLoading);
+  const error = useSelector(selectError);
+  const hasUnsavedChanges = useSelector(selectHasUnsavedChanges);
+  const apiReadyData = useSelector(selectApiReadyData);
+  const syncCheck = useSelector(selectNeedsSyncCheck);
 
   useEffect(() => {
     // Get dealer data from URL
     const path = location.pathname;
     const pathSegments = path.split('/').filter(Boolean);
-    const dealerSlug = pathSegments[0];
+    const slug = pathSegments[0];
 
-    const dealerData = getVendorByIdOrSlug(dealerSlug);
-
-    if (dealerData) {
-      setDealer(dealerData);
+    if (slug) {
+      setDealerSlug(slug);
       // Fetch automobile data to populate Redux store
-      dispatch(fetchAutomobileData(dealerSlug));
-      setLoading(false);
+      dispatch(fetchAutomobileData(slug));
     } else {
       // If no dealer found, redirect to dealer listing
       navigate('/auto-dealers');
     }
   }, [location.pathname, navigate, dispatch]);
+
+  // Handle auto-save functionality for API calls
+  const handleSaveChanges = async () => {
+    try {
+      // Use the new saveCompleteData action for API integration
+      await dispatch(
+        saveCompleteData({
+          vendorSlug: dealerSlug,
+          data: apiReadyData,
+        })
+      ).unwrap();
+
+      console.log('Changes saved successfully to API!');
+    } catch (error) {
+      console.error('Failed to save changes:', error);
+      // Optionally show user-friendly error message
+      alert('Failed to save changes. Please try again.');
+    }
+  };
+
+  const handleDiscardChanges = () => {
+    dispatch(discardTempChanges());
+  };
 
   const getPageTitle = () => {
     switch (activeTab) {
@@ -207,51 +304,59 @@ const DealerDashboard = () => {
   };
 
   const renderContent = () => {
+    const commonProps = {
+      vendor,
+      dealerSlug,
+      onSave: handleSaveChanges,
+      hasUnsavedChanges,
+      syncCheck,
+    };
+
     switch (activeTab) {
       case 'dashboard':
-        return <DashboardTab dealer={dealer} />;
+        return <DashboardTab {...commonProps} />;
       case 'section-order':
-        return <SectionOrderEdit dealer={dealer} />;
+        return <SectionOrderEdit {...commonProps} />;
       case 'hero-section':
-        return <HeroSectionEdit dealer={dealer} />;
+        return <HeroSectionEdit {...commonProps} />;
       case 'categories-section':
-        return <CategoriesSectionEdit dealer={dealer} />;
+        return <CategoriesSectionEdit {...commonProps} />;
       case 'featured-section':
-        return <FeaturedSectionEdit dealer={dealer} />;
+        return <FeaturedSectionEdit {...commonProps} />;
       case 'offers-section':
-        return <SpecialOffersSectionEdit dealer={dealer} />;
+        return <SpecialOffersSectionEdit {...commonProps} />;
       case 'footer-section':
-        return <FooterSectionEdit dealer={dealer} />;
+        return <FooterSectionEdit {...commonProps} />;
       case 'custom-section':
-        return <CustomSectionEdit dealer={dealer} />;
+        return <CustomSectionEdit {...commonProps} />;
       case 'inventory':
-        return <VehicleInventoryTab dealer={dealer} />;
+        return <VehicleInventoryTab {...commonProps} />;
       case 'categories':
-        return <CategoryManagement dealer={dealer} />;
+        return <CategoryManagement {...commonProps} />;
       case 'add-vehicle':
-        return <AddVehicleTab dealer={dealer} />;
+        return <AddVehicleTab {...commonProps} />;
       case 'bulk-import':
-        return <BulkImportTab dealer={dealer} />;
+        return <BulkImportTab {...commonProps} />;
       case 'orders':
-        return <SalesOrdersTab dealer={dealer} />;
+        return <SalesOrdersTab {...commonProps} />;
       case 'enquiries':
-        return <EnquiriesTab dealer={dealer} />;
+        return <EnquiriesTab {...commonProps} />;
       case 'customers':
-        return <CustomersTab dealer={dealer} />;
+        return <CustomersTab {...commonProps} />;
       case 'financing':
-        return <FinancingTab dealer={dealer} />;
+        return <FinancingTab {...commonProps} />;
       case 'trade-ins':
-        return <TradeInsTab dealer={dealer} />;
+        return <TradeInsTab {...commonProps} />;
       case 'service':
-        return <ServiceAppointmentsTab dealer={dealer} />;
+        return <ServiceAppointmentsTab {...commonProps} />;
       case 'promotions':
-        return <PromotionsTab dealer={dealer} />;
+        return <PromotionsTab {...commonProps} />;
       case 'dealer-settings':
-        return <DealerSettingsTab dealer={dealer} />;
+        return <DealerSettingsTab {...commonProps} />;
       case 'analytics':
-        return <AnalyticsTab dealer={dealer} />;
+        return <AnalyticsTab {...commonProps} />;
       default:
-        return <DashboardTab dealer={dealer} />;
+        return <DashboardTab {...commonProps} />;
     }
   };
 
@@ -259,7 +364,21 @@ const DealerDashboard = () => {
     return <LoadingContainer>Loading dealership dashboard...</LoadingContainer>;
   }
 
-  if (!dealer) {
+  if (error) {
+    return (
+      <LoadingContainer>
+        <div style={{ textAlign: 'center', color: '#ef4444' }}>
+          <h3>Error loading dashboard</h3>
+          <p>{error}</p>
+          <button onClick={() => dispatch(fetchAutomobileData(dealerSlug))}>
+            Retry
+          </button>
+        </div>
+      </LoadingContainer>
+    );
+  }
+
+  if (!vendor) {
     return null; // Will redirect
   }
 
@@ -268,13 +387,42 @@ const DealerDashboard = () => {
       <EnhancedDealerSidebar
         activeTab={activeTab}
         onTabChange={setActiveTab}
-        dealer={dealer}
+        vendor={vendor}
+        hasUnsavedChanges={hasUnsavedChanges}
+        onSave={handleSaveChanges}
+        onDiscard={handleDiscardChanges}
+        syncCheck={syncCheck}
       />
       <MainContent>
         <ContentWrapper>
           <PageHeader>
             <PageTitle>{getPageTitle()}</PageTitle>
             <PageSubtitle>{getPageSubtitle()}</PageSubtitle>
+
+            {/* Save Controls */}
+            {hasUnsavedChanges && (
+              <SaveControls>
+                <SaveButton onClick={handleSaveChanges}>
+                  <FaSave style={{ marginRight: '8px' }} />
+                  Save Changes
+                </SaveButton>
+                <DiscardButton onClick={handleDiscardChanges}>
+                  <FaUndo style={{ marginRight: '8px' }} />
+                  Discard
+                </DiscardButton>
+              </SaveControls>
+            )}
+
+            {/* Sync Warning */}
+            {syncCheck.needsSync && (
+              <SyncWarning>
+                <FaExclamationTriangle />
+                Data sync required: Section data differs from global data.
+                {syncCheck.categoriesNeedSync && ' Categories'}
+                {syncCheck.vehiclesNeedSync && ' Vehicles'}
+                need synchronization.
+              </SyncWarning>
+            )}
           </PageHeader>
           {renderContent()}
         </ContentWrapper>

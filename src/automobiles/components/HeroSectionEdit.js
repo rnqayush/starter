@@ -5,8 +5,8 @@ import { FaImage, FaUpload, FaTimes } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
 import {
   selectLoading,
-  selectSectionContent,
-  updatePageSectionContent,
+  selectSectionById,
+  updateSectionContent,
 } from '../../store/slices/automobileManagementSlice';
 
 const Container = styled.div`
@@ -172,26 +172,43 @@ const UrlOption = styled.div`
   border-top: 1px solid ${theme.colors.gray200};
 `;
 
-const HeroSectionEdit = ({ dealer }) => {
+const HeroSectionEdit = ({ vendor, onSave, hasUnsavedChanges }) => {
   const dispatch = useDispatch();
   const loading = useSelector(selectLoading);
-  const heroContent = useSelector(selectSectionContent('hero'));
+  const heroSection = useSelector(state =>
+    state.automobileManagement.pageContent.sections.find(s => s.id === 'hero')
+  );
 
   const [localChanges, setLocalChanges] = useState({});
   const [hasChanges, setHasChanges] = useState(false);
 
-  // Get current values (Redux + local changes)
+  // Get current values from Redux section data + local changes
   const currentContent = {
-    ...heroContent,
+    title: heroSection?.title || 'Welcome to Luxury Auto Gallery',
+    subtitle:
+      heroSection?.subtitle ||
+      'Premium luxury vehicles from world-renowned brands. Experience excellence in automotive craftsmanship with our curated selection of luxury cars, sports cars, and electric vehicles.',
+    backgroundImage: heroSection?.backgroundImage || '',
+    primaryButtonText: heroSection?.primaryButtonText || 'Browse Vehicles',
+    secondaryButtonText: heroSection?.secondaryButtonText || 'View Categories',
     ...localChanges,
   };
 
   const updateContent = (field, value) => {
+    // Update local changes for immediate UI update
     setLocalChanges(prev => ({
       ...prev,
       [field]: value,
     }));
     setHasChanges(true);
+
+    // Immediately update Redux state for real-time updates
+    dispatch(
+      updateSectionContent({
+        sectionId: 'hero',
+        content: { [field]: value },
+      })
+    );
   };
 
   const handleImageUpload = event => {
@@ -209,23 +226,16 @@ const HeroSectionEdit = ({ dealer }) => {
     updateContent('backgroundImage', '');
   };
 
-  // Apply changes automatically when user makes any change
+  // Clear local changes when they're successfully applied
   useEffect(() => {
-    if (hasChanges) {
+    if (hasChanges && Object.keys(localChanges).length > 0) {
       const timeout = setTimeout(() => {
-        if (Object.keys(localChanges).length > 0) {
-          dispatch(
-            updatePageSectionContent({
-              sectionId: 'hero',
-              content: localChanges,
-            })
-          );
-          setLocalChanges({});
-        }
-      }, 500); // Debounce
+        setLocalChanges({});
+        setHasChanges(false);
+      }, 100);
       return () => clearTimeout(timeout);
     }
-  }, [localChanges, hasChanges, dispatch]);
+  }, [localChanges, hasChanges]);
 
   if (loading) {
     return (

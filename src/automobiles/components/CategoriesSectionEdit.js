@@ -7,7 +7,7 @@ import {
   selectCategories,
   selectLoading,
   selectSectionContent,
-  updatePageSectionContent,
+  updateSectionContent,
 } from '../../store/slices/automobileManagementSlice';
 
 const Container = styled.div`
@@ -169,25 +169,42 @@ const VisibilityButton = styled.button.withConfig({
 
 const CategoriesSectionEdit = ({ dealer }) => {
   const dispatch = useDispatch();
-  const categoriesContent = useSelector(selectSectionContent('categories'));
+  const categoriesSection = useSelector(state =>
+    state.automobileManagement.pageContent.sections.find(
+      s => s.id === 'categories'
+    )
+  );
   const categories = useSelector(selectCategories);
   const loading = useSelector(selectLoading);
 
   const [localChanges, setLocalChanges] = useState({});
   const [hasChanges, setHasChanges] = useState(false);
 
-  // Get current values (Redux + local changes)
+  // Get current values from Redux section data + local changes
   const currentContent = {
-    ...categoriesContent,
+    title: categoriesSection?.title || 'Browse by Category',
+    subtitle:
+      categoriesSection?.subtitle || 'Explore our diverse range of vehicles',
+    visibleCategories:
+      categoriesSection?.visibleCategories || categories.map(c => c.id),
     ...localChanges,
   };
 
   const updateContent = (field, value) => {
+    // Update local changes for immediate UI update
     setLocalChanges(prev => ({
       ...prev,
       [field]: value,
     }));
     setHasChanges(true);
+
+    // Immediately update Redux state for real-time updates
+    dispatch(
+      updateSectionContent({
+        sectionId: 'categories',
+        content: { [field]: value },
+      })
+    );
   };
 
   const toggleCategoryVisibility = categoryId => {
@@ -199,23 +216,16 @@ const CategoriesSectionEdit = ({ dealer }) => {
     updateContent('visibleCategories', newCategories);
   };
 
-  // Apply changes automatically when user makes any change
+  // Clear local changes when they're successfully applied
   useEffect(() => {
-    if (hasChanges) {
+    if (hasChanges && Object.keys(localChanges).length > 0) {
       const timeout = setTimeout(() => {
-        if (Object.keys(localChanges).length > 0) {
-          dispatch(
-            updatePageSectionContent({
-              sectionId: 'categories',
-              content: localChanges,
-            })
-          );
-          setLocalChanges({});
-        }
-      }, 500); // Debounce
+        setLocalChanges({});
+        setHasChanges(false);
+      }, 100);
       return () => clearTimeout(timeout);
     }
-  }, [localChanges, hasChanges, dispatch]);
+  }, [localChanges, hasChanges]);
 
   if (loading) {
     return (

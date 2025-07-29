@@ -30,11 +30,9 @@ import {
   FaCheckCircle,
 } from 'react-icons/fa';
 import {
-  applyTempChanges,
-  saveAndPublishChanges,
   discardTempChanges,
-  selectHasUnsavedChanges,
   selectTempChanges,
+  selectHasUnsavedChanges,
 } from '../../store/slices/automobileManagementSlice';
 import { theme, media } from '../../styles/GlobalStyle';
 import { Button } from '../../components/shared/Button';
@@ -369,16 +367,24 @@ const Overlay = styled.div.withConfig({
   }
 `;
 
-const EnhancedDealerSidebar = ({ activeTab, onTabChange, dealer }) => {
+const EnhancedDealerSidebar = ({
+  activeTab,
+  onTabChange,
+  vendor,
+  hasUnsavedChanges,
+  onSave,
+  onDiscard,
+  syncCheck,
+}) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
-  const hasUnsavedChanges = useSelector(selectHasUnsavedChanges);
   const changes = useSelector(selectTempChanges);
+  const hasUnsavedChangesFromRedux = useSelector(selectHasUnsavedChanges);
 
   const handleTabChange = tab => {
-    if (hasUnsavedChanges) {
+    if (hasUnsavedChangesFromRedux) {
       if (window.confirm('You have unsaved changes. Discard them?')) {
         dispatch(discardTempChanges());
         onTabChange(tab);
@@ -391,45 +397,43 @@ const EnhancedDealerSidebar = ({ activeTab, onTabChange, dealer }) => {
   };
 
   const handleBackToDealership = () => {
-    if (hasUnsavedChanges) {
+    if (hasUnsavedChangesFromRedux) {
       if (window.confirm('You have unsaved changes. Discard them?')) {
-        dispatch(discardTempChanges());
-        navigate(`/${dealer.slug}`);
+        onDiscard();
+        navigate(`/${vendor.slug}`);
       }
     } else {
-      navigate(`/${dealer.slug}`);
+      navigate(`/${vendor.slug}`);
     }
   };
 
   const handleSaveAndGoLive = () => {
-    // Apply all temp changes to live state
-    dispatch(saveAndPublishChanges());
-    console.log('Published changes to live data from dealer sidebar');
-
+    // Use the parent's save handler for API calls
+    onSave();
     alert('Changes published to live dealership page successfully!');
 
     // Navigate to the dealer page with updated data
-    navigate(`/${dealer.slug}`);
+    navigate(`/${vendor.slug}`);
   };
 
   const handleSaveChanges = () => {
-    dispatch(applyTempChanges());
+    onSave();
     alert('Changes saved successfully!');
   };
 
   const handleDiscardChanges = () => {
     if (window.confirm('Are you sure you want to discard all changes?')) {
-      dispatch(discardTempChanges());
+      onDiscard();
     }
   };
 
   const handlePreviewChanges = () => {
     // Open dealer page in new tab to preview changes
-    window.open(`/${dealer.slug}`, '_blank');
+    window.open(`/${vendor.slug}`, '_blank');
   };
 
   const renderChangesList = () => {
-    return Object.entries(changes).map(([field, change]) => (
+    return Object.entries(changes).map(([field, value]) => (
       <ChangeItem key={field}>
         <span className="field">{field}:</span>
         <div
@@ -439,9 +443,9 @@ const EnhancedDealerSidebar = ({ activeTab, onTabChange, dealer }) => {
             marginTop: '2px',
           }}
         >
-          {typeof change.new === 'string' && change.new.length > 30
-            ? `${change.new.substring(0, 30)}...`
-            : String(change.new)}
+          {typeof value === 'string' && value.length > 30
+            ? `${value.substring(0, 30)}...`
+            : String(value)}
         </div>
       </ChangeItem>
     ));
@@ -510,14 +514,39 @@ const EnhancedDealerSidebar = ({ activeTab, onTabChange, dealer }) => {
       <SidebarContainer isOpen={isMobileOpen}>
         <SidebarHeader>
           <DealerBranding>
-            {dealer.logo ? (
-              <DealerLogoImage src={dealer.logo} alt={dealer.name} />
+            {vendor.businessInfo?.logo ? (
+              <DealerLogoImage
+                src={vendor.businessInfo.logo}
+                alt={vendor.name}
+              />
             ) : (
-              <DealerLogo>{dealer.name.charAt(0)}</DealerLogo>
+              <DealerLogo>{vendor.name.charAt(0)}</DealerLogo>
             )}
             <DealerInfo>
-              <DealerName>{dealer.name}</DealerName>
+              <DealerName>{vendor.name}</DealerName>
               <DealerRole>Dealer Dashboard</DealerRole>
+              {hasUnsavedChangesFromRedux && (
+                <div
+                  style={{
+                    fontSize: '0.7rem',
+                    color: theme.colors.yellow600,
+                    marginTop: '2px',
+                  }}
+                >
+                  • {Object.keys(changes).length} unsaved changes
+                </div>
+              )}
+              {syncCheck?.needsSync && (
+                <div
+                  style={{
+                    fontSize: '0.7rem',
+                    color: theme.colors.orange600,
+                    marginTop: '2px',
+                  }}
+                >
+                  • Sync required
+                </div>
+              )}
             </DealerInfo>
           </DealerBranding>
 
@@ -551,8 +580,8 @@ const EnhancedDealerSidebar = ({ activeTab, onTabChange, dealer }) => {
             Changes Tracker
           </ChangesPanelHeader>
 
-          <ChangesStatus hasChanges={hasUnsavedChanges}>
-            {hasUnsavedChanges ? (
+          <ChangesStatus hasChanges={hasUnsavedChangesFromRedux}>
+            {hasUnsavedChangesFromRedux ? (
               <>
                 <FaExclamationTriangle />
                 {Object.keys(changes).length} unsaved changes
@@ -565,12 +594,12 @@ const EnhancedDealerSidebar = ({ activeTab, onTabChange, dealer }) => {
             )}
           </ChangesStatus>
 
-          {hasUnsavedChanges && Object.keys(changes).length > 0 && (
+          {hasUnsavedChangesFromRedux && Object.keys(changes).length > 0 && (
             <ChangesList>{renderChangesList()}</ChangesList>
           )}
 
           <ActionsContainer>
-            {hasUnsavedChanges && (
+            {hasUnsavedChangesFromRedux && (
               <>
                 <Button
                   size="small"

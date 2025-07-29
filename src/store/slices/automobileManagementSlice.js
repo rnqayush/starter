@@ -5,13 +5,33 @@ export const fetchAutomobileData = createAsyncThunk(
   'automobile/fetchAutomobileData',
   async (vendorSlug, { rejectWithValue }) => {
     try {
-      // Simulate API call - in real app, this would be an actual API call
+      // TODO: Replace with actual API call using automobileAPI.getVendorBySlug(vendorSlug)
+      // For now, use local JSON data
       const response = await import('../../DummyData/automobiles.json');
 
       // Simulate network delay
       await new Promise(resolve => setTimeout(resolve, 500));
 
       return response.default;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+// Async thunk for saving complete dealer data to API
+export const saveCompleteData = createAsyncThunk(
+  'automobile/saveCompleteData',
+  async ({ vendorSlug, data }, { rejectWithValue }) => {
+    try {
+      // TODO: Implement API call
+      // const response = await automobileAPI.syncCompleteData(vendorSlug, data);
+
+      // For now, simulate successful save
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      console.log('Data saved to API:', data);
+
+      return { success: true, message: 'Data saved successfully' };
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -33,7 +53,8 @@ export const fetchVehicleDetails = createAsyncThunk(
         // Simulate API call for specific vehicle
         const response = await import('../../DummyData/automobiles.json');
         const data = response.default;
-        vehicle = data.data.vehicles.find(v => v.id === parseInt(vehicleId));
+        const vehicleData = data.data.allVehicles || data.data.vehicles || [];
+        vehicle = vehicleData.find(v => v.id === parseInt(vehicleId));
       }
 
       if (!vehicle) {
@@ -243,6 +264,11 @@ const automobileManagementSlice = createSlice({
         s => s.id === sectionId
       );
       if (sectionIndex !== -1) {
+        // Ensure content object exists (for backward compatibility)
+        if (!state.pageContent.sections[sectionIndex].content) {
+          state.pageContent.sections[sectionIndex].content = {};
+        }
+
         // Apply changes directly to main state for real-time updates
         Object.entries(content).forEach(([key, value]) => {
           state.pageContent.sections[sectionIndex].content[key] = value;
@@ -384,13 +410,223 @@ const automobileManagementSlice = createSlice({
       state.error = null;
     },
 
-    // Page content management actions
+    // Smart section update with embedded data sync
+    updateSectionContent: (state, action) => {
+      const { sectionId, content } = action.payload;
+      const sectionIndex = state.pageContent.sections.findIndex(
+        s => s.id === sectionId
+      );
+
+      if (sectionIndex !== -1) {
+        // Update section content by creating a new object reference for proper React re-rendering
+        const updatedSection = {
+          ...state.pageContent.sections[sectionIndex],
+          ...content,
+        };
+
+        // Create new sections array with updated section for proper React re-rendering
+        state.pageContent.sections = [
+          ...state.pageContent.sections.slice(0, sectionIndex),
+          updatedSection,
+          ...state.pageContent.sections.slice(sectionIndex + 1),
+        ];
+
+        // Track changes for sidebar
+        Object.keys(content).forEach(key => {
+          const path = `sections.${sectionId}.${key}`;
+          state.tempChanges[path] = content[key];
+        });
+
+        // Mark as having unsaved changes
+        state.hasUnsavedChanges = true;
+
+        // Smart sync with global data based on section type
+        if (sectionId === 'categories' && content.categories) {
+          // Sync embedded categories with global categories
+          content.categories.forEach(category => {
+            const existingIndex = state.categories.findIndex(
+              c => c.id === category.id
+            );
+            if (existingIndex !== -1) {
+              // Update existing category
+              state.categories[existingIndex] = category;
+            } else {
+              // Add new category
+              state.categories.push(category);
+            }
+          });
+        }
+
+        if (
+          (sectionId === 'featured' || sectionId === 'special-offers') &&
+          content.vehicles
+        ) {
+          // Sync embedded vehicles with global vehicles
+          content.vehicles.forEach(vehicle => {
+            const existingIndex = state.vehicles.findIndex(
+              v => v.id === vehicle.id
+            );
+            if (existingIndex !== -1) {
+              // Update existing vehicle
+              state.vehicles[existingIndex] = vehicle;
+            } else {
+              // Add new vehicle
+              state.vehicles.push(vehicle);
+            }
+          });
+        }
+
+        state.hasUnsavedChanges = true;
+      }
+    },
+
+    // Add new category to both global and section data
+    addCategory: (state, action) => {
+      const newCategory = action.payload;
+
+      // Add to global categories
+      state.categories.push(newCategory);
+
+      // Add to categories section if it exists
+      const categoriesSection = state.pageContent.sections.find(
+        s => s.id === 'categories'
+      );
+      if (categoriesSection && categoriesSection.categories) {
+        categoriesSection.categories.push(newCategory);
+      }
+
+      state.hasUnsavedChanges = true;
+    },
+
+    // Update category in both global and section data
+    updateCategory: (state, action) => {
+      const { categoryId, updates } = action.payload;
+
+      // Update in global categories
+      const globalIndex = state.categories.findIndex(c => c.id === categoryId);
+      if (globalIndex !== -1) {
+        Object.assign(state.categories[globalIndex], updates);
+      }
+
+      // Update in categories section if it exists
+      const categoriesSection = state.pageContent.sections.find(
+        s => s.id === 'categories'
+      );
+      if (categoriesSection && categoriesSection.categories) {
+        const sectionIndex = categoriesSection.categories.findIndex(
+          c => c.id === categoryId
+        );
+        if (sectionIndex !== -1) {
+          Object.assign(categoriesSection.categories[sectionIndex], updates);
+        }
+      }
+
+      state.hasUnsavedChanges = true;
+    },
+
+    // Remove category from both global and section data
+    removeCategory: (state, action) => {
+      const categoryId = action.payload;
+
+      // Remove from global categories
+      state.categories = state.categories.filter(c => c.id !== categoryId);
+
+      // Remove from categories section if it exists
+      const categoriesSection = state.pageContent.sections.find(
+        s => s.id === 'categories'
+      );
+      if (categoriesSection && categoriesSection.categories) {
+        categoriesSection.categories = categoriesSection.categories.filter(
+          c => c.id !== categoryId
+        );
+      }
+
+      state.hasUnsavedChanges = true;
+    },
+
+    // Add new vehicle to both global and relevant sections
+    addVehicle: (state, action) => {
+      const newVehicle = action.payload;
+
+      // Add to global vehicles
+      state.vehicles.push(newVehicle);
+
+      // If it's featured, add to featured section
+      if (newVehicle.featured) {
+        const featuredSection = state.pageContent.sections.find(
+          s => s.id === 'featured'
+        );
+        if (featuredSection && featuredSection.vehicles) {
+          featuredSection.vehicles.push(newVehicle);
+        }
+      }
+
+      // If it's on sale, add to special offers section
+      if (newVehicle.pricing?.onSale) {
+        const offersSection = state.pageContent.sections.find(
+          s => s.id === 'special-offers'
+        );
+        if (offersSection && offersSection.vehicles) {
+          offersSection.vehicles.push(newVehicle);
+        }
+      }
+
+      state.hasUnsavedChanges = true;
+    },
+
+    // Update vehicle in both global and section data
+    updateVehicle: (state, action) => {
+      const { vehicleId, updates } = action.payload;
+
+      // Update in global vehicles
+      const globalIndex = state.vehicles.findIndex(v => v.id === vehicleId);
+      if (globalIndex !== -1) {
+        Object.assign(state.vehicles[globalIndex], updates);
+      }
+
+      // Update in all sections that contain this vehicle
+      state.pageContent.sections.forEach(section => {
+        if (section.vehicles) {
+          const sectionIndex = section.vehicles.findIndex(
+            v => v.id === vehicleId
+          );
+          if (sectionIndex !== -1) {
+            Object.assign(section.vehicles[sectionIndex], updates);
+          }
+        }
+      });
+
+      state.hasUnsavedChanges = true;
+    },
+
+    // Remove vehicle from both global and section data
+    removeVehicle: (state, action) => {
+      const vehicleId = action.payload;
+
+      // Remove from global vehicles
+      state.vehicles = state.vehicles.filter(v => v.id !== vehicleId);
+
+      // Remove from all sections that contain this vehicle
+      state.pageContent.sections.forEach(section => {
+        if (section.vehicles) {
+          section.vehicles = section.vehicles.filter(v => v.id !== vehicleId);
+        }
+      });
+
+      state.hasUnsavedChanges = true;
+    },
+
+    // Update page sections array
     updatePageSections: (state, action) => {
       state.pageContent.sections = action.payload;
+      state.hasUnsavedChanges = true;
     },
+
+    // Publish all changes to API-ready format
     publishPageContent: (state, action) => {
-      state.pageContent.sections = action.payload;
+      state.pageContent.sections = action.payload || state.pageContent.sections;
       state.pageContent.lastPublished = new Date().toISOString();
+      state.hasUnsavedChanges = false;
     },
     addCustomSection: (state, action) => {
       state.pageContent.sections.push(action.payload);
@@ -429,62 +665,72 @@ const automobileManagementSlice = createSlice({
 
         // Update main state with fetched data
         state.vendor = data.vendor;
-        state.categories = data.categories;
-        state.vehicles = data.vehicles;
-        state.promotions = data.promotions;
-        state.customerReviews = data.customerReviews;
+        state.categories = data.allCategories || data.categories || [];
+        state.vehicles = data.allVehicles || data.vehicles || [];
+        state.promotions = data.promotions || [];
+        state.customerReviews = data.customerReviews || [];
         state.financing = data.financing;
 
-        // Initialize page content with vendor data
-        state.pageContent.sections = state.pageContent.sections.map(section => {
-          const sectionContent = { ...section.content };
+        // Use pageSections from API if available, otherwise initialize with vendor data
+        if (data.pageSections && Array.isArray(data.pageSections)) {
+          state.pageContent.sections = data.pageSections;
+        } else {
+          // Fallback: Initialize page content with vendor data
+          const vehicleData = data.allVehicles || data.vehicles || [];
+          const categoryData = data.allCategories || data.categories || [];
 
-          // Initialize content based on vendor data
-          if (section.id === 'hero') {
-            sectionContent.title =
-              sectionContent.title || `Welcome to ${data.vendor.name}`;
-            sectionContent.subtitle =
-              sectionContent.subtitle ||
-              data.vendor.businessInfo?.description ||
-              '';
-            sectionContent.backgroundImage =
-              sectionContent.backgroundImage ||
-              data.vendor.businessInfo?.coverImage ||
-              '';
-          } else if (section.id === 'categories') {
-            sectionContent.visibleCategories =
-              sectionContent.visibleCategories.length > 0
-                ? sectionContent.visibleCategories
-                : data.categories.map(cat => cat.id);
-          } else if (section.id === 'featured') {
-            sectionContent.subtitle =
-              sectionContent.subtitle ||
-              `Handpicked vehicles from ${data.vendor.name} that customers love the most`;
-            sectionContent.vehicleIds =
-              sectionContent.vehicleIds.length > 0
-                ? sectionContent.vehicleIds
-                : data.vehicles
-                    .filter(v => v.featured)
-                    .slice(0, 4)
-                    .map(v => v.id);
-          } else if (section.id === 'special-offers') {
-            sectionContent.subtitle =
-              sectionContent.subtitle ||
-              `Limited time deals from ${data.vendor.name} you don't want to miss`;
-            sectionContent.vehicleIds =
-              sectionContent.vehicleIds.length > 0
-                ? sectionContent.vehicleIds
-                : data.vehicles
-                    .filter(v => v.pricing?.onSale)
-                    .slice(0, 4)
-                    .map(v => v.id);
-          }
+          state.pageContent.sections = state.pageContent.sections.map(
+            section => {
+              const sectionContent = { ...section.content };
 
-          return { ...section, content: sectionContent };
-        });
+              // Initialize content based on vendor data
+              if (section.id === 'hero') {
+                sectionContent.title =
+                  sectionContent.title || `Welcome to ${data.vendor.name}`;
+                sectionContent.subtitle =
+                  sectionContent.subtitle ||
+                  data.vendor.businessInfo?.description ||
+                  '';
+                sectionContent.backgroundImage =
+                  sectionContent.backgroundImage ||
+                  data.vendor.businessInfo?.coverImage ||
+                  '';
+              } else if (section.id === 'categories') {
+                sectionContent.visibleCategories =
+                  sectionContent.visibleCategories.length > 0
+                    ? sectionContent.visibleCategories
+                    : categoryData.map(cat => cat.id);
+              } else if (section.id === 'featured') {
+                sectionContent.subtitle =
+                  sectionContent.subtitle ||
+                  `Handpicked vehicles from ${data.vendor.name} that customers love the most`;
+                sectionContent.vehicleIds =
+                  sectionContent.vehicleIds.length > 0
+                    ? sectionContent.vehicleIds
+                    : vehicleData
+                        .filter(v => v.featured)
+                        .slice(0, 4)
+                        .map(v => v.id);
+              } else if (section.id === 'special-offers') {
+                sectionContent.subtitle =
+                  sectionContent.subtitle ||
+                  `Limited time deals from ${data.vendor.name} you don't want to miss`;
+                sectionContent.vehicleIds =
+                  sectionContent.vehicleIds.length > 0
+                    ? sectionContent.vehicleIds
+                    : vehicleData
+                        .filter(v => v.pricing?.onSale)
+                        .slice(0, 4)
+                        .map(v => v.id);
+              }
 
-        // Update page content with data from API if available
-        if (data.pageContent) {
+              return { ...section, content: sectionContent };
+            }
+          );
+        }
+
+        // Legacy support: Update page content with data from API if available
+        if (data.pageContent && !data.pageSections) {
           state.pageContent.sections = state.pageContent.sections.map(
             section => ({
               ...section,
@@ -496,20 +742,24 @@ const automobileManagementSlice = createSlice({
           );
         }
 
-        // Update pagination
-        state.pagination = {
-          ...state.pagination,
-          ...meta.pagination,
-        };
+        // Update pagination if meta exists
+        if (meta && meta.pagination) {
+          state.pagination = {
+            ...state.pagination,
+            ...meta.pagination,
+          };
+        }
 
-        // Update meta filters
-        state.meta.availableFilters = {
-          categories: meta.filters.availableCategories,
-          makes: meta.filters.availableMakes,
-          years: meta.filters.availableYears,
-          conditions: meta.filters.availableConditions,
-          priceRange: meta.filters.priceRange,
-        };
+        // Update meta filters if meta exists
+        if (meta && meta.filters) {
+          state.meta.availableFilters = {
+            categories: meta.filters.availableCategories || [],
+            makes: meta.filters.availableMakes || [],
+            years: meta.filters.availableYears || [],
+            conditions: meta.filters.availableConditions || [],
+            priceRange: meta.filters.priceRange || { min: 0, max: 500000 },
+          };
+        }
       })
       .addCase(fetchAutomobileData.rejected, (state, action) => {
         state.loading = false;
@@ -562,6 +812,22 @@ const automobileManagementSlice = createSlice({
       .addCase(submitEnquiry.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || 'Failed to submit enquiry';
+      })
+
+      // Save complete data to API
+      .addCase(saveCompleteData.pending, state => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(saveCompleteData.fulfilled, (state, action) => {
+        state.loading = false;
+        state.hasUnsavedChanges = false;
+        state.tempChanges = {};
+        state.pageContent.lastPublished = new Date().toISOString();
+      })
+      .addCase(saveCompleteData.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || 'Failed to save data to API';
       });
   },
 });
@@ -583,6 +849,14 @@ export const {
   addToRecentlyViewed,
   clearError,
   resetAutomobileState,
+  // New smart update actions
+  updateSectionContent,
+  addCategory,
+  updateCategory,
+  removeCategory,
+  addVehicle,
+  updateVehicle,
+  removeVehicle,
   updatePageSections,
   publishPageContent,
   addCustomSection,
@@ -598,6 +872,8 @@ export const selectCategories = state => state.automobileManagement.categories;
 export const selectVehicles = state => state.automobileManagement.vehicles;
 export const selectSelectedVehicle = state =>
   state.automobileManagement.selectedVehicle;
+export const selectPageSections = state =>
+  state.automobileManagement.pageContent.sections;
 export const selectPromotions = state => state.automobileManagement.promotions;
 export const selectCustomerReviews = state =>
   state.automobileManagement.customerReviews;
@@ -618,8 +894,6 @@ export const selectAvailableFilters = state =>
   state.automobileManagement.meta.availableFilters;
 export const selectPageContent = state =>
   state.automobileManagement.pageContent;
-export const selectPageSections = state =>
-  state.automobileManagement.pageContent.sections;
 export const selectHasUnsavedChanges = state =>
   state.automobileManagement.hasUnsavedChanges;
 export const selectTempChanges = state =>
@@ -763,6 +1037,103 @@ export const selectVehicleById = vehicleId => state => {
 
 export const selectIsInWishlist = vehicleId => state => {
   return state.automobileManagement.wishlist.includes(parseInt(vehicleId));
+};
+
+// API-ready data selectors for sending to backend
+export const selectApiReadyData = state => {
+  const {
+    vendor,
+    pageContent,
+    categories,
+    vehicles,
+    promotions,
+    customerReviews,
+    financing,
+  } = state.automobileManagement;
+
+  return {
+    success: true,
+    timestamp: new Date().toISOString(),
+    data: {
+      vendor,
+      pageSections: pageContent.sections,
+      allCategories: categories,
+      allVehicles: vehicles,
+      promotions: promotions || [],
+      customerReviews: customerReviews || [],
+      financing: financing || {},
+      dashboard: {
+        analytics: {},
+        inventory: {
+          totalVehicles: vehicles.length,
+          totalValue: vehicles.reduce(
+            (sum, v) => sum + (v.pricing?.price || 0),
+            0
+          ),
+          lastUpdated: new Date().toISOString(),
+        },
+      },
+    },
+    meta: {
+      pagination: {
+        currentPage: 1,
+        totalPages: 1,
+        totalItems: vehicles.length,
+        itemsPerPage: 50,
+      },
+      filters: {
+        availableCategories: categories.map(c => c.slug),
+        availableMakes: [...new Set(vehicles.map(v => v.make))],
+        availableYears: [...new Set(vehicles.map(v => v.year))],
+        availableConditions: [...new Set(vehicles.map(v => v.condition))],
+        priceRange: {
+          min: Math.min(...vehicles.map(v => v.pricing?.price || 0)),
+          max: Math.max(...vehicles.map(v => v.pricing?.price || 0)),
+        },
+      },
+      lastUpdated: new Date().toISOString(),
+      dataVersion: '2.1.0',
+    },
+  };
+};
+
+// Selector for getting section by ID with embedded data
+export const selectSectionById = sectionId => state => {
+  return state.automobileManagement.pageContent.sections.find(
+    s => s.id === sectionId
+  );
+};
+
+// Selector for checking if data needs sync between sections and global arrays
+export const selectNeedsSyncCheck = state => {
+  const sections = state.automobileManagement.pageContent.sections;
+  const globalCategories = state.automobileManagement.categories;
+  const globalVehicles = state.automobileManagement.vehicles;
+
+  // Check if categories section has different data than global
+  const categoriesSection = sections.find(s => s.id === 'categories');
+  const categoriesNeedSync =
+    categoriesSection?.categories &&
+    categoriesSection.categories.length !== globalCategories.length;
+
+  // Check if vehicle sections have different data than global
+  const featuredSection = sections.find(s => s.id === 'featured');
+  const offersSection = sections.find(s => s.id === 'special-offers');
+
+  const vehiclesNeedSync =
+    (featuredSection?.vehicles || offersSection?.vehicles) &&
+    !sections.every(section => {
+      if (!section.vehicles) return true;
+      return section.vehicles.every(v =>
+        globalVehicles.find(gv => gv.id === v.id)
+      );
+    });
+
+  return {
+    categoriesNeedSync,
+    vehiclesNeedSync,
+    needsSync: categoriesNeedSync || vehiclesNeedSync,
+  };
 };
 
 export default automobileManagementSlice.reducer;
