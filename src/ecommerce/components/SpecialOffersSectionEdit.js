@@ -203,7 +203,7 @@ const SpecialOffersSectionEdit = () => {
   const dispatch = useDispatch();
   const vendor = useSelector(selectVendor);
   const products = useSelector(selectProducts);
-  const section = useSelector(state => selectSectionById(state, 'special-offers'));
+  const section = useSelector(selectSectionById('special-offers'));
 
   const [sectionData, setSectionData] = useState({
     title: '🔥 Hot Deals',
