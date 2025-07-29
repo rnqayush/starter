@@ -700,6 +700,14 @@ const automobileManagementSlice = createSlice({
     },
     reorderSections: (state, action) => {
       state.pageContent.sections = action.payload;
+
+      // Mark as having changes for change tracker
+      state.hasUnsavedChanges = true;
+      state.isDataPersisted = false;
+
+      // Track the change
+      const path = 'sections.order';
+      state.tempChanges[path] = 'Section order changed';
     },
 
     // Reset state
