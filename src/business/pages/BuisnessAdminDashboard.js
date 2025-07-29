@@ -719,9 +719,16 @@ const BuisnessAdminDashboard = () => {
   const actualSlug = businessSlug || slug;
 
   // Redux state
-  const { editingBusiness, hasUnsavedChanges, originalBusiness } = useSelector(
-    state => state.businessManagement
-  );
+  const {
+    editingBusiness,
+    hasUnsavedChanges,
+    originalBusiness,
+    businessType,
+    businessTypeConfig,
+    sectionVisibility,
+    loading: reduxLoading,
+    error: reduxError,
+  } = useSelector(state => state.businessManagement);
 
   // Get business ID from URL path
   const currentPath = window.location.pathname;
