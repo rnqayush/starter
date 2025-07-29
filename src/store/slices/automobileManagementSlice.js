@@ -524,6 +524,7 @@ const automobileManagementSlice = createSlice({
       .addCase(fetchAutomobileData.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || 'Failed to fetch automobile data';
+        console.log('fetchAutomobileData.rejected:', action.payload);
       })
 
       // Fetch vehicle details
