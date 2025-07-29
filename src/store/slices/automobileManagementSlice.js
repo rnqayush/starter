@@ -385,13 +385,179 @@ const automobileManagementSlice = createSlice({
       state.error = null;
     },
 
-    // Page content management actions
+    // Smart section update with embedded data sync
+    updateSectionContent: (state, action) => {
+      const { sectionId, content } = action.payload;
+      const sectionIndex = state.pageContent.sections.findIndex(s => s.id === sectionId);
+
+      if (sectionIndex !== -1) {
+        // Update section content
+        Object.assign(state.pageContent.sections[sectionIndex], content);
+
+        // Smart sync with global data based on section type
+        if (sectionId === 'categories' && content.categories) {
+          // Sync embedded categories with global categories
+          content.categories.forEach(category => {
+            const existingIndex = state.categories.findIndex(c => c.id === category.id);
+            if (existingIndex !== -1) {
+              // Update existing category
+              state.categories[existingIndex] = category;
+            } else {
+              // Add new category
+              state.categories.push(category);
+            }
+          });
+        }
+
+        if ((sectionId === 'featured' || sectionId === 'special-offers') && content.vehicles) {
+          // Sync embedded vehicles with global vehicles
+          content.vehicles.forEach(vehicle => {
+            const existingIndex = state.vehicles.findIndex(v => v.id === vehicle.id);
+            if (existingIndex !== -1) {
+              // Update existing vehicle
+              state.vehicles[existingIndex] = vehicle;
+            } else {
+              // Add new vehicle
+              state.vehicles.push(vehicle);
+            }
+          });
+        }
+
+        state.hasUnsavedChanges = true;
+      }
+    },
+
+    // Add new category to both global and section data
+    addCategory: (state, action) => {
+      const newCategory = action.payload;
+
+      // Add to global categories
+      state.categories.push(newCategory);
+
+      // Add to categories section if it exists
+      const categoriesSection = state.pageContent.sections.find(s => s.id === 'categories');
+      if (categoriesSection && categoriesSection.categories) {
+        categoriesSection.categories.push(newCategory);
+      }
+
+      state.hasUnsavedChanges = true;
+    },
+
+    // Update category in both global and section data
+    updateCategory: (state, action) => {
+      const { categoryId, updates } = action.payload;
+
+      // Update in global categories
+      const globalIndex = state.categories.findIndex(c => c.id === categoryId);
+      if (globalIndex !== -1) {
+        Object.assign(state.categories[globalIndex], updates);
+      }
+
+      // Update in categories section if it exists
+      const categoriesSection = state.pageContent.sections.find(s => s.id === 'categories');
+      if (categoriesSection && categoriesSection.categories) {
+        const sectionIndex = categoriesSection.categories.findIndex(c => c.id === categoryId);
+        if (sectionIndex !== -1) {
+          Object.assign(categoriesSection.categories[sectionIndex], updates);
+        }
+      }
+
+      state.hasUnsavedChanges = true;
+    },
+
+    // Remove category from both global and section data
+    removeCategory: (state, action) => {
+      const categoryId = action.payload;
+
+      // Remove from global categories
+      state.categories = state.categories.filter(c => c.id !== categoryId);
+
+      // Remove from categories section if it exists
+      const categoriesSection = state.pageContent.sections.find(s => s.id === 'categories');
+      if (categoriesSection && categoriesSection.categories) {
+        categoriesSection.categories = categoriesSection.categories.filter(c => c.id !== categoryId);
+      }
+
+      state.hasUnsavedChanges = true;
+    },
+
+    // Add new vehicle to both global and relevant sections
+    addVehicle: (state, action) => {
+      const newVehicle = action.payload;
+
+      // Add to global vehicles
+      state.vehicles.push(newVehicle);
+
+      // If it's featured, add to featured section
+      if (newVehicle.featured) {
+        const featuredSection = state.pageContent.sections.find(s => s.id === 'featured');
+        if (featuredSection && featuredSection.vehicles) {
+          featuredSection.vehicles.push(newVehicle);
+        }
+      }
+
+      // If it's on sale, add to special offers section
+      if (newVehicle.pricing?.onSale) {
+        const offersSection = state.pageContent.sections.find(s => s.id === 'special-offers');
+        if (offersSection && offersSection.vehicles) {
+          offersSection.vehicles.push(newVehicle);
+        }
+      }
+
+      state.hasUnsavedChanges = true;
+    },
+
+    // Update vehicle in both global and section data
+    updateVehicle: (state, action) => {
+      const { vehicleId, updates } = action.payload;
+
+      // Update in global vehicles
+      const globalIndex = state.vehicles.findIndex(v => v.id === vehicleId);
+      if (globalIndex !== -1) {
+        Object.assign(state.vehicles[globalIndex], updates);
+      }
+
+      // Update in all sections that contain this vehicle
+      state.pageContent.sections.forEach(section => {
+        if (section.vehicles) {
+          const sectionIndex = section.vehicles.findIndex(v => v.id === vehicleId);
+          if (sectionIndex !== -1) {
+            Object.assign(section.vehicles[sectionIndex], updates);
+          }
+        }
+      });
+
+      state.hasUnsavedChanges = true;
+    },
+
+    // Remove vehicle from both global and section data
+    removeVehicle: (state, action) => {
+      const vehicleId = action.payload;
+
+      // Remove from global vehicles
+      state.vehicles = state.vehicles.filter(v => v.id !== vehicleId);
+
+      // Remove from all sections that contain this vehicle
+      state.pageContent.sections.forEach(section => {
+        if (section.vehicles) {
+          section.vehicles = section.vehicles.filter(v => v.id !== vehicleId);
+        }
+      });
+
+      state.hasUnsavedChanges = true;
+    },
+
+    // Update page sections array
     updatePageSections: (state, action) => {
       state.pageContent.sections = action.payload;
+      state.hasUnsavedChanges = true;
     },
+
+    // Publish all changes to API-ready format
     publishPageContent: (state, action) => {
-      state.pageContent.sections = action.payload;
+      state.pageContent.sections = action.payload || state.pageContent.sections;
       state.pageContent.lastPublished = new Date().toISOString();
+      state.hasUnsavedChanges = false;
     },
     addCustomSection: (state, action) => {
       state.pageContent.sections.push(action.payload);
@@ -598,6 +764,14 @@ export const {
   addToRecentlyViewed,
   clearError,
   resetAutomobileState,
+  // New smart update actions
+  updateSectionContent,
+  addCategory,
+  updateCategory,
+  removeCategory,
+  addVehicle,
+  updateVehicle,
+  removeVehicle,
   updatePageSections,
   publishPageContent,
   addCustomSection,
