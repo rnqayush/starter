@@ -64,19 +64,19 @@ export const fetchBusinessData = async businessSlug => {
     // Simulate network delay
     await simulateDelay(300);
 
-    const businessData = getBusinessWebsiteData(businessSlug);
+    const businessInfo = detectBusinessType(businessSlug);
 
-    if (!businessData) {
+    if (!businessInfo) {
       throw new Error(`Business with slug "${businessSlug}" not found`);
     }
 
     console.log(
       `[FAKE API] Successfully fetched data for: ${businessSlug}`,
-      businessData
+      businessInfo
     );
 
     return createAPIResponse(
-      businessData,
+      businessInfo,
       true,
       'Business data fetched successfully'
     );
