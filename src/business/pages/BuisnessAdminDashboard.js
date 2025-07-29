@@ -1021,18 +1021,27 @@ const BuisnessAdminDashboard = () => {
         if (response.success && response.data) {
           const { businessData, businessType, businessTypeConfig } = response.data;
           console.log('[AdminDashboard] API call successful:', response.data);
+          console.log('[AdminDashboard] businessData type:', typeof businessData);
+          console.log('[AdminDashboard] businessType type:', typeof businessType);
+          console.log('[AdminDashboard] businessTypeConfig type:', typeof businessTypeConfig);
 
           setBusiness(businessData);
 
+          // Ensure data is serializable
+          const serializableBusinessData = JSON.parse(JSON.stringify(businessData));
+          const serializableBusinessTypeConfig = JSON.parse(JSON.stringify(businessTypeConfig));
+
+          console.log('[AdminDashboard] About to dispatch initializeBusinessData');
           // Initialize Redux state with business data and type config
           dispatch(initializeBusinessData({
-            businessData,
-            businessTypeConfig,
+            businessData: serializableBusinessData,
+            businessTypeConfig: serializableBusinessTypeConfig,
           }));
 
+          console.log('[AdminDashboard] About to dispatch setBusinessType');
           dispatch(setBusinessType({
             businessType,
-            businessTypeConfig,
+            businessTypeConfig: serializableBusinessTypeConfig,
           }));
 
           console.log('About to dispatch setEditingBusiness with:', businessId);
