@@ -200,7 +200,7 @@ const FormField = ({
       return children;
     }
 
-    if (type === 'textarea') {
+    if (type === 'textarea' || multiline) {
       return (
         <Textarea
           name={name}
