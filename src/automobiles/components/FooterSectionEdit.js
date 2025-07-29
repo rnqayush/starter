@@ -404,17 +404,35 @@ const FooterSectionEdit = ({ dealer }) => {
       [field]: value,
     }));
     setHasChanges(true);
+
+    // Immediately update Redux state for real-time updates
+    dispatch(
+      updateSectionContent({
+        sectionId: 'footer',
+        content: { [field]: value },
+      })
+    );
   };
 
   const updateNestedContent = (parent, field, value) => {
+    const newParentValue = {
+      ...sectionContent[parent],
+      [field]: value,
+    };
+
     setSectionContent(prev => ({
       ...prev,
-      [parent]: {
-        ...prev[parent],
-        [field]: value,
-      },
+      [parent]: newParentValue,
     }));
     setHasChanges(true);
+
+    // Immediately update Redux state for real-time updates
+    dispatch(
+      updateSectionContent({
+        sectionId: 'footer',
+        content: { [parent]: newParentValue },
+      })
+    );
   };
 
   const updateBusinessHours = (index, field, value) => {
