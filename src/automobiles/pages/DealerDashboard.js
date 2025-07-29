@@ -29,6 +29,7 @@ import AnalyticsTab from '../components/AnalyticsTab';
 import { getAutomobileVendorByIdOrSlug as getVendorByIdOrSlug } from '../../DummyData';
 import {
   fetchAutomobileData,
+  saveCompleteData,
   selectVendor,
   selectLoading,
   selectError,
