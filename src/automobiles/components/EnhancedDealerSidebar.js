@@ -580,8 +580,8 @@ const EnhancedDealerSidebar = ({
             Changes Tracker
           </ChangesPanelHeader>
 
-          <ChangesStatus hasChanges={hasUnsavedChanges}>
-            {hasUnsavedChanges ? (
+          <ChangesStatus hasChanges={hasUnsavedChangesFromRedux}>
+            {hasUnsavedChangesFromRedux ? (
               <>
                 <FaExclamationTriangle />
                 {Object.keys(changes).length} unsaved changes
@@ -594,12 +594,12 @@ const EnhancedDealerSidebar = ({
             )}
           </ChangesStatus>
 
-          {hasUnsavedChanges && Object.keys(changes).length > 0 && (
+          {hasUnsavedChangesFromRedux && Object.keys(changes).length > 0 && (
             <ChangesList>{renderChangesList()}</ChangesList>
           )}
 
           <ActionsContainer>
-            {hasUnsavedChanges && (
+            {hasUnsavedChangesFromRedux && (
               <>
                 <Button
                   size="small"
