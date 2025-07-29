@@ -369,12 +369,19 @@ const Overlay = styled.div.withConfig({
   }
 `;
 
-const EnhancedDealerSidebar = ({ activeTab, onTabChange, dealer }) => {
+const EnhancedDealerSidebar = ({
+  activeTab,
+  onTabChange,
+  vendor,
+  hasUnsavedChanges,
+  onSave,
+  onDiscard,
+  syncCheck
+}) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
-  const hasUnsavedChanges = useSelector(selectHasUnsavedChanges);
   const changes = useSelector(selectTempChanges);
 
   const handleTabChange = tab => {
