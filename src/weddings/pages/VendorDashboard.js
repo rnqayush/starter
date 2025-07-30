@@ -906,6 +906,9 @@ const VendorDashboard = React.memo(() => {
 
   // Helper function to immediately update Redux editing vendor
   const updateEditingVendorInRedux = () => {
+    // Disabled to fix input lag - the heavy Redux operations were blocking input
+    return;
+
     if (!editingVendor) return;
 
     try {
