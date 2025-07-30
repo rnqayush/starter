@@ -5,7 +5,7 @@ import automobileData from './automobiles.json';
 import ecommerceData from './ecommerce.json';
 import businessData from './business.json';
 import * as WeddingData from '../utils/weddingAPI';
-import * as PlatformData from './platform';
+import platformData from './platform.json';
 // Hotel data now comes from hotels.json via hotelAPI
 import {
   getStaticHotelData,
