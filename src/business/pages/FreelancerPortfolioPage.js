@@ -1050,6 +1050,28 @@ const FreelancerPortfolioPage = () => {
     return () => observer.disconnect();
   }, [currentBusiness]);
 
+  // Intersection Observer for section fade-in animations
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const sectionId = entry.target.id;
+            if (sectionId) {
+              setVisibleSections(prev => new Set([...prev, sectionId]));
+            }
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+
+    const sectionElements = document.querySelectorAll('[data-section]');
+    sectionElements.forEach(el => observer.observe(el));
+
+    return () => observer.disconnect();
+  }, [currentBusiness]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
