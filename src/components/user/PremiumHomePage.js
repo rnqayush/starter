@@ -972,20 +972,22 @@ const PremiumHomePage = () => {
 
       <FeaturesSection>
         <FeaturesContainer>
-          <SectionTitle>Why Choose StoreBuilder?</SectionTitle>
-          <SectionSubtitle>
-            Everything you need to build, launch, and grow your online business
-          </SectionSubtitle>
+          <SectionTitle>{platformData.whyChooseUs.title}</SectionTitle>
+          <SectionSubtitle>{platformData.whyChooseUs.subtitle}</SectionSubtitle>
           <FeaturesGrid>
-            {features.map((feature, index) => (
-              <FeatureCard key={index} delay={`${index * 0.1}s`}>
-                <FeatureIcon>
-                  <feature.icon />
-                </FeatureIcon>
-                <FeatureTitle>{feature.title}</FeatureTitle>
-                <FeatureDescription>{feature.description}</FeatureDescription>
-              </FeatureCard>
-            ))}
+            {platformData.whyChooseUs.benefits.map((benefit, index) => {
+              const icons = [FaBolt, FaShieldAlt, FaGlobe, FaCrown];
+              const IconComponent = icons[index] || FaBolt;
+              return (
+                <FeatureCard key={index} delay={`${index * 0.1}s`}>
+                  <FeatureIcon>
+                    <IconComponent />
+                  </FeatureIcon>
+                  <FeatureTitle>{benefit.title}</FeatureTitle>
+                  <FeatureDescription>{benefit.description}</FeatureDescription>
+                </FeatureCard>
+              );
+            })}
           </FeaturesGrid>
         </FeaturesContainer>
       </FeaturesSection>
