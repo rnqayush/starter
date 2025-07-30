@@ -13,7 +13,6 @@ const UserSchema = new mongoose.Schema({
   email: {
     type: String,
     required: [true, 'Please add an email'],
-    unique: true,
     lowercase: true,
     match: [
       /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
@@ -134,7 +133,7 @@ UserSchema.virtual('isLocked').get(function() {
 });
 
 // Indexes
-UserSchema.index({ email: 1 });
+UserSchema.index({ email: 1 }, { unique: true });
 UserSchema.index({ role: 1 });
 UserSchema.index({ isActive: 1 });
 UserSchema.index({ createdAt: -1 });
@@ -227,4 +226,3 @@ UserSchema.methods.resetLoginAttempts = function() {
 };
 
 module.exports = mongoose.model('User', UserSchema);
-
