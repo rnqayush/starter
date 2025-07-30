@@ -915,15 +915,7 @@ const FreelancerPortfolioPage = () => {
           background: 'linear-gradient(135deg, #ff9800, #ffb74d)',
           color: 'white'
         }}>
-          <div style={{
-            width: '60px',
-            height: '60px',
-            border: '4px solid rgba(255, 255, 255, 0.3)',
-            borderTop: '4px solid white',
-            borderRadius: '50%',
-            animation: `${pulse.getName()} 1s linear infinite`,
-            marginBottom: '2rem'
-          }} />
+          <LoadingSpinner />
           <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Loading Portfolio...</h2>
           <p style={{ opacity: 0.8 }}>Preparing something amazing for you</p>
         </div>
