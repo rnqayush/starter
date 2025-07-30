@@ -402,6 +402,7 @@ export const {
   discardBusinessChanges,
   clearEditingBusiness,
   toggleBusinessSectionVisibility,
+  markUnsavedChanges,
   isSectionAvailable,
   updateSectionVisibilityByType,
 } = businessManagementSlice.actions;
