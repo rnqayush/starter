@@ -2050,7 +2050,8 @@ const VendorDashboard = React.memo(() => {
                 <FormTextarea
                   value={heroData.tagline}
                   onChange={e => {
-                    debouncedInputChange('hero', 'tagline', e.target.value, setHeroData);
+                    setHeroData(prev => ({ ...prev, tagline: e.target.value }));
+                    trackSectionChange('hero');
                   }}
                   placeholder="Enter your business tagline..."
                   rows={3}
