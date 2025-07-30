@@ -311,7 +311,7 @@ const HeroContent = styled.div`
   z-index: 1;
   color: ${theme.colors.white};
   text-align: center;
-  animation: ${fadeInUp} 1s ease-out;
+  ${css`animation: ${fadeInUp} 1s ease-out;`}
 `;
 
 const HeroTitle = styled.h1`
@@ -342,7 +342,7 @@ const HeroTitle = styled.h1`
     height: 4px;
     background: linear-gradient(45deg, #ff9800, #ffb74d);
     border-radius: 2px;
-    animation: ${fadeInUp} 1.5s ease-out;
+    ${css`animation: ${fadeInUp} 1.5s ease-out;`}
   }
 `;
 
@@ -356,7 +356,7 @@ const HeroSubtitle = styled.p`
   line-height: 1.6;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
   opacity: 0.95;
-  animation: ${fadeInUp} 1s ease-out 0.3s both;
+  ${css`animation: ${fadeInUp} 1s ease-out 0.3s both;`}
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     font-size: 1.2rem;
@@ -368,7 +368,7 @@ const HeroButtons = styled.div`
   gap: ${theme.spacing.lg};
   justify-content: center;
   flex-wrap: wrap;
-  animation: ${fadeInUp} 1s ease-out 0.6s both;
+  ${css`animation: ${fadeInUp} 1s ease-out 0.6s both;`}
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     flex-direction: column;
@@ -382,7 +382,7 @@ const ScrollIndicator = styled.div`
   left: 50%;
   transform: translateX(-50%);
   color: white;
-  animation: ${float} 2s ease-in-out infinite;
+  ${css`animation: ${float} 2s ease-in-out infinite;`}
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -483,7 +483,7 @@ const AboutGrid = styled.div`
 `;
 
 const AboutContent = styled.div`
-  animation: ${fadeInLeft} 1s ease-out;
+  ${css`animation: ${fadeInLeft} 1s ease-out;`}
 
   p {
     font-size: 1.2rem;
@@ -497,7 +497,7 @@ const AboutStats = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: ${theme.spacing.lg};
-  animation: ${fadeInRight} 1s ease-out;
+  ${css`animation: ${fadeInRight} 1s ease-out;`}
 `;
 
 const StatCard = styled.div.withConfig({
@@ -740,7 +740,7 @@ const SkillProgressBar = styled.div.withConfig({
     right: 0;
     bottom: 0;
     background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-    animation: ${gradientShift} 2s ease-in-out infinite;
+    ${css`animation: ${gradientShift} 2s ease-in-out infinite;`}
   }
 `;
 
@@ -911,7 +911,7 @@ const FreelancerPortfolioPage = () => {
             border: '4px solid rgba(255, 255, 255, 0.3)',
             borderTop: '4px solid white',
             borderRadius: '50%',
-            animation: `${pulse} 1s linear infinite`,
+            animation: css`${pulse} 1s linear infinite`,
             marginBottom: '2rem'
           }} />
           <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Loading Portfolio...</h2>
