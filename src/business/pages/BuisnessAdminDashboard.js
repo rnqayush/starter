@@ -1084,19 +1084,19 @@ const BuisnessAdminDashboard = () => {
           });
 
           setAboutData({
-            title: businessData.about?.title || 'About Us',
+            title: currentData.about?.title || 'About Us',
             description:
-              businessData.about?.description ||
-              `Learn more about ${businessData.name}`,
-            profileImage: businessData.about?.profileImage || '',
+              currentData.about?.description ||
+              `Learn more about ${currentData.name}`,
+            profileImage: currentData.about?.profileImage || '',
           });
 
-          // Use API data directly instead of getSampleContent
-          setServicesData(businessData.services || []);
-          setTeamData(businessData.team || []);
-          setPortfolioData(businessData.portfolio || []);
-          setSkillsData(businessData.skills || []);
-          setExperienceData(businessData.experience || []);
+          // Use current edited data or API data
+          setServicesData(currentData.services || []);
+          setTeamData(currentData.team || []);
+          setPortfolioData(currentData.portfolio || []);
+          setSkillsData(currentData.skills || []);
+          setExperienceData(currentData.experience || []);
           setGalleryData(businessData.gallery || []);
           setPackagesData(businessData.packages || []);
           setTestimonialsData(businessData.testimonials || []);
