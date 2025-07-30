@@ -1713,18 +1713,7 @@ const VendorDashboard = React.memo(() => {
     };
   }, [mobileSidebarOpen]);
 
-  // Cleanup debounce timers on unmount
-  useEffect(() => {
-    return () => {
-      if (debounceTimer) {
-        clearTimeout(debounceTimer);
-      }
-      // Clean up all input timers
-      Object.values(inputTimers).forEach(timer => {
-        if (timer) clearTimeout(timer);
-      });
-    };
-  }, [debounceTimer, inputTimers]);
+
 
   // File upload handlers
   const handleImageUpload = (file, setter, field) => {
