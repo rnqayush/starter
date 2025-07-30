@@ -758,6 +758,143 @@ const TechTag = styled.span`
   }
 `;
 
+// Timeline Experience Section
+const TimelineContainer = styled.div`
+  position: relative;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: ${theme.spacing.xl} 0;
+
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(to bottom,
+      ${theme.colors.gray300},
+      ${theme.colors.primary},
+      ${theme.colors.gray300}
+    );
+
+    @media (max-width: ${theme.breakpoints.tablet}) {
+      left: 30px;
+    }
+  }
+`;
+
+const TimelineItem = styled.div.withConfig({
+  shouldForwardProp: prop => prop !== 'isLeft' && prop !== 'primaryColor',
+})`
+  display: flex;
+  justify-content: ${props => props.isLeft ? 'flex-end' : 'flex-start'};
+  padding: ${theme.spacing.lg} 0;
+  position: relative;
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    justify-content: flex-start;
+    padding-left: 80px;
+  }
+`;
+
+const TimelineContent = styled.div.withConfig({
+  shouldForwardProp: prop => prop !== 'isLeft' && prop !== 'primaryColor',
+})`
+  background: ${theme.colors.white};
+  border-radius: 20px;
+  padding: ${theme.spacing.xl};
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border: 1px solid ${theme.colors.gray100};
+  width: 45%;
+  position: relative;
+  transition: all 0.3s ease;
+  margin-${props => props.isLeft ? 'right' : 'left'}: ${theme.spacing.lg};
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  }
+
+  &:before {
+    content: '';
+    position: absolute;
+    top: 30px;
+    ${props => props.isLeft ? 'right: -10px' : 'left: -10px'};
+    width: 0;
+    height: 0;
+    border: 10px solid transparent;
+    border-${props => props.isLeft ? 'left' : 'right'}-color: ${theme.colors.white};
+  }
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    width: calc(100% - 80px);
+    margin-left: 0;
+    margin-right: 0;
+
+    &:before {
+      left: -10px;
+      right: auto;
+      border-right-color: ${theme.colors.white};
+      border-left-color: transparent;
+    }
+  }
+`;
+
+const TimelineDot = styled.div.withConfig({
+  shouldForwardProp: prop => prop !== 'primaryColor',
+})`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 20px;
+  background: ${props => props.primaryColor || theme.colors.primary};
+  border: 4px solid ${theme.colors.white};
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px ${props => props.primaryColor + '20' || theme.colors.primary + '20'};
+  z-index: 2;
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    left: 30px;
+  }
+`;
+
+const ExperienceRole = styled.h3`
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: ${theme.colors.gray900};
+  margin-bottom: ${theme.spacing.sm};
+`;
+
+const ExperienceCompany = styled.div.withConfig({
+  shouldForwardProp: prop => prop !== 'primaryColor',
+})`
+  font-size: 1.1rem;
+  color: ${props => props.primaryColor || theme.colors.primary};
+  font-weight: 600;
+  margin-bottom: ${theme.spacing.sm};
+`;
+
+const ExperiencePeriod = styled.div`
+  font-size: 0.9rem;
+  color: ${theme.colors.gray600};
+  font-weight: 500;
+  background: ${theme.colors.gray50};
+  padding: ${theme.spacing.sm} ${theme.spacing.md};
+  border-radius: 20px;
+  display: inline-block;
+  margin-bottom: ${theme.spacing.md};
+`;
+
+const ExperienceDescription = styled.p`
+  color: ${theme.colors.gray600};
+  line-height: 1.7;
+  font-size: 1rem;
+`;
+
 // Enhanced Skills Section
 const SkillsGrid = styled.div`
   display: grid;
