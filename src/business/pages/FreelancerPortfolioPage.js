@@ -1511,7 +1511,11 @@ const FreelancerPortfolioPage = () => {
 
       {/* Packages Section */}
       {sectionVisibility['packages-pricing'] && currentBusiness.packages && (
-        <Section id="packages">
+        <Section
+          id="packages"
+          data-section
+          inView={visibleSections.has('packages')}
+        >
           <SectionContainer>
             <SectionTitle>Service Packages</SectionTitle>
             <PortfolioGrid>
@@ -1629,7 +1633,12 @@ const FreelancerPortfolioPage = () => {
 
       {/* Testimonials Section */}
       {sectionVisibility.testimonials && currentBusiness.testimonials && (
-        <Section id="testimonials" background={theme.colors.gray50}>
+        <Section
+          id="testimonials"
+          data-section
+          background={theme.colors.gray50}
+          inView={visibleSections.has('testimonials')}
+        >
           <SectionContainer>
             <SectionTitle>Client Testimonials</SectionTitle>
             <PortfolioGrid>
@@ -1710,7 +1719,11 @@ const FreelancerPortfolioPage = () => {
 
       {/* Enhanced Contact Section */}
       {sectionVisibility.contact && (
-        <Section id="contact">
+        <Section
+          id="contact"
+          data-section
+          inView={visibleSections.has('contact')}
+        >
           <SectionContainer>
             <SectionTitle>
               {currentBusiness.contact?.title || "Let's Work Together"}
