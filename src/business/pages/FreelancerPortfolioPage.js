@@ -107,6 +107,16 @@ const PageContainer = styled.div`
   overflow-x: hidden;
 `;
 
+const LoadingSpinner = styled.div`
+  width: 60px;
+  height: 60px;
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-top: 4px solid white;
+  border-radius: 50%;
+  ${css`animation: ${pulse} 1s linear infinite;`}
+  margin-bottom: 2rem;
+`;
+
 // Enhanced Navbar with glass morphism effect
 const Navbar = styled.nav`
   background: rgba(255, 255, 255, 0.95);
@@ -1163,7 +1173,7 @@ const FreelancerPortfolioPage = () => {
                       color: 'white',
                       boxShadow: '0 10px 25px rgba(0, 0, 0, 0.1)'
                     }}>
-                      {service.icon || '���'}
+                      {service.icon || '⚡'}
                     </div>
                     <PortfolioTitle>{service.name}</PortfolioTitle>
                     <PortfolioDescription style={{ marginBottom: '1.5rem' }}>
