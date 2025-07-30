@@ -907,8 +907,6 @@ const VendorDashboard = React.memo(() => {
   // Helper function to immediately update Redux editing vendor
   const updateEditingVendorInRedux = () => {
     if (!editingVendor) return;
-    // Only update if there are actual changes to avoid unnecessary work
-    if (changedSections.size === 0) return;
 
     try {
       // Create updated vendor object with current form data
