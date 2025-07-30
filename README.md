@@ -5,7 +5,7 @@ A comprehensive monorepo containing both frontend and backend for a multi-busine
 ## 📁 Project Structure
 
 ```
-├── client/                 # React Frontend Application
+├── frontend/               # React Frontend Application
 │   ├── src/
 │   │   ├── hotel/         # Hotel booking module
 │   │   ├── ecommerce/     # E-commerce module
@@ -17,7 +17,7 @@ A comprehensive monorepo containing both frontend and backend for a multi-busine
 │   │   └── ...
 │   ├── public/
 │   └── package.json
-├── server/                 # Node.js Backend API
+├── backend/                # Node.js Backend API
 │   ├── controllers/       # API controllers
 │   ├── models/           # Database models
 │   ├── routes/           # API routes
@@ -74,10 +74,10 @@ A comprehensive monorepo containing both frontend and backend for a multi-busine
 
 3. **Set up environment variables**
    ```bash
-   # Copy server environment file
-   cp server/.env.example server/.env
+   # Copy backend environment file
+   cp backend/.env.example backend/.env
    
-   # Edit server/.env with your configuration
+   # Edit backend/.env with your configuration
    ```
 
 4. **Start development servers**
@@ -86,32 +86,32 @@ A comprehensive monorepo containing both frontend and backend for a multi-busine
    npm run dev
    
    # Or start them separately
-   npm run dev:client    # Frontend on http://localhost:3000
-   npm run dev:server    # Backend on http://localhost:5000
+   npm run dev:frontend    # Frontend on http://localhost:3000
+   npm run dev:backend    # Backend on http://localhost:5000
    ```
 
 ## 📜 Available Scripts
 
 ### Root Level Scripts
-- `npm run dev` - Start both client and server in development mode
-- `npm run build` - Build both client and server for production
-- `npm run start` - Start the production server
-- `npm run test` - Run tests for both client and server
-- `npm run lint` - Lint both client and server code
-- `npm run install:all` - Install dependencies for root, client, and server
+- `npm run dev` - Start both frontend and backend in development mode
+- `npm run build` - Build both frontend and backend for production
+- `npm run start` - Start the production backend
+- `npm run test` - Run tests for both frontend and backend
+- `npm run lint` - Lint both frontend and backend code
+- `npm run install:all` - Install dependencies for root, frontend, and backend
 - `npm run clean` - Remove all node_modules folders
 
-### Client Scripts
-- `npm run dev:client` - Start React development server
-- `npm run build:client` - Build React app for production
-- `npm run test:client` - Run React tests
-- `npm run lint:client` - Lint React code
+### Frontend Scripts
+- `npm run dev:frontend` - Start React development server
+- `npm run build:frontend` - Build React app for production
+- `npm run test:frontend` - Run React tests
+- `npm run lint:frontend` - Lint React code
 
-### Server Scripts
-- `npm run dev:server` - Start Node.js server with nodemon
-- `npm run start:server` - Start Node.js server in production
-- `npm run test:server` - Run server tests
-- `npm run lint:server` - Lint server code
+### Backend Scripts
+- `npm run dev:backend` - Start Node.js server with nodemon
+- `npm run start:backend` - Start Node.js server in production
+- `npm run test:backend` - Run server tests
+- `npm run lint:backend` - Lint server code
 - `npm run seed` - Seed database with sample data
 
 ## 🏨 Business Modules
@@ -144,7 +144,7 @@ A comprehensive monorepo containing both frontend and backend for a multi-busine
 
 ### Adding New Features
 1. Create feature branch: `git checkout -b feature/your-feature-name`
-2. Make changes in appropriate client/server directories
+2. Make changes in appropriate frontend/backend directories
 3. Test your changes: `npm run test`
 4. Lint your code: `npm run lint`
 5. Commit and push changes
@@ -152,12 +152,12 @@ A comprehensive monorepo containing both frontend and backend for a multi-busine
 
 ### Database Setup
 1. Install MongoDB locally or use MongoDB Atlas
-2. Update `server/.env` with your MongoDB connection string
-3. Run database seeder: `npm run seed` (from server directory)
+2. Update `backend/.env` with your MongoDB connection string
+3. Run database seeder: `npm run seed` (from backend directory)
 
 ### API Documentation
 - Swagger documentation available at: `http://localhost:5000/api-docs`
-- Generate docs: `npm run docs` (from server directory)
+- Generate docs: `npm run docs` (from backend directory)
 
 ## 🌐 Deployment
 
@@ -210,4 +210,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 **Happy Coding!** 🎉
-
