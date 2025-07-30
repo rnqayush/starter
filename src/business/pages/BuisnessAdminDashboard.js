@@ -1946,35 +1946,46 @@ const BuisnessAdminDashboard = () => {
                   }}
                   placeholder="Enter logo URL or upload"
                 />
-                {heroData.logo && (
+                <div
+                  style={{
+                    marginTop: '10px',
+                    padding: '10px',
+                    border: '1px solid #e2e8f0',
+                    borderRadius: '6px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px',
+                  }}
+                >
                   <div
                     style={{
-                      marginTop: '10px',
-                      padding: '10px',
-                      border: '1px solid #e2e8f0',
+                      width: '80px',
+                      height: '40px',
+                      backgroundImage: heroData.logo
+                        ? `url(${heroData.logo})`
+                        : 'linear-gradient(135deg, #f3f4f6, #e5e7eb)',
+                      backgroundSize: 'contain',
+                      backgroundRepeat: 'no-repeat',
+                      backgroundPosition: 'center',
                       borderRadius: '6px',
+                      border: '1px solid #d1d5db',
                       display: 'flex',
                       alignItems: 'center',
-                      gap: '10px',
+                      justifyContent: 'center',
+                      fontSize: '1rem',
                     }}
                   >
-                    <div
-                      style={{
-                        width: '60px',
-                        height: '40px',
-                        backgroundImage: `url(${heroData.logo})`,
-                        backgroundSize: 'contain',
-                        backgroundRepeat: 'no-repeat',
-                        backgroundPosition: 'center',
-                        borderRadius: '6px',
-                        border: '1px solid #d1d5db',
-                      }}
-                    />
-                    <span style={{ fontSize: '0.9rem', color: '#6b7280' }}>
-                      Logo preview
-                    </span>
+                    {!heroData.logo && '🏢'}
                   </div>
-                )}
+                  <div>
+                    <div style={{ fontSize: '0.9rem', color: '#374151', fontWeight: '500' }}>
+                      Logo Preview
+                    </div>
+                    <div style={{ fontSize: '0.8rem', color: '#6b7280' }}>
+                      {heroData.logo ? 'Current logo' : 'No logo selected'}
+                    </div>
+                  </div>
+                </div>
               </FormGroup>
             </FormGrid>
           </ContentSection>
