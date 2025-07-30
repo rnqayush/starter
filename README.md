@@ -1,70 +1,213 @@
-# Getting Started with Create React App
+# Multi-Business Platform Monorepo 🚀
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A comprehensive monorepo containing both frontend and backend for a multi-business platform supporting hotels, ecommerce, weddings, automobiles, and business websites.
 
-## Available Scripts
+## 📁 Project Structure
 
-In the project directory, you can run:
+```
+├── client/                 # React Frontend Application
+│   ├── src/
+│   │   ├── hotel/         # Hotel booking module
+│   │   ├── ecommerce/     # E-commerce module
+│   │   ├── weddings/      # Wedding services module
+│   │   ├── automobiles/   # Automobile marketplace module
+│   │   ├── business/      # Business websites module
+│   │   ├── components/    # Shared components
+│   │   ├── DummyData/     # Mock data for development
+│   │   └── ...
+│   ├── public/
+│   └── package.json
+├── server/                 # Node.js Backend API
+│   ├── controllers/       # API controllers
+│   ├── models/           # Database models
+│   ├── routes/           # API routes
+│   ├── middleware/       # Custom middleware
+│   ├── config/           # Configuration files
+│   ├── utils/            # Utility functions
+│   └── package.json
+└── package.json           # Root package.json for monorepo
+```
 
-### `npm start`
+## 🛠️ Tech Stack
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Frontend (Client)
+- **React** 19.1.0 - UI library
+- **Redux Toolkit** - State management
+- **React Router** v7 - Client-side routing
+- **Styled Components** - CSS-in-JS styling
+- **Swiper** - Touch slider component
+- **React Icons** - Icon library
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Backend (Server)
+- **Node.js** - Runtime environment
+- **Express.js** - Web framework
+- **MongoDB** with Mongoose - Database
+- **JWT** - Authentication
+- **Bcrypt** - Password hashing
+- **Multer & Sharp** - File upload and image processing
+- **Socket.io** - Real-time communication
+- **Stripe** - Payment processing
+- **Cloudinary** - Image hosting
+- **Redis** - Caching
+- **Swagger** - API documentation
 
-### `npm test`
+## 🚀 Quick Start
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Prerequisites
+- Node.js >= 16.0.0
+- npm >= 8.0.0
+- MongoDB (local or cloud)
+- Redis (optional, for caching)
 
-### `npm run build`
+### Installation
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/rnqayush/starter.git
+   cd starter
+   ```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+2. **Install all dependencies**
+   ```bash
+   npm run install:all
+   ```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+3. **Set up environment variables**
+   ```bash
+   # Copy server environment file
+   cp server/.env.example server/.env
+   
+   # Edit server/.env with your configuration
+   ```
 
-### `npm run eject`
+4. **Start development servers**
+   ```bash
+   # Start both frontend and backend concurrently
+   npm run dev
+   
+   # Or start them separately
+   npm run dev:client    # Frontend on http://localhost:3000
+   npm run dev:server    # Backend on http://localhost:5000
+   ```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## 📜 Available Scripts
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Root Level Scripts
+- `npm run dev` - Start both client and server in development mode
+- `npm run build` - Build both client and server for production
+- `npm run start` - Start the production server
+- `npm run test` - Run tests for both client and server
+- `npm run lint` - Lint both client and server code
+- `npm run install:all` - Install dependencies for root, client, and server
+- `npm run clean` - Remove all node_modules folders
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Client Scripts
+- `npm run dev:client` - Start React development server
+- `npm run build:client` - Build React app for production
+- `npm run test:client` - Run React tests
+- `npm run lint:client` - Lint React code
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Server Scripts
+- `npm run dev:server` - Start Node.js server with nodemon
+- `npm run start:server` - Start Node.js server in production
+- `npm run test:server` - Run server tests
+- `npm run lint:server` - Lint server code
+- `npm run seed` - Seed database with sample data
 
-## Learn More
+## 🏨 Business Modules
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### 1. Hotels Module
+- **Features**: Room booking, hotel management, guest services
+- **Components**: HotelDetail, RoomList, Booking, BookingConfirmation
+- **API Endpoints**: `/api/hotels`, `/api/bookings`, `/api/rooms`
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### 2. E-commerce Module
+- **Features**: Product catalog, shopping cart, order management
+- **Components**: ProductList, ProductDetail, SellerDashboard
+- **API Endpoints**: `/api/products`, `/api/orders`, `/api/sellers`
 
-### Code Splitting
+### 3. Weddings Module
+- **Features**: Vendor portfolios, service booking, event management
+- **Components**: VendorPortfolio, VendorDashboard
+- **API Endpoints**: `/api/vendors`, `/api/weddings`, `/api/services`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### 4. Automobiles Module
+- **Features**: Vehicle listings, dealer management, wishlist
+- **Components**: Vehicles, VehicleDetail, DealerDashboard
+- **API Endpoints**: `/api/vehicles`, `/api/dealers`, `/api/wishlist`
 
-### Analyzing the Bundle Size
+### 5. Business Websites Module
+- **Features**: Business profiles, service listings, contact management
+- **API Endpoints**: `/api/businesses`, `/api/services`, `/api/contacts`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## 🔧 Development
 
-### Making a Progressive Web App
+### Adding New Features
+1. Create feature branch: `git checkout -b feature/your-feature-name`
+2. Make changes in appropriate client/server directories
+3. Test your changes: `npm run test`
+4. Lint your code: `npm run lint`
+5. Commit and push changes
+6. Create pull request
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### Database Setup
+1. Install MongoDB locally or use MongoDB Atlas
+2. Update `server/.env` with your MongoDB connection string
+3. Run database seeder: `npm run seed` (from server directory)
 
-### Advanced Configuration
+### API Documentation
+- Swagger documentation available at: `http://localhost:5000/api-docs`
+- Generate docs: `npm run docs` (from server directory)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## 🌐 Deployment
 
-### Deployment
+### Frontend Deployment
+The React app can be deployed to:
+- Vercel
+- Netlify
+- AWS S3 + CloudFront
+- GitHub Pages
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+### Backend Deployment
+The Node.js server can be deployed to:
+- Heroku
+- AWS EC2/ECS
+- DigitalOcean
+- Railway
 
-### `npm run build` fails to minify
+### Environment Variables
+Make sure to set up the following environment variables in production:
+- `MONGODB_URI`
+- `JWT_SECRET`
+- `STRIPE_SECRET_KEY`
+- `CLOUDINARY_*` variables
+- `REDIS_URL` (if using Redis)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 👨‍💻 Author
+
+**rnqayush**
+- GitHub: [@rnqayush](https://github.com/rnqayush)
+
+## 🙏 Acknowledgments
+
+- React team for the amazing framework
+- Express.js community
+- MongoDB team
+- All open source contributors
+
+---
+
+**Happy Coding!** 🎉
+
