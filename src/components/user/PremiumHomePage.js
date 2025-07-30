@@ -1031,6 +1031,65 @@ const PremiumHomePage = () => {
         </CTAContent>
       </CTASection>
 
+      <FooterSection>
+        <FooterContainer>
+          <FooterContent>
+            <FooterBrand>
+              <BrandName>{platformData.footer.brand.name}</BrandName>
+              <BrandDescription>{platformData.footer.brand.description}</BrandDescription>
+              <SocialLinks>
+                <SocialLink href="#"><FaFacebook /></SocialLink>
+                <SocialLink href="#"><FaTwitter /></SocialLink>
+                <SocialLink href="#"><FaInstagram /></SocialLink>
+                <SocialLink href="#"><FaLinkedin /></SocialLink>
+              </SocialLinks>
+            </FooterBrand>
+
+            <FooterColumn delay="0.1s">
+              <FooterTitle>{platformData.footer.sections.industries.title}</FooterTitle>
+              {platformData.footer.sections.industries.links.map((link, index) => (
+                <FooterLink key={index} onClick={() => navigate(link.href)}>
+                  {link.text}
+                </FooterLink>
+              ))}
+            </FooterColumn>
+
+            <FooterColumn delay="0.2s">
+              <FooterTitle>{platformData.footer.sections.company.title}</FooterTitle>
+              {platformData.footer.sections.company.links.map((link, index) => (
+                <FooterLink key={index} onClick={() => navigate(link.href)}>
+                  {link.text}
+                </FooterLink>
+              ))}
+            </FooterColumn>
+
+            <FooterColumn delay="0.3s">
+              <FooterTitle>{platformData.footer.sections.support.title}</FooterTitle>
+              {platformData.footer.sections.support.contact.map((contact, index) => {
+                const IconComponent = contactIcons[contact.icon] || FaEnvelope;
+                return (
+                  <ContactInfo key={index}>
+                    <ContactIcon>
+                      <IconComponent />
+                    </ContactIcon>
+                    {contact.text}
+                  </ContactInfo>
+                );
+              })}
+              {platformData.footer.sections.support.links.map((link, index) => (
+                <FooterLink key={index} onClick={() => navigate(link.href)}>
+                  {link.text}
+                </FooterLink>
+              ))}
+            </FooterColumn>
+          </FooterContent>
+
+          <FooterBottom>
+            {platformData.footer.bottomText}
+          </FooterBottom>
+        </FooterContainer>
+      </FooterSection>
+
       <AuthModal
         isOpen={showAuthModal}
         onClose={() => setShowAuthModal(false)}
