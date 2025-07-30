@@ -780,6 +780,7 @@ const VendorDashboard = () => {
   });
 
   const [changedSections, setChangedSections] = useState(new Set());
+  const [debounceTimer, setDebounceTimer] = useState(null);
   const [showCustomSectionModal, setShowCustomSectionModal] = useState(false);
   const [editingCustomSection, setEditingCustomSection] = useState(null);
   const [customSectionForm, setCustomSectionForm] = useState({
