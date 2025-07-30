@@ -836,6 +836,7 @@ const BuisnessAdminDashboard = () => {
       // Create updated business object with current form data
       const updatedBusiness = {
         ...editingBusiness,
+        logo: heroData.logo, // Update logo from hero data
         hero: heroData,
         about: {
           ...aboutData,
