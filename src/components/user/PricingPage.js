@@ -619,6 +619,13 @@ const PricingPage = () => {
   const features = pricingFeatures;
   const faqs = pricingFAQs;
 
+  // Icon mapping for pricing plans
+  const planIcons = {
+    'Starter': FaRocket,
+    'Professional': FaCrown,
+    'Enterprise': FaAward,
+  };
+
   const toggleFAQ = index => {
     setOpenFAQ(openFAQ === index ? null : index);
   };
