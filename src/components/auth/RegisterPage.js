@@ -359,20 +359,11 @@ const BackToHome = styled(Link)`
 
 const RegisterPage = () => {
   const navigate = useNavigate();
-  const [userType, setUserType] = useState('buyer');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const [buyerData, setBuyerData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-  });
-
-  const [sellerData, setSellerData] = useState({
+  const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
     email: '',
@@ -385,17 +376,9 @@ const RegisterPage = () => {
     website: '',
   });
 
-  const handleBuyerInputChange = e => {
+  const handleInputChange = e => {
     const { name, value } = e.target;
-    setBuyerData(prev => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const handleSellerInputChange = e => {
-    const { name, value } = e.target;
-    setSellerData(prev => ({
+    setFormData(prev => ({
       ...prev,
       [name]: value,
     }));
@@ -405,10 +388,8 @@ const RegisterPage = () => {
     e.preventDefault();
     setIsLoading(true);
 
-    const currentData = userType === 'buyer' ? buyerData : sellerData;
-
     // Validate passwords match
-    if (currentData.password !== currentData.confirmPassword) {
+    if (formData.password !== formData.confirmPassword) {
       alert("Passwords don't match!");
       setIsLoading(false);
       return;
@@ -417,12 +398,8 @@ const RegisterPage = () => {
     // Simulate registration process
     setTimeout(() => {
       setIsLoading(false);
-      // Navigate to appropriate page
-      if (userType === 'seller') {
-        navigate('/seller-dashboard');
-      } else {
-        navigate('/');
-      }
+      // Navigate to seller dashboard
+      navigate('/seller-dashboard');
     }, 1500);
   };
 
@@ -447,24 +424,7 @@ const RegisterPage = () => {
           <LogoSubtext>Launch your online store without coding</LogoSubtext>
         </Logo>
 
-        <Title>Create Your Account</Title>
-
-        <ToggleContainer>
-          <ToggleButton
-            type="button"
-            active={userType === 'buyer'}
-            onClick={() => setUserType('buyer')}
-          >
-            Register as Buyer
-          </ToggleButton>
-          <ToggleButton
-            type="button"
-            active={userType === 'seller'}
-            onClick={() => setUserType('seller')}
-          >
-            Register as Seller
-          </ToggleButton>
-        </ToggleContainer>
+        <Title>Create Account</Title>
 
         <Form onSubmit={handleSubmit}>
           {userType === 'buyer' ? (
@@ -776,9 +736,7 @@ const RegisterPage = () => {
           )}
 
           <RegisterButton type="submit" disabled={isLoading}>
-            {isLoading
-              ? 'Creating Account...'
-              : `Create ${userType === 'buyer' ? 'Buyer' : 'Seller'} Account`}
+            {isLoading ? 'Creating Account...' : 'Create Account'}
           </RegisterButton>
         </Form>
 
