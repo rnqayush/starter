@@ -818,6 +818,9 @@ const BuisnessAdminDashboard = () => {
     setChangedSections(prev => new Set([...prev, sectionId]));
     setSaved(false);
 
+    // Mark changes as unsaved in Redux
+    dispatch(updateBusinessField({ field: 'hasChanges', value: true }));
+
     // Immediately update Redux editing business for real-time preview
     updateEditingBusinessInRedux();
   };
