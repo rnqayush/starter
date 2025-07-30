@@ -135,7 +135,9 @@ const LoadingSpinner = styled.div`
   border: 4px solid rgba(255, 255, 255, 0.3);
   border-top: 4px solid white;
   border-radius: 50%;
-  ${css`animation: ${pulse} 1s linear infinite;`}
+  ${css`
+    animation: ${pulse} 1s linear infinite;
+  `}
   margin-bottom: 2rem;
 `;
 
@@ -152,7 +154,8 @@ const Navbar = styled.nav.withConfig({
   right: 0;
   z-index: 1000;
   transition: all 0.3s ease;
-  transform: ${props => props.isVisible ? 'translateY(0)' : 'translateY(-100%)'};
+  transform: ${props =>
+    props.isVisible ? 'translateY(0)' : 'translateY(-100%)'};
 
   &:before {
     content: '';
@@ -161,7 +164,11 @@ const Navbar = styled.nav.withConfig({
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.1),
+      rgba(255, 255, 255, 0)
+    );
     pointer-events: none;
   }
 `;
@@ -211,7 +218,11 @@ const Logo = styled.div.withConfig({
       left: 0;
       width: 100%;
       height: 3px;
-      background: linear-gradient(45deg, ${props => props.primaryColor || theme.colors.primary}, transparent);
+      background: linear-gradient(
+        45deg,
+        ${props => props.primaryColor || theme.colors.primary},
+        transparent
+      );
       transform: scaleX(0);
       transform-origin: left;
       transition: transform 0.3s ease;
@@ -237,7 +248,7 @@ const NavLinks = styled.div.withConfig({
 })`
   display: flex;
   gap: ${theme.spacing.xl};
-  
+
   a {
     text-decoration: none;
     color: ${theme.colors.gray700};
@@ -259,7 +270,11 @@ const NavLinks = styled.div.withConfig({
       height: 2px;
       bottom: 0;
       left: 50%;
-      background: linear-gradient(45deg, ${props => props.primaryColor || theme.colors.primary}, ${props => props.primaryColor + '80' || theme.colors.primary});
+      background: linear-gradient(
+        45deg,
+        ${props => props.primaryColor || theme.colors.primary},
+        ${props => props.primaryColor + '80' || theme.colors.primary}
+      );
       transition: all 0.3s ease;
       transform: translateX(-50%);
     }
@@ -277,8 +292,14 @@ const NavLinks = styled.div.withConfig({
 const ActionButton = styled.button.withConfig({
   shouldForwardProp: prop => prop !== 'primaryColor' && prop !== 'variant',
 })`
-  background: ${props => props.variant === 'outline' ? 'transparent' : (props.primaryColor || theme.colors.primary)};
-  color: ${props => props.variant === 'outline' ? (props.primaryColor || theme.colors.primary) : 'white'};
+  background: ${props =>
+    props.variant === 'outline'
+      ? 'transparent'
+      : props.primaryColor || theme.colors.primary};
+  color: ${props =>
+    props.variant === 'outline'
+      ? props.primaryColor || theme.colors.primary
+      : 'white'};
   padding: ${theme.spacing.sm} ${theme.spacing.lg};
   border: 2px solid ${props => props.primaryColor || theme.colors.primary};
   border-radius: 50px;
@@ -298,7 +319,12 @@ const ActionButton = styled.button.withConfig({
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
     transition: left 0.5s ease;
   }
 
@@ -309,10 +335,12 @@ const ActionButton = styled.button.withConfig({
   &:hover {
     transform: translateY(-2px);
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-    ${props => props.variant === 'outline' && css`
-      background: ${props.primaryColor || theme.colors.primary};
-      color: white;
-    `}
+    ${props =>
+      props.variant === 'outline' &&
+      css`
+        background: ${props.primaryColor || theme.colors.primary};
+        color: white;
+      `}
   }
 
   @media (max-width: ${theme.breakpoints.tablet}) {
@@ -326,7 +354,11 @@ const HeroSection = styled.section.withConfig({
   shouldForwardProp: prop => prop !== 'primaryColor',
 })`
   min-height: 100vh;
-  background: linear-gradient(135deg, ${props => props.primaryColor + '10' || theme.colors.primary + '10'}, ${theme.colors.white});
+  background: linear-gradient(
+    135deg,
+    ${props => props.primaryColor + '10' || theme.colors.primary + '10'},
+    ${theme.colors.white}
+  );
   display: flex;
   align-items: center;
   position: relative;
@@ -340,7 +372,8 @@ const HeroSection = styled.section.withConfig({
     left: 0;
     width: 50%;
     height: 100%;
-    background: linear-gradient(135deg,
+    background: linear-gradient(
+      135deg,
       ${props => props.primaryColor + '15' || theme.colors.primary + '15'},
       transparent
     );
@@ -373,7 +406,9 @@ const HeroContainer = styled.div`
 `;
 
 const HeroContent = styled.div`
-  ${css`animation: ${fadeInLeft} 1s ease-out;`}
+  ${css`
+    animation: ${fadeInLeft} 1s ease-out;
+  `}
 
   @media (max-width: ${theme.breakpoints.tablet}) {
     order: 2;
@@ -385,7 +420,9 @@ const HeroImageContainer = styled.div`
   justify-content: center;
   align-items: center;
   position: relative;
-  ${css`animation: ${fadeInRight} 1s ease-out 0.3s both;`}
+  ${css`
+    animation: ${fadeInRight} 1s ease-out 0.3s both;
+  `}
 
   @media (max-width: ${theme.breakpoints.tablet}) {
     order: 1;
@@ -398,7 +435,10 @@ const HeroImage = styled.div.withConfig({
   width: 400px;
   height: 400px;
   border-radius: 50%;
-  background: url(${props => props.image || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80'}) center/cover;
+  background: url(${props =>
+      props.image ||
+      'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80'})
+    center/cover;
   border: 8px solid ${theme.colors.white};
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
   position: relative;
@@ -419,7 +459,9 @@ const HeroImage = styled.div.withConfig({
     border: 2px solid ${props => props.primaryColor || theme.colors.primary};
     border-radius: 50%;
     opacity: 0.3;
-    ${css`animation: ${pulse} 3s ease-in-out infinite;`}
+    ${css`
+      animation: ${pulse} 3s ease-in-out infinite;
+    `}
   }
 
   @media (max-width: ${theme.breakpoints.tablet}) {
@@ -459,7 +501,9 @@ const HeroTitle = styled.h1`
     height: 4px;
     background: linear-gradient(45deg, #ff9800, #ffb74d);
     border-radius: 2px;
-    ${css`animation: ${slideInFromBottom} 1.5s ease-out;`}
+    ${css`
+      animation: ${slideInFromBottom} 1.5s ease-out;
+    `}
 
     @media (max-width: ${theme.breakpoints.tablet}) {
       left: 50%;
@@ -473,7 +517,9 @@ const HeroSubtitle = styled.p`
   color: ${theme.colors.gray600};
   margin-bottom: ${theme.spacing.xl};
   line-height: 1.7;
-  ${css`animation: ${fadeInLeft} 1s ease-out 0.3s both;`}
+  ${css`
+    animation: ${fadeInLeft} 1s ease-out 0.3s both;
+  `}
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     font-size: 1.1rem;
@@ -484,7 +530,9 @@ const HeroButtons = styled.div`
   display: flex;
   gap: ${theme.spacing.lg};
   flex-wrap: wrap;
-  ${css`animation: ${fadeInLeft} 1s ease-out 0.6s both;`}
+  ${css`
+    animation: ${fadeInLeft} 1s ease-out 0.6s both;
+  `}
 
   @media (max-width: ${theme.breakpoints.tablet}) {
     justify-content: center;
@@ -502,7 +550,9 @@ const ScrollIndicator = styled.div`
   left: 50%;
   transform: translateX(-50%);
   color: ${theme.colors.gray600};
-  ${css`animation: ${float} 2s ease-in-out infinite;`}
+  ${css`
+    animation: ${float} 2s ease-in-out infinite;
+  `}
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -517,14 +567,15 @@ const ScrollIndicator = styled.div`
 
 // Section with enhanced animations and intersection observer
 const Section = styled.section.withConfig({
-  shouldForwardProp: prop => prop !== 'isVisible' && prop !== 'background' && prop !== 'inView',
+  shouldForwardProp: prop =>
+    prop !== 'isVisible' && prop !== 'background' && prop !== 'inView',
 })`
   padding: ${theme.spacing.xxl} 0;
   background: ${props => props.background || theme.colors.white};
   position: relative;
   overflow: hidden;
-  opacity: ${props => props.inView ? 1 : 0};
-  transform: translateY(${props => props.inView ? '0' : '30px'});
+  opacity: ${props => (props.inView ? 1 : 0)};
+  transform: translateY(${props => (props.inView ? '0' : '30px')});
   transition: all 0.8s ease-out;
 
   &:before {
@@ -534,7 +585,12 @@ const Section = styled.section.withConfig({
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.1),
+      transparent
+    );
     transition: left 1s ease;
   }
 
@@ -606,7 +662,9 @@ const AboutGrid = styled.div`
 `;
 
 const AboutContent = styled.div`
-  ${css`animation: ${fadeInLeft} 1s ease-out;`}
+  ${css`
+    animation: ${fadeInLeft} 1s ease-out;
+  `}
 
   p {
     font-size: 1.2rem;
@@ -620,7 +678,9 @@ const AboutStats = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: ${theme.spacing.lg};
-  ${css`animation: ${fadeInRight} 1s ease-out;`}
+  ${css`
+    animation: ${fadeInRight} 1s ease-out;
+  `}
 `;
 
 const StatCard = styled.div.withConfig({
@@ -643,7 +703,11 @@ const StatCard = styled.div.withConfig({
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(45deg, ${props => props.primaryColor || theme.colors.primary}, ${props => props.primaryColor + '80' || theme.colors.primary});
+    background: linear-gradient(
+      45deg,
+      ${props => props.primaryColor || theme.colors.primary},
+      ${props => props.primaryColor + '80' || theme.colors.primary}
+    );
   }
 
   &:hover {
@@ -704,7 +768,8 @@ const PortfolioImage = styled.div.withConfig({
   background-image: url(${props => props.image});
   background-size: cover;
   background-position: center;
-  background-color: ${props => props.primaryColor + '20' || theme.colors.primary + '20'};
+  background-color: ${props =>
+    props.primaryColor + '20' || theme.colors.primary + '20'};
   position: relative;
   overflow: hidden;
   transition: transform 0.4s ease;
@@ -718,13 +783,17 @@ const PortfolioOverlay = styled.div.withConfig({
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, ${props => props.primaryColor + 'cc' || theme.colors.primary + 'cc'}, rgba(0, 0, 0, 0.7));
+  background: linear-gradient(
+    135deg,
+    ${props => props.primaryColor + 'cc' || theme.colors.primary + 'cc'},
+    rgba(0, 0, 0, 0.7)
+  );
   display: flex;
   align-items: center;
   justify-content: center;
   opacity: 0;
   transition: opacity 0.3s ease;
-  
+
   svg {
     font-size: 2rem;
     color: white;
@@ -795,7 +864,8 @@ const TimelineContainer = styled.div`
     transform: translateX(-50%);
     width: 4px;
     height: 100%;
-    background: linear-gradient(to bottom,
+    background: linear-gradient(
+      to bottom,
       ${theme.colors.gray300},
       ${theme.colors.primary},
       ${theme.colors.gray300}
@@ -811,7 +881,7 @@ const TimelineItem = styled.div.withConfig({
   shouldForwardProp: prop => prop !== 'isLeft' && prop !== 'primaryColor',
 })`
   display: flex;
-  justify-content: ${props => props.isLeft ? 'flex-end' : 'flex-start'};
+  justify-content: ${props => (props.isLeft ? 'flex-end' : 'flex-start')};
   padding: ${theme.spacing.lg} 0;
   position: relative;
 
@@ -832,7 +902,7 @@ const TimelineContent = styled.div.withConfig({
   width: 45%;
   position: relative;
   transition: all 0.3s ease;
-  margin-${props => props.isLeft ? 'right' : 'left'}: ${theme.spacing.lg};
+  margin-${props => (props.isLeft ? 'right' : 'left')}: ${theme.spacing.lg};
 
   &:hover {
     transform: translateY(-5px);
@@ -843,11 +913,11 @@ const TimelineContent = styled.div.withConfig({
     content: '';
     position: absolute;
     top: 30px;
-    ${props => props.isLeft ? 'right: -10px' : 'left: -10px'};
+    ${props => (props.isLeft ? 'right: -10px' : 'left: -10px')};
     width: 0;
     height: 0;
     border: 10px solid transparent;
-    border-${props => props.isLeft ? 'left' : 'right'}-color: ${theme.colors.white};
+    border-${props => (props.isLeft ? 'left' : 'right')}-color: ${theme.colors.white};
   }
 
   @media (max-width: ${theme.breakpoints.tablet}) {
@@ -876,7 +946,8 @@ const TimelineDot = styled.div.withConfig({
   background: ${props => props.primaryColor || theme.colors.primary};
   border: 4px solid ${theme.colors.white};
   border-radius: 50%;
-  box-shadow: 0 0 0 4px ${props => props.primaryColor + '20' || theme.colors.primary + '20'};
+  box-shadow: 0 0 0 4px
+    ${props => props.primaryColor + '20' || theme.colors.primary + '20'};
   z-index: 2;
 
   @media (max-width: ${theme.breakpoints.tablet}) {
@@ -986,7 +1057,11 @@ const SkillProgressBar = styled.div.withConfig({
   shouldForwardProp: prop => prop !== 'level' && prop !== 'primaryColor',
 })`
   height: 100%;
-  background: linear-gradient(90deg, ${props => props.primaryColor || '#ff9800'}, ${props => props.primaryColor + 'cc' || '#ffb74d'});
+  background: linear-gradient(
+    90deg,
+    ${props => props.primaryColor || '#ff9800'},
+    ${props => props.primaryColor + 'cc' || '#ffb74d'}
+  );
   border-radius: 5px;
   width: ${props => props.level}%;
   transition: width 2s ease-in-out;
@@ -999,8 +1074,15 @@ const SkillProgressBar = styled.div.withConfig({
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-    ${css`animation: ${gradientShift} 2s ease-in-out infinite;`}
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.3),
+      transparent
+    );
+    ${css`
+      animation: ${gradientShift} 2s ease-in-out infinite;
+    `}
   }
 `;
 
@@ -1053,8 +1135,8 @@ const FreelancerPortfolioPage = () => {
   // Intersection Observer for skill animations
   useEffect(() => {
     const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
+      entries => {
+        entries.forEach(entry => {
           if (entry.isIntersecting) {
             const skillId = entry.target.dataset.skillId;
             if (skillId) {
@@ -1075,8 +1157,8 @@ const FreelancerPortfolioPage = () => {
   // Intersection Observer for section fade-in animations
   useEffect(() => {
     const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
+      entries => {
+        entries.forEach(entry => {
           if (entry.isIntersecting) {
             const sectionId = entry.target.id;
             if (sectionId) {
@@ -1170,7 +1252,7 @@ const FreelancerPortfolioPage = () => {
     navigate(`/${actualSlug}/adminpanel`);
   };
 
-  const scrollToSection = (sectionId) => {
+  const scrollToSection = sectionId => {
     const element = document.getElementById(sectionId.replace('#', ''));
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
@@ -1180,17 +1262,21 @@ const FreelancerPortfolioPage = () => {
   if (loading) {
     return (
       <PageContainer>
-        <div style={{ 
-          display: 'flex', 
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          height: '100vh',
-          background: 'linear-gradient(135deg, #ff9800, #ffb74d)',
-          color: 'white'
-        }}>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: '100vh',
+            background: 'linear-gradient(135deg, #ff9800, #ffb74d)',
+            color: 'white',
+          }}
+        >
           <LoadingSpinner />
-          <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Loading Portfolio...</h2>
+          <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>
+            Loading Portfolio...
+          </h2>
           <p style={{ opacity: 0.8 }}>Preparing something amazing for you</p>
         </div>
       </PageContainer>
@@ -1200,22 +1286,34 @@ const FreelancerPortfolioPage = () => {
   if (error || !currentBusiness) {
     return (
       <PageContainer>
-        <div style={{ 
-          display: 'flex', 
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          height: '100vh',
-          padding: '2rem',
-          textAlign: 'center'
-        }}>
-          <h2 style={{ fontSize: '2rem', marginBottom: '1rem', color: theme.colors.gray900 }}>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: '100vh',
+            padding: '2rem',
+            textAlign: 'center',
+          }}
+        >
+          <h2
+            style={{
+              fontSize: '2rem',
+              marginBottom: '1rem',
+              color: theme.colors.gray900,
+            }}
+          >
             Portfolio Not Found
           </h2>
           <p style={{ color: theme.colors.gray600, marginBottom: '2rem' }}>
-            {error || "The freelancer portfolio you're looking for doesn't exist."}
+            {error ||
+              "The freelancer portfolio you're looking for doesn't exist."}
           </p>
-          <ActionButton onClick={handleBackToList} primaryColor={theme.colors.primary}>
+          <ActionButton
+            onClick={handleBackToList}
+            primaryColor={theme.colors.primary}
+          >
             <FaArrowLeft />
             Back to Business Websites
           </ActionButton>
@@ -1247,7 +1345,11 @@ const FreelancerPortfolioPage = () => {
       {/* Enhanced Navbar */}
       <Navbar isVisible={isNavVisible}>
         <NavContainer>
-          <ActionButton variant="outline" onClick={handleBackToList} primaryColor={currentBusiness.primaryColor}>
+          <ActionButton
+            variant="outline"
+            onClick={handleBackToList}
+            primaryColor={currentBusiness.primaryColor}
+          >
             <FaArrowLeft />
           </ActionButton>
           <Logo primaryColor={currentBusiness.primaryColor}>
@@ -1258,21 +1360,26 @@ const FreelancerPortfolioPage = () => {
                 className="logo-image"
               />
             )}
-            <span className="logo-text">
-              {currentBusiness.name}
-            </span>
+            <span className="logo-text">{currentBusiness.name}</span>
           </Logo>
           <NavLinks primaryColor={currentBusiness.primaryColor}>
             {navigationItems.map((item, index) => (
-              <a key={index} href={item.href} onClick={(e) => {
-                e.preventDefault();
-                scrollToSection(item.href);
-              }}>
+              <a
+                key={index}
+                href={item.href}
+                onClick={e => {
+                  e.preventDefault();
+                  scrollToSection(item.href);
+                }}
+              >
                 {item.name}
               </a>
             ))}
           </NavLinks>
-          <ActionButton onClick={handleOwnerClick} primaryColor={currentBusiness.primaryColor}>
+          <ActionButton
+            onClick={handleOwnerClick}
+            primaryColor={currentBusiness.primaryColor}
+          >
             <FaEdit />
             Admin Panel
           </ActionButton>
@@ -1281,10 +1388,7 @@ const FreelancerPortfolioPage = () => {
 
       {/* Enhanced Hero Section */}
       {sectionVisibility.hero && (
-        <HeroSection
-          id="home"
-          primaryColor={currentBusiness.primaryColor}
-        >
+        <HeroSection id="home" primaryColor={currentBusiness.primaryColor}>
           <HeroContainer>
             <HeroContent>
               <HeroTitle>
@@ -1309,7 +1413,10 @@ const FreelancerPortfolioPage = () => {
             </HeroContent>
             <HeroImageContainer>
               <HeroImage
-                image={currentBusiness.hero?.profileImage || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80'}
+                image={
+                  currentBusiness.hero?.profileImage ||
+                  'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80'
+                }
                 primaryColor={currentBusiness.primaryColor}
               />
             </HeroImageContainer>
@@ -1341,19 +1448,20 @@ const FreelancerPortfolioPage = () => {
                 </p>
                 <p>
                   {currentBusiness.about?.extendedDescription ||
-                    "I pride myself on delivering exceptional service and creating memorable experiences for all my clients."}
+                    'I pride myself on delivering exceptional service and creating memorable experiences for all my clients.'}
                 </p>
               </AboutContent>
               <AboutStats>
-                {currentBusiness.about?.stats && currentBusiness.about.stats.map((stat, index) => (
-                  <StatCard
-                    key={index}
-                    primaryColor={currentBusiness.primaryColor}
-                  >
-                    <span className="number">{stat.number}</span>
-                    <span className="label">{stat.label}</span>
-                  </StatCard>
-                ))}
+                {currentBusiness.about?.stats &&
+                  currentBusiness.about.stats.map((stat, index) => (
+                    <StatCard
+                      key={index}
+                      primaryColor={currentBusiness.primaryColor}
+                    >
+                      <span className="number">{stat.number}</span>
+                      <span className="label">{stat.label}</span>
+                    </StatCard>
+                  ))}
               </AboutStats>
             </AboutGrid>
           </SectionContainer>
@@ -1372,12 +1480,12 @@ const FreelancerPortfolioPage = () => {
             <PortfolioGrid>
               {currentBusiness.portfolio.map((project, index) => (
                 <PortfolioCard key={project.id || index}>
-                  <PortfolioImage 
-                    image={project.image} 
+                  <PortfolioImage
+                    image={project.image}
                     primaryColor={currentBusiness.primaryColor}
                     className="portfolio-image"
                   >
-                    <PortfolioOverlay 
+                    <PortfolioOverlay
                       className="portfolio-overlay"
                       primaryColor={currentBusiness.primaryColor}
                     >
@@ -1385,7 +1493,9 @@ const FreelancerPortfolioPage = () => {
                     </PortfolioOverlay>
                   </PortfolioImage>
                   <PortfolioContent>
-                    <PortfolioCategory primaryColor={currentBusiness.primaryColor}>
+                    <PortfolioCategory
+                      primaryColor={currentBusiness.primaryColor}
+                    >
                       {project.category}
                     </PortfolioCategory>
                     <PortfolioTitle>{project.title}</PortfolioTitle>
@@ -1420,7 +1530,7 @@ const FreelancerPortfolioPage = () => {
             <SectionTitle>My Skills</SectionTitle>
             <SkillsGrid>
               {currentBusiness.skills.map((skill, index) => (
-                <SkillCard 
+                <SkillCard
                   key={skill.id || index}
                   data-skill-id={skill.id || index}
                 >
@@ -1433,7 +1543,11 @@ const FreelancerPortfolioPage = () => {
                   </SkillHeader>
                   <SkillProgress>
                     <SkillProgressBar
-                      level={animatedSkills.has(skill.id || index.toString()) ? skill.level : 0}
+                      level={
+                        animatedSkills.has(skill.id || index.toString())
+                          ? skill.level
+                          : 0
+                      }
                       primaryColor={currentBusiness.primaryColor}
                     />
                   </SkillProgress>
@@ -1456,24 +1570,28 @@ const FreelancerPortfolioPage = () => {
             <PortfolioGrid>
               {currentBusiness.services.map((service, index) => (
                 <PortfolioCard key={service.id || index}>
-                  <div style={{
-                    padding: '2rem',
-                    textAlign: 'center',
-                    background: `linear-gradient(135deg, ${currentBusiness.primaryColor}10, ${theme.colors.white})`
-                  }}>
-                    <div style={{
-                      width: '80px',
-                      height: '80px',
-                      margin: '0 auto 1.5rem',
-                      background: `linear-gradient(135deg, ${currentBusiness.primaryColor}, ${currentBusiness.primaryColor}cc)`,
-                      borderRadius: '50%',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: '2rem',
-                      color: 'white',
-                      boxShadow: '0 10px 25px rgba(0, 0, 0, 0.1)'
-                    }}>
+                  <div
+                    style={{
+                      padding: '2rem',
+                      textAlign: 'center',
+                      background: `linear-gradient(135deg, ${currentBusiness.primaryColor}10, ${theme.colors.white})`,
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: '80px',
+                        height: '80px',
+                        margin: '0 auto 1.5rem',
+                        background: `linear-gradient(135deg, ${currentBusiness.primaryColor}, ${currentBusiness.primaryColor}cc)`,
+                        borderRadius: '50%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '2rem',
+                        color: 'white',
+                        boxShadow: '0 10px 25px rgba(0, 0, 0, 0.1)',
+                      }}
+                    >
                       {service.icon || '⚡'}
                     </div>
                     <PortfolioTitle>{service.name}</PortfolioTitle>
@@ -1481,12 +1599,14 @@ const FreelancerPortfolioPage = () => {
                       {service.description}
                     </PortfolioDescription>
                     {service.price && (
-                      <div style={{
-                        fontSize: '1.3rem',
-                        fontWeight: '700',
-                        color: currentBusiness.primaryColor,
-                        marginBottom: '1rem'
-                      }}>
+                      <div
+                        style={{
+                          fontSize: '1.3rem',
+                          fontWeight: '700',
+                          color: currentBusiness.primaryColor,
+                          marginBottom: '1rem',
+                        }}
+                      >
                         {service.price}
                       </div>
                     )}
@@ -1524,7 +1644,9 @@ const FreelancerPortfolioPage = () => {
                     primaryColor={currentBusiness.primaryColor}
                   >
                     <ExperienceRole>{job.role}</ExperienceRole>
-                    <ExperienceCompany primaryColor={currentBusiness.primaryColor}>
+                    <ExperienceCompany
+                      primaryColor={currentBusiness.primaryColor}
+                    >
                       {job.company}
                     </ExperienceCompany>
                     <ExperiencePeriod>{job.period}</ExperiencePeriod>
@@ -1566,76 +1688,93 @@ const FreelancerPortfolioPage = () => {
                       ? `3px solid ${currentBusiness.primaryColor}`
                       : `1px solid ${theme.colors.gray100}`,
                     transform: pkg.featured ? 'scale(1.05)' : 'none',
-                    transition: 'all 0.3s ease'
+                    transition: 'all 0.3s ease',
                   }}
                 >
                   {pkg.featured && (
-                    <div style={{
-                      position: 'absolute',
-                      top: '-15px',
-                      left: '50%',
-                      transform: 'translateX(-50%)',
-                      background: `linear-gradient(135deg, ${currentBusiness.primaryColor}, ${currentBusiness.primaryColor}cc)`,
-                      color: 'white',
-                      padding: '0.75rem 1.5rem',
-                      borderRadius: '25px',
-                      fontSize: '0.8rem',
-                      fontWeight: '700',
-                      boxShadow: '0 5px 15px rgba(0, 0, 0, 0.2)'
-                    }}>
+                    <div
+                      style={{
+                        position: 'absolute',
+                        top: '-15px',
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        background: `linear-gradient(135deg, ${currentBusiness.primaryColor}, ${currentBusiness.primaryColor}cc)`,
+                        color: 'white',
+                        padding: '0.75rem 1.5rem',
+                        borderRadius: '25px',
+                        fontSize: '0.8rem',
+                        fontWeight: '700',
+                        boxShadow: '0 5px 15px rgba(0, 0, 0, 0.2)',
+                      }}
+                    >
                       MOST POPULAR
                     </div>
                   )}
-                  <h3 style={{
-                    fontSize: '1.6rem',
-                    fontWeight: '700',
-                    marginBottom: '1rem',
-                    color: theme.colors.gray900
-                  }}>
+                  <h3
+                    style={{
+                      fontSize: '1.6rem',
+                      fontWeight: '700',
+                      marginBottom: '1rem',
+                      color: theme.colors.gray900,
+                    }}
+                  >
                     {pkg.name}
                   </h3>
-                  <div style={{
-                    fontSize: '3rem',
-                    fontWeight: '800',
-                    color: currentBusiness.primaryColor,
-                    marginBottom: '0.5rem'
-                  }}>
+                  <div
+                    style={{
+                      fontSize: '3rem',
+                      fontWeight: '800',
+                      color: currentBusiness.primaryColor,
+                      marginBottom: '0.5rem',
+                    }}
+                  >
                     {pkg.price}
                   </div>
-                  <div style={{
-                    color: theme.colors.gray600,
-                    marginBottom: '2rem',
-                    fontSize: '1rem'
-                  }}>
+                  <div
+                    style={{
+                      color: theme.colors.gray600,
+                      marginBottom: '2rem',
+                      fontSize: '1rem',
+                    }}
+                  >
                     {pkg.duration}
                   </div>
-                  <p style={{
-                    color: theme.colors.gray600,
-                    lineHeight: '1.6',
-                    marginBottom: '2rem',
-                    fontSize: '1rem'
-                  }}>
+                  <p
+                    style={{
+                      color: theme.colors.gray600,
+                      lineHeight: '1.6',
+                      marginBottom: '2rem',
+                      fontSize: '1rem',
+                    }}
+                  >
                     {pkg.description}
                   </p>
                   {pkg.features && (
-                    <ul style={{ 
-                      textAlign: 'left', 
-                      marginBottom: '2rem',
-                      listStyle: 'none',
-                      padding: 0
-                    }}>
+                    <ul
+                      style={{
+                        textAlign: 'left',
+                        marginBottom: '2rem',
+                        listStyle: 'none',
+                        padding: 0,
+                      }}
+                    >
                       {pkg.features.map((feature, i) => (
-                        <li key={i} style={{
-                          marginBottom: '0.75rem',
-                          display: 'flex',
-                          alignItems: 'center',
-                          fontSize: '0.95rem'
-                        }}>
-                          <FaCheck style={{
-                            color: currentBusiness.primaryColor,
-                            marginRight: '0.75rem',
-                            fontSize: '0.8rem'
-                          }} />
+                        <li
+                          key={i}
+                          style={{
+                            marginBottom: '0.75rem',
+                            display: 'flex',
+                            alignItems: 'center',
+                            fontSize: '0.95rem',
+                          }}
+                        >
+                          <FaCheck
+                            style={{
+                              color: currentBusiness.primaryColor,
+                              marginRight: '0.75rem',
+                              fontSize: '0.8rem',
+                            }}
+                          />
                           {feature}
                         </li>
                       ))}
@@ -1683,51 +1822,63 @@ const FreelancerPortfolioPage = () => {
                     boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)',
                     position: 'relative',
                     border: `1px solid ${theme.colors.gray100}`,
-                    transition: 'all 0.3s ease'
+                    transition: 'all 0.3s ease',
                   }}
-                  onMouseEnter={(e) => {
+                  onMouseEnter={e => {
                     e.currentTarget.style.transform = 'translateY(-5px)';
-                    e.currentTarget.style.boxShadow = '0 20px 40px rgba(0, 0, 0, 0.15)';
+                    e.currentTarget.style.boxShadow =
+                      '0 20px 40px rgba(0, 0, 0, 0.15)';
                   }}
-                  onMouseLeave={(e) => {
+                  onMouseLeave={e => {
                     e.currentTarget.style.transform = 'translateY(0)';
-                    e.currentTarget.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.1)';
+                    e.currentTarget.style.boxShadow =
+                      '0 10px 30px rgba(0, 0, 0, 0.1)';
                   }}
                 >
-                  <FaQuoteLeft style={{
-                    color: currentBusiness.primaryColor,
-                    fontSize: '2rem',
-                    marginBottom: '1.5rem',
-                    opacity: 0.7
-                  }} />
-                  <p style={{
-                    color: theme.colors.gray700,
-                    lineHeight: '1.7',
-                    marginBottom: '2rem',
-                    fontStyle: 'italic',
-                    fontSize: '1.1rem'
-                  }}>
+                  <FaQuoteLeft
+                    style={{
+                      color: currentBusiness.primaryColor,
+                      fontSize: '2rem',
+                      marginBottom: '1.5rem',
+                      opacity: 0.7,
+                    }}
+                  />
+                  <p
+                    style={{
+                      color: theme.colors.gray700,
+                      lineHeight: '1.7',
+                      marginBottom: '2rem',
+                      fontStyle: 'italic',
+                      fontSize: '1.1rem',
+                    }}
+                  >
                     "{testimonial.text}"
                   </p>
-                  <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between'
-                  }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                    }}
+                  >
                     <div>
-                      <div style={{
-                        fontWeight: '600',
-                        color: theme.colors.gray900,
-                        fontSize: '1rem'
-                      }}>
+                      <div
+                        style={{
+                          fontWeight: '600',
+                          color: theme.colors.gray900,
+                          fontSize: '1rem',
+                        }}
+                      >
                         {testimonial.name}
                       </div>
                       {testimonial.service && (
-                        <div style={{
-                          fontSize: '0.9rem',
-                          color: theme.colors.gray600,
-                          marginTop: '0.25rem'
-                        }}>
+                        <div
+                          style={{
+                            fontSize: '0.9rem',
+                            color: theme.colors.gray600,
+                            marginTop: '0.25rem',
+                          }}
+                        >
                           {testimonial.service}
                         </div>
                       )}
@@ -1759,49 +1910,59 @@ const FreelancerPortfolioPage = () => {
             <SectionTitle>
               {currentBusiness.contact?.title || "Let's Work Together"}
             </SectionTitle>
-            <div style={{
-              maxWidth: '600px',
-              margin: '0 auto',
-              textAlign: 'center'
-            }}>
-              <p style={{
-                fontSize: '1.2rem',
-                color: theme.colors.gray600,
-                marginBottom: '3rem',
-                lineHeight: '1.7'
-              }}>
+            <div
+              style={{
+                maxWidth: '600px',
+                margin: '0 auto',
+                textAlign: 'center',
+              }}
+            >
+              <p
+                style={{
+                  fontSize: '1.2rem',
+                  color: theme.colors.gray600,
+                  marginBottom: '3rem',
+                  lineHeight: '1.7',
+                }}
+              >
                 {currentBusiness.contact?.description ||
                   "Have a project in mind? I'd love to hear about it!"}
               </p>
 
-              <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-                gap: '2rem',
-                marginBottom: '3rem'
-              }}>
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+                  gap: '2rem',
+                  marginBottom: '3rem',
+                }}
+              >
                 {currentBusiness.contact?.phone && (
-                  <div style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    padding: '2rem',
-                    background: theme.colors.white,
-                    borderRadius: '20px',
-                    boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)',
-                    border: `1px solid ${theme.colors.gray100}`,
-                    transition: 'all 0.3s ease'
-                  }}>
-                    <div style={{
-                      width: '60px',
-                      height: '60px',
-                      background: `linear-gradient(135deg, ${currentBusiness.primaryColor}, ${currentBusiness.primaryColor}cc)`,
-                      borderRadius: '50%',
+                  <div
+                    style={{
                       display: 'flex',
+                      flexDirection: 'column',
                       alignItems: 'center',
-                      justifyContent: 'center',
-                      marginBottom: '1rem'
-                    }}>
+                      padding: '2rem',
+                      background: theme.colors.white,
+                      borderRadius: '20px',
+                      boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)',
+                      border: `1px solid ${theme.colors.gray100}`,
+                      transition: 'all 0.3s ease',
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: '60px',
+                        height: '60px',
+                        background: `linear-gradient(135deg, ${currentBusiness.primaryColor}, ${currentBusiness.primaryColor}cc)`,
+                        borderRadius: '50%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        marginBottom: '1rem',
+                      }}
+                    >
                       <FaPhone style={{ color: 'white', fontSize: '1.2rem' }} />
                     </div>
                     <span style={{ fontWeight: '600', fontSize: '1rem' }}>
@@ -1811,28 +1972,34 @@ const FreelancerPortfolioPage = () => {
                 )}
 
                 {currentBusiness.contact?.email && (
-                  <div style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    padding: '2rem',
-                    background: theme.colors.white,
-                    borderRadius: '20px',
-                    boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)',
-                    border: `1px solid ${theme.colors.gray100}`,
-                    transition: 'all 0.3s ease'
-                  }}>
-                    <div style={{
-                      width: '60px',
-                      height: '60px',
-                      background: `linear-gradient(135deg, ${currentBusiness.primaryColor}, ${currentBusiness.primaryColor}cc)`,
-                      borderRadius: '50%',
+                  <div
+                    style={{
                       display: 'flex',
+                      flexDirection: 'column',
                       alignItems: 'center',
-                      justifyContent: 'center',
-                      marginBottom: '1rem'
-                    }}>
-                      <FaEnvelope style={{ color: 'white', fontSize: '1.2rem' }} />
+                      padding: '2rem',
+                      background: theme.colors.white,
+                      borderRadius: '20px',
+                      boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)',
+                      border: `1px solid ${theme.colors.gray100}`,
+                      transition: 'all 0.3s ease',
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: '60px',
+                        height: '60px',
+                        background: `linear-gradient(135deg, ${currentBusiness.primaryColor}, ${currentBusiness.primaryColor}cc)`,
+                        borderRadius: '50%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        marginBottom: '1rem',
+                      }}
+                    >
+                      <FaEnvelope
+                        style={{ color: 'white', fontSize: '1.2rem' }}
+                      />
                     </div>
                     <span style={{ fontWeight: '600', fontSize: '1rem' }}>
                       {currentBusiness.contact.email}
@@ -1841,28 +2008,34 @@ const FreelancerPortfolioPage = () => {
                 )}
 
                 {currentBusiness.contact?.address && (
-                  <div style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    padding: '2rem',
-                    background: theme.colors.white,
-                    borderRadius: '20px',
-                    boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)',
-                    border: `1px solid ${theme.colors.gray100}`,
-                    transition: 'all 0.3s ease'
-                  }}>
-                    <div style={{
-                      width: '60px',
-                      height: '60px',
-                      background: `linear-gradient(135deg, ${currentBusiness.primaryColor}, ${currentBusiness.primaryColor}cc)`,
-                      borderRadius: '50%',
+                  <div
+                    style={{
                       display: 'flex',
+                      flexDirection: 'column',
                       alignItems: 'center',
-                      justifyContent: 'center',
-                      marginBottom: '1rem'
-                    }}>
-                      <FaMapMarkerAlt style={{ color: 'white', fontSize: '1.2rem' }} />
+                      padding: '2rem',
+                      background: theme.colors.white,
+                      borderRadius: '20px',
+                      boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)',
+                      border: `1px solid ${theme.colors.gray100}`,
+                      transition: 'all 0.3s ease',
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: '60px',
+                        height: '60px',
+                        background: `linear-gradient(135deg, ${currentBusiness.primaryColor}, ${currentBusiness.primaryColor}cc)`,
+                        borderRadius: '50%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        marginBottom: '1rem',
+                      }}
+                    >
+                      <FaMapMarkerAlt
+                        style={{ color: 'white', fontSize: '1.2rem' }}
+                      />
                     </div>
                     <span style={{ fontWeight: '600', fontSize: '1rem' }}>
                       {currentBusiness.contact.address}
@@ -1871,7 +2044,7 @@ const FreelancerPortfolioPage = () => {
                 )}
               </div>
 
-              <ActionButton 
+              <ActionButton
                 primaryColor={currentBusiness.primaryColor}
                 style={{ fontSize: '1.1rem', padding: '1rem 2rem' }}
               >

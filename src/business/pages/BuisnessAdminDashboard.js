@@ -1082,9 +1082,12 @@ const BuisnessAdminDashboard = () => {
             backgroundImage:
               currentData.hero?.backgroundImage || currentData.image || '',
             profileImage:
-              currentData.hero?.profileImage || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80',
+              currentData.hero?.profileImage ||
+              'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80',
             logo:
-              currentData.logo || currentData.navigation?.logo || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=80',
+              currentData.logo ||
+              currentData.navigation?.logo ||
+              'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=80',
           });
 
           setAboutData({
@@ -1282,9 +1285,12 @@ const BuisnessAdminDashboard = () => {
           originalBusiness.image ||
           '',
         profileImage:
-          originalBusiness.hero?.profileImage || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80',
+          originalBusiness.hero?.profileImage ||
+          'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80',
         logo:
-          originalBusiness.logo || originalBusiness.navigation?.logo || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=80',
+          originalBusiness.logo ||
+          originalBusiness.navigation?.logo ||
+          'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=80',
       });
 
       setAboutData({
@@ -1813,11 +1819,19 @@ const BuisnessAdminDashboard = () => {
                     {!heroData.backgroundImage && '🖼️'}
                   </div>
                   <div>
-                    <div style={{ fontSize: '0.9rem', color: '#374151', fontWeight: '500' }}>
+                    <div
+                      style={{
+                        fontSize: '0.9rem',
+                        color: '#374151',
+                        fontWeight: '500',
+                      }}
+                    >
                       Background Image Preview
                     </div>
                     <div style={{ fontSize: '0.8rem', color: '#6b7280' }}>
-                      {heroData.backgroundImage ? 'Current image loaded' : 'No image selected'}
+                      {heroData.backgroundImage
+                        ? 'Current image loaded'
+                        : 'No image selected'}
                     </div>
                   </div>
                 </div>
@@ -1897,11 +1911,19 @@ const BuisnessAdminDashboard = () => {
                     {!heroData.profileImage && '👤'}
                   </div>
                   <div>
-                    <div style={{ fontSize: '0.9rem', color: '#374151', fontWeight: '500' }}>
+                    <div
+                      style={{
+                        fontSize: '0.9rem',
+                        color: '#374151',
+                        fontWeight: '500',
+                      }}
+                    >
                       Profile Image Preview
                     </div>
                     <div style={{ fontSize: '0.8rem', color: '#6b7280' }}>
-                      {heroData.profileImage ? 'Current profile image' : 'No profile image selected'}
+                      {heroData.profileImage
+                        ? 'Current profile image'
+                        : 'No profile image selected'}
                     </div>
                   </div>
                 </div>
@@ -1982,7 +2004,13 @@ const BuisnessAdminDashboard = () => {
                     {!heroData.logo && '🏢'}
                   </div>
                   <div>
-                    <div style={{ fontSize: '0.9rem', color: '#374151', fontWeight: '500' }}>
+                    <div
+                      style={{
+                        fontSize: '0.9rem',
+                        color: '#374151',
+                        fontWeight: '500',
+                      }}
+                    >
                       Logo Preview
                     </div>
                     <div style={{ fontSize: '0.8rem', color: '#6b7280' }}>
@@ -2116,11 +2144,19 @@ const BuisnessAdminDashboard = () => {
                     {!aboutData.profileImage && '👤'}
                   </div>
                   <div>
-                    <div style={{ fontSize: '0.9rem', color: '#374151', fontWeight: '500' }}>
+                    <div
+                      style={{
+                        fontSize: '0.9rem',
+                        color: '#374151',
+                        fontWeight: '500',
+                      }}
+                    >
                       About Profile Image
                     </div>
                     <div style={{ fontSize: '0.8rem', color: '#6b7280' }}>
-                      {aboutData.profileImage ? 'Current profile image' : 'No profile image selected'}
+                      {aboutData.profileImage
+                        ? 'Current profile image'
+                        : 'No profile image selected'}
                     </div>
                   </div>
                 </div>

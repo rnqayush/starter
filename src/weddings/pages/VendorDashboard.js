@@ -1714,8 +1714,6 @@ const VendorDashboard = () => {
     };
   }, [mobileSidebarOpen]);
 
-
-
   // File upload handlers
   const handleImageUpload = (file, setter, field) => {
     const reader = new FileReader();

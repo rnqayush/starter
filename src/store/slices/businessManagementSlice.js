@@ -341,7 +341,7 @@ const businessManagementSlice = createSlice({
     },
 
     // Mark that there are unsaved changes
-    markUnsavedChanges: (state) => {
+    markUnsavedChanges: state => {
       state.hasUnsavedChanges = true;
     },
 
