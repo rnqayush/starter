@@ -991,8 +991,10 @@ const FreelancerPortfolioPage = () => {
   const [isNavVisible, setIsNavVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [animatedSkills, setAnimatedSkills] = useState(new Set());
+  const [visibleSections, setVisibleSections] = useState(new Set());
 
   const skillsRef = useRef(null);
+  const sectionsRef = useRef([]);
 
   // Support both businessSlug (legacy routes) and slug (new optimized routes)
   const actualSlug = businessSlug || slug || 'freelancer';
