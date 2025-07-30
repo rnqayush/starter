@@ -774,7 +774,7 @@ const BrandName = styled.h3`
 `;
 
 const BrandDescription = styled.p`
-  color: rgba(255, 255, 255, 0.7);
+  color: #94a3b8;
   line-height: 1.6;
 `;
 
@@ -784,7 +784,7 @@ const FooterColumn = styled.div`
 `;
 
 const FooterTitle = styled.h4`
-  color: white;
+  color: #f1f5f9;
   font-weight: 600;
   margin-bottom: ${theme.spacing.lg};
   font-size: 1.125rem;
@@ -792,7 +792,7 @@ const FooterTitle = styled.h4`
 
 const FooterLink = styled.a`
   display: block;
-  color: rgba(255, 255, 255, 0.7);
+  color: #94a3b8;
   text-decoration: none;
   margin-bottom: ${theme.spacing.sm};
   transition: color 0.3s ease;
@@ -808,7 +808,7 @@ const ContactInfo = styled.div`
   align-items: center;
   gap: ${theme.spacing.sm};
   margin-bottom: ${theme.spacing.sm};
-  color: rgba(255, 255, 255, 0.7);
+  color: #94a3b8;
 `;
 
 const ContactIcon = styled.div`
