@@ -1060,9 +1060,11 @@ const BlogsPage = () => {
                       ))}
                     </BlogTags>
 
-                    <ReadMoreButton>
-                      Read More
-                    </ReadMoreButton>
+                    <Link to={`/blog/${blog.id}`} style={{ textDecoration: 'none' }}>
+                      <ReadMoreButton>
+                        Read More
+                      </ReadMoreButton>
+                    </Link>
                   </BlogFooter>
 
                   <BlogStats style={{ marginTop: theme.spacing.md, paddingTop: theme.spacing.md, borderTop: `1px solid ${theme.colors.gray100}` }}>

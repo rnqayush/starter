@@ -12,6 +12,7 @@ import ErrorBoundary from './components/ErrorBoundary';
 import PlatformHomePage from './components/user/PlatformHomePage';
 import PricingPage from './components/user/PricingPage';
 import BlogsPage from './components/user/BlogsPage';
+import SingleBlogPage from './components/user/SingleBlogPage';
 import LoginPage from './components/auth/LoginPage';
 import RegisterPage from './components/auth/RegisterPage';
 import StartBuilding from './components/StartBuilding';
@@ -106,6 +107,7 @@ function App() {
                   {/* Main Platform Routes (Highest Priority) */}
                   <Route path="/" element={<PlatformHomePage />} />
                   <Route path="/blogs" element={<BlogsPage />} />
+                  <Route path="/blog/:id" element={<SingleBlogPage />} />
                   <Route path="/pricing" element={<PricingPage />} />
                   <Route path="/login" element={<LoginPage />} />
                   <Route path="/register" element={<RegisterPage />} />
