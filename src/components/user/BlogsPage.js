@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   FaSearch,
   FaCalendarAlt,
@@ -11,10 +12,20 @@ import {
   FaUser,
   FaFilter,
   FaTimes,
+  FaPlus,
+  FaPen,
 } from 'react-icons/fa';
 import { theme, media } from '../../styles/GlobalStyle';
 import Header from '../shared/Header';
-import blogsData from '../../DummyData/blogs.json';
+import CreateBlogModal from './CreateBlogModal';
+import {
+  loadBlogs,
+  setSearchTerm,
+  setSelectedCategory,
+  setSortBy,
+  clearFilters,
+  showCreateBlogModal,
+} from '../../store/slices/blogsSlice';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -206,6 +217,90 @@ const PageSubtitle = styled.p`
 
   ${media.mobile} {
     font-size: 1rem;
+  }
+`;
+
+const HeroActions = styled.div`
+  display: flex;
+  gap: ${theme.spacing.md};
+  justify-content: center;
+  align-items: center;
+  margin-top: ${theme.spacing.xl};
+  position: relative;
+  z-index: 1;
+  animation: slideInUp 1s ease-out 0.6s both;
+
+  ${media.mobile} {
+    flex-direction: column;
+    gap: ${theme.spacing.sm};
+  }
+`;
+
+const CreateBlogButton = styled.button`
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  color: ${theme.colors.white};
+  padding: ${theme.spacing.md} ${theme.spacing.xl};
+  border-radius: ${theme.borderRadius.full};
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.sm};
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s ease;
+  }
+
+  &:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+    border-color: rgba(255, 255, 255, 0.5);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.2));
+
+    &::before {
+      left: 100%;
+    }
+  }
+
+  &:active {
+    transform: translateY(-1px) scale(1.02);
+  }
+
+  svg {
+    font-size: 1.2rem;
+    animation: bounce 2s infinite;
+  }
+
+  @keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+      transform: translateY(0);
+    }
+    40% {
+      transform: translateY(-3px);
+    }
+    60% {
+      transform: translateY(-2px);
+    }
+  }
+
+  ${media.mobile} {
+    width: 100%;
+    justify-content: center;
+    padding: ${theme.spacing.lg} ${theme.spacing.xl};
   }
 `;
 
@@ -843,92 +938,40 @@ const LoadingSpinner = styled.div`
 `;
 
 const BlogsPage = () => {
-  const [blogs, setBlogs] = useState([]);
-  const [filteredBlogs, setFilteredBlogs] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('');
-  const [sortBy, setSortBy] = useState('newest');
+  const dispatch = useDispatch();
+  const {
+    blogs,
+    categories,
+    filteredBlogs,
+    loading,
+    error,
+    searchTerm,
+    selectedCategory,
+    sortBy,
+  } = useSelector(state => state.blogs);
 
   useEffect(() => {
-    // Simulate API call
-    const loadBlogs = async () => {
-      setLoading(true);
-      try {
-        // Simulate network delay
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        
-        // Handle API response structure (matching existing project pattern)
-        if (blogsData.status === 'success' && blogsData.data) {
-          setBlogs(blogsData.data.blogs);
-          setCategories(blogsData.data.categories);
-          setFilteredBlogs(blogsData.data.blogs);
-          
-          // Log API response info for debugging
-          console.log('API Response:', {
-            status: blogsData.status,
-            statusCode: blogsData.statusCode,
-            message: blogsData.message,
-            timestamp: blogsData.timestamp,
-            totalBlogs: blogsData.data.blogs.length,
-            totalCategories: blogsData.data.categories.length
-          });
-        } else {
-          console.error('API Error:', blogsData.message || 'Invalid response structure');
-        }
-      } catch (error) {
-        console.error('Error loading blogs:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
+    dispatch(loadBlogs());
+  }, [dispatch]);
 
-    loadBlogs();
-  }, []);
+  const handleSearchChange = (e) => {
+    dispatch(setSearchTerm(e.target.value));
+  };
 
-  useEffect(() => {
-    let filtered = [...blogs];
+  const handleCategoryChange = (e) => {
+    dispatch(setSelectedCategory(e.target.value));
+  };
 
-    // Filter by search term
-    if (searchTerm) {
-      filtered = filtered.filter(blog =>
-        blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        blog.excerpt.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        blog.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))
-      );
-    }
-
-    // Filter by category
-    if (selectedCategory) {
-      filtered = filtered.filter(blog => blog.category === selectedCategory);
-    }
-
-    // Sort blogs
-    switch (sortBy) {
-      case 'newest':
-        filtered.sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt));
-        break;
-      case 'oldest':
-        filtered.sort((a, b) => new Date(a.publishedAt) - new Date(b.publishedAt));
-        break;
-      case 'popular':
-        filtered.sort((a, b) => b.views - a.views);
-        break;
-      case 'liked':
-        filtered.sort((a, b) => b.likes - a.likes);
-        break;
-      default:
-        break;
-    }
-
-    setFilteredBlogs(filtered);
-  }, [blogs, searchTerm, selectedCategory, sortBy]);
+  const handleSortChange = (e) => {
+    dispatch(setSortBy(e.target.value));
+  };
 
   const handleClearFilters = () => {
-    setSearchTerm('');
-    setSelectedCategory('');
-    setSortBy('newest');
+    dispatch(clearFilters());
+  };
+
+  const handleCreateBlog = () => {
+    dispatch(showCreateBlogModal());
   };
 
   const formatDate = (dateString) => {
@@ -964,6 +1007,12 @@ const BlogsPage = () => {
           <PageSubtitle>
             Discover insights, tips, and strategies to grow your business and stay ahead in the digital world
           </PageSubtitle>
+          <HeroActions>
+            <CreateBlogButton onClick={handleCreateBlog}>
+              <FaPlus />
+              Create New Blog
+            </CreateBlogButton>
+          </HeroActions>
         </PageHeader>
 
         <FilterSection>
@@ -973,14 +1022,14 @@ const BlogsPage = () => {
               type="text"
               placeholder="Search blogs..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={handleSearchChange}
             />
           </SearchContainer>
 
           <FilterControls>
             <CategoryFilter
               value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
+              onChange={handleCategoryChange}
             >
               <option value="">All Categories</option>
               {categories.map(category => (
@@ -992,7 +1041,7 @@ const BlogsPage = () => {
 
             <SortFilter
               value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
+              onChange={handleSortChange}
             >
               <option value="newest">Newest First</option>
               <option value="oldest">Oldest First</option>
@@ -1083,6 +1132,7 @@ const BlogsPage = () => {
           </BlogsGrid>
         )}
       </Container>
+      <CreateBlogModal />
     </PageContainer>
   );
 };

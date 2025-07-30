@@ -5,6 +5,7 @@ import weddingManagementReducer from './slices/weddingManagementSlice';
 import businessManagementReducer from './slices/businessManagementSlice';
 import automobileManagementReducer from './slices/automobileManagementSlice';
 import ecommerceManagementReducer from './slices/ecommerceManagementSlice';
+import blogsReducer from './slices/blogsSlice';
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     businessManagement: businessManagementReducer,
     automobileManagement: automobileManagementReducer,
     ecommerceManagement: ecommerceManagementReducer,
+    blogs: blogsReducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
