@@ -1292,7 +1292,12 @@ const FreelancerPortfolioPage = () => {
 
       {/* Enhanced About Section */}
       {sectionVisibility['about-us'] && (
-        <Section id="about" background={theme.colors.gray50}>
+        <Section
+          id="about"
+          data-section
+          background={theme.colors.gray50}
+          inView={visibleSections.has('about')}
+        >
           <SectionContainer>
             <SectionTitle>
               {currentBusiness.about?.title || 'About Me'}
@@ -1326,7 +1331,11 @@ const FreelancerPortfolioPage = () => {
 
       {/* Enhanced Portfolio Section */}
       {sectionVisibility.portfolio && currentBusiness.portfolio && (
-        <Section id="portfolio">
+        <Section
+          id="portfolio"
+          data-section
+          inView={visibleSections.has('portfolio')}
+        >
           <SectionContainer>
             <SectionTitle>My Portfolio</SectionTitle>
             <PortfolioGrid>
@@ -1369,7 +1378,13 @@ const FreelancerPortfolioPage = () => {
 
       {/* Enhanced Skills Section */}
       {sectionVisibility.skills && currentBusiness.skills && (
-        <Section id="skills" background={theme.colors.gray50} ref={skillsRef}>
+        <Section
+          id="skills"
+          data-section
+          background={theme.colors.gray50}
+          ref={skillsRef}
+          inView={visibleSections.has('skills')}
+        >
           <SectionContainer>
             <SectionTitle>My Skills</SectionTitle>
             <SkillsGrid>
@@ -1400,7 +1415,11 @@ const FreelancerPortfolioPage = () => {
 
       {/* Enhanced Services Section */}
       {sectionVisibility['services-offered'] && currentBusiness.services && (
-        <Section id="services">
+        <Section
+          id="services"
+          data-section
+          inView={visibleSections.has('services')}
+        >
           <SectionContainer>
             <SectionTitle>My Services</SectionTitle>
             <PortfolioGrid>
