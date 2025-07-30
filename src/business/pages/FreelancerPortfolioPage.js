@@ -332,15 +332,83 @@ const HeroSection = styled.section.withConfig({
   }
 `;
 
-const HeroContent = styled.div`
-  max-width: 1000px;
+const HeroContainer = styled.div`
+  max-width: 1200px;
   margin: 0 auto;
   padding: 0 ${theme.spacing.md};
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: ${theme.spacing.xxl};
+  align-items: center;
   position: relative;
   z-index: 1;
-  color: ${theme.colors.white};
-  text-align: center;
-  ${css`animation: ${fadeInUp} 1s ease-out;`}
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    grid-template-columns: 1fr;
+    gap: ${theme.spacing.xl};
+    text-align: center;
+  }
+`;
+
+const HeroContent = styled.div`
+  ${css`animation: ${fadeInLeft} 1s ease-out;`}
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    order: 2;
+  }
+`;
+
+const HeroImageContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  ${css`animation: ${fadeInRight} 1s ease-out 0.3s both;`}
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    order: 1;
+  }
+`;
+
+const HeroImage = styled.div.withConfig({
+  shouldForwardProp: prop => prop !== 'image' && prop !== 'primaryColor',
+})`
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  background: url(${props => props.image || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80'}) center/cover;
+  border: 8px solid ${theme.colors.white};
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  position: relative;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.2);
+  }
+
+  &:before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    right: -20px;
+    bottom: -20px;
+    border: 2px solid ${props => props.primaryColor || theme.colors.primary};
+    border-radius: 50%;
+    opacity: 0.3;
+    ${css`animation: ${pulse} 3s ease-in-out infinite;`}
+  }
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    width: 300px;
+    height: 300px;
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    width: 250px;
+    height: 250px;
+  }
 `;
 
 const HeroTitle = styled.h1`
