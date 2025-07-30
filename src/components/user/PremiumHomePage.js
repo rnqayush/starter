@@ -307,8 +307,9 @@ const FloatingIcon = styled.div`
 `;
 
 const StatsSection = styled.section`
-  background: #0a0a0a;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
   padding: ${theme.spacing.xxl} 0;
+  margin: ${theme.spacing.xxl} 0;
   position: relative;
 
   &::before {
@@ -318,7 +319,7 @@ const StatsSection = styled.section`
     left: 0;
     right: 0;
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    background: linear-gradient(90deg, transparent, rgba(148, 163, 184, 0.3), transparent);
   }
 `;
 
