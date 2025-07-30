@@ -140,7 +140,9 @@ const LoadingSpinner = styled.div`
 `;
 
 // Enhanced Navbar with glass morphism effect
-const Navbar = styled.nav`
+const Navbar = styled.nav.withConfig({
+  shouldForwardProp: prop => prop !== 'isVisible',
+})`
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
