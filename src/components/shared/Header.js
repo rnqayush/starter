@@ -768,6 +768,9 @@ const Header = ({ isOwnerView = false }) => {
                 <NavLink to="/" isScrolled={isScrolled}>
                   Home
                 </NavLink>
+                <NavLink to="/blogs" isScrolled={isScrolled}>
+                  Blogs
+                </NavLink>
                 <NavLink to="/pricing" isScrolled={isScrolled}>
                   Pricing
                 </NavLink>
@@ -851,6 +854,9 @@ const Header = ({ isOwnerView = false }) => {
               <>
                 <NavLink to="/" onClick={closeMobileMenu} isMobile={true}>
                   Home
+                </NavLink>
+                <NavLink to="/blogs" onClick={closeMobileMenu} isMobile={true}>
+                  Blogs
                 </NavLink>
                 <NavLink
                   to="/pricing"
