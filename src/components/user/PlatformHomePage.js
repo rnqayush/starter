@@ -37,14 +37,6 @@ import {
   FaCloud,
   FaLock,
   FaRocket,
-  FaCrown,
-  FaAward,
-  FaShieldAlt,
-  FaHeadset,
-  FaChartLine,
-  FaUsers,
-  FaBriefcase,
-  FaShoppingCart,
 } from 'react-icons/fa';
 
 const PageContainer = styled.div`
