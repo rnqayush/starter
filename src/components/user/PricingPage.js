@@ -1,13 +1,22 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { FaCheck, FaStar, FaArrowRight, FaPlus, FaMinus } from 'react-icons/fa';
+import {
+  FaCheck,
+  FaStar,
+  FaArrowRight,
+  FaPlus,
+  FaMinus,
+  FaRocket,
+  FaCrown,
+  FaAward,
+} from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
 import Header from '../shared/Header';
 import {
   pricingPlans,
   pricingFeatures,
   pricingFAQs,
-} from '../../DummyData/platform';
+} from '../../DummyData/index';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -614,10 +623,17 @@ const PricingPage = () => {
   const [isYearly, setIsYearly] = useState(false);
   const [openFAQ, setOpenFAQ] = useState(null);
 
-  // Data is now imported from DummyData/platform.js
+  // Data is now imported from DummyData/platform.json
   const plans = pricingPlans;
   const features = pricingFeatures;
   const faqs = pricingFAQs;
+
+  // Icon mapping for pricing plans
+  const planIcons = {
+    Starter: FaRocket,
+    Professional: FaCrown,
+    Enterprise: FaAward,
+  };
 
   const toggleFAQ = index => {
     setOpenFAQ(openFAQ === index ? null : index);
@@ -694,7 +710,7 @@ const PricingPage = () => {
                 )}
 
                 <PlanIcon featured={plan.featured}>
-                  <plan.icon />
+                  {React.createElement(planIcons[plan.name] || FaRocket)}
                 </PlanIcon>
 
                 <PlanName>{plan.name}</PlanName>

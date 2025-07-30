@@ -7,10 +7,15 @@ import {
   FaCheck,
   FaUpload,
   FaRocket,
+  FaRing,
+  FaHotel,
+  FaShoppingCart,
+  FaCar,
+  FaBriefcase,
 } from 'react-icons/fa';
 import { theme, media } from '../styles/GlobalStyle';
 import { Button } from './shared/Button';
-import { websiteTypes, colorOptions } from '../DummyData/platform';
+import { websiteTypes, colorOptions } from '../DummyData/index';
 
 const Container = styled.div`
   min-height: 100vh;
@@ -115,7 +120,9 @@ const StepIndicator = styled.div`
   }
 `;
 
-const StepDot = styled.div`
+const StepDot = styled.div.withConfig({
+  shouldForwardProp: prop => !['active', 'completed'].includes(prop),
+})`
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -150,7 +157,9 @@ const StepDot = styled.div`
   }
 `;
 
-const StepConnector = styled.div`
+const StepConnector = styled.div.withConfig({
+  shouldForwardProp: prop => prop !== 'completed',
+})`
   width: 60px;
   height: 2px;
   background: ${props =>
@@ -505,7 +514,16 @@ const StartBuilding = () => {
     themeColor: '#10b981',
   });
 
-  // Data is now imported from DummyData/platform.js
+  // Data is now imported from DummyData/platform.json
+
+  // Icon mapping for website types
+  const iconMap = {
+    weddings: FaRing,
+    hotels: FaHotel,
+    ecommerce: FaShoppingCart,
+    automobiles: FaCar,
+    professional: FaBriefcase,
+  };
 
   const totalSteps = 3;
   const progress = (currentStep / totalSteps) * 100;
@@ -562,7 +580,7 @@ const StartBuilding = () => {
             </Subtitle>
             <WebsiteTypeGrid>
               {websiteTypes.map(type => {
-                const IconComponent = type.icon;
+                const IconComponent = iconMap[type.id];
                 return (
                   <WebsiteTypeCard
                     key={type.id}

@@ -5,7 +5,7 @@ import automobileData from './automobiles.json';
 import ecommerceData from './ecommerce.json';
 import businessData from './business.json';
 import * as WeddingData from '../utils/weddingAPI';
-import * as PlatformData from './platform';
+import platformData from './platform.json';
 // Hotel data now comes from hotels.json via hotelAPI
 import {
   getStaticHotelData,
@@ -43,17 +43,16 @@ export const amenitiesList = getStaticAmenitiesData();
 export const weddingVendors = WeddingData.getStaticWeddingVendors();
 export const weddingBookings = WeddingData.getStaticWeddingBookings();
 
-export const {
-  storeCategories,
-  platformStats,
-  platformBenefits,
-  platformTestimonials,
-  pricingPlans,
-  pricingFeatures,
-  pricingFAQs,
-  websiteTypes,
-  colorOptions,
-} = PlatformData;
+// Export platform data from JSON
+export const storeCategories = platformData.exploreStores.categories || [];
+export const platformStats = platformData.stats || [];
+export const platformBenefits = platformData.whyChooseUs.benefits || [];
+export const platformTestimonials = platformData.testimonials.items || [];
+export const pricingPlans = platformData.pricing.plans || [];
+export const pricingFeatures = platformData.pricing.features || [];
+export const pricingFAQs = platformData.pricing.faqs || [];
+export const websiteTypes = platformData.websiteTypes || [];
+export const colorOptions = platformData.colorOptions || [];
 
 // Export utility functions with prefixed names to avoid conflicts
 // Automobile functions - using JSON data directly

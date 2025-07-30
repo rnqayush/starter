@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import {
@@ -10,7 +10,6 @@ import {
   FaPhone,
   FaEnvelope,
   FaMapMarkerAlt,
-  FaRocket,
   FaCheck,
   FaStar,
   FaQuoteLeft,
@@ -25,7 +24,20 @@ import {
   platformStats,
   platformBenefits,
   platformTestimonials,
-} from '../../DummyData/platform';
+} from '../../DummyData/index';
+import platformData from '../../DummyData/platform.json';
+import {
+  FaHotel,
+  FaCar,
+  FaRing,
+  FaShoppingBag,
+  FaGlobe,
+  FaCode,
+  FaPalette,
+  FaCloud,
+  FaLock,
+  FaRocket,
+} from 'react-icons/fa';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -806,10 +818,23 @@ const PlatformHomePage = () => {
   const { isAuthenticated } = useAuth();
   const [showAuthModal, setShowAuthModal] = useState(false);
 
-  // Data is now imported from DummyData/platform.js
+  // Data is now imported from DummyData/platform.json
   const stats = platformStats;
   const benefits = platformBenefits;
   const testimonials = platformTestimonials;
+
+  // Icon mapping for categories and benefits
+  const iconMap = {
+    hotels: FaHotel,
+    ecommerce: FaShoppingBag,
+    weddings: FaRing,
+    automobiles: FaCar,
+    'business-websites': FaGlobe,
+    'No-Code Platform': FaCode,
+    'Unlimited Customization': FaPalette,
+    'Enterprise-Grade Infrastructure': FaCloud,
+    'Secure & Compliant': FaLock,
+  };
 
   const handleStoreClick = store => {
     navigate(store.path);
@@ -843,33 +868,23 @@ const PlatformHomePage = () => {
       {/* Hero Section */}
       <HeroSection>
         <HeroContent>
-          <HeroTitle>Your Business. Your Website. Live in 5 Minutes.</HeroTitle>
-          <HeroSubtitle>
-            Trusted by 50,000+ businesses worldwide. Create stunning,
-            conversion-optimized stores for any industry with our
-            enterprise-grade no-code platform.
-          </HeroSubtitle>
+          <HeroTitle>{platformData.hero.title}</HeroTitle>
+          <HeroSubtitle>{platformData.hero.subtitle}</HeroSubtitle>
           <TrustIndicators>
-            <TrustItem>
-              <FaCheck />
-              <span>No Credit Card Required</span>
-            </TrustItem>
-            <TrustItem>
-              <FaCheck />
-              <span>14-Day Free Trial</span>
-            </TrustItem>
-            <TrustItem>
-              <FaCheck />
-              <span>24/7 Expert Support</span>
-            </TrustItem>
+            {platformData.hero.trustIndicators.map((indicator, index) => (
+              <TrustItem key={index}>
+                <FaCheck />
+                <span>{indicator.text}</span>
+              </TrustItem>
+            ))}
           </TrustIndicators>
           <HeroCTAContainer>
             <CreateStoreCTA onClick={handleCreateStore}>
-              Start Building Your Store
+              {platformData.hero.ctaButtons.primary}
               <FaRocket />
             </CreateStoreCTA>
             <ExploreStoreCTA onClick={handleExploreStores}>
-              View Live Examples
+              {platformData.hero.ctaButtons.secondary}
               <FaArrowRight />
             </ExploreStoreCTA>
           </HeroCTAContainer>
@@ -891,15 +906,13 @@ const PlatformHomePage = () => {
       {/* Explore Stores Section */}
       <ExploreStoresSection id="explore-stores">
         <ExploreStoresContainer>
-          <SectionTitle>Industry-Specific Solutions</SectionTitle>
+          <SectionTitle>{platformData.exploreStores.title}</SectionTitle>
           <SectionSubtitle>
-            Explore our specialized templates and features designed for your
-            industry. Each solution comes with industry-specific tools and
-            integrations.
+            {platformData.exploreStores.subtitle}
           </SectionSubtitle>
           <StoreCardsGrid>
             {storeCategories.map(store => {
-              const IconComponent = store.icon;
+              const IconComponent = iconMap[store.id];
               return (
                 <StoreCard
                   key={store.id}
@@ -929,14 +942,11 @@ const PlatformHomePage = () => {
       {/* Why Choose Us Section */}
       <WhyChooseUsSection>
         <WhyChooseUsContainer>
-          <SectionTitle>Why Leading Brands Choose StoreBuilder</SectionTitle>
-          <SectionSubtitle>
-            Join thousands of successful businesses who trust our platform to
-            power their online growth.
-          </SectionSubtitle>
+          <SectionTitle>{platformData.whyChooseUs.title}</SectionTitle>
+          <SectionSubtitle>{platformData.whyChooseUs.subtitle}</SectionSubtitle>
           <BenefitsGrid>
             {benefits.map((benefit, index) => {
-              const IconComponent = benefit.icon;
+              const IconComponent = iconMap[benefit.title];
               return (
                 <BenefitCard key={index}>
                   <BenefitIcon>
@@ -954,10 +964,9 @@ const PlatformHomePage = () => {
       {/* Testimonials Section */}
       <TestimonialsSection>
         <TestimonialsContainer>
-          <SectionTitle>Trusted by Industry Leaders</SectionTitle>
+          <SectionTitle>{platformData.testimonials.title}</SectionTitle>
           <SectionSubtitle>
-            Don't just take our word for it. Here's what our customers say about
-            their success with StoreBuilder.
+            {platformData.testimonials.subtitle}
           </SectionSubtitle>
           <TestimonialsGrid>
             {testimonials.map((testimonial, index) => (
@@ -986,9 +995,9 @@ const PlatformHomePage = () => {
       {/* CTA Banner Section */}
       <CTABannerSection>
         <CTABannerContainer>
-          <CTABannerTitle>Ready to Transform Your Business?</CTABannerTitle>
+          <CTABannerTitle>{platformData.ctaBanner.title}</CTABannerTitle>
           <CTABannerButton onClick={handleCreateStore}>
-            Start My Online Store
+            {platformData.ctaBanner.buttonText}
             <FaRocket />
           </CTABannerButton>
         </CTABannerContainer>
@@ -998,11 +1007,8 @@ const PlatformHomePage = () => {
       <Footer>
         <FooterContent>
           <FooterSection>
-            <h3>StoreBuilder</h3>
-            <p>
-              Empowering businesses to create professional websites with
-              industry-specific features and tools.
-            </p>
+            <h3>{platformData.footer.brand.name}</h3>
+            <p>{platformData.footer.brand.description}</p>
             <SocialLinks>
               <SocialLink href="#" aria-label="Facebook">
                 <FaFacebook />
@@ -1020,41 +1026,47 @@ const PlatformHomePage = () => {
           </FooterSection>
 
           <FooterSection>
-            <h3>Industries</h3>
-            <FooterLink href="/hotels">Hotels</FooterLink>
-            <FooterLink href="/ecommerce">Ecommerce</FooterLink>
-            <FooterLink href="/weddings">Weddings</FooterLink>
-            <FooterLink href="/automobiles">Automobiles</FooterLink>
+            <h3>{platformData.footer.sections.industries.title}</h3>
+            {platformData.footer.sections.industries.links.map(
+              (link, index) => (
+                <FooterLink key={index} href={link.href}>
+                  {link.text}
+                </FooterLink>
+              )
+            )}
           </FooterSection>
 
           <FooterSection>
-            <h3>Company</h3>
-            <FooterLink href="/about">About Us</FooterLink>
-            <FooterLink href="/pricing">Pricing</FooterLink>
-            <FooterLink href="/faq">FAQ</FooterLink>
+            <h3>{platformData.footer.sections.company.title}</h3>
+            {platformData.footer.sections.company.links.map((link, index) => (
+              <FooterLink key={index} href={link.href}>
+                {link.text}
+              </FooterLink>
+            ))}
           </FooterSection>
 
           <FooterSection>
-            <h3>Support</h3>
-            <ContactInfo>
-              <FaPhone />
-              <span>+1 (555) 123-4567</span>
-            </ContactInfo>
-            <ContactInfo>
-              <FaEnvelope />
-              <span>hello@storebuilder.com</span>
-            </ContactInfo>
-            <ContactInfo>
-              <FaMapMarkerAlt />
-              <span>123 Business St, Tech City</span>
-            </ContactInfo>
-            <FooterLink href="/privacy">Privacy Policy</FooterLink>
-            <FooterLink href="/terms">Terms of Service</FooterLink>
+            <h3>{platformData.footer.sections.support.title}</h3>
+            {platformData.footer.sections.support.contact.map(
+              (contact, index) => (
+                <ContactInfo key={index}>
+                  {contact.icon === 'phone' && <FaPhone />}
+                  {contact.icon === 'email' && <FaEnvelope />}
+                  {contact.icon === 'location' && <FaMapMarkerAlt />}
+                  <span>{contact.text}</span>
+                </ContactInfo>
+              )
+            )}
+            {platformData.footer.sections.support.links.map((link, index) => (
+              <FooterLink key={index} href={link.href}>
+                {link.text}
+              </FooterLink>
+            ))}
           </FooterSection>
         </FooterContent>
 
         <FooterBottom>
-          <p>&copy; 2024 StoreBuilder. All rights reserved.</p>
+          <p>{platformData.footer.bottomText}</p>
         </FooterBottom>
       </Footer>
 
