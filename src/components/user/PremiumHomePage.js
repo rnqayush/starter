@@ -992,14 +992,40 @@ const PremiumHomePage = () => {
         </FeaturesContainer>
       </FeaturesSection>
 
+      <TestimonialsSection>
+        <TestimonialsContainer>
+          <SectionTitle>{platformData.testimonials.title}</SectionTitle>
+          <SectionSubtitle>{platformData.testimonials.subtitle}</SectionSubtitle>
+          <TestimonialsGrid>
+            {platformData.testimonials.items.map((testimonial, index) => (
+              <TestimonialCard key={index} delay={`${index * 0.1}s`}>
+                <TestimonialQuote>
+                  <FaQuoteLeft />
+                </TestimonialQuote>
+                <TestimonialText>"{testimonial.text}"</TestimonialText>
+                <TestimonialAuthor>
+                  <AuthorName>{testimonial.name}</AuthorName>
+                  <AuthorRole>{testimonial.role}</AuthorRole>
+                  <StarRating>
+                    {[...Array(testimonial.rating)].map((_, i) => (
+                      <FaStar key={i} />
+                    ))}
+                  </StarRating>
+                </TestimonialAuthor>
+              </TestimonialCard>
+            ))}
+          </TestimonialsGrid>
+        </TestimonialsContainer>
+      </TestimonialsSection>
+
       <CTASection>
         <CTAContent>
-          <CTATitle>Ready to Transform Your Business?</CTATitle>
+          <CTATitle>{platformData.ctaBanner.title}</CTATitle>
           <CTASubtitle>
             Join thousands of successful entrepreneurs who chose StoreBuilder to power their dreams
           </CTASubtitle>
           <CTAButton onClick={handleGetStarted}>
-            Get Started Free
+            {platformData.ctaBanner.buttonText}
             <FaArrowRight />
           </CTAButton>
         </CTAContent>
