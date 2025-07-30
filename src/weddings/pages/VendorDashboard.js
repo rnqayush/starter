@@ -2039,7 +2039,8 @@ const VendorDashboard = React.memo(() => {
                 <FormInput
                   value={heroData.name}
                   onChange={e => {
-                    debouncedInputChange('hero', 'name', e.target.value, setHeroData);
+                    setHeroData(prev => ({ ...prev, name: e.target.value }));
+                    trackSectionChange('hero');
                   }}
                   placeholder="Enter your business name"
                 />
