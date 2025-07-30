@@ -944,6 +944,32 @@ const PremiumHomePage = () => {
         </StatsContainer>
       </StatsSection>
 
+      <ExploreSection>
+        <ExploreContainer>
+          <SectionTitle>{platformData.exploreStores.title}</SectionTitle>
+          <SectionSubtitle>{platformData.exploreStores.subtitle}</SectionSubtitle>
+          <ExploreGrid>
+            {platformData.exploreStores.categories.map((category, index) => {
+              const IconComponent = categoryIcons[category.id] || FaBriefcase;
+              return (
+                <CategoryCard
+                  key={category.id}
+                  gradient={category.gradient}
+                  delay={`${index * 0.1}s`}
+                  onClick={() => handleCategoryClick(category.path)}
+                >
+                  <CategoryIcon>
+                    <IconComponent />
+                  </CategoryIcon>
+                  <CategoryTitle>{category.title}</CategoryTitle>
+                  <CategoryDescription>{category.description}</CategoryDescription>
+                </CategoryCard>
+              );
+            })}
+          </ExploreGrid>
+        </ExploreContainer>
+      </ExploreSection>
+
       <FeaturesSection>
         <FeaturesContainer>
           <SectionTitle>Why Choose StoreBuilder?</SectionTitle>
