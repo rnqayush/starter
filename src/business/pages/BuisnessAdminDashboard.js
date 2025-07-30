@@ -1163,10 +1163,10 @@ const BuisnessAdminDashboard = () => {
             }
           );
 
-          // Initialize UI content data from API data
+          // Initialize UI content data from current data
           setUiContentData(
-            businessData.ui || {
-              sections: businessData.sections || {},
+            currentData.ui || {
+              sections: currentData.sections || {},
               buttons: {
                 bookNow: 'Book Now',
                 learnMore: 'Learn More',
