@@ -1137,12 +1137,12 @@ const BuisnessAdminDashboard = () => {
             'contact',
           ]);
 
-          // Initialize contact data from API data
+          // Initialize contact data from current data
           setContactData(
-            businessData.contact || {
+            currentData.contact || {
               title: 'Get In Touch',
-              description: `Contact us to learn more about ${businessData.name}`,
-              email: `hello@${businessData.slug}.com`,
+              description: `Contact us to learn more about ${currentData.name}`,
+              email: `hello@${currentData.slug}.com`,
               phone: '+1 (555) 123-4567',
               address: '123 Business Street, City, State 12345',
               hours: {
