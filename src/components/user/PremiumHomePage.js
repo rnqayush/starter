@@ -864,45 +864,25 @@ const PremiumHomePage = () => {
     navigate('/pricing');
   };
 
-  const stats = [
-    { number: '50K+', label: 'Active Stores' },
-    { number: '99.9%', label: 'Uptime' },
-    { number: '24/7', label: 'Support' },
-    { number: '4.9/5', label: 'Rating' },
-  ];
+  const handleCategoryClick = (path) => {
+    navigate(path);
+  };
 
-  const features = [
-    {
-      icon: FaBolt,
-      title: 'Lightning Fast',
-      description: 'Build your store in minutes with our AI-powered platform and premium templates.',
-    },
-    {
-      icon: FaShieldAlt,
-      title: 'Enterprise Security',
-      description: 'Bank-level security with SSL certificates and automated backups included.',
-    },
-    {
-      icon: FaGlobe,
-      title: 'Global Reach',
-      description: 'Reach customers worldwide with our global CDN and multi-language support.',
-    },
-    {
-      icon: FaMobile,
-      title: 'Mobile First',
-      description: 'Beautiful responsive designs that work perfectly on all devices.',
-    },
-    {
-      icon: FaChartLine,
-      title: 'Advanced Analytics',
-      description: 'Track performance with detailed analytics and business insights.',
-    },
-    {
-      icon: FaCrown,
-      title: 'Premium Templates',
-      description: 'Access hundreds of professionally designed templates for every industry.',
-    },
-  ];
+  // Icon mapping for categories
+  const categoryIcons = {
+    hotels: FaHotel,
+    ecommerce: FaShoppingCart,
+    weddings: FaRing,
+    automobiles: FaCar,
+    'business-websites': FaBriefcase,
+  };
+
+  // Icon mapping for contact
+  const contactIcons = {
+    phone: FaPhoneAlt,
+    email: FaEnvelope,
+    location: FaMapMarkerAlt,
+  };
 
   return (
     <PageContainer>
