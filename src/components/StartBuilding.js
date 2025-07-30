@@ -518,11 +518,11 @@ const StartBuilding = () => {
 
   // Icon mapping for website types
   const iconMap = {
-    'weddings': FaRing,
-    'hotels': FaHotel,
-    'ecommerce': FaShoppingCart,
-    'automobiles': FaCar,
-    'professional': FaBriefcase,
+    weddings: FaRing,
+    hotels: FaHotel,
+    ecommerce: FaShoppingCart,
+    automobiles: FaCar,
+    professional: FaBriefcase,
   };
 
   const totalSteps = 3;

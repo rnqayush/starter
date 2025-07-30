@@ -47,8 +47,6 @@ const fadeInUp = keyframes`
   }
 `;
 
-
-
 const float = keyframes`
   0%, 100% {
     transform: translateY(0px);
@@ -97,7 +95,14 @@ const PageContainer = styled.div`
 
 const HeroSection = styled.section`
   min-height: 100vh;
-  background: linear-gradient(135deg, #000000 0%, #1a1a2e 25%, #16213e 50%, #0f0f23 75%, #000000 100%);
+  background: linear-gradient(
+    135deg,
+    #000000 0%,
+    #1a1a2e 25%,
+    #16213e 50%,
+    #0f0f23 75%,
+    #000000 100%
+  );
   background-size: 400% 400%;
   animation: ${gradient} 15s ease infinite;
   display: flex;
@@ -114,9 +119,22 @@ const HeroSection = styled.section`
     left: 0;
     right: 0;
     bottom: 0;
-    background: radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.2) 0%, transparent 50%);
+    background:
+      radial-gradient(
+        circle at 20% 80%,
+        rgba(120, 119, 198, 0.3) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 80% 20%,
+        rgba(255, 119, 198, 0.3) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 40% 40%,
+        rgba(120, 219, 255, 0.2) 0%,
+        transparent 50%
+      );
     pointer-events: none;
   }
 
@@ -218,7 +236,12 @@ const PrimaryButton = styled.button`
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
     transition: left 0.5s;
   }
 
@@ -302,10 +325,12 @@ const FloatingIcon = styled.div`
   animation: ${float} ${props => props.duration || '6s'} ease-in-out infinite;
   animation-delay: ${props => props.delay || '0s'};
 
-  ${props => props.position && css`
-    top: ${props.position.top};
-    left: ${props.position.left};
-  `}
+  ${props =>
+    props.position &&
+    css`
+      top: ${props.position.top};
+      left: ${props.position.left};
+    `}
 `;
 
 const StatsSection = styled.section`
@@ -321,7 +346,12 @@ const StatsSection = styled.section`
     left: 0;
     right: 0;
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(148, 163, 184, 0.3), transparent);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(148, 163, 184, 0.3),
+      transparent
+    );
   }
 `;
 
@@ -456,7 +486,12 @@ const FeatureCard = styled.div`
     left: 0;
     right: 0;
     height: 3px;
-    background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.8), transparent);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(102, 126, 234, 0.8),
+      transparent
+    );
     transform: scaleX(0);
     transition: transform 0.3s ease;
   }
@@ -588,7 +623,8 @@ const ExploreGrid = styled.div`
 const CategoryCard = styled.div`
   padding: ${theme.spacing.xxl};
   border-radius: ${theme.borderRadius.xl};
-  background: ${props => props.gradient || 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'};
+  background: ${props =>
+    props.gradient || 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'};
   color: white;
   transition: all 0.3s ease;
   cursor: pointer;
@@ -869,7 +905,7 @@ const PremiumHomePage = () => {
     navigate('/pricing');
   };
 
-  const handleCategoryClick = (path) => {
+  const handleCategoryClick = path => {
     navigate(path);
   };
 
@@ -894,30 +930,48 @@ const PremiumHomePage = () => {
       <Header />
       <HeroSection>
         <FloatingElements>
-          <FloatingIcon position={{ top: '10%', left: '10%' }} delay="0s" duration="8s">
+          <FloatingIcon
+            position={{ top: '10%', left: '10%' }}
+            delay="0s"
+            duration="8s"
+          >
             <FaRocket />
           </FloatingIcon>
-          <FloatingIcon position={{ top: '20%', right: '15%' }} delay="2s" duration="6s">
+          <FloatingIcon
+            position={{ top: '20%', right: '15%' }}
+            delay="2s"
+            duration="6s"
+          >
             <FaStar />
           </FloatingIcon>
-          <FloatingIcon position={{ bottom: '30%', left: '5%' }} delay="4s" duration="10s">
+          <FloatingIcon
+            position={{ bottom: '30%', left: '5%' }}
+            delay="4s"
+            duration="10s"
+          >
             <FaCrown />
           </FloatingIcon>
-          <FloatingIcon position={{ bottom: '20%', right: '10%' }} delay="1s" duration="7s" size="1.5rem">
+          <FloatingIcon
+            position={{ bottom: '20%', right: '10%' }}
+            delay="1s"
+            duration="7s"
+            size="1.5rem"
+          >
             <FaHeart />
           </FloatingIcon>
-          <FloatingIcon position={{ top: '50%', left: '3%' }} delay="3s" duration="9s" size="1.2rem">
+          <FloatingIcon
+            position={{ top: '50%', left: '3%' }}
+            delay="3s"
+            duration="9s"
+            size="1.2rem"
+          >
             <FaAward />
           </FloatingIcon>
         </FloatingElements>
 
         <HeroContent>
-          <HeroTitle>
-            {platformData.hero.title}
-          </HeroTitle>
-          <HeroSubtitle>
-            {platformData.hero.subtitle}
-          </HeroSubtitle>
+          <HeroTitle>{platformData.hero.title}</HeroTitle>
+          <HeroSubtitle>{platformData.hero.subtitle}</HeroSubtitle>
           <CTAContainer>
             <PrimaryButton onClick={handleGetStarted}>
               {platformData.hero.ctaButtons.primary}
@@ -953,7 +1007,9 @@ const PremiumHomePage = () => {
       <ExploreSection>
         <ExploreContainer>
           <SectionTitle>{platformData.exploreStores.title}</SectionTitle>
-          <SectionSubtitle>{platformData.exploreStores.subtitle}</SectionSubtitle>
+          <SectionSubtitle>
+            {platformData.exploreStores.subtitle}
+          </SectionSubtitle>
           <ExploreGrid>
             {platformData.exploreStores.categories.map((category, index) => {
               const IconComponent = categoryIcons[category.id] || FaBriefcase;
@@ -968,7 +1024,9 @@ const PremiumHomePage = () => {
                     <IconComponent />
                   </CategoryIcon>
                   <CategoryTitle>{category.title}</CategoryTitle>
-                  <CategoryDescription>{category.description}</CategoryDescription>
+                  <CategoryDescription>
+                    {category.description}
+                  </CategoryDescription>
                 </CategoryCard>
               );
             })}
@@ -1001,7 +1059,9 @@ const PremiumHomePage = () => {
       <TestimonialsSection>
         <TestimonialsContainer>
           <SectionTitle>{platformData.testimonials.title}</SectionTitle>
-          <SectionSubtitle>{platformData.testimonials.subtitle}</SectionSubtitle>
+          <SectionSubtitle>
+            {platformData.testimonials.subtitle}
+          </SectionSubtitle>
           <TestimonialsGrid>
             {platformData.testimonials.items.map((testimonial, index) => (
               <TestimonialCard key={index} delay={`${index * 0.1}s`}>
@@ -1028,7 +1088,8 @@ const PremiumHomePage = () => {
         <CTAContent>
           <CTATitle>{platformData.ctaBanner.title}</CTATitle>
           <CTASubtitle>
-            Join thousands of successful entrepreneurs who chose StoreBuilder to power their dreams
+            Join thousands of successful entrepreneurs who chose StoreBuilder to
+            power their dreams
           </CTASubtitle>
           <CTAButton onClick={handleGetStarted}>
             {platformData.ctaBanner.buttonText}
@@ -1042,26 +1103,42 @@ const PremiumHomePage = () => {
           <FooterContent>
             <FooterBrand>
               <BrandName>{platformData.footer.brand.name}</BrandName>
-              <BrandDescription>{platformData.footer.brand.description}</BrandDescription>
+              <BrandDescription>
+                {platformData.footer.brand.description}
+              </BrandDescription>
               <SocialLinks>
-                <SocialLink href="#"><FaFacebook /></SocialLink>
-                <SocialLink href="#"><FaTwitter /></SocialLink>
-                <SocialLink href="#"><FaInstagram /></SocialLink>
-                <SocialLink href="#"><FaLinkedin /></SocialLink>
+                <SocialLink href="#">
+                  <FaFacebook />
+                </SocialLink>
+                <SocialLink href="#">
+                  <FaTwitter />
+                </SocialLink>
+                <SocialLink href="#">
+                  <FaInstagram />
+                </SocialLink>
+                <SocialLink href="#">
+                  <FaLinkedin />
+                </SocialLink>
               </SocialLinks>
             </FooterBrand>
 
             <FooterColumn delay="0.1s">
-              <FooterTitle>{platformData.footer.sections.industries.title}</FooterTitle>
-              {platformData.footer.sections.industries.links.map((link, index) => (
-                <FooterLink key={index} onClick={() => navigate(link.href)}>
-                  {link.text}
-                </FooterLink>
-              ))}
+              <FooterTitle>
+                {platformData.footer.sections.industries.title}
+              </FooterTitle>
+              {platformData.footer.sections.industries.links.map(
+                (link, index) => (
+                  <FooterLink key={index} onClick={() => navigate(link.href)}>
+                    {link.text}
+                  </FooterLink>
+                )
+              )}
             </FooterColumn>
 
             <FooterColumn delay="0.2s">
-              <FooterTitle>{platformData.footer.sections.company.title}</FooterTitle>
+              <FooterTitle>
+                {platformData.footer.sections.company.title}
+              </FooterTitle>
               {platformData.footer.sections.company.links.map((link, index) => (
                 <FooterLink key={index} onClick={() => navigate(link.href)}>
                   {link.text}
@@ -1070,18 +1147,23 @@ const PremiumHomePage = () => {
             </FooterColumn>
 
             <FooterColumn delay="0.3s">
-              <FooterTitle>{platformData.footer.sections.support.title}</FooterTitle>
-              {platformData.footer.sections.support.contact.map((contact, index) => {
-                const IconComponent = contactIcons[contact.icon] || FaEnvelope;
-                return (
-                  <ContactInfo key={index}>
-                    <ContactIcon>
-                      <IconComponent />
-                    </ContactIcon>
-                    {contact.text}
-                  </ContactInfo>
-                );
-              })}
+              <FooterTitle>
+                {platformData.footer.sections.support.title}
+              </FooterTitle>
+              {platformData.footer.sections.support.contact.map(
+                (contact, index) => {
+                  const IconComponent =
+                    contactIcons[contact.icon] || FaEnvelope;
+                  return (
+                    <ContactInfo key={index}>
+                      <ContactIcon>
+                        <IconComponent />
+                      </ContactIcon>
+                      {contact.text}
+                    </ContactInfo>
+                  );
+                }
+              )}
               {platformData.footer.sections.support.links.map((link, index) => (
                 <FooterLink key={index} onClick={() => navigate(link.href)}>
                   {link.text}
@@ -1090,9 +1172,7 @@ const PremiumHomePage = () => {
             </FooterColumn>
           </FooterContent>
 
-          <FooterBottom>
-            {platformData.footer.bottomText}
-          </FooterBottom>
+          <FooterBottom>{platformData.footer.bottomText}</FooterBottom>
         </FooterContainer>
       </FooterSection>
 

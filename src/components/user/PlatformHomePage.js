@@ -825,10 +825,10 @@ const PlatformHomePage = () => {
 
   // Icon mapping for categories and benefits
   const iconMap = {
-    'hotels': FaHotel,
-    'ecommerce': FaShoppingBag,
-    'weddings': FaRing,
-    'automobiles': FaCar,
+    hotels: FaHotel,
+    ecommerce: FaShoppingBag,
+    weddings: FaRing,
+    automobiles: FaCar,
     'business-websites': FaGlobe,
     'No-Code Platform': FaCode,
     'Unlimited Customization': FaPalette,
@@ -869,9 +869,7 @@ const PlatformHomePage = () => {
       <HeroSection>
         <HeroContent>
           <HeroTitle>{platformData.hero.title}</HeroTitle>
-          <HeroSubtitle>
-            {platformData.hero.subtitle}
-          </HeroSubtitle>
+          <HeroSubtitle>{platformData.hero.subtitle}</HeroSubtitle>
           <TrustIndicators>
             {platformData.hero.trustIndicators.map((indicator, index) => (
               <TrustItem key={index}>
@@ -945,9 +943,7 @@ const PlatformHomePage = () => {
       <WhyChooseUsSection>
         <WhyChooseUsContainer>
           <SectionTitle>{platformData.whyChooseUs.title}</SectionTitle>
-          <SectionSubtitle>
-            {platformData.whyChooseUs.subtitle}
-          </SectionSubtitle>
+          <SectionSubtitle>{platformData.whyChooseUs.subtitle}</SectionSubtitle>
           <BenefitsGrid>
             {benefits.map((benefit, index) => {
               const IconComponent = iconMap[benefit.title];
@@ -1012,9 +1008,7 @@ const PlatformHomePage = () => {
         <FooterContent>
           <FooterSection>
             <h3>{platformData.footer.brand.name}</h3>
-            <p>
-              {platformData.footer.brand.description}
-            </p>
+            <p>{platformData.footer.brand.description}</p>
             <SocialLinks>
               <SocialLink href="#" aria-label="Facebook">
                 <FaFacebook />
@@ -1033,30 +1027,40 @@ const PlatformHomePage = () => {
 
           <FooterSection>
             <h3>{platformData.footer.sections.industries.title}</h3>
-            {platformData.footer.sections.industries.links.map((link, index) => (
-              <FooterLink key={index} href={link.href}>{link.text}</FooterLink>
-            ))}
+            {platformData.footer.sections.industries.links.map(
+              (link, index) => (
+                <FooterLink key={index} href={link.href}>
+                  {link.text}
+                </FooterLink>
+              )
+            )}
           </FooterSection>
 
           <FooterSection>
             <h3>{platformData.footer.sections.company.title}</h3>
             {platformData.footer.sections.company.links.map((link, index) => (
-              <FooterLink key={index} href={link.href}>{link.text}</FooterLink>
+              <FooterLink key={index} href={link.href}>
+                {link.text}
+              </FooterLink>
             ))}
           </FooterSection>
 
           <FooterSection>
             <h3>{platformData.footer.sections.support.title}</h3>
-            {platformData.footer.sections.support.contact.map((contact, index) => (
-              <ContactInfo key={index}>
-                {contact.icon === 'phone' && <FaPhone />}
-                {contact.icon === 'email' && <FaEnvelope />}
-                {contact.icon === 'location' && <FaMapMarkerAlt />}
-                <span>{contact.text}</span>
-              </ContactInfo>
-            ))}
+            {platformData.footer.sections.support.contact.map(
+              (contact, index) => (
+                <ContactInfo key={index}>
+                  {contact.icon === 'phone' && <FaPhone />}
+                  {contact.icon === 'email' && <FaEnvelope />}
+                  {contact.icon === 'location' && <FaMapMarkerAlt />}
+                  <span>{contact.text}</span>
+                </ContactInfo>
+              )
+            )}
             {platformData.footer.sections.support.links.map((link, index) => (
-              <FooterLink key={index} href={link.href}>{link.text}</FooterLink>
+              <FooterLink key={index} href={link.href}>
+                {link.text}
+              </FooterLink>
             ))}
           </FooterSection>
         </FooterContent>
