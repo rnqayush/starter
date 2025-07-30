@@ -1471,88 +1471,40 @@ const FreelancerPortfolioPage = () => {
       )}
 
       {/* Rest of the sections remain the same but with enhanced styling... */}
-      {/* Experience Section */}
+      {/* Timeline Experience Section */}
       {sectionVisibility.experience && currentBusiness.experience && (
-        <Section id="experience" background={theme.colors.gray50}>
+        <Section
+          id="experience"
+          data-section
+          background={theme.colors.gray50}
+          inView={visibleSections.has('experience')}
+        >
           <SectionContainer>
             <SectionTitle>My Experience</SectionTitle>
-            <div style={{ maxWidth: '800px', margin: '0 auto' }}>
+            <TimelineContainer>
               {currentBusiness.experience.map((job, index) => (
-                <div
+                <TimelineItem
                   key={job.id || index}
-                  style={{
-                    background: theme.colors.white,
-                    padding: '2rem',
-                    borderRadius: '20px',
-                    boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)',
-                    marginBottom: '2rem',
-                    border: `1px solid ${theme.colors.gray100}`,
-                    position: 'relative',
-                    overflow: 'hidden',
-                    transition: 'all 0.3s ease'
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = 'translateY(-5px)';
-                    e.currentTarget.style.boxShadow = '0 20px 40px rgba(0, 0, 0, 0.15)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = 'translateY(0)';
-                    e.currentTarget.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.1)';
-                  }}
+                  isLeft={index % 2 === 0}
+                  primaryColor={currentBusiness.primaryColor}
                 >
-                  <div style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    height: '4px',
-                    background: `linear-gradient(45deg, ${currentBusiness.primaryColor}, ${currentBusiness.primaryColor}80)`
-                  }} />
-                  <div style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'start',
-                    marginBottom: '1rem'
-                  }}>
-                    <div>
-                      <h3 style={{
-                        fontSize: '1.4rem',
-                        fontWeight: '600',
-                        color: theme.colors.gray900,
-                        marginBottom: '0.5rem'
-                      }}>
-                        {job.role}
-                      </h3>
-                      <div style={{
-                        fontSize: '1.1rem',
-                        color: currentBusiness.primaryColor,
-                        fontWeight: '600'
-                      }}>
-                        {job.company}
-                      </div>
-                    </div>
-                    <div style={{
-                      fontSize: '0.9rem',
-                      color: theme.colors.gray600,
-                      fontWeight: '500',
-                      textAlign: 'right',
-                      background: theme.colors.gray50,
-                      padding: '0.5rem 1rem',
-                      borderRadius: '20px'
-                    }}>
-                      {job.period}
-                    </div>
-                  </div>
-                  <p style={{ 
-                    color: theme.colors.gray600, 
-                    lineHeight: '1.7',
-                    fontSize: '1rem'
-                  }}>
-                    {job.description}
-                  </p>
-                </div>
+                  <TimelineContent
+                    isLeft={index % 2 === 0}
+                    primaryColor={currentBusiness.primaryColor}
+                  >
+                    <ExperienceRole>{job.role}</ExperienceRole>
+                    <ExperienceCompany primaryColor={currentBusiness.primaryColor}>
+                      {job.company}
+                    </ExperienceCompany>
+                    <ExperiencePeriod>{job.period}</ExperiencePeriod>
+                    <ExperienceDescription>
+                      {job.description}
+                    </ExperienceDescription>
+                  </TimelineContent>
+                  <TimelineDot primaryColor={currentBusiness.primaryColor} />
+                </TimelineItem>
               ))}
-            </div>
+            </TimelineContainer>
           </SectionContainer>
         </Section>
       )}
