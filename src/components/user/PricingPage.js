@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { FaCheck, FaStar, FaArrowRight, FaPlus, FaMinus } from 'react-icons/fa';
+import { FaCheck, FaStar, FaArrowRight, FaPlus, FaMinus, FaRocket, FaCrown, FaAward } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
 import Header from '../shared/Header';
 import {
