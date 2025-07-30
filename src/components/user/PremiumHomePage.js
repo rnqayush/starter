@@ -935,7 +935,7 @@ const PremiumHomePage = () => {
 
       <StatsSection>
         <StatsContainer>
-          {stats.map((stat, index) => (
+          {platformData.stats.map((stat, index) => (
             <StatCard key={index} delay={`${index * 0.1}s`}>
               <StatNumber>{stat.number}</StatNumber>
               <StatLabel>{stat.label}</StatLabel>
