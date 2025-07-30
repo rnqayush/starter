@@ -10,7 +10,6 @@ import {
   FaPhone,
   FaEnvelope,
   FaMapMarkerAlt,
-  FaRocket,
   FaCheck,
   FaStar,
   FaQuoteLeft,
