@@ -831,13 +831,25 @@ const VendorDashboard = () => {
   });
   const [showDeleteAccountModal, setShowDeleteAccountModal] = useState(false);
 
+  // Debounce timer for Redux updates
+  const [debounceTimer, setDebounceTimer] = useState(null);
+
   // Track changes in a section and update Redux editing vendor for real-time preview
   const trackSectionChange = sectionId => {
     setChangedSections(prev => new Set([...prev, sectionId]));
     setSaved(false);
 
-    // Immediately update Redux editing vendor for real-time preview
-    updateEditingVendorInRedux();
+    // Clear existing timer
+    if (debounceTimer) {
+      clearTimeout(debounceTimer);
+    }
+
+    // Debounce Redux updates to avoid performance issues
+    const newTimer = setTimeout(() => {
+      updateEditingVendorInRedux();
+    }, 300); // 300ms delay
+
+    setDebounceTimer(newTimer);
   };
 
   // Handle footer data changes
