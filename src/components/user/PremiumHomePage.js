@@ -33,27 +33,7 @@ const fadeInUp = keyframes`
   }
 `;
 
-const fadeInLeft = keyframes`
-  from {
-    opacity: 0;
-    transform: translateX(-60px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-`;
 
-const fadeInRight = keyframes`
-  from {
-    opacity: 0;
-    transform: translateX(60px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-`;
 
 const float = keyframes`
   0%, 100% {
