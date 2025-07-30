@@ -1098,14 +1098,14 @@ const BuisnessAdminDashboard = () => {
           setSkillsData(currentData.skills || []);
           setExperienceData(currentData.experience || []);
           setGalleryData(businessData.gallery || []);
-          setPackagesData(businessData.packages || []);
-          setTestimonialsData(businessData.testimonials || []);
-          setReviewsData(businessData.reviews || []);
-          setFaqData(businessData.faq || []);
+          setPackagesData(currentData.packages || []);
+          setTestimonialsData(currentData.testimonials || []);
+          setReviewsData(currentData.reviews || []);
+          setFaqData(currentData.faq || []);
 
-          // Initialize business hours from API data
+          // Initialize business hours from current data
           setBusinessHoursData(
-            businessData.businessHours || {
+            currentData.businessHours || {
               title: 'Business Hours',
               hours: {
                 monday: '9:00 AM - 6:00 PM',
@@ -1620,7 +1620,7 @@ const BuisnessAdminDashboard = () => {
           heading: 'Card Section',
           cards: [
             { title: 'Card 1', description: 'Description 1', icon: '🎯' },
-            { title: 'Card 2', description: 'Description 2', icon: '⚡' },
+            { title: 'Card 2', description: 'Description 2', icon: '���' },
             { title: 'Card 3', description: 'Description 3', icon: '🚀' },
           ],
           layout: 'grid', // grid, horizontal, vertical
