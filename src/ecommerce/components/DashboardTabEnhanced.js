@@ -13,7 +13,7 @@ import {
   FaEye,
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
-import { sellerDashboardData } from '../../DummyData';
+import { sellerDashboardData } from '../../data';
 const {
   dashboardStats,
   salesTrendData,

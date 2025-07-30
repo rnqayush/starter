@@ -21,7 +21,7 @@ import {
   FaVideo,
   FaTable,
 } from 'react-icons/fa';
-import { theme } from '../../styles/GlobalStyle';
+import { theme } from '../../../styles/GlobalStyle';
 import {
   setEditingHotel,
   updateHotelField,
@@ -40,11 +40,11 @@ import {
   addAmenityToCategory,
   removeAmenityFromCategory,
   selectHasPendingChanges,
-} from '../../store/slices/hotelManagementSlice';
-import { useAppContext } from '../../context/AppContext';
-import { getHotelByIdOrSlug, amenitiesList } from '../../DummyData';
-import { Button } from '../shared/Button';
-import { Input } from '../shared/Input';
+} from '../../store/hotelManagementSlice';
+import { useAppContext } from '../../../context/AppContext';
+import { getHotelByIdOrSlug, amenitiesList } from '../../../data';
+import { Button } from '../../../components/shared/Button';
+import { Input } from '../../../components/shared/Input';
 
 const EditorContainer = styled.div`
   padding: ${theme.spacing.xl};

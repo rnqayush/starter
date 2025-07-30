@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useAuth } from '../../context/AuthContext';
 import AuthModal from '../../components/auth/AuthModal';
-import UserProfile from '../../components/user/UserProfile';
+import { UserProfile } from '../../platform';
 import {
   FaShoppingCart,
   FaUser,

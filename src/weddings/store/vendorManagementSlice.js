@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getStaticWeddingVendors } from '../../utils/weddingAPI';
+import { getStaticWeddingVendors } from '../utils/weddingAPI';
 
 const initialState = {
   vendors: getStaticWeddingVendors(),

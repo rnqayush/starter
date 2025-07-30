@@ -47,7 +47,7 @@ import {
   selectIsDataPersisted,
   clearError,
   discardChanges,
-} from '../../store/slices/ecommerceManagementSlice';
+} from '../store/ecommerceManagementSlice';
 
 const DashboardContainer = styled.div`
   display: flex;

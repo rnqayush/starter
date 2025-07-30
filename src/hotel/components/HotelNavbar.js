@@ -12,7 +12,7 @@ import {
   FaBed,
 } from 'react-icons/fa';
 import { theme, media } from '../../styles/GlobalStyle';
-import { getHotelByIdOrSlug } from '../../DummyData';
+import { getHotelByIdOrSlug } from '../../data';
 
 const NavbarContainer = styled.nav.withConfig({
   shouldForwardProp: prop => prop !== 'isScrolled',

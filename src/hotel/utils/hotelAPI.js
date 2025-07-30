@@ -1,5 +1,5 @@
 // Hotel API utility - simulates real API calls using JSON data
-import hotelData from '../DummyData/hotels.json';
+import hotelData from '../data/hotels.json';
 
 // Simulate network delay for realistic API behavior
 const delay = (ms = 500) => new Promise(resolve => setTimeout(resolve, ms));

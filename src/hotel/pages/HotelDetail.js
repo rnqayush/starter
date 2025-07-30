@@ -32,9 +32,9 @@ import {
   fetchHotelById,
   fetchHotelSections,
   fetchHotelReviews,
-} from '../../utils/hotelAPI';
-import { loadHotelData } from '../../store/slices/hotelManagementSlice';
-import hotelJsonData from '../../DummyData/hotels.json';
+} from '../utils/hotelAPI';
+import { loadHotelData } from '../store/hotelManagementSlice';
+import hotelJsonData from '../data/hotels.json';
 
 // Animations
 const fadeInUp = keyframes`

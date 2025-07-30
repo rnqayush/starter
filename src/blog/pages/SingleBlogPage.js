@@ -16,8 +16,8 @@ import {
   FaCopy,
 } from 'react-icons/fa';
 import { theme, media } from '../../styles/GlobalStyle';
-import Header from '../shared/Header';
-import blogsData from '../../DummyData/blogs.json';
+import Header from '../../components/shared/Header';
+import blogsData from '../data/blogs.json';
 
 const PageContainer = styled.div`
   min-height: 100vh;

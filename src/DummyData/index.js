@@ -1,19 +1,19 @@
 // Centralized data exports - all dummy data flows through this file
 
 // Import all data and utility functions with namespaced aliases to avoid conflicts
-import automobileData from './automobiles.json';
-import ecommerceData from './ecommerce.json';
-import businessData from './business.json';
-import * as WeddingData from '../utils/weddingAPI';
-import platformData from './platform.json';
+import automobileData from '../automobiles/data/automobiles.json';
+import ecommerceData from '../ecommerce/data/ecommerce.json';
+import businessData from '../business/data/business.json';
+import * as WeddingData from '../weddings/utils/weddingAPI';
+import platformData from '../platform/data/platform.json';
 // Hotel data now comes from hotels.json via hotelAPI
 import {
   getStaticHotelData,
   getStaticBookingsData,
   getStaticAmenitiesData,
   getOwnerHotels,
-} from '../utils/hotelAPI';
-import hotelAPI from '../utils/hotelAPI';
+} from '../hotel/utils/hotelAPI';
+import hotelAPI from '../hotel/utils/hotelAPI';
 
 // Export data arrays/objects from JSON
 export const automobileCategories =

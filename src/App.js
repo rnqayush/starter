@@ -9,10 +9,8 @@ import { AuthProvider } from './context/AuthContext';
 import ErrorBoundary from './components/ErrorBoundary';
 
 // User Components
-import PlatformHomePage from './components/user/PlatformHomePage';
-import PricingPage from './components/user/PricingPage';
-import BlogsPage from './components/user/BlogsPage';
-import SingleBlogPage from './components/user/SingleBlogPage';
+import { PlatformHomePage, PricingPage } from './platform';
+import { BlogsPage, SingleBlogPage } from './blog';
 import LoginPage from './components/auth/LoginPage';
 import RegisterPage from './components/auth/RegisterPage';
 import StartBuilding from './components/StartBuilding';
@@ -25,21 +23,17 @@ import SmartRouter from './components/SmartRouter';
 // Note: HotelModule removed as it's not used in current routing
 
 // Mock data
-import {
-  hotels as hotelModuleData,
-  hotelBookings,
-  ownerHotels as hotelOwnerData,
-} from './DummyData';
+import { hotelsData as hotelModuleData } from './hotel';
 
 // Category Landing Pages
-import HotelCategoryLanding from './components/category/HotelCategoryLanding';
-import EcommerceCategoryLanding from './components/category/EcommerceCategoryLanding';
-import WeddingCategoryLanding from './components/category/WeddingCategoryLanding';
-import AutomobileCategoryLanding from './components/category/AutomobileCategoryLanding';
-import BusinessCategoryLanding from './components/category/BusinessCategoryLanding';
+import { HotelCategoryLanding } from './hotel';
+import { EcommerceCategoryLanding } from './ecommerce';
+import { WeddingCategoryLanding } from './weddings';
+import { AutomobileCategoryLanding } from './automobiles';
+import { BusinessCategoryLanding } from './business';
 
 // Store Listing Pages
-import OwnerDashboard from './components/owner/OwnerDashboard';
+import { OwnerDashboard } from './hotel';
 import RoomDetail from './hotel/pages/RoomDetail';
 import Booking from './hotel/pages/Booking';
 import BookingConfirmation from './hotel/pages/BookingConfirmation';
@@ -75,8 +69,8 @@ function App() {
 
   // For backwards compatibility, provide both live and static data
   const [hotels, setHotels] = useState(hotelModuleData);
-  const [bookings, setBookings] = useState(hotelBookings);
-  const [ownerHotels, setOwnerHotels] = useState(hotelOwnerData || []);
+  const [bookings, setBookings] = useState(hotelModuleData?.data?.bookings || []);
+  const [ownerHotels, setOwnerHotels] = useState([hotelModuleData?.data?.hotel] || []);
 
   const contextValue = {
     user,

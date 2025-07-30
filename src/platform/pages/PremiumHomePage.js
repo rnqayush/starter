@@ -31,9 +31,9 @@ import {
 } from 'react-icons/fa';
 import { theme, media } from '../../styles/GlobalStyle';
 import { useAuth } from '../../context/AuthContext';
-import AuthModal from '../auth/AuthModal';
-import Header from '../shared/Header';
-import platformData from '../../DummyData/platform.json';
+import AuthModal from '../../components/auth/AuthModal';
+import Header from '../../components/shared/Header';
+import platformData from '../data/platform.json';
 
 // Keyframe animations
 const fadeInUp = keyframes`

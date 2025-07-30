@@ -37,7 +37,7 @@ import {
   selectError,
   selectIsInWishlist,
   clearError,
-} from '../../store/slices/automobileManagementSlice';
+} from '../store/automobileManagementSlice';
 
 const PageContainer = styled.div`
   min-height: 100vh;

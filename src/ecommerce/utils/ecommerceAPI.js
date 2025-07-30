@@ -1,7 +1,7 @@
 // Ecommerce API utilities - following the automobile module pattern
 // In a real application, these would make actual HTTP requests to your backend
 
-import ecommerceData from '../DummyData/ecommerce.json';
+import ecommerceData from '../data/ecommerce.json';
 
 // Base configuration
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || '/api';

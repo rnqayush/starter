@@ -18,7 +18,7 @@ import {
   updatePageSections,
   removeCustomSection,
   updateSectionContent,
-} from '../../store/slices/automobileManagementSlice';
+} from '../store/automobileManagementSlice';
 
 const Container = styled.div`
   background: ${theme.colors.white};

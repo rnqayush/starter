@@ -44,7 +44,7 @@ import {
   FaCopy,
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
-import { getWeddingVendorById as getVendorById } from '../../DummyData';
+import { getWeddingVendorById as getVendorById } from '../../data';
 import { useAuth } from '../../context/AuthContext';
 import {
   setEditingVendor,
@@ -61,7 +61,7 @@ import {
   saveVendorChanges,
   discardVendorChanges,
   toggleRealTimeUpdates,
-} from '../../store/slices/weddingManagementSlice';
+} from '../store/weddingManagementSlice';
 
 const DashboardContainer = styled.div`
   min-height: 100vh;

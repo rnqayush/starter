@@ -1,16 +1,25 @@
 // Automobiles Module Exports
 
 // Pages
-export { default as AutomobileDetail } from './pages/AutomobileDetail';
-export { default as AutomobileList } from './pages/AutomobileList';
+export { default as AutomobileMain } from './pages/AutomobileMain';
+export { default as DealerDashboard } from './pages/DealerDashboard';
+export { default as VehicleDetail } from './pages/VehicleDetail';
+export { default as Vehicles } from './pages/Vehicles';
+export { default as Wishlist } from './pages/Wishlist';
 
 // Components
 export { default as AutomobileCategoryLanding } from './components/AutomobileCategoryLanding';
 
 // Store
-export { default as automobileManagementSlice } from './store/automobileManagementSlice';
+import automobileManagementSliceReducer, * as automobileManagementSliceActions from './store/automobileManagementSlice';
+export const automobileManagementSlice = {
+  reducer: automobileManagementSliceReducer,
+  actions: automobileManagementSliceActions
+};
 export * from './store/automobileManagementSlice';
 
 // Data
 export { default as automobilesData } from './data/automobiles.json';
 
+// Default export - main automobile module component
+export { default } from './components/AutomobileCategoryLanding';

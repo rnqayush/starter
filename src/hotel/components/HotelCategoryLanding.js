@@ -1,5 +1,5 @@
 import React from 'react';
-import CategoryLanding from './CategoryLanding';
+import CategoryLanding from '../../components/category/CategoryLanding';
 
 const HotelCategoryLanding = () => {
   const mockups = [

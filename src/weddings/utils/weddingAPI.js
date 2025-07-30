@@ -1,5 +1,5 @@
 // Wedding API utility - mimics an API response with JSON data
-import weddingData from '../DummyData/wedding.json';
+import weddingData from '../data/wedding.json';
 
 // Simulate API delay for realistic behavior
 const simulateApiDelay = (ms = 100) =>

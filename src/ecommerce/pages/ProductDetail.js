@@ -27,7 +27,7 @@ import {
   getProductAvailabilityStatus as getAvailabilityStatus,
   getProductAvailabilityLabel as getAvailabilityLabel,
   getEcommerceVendorByIdOrSlug as getVendorByIdOrSlug,
-} from '../../DummyData';
+} from '../../data';
 
 const PageContainer = styled.div`
   min-height: 100vh;

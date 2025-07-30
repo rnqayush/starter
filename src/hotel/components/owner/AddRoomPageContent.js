@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { FaArrowLeft } from 'react-icons/fa';
-import { Card, CardContent } from '../shared/Card';
-import { Button } from '../shared/Button';
+import { Card, CardContent } from '../../../components/shared/Card';
+import { Button } from '../../../components/shared/Button';
 import {
   Input,
   FormGroup,
@@ -12,10 +12,10 @@ import {
   InputGroup,
   CheckboxGroup,
   CheckboxItem,
-} from '../shared/Input';
-import { theme } from '../../styles/GlobalStyle';
-import { useAppContext } from '../../context/AppContext';
-import { amenitiesList } from '../../DummyData';
+} from '../../../components/shared/Input';
+import { theme } from '../../../styles/GlobalStyle';
+import { useAppContext } from '../../../context/AppContext';
+import { amenitiesList } from '../../../data';
 
 const BackButton = styled.button`
   display: inline-flex;

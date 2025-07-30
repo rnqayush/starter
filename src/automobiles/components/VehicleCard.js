@@ -16,7 +16,7 @@ import {
   addToWishlist,
   removeFromWishlist,
   selectIsInWishlist,
-} from '../../store/slices/automobileManagementSlice';
+} from '../store/automobileManagementSlice';
 
 const Card = styled.div`
   background: ${theme.colors.white};

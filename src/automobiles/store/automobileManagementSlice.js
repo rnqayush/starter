@@ -32,7 +32,7 @@ export const fetchAutomobileData = createAsyncThunk(
 
       // TODO: Replace with actual API call using automobileAPI.getVendorBySlug(vendorSlug)
       // For now, use local JSON data
-      const response = await import('../../DummyData/automobiles.json');
+      const response = await import('../data/automobiles.json');
 
       // Simulate network delay
       await new Promise(resolve => setTimeout(resolve, 500));
@@ -76,7 +76,7 @@ export const fetchVehicleDetails = createAsyncThunk(
 
       if (!vehicle) {
         // Simulate API call for specific vehicle
-        const response = await import('../../DummyData/automobiles.json');
+        const response = await import('../data/automobiles.json');
         const data = response.default;
         const vehicleData = data.data.allVehicles || data.data.vehicles || [];
         vehicle = vehicleData.find(v => v.id === parseInt(vehicleId));

@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import ecommerceData from '../../DummyData/ecommerce.json';
-import { ecommerceAPI } from '../../utils/ecommerceAPI';
+import ecommerceData from '../data/ecommerce.json';
+import { ecommerceAPI } from '../utils/ecommerceAPI';
 
 // Async thunks for API operations
 export const fetchEcommerceData = createAsyncThunk(

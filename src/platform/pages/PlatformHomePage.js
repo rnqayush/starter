@@ -14,18 +14,18 @@ import {
   FaStar,
   FaQuoteLeft,
 } from 'react-icons/fa';
-import Header from '../shared/Header';
-import { Button } from '../shared/Button';
+import Header from '../../components/shared/Header';
+import { Button } from '../../components/shared/Button';
 import { theme, media } from '../../styles/GlobalStyle';
 import { useAuth } from '../../context/AuthContext';
-import AuthModal from '../auth/AuthModal';
+import AuthModal from '../../components/auth/AuthModal';
 import {
   storeCategories,
   platformStats,
   platformBenefits,
   platformTestimonials,
-} from '../../DummyData/index';
-import platformData from '../../DummyData/platform.json';
+} from '../../data/index';
+import platformData from '../data/platform.json';
 import {
   FaHotel,
   FaCar,

@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { hotels } from '../../DummyData';
-import hotelJsonData from '../../DummyData/hotels.json';
+import { hotels } from '../../data';
+import hotelJsonData from '../data/hotels.json';
 
 // Initialize with hotel from JSON and fallback to dummy data
 const initialHotels = hotelJsonData?.data?.hotel

@@ -37,7 +37,7 @@ import {
   selectApiReadyData,
   selectNeedsSyncCheck,
   discardTempChanges,
-} from '../../store/slices/automobileManagementSlice';
+} from '../store/automobileManagementSlice';
 
 const DashboardContainer = styled.div`
   display: flex;

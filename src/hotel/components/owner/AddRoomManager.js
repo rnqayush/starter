@@ -12,16 +12,16 @@ import {
   FaUndo,
   FaGift,
 } from 'react-icons/fa';
-import { theme } from '../../styles/GlobalStyle';
+import { theme } from '../../../styles/GlobalStyle';
 import {
   addRoom,
   setEditingHotel,
   saveChanges,
   publishChanges,
-} from '../../store/slices/hotelManagementSlice';
-import { getHotelByIdOrSlug } from '../../DummyData';
-import { Button } from '../shared/Button';
-import { Input } from '../shared/Input';
+} from '../../store/hotelManagementSlice';
+import { getHotelByIdOrSlug } from '../../../data';
+import { Button } from '../../../components/shared/Button';
+import { Input } from '../../../components/shared/Input';
 
 const Container = styled.div`
   padding: ${theme.spacing.xl};

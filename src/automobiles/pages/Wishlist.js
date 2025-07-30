@@ -10,7 +10,7 @@ import BackToTop from '../../ecommerce/components/BackToTop';
 import {
   getVehicleById,
   getAutomobileVendorByIdOrSlug as getVendorByIdOrSlug,
-} from '../../DummyData';
+} from '../../data';
 
 const PageContainer = styled.div`
   min-height: 100vh;

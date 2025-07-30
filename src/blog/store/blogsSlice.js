@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import blogsData from '../../DummyData/blogs.json';
+import blogsData from '../data/blogs.json';
 
 // Async thunk for loading blogs (simulating API call)
 export const loadBlogs = createAsyncThunk(

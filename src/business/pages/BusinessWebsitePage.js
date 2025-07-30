@@ -18,14 +18,14 @@ import {
   FaTimes,
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
-import { fetchBusinessData } from '../../utils/businessAPI';
+import { fetchBusinessData } from '../utils/businessAPI';
 import {
   initializeBusinessData,
   setBusinessType,
   setLoading,
   setError,
   clearError,
-} from '../../store/slices/businessManagementSlice';
+} from '../store/businessManagementSlice';
 
 const PageContainer = styled.div`
   min-height: 100vh;

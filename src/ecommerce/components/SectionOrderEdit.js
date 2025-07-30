@@ -19,7 +19,7 @@ import {
   updateSectionContent,
   reorderSections,
   updateSectionVisibility,
-} from '../../store/slices/ecommerceManagementSlice';
+} from '../store/ecommerceManagementSlice';
 
 const Container = styled.div`
   background: ${theme.colors.white};

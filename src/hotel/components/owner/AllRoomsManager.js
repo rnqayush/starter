@@ -14,16 +14,16 @@ import {
   FaGift,
   FaEye,
 } from 'react-icons/fa';
-import { theme } from '../../styles/GlobalStyle';
+import { theme } from '../../../styles/GlobalStyle';
 import {
   updateRoom,
   removeRoom,
   setEditingHotel,
-} from '../../store/slices/hotelManagementSlice';
-import { getHotelByIdOrSlug } from '../../DummyData';
-import { Button } from '../shared/Button';
-import { Input } from '../shared/Input';
-import { Card, CardContent } from '../shared/Card';
+} from '../../store/hotelManagementSlice';
+import { getHotelByIdOrSlug } from '../../../data';
+import { Button } from '../../../components/shared/Button';
+import { Input } from '../../../components/shared/Input';
+import { Card, CardContent } from '../../../components/shared/Card';
 
 const Container = styled.div`
   padding: ${theme.spacing.xl};

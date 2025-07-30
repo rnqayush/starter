@@ -2,7 +2,7 @@
 // This mimics what would be real API calls to a backend service
 
 // Import the business data directly
-import businessData from '../DummyData/business.json';
+import businessData from '../data/business.json';
 
 // Helper function to get business data by slug
 const getBusinessWebsiteData = slug => {

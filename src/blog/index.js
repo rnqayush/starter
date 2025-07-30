@@ -4,9 +4,12 @@ export { default as SingleBlogPage } from './pages/SingleBlogPage';
 export { default as CreateBlogModal } from './components/CreateBlogModal';
 
 // Store exports
-export { default as blogsSlice } from './store/blogsSlice';
+import blogsSliceReducer, * as blogsSliceActions from './store/blogsSlice';
+export const blogsSlice = {
+  reducer: blogsSliceReducer,
+  actions: blogsSliceActions
+};
 export * from './store/blogsSlice';
 
 // Data exports
 export { default as blogsData } from './data/blogs.json';
-

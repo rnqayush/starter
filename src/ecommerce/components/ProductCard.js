@@ -8,7 +8,7 @@ import {
   getProductAvailabilityStatus as getAvailabilityStatus,
   getProductAvailabilityLabel as getAvailabilityLabel,
   getProductAvailabilityColor as getAvailabilityColor,
-} from '../../DummyData';
+} from '../../data';
 
 const Card = styled.div`
   background: ${theme.colors.white};

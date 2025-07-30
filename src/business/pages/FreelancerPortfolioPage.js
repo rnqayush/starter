@@ -25,14 +25,14 @@ import {
   FaMobile,
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
-import { fetchBusinessData } from '../../utils/businessAPI';
+import { fetchBusinessData } from '../utils/businessAPI';
 import {
   initializeBusinessData,
   setBusinessType,
   setLoading,
   setError,
   clearError,
-} from '../../store/slices/businessManagementSlice';
+} from '../store/businessManagementSlice';
 
 // Keyframe animations
 const fadeInUp = keyframes`

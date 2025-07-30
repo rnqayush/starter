@@ -3,7 +3,7 @@ import {
   getStaticWeddingVendors,
   getStaticWeddingBookings,
   getVendorById,
-} from '../../utils/weddingAPI';
+} from '../utils/weddingAPI';
 
 const initialState = {
   // Vendor management

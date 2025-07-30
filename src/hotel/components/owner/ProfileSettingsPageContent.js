@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { FaUser, FaLock, FaSave, FaSignOutAlt, FaTrashAlt, FaExclamationTriangle } from 'react-icons/fa';
-import { Card, CardContent } from '../shared/Card';
-import { Button } from '../shared/Button';
-import { Input, FormGroup, Label, InputGroup } from '../shared/Input';
-import { theme } from '../../styles/GlobalStyle';
-import { useAppContext } from '../../context/AppContext';
+import { Card, CardContent } from '../../../components/shared/Card';
+import { Button } from '../../../components/shared/Button';
+import { Input, FormGroup, Label, InputGroup } from '../../../components/shared/Input';
+import { theme } from '../../../styles/GlobalStyle';
+import { useAppContext } from '../../../context/AppContext';
 
 const PageTitle = styled.h1`
   font-size: 2.5rem;

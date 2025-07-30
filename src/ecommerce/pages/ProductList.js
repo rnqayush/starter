@@ -12,7 +12,7 @@ import {
   ecommerceCategories as categories,
   getProductsByCategory,
   getEcommerceVendorByIdOrSlug as getVendorByIdOrSlug,
-} from '../../DummyData';
+} from '../../data';
 
 const PageContainer = styled.div`
   min-height: 100vh;

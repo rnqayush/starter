@@ -14,7 +14,7 @@ import {
   FaPlus,
 } from 'react-icons/fa';
 import { theme, media } from '../../styles/GlobalStyle';
-import { createBlog, hideCreateBlogModal, clearCreateBlogError } from '../../store/slices/blogsSlice';
+import { createBlog, hideCreateBlogModal, clearCreateBlogError } from '../store/blogsSlice';
 
 const ModalOverlay = styled.div`
   position: fixed;

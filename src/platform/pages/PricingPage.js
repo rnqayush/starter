@@ -11,12 +11,12 @@ import {
   FaAward,
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
-import Header from '../shared/Header';
+import Header from '../../components/shared/Header';
 import {
   pricingPlans,
   pricingFeatures,
   pricingFAQs,
-} from '../../DummyData/index';
+} from '../../data/index';
 
 const PageContainer = styled.div`
   min-height: 100vh;

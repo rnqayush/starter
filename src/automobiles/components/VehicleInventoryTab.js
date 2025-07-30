@@ -16,7 +16,7 @@ import {
   getVehicleAvailabilityStatus as getAvailabilityStatus,
   getVehicleAvailabilityLabel as getAvailabilityLabel,
   getVehicleAvailabilityColor as getAvailabilityColor,
-} from '../../DummyData';
+} from '../../data';
 
 const InventoryContainer = styled.div`
   background: ${theme.colors.white};

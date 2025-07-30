@@ -11,7 +11,7 @@ import {
   getAutomobileVendorBySlug,
   getVendorById,
   getBusinessTemplate,
-} from '../DummyData';
+} from '../data';
 import HotelDetail from '../hotel/pages/HotelDetail';
 import EcommerceMain from '../ecommerce/pages/EcommerceMain';
 

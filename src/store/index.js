@@ -1,21 +1,20 @@
 import { configureStore } from '@reduxjs/toolkit';
-import hotelManagementReducer from './slices/hotelManagementSlice';
-import vendorManagementReducer from './slices/vendorManagementSlice';
-import weddingManagementReducer from './slices/weddingManagementSlice';
-import businessManagementReducer from './slices/businessManagementSlice';
-import automobileManagementReducer from './slices/automobileManagementSlice';
-import ecommerceManagementReducer from './slices/ecommerceManagementSlice';
-import blogsReducer from './slices/blogsSlice';
+import { hotelManagementSlice } from '../hotel';
+import { vendorManagementSlice, weddingManagementSlice } from '../weddings';
+import { businessManagementSlice } from '../business';
+import { automobileManagementSlice } from '../automobiles';
+import { ecommerceManagementSlice } from '../ecommerce';
+import { blogsSlice } from '../blog';
 
 export const store = configureStore({
   reducer: {
-    hotelManagement: hotelManagementReducer,
-    vendorManagement: vendorManagementReducer,
-    weddingManagement: weddingManagementReducer,
-    businessManagement: businessManagementReducer,
-    automobileManagement: automobileManagementReducer,
-    ecommerceManagement: ecommerceManagementReducer,
-    blogs: blogsReducer,
+    hotelManagement: hotelManagementSlice.reducer,
+    vendorManagement: vendorManagementSlice.reducer,
+    weddingManagement: weddingManagementSlice.reducer,
+    businessManagement: businessManagementSlice.reducer,
+    automobileManagement: automobileManagementSlice.reducer,
+    ecommerceManagement: ecommerceManagementSlice.reducer,
+    blogs: blogsSlice.reducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({

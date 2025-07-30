@@ -25,7 +25,11 @@ export { default as ProfileSettingsPageContent } from './components/owner/Profil
 export { default as SectionBasedHotelEditor } from './components/owner/SectionBasedHotelEditor';
 
 // Store exports
-export { default as hotelManagementSlice } from './store/hotelManagementSlice';
+import hotelManagementSliceReducer, * as hotelManagementSliceActions from './store/hotelManagementSlice';
+export const hotelManagementSlice = {
+  reducer: hotelManagementSliceReducer,
+  actions: hotelManagementSliceActions
+};
 export * from './store/hotelManagementSlice';
 
 // Utils
@@ -34,3 +38,5 @@ export * from './utils/hotelAPI';
 // Data
 export { default as hotelsData } from './data/hotels.json';
 
+// Default export - main hotel module component
+export { default } from './components/HotelCategoryLanding';

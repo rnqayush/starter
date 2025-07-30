@@ -16,8 +16,8 @@ import {
   FaPen,
 } from 'react-icons/fa';
 import { theme, media } from '../../styles/GlobalStyle';
-import Header from '../shared/Header';
-import CreateBlogModal from './CreateBlogModal';
+import Header from '../../components/shared/Header';
+import CreateBlogModal from '../components/CreateBlogModal';
 import {
   loadBlogs,
   setSearchTerm,
@@ -25,7 +25,7 @@ import {
   setSortBy,
   clearFilters,
   showCreateBlogModal,
-} from '../../store/slices/blogsSlice';
+} from '../store/blogsSlice';
 
 const PageContainer = styled.div`
   min-height: 100vh;

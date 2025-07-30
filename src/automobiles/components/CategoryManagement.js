@@ -13,7 +13,7 @@ import { theme } from '../../styles/GlobalStyle';
 import {
   selectCategories,
   selectLoading,
-} from '../../store/slices/automobileManagementSlice';
+} from '../store/automobileManagementSlice';
 
 const Container = styled.div`
   background: ${theme.colors.white};

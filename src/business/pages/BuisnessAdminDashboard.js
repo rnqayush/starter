@@ -52,7 +52,7 @@ import {
   FaRandom,
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
-import { fetchBusinessData } from '../../utils/businessAPI';
+import { fetchBusinessData } from '../utils/businessAPI';
 import { useAuth } from '../../context/AuthContext';
 import {
   setEditingBusiness,
@@ -77,7 +77,7 @@ import {
   setLoading,
   setError,
   clearError,
-} from '../../store/slices/businessManagementSlice';
+} from '../store/businessManagementSlice';
 
 const DashboardContainer = styled.div`
   min-height: 100vh;

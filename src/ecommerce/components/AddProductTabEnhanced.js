@@ -13,7 +13,7 @@ import {
 import { theme } from '../../styles/GlobalStyle';
 import FormField from './shared/FormField';
 import { Button } from '../../components/shared/Button';
-import { ecommerceCategories } from '../../DummyData';
+import { ecommerceCategories } from '../../data';
 
 const FormContainer = styled.div`
   max-width: 1000px;
