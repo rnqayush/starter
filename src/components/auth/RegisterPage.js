@@ -427,313 +427,202 @@ const RegisterPage = () => {
         <Title>Create Account</Title>
 
         <Form onSubmit={handleSubmit}>
-          {userType === 'buyer' ? (
-            // Buyer Form
-            <>
-              <FormRow>
-                <FormGroup>
-                  <Label htmlFor="firstName">First Name</Label>
-                  <InputContainer>
-                    <InputIcon>
-                      <FaUser />
-                    </InputIcon>
-                    <StyledInput
-                      type="text"
-                      id="firstName"
-                      name="firstName"
-                      placeholder="First name"
-                      value={buyerData.firstName}
-                      onChange={handleBuyerInputChange}
-                      required
-                    />
-                  </InputContainer>
-                </FormGroup>
-                <FormGroup>
-                  <Label htmlFor="lastName">Last Name</Label>
-                  <InputContainer>
-                    <InputIcon>
-                      <FaUser />
-                    </InputIcon>
-                    <StyledInput
-                      type="text"
-                      id="lastName"
-                      name="lastName"
-                      placeholder="Last name"
-                      value={buyerData.lastName}
-                      onChange={handleBuyerInputChange}
-                      required
-                    />
-                  </InputContainer>
-                </FormGroup>
-              </FormRow>
+          <FormRow>
+            <FormGroup>
+              <Label htmlFor="firstName">First Name</Label>
+              <InputContainer>
+                <InputIcon>
+                  <FaUser />
+                </InputIcon>
+                <StyledInput
+                  type="text"
+                  id="firstName"
+                  name="firstName"
+                  placeholder="First name"
+                  value={formData.firstName}
+                  onChange={handleInputChange}
+                  required
+                />
+              </InputContainer>
+            </FormGroup>
+            <FormGroup>
+              <Label htmlFor="lastName">Last Name</Label>
+              <InputContainer>
+                <InputIcon>
+                  <FaUser />
+                </InputIcon>
+                <StyledInput
+                  type="text"
+                  id="lastName"
+                  name="lastName"
+                  placeholder="Last name"
+                  value={formData.lastName}
+                  onChange={handleInputChange}
+                  required
+                />
+              </InputContainer>
+            </FormGroup>
+          </FormRow>
 
-              <FormGroup>
-                <Label htmlFor="email">Email Address</Label>
-                <InputContainer>
-                  <InputIcon>
-                    <FaEnvelope />
-                  </InputIcon>
-                  <StyledInput
-                    type="email"
-                    id="email"
-                    name="email"
-                    placeholder="Enter your email"
-                    value={buyerData.email}
-                    onChange={handleBuyerInputChange}
-                    required
-                  />
-                </InputContainer>
-              </FormGroup>
+          <FormGroup>
+            <Label htmlFor="email">Email Address</Label>
+            <InputContainer>
+              <InputIcon>
+                <FaEnvelope />
+              </InputIcon>
+              <StyledInput
+                type="email"
+                id="email"
+                name="email"
+                placeholder="Enter your email"
+                value={formData.email}
+                onChange={handleInputChange}
+                required
+              />
+            </InputContainer>
+          </FormGroup>
 
-              <FormGroup>
-                <Label htmlFor="password">Password</Label>
-                <InputContainer>
-                  <InputIcon>
-                    <FaLock />
-                  </InputIcon>
-                  <StyledInput
-                    type={showPassword ? 'text' : 'password'}
-                    id="password"
-                    name="password"
-                    placeholder="Create a password"
-                    value={buyerData.password}
-                    onChange={handleBuyerInputChange}
-                    required
-                  />
-                  <PasswordToggle
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? <FaEyeSlash /> : <FaEye />}
-                  </PasswordToggle>
-                </InputContainer>
-              </FormGroup>
+          <FormRow>
+            <FormGroup>
+              <Label htmlFor="phone">Phone Number</Label>
+              <InputContainer>
+                <InputIcon>
+                  <FaPhone />
+                </InputIcon>
+                <StyledInput
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  placeholder="Phone number"
+                  value={formData.phone}
+                  onChange={handleInputChange}
+                  required
+                />
+              </InputContainer>
+            </FormGroup>
+            <FormGroup>
+              <Label htmlFor="businessName">Business Name</Label>
+              <InputContainer>
+                <InputIcon>
+                  <FaBuilding />
+                </InputIcon>
+                <StyledInput
+                  type="text"
+                  id="businessName"
+                  name="businessName"
+                  placeholder="Your business name"
+                  value={formData.businessName}
+                  onChange={handleInputChange}
+                  required
+                />
+              </InputContainer>
+            </FormGroup>
+          </FormRow>
 
-              <FormGroup>
-                <Label htmlFor="confirmPassword">Confirm Password</Label>
-                <InputContainer>
-                  <InputIcon>
-                    <FaLock />
-                  </InputIcon>
-                  <StyledInput
-                    type={showConfirmPassword ? 'text' : 'password'}
-                    id="confirmPassword"
-                    name="confirmPassword"
-                    placeholder="Confirm your password"
-                    value={buyerData.confirmPassword}
-                    onChange={handleBuyerInputChange}
-                    required
-                  />
-                  <PasswordToggle
-                    type="button"
-                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  >
-                    {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
-                  </PasswordToggle>
-                </InputContainer>
-              </FormGroup>
-            </>
-          ) : (
-            // Seller Form
-            <>
-              <FormRow>
-                <FormGroup>
-                  <Label htmlFor="firstName">First Name</Label>
-                  <InputContainer>
-                    <InputIcon>
-                      <FaUser />
-                    </InputIcon>
-                    <StyledInput
-                      type="text"
-                      id="firstName"
-                      name="firstName"
-                      placeholder="First name"
-                      value={sellerData.firstName}
-                      onChange={handleSellerInputChange}
-                      required
-                    />
-                  </InputContainer>
-                </FormGroup>
-                <FormGroup>
-                  <Label htmlFor="lastName">Last Name</Label>
-                  <InputContainer>
-                    <InputIcon>
-                      <FaUser />
-                    </InputIcon>
-                    <StyledInput
-                      type="text"
-                      id="lastName"
-                      name="lastName"
-                      placeholder="Last name"
-                      value={sellerData.lastName}
-                      onChange={handleSellerInputChange}
-                      required
-                    />
-                  </InputContainer>
-                </FormGroup>
-              </FormRow>
+          <FormGroup>
+            <Label htmlFor="businessCategory">Business Category</Label>
+            <InputContainer>
+              <InputIcon>
+                <FaShoppingBag />
+              </InputIcon>
+              <Select
+                id="businessCategory"
+                name="businessCategory"
+                value={formData.businessCategory}
+                onChange={handleInputChange}
+                required
+              >
+                {categories.map(category => (
+                  <option key={category.value} value={category.value}>
+                    {category.label}
+                  </option>
+                ))}
+              </Select>
+            </InputContainer>
+          </FormGroup>
 
-              <FormGroup>
-                <Label htmlFor="email">Email Address</Label>
-                <InputContainer>
-                  <InputIcon>
-                    <FaEnvelope />
-                  </InputIcon>
-                  <StyledInput
-                    type="email"
-                    id="email"
-                    name="email"
-                    placeholder="Business email"
-                    value={sellerData.email}
-                    onChange={handleSellerInputChange}
-                    required
-                  />
-                </InputContainer>
-              </FormGroup>
+          <FormGroup>
+            <Label htmlFor="address">Business Address</Label>
+            <InputContainer>
+              <InputIcon>
+                <FaMapMarkerAlt />
+              </InputIcon>
+              <StyledInput
+                type="text"
+                id="address"
+                name="address"
+                placeholder="Business address"
+                value={formData.address}
+                onChange={handleInputChange}
+                required
+              />
+            </InputContainer>
+          </FormGroup>
 
-              <FormGroup>
-                <Label htmlFor="businessName">Business Name</Label>
-                <InputContainer>
-                  <InputIcon>
-                    <FaBuilding />
-                  </InputIcon>
-                  <StyledInput
-                    type="text"
-                    id="businessName"
-                    name="businessName"
-                    placeholder="Your business name"
-                    value={sellerData.businessName}
-                    onChange={handleSellerInputChange}
-                    required
-                  />
-                </InputContainer>
-              </FormGroup>
+          <FormGroup>
+            <Label htmlFor="website">Website (Optional)</Label>
+            <InputContainer>
+              <InputIcon>
+                <FaGlobe />
+              </InputIcon>
+              <StyledInput
+                type="url"
+                id="website"
+                name="website"
+                placeholder="www.example.com"
+                value={formData.website}
+                onChange={handleInputChange}
+              />
+            </InputContainer>
+          </FormGroup>
 
-              <FormGroup>
-                <Label htmlFor="businessCategory">Business Category</Label>
-                <InputContainer>
-                  <InputIcon>
-                    <FaShoppingBag />
-                  </InputIcon>
-                  <Select
-                    id="businessCategory"
-                    name="businessCategory"
-                    value={sellerData.businessCategory}
-                    onChange={handleSellerInputChange}
-                    required
-                  >
-                    {categories.map(category => (
-                      <option key={category.value} value={category.value}>
-                        {category.label}
-                      </option>
-                    ))}
-                  </Select>
-                </InputContainer>
-              </FormGroup>
+          <FormGroup>
+            <Label htmlFor="password">Password</Label>
+            <InputContainer>
+              <InputIcon>
+                <FaLock />
+              </InputIcon>
+              <StyledInput
+                type={showPassword ? 'text' : 'password'}
+                id="password"
+                name="password"
+                placeholder="Create a password"
+                value={formData.password}
+                onChange={handleInputChange}
+                required
+              />
+              <PasswordToggle
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </PasswordToggle>
+            </InputContainer>
+          </FormGroup>
 
-              <FormRow>
-                <FormGroup>
-                  <Label htmlFor="phone">Phone Number</Label>
-                  <InputContainer>
-                    <InputIcon>
-                      <FaPhone />
-                    </InputIcon>
-                    <StyledInput
-                      type="tel"
-                      id="phone"
-                      name="phone"
-                      placeholder="Phone number"
-                      value={sellerData.phone}
-                      onChange={handleSellerInputChange}
-                      required
-                    />
-                  </InputContainer>
-                </FormGroup>
-                <FormGroup>
-                  <Label htmlFor="website">Website (Optional)</Label>
-                  <InputContainer>
-                    <InputIcon>
-                      <FaGlobe />
-                    </InputIcon>
-                    <StyledInput
-                      type="url"
-                      id="website"
-                      name="website"
-                      placeholder="www.example.com"
-                      value={sellerData.website}
-                      onChange={handleSellerInputChange}
-                    />
-                  </InputContainer>
-                </FormGroup>
-              </FormRow>
-
-              <FormGroup>
-                <Label htmlFor="address">Business Address</Label>
-                <InputContainer>
-                  <InputIcon>
-                    <FaMapMarkerAlt />
-                  </InputIcon>
-                  <StyledInput
-                    type="text"
-                    id="address"
-                    name="address"
-                    placeholder="Business address"
-                    value={sellerData.address}
-                    onChange={handleSellerInputChange}
-                    required
-                  />
-                </InputContainer>
-              </FormGroup>
-
-              <FormGroup>
-                <Label htmlFor="password">Password</Label>
-                <InputContainer>
-                  <InputIcon>
-                    <FaLock />
-                  </InputIcon>
-                  <StyledInput
-                    type={showPassword ? 'text' : 'password'}
-                    id="password"
-                    name="password"
-                    placeholder="Create a password"
-                    value={sellerData.password}
-                    onChange={handleSellerInputChange}
-                    required
-                  />
-                  <PasswordToggle
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? <FaEyeSlash /> : <FaEye />}
-                  </PasswordToggle>
-                </InputContainer>
-              </FormGroup>
-
-              <FormGroup>
-                <Label htmlFor="confirmPassword">Confirm Password</Label>
-                <InputContainer>
-                  <InputIcon>
-                    <FaLock />
-                  </InputIcon>
-                  <StyledInput
-                    type={showConfirmPassword ? 'text' : 'password'}
-                    id="confirmPassword"
-                    name="confirmPassword"
-                    placeholder="Confirm your password"
-                    value={sellerData.confirmPassword}
-                    onChange={handleSellerInputChange}
-                    required
-                  />
-                  <PasswordToggle
-                    type="button"
-                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  >
-                    {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
-                  </PasswordToggle>
-                </InputContainer>
-              </FormGroup>
-            </>
-          )}
+          <FormGroup>
+            <Label htmlFor="confirmPassword">Confirm Password</Label>
+            <InputContainer>
+              <InputIcon>
+                <FaLock />
+              </InputIcon>
+              <StyledInput
+                type={showConfirmPassword ? 'text' : 'password'}
+                id="confirmPassword"
+                name="confirmPassword"
+                placeholder="Confirm your password"
+                value={formData.confirmPassword}
+                onChange={handleInputChange}
+                required
+              />
+              <PasswordToggle
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              >
+                {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+              </PasswordToggle>
+            </InputContainer>
+          </FormGroup>
 
           <RegisterButton type="submit" disabled={isLoading}>
             {isLoading ? 'Creating Account...' : 'Create Account'}
