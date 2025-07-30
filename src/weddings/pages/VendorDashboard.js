@@ -2100,8 +2100,7 @@ const VendorDashboard = () => {
                 <FormTextarea
                   value={heroData.tagline}
                   onChange={e => {
-                    setHeroData(prev => ({ ...prev, tagline: e.target.value }));
-                    trackSectionChange('hero');
+                    debouncedInputChange('hero', 'tagline', e.target.value, setHeroData);
                   }}
                   placeholder="Enter your business tagline..."
                   rows={3}
