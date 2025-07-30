@@ -859,9 +859,19 @@ const BlogsPage = () => {
         // Simulate network delay
         await new Promise(resolve => setTimeout(resolve, 1000));
         
-        setBlogs(blogsData.blogs);
-        setCategories(blogsData.categories);
-        setFilteredBlogs(blogsData.blogs);
+        // Handle API response structure
+        if (blogsData.success && blogsData.data) {
+          setBlogs(blogsData.data.blogs);
+          setCategories(blogsData.data.categories);
+          setFilteredBlogs(blogsData.data.blogs);
+          
+          // Log API metadata for debugging
+          console.log('API Response Meta:', blogsData.meta);
+          console.log('Pagination Info:', blogsData.pagination);
+          console.log('Debug Info:', blogsData.debug);
+        } else {
+          console.error('API Error:', blogsData.errors || 'Invalid response structure');
+        }
       } catch (error) {
         console.error('Error loading blogs:', error);
       } finally {

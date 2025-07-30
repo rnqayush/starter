@@ -1,5 +1,25 @@
 {
-  "blogs": [
+  "success": true,
+  "message": "Blogs retrieved successfully",
+  "timestamp": "2024-01-30T12:30:00Z",
+  "version": "1.0",
+  "pagination": {
+    "page": 1,
+    "limit": 10,
+    "total": 9,
+    "totalPages": 1,
+    "hasNext": false,
+    "hasPrev": false
+  },
+  "meta": {
+    "totalBlogs": 9,
+    "featuredBlogs": 3,
+    "totalCategories": 8,
+    "totalAuthors": 9,
+    "lastUpdated": "2024-01-15T10:30:00Z"
+  },
+  "data": {
+    "blogs": [
     {
       "id": 1,
       "title": "The Future of E-commerce: Trends to Watch in 2024",
@@ -171,8 +191,8 @@
       "views": 876,
       "likes": 65
     }
-  ],
-  "categories": [
+    ],
+    "categories": [
     {
       "id": 1,
       "name": "E-commerce",
@@ -229,6 +249,17 @@
       "description": "Restaurant and food business insights",
       "color": "#F97316"
     }
-  ]
+    ]
+  },
+  "errors": null,
+  "warnings": [],
+  "debug": {
+    "queryTime": "0.045s",
+    "source": "database",
+    "cached": false,
+    "filters": {
+      "status": "published",
+      "visibility": "public"
+    }
+  }
 }
-
