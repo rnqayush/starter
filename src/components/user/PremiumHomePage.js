@@ -558,6 +558,294 @@ const CTAButton = styled(PrimaryButton)`
   }
 `;
 
+// Explore Stores Section
+const ExploreSection = styled.section`
+  background: #111;
+  padding: ${theme.spacing.xxl} 0;
+  position: relative;
+`;
+
+const ExploreContainer = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 ${theme.spacing.xl};
+
+  ${media.mobile} {
+    padding: 0 ${theme.spacing.lg};
+  }
+`;
+
+const ExploreGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: ${theme.spacing.xl};
+  margin-top: ${theme.spacing.xxl};
+`;
+
+const CategoryCard = styled.div`
+  padding: ${theme.spacing.xxl};
+  border-radius: ${theme.borderRadius.xl};
+  background: ${props => props.gradient || 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'};
+  color: white;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  animation: ${fadeInUp} 0.8s ease-out both;
+  animation-delay: ${props => props.delay || '0s'};
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  &:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+
+    &::before {
+      opacity: 1;
+    }
+  }
+`;
+
+const CategoryIcon = styled.div`
+  width: 60px;
+  height: 60px;
+  border-radius: ${theme.borderRadius.lg};
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: ${theme.spacing.lg};
+  font-size: 1.5rem;
+  backdrop-filter: blur(10px);
+`;
+
+const CategoryTitle = styled.h3`
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: ${theme.spacing.md};
+`;
+
+const CategoryDescription = styled.p`
+  opacity: 0.9;
+  line-height: 1.6;
+`;
+
+// Testimonials Section
+const TestimonialsSection = styled.section`
+  background: #050505;
+  padding: ${theme.spacing.xxl} 0;
+  position: relative;
+`;
+
+const TestimonialsContainer = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 ${theme.spacing.xl};
+
+  ${media.mobile} {
+    padding: 0 ${theme.spacing.lg};
+  }
+`;
+
+const TestimonialsGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: ${theme.spacing.xl};
+  margin-top: ${theme.spacing.xxl};
+`;
+
+const TestimonialCard = styled.div`
+  padding: ${theme.spacing.xxl};
+  border-radius: ${theme.borderRadius.xl};
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.1) 100%);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+  animation: ${fadeInUp} 0.8s ease-out both;
+  animation-delay: ${props => props.delay || '0s'};
+  position: relative;
+
+  &:hover {
+    transform: translateY(-10px);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.15) 100%);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  }
+`;
+
+const TestimonialQuote = styled.div`
+  position: absolute;
+  top: ${theme.spacing.lg};
+  left: ${theme.spacing.lg};
+  color: rgba(102, 126, 234, 0.3);
+  font-size: 2rem;
+`;
+
+const TestimonialText = styled.p`
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1.125rem;
+  line-height: 1.6;
+  margin-bottom: ${theme.spacing.lg};
+  margin-top: ${theme.spacing.lg};
+  font-style: italic;
+`;
+
+const TestimonialAuthor = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${theme.spacing.xs};
+`;
+
+const AuthorName = styled.h4`
+  color: white;
+  font-weight: 600;
+  font-size: 1.125rem;
+`;
+
+const AuthorRole = styled.p`
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.875rem;
+`;
+
+const StarRating = styled.div`
+  display: flex;
+  gap: ${theme.spacing.xs};
+  margin-top: ${theme.spacing.sm};
+  color: #fbbf24;
+`;
+
+// Footer Section
+const FooterSection = styled.footer`
+  background: #000;
+  padding: ${theme.spacing.xxl} 0 ${theme.spacing.xl} 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+`;
+
+const FooterContainer = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 ${theme.spacing.xl};
+
+  ${media.mobile} {
+    padding: 0 ${theme.spacing.lg};
+  }
+`;
+
+const FooterContent = styled.div`
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1.5fr;
+  gap: ${theme.spacing.xxl};
+  margin-bottom: ${theme.spacing.xl};
+
+  ${media.tablet} {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  ${media.mobile} {
+    grid-template-columns: 1fr;
+    gap: ${theme.spacing.xl};
+  }
+`;
+
+const FooterBrand = styled.div`
+  animation: ${fadeInUp} 0.8s ease-out;
+`;
+
+const BrandName = styled.h3`
+  font-size: 1.5rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: ${theme.spacing.md};
+`;
+
+const BrandDescription = styled.p`
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.6;
+`;
+
+const FooterColumn = styled.div`
+  animation: ${fadeInUp} 0.8s ease-out both;
+  animation-delay: ${props => props.delay || '0s'};
+`;
+
+const FooterTitle = styled.h4`
+  color: white;
+  font-weight: 600;
+  margin-bottom: ${theme.spacing.lg};
+  font-size: 1.125rem;
+`;
+
+const FooterLink = styled.a`
+  display: block;
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  margin-bottom: ${theme.spacing.sm};
+  transition: color 0.3s ease;
+  cursor: pointer;
+
+  &:hover {
+    color: #667eea;
+  }
+`;
+
+const ContactInfo = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.sm};
+  margin-bottom: ${theme.spacing.sm};
+  color: rgba(255, 255, 255, 0.7);
+`;
+
+const ContactIcon = styled.div`
+  color: #667eea;
+  font-size: 1rem;
+`;
+
+const FooterBottom = styled.div`
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: ${theme.spacing.lg};
+  text-align: center;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.875rem;
+`;
+
+const SocialLinks = styled.div`
+  display: flex;
+  gap: ${theme.spacing.md};
+  margin-top: ${theme.spacing.lg};
+`;
+
+const SocialLink = styled.a`
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.7);
+  transition: all 0.3s ease;
+  cursor: pointer;
+
+  &:hover {
+    background: #667eea;
+    color: white;
+    transform: translateY(-2px);
+  }
+`;
+
 const PremiumHomePage = () => {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
