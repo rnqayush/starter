@@ -10,6 +10,7 @@ import {
   FaSpinner,
   FaCheck,
   FaExclamationTriangle,
+  FaTrash,
 } from 'react-icons/fa';
 import { theme, media } from '../../styles/GlobalStyle';
 import { createBlog, hideCreateBlogModal, clearCreateBlogError } from '../../store/slices/blogsSlice';
@@ -399,6 +400,143 @@ const CharacterCount = styled.div`
   margin-top: ${theme.spacing.xs};
 `;
 
+const ContentSectionsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${theme.spacing.lg};
+`;
+
+const ContentSection = styled.div`
+  padding: ${theme.spacing.lg};
+  border: 2px solid ${theme.colors.gray200};
+  border-radius: ${theme.borderRadius.lg};
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.02), rgba(240, 147, 251, 0.02));
+  position: relative;
+  transition: all 0.3s ease;
+  animation: slideIn 0.4s ease-out;
+
+  @keyframes slideIn {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  &:hover {
+    border-color: ${theme.colors.primary};
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+  }
+`;
+
+const SectionHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: ${theme.spacing.md};
+`;
+
+const SectionTitle = styled.h4`
+  margin: 0;
+  color: ${theme.colors.gray700};
+  font-size: 1rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.xs};
+
+  svg {
+    color: ${theme.colors.primary};
+  }
+`;
+
+const RemoveSectionButton = styled.button`
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(220, 38, 38, 0.1));
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: ${theme.colors.error};
+  padding: ${theme.spacing.xs} ${theme.spacing.sm};
+  border-radius: ${theme.borderRadius.md};
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.xs};
+
+  &:hover {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(220, 38, 38, 0.2));
+    border-color: rgba(239, 68, 68, 0.5);
+    transform: scale(1.05);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+`;
+
+const AddSectionButton = styled.button`
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(240, 147, 251, 0.1));
+  border: 2px dashed ${theme.colors.primary};
+  color: ${theme.colors.primary};
+  padding: ${theme.spacing.lg};
+  border-radius: ${theme.borderRadius.lg};
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: ${theme.spacing.sm};
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.1), transparent);
+    transition: left 0.5s ease;
+  }
+
+  &:hover {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.15), rgba(240, 147, 251, 0.15));
+    border-color: ${theme.colors.secondary};
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+
+    &::before {
+      left: 100%;
+    }
+  }
+
+  svg {
+    font-size: 1.2rem;
+    animation: bounce 2s infinite;
+  }
+
+  @keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+      transform: translateY(0);
+    }
+    40% {
+      transform: translateY(-3px);
+    }
+    60% {
+      transform: translateY(-2px);
+    }
+  }
+`;
+
 const CreateBlogModal = () => {
   const dispatch = useDispatch();
   const { categories, createBlogLoading, createBlogError, showCreateBlogModal } = useSelector(state => state.blogs);
@@ -406,7 +544,9 @@ const CreateBlogModal = () => {
   const [formData, setFormData] = useState({
     title: '',
     excerpt: '',
-    content: '',
+    contentSections: [
+      { heading: '', description: '' }
+    ],
     authorName: '',
     authorBio: '',
     authorAvatar: '',
@@ -465,19 +605,58 @@ const CreateBlogModal = () => {
     }));
   };
 
+  const handleContentSectionChange = (index, field, value) => {
+    setFormData(prev => ({
+      ...prev,
+      contentSections: prev.contentSections.map((section, i) => 
+        i === index ? { ...section, [field]: value } : section
+      )
+    }));
+  };
+
+  const addContentSection = () => {
+    setFormData(prev => ({
+      ...prev,
+      contentSections: [...prev.contentSections, { heading: '', description: '' }]
+    }));
+  };
+
+  const removeContentSection = (index) => {
+    if (formData.contentSections.length > 1) {
+      setFormData(prev => ({
+        ...prev,
+        contentSections: prev.contentSections.filter((_, i) => i !== index)
+      }));
+    }
+  };
+
   const validateForm = () => {
     const newErrors = {};
     
     if (!formData.title.trim()) newErrors.title = 'Title is required';
     if (!formData.excerpt.trim()) newErrors.excerpt = 'Excerpt is required';
-    if (!formData.content.trim()) newErrors.content = 'Content is required';
     if (!formData.authorName.trim()) newErrors.authorName = 'Author name is required';
     if (!formData.category) newErrors.category = 'Category is required';
     if (!formData.image.trim()) newErrors.image = 'Featured image URL is required';
     
     if (formData.title.length > 100) newErrors.title = 'Title must be less than 100 characters';
     if (formData.excerpt.length > 300) newErrors.excerpt = 'Excerpt must be less than 300 characters';
-    if (formData.content.length < 100) newErrors.content = 'Content must be at least 100 characters';
+    
+    // Validate content sections
+    const hasValidContent = formData.contentSections.some(section => 
+      section.heading.trim() || section.description.trim()
+    );
+    if (!hasValidContent) newErrors.contentSections = 'At least one content section with heading or description is required';
+    
+    // Check individual sections
+    formData.contentSections.forEach((section, index) => {
+      if (section.heading.trim() && section.heading.length > 100) {
+        newErrors[`section_${index}_heading`] = 'Heading must be less than 100 characters';
+      }
+      if (section.description.trim() && section.description.length < 20) {
+        newErrors[`section_${index}_description`] = 'Description must be at least 20 characters';
+      }
+    });
     
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -494,7 +673,9 @@ const CreateBlogModal = () => {
       setFormData({
         title: '',
         excerpt: '',
-        content: '',
+        contentSections: [
+          { heading: '', description: '' }
+        ],
         authorName: '',
         authorBio: '',
         authorAvatar: '',
@@ -572,23 +753,86 @@ const CreateBlogModal = () => {
             </FormGroup>
 
             <FormGroup>
-              <Label htmlFor="content">
+              <Label>
                 <FaFileAlt />
-                Blog Content *
+                Blog Content Sections *
               </Label>
-              <TextArea
-                id="content"
-                name="content"
-                className="content"
-                placeholder="Write your full blog content here. You can use markdown-style formatting like ## for headings, **bold text**, and - for bullet points..."
-                value={formData.content}
-                onChange={handleInputChange}
-                style={{ borderColor: errors.content ? theme.colors.error : undefined }}
-              />
-              <CharacterCount isOver={formData.content.length < 100}>
-                {formData.content.length} characters (minimum 100)
-              </CharacterCount>
-              {errors.content && <ErrorMessage><FaExclamationTriangle />{errors.content}</ErrorMessage>}
+              <ContentSectionsContainer>
+                {formData.contentSections.map((section, index) => (
+                  <ContentSection key={index}>
+                    <SectionHeader>
+                      <SectionTitle>
+                        <FaFileAlt />
+                        Section {index + 1}
+                      </SectionTitle>
+                      <RemoveSectionButton
+                        type="button"
+                        onClick={() => removeContentSection(index)}
+                        disabled={formData.contentSections.length === 1}
+                      >
+                        <FaTrash />
+                        Remove
+                      </RemoveSectionButton>
+                    </SectionHeader>
+
+                    <FormGroup>
+                      <Label htmlFor={`heading-${index}`}>
+                        Section Heading
+                      </Label>
+                      <Input
+                        id={`heading-${index}`}
+                        type="text"
+                        placeholder="Enter section heading (optional)"
+                        value={section.heading}
+                        onChange={(e) => handleContentSectionChange(index, 'heading', e.target.value)}
+                        style={{ borderColor: errors[`section_${index}_heading`] ? theme.colors.error : undefined }}
+                      />
+                      <CharacterCount isOver={section.heading.length > 100}>
+                        {section.heading.length}/100
+                      </CharacterCount>
+                      {errors[`section_${index}_heading`] && (
+                        <ErrorMessage>
+                          <FaExclamationTriangle />
+                          {errors[`section_${index}_heading`]}
+                        </ErrorMessage>
+                      )}
+                    </FormGroup>
+
+                    <FormGroup>
+                      <Label htmlFor={`description-${index}`}>
+                        Section Description
+                      </Label>
+                      <TextArea
+                        id={`description-${index}`}
+                        placeholder="Write the content for this section..."
+                        value={section.description}
+                        onChange={(e) => handleContentSectionChange(index, 'description', e.target.value)}
+                        style={{ borderColor: errors[`section_${index}_description`] ? theme.colors.error : undefined }}
+                      />
+                      <CharacterCount isOver={section.description.length > 0 && section.description.length < 20}>
+                        {section.description.length} characters {section.description.length > 0 ? '(minimum 20)' : ''}
+                      </CharacterCount>
+                      {errors[`section_${index}_description`] && (
+                        <ErrorMessage>
+                          <FaExclamationTriangle />
+                          {errors[`section_${index}_description`]}
+                        </ErrorMessage>
+                      )}
+                    </FormGroup>
+                  </ContentSection>
+                ))}
+
+                <AddSectionButton type="button" onClick={addContentSection}>
+                  <FaPlus />
+                  Add More Section
+                </AddSectionButton>
+              </ContentSectionsContainer>
+              {errors.contentSections && (
+                <ErrorMessage>
+                  <FaExclamationTriangle />
+                  {errors.contentSections}
+                </ErrorMessage>
+              )}
             </FormGroup>
 
             <FormRow>

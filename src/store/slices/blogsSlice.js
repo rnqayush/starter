@@ -40,11 +40,29 @@ export const createBlog = createAsyncThunk(
       const { blogs } = getState().blogs;
       const newId = Math.max(...blogs.map(b => b.id), 0) + 1;
       
+      // Convert content sections to a single content string for compatibility
+      const content = blogData.contentSections
+        .filter(section => section.heading.trim() || section.description.trim())
+        .map(section => {
+          let sectionContent = '';
+          if (section.heading.trim()) {
+            sectionContent += `## ${section.heading.trim()}\n\n`;
+          }
+          if (section.description.trim()) {
+            sectionContent += `${section.description.trim()}\n\n`;
+          }
+          return sectionContent;
+        })
+        .join('');
+
+      const wordCount = content.split(' ').filter(word => word.length > 0).length;
+
       const newBlog = {
         id: newId,
         title: blogData.title,
         excerpt: blogData.excerpt,
-        content: blogData.content,
+        content: content,
+        contentSections: blogData.contentSections,
         author: {
           name: blogData.authorName,
           avatar: blogData.authorAvatar || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
@@ -54,7 +72,7 @@ export const createBlog = createAsyncThunk(
         tags: blogData.tags,
         image: blogData.image,
         publishedAt: new Date().toISOString(),
-        readTime: `${Math.ceil(blogData.content.split(' ').length / 200)} min read`,
+        readTime: `${Math.ceil(wordCount / 200)} min read`,
         views: Math.floor(Math.random() * 1000) + 100,
         likes: Math.floor(Math.random() * 50) + 10,
         featured: false
