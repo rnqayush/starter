@@ -643,8 +643,9 @@ const CategoryDescription = styled.p`
 
 // Testimonials Section
 const TestimonialsSection = styled.section`
-  background: #050505;
+  background: white;
   padding: ${theme.spacing.xxl} 0;
+  margin: ${theme.spacing.xxl} 0;
   position: relative;
 `;
 
