@@ -14,12 +14,25 @@ import {
   FaMobile,
   FaChartLine,
   FaHeart,
-
   FaAward,
+  FaHotel,
+  FaShoppingCart,
+  FaRing,
+  FaCar,
+  FaBriefcase,
+  FaQuoteLeft,
+  FaPhoneAlt,
+  FaEnvelope,
+  FaMapMarkerAlt,
+  FaFacebook,
+  FaTwitter,
+  FaInstagram,
+  FaLinkedin,
 } from 'react-icons/fa';
 import { theme, media } from '../../styles/GlobalStyle';
 import { useAuth } from '../../context/AuthContext';
 import AuthModal from '../auth/AuthModal';
+import platformData from '../../DummyData/platform.json';
 
 // Keyframe animations
 const fadeInUp = keyframes`
