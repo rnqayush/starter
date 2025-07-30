@@ -685,7 +685,7 @@ const Tab = styled.button.withConfig({
   }
 `;
 
-const VendorDashboard = React.memo(() => {
+const VendorDashboard = () => {
   const { vendorSlug } = useParams();
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -5101,6 +5101,6 @@ https://example.com/image2.jpg"
       )}
     </DashboardContainer>
   );
-});
+};
 
 export default VendorDashboard;
