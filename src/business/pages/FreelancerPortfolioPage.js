@@ -1253,29 +1253,36 @@ const FreelancerPortfolioPage = () => {
         <HeroSection
           id="home"
           primaryColor={currentBusiness.primaryColor}
-          backgroundImage={currentBusiness.hero?.backgroundImage}
         >
-          <HeroContent>
-            <HeroTitle>
-              {currentBusiness.hero?.title || currentBusiness.name}
-            </HeroTitle>
-            <HeroSubtitle>
-              {currentBusiness.hero?.subtitle ||
-                `Welcome to ${currentBusiness.name}`}
-            </HeroSubtitle>
-            <HeroButtons>
-              <ActionButton primaryColor={currentBusiness.primaryColor}>
-                {currentBusiness.hero?.ctaText || 'Hire Me'}
-              </ActionButton>
-              <ActionButton 
-                variant="outline" 
-                primaryColor="white"
-                onClick={() => scrollToSection('#portfolio')}
-              >
-                View Portfolio
-              </ActionButton>
-            </HeroButtons>
-          </HeroContent>
+          <HeroContainer>
+            <HeroContent>
+              <HeroTitle>
+                {currentBusiness.hero?.title || currentBusiness.name}
+              </HeroTitle>
+              <HeroSubtitle>
+                {currentBusiness.hero?.subtitle ||
+                  `Welcome to ${currentBusiness.name}`}
+              </HeroSubtitle>
+              <HeroButtons>
+                <ActionButton primaryColor={currentBusiness.primaryColor}>
+                  {currentBusiness.hero?.ctaText || 'Hire Me'}
+                </ActionButton>
+                <ActionButton
+                  variant="outline"
+                  primaryColor={currentBusiness.primaryColor}
+                  onClick={() => scrollToSection('#portfolio')}
+                >
+                  View Portfolio
+                </ActionButton>
+              </HeroButtons>
+            </HeroContent>
+            <HeroImageContainer>
+              <HeroImage
+                image={currentBusiness.hero?.profileImage || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80'}
+                primaryColor={currentBusiness.primaryColor}
+              />
+            </HeroImageContainer>
+          </HeroContainer>
           <ScrollIndicator onClick={() => scrollToSection('#about')}>
             <span>Scroll Down</span>
             <FaArrowDown />
