@@ -911,7 +911,7 @@ const FreelancerPortfolioPage = () => {
             border: '4px solid rgba(255, 255, 255, 0.3)',
             borderTop: '4px solid white',
             borderRadius: '50%',
-            animation: css`${pulse} 1s linear infinite`,
+            animation: `${pulse.getName()} 1s linear infinite`,
             marginBottom: '2rem'
           }} />
           <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Loading Portfolio...</h2>
@@ -1163,7 +1163,7 @@ const FreelancerPortfolioPage = () => {
                       color: 'white',
                       boxShadow: '0 10px 25px rgba(0, 0, 0, 0.1)'
                     }}>
-                      {service.icon || '⚡'}
+                      {service.icon || '���'}
                     </div>
                     <PortfolioTitle>{service.name}</PortfolioTitle>
                     <PortfolioDescription style={{ marginBottom: '1.5rem' }}>
