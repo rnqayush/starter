@@ -487,12 +487,12 @@ const FeatureIcon = styled.div`
 const FeatureTitle = styled.h3`
   font-size: 1.5rem;
   font-weight: 700;
-  color: white;
+  color: #1e293b;
   margin-bottom: ${theme.spacing.md};
 `;
 
 const FeatureDescription = styled.p`
-  color: rgba(255, 255, 255, 0.7);
+  color: #64748b;
   line-height: 1.6;
 `;
 
