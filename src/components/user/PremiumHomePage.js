@@ -399,10 +399,7 @@ const SectionTitle = styled.h2`
   font-size: 3.5rem;
   font-weight: 800;
   text-align: center;
-  background: linear-gradient(135deg, #ffffff 0%, #a8edea 50%, #fed6e3 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #1e293b;
   margin-bottom: ${theme.spacing.xl};
   animation: ${fadeInUp} 0.8s ease-out;
 
@@ -413,13 +410,14 @@ const SectionTitle = styled.h2`
 
 const SectionSubtitle = styled.p`
   font-size: 1.25rem;
-  color: rgba(255, 255, 255, 0.7);
+  color: #64748b;
   text-align: center;
   margin-bottom: ${theme.spacing.xxl};
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
   animation: ${fadeInUp} 0.8s ease-out 0.2s both;
+  line-height: 1.6;
 `;
 
 const FeaturesGrid = styled.div`
