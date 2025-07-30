@@ -345,17 +345,17 @@ const StatCard = styled.div`
   text-align: center;
   padding: ${theme.spacing.xl};
   border-radius: ${theme.borderRadius.xl};
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.1) 100%);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: white;
+  border: 1px solid rgba(148, 163, 184, 0.2);
   transition: all 0.3s ease;
   animation: ${fadeInUp} 0.8s ease-out both;
   animation-delay: ${props => props.delay || '0s'};
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 
   &:hover {
-    transform: translateY(-10px);
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.15) 100%);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(102, 126, 234, 0.15);
+    border-color: rgba(102, 126, 234, 0.3);
   }
 `;
 
