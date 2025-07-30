@@ -1777,34 +1777,46 @@ const BuisnessAdminDashboard = () => {
                   }}
                   placeholder="Enter background image URL or upload"
                 />
-                {heroData.backgroundImage && (
+                <div
+                  style={{
+                    marginTop: '10px',
+                    padding: '10px',
+                    border: '1px solid #e2e8f0',
+                    borderRadius: '6px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px',
+                  }}
+                >
                   <div
                     style={{
-                      marginTop: '10px',
-                      padding: '10px',
-                      border: '1px solid #e2e8f0',
+                      width: '80px',
+                      height: '60px',
+                      backgroundImage: heroData.backgroundImage
+                        ? `url(${heroData.backgroundImage})`
+                        : 'linear-gradient(135deg, #f3f4f6, #e5e7eb)',
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
                       borderRadius: '6px',
+                      border: '1px solid #d1d5db',
                       display: 'flex',
                       alignItems: 'center',
-                      gap: '10px',
+                      justifyContent: 'center',
+                      fontSize: '0.8rem',
+                      color: '#6b7280',
                     }}
                   >
-                    <div
-                      style={{
-                        width: '60px',
-                        height: '60px',
-                        backgroundImage: `url(${heroData.backgroundImage})`,
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center',
-                        borderRadius: '6px',
-                        border: '1px solid #d1d5db',
-                      }}
-                    />
-                    <span style={{ fontSize: '0.9rem', color: '#6b7280' }}>
-                      Image preview
-                    </span>
+                    {!heroData.backgroundImage && '🖼️'}
                   </div>
-                )}
+                  <div>
+                    <div style={{ fontSize: '0.9rem', color: '#374151', fontWeight: '500' }}>
+                      Background Image Preview
+                    </div>
+                    <div style={{ fontSize: '0.8rem', color: '#6b7280' }}>
+                      {heroData.backgroundImage ? 'Current image loaded' : 'No image selected'}
+                    </div>
+                  </div>
+                </div>
               </FormGroup>
               <FormGroup style={{ gridColumn: '1 / -1' }}>
                 <FormLabel>
@@ -4475,7 +4487,7 @@ const BuisnessAdminDashboard = () => {
                     hero: '🏠',
                     'about-us': '👥',
                     'services-offered': '⚙️',
-                    portfolio: '💼',
+                    portfolio: '����',
                     skills: '🎯',
                     experience: '📄',
                     team: '👨‍👩‍👧‍👦',
