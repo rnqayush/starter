@@ -1071,6 +1071,10 @@ const BuisnessAdminDashboard = () => {
               businessData.hero?.subtitle || `Welcome to ${businessData.name}`,
             backgroundImage:
               businessData.hero?.backgroundImage || businessData.image || '',
+            profileImage:
+              businessData.hero?.profileImage || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80',
+            logo:
+              businessData.logo || businessData.navigation?.logo || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=80',
           });
 
           setAboutData({
