@@ -837,6 +837,10 @@ const BuisnessAdminDashboard = () => {
       const updatedBusiness = {
         ...editingBusiness,
         logo: heroData.logo, // Update logo from hero data
+        navigation: {
+          ...editingBusiness.navigation,
+          logo: heroData.logo, // Also update navigation logo
+        },
         hero: heroData,
         about: {
           ...aboutData,
