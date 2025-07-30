@@ -184,31 +184,51 @@ const NavContainer = styled.div`
 const Logo = styled.div.withConfig({
   shouldForwardProp: prop => prop !== 'primaryColor',
 })`
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.md};
   font-size: 1.8rem;
   font-weight: 800;
   color: ${props => props.primaryColor || theme.colors.primary};
   position: relative;
   z-index: 1;
-  
-  &:after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    background: linear-gradient(45deg, ${props => props.primaryColor || theme.colors.primary}, transparent);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.3s ease;
+
+  .logo-image {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid ${props => props.primaryColor || theme.colors.primary};
   }
 
-  &:hover:after {
+  .logo-text {
+    position: relative;
+
+    &:after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(45deg, ${props => props.primaryColor || theme.colors.primary}, transparent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s ease;
+    }
+  }
+
+  &:hover .logo-text:after {
     transform: scaleX(1);
   }
 
   @media (max-width: ${theme.breakpoints.tablet}) {
     font-size: 1.5rem;
+
+    .logo-image {
+      width: 35px;
+      height: 35px;
+    }
   }
 `;
 
