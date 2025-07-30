@@ -2148,7 +2148,11 @@ const VendorDashboard = React.memo(() => {
                 <FormTextarea
                   value={aboutUsData.description}
                   onChange={e => {
-                    debouncedInputChange('about-us', 'description', e.target.value, setAboutUsData);
+                    setAboutUsData(prev => ({
+                      ...prev,
+                      description: e.target.value,
+                    }));
+                    trackSectionChange('about-us');
                   }}
                   placeholder="Tell your clients about your business..."
                   rows={6}
