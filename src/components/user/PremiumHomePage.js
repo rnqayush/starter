@@ -907,37 +907,28 @@ const PremiumHomePage = () => {
 
         <HeroContent>
           <HeroTitle>
-            Build Your Dream Store
-            <br />
-            In Minutes, Not Months
+            {platformData.hero.title}
           </HeroTitle>
           <HeroSubtitle>
-            Launch a professional e-commerce store with our premium platform. 
-            No coding required, unlimited customization, enterprise-grade security.
+            {platformData.hero.subtitle}
           </HeroSubtitle>
           <CTAContainer>
             <PrimaryButton onClick={handleGetStarted}>
-              Start Building Now
+              {platformData.hero.ctaButtons.primary}
               <FaRocket />
             </PrimaryButton>
             <SecondaryButton onClick={handleWatchDemo}>
               <FaPlay />
-              Watch Demo
+              {platformData.hero.ctaButtons.secondary}
             </SecondaryButton>
           </CTAContainer>
           <TrustBadges>
-            <TrustBadge>
-              <FaCheck />
-              14-Day Free Trial
-            </TrustBadge>
-            <TrustBadge>
-              <FaCheck />
-              No Credit Card Required
-            </TrustBadge>
-            <TrustBadge>
-              <FaCheck />
-              Cancel Anytime
-            </TrustBadge>
+            {platformData.hero.trustIndicators.map((indicator, index) => (
+              <TrustBadge key={index}>
+                <FaCheck />
+                {indicator.text}
+              </TrustBadge>
+            ))}
           </TrustBadges>
         </HeroContent>
       </HeroSection>
