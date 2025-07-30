@@ -509,7 +509,7 @@ const StartBuilding = () => {
     themeColor: '#10b981',
   });
 
-  // Data is now imported from DummyData/platform.js
+  // Data is now imported from DummyData/platform.json
 
   const totalSteps = 3;
   const progress = (currentStep / totalSteps) * 100;
