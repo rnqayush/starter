@@ -614,7 +614,7 @@ const PricingPage = () => {
   const [isYearly, setIsYearly] = useState(false);
   const [openFAQ, setOpenFAQ] = useState(null);
 
-  // Data is now imported from DummyData/platform.js
+  // Data is now imported from DummyData/platform.json
   const plans = pricingPlans;
   const features = pricingFeatures;
   const faqs = pricingFAQs;
