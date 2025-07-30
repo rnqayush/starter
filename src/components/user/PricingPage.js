@@ -701,7 +701,7 @@ const PricingPage = () => {
                 )}
 
                 <PlanIcon featured={plan.featured}>
-                  <plan.icon />
+                  {React.createElement(planIcons[plan.name] || FaRocket)}
                 </PlanIcon>
 
                 <PlanName>{plan.name}</PlanName>
