@@ -817,10 +817,10 @@ const ContactIcon = styled.div`
 `;
 
 const FooterBottom = styled.div`
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid rgba(148, 163, 184, 0.2);
   padding-top: ${theme.spacing.lg};
   text-align: center;
-  color: rgba(255, 255, 255, 0.6);
+  color: #94a3b8;
   font-size: 0.875rem;
 `;
 
@@ -834,11 +834,11 @@ const SocialLink = styled.a`
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(148, 163, 184, 0.2);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: rgba(255, 255, 255, 0.7);
+  color: #94a3b8;
   transition: all 0.3s ease;
   cursor: pointer;
 
