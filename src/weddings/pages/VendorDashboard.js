@@ -833,6 +833,32 @@ const VendorDashboard = () => {
   });
   const [showDeleteAccountModal, setShowDeleteAccountModal] = useState(false);
 
+  // Debounced input handler to prevent performance issues
+  const debouncedInputChange = (section, field, value, setter, delay = 150) => {
+    // Clear existing timer for this specific field
+    const timerKey = `${section}-${field}`;
+    if (inputTimers[timerKey]) {
+      clearTimeout(inputTimers[timerKey]);
+    }
+
+    // Immediately update the input value for responsiveness
+    setter(prev => ({ ...prev, [field]: value }));
+
+    // Debounce the section change tracking and Redux updates
+    const newTimer = setTimeout(() => {
+      trackSectionChange(section);
+      // Clean up this timer from state
+      setInputTimers(prev => {
+        const newTimers = { ...prev };
+        delete newTimers[timerKey];
+        return newTimers;
+      });
+    }, delay);
+
+    // Store the timer
+    setInputTimers(prev => ({ ...prev, [timerKey]: newTimer }));
+  };
+
   // Track changes in a section and update Redux editing vendor for real-time preview
   const trackSectionChange = sectionId => {
     setChangedSections(prev => new Set([...prev, sectionId]));
@@ -846,7 +872,7 @@ const VendorDashboard = () => {
     // Debounce Redux updates to avoid performance issues
     const newTimer = setTimeout(() => {
       updateEditingVendorInRedux();
-    }, 300); // 300ms delay
+    }, 200); // Reduced to 200ms for faster updates
 
     setDebounceTimer(newTimer);
   };
