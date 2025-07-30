@@ -1862,34 +1862,45 @@ const BuisnessAdminDashboard = () => {
                   }}
                   placeholder="Enter profile image URL or upload"
                 />
-                {heroData.profileImage && (
+                <div
+                  style={{
+                    marginTop: '10px',
+                    padding: '10px',
+                    border: '1px solid #e2e8f0',
+                    borderRadius: '6px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px',
+                  }}
+                >
                   <div
                     style={{
-                      marginTop: '10px',
-                      padding: '10px',
-                      border: '1px solid #e2e8f0',
-                      borderRadius: '6px',
+                      width: '60px',
+                      height: '60px',
+                      backgroundImage: heroData.profileImage
+                        ? `url(${heroData.profileImage})`
+                        : 'linear-gradient(135deg, #f3f4f6, #e5e7eb)',
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                      borderRadius: '50%',
+                      border: '1px solid #d1d5db',
                       display: 'flex',
                       alignItems: 'center',
-                      gap: '10px',
+                      justifyContent: 'center',
+                      fontSize: '1.2rem',
                     }}
                   >
-                    <div
-                      style={{
-                        width: '60px',
-                        height: '60px',
-                        backgroundImage: `url(${heroData.profileImage})`,
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center',
-                        borderRadius: '50%',
-                        border: '1px solid #d1d5db',
-                      }}
-                    />
-                    <span style={{ fontSize: '0.9rem', color: '#6b7280' }}>
-                      Profile image preview
-                    </span>
+                    {!heroData.profileImage && '👤'}
                   </div>
-                )}
+                  <div>
+                    <div style={{ fontSize: '0.9rem', color: '#374151', fontWeight: '500' }}>
+                      Profile Image Preview
+                    </div>
+                    <div style={{ fontSize: '0.8rem', color: '#6b7280' }}>
+                      {heroData.profileImage ? 'Current profile image' : 'No profile image selected'}
+                    </div>
+                  </div>
+                </div>
               </FormGroup>
               <FormGroup style={{ gridColumn: '1 / -1' }}>
                 <FormLabel>
@@ -4487,7 +4498,7 @@ const BuisnessAdminDashboard = () => {
                     hero: '🏠',
                     'about-us': '👥',
                     'services-offered': '⚙️',
-                    portfolio: '����',
+                    portfolio: '💼',
                     skills: '🎯',
                     experience: '📄',
                     team: '👨‍👩‍👧‍👦',
