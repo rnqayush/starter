@@ -11,6 +11,7 @@ import {
   FaCheck,
   FaExclamationTriangle,
   FaTrash,
+  FaPlus,
 } from 'react-icons/fa';
 import { theme, media } from '../../styles/GlobalStyle';
 import { createBlog, hideCreateBlogModal, clearCreateBlogError } from '../../store/slices/blogsSlice';
