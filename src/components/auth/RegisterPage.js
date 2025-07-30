@@ -120,52 +120,7 @@ const Title = styled.h2`
   }
 `;
 
-const ToggleContainer = styled.div`
-  display: flex;
-  background: ${theme.colors.gray100};
-  border-radius: ${theme.borderRadius.lg};
-  padding: ${theme.spacing.xs};
-  margin-bottom: ${theme.spacing.xl};
 
-  ${media.mobile} {
-    margin-bottom: ${theme.spacing.lg};
-    border-radius: ${theme.borderRadius.md};
-  }
-`;
-
-const ToggleButton = styled.button.withConfig({
-  shouldForwardProp: prop => prop !== 'active',
-})`
-  flex: 1;
-  padding: ${theme.spacing.md};
-  border: none;
-  border-radius: ${theme.borderRadius.md};
-  font-weight: 500;
-  transition: all 0.2s ease;
-  cursor: pointer;
-  font-size: 0.875rem;
-
-  ${media.mobile} {
-    padding: ${theme.spacing.sm};
-    font-size: 0.8125rem;
-  }
-
-  ${props =>
-    props.active
-      ? `
-    background: ${theme.colors.white};
-    color: ${theme.colors.primary};
-    box-shadow: ${theme.shadows.sm};
-  `
-      : `
-    background: transparent;
-    color: ${theme.colors.gray600};
-    
-    &:hover {
-      color: ${theme.colors.gray800};
-    }
-  `}
-`;
 
 const Form = styled.form`
   display: flex;
