@@ -7,6 +7,11 @@ import {
   FaCheck,
   FaUpload,
   FaRocket,
+  FaRing,
+  FaHotel,
+  FaShoppingCart,
+  FaCar,
+  FaBriefcase,
 } from 'react-icons/fa';
 import { theme, media } from '../styles/GlobalStyle';
 import { Button } from './shared/Button';
@@ -511,6 +516,15 @@ const StartBuilding = () => {
 
   // Data is now imported from DummyData/platform.json
 
+  // Icon mapping for website types
+  const iconMap = {
+    'weddings': FaRing,
+    'hotels': FaHotel,
+    'ecommerce': FaShoppingCart,
+    'automobiles': FaCar,
+    'professional': FaBriefcase,
+  };
+
   const totalSteps = 3;
   const progress = (currentStep / totalSteps) * 100;
 
@@ -566,7 +580,7 @@ const StartBuilding = () => {
             </Subtitle>
             <WebsiteTypeGrid>
               {websiteTypes.map(type => {
-                const IconComponent = type.icon;
+                const IconComponent = iconMap[type.id];
                 return (
                   <WebsiteTypeCard
                     key={type.id}
