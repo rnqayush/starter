@@ -493,14 +493,17 @@ const ScrollIndicator = styled.div`
   }
 `;
 
-// Section with enhanced animations
+// Section with enhanced animations and intersection observer
 const Section = styled.section.withConfig({
-  shouldForwardProp: prop => prop !== 'isVisible' && prop !== 'background',
+  shouldForwardProp: prop => prop !== 'isVisible' && prop !== 'background' && prop !== 'inView',
 })`
   padding: ${theme.spacing.xxl} 0;
   background: ${props => props.background || theme.colors.white};
   position: relative;
   overflow: hidden;
+  opacity: ${props => props.inView ? 1 : 0};
+  transform: translateY(${props => props.inView ? '0' : '30px'});
+  transition: all 0.8s ease-out;
 
   &:before {
     content: '';
