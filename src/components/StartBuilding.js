@@ -115,7 +115,9 @@ const StepIndicator = styled.div`
   }
 `;
 
-const StepDot = styled.div`
+const StepDot = styled.div.withConfig({
+  shouldForwardProp: prop => !['active', 'completed'].includes(prop),
+})`
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -150,7 +152,9 @@ const StepDot = styled.div`
   }
 `;
 
-const StepConnector = styled.div`
+const StepConnector = styled.div.withConfig({
+  shouldForwardProp: prop => prop !== 'completed',
+})`
   width: 60px;
   height: 2px;
   background: ${props =>
