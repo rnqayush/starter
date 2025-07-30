@@ -1726,6 +1726,15 @@ const VendorDashboard = () => {
     };
   }, [mobileSidebarOpen]);
 
+  // Cleanup debounce timer on unmount
+  useEffect(() => {
+    return () => {
+      if (debounceTimer) {
+        clearTimeout(debounceTimer);
+      }
+    };
+  }, [debounceTimer]);
+
   // File upload handlers
   const handleImageUpload = (file, setter, field) => {
     const reader = new FileReader();
