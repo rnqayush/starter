@@ -1251,7 +1251,16 @@ const FreelancerPortfolioPage = () => {
             <FaArrowLeft />
           </ActionButton>
           <Logo primaryColor={currentBusiness.primaryColor}>
-            {currentBusiness.navigation?.logo || currentBusiness.name}
+            {currentBusiness.logo && (
+              <img
+                src={currentBusiness.logo}
+                alt={`${currentBusiness.name} logo`}
+                className="logo-image"
+              />
+            )}
+            <span className="logo-text">
+              {currentBusiness.name}
+            </span>
           </Logo>
           <NavLinks primaryColor={currentBusiness.primaryColor}>
             {navigationItems.map((item, index) => (
