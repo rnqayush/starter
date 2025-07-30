@@ -1,5 +1,6 @@
 const express = require('express');
 const Hotel = require('../models/Hotel');
+const Business = require('../models/Business');
 const { protect, authorize, authorizeBusinessAccess } = require('../middleware/auth');
 
 const router = express.Router();
@@ -10,7 +11,7 @@ const router = express.Router();
 router.get('/', async (req, res) => {
   try {
     const hotels = await Hotel.find({ isActive: true })
-      .populate('business', 'name slug address contact')
+      .populate('business', 'name slug contact address')
       .select('-reviews');
 
     res.status(200).json({
@@ -19,9 +20,11 @@ router.get('/', async (req, res) => {
       data: hotels
     });
   } catch (error) {
+    console.error('Error fetching hotels:', error);
     res.status(500).json({
       success: false,
-      message: 'Server error'
+      message: 'Server error',
+      error: error.message
     });
   }
 });
@@ -150,4 +153,3 @@ router.delete('/:id', protect, async (req, res) => {
 });
 
 module.exports = router;
-

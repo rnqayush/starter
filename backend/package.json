@@ -11,7 +11,8 @@
     "test:watch": "jest --watch",
     "lint": "eslint . --ext .js",
     "lint:fix": "eslint . --ext .js --fix",
-    "seed": "node utils/seedDatabase.js",
+    "seed": "node seeds/hotelSeeder.js seed",
+    "seed:clear": "node seeds/hotelSeeder.js clear",
     "docs": "swagger-jsdoc -d docs/swagger.js -o docs/swagger.json"
   },
   "repository": {
