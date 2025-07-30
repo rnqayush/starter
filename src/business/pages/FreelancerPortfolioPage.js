@@ -447,28 +447,26 @@ const HeroTitle = styled.h1`
 `;
 
 const HeroSubtitle = styled.p`
-  font-size: 1.4rem;
-  color: ${theme.colors.white};
-  margin-bottom: ${theme.spacing.xxl};
-  max-width: 700px;
-  margin-left: auto;
-  margin-right: auto;
-  line-height: 1.6;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-  opacity: 0.95;
-  ${css`animation: ${fadeInUp} 1s ease-out 0.3s both;`}
+  font-size: 1.3rem;
+  color: ${theme.colors.gray600};
+  margin-bottom: ${theme.spacing.xl};
+  line-height: 1.7;
+  ${css`animation: ${fadeInLeft} 1s ease-out 0.3s both;`}
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
   }
 `;
 
 const HeroButtons = styled.div`
   display: flex;
   gap: ${theme.spacing.lg};
-  justify-content: center;
   flex-wrap: wrap;
-  ${css`animation: ${fadeInUp} 1s ease-out 0.6s both;`}
+  ${css`animation: ${fadeInLeft} 1s ease-out 0.6s both;`}
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    justify-content: center;
+  }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
     flex-direction: column;
