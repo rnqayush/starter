@@ -832,9 +832,6 @@ const VendorDashboard = () => {
   });
   const [showDeleteAccountModal, setShowDeleteAccountModal] = useState(false);
 
-  // Debounce timer for Redux updates
-  const [debounceTimer, setDebounceTimer] = useState(null);
-
   // Track changes in a section and update Redux editing vendor for real-time preview
   const trackSectionChange = sectionId => {
     setChangedSections(prev => new Set([...prev, sectionId]));
