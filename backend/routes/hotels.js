@@ -1,5 +1,6 @@
 const express = require('express');
 const Hotel = require('../models/Hotel');
+const Business = require('../models/Business');
 const { protect, authorize, authorizeBusinessAccess } = require('../middleware/auth');
 
 const router = express.Router();
@@ -150,4 +151,3 @@ router.delete('/:id', protect, async (req, res) => {
 });
 
 module.exports = router;
-
