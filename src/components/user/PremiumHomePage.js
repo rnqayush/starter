@@ -374,7 +374,7 @@ const StatNumber = styled.h3`
 `;
 
 const StatLabel = styled.p`
-  color: rgba(255, 255, 255, 0.8);
+  color: #64748b;
   font-size: 1rem;
   font-weight: 500;
 `;
