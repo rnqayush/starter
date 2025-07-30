@@ -891,6 +891,7 @@ const PremiumHomePage = () => {
 
   return (
     <PageContainer>
+      <Header />
       <HeroSection>
         <FloatingElements>
           <FloatingIcon position={{ top: '10%', left: '10%' }} delay="0s" duration="8s">
