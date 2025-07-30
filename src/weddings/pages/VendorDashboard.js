@@ -780,8 +780,6 @@ const VendorDashboard = React.memo(() => {
   });
 
   const [changedSections, setChangedSections] = useState(new Set());
-  const [debounceTimer, setDebounceTimer] = useState(null);
-  const [inputTimers, setInputTimers] = useState({});
   const [showCustomSectionModal, setShowCustomSectionModal] = useState(false);
   const [editingCustomSection, setEditingCustomSection] = useState(null);
   const [customSectionForm, setCustomSectionForm] = useState({
