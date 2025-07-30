@@ -2197,11 +2197,7 @@ const VendorDashboard = () => {
                 <FormTextarea
                   value={aboutUsData.description}
                   onChange={e => {
-                    setAboutUsData(prev => ({
-                      ...prev,
-                      description: e.target.value,
-                    }));
-                    trackSectionChange('about-us');
+                    debouncedInputChange('about-us', 'description', e.target.value, setAboutUsData);
                   }}
                   placeholder="Tell your clients about your business..."
                   rows={6}
