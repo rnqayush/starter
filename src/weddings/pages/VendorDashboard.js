@@ -831,13 +831,10 @@ const VendorDashboard = () => {
   });
   const [showDeleteAccountModal, setShowDeleteAccountModal] = useState(false);
 
-  // Track changes in a section and update Redux editing vendor for real-time preview
+  // Track changes in a section
   const trackSectionChange = sectionId => {
     setChangedSections(prev => new Set([...prev, sectionId]));
     setSaved(false);
-
-    // Immediately update Redux editing vendor for real-time preview
-    updateEditingVendorInRedux();
   };
 
   // Handle footer data changes
@@ -909,6 +906,9 @@ const VendorDashboard = () => {
 
   // Helper function to immediately update Redux editing vendor
   const updateEditingVendorInRedux = () => {
+    // Disabled to fix input lag - the heavy Redux operations were blocking input
+    return;
+
     if (!editingVendor) return;
 
     try {

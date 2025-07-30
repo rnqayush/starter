@@ -340,6 +340,11 @@ const businessManagementSlice = createSlice({
       state.hasUnsavedChanges = true;
     },
 
+    // Mark that there are unsaved changes
+    markUnsavedChanges: state => {
+      state.hasUnsavedChanges = true;
+    },
+
     // Helper to check if section should be visible for current business type
     isSectionAvailable: (state, action) => {
       const { section } = action.payload;
@@ -397,6 +402,7 @@ export const {
   discardBusinessChanges,
   clearEditingBusiness,
   toggleBusinessSectionVisibility,
+  markUnsavedChanges,
   isSectionAvailable,
   updateSectionVisibilityByType,
 } = businessManagementSlice.actions;

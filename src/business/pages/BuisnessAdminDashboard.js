@@ -73,6 +73,7 @@ import {
   saveBusinessChanges,
   discardBusinessChanges,
   toggleBusinessSectionVisibility,
+  markUnsavedChanges,
   setLoading,
   setError,
   clearError,
@@ -749,6 +750,8 @@ const BuisnessAdminDashboard = () => {
     title: '',
     subtitle: '',
     backgroundImage: '',
+    profileImage: '',
+    logo: '',
   });
 
   const [aboutData, setAboutData] = useState({
@@ -816,6 +819,9 @@ const BuisnessAdminDashboard = () => {
     setChangedSections(prev => new Set([...prev, sectionId]));
     setSaved(false);
 
+    // Mark changes as unsaved in Redux
+    dispatch(markUnsavedChanges());
+
     // Immediately update Redux editing business for real-time preview
     updateEditingBusinessInRedux();
   };
@@ -834,6 +840,11 @@ const BuisnessAdminDashboard = () => {
       // Create updated business object with current form data
       const updatedBusiness = {
         ...editingBusiness,
+        logo: heroData.logo, // Update logo from hero data
+        navigation: {
+          ...editingBusiness.navigation,
+          logo: heroData.logo, // Also update navigation logo
+        },
         hero: heroData,
         about: {
           ...aboutData,
@@ -1062,38 +1073,46 @@ const BuisnessAdminDashboard = () => {
           //   throw error;
           // }
 
-          // Pre-fill all form data from business data (using API data structure)
+          // Pre-fill all form data from current edited business or original business data
+          const currentData = editingBusiness || businessData;
           setHeroData({
-            title: businessData.hero?.title || `${businessData.name}`,
+            title: currentData.hero?.title || `${currentData.name}`,
             subtitle:
-              businessData.hero?.subtitle || `Welcome to ${businessData.name}`,
+              currentData.hero?.subtitle || `Welcome to ${currentData.name}`,
             backgroundImage:
-              businessData.hero?.backgroundImage || businessData.image || '',
+              currentData.hero?.backgroundImage || currentData.image || '',
+            profileImage:
+              currentData.hero?.profileImage ||
+              'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80',
+            logo:
+              currentData.logo ||
+              currentData.navigation?.logo ||
+              'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=80',
           });
 
           setAboutData({
-            title: businessData.about?.title || 'About Us',
+            title: currentData.about?.title || 'About Us',
             description:
-              businessData.about?.description ||
-              `Learn more about ${businessData.name}`,
-            profileImage: businessData.about?.profileImage || '',
+              currentData.about?.description ||
+              `Learn more about ${currentData.name}`,
+            profileImage: currentData.about?.profileImage || '',
           });
 
-          // Use API data directly instead of getSampleContent
-          setServicesData(businessData.services || []);
-          setTeamData(businessData.team || []);
-          setPortfolioData(businessData.portfolio || []);
-          setSkillsData(businessData.skills || []);
-          setExperienceData(businessData.experience || []);
+          // Use current edited data or API data
+          setServicesData(currentData.services || []);
+          setTeamData(currentData.team || []);
+          setPortfolioData(currentData.portfolio || []);
+          setSkillsData(currentData.skills || []);
+          setExperienceData(currentData.experience || []);
           setGalleryData(businessData.gallery || []);
-          setPackagesData(businessData.packages || []);
-          setTestimonialsData(businessData.testimonials || []);
-          setReviewsData(businessData.reviews || []);
-          setFaqData(businessData.faq || []);
+          setPackagesData(currentData.packages || []);
+          setTestimonialsData(currentData.testimonials || []);
+          setReviewsData(currentData.reviews || []);
+          setFaqData(currentData.faq || []);
 
-          // Initialize business hours from API data
+          // Initialize business hours from current data
           setBusinessHoursData(
-            businessData.businessHours || {
+            currentData.businessHours || {
               title: 'Business Hours',
               hours: {
                 monday: '9:00 AM - 6:00 PM',
@@ -1125,12 +1144,12 @@ const BuisnessAdminDashboard = () => {
             'contact',
           ]);
 
-          // Initialize contact data from API data
+          // Initialize contact data from current data
           setContactData(
-            businessData.contact || {
+            currentData.contact || {
               title: 'Get In Touch',
-              description: `Contact us to learn more about ${businessData.name}`,
-              email: `hello@${businessData.slug}.com`,
+              description: `Contact us to learn more about ${currentData.name}`,
+              email: `hello@${currentData.slug}.com`,
               phone: '+1 (555) 123-4567',
               address: '123 Business Street, City, State 12345',
               hours: {
@@ -1151,10 +1170,10 @@ const BuisnessAdminDashboard = () => {
             }
           );
 
-          // Initialize UI content data from API data
+          // Initialize UI content data from current data
           setUiContentData(
-            businessData.ui || {
-              sections: businessData.sections || {},
+            currentData.ui || {
+              sections: currentData.sections || {},
               buttons: {
                 bookNow: 'Book Now',
                 learnMore: 'Learn More',
@@ -1265,6 +1284,13 @@ const BuisnessAdminDashboard = () => {
           originalBusiness.hero?.backgroundImage ||
           originalBusiness.image ||
           '',
+        profileImage:
+          originalBusiness.hero?.profileImage ||
+          'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80',
+        logo:
+          originalBusiness.logo ||
+          originalBusiness.navigation?.logo ||
+          'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=80',
       });
 
       setAboutData({
@@ -1604,7 +1630,7 @@ const BuisnessAdminDashboard = () => {
           heading: 'Card Section',
           cards: [
             { title: 'Card 1', description: 'Description 1', icon: '🎯' },
-            { title: 'Card 2', description: 'Description 2', icon: '⚡' },
+            { title: 'Card 2', description: 'Description 2', icon: '���' },
             { title: 'Card 3', description: 'Description 3', icon: '🚀' },
           ],
           layout: 'grid', // grid, horizontal, vertical
@@ -1761,34 +1787,237 @@ const BuisnessAdminDashboard = () => {
                   }}
                   placeholder="Enter background image URL or upload"
                 />
-                {heroData.backgroundImage && (
+                <div
+                  style={{
+                    marginTop: '10px',
+                    padding: '10px',
+                    border: '1px solid #e2e8f0',
+                    borderRadius: '6px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px',
+                  }}
+                >
                   <div
                     style={{
-                      marginTop: '10px',
-                      padding: '10px',
-                      border: '1px solid #e2e8f0',
+                      width: '80px',
+                      height: '60px',
+                      backgroundImage: heroData.backgroundImage
+                        ? `url(${heroData.backgroundImage})`
+                        : 'linear-gradient(135deg, #f3f4f6, #e5e7eb)',
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
                       borderRadius: '6px',
+                      border: '1px solid #d1d5db',
                       display: 'flex',
                       alignItems: 'center',
-                      gap: '10px',
+                      justifyContent: 'center',
+                      fontSize: '0.8rem',
+                      color: '#6b7280',
                     }}
                   >
+                    {!heroData.backgroundImage && '🖼️'}
+                  </div>
+                  <div>
                     <div
                       style={{
-                        width: '60px',
-                        height: '60px',
-                        backgroundImage: `url(${heroData.backgroundImage})`,
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center',
-                        borderRadius: '6px',
-                        border: '1px solid #d1d5db',
+                        fontSize: '0.9rem',
+                        color: '#374151',
+                        fontWeight: '500',
                       }}
-                    />
-                    <span style={{ fontSize: '0.9rem', color: '#6b7280' }}>
-                      Image preview
-                    </span>
+                    >
+                      Background Image Preview
+                    </div>
+                    <div style={{ fontSize: '0.8rem', color: '#6b7280' }}>
+                      {heroData.backgroundImage
+                        ? 'Current image loaded'
+                        : 'No image selected'}
+                    </div>
                   </div>
-                )}
+                </div>
+              </FormGroup>
+              <FormGroup style={{ gridColumn: '1 / -1' }}>
+                <FormLabel>
+                  <FaCamera />
+                  Profile Image URL
+                  <input
+                    type="file"
+                    accept="image/*"
+                    style={{ display: 'none' }}
+                    id="hero-profile-upload"
+                    onChange={e =>
+                      handleImageUpload(e, url => {
+                        setHeroData(prev => ({
+                          ...prev,
+                          profileImage: url,
+                        }));
+                        trackSectionChange('hero');
+                      })
+                    }
+                  />
+                  <label
+                    htmlFor="hero-profile-upload"
+                    style={{
+                      marginLeft: '10px',
+                      cursor: 'pointer',
+                      color: '#3b82f6',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                    }}
+                  >
+                    <FaUpload /> Upload
+                  </label>
+                </FormLabel>
+                <FormInput
+                  value={heroData.profileImage}
+                  onChange={e => {
+                    setHeroData(prev => ({
+                      ...prev,
+                      profileImage: e.target.value,
+                    }));
+                    trackSectionChange('hero');
+                  }}
+                  placeholder="Enter profile image URL or upload"
+                />
+                <div
+                  style={{
+                    marginTop: '10px',
+                    padding: '10px',
+                    border: '1px solid #e2e8f0',
+                    borderRadius: '6px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px',
+                  }}
+                >
+                  <div
+                    style={{
+                      width: '60px',
+                      height: '60px',
+                      backgroundImage: heroData.profileImage
+                        ? `url(${heroData.profileImage})`
+                        : 'linear-gradient(135deg, #f3f4f6, #e5e7eb)',
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                      borderRadius: '50%',
+                      border: '1px solid #d1d5db',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '1.2rem',
+                    }}
+                  >
+                    {!heroData.profileImage && '👤'}
+                  </div>
+                  <div>
+                    <div
+                      style={{
+                        fontSize: '0.9rem',
+                        color: '#374151',
+                        fontWeight: '500',
+                      }}
+                    >
+                      Profile Image Preview
+                    </div>
+                    <div style={{ fontSize: '0.8rem', color: '#6b7280' }}>
+                      {heroData.profileImage
+                        ? 'Current profile image'
+                        : 'No profile image selected'}
+                    </div>
+                  </div>
+                </div>
+              </FormGroup>
+              <FormGroup style={{ gridColumn: '1 / -1' }}>
+                <FormLabel>
+                  <FaFileImage />
+                  Logo URL
+                  <input
+                    type="file"
+                    accept="image/*"
+                    style={{ display: 'none' }}
+                    id="hero-logo-upload"
+                    onChange={e =>
+                      handleImageUpload(e, url => {
+                        setHeroData(prev => ({
+                          ...prev,
+                          logo: url,
+                        }));
+                        trackSectionChange('hero');
+                      })
+                    }
+                  />
+                  <label
+                    htmlFor="hero-logo-upload"
+                    style={{
+                      marginLeft: '10px',
+                      cursor: 'pointer',
+                      color: '#3b82f6',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                    }}
+                  >
+                    <FaUpload /> Upload
+                  </label>
+                </FormLabel>
+                <FormInput
+                  value={heroData.logo}
+                  onChange={e => {
+                    setHeroData(prev => ({
+                      ...prev,
+                      logo: e.target.value,
+                    }));
+                    trackSectionChange('hero');
+                  }}
+                  placeholder="Enter logo URL or upload"
+                />
+                <div
+                  style={{
+                    marginTop: '10px',
+                    padding: '10px',
+                    border: '1px solid #e2e8f0',
+                    borderRadius: '6px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px',
+                  }}
+                >
+                  <div
+                    style={{
+                      width: '80px',
+                      height: '40px',
+                      backgroundImage: heroData.logo
+                        ? `url(${heroData.logo})`
+                        : 'linear-gradient(135deg, #f3f4f6, #e5e7eb)',
+                      backgroundSize: 'contain',
+                      backgroundRepeat: 'no-repeat',
+                      backgroundPosition: 'center',
+                      borderRadius: '6px',
+                      border: '1px solid #d1d5db',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '1rem',
+                    }}
+                  >
+                    {!heroData.logo && '🏢'}
+                  </div>
+                  <div>
+                    <div
+                      style={{
+                        fontSize: '0.9rem',
+                        color: '#374151',
+                        fontWeight: '500',
+                      }}
+                    >
+                      Logo Preview
+                    </div>
+                    <div style={{ fontSize: '0.8rem', color: '#6b7280' }}>
+                      {heroData.logo ? 'Current logo' : 'No logo selected'}
+                    </div>
+                  </div>
+                </div>
               </FormGroup>
             </FormGrid>
           </ContentSection>
@@ -1884,34 +2113,53 @@ const BuisnessAdminDashboard = () => {
                   }}
                   placeholder="Enter profile image URL or upload"
                 />
-                {aboutData.profileImage && (
+                <div
+                  style={{
+                    marginTop: '10px',
+                    padding: '10px',
+                    border: '1px solid #e2e8f0',
+                    borderRadius: '6px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px',
+                  }}
+                >
                   <div
                     style={{
-                      marginTop: '10px',
-                      padding: '10px',
-                      border: '1px solid #e2e8f0',
-                      borderRadius: '6px',
+                      width: '60px',
+                      height: '60px',
+                      backgroundImage: aboutData.profileImage
+                        ? `url(${aboutData.profileImage})`
+                        : 'linear-gradient(135deg, #f3f4f6, #e5e7eb)',
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                      borderRadius: '50%',
+                      border: '1px solid #d1d5db',
                       display: 'flex',
                       alignItems: 'center',
-                      gap: '10px',
+                      justifyContent: 'center',
+                      fontSize: '1.2rem',
                     }}
                   >
+                    {!aboutData.profileImage && '👤'}
+                  </div>
+                  <div>
                     <div
                       style={{
-                        width: '60px',
-                        height: '60px',
-                        backgroundImage: `url(${aboutData.profileImage})`,
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center',
-                        borderRadius: '6px',
-                        border: '1px solid #d1d5db',
+                        fontSize: '0.9rem',
+                        color: '#374151',
+                        fontWeight: '500',
                       }}
-                    />
-                    <span style={{ fontSize: '0.9rem', color: '#6b7280' }}>
-                      Profile image preview
-                    </span>
+                    >
+                      About Profile Image
+                    </div>
+                    <div style={{ fontSize: '0.8rem', color: '#6b7280' }}>
+                      {aboutData.profileImage
+                        ? 'Current profile image'
+                        : 'No profile image selected'}
+                    </div>
                   </div>
-                )}
+                </div>
               </FormGroup>
 
               {/* Statistics Section within About Us */}
