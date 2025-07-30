@@ -14,7 +14,7 @@ import {
   FaMobile,
   FaChartLine,
   FaHeart,
-  FaUsers,
+
   FaAward,
 } from 'react-icons/fa';
 import { theme, media } from '../../styles/GlobalStyle';
