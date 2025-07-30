@@ -561,8 +561,9 @@ const CTAButton = styled(PrimaryButton)`
 
 // Explore Stores Section
 const ExploreSection = styled.section`
-  background: #111;
+  background: white;
   padding: ${theme.spacing.xxl} 0;
+  margin: ${theme.spacing.xxl} 0;
   position: relative;
 `;
 
