@@ -299,39 +299,36 @@ const ActionButton = styled.button.withConfig({
   }
 `;
 
-// Enhanced Hero Section with parallax and animated elements
+// Enhanced Hero Section with split layout
 const HeroSection = styled.section.withConfig({
-  shouldForwardProp: prop => prop !== 'primaryColor' && prop !== 'backgroundImage',
+  shouldForwardProp: prop => prop !== 'primaryColor',
 })`
-  height: 100vh;
-  background: linear-gradient(135deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5)), 
-              url(${props => props.backgroundImage || 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-4.0.3&w=1200&q=80'});
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
+  min-height: 100vh;
+  background: linear-gradient(135deg, ${props => props.primaryColor + '10' || theme.colors.primary + '10'}, ${theme.colors.white});
   display: flex;
   align-items: center;
-  justify-content: center;
-  text-align: center;
   position: relative;
   overflow: hidden;
+  padding: 120px 0 80px;
 
   &:before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(45deg, 
-      ${props => props.primaryColor + '20' || theme.colors.primary + '20'}, 
-      transparent 70%
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(135deg,
+      ${props => props.primaryColor + '15' || theme.colors.primary + '15'},
+      transparent
     );
     pointer-events: none;
   }
 
-  @media (max-width: ${theme.breakpoints.mobile}) {
-    background-attachment: scroll;
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    flex-direction: column;
+    text-align: center;
+    padding: 100px 0 60px;
   }
 `;
 
