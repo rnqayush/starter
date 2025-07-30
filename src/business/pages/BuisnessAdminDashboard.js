@@ -749,6 +749,8 @@ const BuisnessAdminDashboard = () => {
     title: '',
     subtitle: '',
     backgroundImage: '',
+    profileImage: '',
+    logo: '',
   });
 
   const [aboutData, setAboutData] = useState({
