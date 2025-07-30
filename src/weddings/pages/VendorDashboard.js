@@ -2090,8 +2090,7 @@ const VendorDashboard = () => {
                 <FormInput
                   value={heroData.name}
                   onChange={e => {
-                    setHeroData(prev => ({ ...prev, name: e.target.value }));
-                    trackSectionChange('hero');
+                    debouncedInputChange('hero', 'name', e.target.value, setHeroData);
                   }}
                   placeholder="Enter your business name"
                 />
