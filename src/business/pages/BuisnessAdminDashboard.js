@@ -1800,6 +1800,153 @@ const BuisnessAdminDashboard = () => {
                   </div>
                 )}
               </FormGroup>
+              <FormGroup style={{ gridColumn: '1 / -1' }}>
+                <FormLabel>
+                  <FaCamera />
+                  Profile Image URL
+                  <input
+                    type="file"
+                    accept="image/*"
+                    style={{ display: 'none' }}
+                    id="hero-profile-upload"
+                    onChange={e =>
+                      handleImageUpload(e, url => {
+                        setHeroData(prev => ({
+                          ...prev,
+                          profileImage: url,
+                        }));
+                        trackSectionChange('hero');
+                      })
+                    }
+                  />
+                  <label
+                    htmlFor="hero-profile-upload"
+                    style={{
+                      marginLeft: '10px',
+                      cursor: 'pointer',
+                      color: '#3b82f6',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                    }}
+                  >
+                    <FaUpload /> Upload
+                  </label>
+                </FormLabel>
+                <FormInput
+                  value={heroData.profileImage}
+                  onChange={e => {
+                    setHeroData(prev => ({
+                      ...prev,
+                      profileImage: e.target.value,
+                    }));
+                    trackSectionChange('hero');
+                  }}
+                  placeholder="Enter profile image URL or upload"
+                />
+                {heroData.profileImage && (
+                  <div
+                    style={{
+                      marginTop: '10px',
+                      padding: '10px',
+                      border: '1px solid #e2e8f0',
+                      borderRadius: '6px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '10px',
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: '60px',
+                        height: '60px',
+                        backgroundImage: `url(${heroData.profileImage})`,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        borderRadius: '50%',
+                        border: '1px solid #d1d5db',
+                      }}
+                    />
+                    <span style={{ fontSize: '0.9rem', color: '#6b7280' }}>
+                      Profile image preview
+                    </span>
+                  </div>
+                )}
+              </FormGroup>
+              <FormGroup style={{ gridColumn: '1 / -1' }}>
+                <FormLabel>
+                  <FaFileImage />
+                  Logo URL
+                  <input
+                    type="file"
+                    accept="image/*"
+                    style={{ display: 'none' }}
+                    id="hero-logo-upload"
+                    onChange={e =>
+                      handleImageUpload(e, url => {
+                        setHeroData(prev => ({
+                          ...prev,
+                          logo: url,
+                        }));
+                        trackSectionChange('hero');
+                      })
+                    }
+                  />
+                  <label
+                    htmlFor="hero-logo-upload"
+                    style={{
+                      marginLeft: '10px',
+                      cursor: 'pointer',
+                      color: '#3b82f6',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                    }}
+                  >
+                    <FaUpload /> Upload
+                  </label>
+                </FormLabel>
+                <FormInput
+                  value={heroData.logo}
+                  onChange={e => {
+                    setHeroData(prev => ({
+                      ...prev,
+                      logo: e.target.value,
+                    }));
+                    trackSectionChange('hero');
+                  }}
+                  placeholder="Enter logo URL or upload"
+                />
+                {heroData.logo && (
+                  <div
+                    style={{
+                      marginTop: '10px',
+                      padding: '10px',
+                      border: '1px solid #e2e8f0',
+                      borderRadius: '6px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '10px',
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: '60px',
+                        height: '40px',
+                        backgroundImage: `url(${heroData.logo})`,
+                        backgroundSize: 'contain',
+                        backgroundRepeat: 'no-repeat',
+                        backgroundPosition: 'center',
+                        borderRadius: '6px',
+                        border: '1px solid #d1d5db',
+                      }}
+                    />
+                    <span style={{ fontSize: '0.9rem', color: '#6b7280' }}>
+                      Logo preview
+                    </span>
+                  </div>
+                )}
+              </FormGroup>
             </FormGrid>
           </ContentSection>
         );
