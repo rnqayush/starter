@@ -7,7 +7,7 @@ import {
   pricingPlans,
   pricingFeatures,
   pricingFAQs,
-} from '../../DummyData/platform';
+} from '../../DummyData/index';
 
 const PageContainer = styled.div`
   min-height: 100vh;
