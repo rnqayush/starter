@@ -479,14 +479,14 @@ const ScrollIndicator = styled.div`
   bottom: 30px;
   left: 50%;
   transform: translateX(-50%);
-  color: white;
+  color: ${theme.colors.gray600};
   ${css`animation: ${float} 2s ease-in-out infinite;`}
   cursor: pointer;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: ${theme.spacing.sm};
-  
+
   span {
     font-size: 0.9rem;
     font-weight: 500;
