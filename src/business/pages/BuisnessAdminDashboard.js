@@ -1069,17 +1069,18 @@ const BuisnessAdminDashboard = () => {
           //   throw error;
           // }
 
-          // Pre-fill all form data from business data (using API data structure)
+          // Pre-fill all form data from current edited business or original business data
+          const currentData = editingBusiness || businessData;
           setHeroData({
-            title: businessData.hero?.title || `${businessData.name}`,
+            title: currentData.hero?.title || `${currentData.name}`,
             subtitle:
-              businessData.hero?.subtitle || `Welcome to ${businessData.name}`,
+              currentData.hero?.subtitle || `Welcome to ${currentData.name}`,
             backgroundImage:
-              businessData.hero?.backgroundImage || businessData.image || '',
+              currentData.hero?.backgroundImage || currentData.image || '',
             profileImage:
-              businessData.hero?.profileImage || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80',
+              currentData.hero?.profileImage || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80',
             logo:
-              businessData.logo || businessData.navigation?.logo || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=80',
+              currentData.logo || currentData.navigation?.logo || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=80',
           });
 
           setAboutData({
