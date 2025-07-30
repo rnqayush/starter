@@ -693,7 +693,7 @@ const TestimonialQuote = styled.div`
 `;
 
 const TestimonialText = styled.p`
-  color: rgba(255, 255, 255, 0.9);
+  color: #374151;
   font-size: 1.125rem;
   line-height: 1.6;
   margin-bottom: ${theme.spacing.lg};
@@ -708,13 +708,13 @@ const TestimonialAuthor = styled.div`
 `;
 
 const AuthorName = styled.h4`
-  color: white;
+  color: #1e293b;
   font-weight: 600;
   font-size: 1.125rem;
 `;
 
 const AuthorRole = styled.p`
-  color: rgba(255, 255, 255, 0.6);
+  color: #64748b;
   font-size: 0.875rem;
 `;
 
