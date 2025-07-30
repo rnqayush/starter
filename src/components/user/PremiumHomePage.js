@@ -380,8 +380,9 @@ const StatLabel = styled.p`
 `;
 
 const FeaturesSection = styled.section`
-  background: #000;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
   padding: ${theme.spacing.xxl} 0;
+  margin: ${theme.spacing.xxl} 0;
   position: relative;
 `;
 
