@@ -412,34 +412,37 @@ const HeroImage = styled.div.withConfig({
 `;
 
 const HeroTitle = styled.h1`
-  font-size: 4.5rem;
+  font-size: 4rem;
   font-weight: 900;
-  color: ${theme.colors.white};
-  margin-bottom: ${theme.spacing.xl};
+  color: ${theme.colors.gray900};
+  margin-bottom: ${theme.spacing.lg};
   line-height: 1.1;
   letter-spacing: -0.02em;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
   position: relative;
 
   @media (max-width: ${theme.breakpoints.tablet}) {
-    font-size: 3.8rem;
+    font-size: 3.5rem;
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    font-size: 3rem;
+    font-size: 2.8rem;
   }
 
   &:after {
     content: '';
     position: absolute;
     bottom: -10px;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 0;
     width: 100px;
     height: 4px;
     background: linear-gradient(45deg, #ff9800, #ffb74d);
     border-radius: 2px;
-    ${css`animation: ${fadeInUp} 1.5s ease-out;`}
+    ${css`animation: ${slideInFromBottom} 1.5s ease-out;`}
+
+    @media (max-width: ${theme.breakpoints.tablet}) {
+      left: 50%;
+      transform: translateX(-50%);
+    }
   }
 `;
 
