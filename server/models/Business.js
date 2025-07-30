@@ -10,7 +10,6 @@ const BusinessSchema = new mongoose.Schema({
   slug: {
     type: String,
     required: [true, 'Please add a business slug'],
-    unique: true,
     lowercase: true,
     match: [/^[a-z0-9-]+$/, 'Slug can only contain lowercase letters, numbers, and hyphens']
   },
@@ -235,7 +234,7 @@ const BusinessSchema = new mongoose.Schema({
 });
 
 // Indexes
-BusinessSchema.index({ slug: 1 });
+BusinessSchema.index({ slug: 1 }, { unique: true });
 BusinessSchema.index({ type: 1 });
 BusinessSchema.index({ owner: 1 });
 BusinessSchema.index({ 'settings.isPublished': 1 });
@@ -297,4 +296,3 @@ BusinessSchema.statics.getBusinessesInRadius = async function(zipcode, distance)
 };
 
 module.exports = mongoose.model('Business', BusinessSchema);
-

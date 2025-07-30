@@ -15,7 +15,6 @@ const ProductSchema = new mongoose.Schema({
   slug: {
     type: String,
     required: true,
-    unique: true,
     lowercase: true
   },
   description: {
@@ -36,7 +35,6 @@ const ProductSchema = new mongoose.Schema({
   sku: {
     type: String,
     required: [true, 'Please add a SKU'],
-    unique: true,
     uppercase: true
   },
   images: {
@@ -249,8 +247,8 @@ const ProductSchema = new mongoose.Schema({
 
 // Indexes
 ProductSchema.index({ business: 1 });
-ProductSchema.index({ slug: 1 });
-ProductSchema.index({ sku: 1 });
+ProductSchema.index({ slug: 1 }, { unique: true });
+ProductSchema.index({ sku: 1 }, { unique: true });
 ProductSchema.index({ category: 1 });
 ProductSchema.index({ status: 1 });
 ProductSchema.index({ featured: 1 });
@@ -402,4 +400,3 @@ ProductSchema.statics.searchProducts = function(query, filters = {}) {
 };
 
 module.exports = mongoose.model('Product', ProductSchema);
-

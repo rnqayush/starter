@@ -3,8 +3,7 @@ const mongoose = require('mongoose');
 const BookingSchema = new mongoose.Schema({
   bookingNumber: {
     type: String,
-    required: true,
-    unique: true
+    required: true
   },
   business: {
     type: mongoose.Schema.ObjectId,
@@ -270,7 +269,7 @@ const BookingSchema = new mongoose.Schema({
 });
 
 // Indexes
-BookingSchema.index({ bookingNumber: 1 });
+BookingSchema.index({ bookingNumber: 1 }, { unique: true });
 BookingSchema.index({ business: 1 });
 BookingSchema.index({ customer: 1 });
 BookingSchema.index({ hotel: 1 });
@@ -378,4 +377,3 @@ BookingSchema.methods.addNote = function(note, addedBy, isInternal = false) {
 };
 
 module.exports = mongoose.model('Booking', BookingSchema);
-
