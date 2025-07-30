@@ -9,8 +9,9 @@ import { AuthProvider } from './context/AuthContext';
 import ErrorBoundary from './components/ErrorBoundary';
 
 // User Components
-import PremiumHomePage from './components/user/PremiumHomePage';
+import PlatformHomePage from './components/user/PlatformHomePage';
 import PricingPage from './components/user/PricingPage';
+import BlogsPage from './components/user/BlogsPage';
 import LoginPage from './components/auth/LoginPage';
 import RegisterPage from './components/auth/RegisterPage';
 import StartBuilding from './components/StartBuilding';
@@ -103,7 +104,8 @@ function App() {
                 <ScrollToTop />
                 <Routes>
                   {/* Main Platform Routes (Highest Priority) */}
-                  <Route path="/" element={<PremiumHomePage />} />
+                  <Route path="/" element={<PlatformHomePage />} />
+                  <Route path="/blogs" element={<BlogsPage />} />
                   <Route path="/pricing" element={<PricingPage />} />
                   <Route path="/login" element={<LoginPage />} />
                   <Route path="/register" element={<RegisterPage />} />
