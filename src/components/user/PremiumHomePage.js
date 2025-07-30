@@ -105,6 +105,7 @@ const HeroSection = styled.section`
   justify-content: center;
   position: relative;
   overflow: hidden;
+  padding-top: 60px;
 
   &::before {
     content: '';
