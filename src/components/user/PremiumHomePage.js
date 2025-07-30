@@ -669,18 +669,18 @@ const TestimonialsGrid = styled.div`
 const TestimonialCard = styled.div`
   padding: ${theme.spacing.xxl};
   border-radius: ${theme.borderRadius.xl};
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.1) 100%);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  border: 1px solid rgba(148, 163, 184, 0.2);
   transition: all 0.3s ease;
   animation: ${fadeInUp} 0.8s ease-out both;
   animation-delay: ${props => props.delay || '0s'};
   position: relative;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 
   &:hover {
-    transform: translateY(-10px);
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.15) 100%);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(102, 126, 234, 0.15);
+    border-color: rgba(102, 126, 234, 0.3);
   }
 `;
 
