@@ -727,9 +727,10 @@ const StarRating = styled.div`
 
 // Footer Section
 const FooterSection = styled.footer`
-  background: #000;
+  background: #1e293b;
   padding: ${theme.spacing.xxl} 0 ${theme.spacing.xl} 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: ${theme.spacing.xxl};
+  border-top: 1px solid rgba(148, 163, 184, 0.2);
 `;
 
 const FooterContainer = styled.div`
