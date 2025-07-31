@@ -19,6 +19,8 @@ require('dotenv').config();
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/users');
 const hotelRoutes = require('./routes/hotels');
+const hotelSearchRoutes = require('./routes/hotelSearch');
+const hotelAnalyticsRoutes = require('./routes/hotelAnalytics');
 const bookingRoutes = require('./routes/bookings');
 const productRoutes = require('./routes/products');
 const orderRoutes = require('./routes/orders');
@@ -129,6 +131,8 @@ app.get('/health', (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/hotels', hotelRoutes);
+app.use('/api/hotels', hotelSearchRoutes);
+app.use('/api/hotels', hotelAnalyticsRoutes);
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
@@ -177,4 +181,3 @@ process.on('uncaughtException', (err) => {
 });
 
 module.exports = app;
-

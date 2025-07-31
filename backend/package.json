@@ -12,6 +12,7 @@
     "lint": "eslint . --ext .js",
     "lint:fix": "eslint . --ext .js --fix",
     "seed": "node utils/seedDatabase.js",
+    "seed:enhanced": "node utils/seedDatabase.js --enhanced",
     "docs": "swagger-jsdoc -d docs/swagger.js -o docs/swagger.json"
   },
   "repository": {
