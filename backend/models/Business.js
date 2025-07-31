@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
+const slugify = require('slugify');
 
 const BusinessSchema = new mongoose.Schema({
+  // Basic Information
   name: {
     type: String,
     required: [true, 'Please add a business name'],
@@ -9,61 +11,70 @@ const BusinessSchema = new mongoose.Schema({
   },
   slug: {
     type: String,
-    required: [true, 'Please add a business slug'],
-    lowercase: true,
-    match: [/^[a-z0-9-]+$/, 'Slug can only contain lowercase letters, numbers, and hyphens']
-  },
-  description: {
-    type: String,
-    required: [true, 'Please add a description'],
-    maxlength: [1000, 'Description cannot be more than 1000 characters']
+    unique: true
   },
   type: {
     type: String,
     required: [true, 'Please specify business type'],
-    enum: ['hotel', 'ecommerce', 'wedding', 'automobile', 'business']
+    enum: ['business', 'personal', 'portfolio']
   },
+  category: {
+    type: String,
+    required: [true, 'Please add a business category'],
+    enum: [
+      'Beauty & Wellness',
+      'Healthcare',
+      'Professional Services',
+      'Retail',
+      'Food & Beverage',
+      'Technology',
+      'Education',
+      'Entertainment',
+      'Real Estate',
+      'Automotive',
+      'Other'
+    ]
+  },
+  
+  // Owner Information
   owner: {
     type: mongoose.Schema.ObjectId,
     ref: 'User',
     required: true
   },
+  
+  // Visual Branding
+  primaryColor: {
+    type: String,
+    default: '#3b82f6'
+  },
+  secondaryColor: {
+    type: String,
+    default: '#93c5fd'
+  },
   logo: {
     type: String,
     default: 'default-business-logo.jpg'
   },
-  coverImage: {
+  image: {
     type: String,
-    default: 'default-business-cover.jpg'
+    default: 'default-business-image.jpg'
   },
-  images: [String],
-  contact: {
-    email: {
-      type: String,
-      required: [true, 'Please add a contact email'],
-      match: [
-        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-        'Please add a valid email'
-      ]
-    },
-    phone: {
-      type: String,
-      required: [true, 'Please add a contact phone'],
-      match: [/^\+?[\d\s\-\(\)]+$/, 'Please add a valid phone number']
-    },
-    website: {
-      type: String,
-      match: [
-        /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/,
-        'Please add a valid URL'
-      ]
-    }
+  
+  // Business Details
+  tagline: {
+    type: String,
+    maxlength: [200, 'Tagline cannot be more than 200 characters']
   },
+  description: {
+    type: String,
+    required: [true, 'Please add a business description'],
+    maxlength: [1000, 'Description cannot be more than 1000 characters']
+  },
+  
+  // Location Information
   address: {
-    street: {
-      type: String,
-      required: [true, 'Please add a street address']
-    },
+    street: String,
     city: {
       type: String,
       required: [true, 'Please add a city']
@@ -72,227 +83,356 @@ const BusinessSchema = new mongoose.Schema({
       type: String,
       required: [true, 'Please add a state']
     },
-    zipCode: {
-      type: String,
-      required: [true, 'Please add a zip code']
-    },
+    zipCode: String,
     country: {
       type: String,
-      required: [true, 'Please add a country'],
       default: 'United States'
-    },
-    coordinates: {
-      type: {
-        type: String,
-        enum: ['Point']
-      },
-      coordinates: {
-        type: [Number],
-        index: '2dsphere'
-      }
     }
   },
+  coordinates: {
+    lat: {
+      type: Number,
+      required: [true, 'Please add latitude coordinates']
+    },
+    lng: {
+      type: Number,
+      required: [true, 'Please add longitude coordinates']
+    }
+  },
+  
+  // Contact Information
+  contact: {
+    phone: {
+      type: String,
+      match: [/^\+?[\d\s\-\(\)]+$/, 'Please add a valid phone number']
+    },
+    email: {
+      type: String,
+      match: [
+        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+        'Please add a valid email'
+      ]
+    },
+    website: String
+  },
+  
+  // Business Hours
+  hours: {
+    monday: { open: String, close: String, closed: { type: Boolean, default: false } },
+    tuesday: { open: String, close: String, closed: { type: Boolean, default: false } },
+    wednesday: { open: String, close: String, closed: { type: Boolean, default: false } },
+    thursday: { open: String, close: String, closed: { type: Boolean, default: false } },
+    friday: { open: String, close: String, closed: { type: Boolean, default: false } },
+    saturday: { open: String, close: String, closed: { type: Boolean, default: false } },
+    sunday: { open: String, close: String, closed: { type: Boolean, default: false } }
+  },
+  
+  // Features and Services
+  features: [{
+    type: String,
+    enum: [
+      'Online Booking',
+      'Service Gallery',
+      'Staff Profiles',
+      'Client Reviews',
+      'Online Payments',
+      'Appointment Scheduling',
+      'Portfolio Showcase',
+      'Contact Forms',
+      'Social Media Integration',
+      'Blog/News',
+      'E-commerce',
+      'Multi-language Support'
+    ]
+  }],
+  
+  services: [{
+    name: {
+      type: String,
+      required: true
+    },
+    description: String,
+    price: {
+      amount: Number,
+      currency: {
+        type: String,
+        default: 'USD'
+      },
+      type: {
+        type: String,
+        enum: ['fixed', 'starting_from', 'hourly', 'custom'],
+        default: 'fixed'
+      }
+    },
+    duration: String, // e.g., "1 hour", "30 minutes"
+    category: String,
+    image: String,
+    featured: {
+      type: Boolean,
+      default: false
+    }
+  }],
+  
+  // Hero Section
+  hero: {
+    title: {
+      type: String,
+      required: [true, 'Please add a hero title']
+    },
+    subtitle: String,
+    backgroundImage: String,
+    ctaText: {
+      type: String,
+      default: 'Get Started'
+    },
+    ctaLink: String
+  },
+  
+  // About Section
+  about: {
+    title: {
+      type: String,
+      default: 'About Us'
+    },
+    description: String,
+    extendedDescription: String,
+    experience: String,
+    completedServices: String,
+    satisfiedClients: String,
+    averageRating: String,
+    stats: [{
+      number: String,
+      label: String
+    }],
+    images: [String],
+    achievements: [String],
+    certifications: [String]
+  },
+  
+  // Team Members
+  team: [{
+    name: {
+      type: String,
+      required: true
+    },
+    position: String,
+    bio: String,
+    image: String,
+    specialties: [String],
+    experience: String,
+    contact: {
+      email: String,
+      phone: String
+    },
+    socialMedia: {
+      facebook: String,
+      instagram: String,
+      twitter: String,
+      linkedin: String
+    }
+  }],
+  
+  // Gallery
+  gallery: [{
+    image: {
+      type: String,
+      required: true
+    },
+    title: String,
+    description: String,
+    category: String,
+    featured: {
+      type: Boolean,
+      default: false
+    }
+  }],
+  
+  // Testimonials/Reviews
+  testimonials: [{
+    name: {
+      type: String,
+      required: true
+    },
+    review: {
+      type: String,
+      required: true
+    },
+    rating: {
+      type: Number,
+      min: 1,
+      max: 5,
+      required: true
+    },
+    image: String,
+    position: String,
+    company: String,
+    date: {
+      type: Date,
+      default: Date.now
+    },
+    featured: {
+      type: Boolean,
+      default: false
+    }
+  }],
+  
+  // Social Media
   socialMedia: {
     facebook: String,
     instagram: String,
     twitter: String,
     linkedin: String,
-    youtube: String
+    youtube: String,
+    tiktok: String
   },
-  businessHours: [{
-    day: {
-      type: String,
-      enum: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
-    },
-    isOpen: {
-      type: Boolean,
-      default: true
-    },
-    openTime: String,
-    closeTime: String
-  }],
-  settings: {
-    isPublished: {
-      type: Boolean,
-      default: false
-    },
-    isFeatured: {
-      type: Boolean,
-      default: false
-    },
-    allowOnlineBooking: {
-      type: Boolean,
-      default: true
-    },
-    allowOnlineOrdering: {
-      type: Boolean,
-      default: true
-    },
-    requireApproval: {
-      type: Boolean,
-      default: false
-    },
-    autoConfirmBookings: {
-      type: Boolean,
-      default: false
-    },
-    theme: {
-      primaryColor: {
-        type: String,
-        default: '#3B82F6'
-      },
-      secondaryColor: {
-        type: String,
-        default: '#1F2937'
-      },
-      accentColor: {
-        type: String,
-        default: '#F59E0B'
-      },
-      fontFamily: {
-        type: String,
-        default: 'Inter'
-      }
-    }
-  },
-  subscription: {
-    plan: {
-      type: String,
-      enum: ['free', 'basic', 'premium', 'enterprise'],
-      default: 'free'
-    },
-    status: {
-      type: String,
-      enum: ['active', 'inactive', 'cancelled', 'past_due'],
-      default: 'active'
-    },
-    startDate: Date,
-    endDate: Date,
-    stripeCustomerId: String,
-    stripeSubscriptionId: String
-  },
-  analytics: {
-    totalViews: {
-      type: Number,
-      default: 0
-    },
-    totalBookings: {
-      type: Number,
-      default: 0
-    },
-    totalRevenue: {
-      type: Number,
-      default: 0
-    },
-    averageRating: {
-      type: Number,
-      default: 0,
-      min: 0,
-      max: 5
-    },
-    totalReviews: {
-      type: Number,
-      default: 0
-    }
-  },
+  
+  // SEO and Analytics
   seo: {
     metaTitle: String,
     metaDescription: String,
     keywords: [String],
     ogImage: String
   },
+  
+  // Business Metrics
+  rating: {
+    type: Number,
+    min: [1, 'Rating must be at least 1'],
+    max: [5, 'Rating must can not be more than 5'],
+    default: 5
+  },
+  reviewCount: {
+    type: Number,
+    default: 0
+  },
+  
+  // Status and Settings
   isActive: {
     type: Boolean,
     default: true
   },
-  verificationStatus: {
-    type: String,
-    enum: ['pending', 'verified', 'rejected'],
-    default: 'pending'
+  isPublished: {
+    type: Boolean,
+    default: false
   },
-  verificationDocuments: [String],
-  staff: [{
-    user: {
-      type: mongoose.Schema.ObjectId,
-      ref: 'User'
-    },
-    role: {
+  isFeatured: {
+    type: Boolean,
+    default: false
+  },
+  isVerified: {
+    type: Boolean,
+    default: false
+  },
+  
+  // Website Settings
+  settings: {
+    theme: {
       type: String,
-      enum: ['manager', 'staff', 'editor'],
-      default: 'staff'
+      enum: ['modern', 'classic', 'minimal', 'creative'],
+      default: 'modern'
     },
-    permissions: [String],
-    addedAt: {
-      type: Date,
-      default: Date.now
+    layout: {
+      type: String,
+      enum: ['single-page', 'multi-page'],
+      default: 'single-page'
+    },
+    showContactInfo: {
+      type: Boolean,
+      default: true
+    },
+    showSocialMedia: {
+      type: Boolean,
+      default: true
+    },
+    showTestimonials: {
+      type: Boolean,
+      default: true
+    },
+    showGallery: {
+      type: Boolean,
+      default: true
+    },
+    showTeam: {
+      type: Boolean,
+      default: true
+    },
+    allowBookings: {
+      type: Boolean,
+      default: false
+    },
+    allowReviews: {
+      type: Boolean,
+      default: true
     }
-  }]
+  },
+  
+  // Analytics
+  analytics: {
+    views: {
+      type: Number,
+      default: 0
+    },
+    uniqueVisitors: {
+      type: Number,
+      default: 0
+    },
+    inquiries: {
+      type: Number,
+      default: 0
+    },
+    bookings: {
+      type: Number,
+      default: 0
+    }
+  }
 }, {
   timestamps: true,
   toJSON: { virtuals: true },
   toObject: { virtuals: true }
 });
 
-// Indexes
-BusinessSchema.index({ slug: 1 }, { unique: true });
-BusinessSchema.index({ type: 1 });
-BusinessSchema.index({ owner: 1 });
-BusinessSchema.index({ 'settings.isPublished': 1 });
-BusinessSchema.index({ 'settings.isFeatured': 1 });
-BusinessSchema.index({ 'address.coordinates': '2dsphere' });
-BusinessSchema.index({ createdAt: -1 });
+// Create business slug from the name
+BusinessSchema.pre('save', function(next) {
+  if (this.isModified('name')) {
+    this.slug = slugify(this.name, { lower: true });
+  }
+  next();
+});
 
 // Virtual for full address
 BusinessSchema.virtual('fullAddress').get(function() {
-  const addr = this.address;
-  return `${addr.street}, ${addr.city}, ${addr.state} ${addr.zipCode}, ${addr.country}`;
+  if (!this.address) return '';
+  const { street, city, state, zipCode, country } = this.address;
+  return [street, city, state, zipCode, country].filter(Boolean).join(', ');
 });
 
-// Virtual for business URL
-BusinessSchema.virtual('businessUrl').get(function() {
-  return `${process.env.CLIENT_URL}/${this.slug}`;
-});
-
-// Pre-save middleware to generate coordinates from address
-BusinessSchema.pre('save', async function(next) {
-  if (!this.isModified('address')) {
-    next();
+// Virtual for average rating calculation
+BusinessSchema.virtual('averageRating').get(function() {
+  if (this.testimonials && this.testimonials.length > 0) {
+    const sum = this.testimonials.reduce((acc, testimonial) => acc + testimonial.rating, 0);
+    return Math.round((sum / this.testimonials.length) * 10) / 10;
   }
-
-  try {
-    // In a real application, you would use a geocoding service like Google Maps API
-    // For now, we'll set default coordinates
-    if (!this.address.coordinates) {
-      this.address.coordinates = {
-        type: 'Point',
-        coordinates: [-74.006, 40.7128] // Default to NYC coordinates
-      };
-    }
-    next();
-  } catch (error) {
-    next(error);
-  }
+  return this.rating;
 });
 
-// Static method to get businesses within radius
-BusinessSchema.statics.getBusinessesInRadius = async function(zipcode, distance) {
-  // Get lat/lng from geocoder (would use real geocoding service)
-  const loc = await geocoder.geocode(zipcode);
-  const lat = loc[0].latitude;
-  const lng = loc[0].longitude;
+// Indexes for better query performance
+BusinessSchema.index({ slug: 1 });
+BusinessSchema.index({ owner: 1 });
+BusinessSchema.index({ category: 1 });
+BusinessSchema.index({ 'address.city': 1, 'address.state': 1 });
+BusinessSchema.index({ isActive: 1, isPublished: 1 });
+BusinessSchema.index({ isFeatured: 1 });
+BusinessSchema.index({ rating: -1 });
+BusinessSchema.index({ createdAt: -1 });
 
-  // Calculate radius using radians
-  // Divide distance by radius of Earth
-  // Earth Radius = 3,963 mi / 6,378 km
-  const radius = distance / 3963;
-
-  const businesses = await this.find({
-    'address.coordinates': {
-      $geoWithin: { $centerSphere: [[lng, lat], radius] }
-    }
-  });
-
-  return businesses;
-};
+// Text index for search functionality
+BusinessSchema.index({
+  name: 'text',
+  description: 'text',
+  tagline: 'text',
+  'services.name': 'text',
+  'services.description': 'text'
+});
 
 module.exports = mongoose.model('Business', BusinessSchema);
+

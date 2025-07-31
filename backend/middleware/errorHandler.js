@@ -3,7 +3,7 @@ const errorHandler = (err, req, res, next) => {
   error.message = err.message;
 
   // Log to console for dev
-  console.error(err);
+  console.error('Error:', err);
 
   // Mongoose bad ObjectId
   if (err.name === 'CastError') {
@@ -16,7 +16,14 @@ const errorHandler = (err, req, res, next) => {
 
   // Mongoose duplicate key
   if (err.code === 11000) {
-    const message = 'Duplicate field value entered';
+    let message = 'Duplicate field value entered';
+    
+    // Extract field name from error
+    const field = Object.keys(err.keyValue)[0];
+    if (field) {
+      message = `${field.charAt(0).toUpperCase() + field.slice(1)} already exists`;
+    }
+    
     error = {
       message,
       statusCode: 400
@@ -49,9 +56,17 @@ const errorHandler = (err, req, res, next) => {
     };
   }
 
-  // Multer errors
+  // Multer errors (file upload)
   if (err.code === 'LIMIT_FILE_SIZE') {
     const message = 'File too large';
+    error = {
+      message,
+      statusCode: 400
+    };
+  }
+
+  if (err.code === 'LIMIT_FILE_COUNT') {
+    const message = 'Too many files';
     error = {
       message,
       statusCode: 400
@@ -66,11 +81,62 @@ const errorHandler = (err, req, res, next) => {
     };
   }
 
-  res.status(error.statusCode || 500).json({
+  // Payment errors (Stripe)
+  if (err.type === 'StripeCardError') {
+    const message = err.message || 'Payment failed';
+    error = {
+      message,
+      statusCode: 400
+    };
+  }
+
+  if (err.type === 'StripeInvalidRequestError') {
+    const message = 'Invalid payment request';
+    error = {
+      message,
+      statusCode: 400
+    };
+  }
+
+  // Rate limiting errors
+  if (err.status === 429) {
+    const message = 'Too many requests, please try again later';
+    error = {
+      message,
+      statusCode: 429
+    };
+  }
+
+  // Default error response
+  const statusCode = error.statusCode || err.statusCode || 500;
+  const message = error.message || 'Server Error';
+
+  // Prepare error response
+  const errorResponse = {
     success: false,
-    message: error.message || 'Server Error',
-    ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
-  });
+    message
+  };
+
+  // Add additional error details in development
+  if (process.env.NODE_ENV === 'development') {
+    errorResponse.error = err;
+    errorResponse.stack = err.stack;
+  }
+
+  // Add error code if available
+  if (err.code) {
+    errorResponse.code = err.code;
+  }
+
+  // Add validation errors if available
+  if (err.name === 'ValidationError' && err.errors) {
+    errorResponse.errors = Object.keys(err.errors).reduce((acc, key) => {
+      acc[key] = err.errors[key].message;
+      return acc;
+    }, {});
+  }
+
+  res.status(statusCode).json(errorResponse);
 };
 
 module.exports = errorHandler;

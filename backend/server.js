@@ -8,12 +8,18 @@ const rateLimit = require('express-rate-limit');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
+const cookieParser = require('cookie-parser');
 const path = require('path');
-const http = require('http');
-const socketIo = require('socket.io');
 
 // Load environment variables
 require('dotenv').config();
+
+// Create Express app
+const app = express();
+
+// Connect to MongoDB
+const connectDB = require('./config/database');
+connectDB();
 
 // Import routes
 const authRoutes = require('./routes/auth');
@@ -36,35 +42,31 @@ const analyticsRoutes = require('./routes/analytics');
 const errorHandler = require('./middleware/errorHandler');
 const notFound = require('./middleware/notFound');
 
-// Import database connection
-const connectDB = require('./config/database');
-
-// Import socket handlers
-const socketHandler = require('./utils/socketHandler');
-
-const app = express();
-const server = http.createServer(app);
-const io = socketIo(server, {
-  cors: {
-    origin: process.env.CLIENT_URL || "http://localhost:3000",
-    methods: ["GET", "POST"]
-  }
-});
-
-// Connect to database
-connectDB();
-
 // Security middleware
-app.use(helmet());
-app.use(mongoSanitize());
-app.use(xss());
-app.use(hpp());
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      styleSrc: ["'self'", "'unsafe-inline'", "https:"],
+      scriptSrc: ["'self'", "https:"],
+      imgSrc: ["'self'", "data:", "https:"],
+      connectSrc: ["'self'", "https:"],
+      fontSrc: ["'self'", "https:"],
+      objectSrc: ["'none'"],
+      mediaSrc: ["'self'", "https:"],
+      frameSrc: ["'none'"],
+    },
+  },
+  crossOriginEmbedderPolicy: false
+}));
 
 // Rate limiting
 const limiter = rateLimit({
-  windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000, // 15 minutes
-  max: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS) || 100, // limit each IP to 100 requests per windowMs
-  message: 'Too many requests from this IP, please try again later.',
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: process.env.NODE_ENV === 'production' ? 100 : 1000, // limit each IP to 100 requests per windowMs in production
+  message: {
+    error: 'Too many requests from this IP, please try again later.',
+  },
   standardHeaders: true,
   legacyHeaders: false,
 });
@@ -73,20 +75,27 @@ app.use('/api/', limiter);
 // CORS configuration
 const corsOptions = {
   origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
     const allowedOrigins = [
-      process.env.CLIENT_URL || 'http://localhost:3000',
       'http://localhost:3000',
       'http://localhost:3001',
-    ];
+      'http://127.0.0.1:3000',
+      'http://127.0.0.1:3001',
+      process.env.FRONTEND_URL,
+      process.env.ADMIN_URL
+    ].filter(Boolean);
     
-    if (!origin || allowedOrigins.includes(origin)) {
+    if (allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
     }
   },
   credentials: true,
-  optionsSuccessStatus: 200
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
 };
 
 app.use(cors(corsOptions));
@@ -94,6 +103,30 @@ app.use(cors(corsOptions));
 // Body parsing middleware
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+app.use(cookieParser());
+
+// Data sanitization against NoSQL query injection
+app.use(mongoSanitize());
+
+// Data sanitization against XSS
+app.use(xss());
+
+// Prevent parameter pollution
+app.use(hpp({
+  whitelist: [
+    'sort',
+    'fields',
+    'page',
+    'limit',
+    'category',
+    'location',
+    'price',
+    'rating',
+    'amenities',
+    'roomType',
+    'availability'
+  ]
+}));
 
 // Compression middleware
 app.use(compression());
@@ -105,25 +138,14 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('combined'));
 }
 
-// Static files
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
-// Socket.io setup
-socketHandler(io);
-
-// Make io accessible to routes
-app.use((req, res, next) => {
-  req.io = io;
-  next();
-});
-
 // Health check endpoint
 app.get('/health', (req, res) => {
   res.status(200).json({
     status: 'success',
     message: 'Multi-Business Platform API is running',
     timestamp: new Date().toISOString(),
-    environment: process.env.NODE_ENV
+    environment: process.env.NODE_ENV || 'development',
+    version: '1.0.0'
   });
 });
 
@@ -148,25 +170,37 @@ app.use('/api/analytics', analyticsRoutes);
 if (process.env.NODE_ENV === 'development') {
   const swaggerUi = require('swagger-ui-express');
   const swaggerDocument = require('./docs/swagger.json');
-  
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+}
+
+// Serve static files in production
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../frontend/build')));
+  
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, '../frontend/build', 'index.html'));
+  });
 }
 
 // Error handling middleware (must be last)
 app.use(notFound);
 app.use(errorHandler);
 
+// Start server
 const PORT = process.env.PORT || 5000;
 
-server.listen(PORT, () => {
-  console.log(`🚀 Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
-  console.log(`📚 API Documentation available at http://localhost:${PORT}/api-docs`);
-  console.log(`🏥 Health check available at http://localhost:${PORT}/health`);
+const server = app.listen(PORT, () => {
+  console.log(`🚀 Multi-Business Platform API Server running on port ${PORT}`);
+  console.log(`📊 Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`🔗 Health check: http://localhost:${PORT}/health`);
+  if (process.env.NODE_ENV === 'development') {
+    console.log(`📚 API Documentation: http://localhost:${PORT}/api-docs`);
+  }
 });
 
 // Handle unhandled promise rejections
 process.on('unhandledRejection', (err, promise) => {
-  console.log(`Error: ${err.message}`);
+  console.log(`❌ Unhandled Rejection: ${err.message}`);
   // Close server & exit process
   server.close(() => {
     process.exit(1);
@@ -175,9 +209,18 @@ process.on('unhandledRejection', (err, promise) => {
 
 // Handle uncaught exceptions
 process.on('uncaughtException', (err) => {
-  console.log(`Error: ${err.message}`);
-  console.log('Shutting down the server due to uncaught exception');
+  console.log(`❌ Uncaught Exception: ${err.message}`);
+  console.log('💥 Shutting down...');
   process.exit(1);
 });
 
+// Graceful shutdown
+process.on('SIGTERM', () => {
+  console.log('👋 SIGTERM received. Shutting down gracefully...');
+  server.close(() => {
+    console.log('💤 Process terminated');
+  });
+});
+
 module.exports = app;
+

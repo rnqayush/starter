@@ -1,16 +1,16 @@
 const crypto = require('crypto');
 const User = require('../models/User');
-const sendEmail = require('../utils/sendEmail');
+const sendEmail = require('../utils/email');
 
 // @desc    Register user
 // @route   POST /api/auth/register
 // @access  Public
-const register = async (req, res, next) => {
+exports.register = async (req, res) => {
   try {
-    const { name, email, password, role, phone } = req.body;
+    const { name, email, password, role, phone, businessProfile } = req.body;
 
-    // Check if user exists
-    const existingUser = await User.findOne({ email });
+    // Check if user already exists
+    const existingUser = await User.findOne({ email: email.toLowerCase() });
     if (existingUser) {
       return res.status(400).json({
         success: false,
@@ -21,10 +21,11 @@ const register = async (req, res, next) => {
     // Create user
     const user = await User.create({
       name,
-      email,
+      email: email.toLowerCase(),
       password,
-      role: role || 'customer',
-      phone
+      role: role || 'user',
+      phone,
+      businessProfile
     });
 
     // Generate email verification token
@@ -35,45 +36,59 @@ const register = async (req, res, next) => {
     try {
       const verificationUrl = `${req.protocol}://${req.get('host')}/api/auth/verify-email/${verificationToken}`;
       
-      const message = `
-        Welcome to our platform! Please verify your email by clicking the link below:
-        
-        ${verificationUrl}
-        
-        This link will expire in 24 hours.
-      `;
-
       await sendEmail({
         email: user.email,
-        subject: 'Email Verification',
-        message
+        subject: 'Email Verification - Multi-Business Platform',
+        template: 'emailVerification',
+        data: {
+          name: user.name,
+          verificationUrl
+        }
       });
 
       res.status(201).json({
         success: true,
-        message: 'User registered successfully. Please check your email for verification.',
+        message: 'User registered successfully. Please check your email to verify your account.',
         data: {
           user: {
             id: user._id,
             name: user.name,
             email: user.email,
-            role: user.role
+            role: user.role,
+            isEmailVerified: user.isEmailVerified
           }
         }
       });
-    } catch (err) {
-      console.error('Email sending failed:', err);
-      user.emailVerificationToken = undefined;
-      user.emailVerificationExpire = undefined;
-      await user.save({ validateBeforeSave: false });
-
-      return res.status(500).json({
-        success: false,
-        message: 'User created but email could not be sent'
+    } catch (emailError) {
+      console.error('Email sending failed:', emailError);
+      
+      // If email fails, still return success but mention email issue
+      res.status(201).json({
+        success: true,
+        message: 'User registered successfully, but verification email could not be sent. Please contact support.',
+        data: {
+          user: {
+            id: user._id,
+            name: user.name,
+            email: user.email,
+            role: user.role,
+            isEmailVerified: user.isEmailVerified
+          }
+        }
       });
     }
   } catch (error) {
     console.error('Registration error:', error);
+    
+    if (error.name === 'ValidationError') {
+      const messages = Object.values(error.errors).map(err => err.message);
+      return res.status(400).json({
+        success: false,
+        message: 'Validation error',
+        errors: messages
+      });
+    }
+
     res.status(500).json({
       success: false,
       message: 'Server error during registration'
@@ -84,7 +99,7 @@ const register = async (req, res, next) => {
 // @desc    Login user
 // @route   POST /api/auth/login
 // @access  Public
-const login = async (req, res, next) => {
+exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -96,8 +111,8 @@ const login = async (req, res, next) => {
       });
     }
 
-    // Check for user
-    const user = await User.findOne({ email }).select('+password');
+    // Check for user (include password for comparison)
+    const user = await User.findOne({ email: email.toLowerCase() }).select('+password');
 
     if (!user) {
       return res.status(401).json({
@@ -110,26 +125,28 @@ const login = async (req, res, next) => {
     if (user.isLocked) {
       return res.status(423).json({
         success: false,
-        message: 'Account temporarily locked due to too many failed login attempts'
+        message: 'Account is temporarily locked due to too many failed login attempts'
       });
     }
 
-    // Check password
-    const isMatch = await user.matchPassword(password);
-
-    if (!isMatch) {
-      await user.incLoginAttempts();
-      return res.status(401).json({
-        success: false,
-        message: 'Invalid credentials'
-      });
-    }
-
-    // Check if user is active
+    // Check if account is active
     if (!user.isActive) {
       return res.status(401).json({
         success: false,
-        message: 'Account is deactivated'
+        message: 'Account has been deactivated'
+      });
+    }
+
+    // Check if password matches
+    const isMatch = await user.matchPassword(password);
+
+    if (!isMatch) {
+      // Increment login attempts
+      await user.incLoginAttempts();
+      
+      return res.status(401).json({
+        success: false,
+        message: 'Invalid credentials'
       });
     }
 
@@ -155,7 +172,7 @@ const login = async (req, res, next) => {
 // @desc    Log user out / clear cookie
 // @route   GET /api/auth/logout
 // @access  Private
-const logout = async (req, res, next) => {
+exports.logout = async (req, res) => {
   res.cookie('token', 'none', {
     expires: new Date(Date.now() + 10 * 1000),
     httpOnly: true
@@ -163,20 +180,22 @@ const logout = async (req, res, next) => {
 
   res.status(200).json({
     success: true,
-    message: 'Logged out successfully'
+    message: 'User logged out successfully'
   });
 };
 
 // @desc    Get current logged in user
 // @route   GET /api/auth/me
 // @access  Private
-const getMe = async (req, res, next) => {
+exports.getMe = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).populate('businesses');
+    const user = await User.findById(req.user.id).populate('businessProfile');
 
     res.status(200).json({
       success: true,
-      data: user
+      data: {
+        user
+      }
     });
   } catch (error) {
     console.error('Get me error:', error);
@@ -190,22 +209,23 @@ const getMe = async (req, res, next) => {
 // @desc    Update user details
 // @route   PUT /api/auth/updatedetails
 // @access  Private
-const updateDetails = async (req, res, next) => {
+exports.updateDetails = async (req, res) => {
   try {
     const fieldsToUpdate = {
       name: req.body.name,
       email: req.body.email,
       phone: req.body.phone,
       address: req.body.address,
-      dateOfBirth: req.body.dateOfBirth,
-      gender: req.body.gender,
-      preferences: req.body.preferences
+      preferences: req.body.preferences,
+      businessProfile: req.body.businessProfile
     };
 
     // Remove undefined fields
-    Object.keys(fieldsToUpdate).forEach(key => 
-      fieldsToUpdate[key] === undefined && delete fieldsToUpdate[key]
-    );
+    Object.keys(fieldsToUpdate).forEach(key => {
+      if (fieldsToUpdate[key] === undefined) {
+        delete fieldsToUpdate[key];
+      }
+    });
 
     const user = await User.findByIdAndUpdate(req.user.id, fieldsToUpdate, {
       new: true,
@@ -214,10 +234,22 @@ const updateDetails = async (req, res, next) => {
 
     res.status(200).json({
       success: true,
-      data: user
+      data: {
+        user
+      }
     });
   } catch (error) {
     console.error('Update details error:', error);
+    
+    if (error.name === 'ValidationError') {
+      const messages = Object.values(error.errors).map(err => err.message);
+      return res.status(400).json({
+        success: false,
+        message: 'Validation error',
+        errors: messages
+      });
+    }
+
     res.status(500).json({
       success: false,
       message: 'Server error during update'
@@ -228,7 +260,7 @@ const updateDetails = async (req, res, next) => {
 // @desc    Update password
 // @route   PUT /api/auth/updatepassword
 // @access  Private
-const updatePassword = async (req, res, next) => {
+exports.updatePassword = async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select('+password');
 
@@ -236,7 +268,7 @@ const updatePassword = async (req, res, next) => {
     if (!(await user.matchPassword(req.body.currentPassword))) {
       return res.status(401).json({
         success: false,
-        message: 'Password is incorrect'
+        message: 'Current password is incorrect'
       });
     }
 
@@ -256,9 +288,9 @@ const updatePassword = async (req, res, next) => {
 // @desc    Forgot password
 // @route   POST /api/auth/forgotpassword
 // @access  Public
-const forgotPassword = async (req, res, next) => {
+exports.forgotPassword = async (req, res) => {
   try {
-    const user = await User.findOne({ email: req.body.email });
+    const user = await User.findOne({ email: req.body.email.toLowerCase() });
 
     if (!user) {
       return res.status(404).json({
@@ -275,28 +307,24 @@ const forgotPassword = async (req, res, next) => {
     // Create reset url
     const resetUrl = `${req.protocol}://${req.get('host')}/api/auth/resetpassword/${resetToken}`;
 
-    const message = `
-      You are receiving this email because you (or someone else) has requested the reset of a password. 
-      Please make a PUT request to: 
-      
-      ${resetUrl}
-      
-      This link will expire in 10 minutes.
-    `;
-
     try {
       await sendEmail({
         email: user.email,
-        subject: 'Password Reset Token',
-        message
+        subject: 'Password Reset Request - Multi-Business Platform',
+        template: 'passwordReset',
+        data: {
+          name: user.name,
+          resetUrl
+        }
       });
 
       res.status(200).json({
         success: true,
-        message: 'Email sent'
+        message: 'Password reset email sent'
       });
-    } catch (err) {
-      console.error('Email sending failed:', err);
+    } catch (emailError) {
+      console.error('Reset email error:', emailError);
+      
       user.resetPasswordToken = undefined;
       user.resetPasswordExpire = undefined;
 
@@ -319,7 +347,7 @@ const forgotPassword = async (req, res, next) => {
 // @desc    Reset password
 // @route   PUT /api/auth/resetpassword/:resettoken
 // @access  Public
-const resetPassword = async (req, res, next) => {
+exports.resetPassword = async (req, res) => {
   try {
     // Get hashed token
     const resetPasswordToken = crypto
@@ -335,7 +363,7 @@ const resetPassword = async (req, res, next) => {
     if (!user) {
       return res.status(400).json({
         success: false,
-        message: 'Invalid token'
+        message: 'Invalid or expired token'
       });
     }
 
@@ -358,7 +386,7 @@ const resetPassword = async (req, res, next) => {
 // @desc    Verify email
 // @route   GET /api/auth/verify-email/:token
 // @access  Public
-const verifyEmail = async (req, res, next) => {
+exports.verifyEmail = async (req, res) => {
   try {
     // Get hashed token
     const emailVerificationToken = crypto
@@ -378,21 +406,88 @@ const verifyEmail = async (req, res, next) => {
       });
     }
 
-    // Verify email
+    // Mark email as verified
     user.isEmailVerified = true;
     user.emailVerificationToken = undefined;
     user.emailVerificationExpire = undefined;
-    await user.save();
+    await user.save({ validateBeforeSave: false });
 
     res.status(200).json({
       success: true,
-      message: 'Email verified successfully'
+      message: 'Email verified successfully',
+      data: {
+        user: {
+          id: user._id,
+          name: user.name,
+          email: user.email,
+          isEmailVerified: user.isEmailVerified
+        }
+      }
     });
   } catch (error) {
     console.error('Email verification error:', error);
     res.status(500).json({
       success: false,
       message: 'Server error during email verification'
+    });
+  }
+};
+
+// @desc    Resend verification email
+// @route   POST /api/auth/resend-verification
+// @access  Public
+exports.resendVerification = async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.body.email.toLowerCase() });
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found'
+      });
+    }
+
+    if (user.isEmailVerified) {
+      return res.status(400).json({
+        success: false,
+        message: 'Email is already verified'
+      });
+    }
+
+    // Generate new verification token
+    const verificationToken = user.getEmailVerificationToken();
+    await user.save({ validateBeforeSave: false });
+
+    // Send verification email
+    const verificationUrl = `${req.protocol}://${req.get('host')}/api/auth/verify-email/${verificationToken}`;
+
+    try {
+      await sendEmail({
+        email: user.email,
+        subject: 'Email Verification - Multi-Business Platform',
+        template: 'emailVerification',
+        data: {
+          name: user.name,
+          verificationUrl
+        }
+      });
+
+      res.status(200).json({
+        success: true,
+        message: 'Verification email sent'
+      });
+    } catch (emailError) {
+      console.error('Verification email error:', emailError);
+      res.status(500).json({
+        success: false,
+        message: 'Email could not be sent'
+      });
+    }
+  } catch (error) {
+    console.error('Resend verification error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Server error'
     });
   }
 };
@@ -411,34 +506,27 @@ const sendTokenResponse = (user, statusCode, res) => {
 
   if (process.env.NODE_ENV === 'production') {
     options.secure = true;
+    options.sameSite = 'strict';
   }
 
-  res.status(statusCode).cookie('token', token, options).json({
-    success: true,
-    token,
-    data: {
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-        isEmailVerified: user.isEmailVerified,
-        avatar: user.avatar,
-        businesses: user.businesses
+  res.status(statusCode)
+    .cookie('token', token, options)
+    .json({
+      success: true,
+      token,
+      data: {
+        user: {
+          id: user._id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+          avatar: user.avatar,
+          isEmailVerified: user.isEmailVerified,
+          businessProfile: user.businessProfile,
+          preferences: user.preferences,
+          lastLogin: user.lastLogin
+        }
       }
-    }
-  });
-};
-
-module.exports = {
-  register,
-  login,
-  logout,
-  getMe,
-  updateDetails,
-  updatePassword,
-  forgotPassword,
-  resetPassword,
-  verifyEmail
+    });
 };
 

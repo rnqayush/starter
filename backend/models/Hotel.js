@@ -1,288 +1,394 @@
 const mongoose = require('mongoose');
-
-const RoomSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: [true, 'Please add a room name'],
-    trim: true
-  },
-  type: {
-    type: String,
-    required: [true, 'Please specify room type'],
-    enum: ['single', 'double', 'suite', 'deluxe', 'presidential', 'family', 'twin']
-  },
-  description: {
-    type: String,
-    required: [true, 'Please add a room description']
-  },
-  images: [String],
-  capacity: {
-    adults: {
-      type: Number,
-      required: [true, 'Please specify adult capacity'],
-      min: 1
-    },
-    children: {
-      type: Number,
-      default: 0,
-      min: 0
-    }
-  },
-  bedConfiguration: {
-    kingBeds: { type: Number, default: 0 },
-    queenBeds: { type: Number, default: 0 },
-    doubleBeds: { type: Number, default: 0 },
-    singleBeds: { type: Number, default: 0 },
-    sofaBeds: { type: Number, default: 0 }
-  },
-  size: {
-    value: Number,
-    unit: {
-      type: String,
-      enum: ['sqft', 'sqm'],
-      default: 'sqft'
-    }
-  },
-  amenities: [String],
-  pricing: {
-    basePrice: {
-      type: Number,
-      required: [true, 'Please add base price'],
-      min: 0
-    },
-    currency: {
-      type: String,
-      default: 'USD'
-    },
-    seasonalRates: [{
-      name: String,
-      startDate: Date,
-      endDate: Date,
-      rate: Number,
-      isActive: {
-        type: Boolean,
-        default: true
-      }
-    }],
-    weekendRate: Number,
-    taxes: {
-      type: Number,
-      default: 0
-    },
-    serviceFee: {
-      type: Number,
-      default: 0
-    }
-  },
-  availability: {
-    totalRooms: {
-      type: Number,
-      required: [true, 'Please specify total rooms'],
-      min: 1
-    },
-    availableRooms: {
-      type: Number,
-      required: true
-    },
-    blockedDates: [{
-      startDate: Date,
-      endDate: Date,
-      reason: String
-    }]
-  },
-  policies: {
-    checkIn: {
-      type: String,
-      default: '15:00'
-    },
-    checkOut: {
-      type: String,
-      default: '11:00'
-    },
-    cancellation: {
-      type: String,
-      default: 'Free cancellation up to 24 hours before check-in'
-    },
-    smoking: {
-      type: Boolean,
-      default: false
-    },
-    pets: {
-      type: Boolean,
-      default: false
-    }
-  },
-  isActive: {
-    type: Boolean,
-    default: true
-  }
-}, {
-  timestamps: true
-});
+const slugify = require('slugify');
 
 const HotelSchema = new mongoose.Schema({
-  business: {
-    type: mongoose.Schema.ObjectId,
-    ref: 'Business',
-    required: true
-  },
+  // Basic Information
   name: {
     type: String,
     required: [true, 'Please add a hotel name'],
     trim: true,
     maxlength: [100, 'Hotel name cannot be more than 100 characters']
   },
+  slug: {
+    type: String,
+    unique: true
+  },
+  
+  // Owner Information
+  owner: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'User',
+    required: true
+  },
+  
+  // Location Information
+  location: {
+    type: String,
+    required: [true, 'Please add a location']
+  },
+  address: {
+    street: {
+      type: String,
+      required: [true, 'Please add a street address']
+    },
+    city: {
+      type: String,
+      required: [true, 'Please add a city']
+    },
+    state: String,
+    country: {
+      type: String,
+      default: 'United States'
+    },
+    pincode: String,
+    coordinates: {
+      lat: Number,
+      lng: Number
+    }
+  },
+  
+  // Contact Information
+  contact: {
+    phone: {
+      type: String,
+      required: [true, 'Please add a phone number'],
+      match: [/^\+?[\d\s\-\(\)]+$/, 'Please add a valid phone number']
+    },
+    email: {
+      type: String,
+      required: [true, 'Please add an email'],
+      match: [
+        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+        'Please add a valid email'
+      ]
+    },
+    website: String,
+    fax: String
+  },
+  
+  // Hotel Details
   description: {
     type: String,
-    required: [true, 'Please add a description'],
+    required: [true, 'Please add a hotel description'],
     maxlength: [2000, 'Description cannot be more than 2000 characters']
   },
-  category: {
-    type: String,
-    enum: ['budget', 'mid-range', 'luxury', 'boutique', 'resort', 'business'],
-    default: 'mid-range'
+  
+  // Ratings and Reviews
+  rating: {
+    type: Number,
+    min: [1, 'Rating must be at least 1'],
+    max: [5, 'Rating cannot be more than 5'],
+    default: 4.5
   },
   starRating: {
     type: Number,
-    min: 1,
-    max: 5,
-    default: 3
+    min: [1, 'Star rating must be at least 1'],
+    max: [5, 'Star rating cannot be more than 5'],
+    required: [true, 'Please add a star rating']
   },
-  images: [String],
-  rooms: [RoomSchema],
-  amenities: {
-    general: [String],
-    business: [String],
-    wellness: [String],
-    dining: [String],
-    entertainment: [String],
-    connectivity: [String],
-    accessibility: [String]
+  reviewCount: {
+    type: Number,
+    default: 0
   },
-  services: [{
-    name: String,
-    description: String,
-    price: Number,
-    isActive: {
-      type: Boolean,
-      default: true
+  
+  // Images
+  image: {
+    type: String,
+    default: 'default-hotel.jpg'
+  },
+  images: [{
+    url: String,
+    caption: String,
+    category: {
+      type: String,
+      enum: ['exterior', 'interior', 'room', 'amenity', 'dining', 'other'],
+      default: 'other'
     }
   }],
+  
+  // Check-in/Check-out
+  checkInTime: {
+    type: String,
+    default: '3:00 PM'
+  },
+  checkOutTime: {
+    type: String,
+    default: '12:00 PM'
+  },
+  
+  // Policies
+  policies: [{
+    type: String
+  }],
+  
+  // Pricing
+  startingPrice: {
+    type: Number,
+    required: [true, 'Please add a starting price']
+  },
+  currency: {
+    type: String,
+    default: 'USD'
+  },
+  
+  // Room Information
+  totalRooms: {
+    type: Number,
+    required: [true, 'Please add total number of rooms']
+  },
+  availableRooms: {
+    type: Number,
+    default: function() {
+      return this.totalRooms;
+    }
+  },
+  
+  // Amenities
+  amenities: [{
+    name: {
+      type: String,
+      required: true
+    },
+    icon: String,
+    category: {
+      type: String,
+      enum: ['general', 'business', 'wellness', 'dining', 'entertainment', 'connectivity'],
+      default: 'general'
+    },
+    description: String,
+    available: {
+      type: Boolean,
+      default: true
+    },
+    chargeable: {
+      type: Boolean,
+      default: false
+    },
+    price: Number
+  }],
+  
+  // Services
+  services: [{
+    name: {
+      type: String,
+      required: true
+    },
+    description: String,
+    category: {
+      type: String,
+      enum: ['concierge', 'transportation', 'dining', 'wellness', 'business', 'entertainment'],
+      default: 'concierge'
+    },
+    available: {
+      type: Boolean,
+      default: true
+    },
+    hours: {
+      start: String,
+      end: String,
+      allDay: {
+        type: Boolean,
+        default: false
+      }
+    },
+    chargeable: {
+      type: Boolean,
+      default: false
+    },
+    price: Number
+  }],
+  
+  // Dining Options
   dining: [{
-    name: String,
+    name: {
+      type: String,
+      required: true
+    },
     type: {
       type: String,
-      enum: ['restaurant', 'bar', 'cafe', 'room_service', 'buffet']
+      enum: ['restaurant', 'bar', 'cafe', 'room_service', 'buffet'],
+      required: true
     },
     cuisine: String,
     description: String,
     hours: {
-      open: String,
-      close: String
+      breakfast: { start: String, end: String },
+      lunch: { start: String, end: String },
+      dinner: { start: String, end: String }
     },
-    images: [String],
+    priceRange: {
+      min: Number,
+      max: Number
+    },
+    image: String,
+    featured: {
+      type: Boolean,
+      default: false
+    }
+  }],
+  
+  // Hero Section for Website
+  hero: {
+    title: String,
+    subtitle: String,
+    backgroundImage: String,
+    ctaText: {
+      type: String,
+      default: 'Book Your Room'
+    },
+    quickInfo: [{
+      icon: String,
+      label: String,
+      value: String
+    }]
+  },
+  
+  // About Section
+  about: {
+    title: {
+      type: String,
+      default: 'About Our Hotel'
+    },
+    description: String,
+    highlights: [String],
+    history: String,
+    awards: [String]
+  },
+  
+  // Location Details
+  locationDetails: {
+    nearbyAttractions: [{
+      name: String,
+      distance: String,
+      description: String,
+      category: {
+        type: String,
+        enum: ['tourist', 'business', 'shopping', 'dining', 'entertainment', 'transport']
+      }
+    }],
+    transportation: {
+      airport: {
+        name: String,
+        distance: String,
+        travelTime: String
+      },
+      trainStation: {
+        name: String,
+        distance: String,
+        travelTime: String
+      },
+      busStation: {
+        name: String,
+        distance: String,
+        travelTime: String
+      }
+    }
+  },
+  
+  // Special Offers
+  offers: [{
+    title: {
+      type: String,
+      required: true
+    },
+    description: String,
+    discountType: {
+      type: String,
+      enum: ['percentage', 'fixed', 'free_nights', 'upgrade'],
+      required: true
+    },
+    discountValue: Number,
+    validFrom: Date,
+    validTo: Date,
+    conditions: [String],
     isActive: {
       type: Boolean,
       default: true
     }
   }],
-  policies: {
-    checkIn: {
+  
+  // Business Information
+  businessInfo: {
+    established: Date,
+    ownership: {
       type: String,
-      default: '15:00'
+      enum: ['independent', 'chain', 'franchise'],
+      default: 'independent'
     },
-    checkOut: {
-      type: String,
-      default: '11:00'
-    },
-    cancellation: {
-      type: String,
-      default: 'Free cancellation up to 24 hours before check-in'
-    },
-    children: String,
-    pets: {
-      allowed: {
-        type: Boolean,
-        default: false
-      },
-      fee: Number,
-      restrictions: String
-    },
-    smoking: {
+    chainName: String,
+    managementCompany: String,
+    licenses: [String]
+  },
+  
+  // Status and Settings
+  isActive: {
+    type: Boolean,
+    default: true
+  },
+  isPublished: {
+    type: Boolean,
+    default: false
+  },
+  isFeatured: {
+    type: Boolean,
+    default: false
+  },
+  isVerified: {
+    type: Boolean,
+    default: false
+  },
+  
+  // Booking Settings
+  bookingSettings: {
+    instantBooking: {
       type: Boolean,
       default: false
     },
-    ageRestriction: {
-      minimum: {
-        type: Number,
-        default: 18
-      }
-    }
-  },
-  location: {
-    nearbyAttractions: [{
-      name: String,
-      distance: String,
-      type: String
-    }],
-    transportation: [{
+    advanceBookingDays: {
+      type: Number,
+      default: 365
+    },
+    minimumStay: {
+      type: Number,
+      default: 1
+    },
+    maximumStay: {
+      type: Number,
+      default: 30
+    },
+    cancellationPolicy: {
       type: String,
-      name: String,
-      distance: String
+      enum: ['flexible', 'moderate', 'strict'],
+      default: 'moderate'
+    },
+    paymentMethods: [{
+      type: String,
+      enum: ['credit_card', 'debit_card', 'paypal', 'bank_transfer', 'cash']
     }]
   },
-  reviews: [{
-    user: {
-      type: mongoose.Schema.ObjectId,
-      ref: 'User'
-    },
-    rating: {
-      type: Number,
-      required: true,
-      min: 1,
-      max: 5
-    },
-    title: String,
-    comment: String,
-    images: [String],
-    helpful: {
-      type: Number,
-      default: 0
-    },
-    createdAt: {
-      type: Date,
-      default: Date.now
-    }
-  }],
+  
+  // Analytics
   analytics: {
-    totalBookings: {
+    views: {
       type: Number,
       default: 0
     },
-    totalRevenue: {
+    bookings: {
       type: Number,
       default: 0
     },
-    averageRating: {
+    revenue: {
       type: Number,
-      default: 0,
-      min: 0,
-      max: 5
+      default: 0
     },
     occupancyRate: {
       type: Number,
-      default: 0,
-      min: 0,
-      max: 100
+      default: 0
     },
     averageDailyRate: {
       type: Number,
       default: 0
     }
-  },
-  isActive: {
-    type: Boolean,
-    default: true
   }
 }, {
   timestamps: true,
@@ -290,110 +396,59 @@ const HotelSchema = new mongoose.Schema({
   toObject: { virtuals: true }
 });
 
-// Indexes
-HotelSchema.index({ business: 1 });
-HotelSchema.index({ 'analytics.averageRating': -1 });
+// Create hotel slug from the name
+HotelSchema.pre('save', function(next) {
+  if (this.isModified('name')) {
+    this.slug = slugify(this.name, { lower: true });
+  }
+  next();
+});
+
+// Virtual for full address
+HotelSchema.virtual('fullAddress').get(function() {
+  if (!this.address) return '';
+  const { street, city, state, pincode, country } = this.address;
+  return [street, city, state, pincode, country].filter(Boolean).join(', ');
+});
+
+// Virtual for occupancy percentage
+HotelSchema.virtual('occupancyPercentage').get(function() {
+  if (this.totalRooms === 0) return 0;
+  const occupiedRooms = this.totalRooms - this.availableRooms;
+  return Math.round((occupiedRooms / this.totalRooms) * 100);
+});
+
+// Virtual for availability status
+HotelSchema.virtual('availabilityStatus').get(function() {
+  const percentage = this.occupancyPercentage;
+  if (percentage >= 95) return 'fully_booked';
+  if (percentage >= 80) return 'limited_availability';
+  if (percentage >= 50) return 'good_availability';
+  return 'high_availability';
+});
+
+// Indexes for better query performance
+HotelSchema.index({ slug: 1 });
+HotelSchema.index({ owner: 1 });
+HotelSchema.index({ 'address.city': 1, 'address.state': 1 });
+HotelSchema.index({ isActive: 1, isPublished: 1 });
+HotelSchema.index({ isFeatured: 1 });
+HotelSchema.index({ rating: -1 });
+HotelSchema.index({ startingPrice: 1 });
 HotelSchema.index({ starRating: -1 });
-HotelSchema.index({ category: 1 });
-HotelSchema.index({ isActive: 1 });
 HotelSchema.index({ createdAt: -1 });
 
-// Virtual for total rooms
-HotelSchema.virtual('totalRooms').get(function() {
-  return this.rooms.reduce((total, room) => total + room.availability.totalRooms, 0);
+// Geospatial index for location-based queries
+HotelSchema.index({ 'address.coordinates': '2dsphere' });
+
+// Text index for search functionality
+HotelSchema.index({
+  name: 'text',
+  description: 'text',
+  location: 'text',
+  'amenities.name': 'text',
+  'services.name': 'text'
 });
-
-// Virtual for available rooms
-HotelSchema.virtual('availableRooms').get(function() {
-  return this.rooms.reduce((total, room) => total + room.availability.availableRooms, 0);
-});
-
-// Virtual for starting price
-HotelSchema.virtual('startingPrice').get(function() {
-  if (this.rooms.length === 0) return 0;
-  return Math.min(...this.rooms.map(room => room.pricing.basePrice));
-});
-
-// Method to check room availability
-HotelSchema.methods.checkAvailability = function(roomId, checkIn, checkOut, roomsNeeded = 1) {
-  const room = this.rooms.id(roomId);
-  if (!room || !room.isActive) return false;
-
-  // Check if enough rooms available
-  if (room.availability.availableRooms < roomsNeeded) return false;
-
-  // Check blocked dates
-  const checkInDate = new Date(checkIn);
-  const checkOutDate = new Date(checkOut);
-
-  for (let blockedPeriod of room.availability.blockedDates) {
-    const blockStart = new Date(blockedPeriod.startDate);
-    const blockEnd = new Date(blockedPeriod.endDate);
-
-    // Check if dates overlap with blocked period
-    if (checkInDate < blockEnd && checkOutDate > blockStart) {
-      return false;
-    }
-  }
-
-  return true;
-};
-
-// Method to calculate room price
-HotelSchema.methods.calculateRoomPrice = function(roomId, checkIn, checkOut) {
-  const room = this.rooms.id(roomId);
-  if (!room) return 0;
-
-  const checkInDate = new Date(checkIn);
-  const checkOutDate = new Date(checkOut);
-  const nights = Math.ceil((checkOutDate - checkInDate) / (1000 * 60 * 60 * 24));
-
-  let totalPrice = 0;
-  let currentDate = new Date(checkInDate);
-
-  for (let i = 0; i < nights; i++) {
-    let dailyRate = room.pricing.basePrice;
-
-    // Check for seasonal rates
-    for (let seasonalRate of room.pricing.seasonalRates) {
-      if (seasonalRate.isActive &&
-          currentDate >= new Date(seasonalRate.startDate) &&
-          currentDate <= new Date(seasonalRate.endDate)) {
-        dailyRate = seasonalRate.rate;
-        break;
-      }
-    }
-
-    // Check for weekend rates
-    const dayOfWeek = currentDate.getDay();
-    if ((dayOfWeek === 5 || dayOfWeek === 6) && room.pricing.weekendRate) {
-      dailyRate = room.pricing.weekendRate;
-    }
-
-    totalPrice += dailyRate;
-    currentDate.setDate(currentDate.getDate() + 1);
-  }
-
-  // Add taxes and service fees
-  totalPrice += (room.pricing.taxes || 0) * nights;
-  totalPrice += (room.pricing.serviceFee || 0) * nights;
-
-  return totalPrice;
-};
-
-// Method to update availability
-HotelSchema.methods.updateRoomAvailability = function(roomId, change) {
-  const room = this.rooms.id(roomId);
-  if (room) {
-    room.availability.availableRooms += change;
-    if (room.availability.availableRooms < 0) {
-      room.availability.availableRooms = 0;
-    }
-    if (room.availability.availableRooms > room.availability.totalRooms) {
-      room.availability.availableRooms = room.availability.totalRooms;
-    }
-  }
-};
 
 module.exports = mongoose.model('Hotel', HotelSchema);
 

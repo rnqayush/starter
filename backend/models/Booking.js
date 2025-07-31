@@ -1,41 +1,111 @@
 const mongoose = require('mongoose');
 
 const BookingSchema = new mongoose.Schema({
+  // Basic Information
   bookingNumber: {
     type: String,
-    required: false // Auto-generated in pre-save middleware
-  },
-  business: {
-    type: mongoose.Schema.ObjectId,
-    ref: 'Business',
+    unique: true,
     required: true
   },
-  hotel: {
-    type: mongoose.Schema.ObjectId,
-    ref: 'Hotel',
-    required: function() {
-      return this.bookingType === 'hotel';
-    }
-  },
-  weddingVendor: {
-    type: mongoose.Schema.ObjectId,
-    ref: 'WeddingVendor',
-    required: function() {
-      return this.bookingType === 'wedding';
-    }
-  },
-  bookingType: {
-    type: String,
-    required: true,
-    enum: ['hotel', 'wedding', 'service']
-  },
+  
+  // References
   customer: {
     type: mongoose.Schema.ObjectId,
     ref: 'User',
     required: true
   },
-  guestDetails: {
-    primaryGuest: {
+  business: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'Business'
+  },
+  
+  // Booking Type and Resource
+  bookingType: {
+    type: String,
+    required: [true, 'Please specify booking type'],
+    enum: ['hotel', 'room', 'service', 'appointment', 'event', 'vehicle_test_drive', 'consultation', 'other']
+  },
+  
+  // Resource References (polymorphic)
+  resource: {
+    resourceType: {
+      type: String,
+      required: true,
+      enum: ['Hotel', 'Room', 'Business', 'Vehicle', 'Service']
+    },
+    resourceId: {
+      type: mongoose.Schema.ObjectId,
+      required: true,
+      refPath: 'resource.resourceType'
+    }
+  },
+  
+  // Date and Time Information
+  dateTime: {
+    startDate: {
+      type: Date,
+      required: [true, 'Please add start date']
+    },
+    endDate: {
+      type: Date,
+      required: [true, 'Please add end date']
+    },
+    startTime: String, // for appointments/services
+    endTime: String,   // for appointments/services
+    duration: Number,  // in minutes
+    timezone: {
+      type: String,
+      default: 'America/New_York'
+    },
+    allDay: {
+      type: Boolean,
+      default: false
+    }
+  },
+  
+  // Guest/Participant Information
+  guests: {
+    adults: {
+      type: Number,
+      required: true,
+      min: 1,
+      max: 20
+    },
+    children: {
+      type: Number,
+      default: 0,
+      min: 0,
+      max: 10
+    },
+    infants: {
+      type: Number,
+      default: 0,
+      min: 0,
+      max: 5
+    }
+  },
+  
+  // Guest Details
+  guestDetails: [{
+    firstName: {
+      type: String,
+      required: true
+    },
+    lastName: {
+      type: String,
+      required: true
+    },
+    email: String,
+    phone: String,
+    age: Number,
+    specialRequests: String,
+    dietaryRestrictions: [String],
+    accessibility: [String]
+  }],
+  
+  // Contact Information
+  contactInfo: {
+    primaryContact: {
       name: {
         type: String,
         required: true
@@ -50,199 +120,257 @@ const BookingSchema = new mongoose.Schema({
       },
       phone: {
         type: String,
-        required: true
-      }
-    },
-    additionalGuests: [{
-      name: String,
-      age: Number,
-      relation: String
-    }],
-    totalGuests: {
-      adults: {
-        type: Number,
         required: true,
-        min: 1
-      },
-      children: {
-        type: Number,
-        default: 0,
-        min: 0
+        match: [/^\+?[\d\s\-\(\)]+$/, 'Please add a valid phone number']
       }
     },
-    specialRequests: String
-  },
-  // Hotel-specific fields
-  roomDetails: {
-    room: {
-      type: mongoose.Schema.ObjectId,
-      required: function() {
-        return this.bookingType === 'hotel';
-      }
-    },
-    roomType: String,
-    roomNumber: String,
-    checkIn: {
-      type: Date,
-      required: function() {
-        return this.bookingType === 'hotel';
-      }
-    },
-    checkOut: {
-      type: Date,
-      required: function() {
-        return this.bookingType === 'hotel';
-      }
-    },
-    nights: Number,
-    roomsBooked: {
-      type: Number,
-      default: 1,
-      min: 1
+    emergencyContact: {
+      name: String,
+      relationship: String,
+      phone: String
     }
   },
-  // Wedding-specific fields
-  eventDetails: {
-    eventDate: {
-      type: Date,
-      required: function() {
-        return this.bookingType === 'wedding';
-      }
-    },
-    eventType: {
-      type: String,
-      enum: ['wedding', 'engagement', 'reception', 'mehendi', 'sangeet', 'other']
-    },
-    venue: String,
-    guestCount: Number,
-    duration: {
-      hours: Number,
-      startTime: String,
-      endTime: String
-    },
-    services: [{
-      service: String,
-      description: String,
-      price: Number
-    }]
-  },
+  
+  // Pricing and Payment
   pricing: {
-    baseAmount: {
+    basePrice: {
       type: Number,
       required: true,
       min: 0
     },
-    taxes: {
-      type: Number,
-      default: 0
-    },
-    serviceFees: {
-      type: Number,
-      default: 0
-    },
-    discounts: {
-      type: Number,
-      default: 0
-    },
+    taxes: [{
+      name: String,
+      type: {
+        type: String,
+        enum: ['percentage', 'fixed'],
+        default: 'percentage'
+      },
+      value: Number,
+      amount: Number
+    }],
+    fees: [{
+      name: String,
+      description: String,
+      amount: Number,
+      type: {
+        type: String,
+        enum: ['cleaning', 'service', 'booking', 'cancellation', 'other'],
+        default: 'other'
+      }
+    }],
+    discounts: [{
+      name: String,
+      type: {
+        type: String,
+        enum: ['percentage', 'fixed', 'coupon'],
+        default: 'percentage'
+      },
+      value: Number,
+      amount: Number,
+      code: String
+    }],
+    subtotal: Number,
+    totalTaxes: Number,
+    totalFees: Number,
+    totalDiscounts: Number,
     totalAmount: {
       type: Number,
-      required: true,
-      min: 0
+      required: true
     },
     currency: {
       type: String,
       default: 'USD'
-    }
-  },
-  payment: {
-    status: {
-      type: String,
-      enum: ['pending', 'partial', 'paid', 'refunded', 'failed'],
-      default: 'pending'
     },
-    method: {
-      type: String,
-      enum: ['credit_card', 'debit_card', 'paypal', 'stripe', 'cash', 'bank_transfer']
-    },
-    transactionId: String,
-    stripePaymentIntentId: String,
     paidAmount: {
       type: Number,
       default: 0
     },
-    refundAmount: {
+    remainingAmount: {
       type: Number,
       default: 0
-    },
-    paymentDate: Date,
-    refundDate: Date,
-    installments: [{
-      amount: Number,
-      dueDate: Date,
-      status: {
-        type: String,
-        enum: ['pending', 'paid', 'overdue'],
-        default: 'pending'
-      },
-      paidDate: Date,
-      transactionId: String
-    }]
+    }
   },
+  
+  // Payment Information
+  payment: {
+    method: {
+      type: String,
+      enum: ['credit_card', 'debit_card', 'paypal', 'bank_transfer', 'cash', 'check', 'other'],
+      required: true
+    },
+    status: {
+      type: String,
+      enum: ['pending', 'processing', 'completed', 'failed', 'refunded', 'partially_refunded'],
+      default: 'pending'
+    },
+    transactionId: String,
+    paymentIntentId: String, // for Stripe
+    receiptUrl: String,
+    paidAt: Date,
+    refundedAt: Date,
+    refundAmount: Number,
+    refundReason: String
+  },
+  
+  // Booking Status
   status: {
     type: String,
-    enum: ['pending', 'confirmed', 'checked_in', 'checked_out', 'completed', 'cancelled', 'no_show'],
+    enum: [
+      'pending',
+      'confirmed',
+      'checked_in',
+      'in_progress',
+      'completed',
+      'cancelled',
+      'no_show',
+      'refunded'
+    ],
     default: 'pending'
   },
-  cancellation: {
-    isCancelled: {
-      type: Boolean,
-      default: false
+  
+  // Special Requests and Notes
+  specialRequests: {
+    type: String,
+    maxlength: [1000, 'Special requests cannot be more than 1000 characters']
+  },
+  internalNotes: {
+    type: String,
+    maxlength: [2000, 'Internal notes cannot be more than 2000 characters']
+  },
+  
+  // Services and Add-ons
+  services: [{
+    name: {
+      type: String,
+      required: true
     },
+    description: String,
+    price: Number,
+    quantity: {
+      type: Number,
+      default: 1
+    },
+    date: Date,
+    time: String,
+    status: {
+      type: String,
+      enum: ['pending', 'confirmed', 'completed', 'cancelled'],
+      default: 'pending'
+    }
+  }],
+  
+  // Check-in/Check-out (for hotels)
+  checkIn: {
+    expectedTime: String,
+    actualTime: Date,
+    staff: {
+      type: mongoose.Schema.ObjectId,
+      ref: 'User'
+    },
+    notes: String,
+    keyCards: Number,
+    parkingSpot: String
+  },
+  checkOut: {
+    expectedTime: String,
+    actualTime: Date,
+    staff: {
+      type: mongoose.Schema.ObjectId,
+      ref: 'User'
+    },
+    notes: String,
+    damages: [{
+      description: String,
+      cost: Number,
+      images: [String]
+    }],
+    finalBill: Number
+  },
+  
+  // Cancellation Information
+  cancellation: {
     cancelledAt: Date,
     cancelledBy: {
       type: mongoose.Schema.ObjectId,
       ref: 'User'
     },
     reason: String,
-    refundAmount: Number,
-    refundStatus: {
+    policy: {
       type: String,
-      enum: ['pending', 'processed', 'failed'],
-      default: 'pending'
-    }
+      enum: ['flexible', 'moderate', 'strict', 'super_strict'],
+      default: 'moderate'
+    },
+    refundAmount: Number,
+    refundPercentage: Number,
+    cancellationFee: Number
   },
-  communication: {
-    confirmationSent: {
+  
+  // Communication History
+  communications: [{
+    type: {
+      type: String,
+      enum: ['email', 'sms', 'phone', 'in_person', 'system'],
+      required: true
+    },
+    direction: {
+      type: String,
+      enum: ['inbound', 'outbound'],
+      required: true
+    },
+    subject: String,
+    message: String,
+    sentBy: {
+      type: mongoose.Schema.ObjectId,
+      ref: 'User'
+    },
+    sentAt: {
+      type: Date,
+      default: Date.now
+    },
+    status: {
+      type: String,
+      enum: ['sent', 'delivered', 'read', 'failed'],
+      default: 'sent'
+    }
+  }],
+  
+  // Reminders and Notifications
+  reminders: [{
+    type: {
+      type: String,
+      enum: ['confirmation', 'check_in', 'check_out', 'payment', 'review', 'custom'],
+      required: true
+    },
+    scheduledFor: Date,
+    sent: {
       type: Boolean,
       default: false
     },
-    remindersSent: [{
-      type: {
-        type: String,
-        enum: ['booking_confirmation', 'check_in_reminder', 'check_out_reminder', 'payment_reminder']
-      },
-      sentAt: Date,
-      method: {
-        type: String,
-        enum: ['email', 'sms', 'push']
-      }
-    }],
-    notes: [{
-      note: String,
-      addedBy: {
-        type: mongoose.Schema.ObjectId,
-        ref: 'User'
-      },
-      addedAt: {
-        type: Date,
-        default: Date.now
-      },
-      isInternal: {
-        type: Boolean,
-        default: false
-      }
-    }]
+    sentAt: Date,
+    method: {
+      type: String,
+      enum: ['email', 'sms', 'push'],
+      default: 'email'
+    },
+    message: String
+  }],
+  
+  // Source and Attribution
+  source: {
+    channel: {
+      type: String,
+      enum: ['website', 'phone', 'email', 'walk_in', 'referral', 'social_media', 'third_party', 'other'],
+      default: 'website'
+    },
+    referrer: String,
+    campaign: String,
+    medium: String,
+    utmSource: String,
+    utmMedium: String,
+    utmCampaign: String
   },
+  
+  // Review and Feedback
   review: {
     rating: {
       type: Number,
@@ -250,17 +378,21 @@ const BookingSchema = new mongoose.Schema({
       max: 5
     },
     comment: String,
-    reviewDate: Date
+    reviewedAt: Date,
+    response: String,
+    respondedAt: Date,
+    published: {
+      type: Boolean,
+      default: false
+    }
   },
+  
+  // Metadata
   metadata: {
-    source: {
-      type: String,
-      enum: ['website', 'mobile_app', 'phone', 'walk_in', 'third_party'],
-      default: 'website'
-    },
-    userAgent: String,
     ipAddress: String,
-    referrer: String
+    userAgent: String,
+    deviceType: String,
+    browserInfo: String
   }
 }, {
   timestamps: true,
@@ -268,112 +400,104 @@ const BookingSchema = new mongoose.Schema({
   toObject: { virtuals: true }
 });
 
-// Indexes
-BookingSchema.index({ bookingNumber: 1 }, { unique: true });
-BookingSchema.index({ business: 1 });
-BookingSchema.index({ customer: 1 });
-BookingSchema.index({ hotel: 1 });
-BookingSchema.index({ weddingVendor: 1 });
-BookingSchema.index({ status: 1 });
-BookingSchema.index({ 'payment.status': 1 });
-BookingSchema.index({ 'roomDetails.checkIn': 1 });
-BookingSchema.index({ 'roomDetails.checkOut': 1 });
-BookingSchema.index({ 'eventDetails.eventDate': 1 });
-BookingSchema.index({ createdAt: -1 });
-
-// Virtual for booking duration (hotel bookings)
-BookingSchema.virtual('duration').get(function() {
-  if (this.bookingType === 'hotel' && this.roomDetails.checkIn && this.roomDetails.checkOut) {
-    const checkIn = new Date(this.roomDetails.checkIn);
-    const checkOut = new Date(this.roomDetails.checkOut);
-    return Math.ceil((checkOut - checkIn) / (1000 * 60 * 60 * 24));
-  }
-  return null;
-});
-
-// Virtual for total guests
-BookingSchema.virtual('totalGuestsCount').get(function() {
-  return this.guestDetails.totalGuests.adults + this.guestDetails.totalGuests.children;
-});
-
-// Virtual for payment balance
-BookingSchema.virtual('paymentBalance').get(function() {
-  return this.pricing.totalAmount - this.payment.paidAmount;
-});
-
-// Virtual for is fully paid
-BookingSchema.virtual('isFullyPaid').get(function() {
-  return this.payment.paidAmount >= this.pricing.totalAmount;
-});
-
-// Pre-save middleware to generate booking number
-BookingSchema.pre('save', async function(next) {
+// Generate booking number
+BookingSchema.pre('save', function(next) {
   if (!this.bookingNumber) {
     const prefix = this.bookingType.toUpperCase().substring(0, 3);
     const timestamp = Date.now().toString().slice(-6);
     const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
-    this.bookingNumber = `${prefix}${timestamp}${random}`;
+    this.bookingNumber = `${prefix}-${timestamp}-${random}`;
   }
-
-  // Calculate nights for hotel bookings
-  if (this.bookingType === 'hotel' && this.roomDetails.checkIn && this.roomDetails.checkOut) {
-    const checkIn = new Date(this.roomDetails.checkIn);
-    const checkOut = new Date(this.roomDetails.checkOut);
-    this.roomDetails.nights = Math.ceil((checkOut - checkIn) / (1000 * 60 * 60 * 24));
-  }
-
   next();
 });
 
-// Method to calculate refund amount based on cancellation policy
-BookingSchema.methods.calculateRefund = function() {
-  const now = new Date();
-  let refundPercentage = 0;
+// Calculate remaining amount
+BookingSchema.pre('save', function(next) {
+  this.pricing.remainingAmount = this.pricing.totalAmount - this.pricing.paidAmount;
+  next();
+});
 
-  if (this.bookingType === 'hotel') {
-    const checkIn = new Date(this.roomDetails.checkIn);
-    const hoursUntilCheckIn = (checkIn - now) / (1000 * 60 * 60);
+// Virtual for total guests
+BookingSchema.virtual('totalGuests').get(function() {
+  return this.guests.adults + this.guests.children + this.guests.infants;
+});
 
-    if (hoursUntilCheckIn >= 24) {
-      refundPercentage = 100; // Full refund
-    } else if (hoursUntilCheckIn >= 12) {
-      refundPercentage = 50; // 50% refund
-    } else {
-      refundPercentage = 0; // No refund
-    }
-  } else if (this.bookingType === 'wedding') {
-    const eventDate = new Date(this.eventDetails.eventDate);
-    const daysUntilEvent = (eventDate - now) / (1000 * 60 * 60 * 24);
-
-    if (daysUntilEvent >= 30) {
-      refundPercentage = 90; // 90% refund
-    } else if (daysUntilEvent >= 14) {
-      refundPercentage = 50; // 50% refund
-    } else if (daysUntilEvent >= 7) {
-      refundPercentage = 25; // 25% refund
-    } else {
-      refundPercentage = 0; // No refund
-    }
+// Virtual for booking duration in days
+BookingSchema.virtual('durationDays').get(function() {
+  if (this.dateTime.startDate && this.dateTime.endDate) {
+    const diffTime = Math.abs(this.dateTime.endDate - this.dateTime.startDate);
+    return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   }
+  return 0;
+});
 
-  return (this.payment.paidAmount * refundPercentage) / 100;
-};
+// Virtual for booking duration in hours
+BookingSchema.virtual('durationHours').get(function() {
+  if (this.dateTime.duration) {
+    return Math.round(this.dateTime.duration / 60);
+  }
+  if (this.dateTime.startDate && this.dateTime.endDate) {
+    const diffTime = Math.abs(this.dateTime.endDate - this.dateTime.startDate);
+    return Math.round(diffTime / (1000 * 60 * 60));
+  }
+  return 0;
+});
 
-// Method to send confirmation email
-BookingSchema.methods.sendConfirmation = async function() {
-  // Implementation would integrate with email service
-  this.communication.confirmationSent = true;
-  await this.save();
-};
+// Virtual for payment status
+BookingSchema.virtual('paymentComplete').get(function() {
+  return this.pricing.paidAmount >= this.pricing.totalAmount;
+});
 
-// Method to add note
-BookingSchema.methods.addNote = function(note, addedBy, isInternal = false) {
-  this.communication.notes.push({
-    note,
-    addedBy,
-    isInternal
-  });
-  return this.save();
-};
+// Virtual for booking status text
+BookingSchema.virtual('statusText').get(function() {
+  const statusMap = {
+    pending: 'Pending Confirmation',
+    confirmed: 'Confirmed',
+    checked_in: 'Checked In',
+    in_progress: 'In Progress',
+    completed: 'Completed',
+    cancelled: 'Cancelled',
+    no_show: 'No Show',
+    refunded: 'Refunded'
+  };
+  return statusMap[this.status] || 'Unknown';
+});
+
+// Virtual for days until booking
+BookingSchema.virtual('daysUntilBooking').get(function() {
+  if (this.dateTime.startDate) {
+    const today = new Date();
+    const diffTime = this.dateTime.startDate - today;
+    return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  }
+  return null;
+});
+
+// Indexes for better query performance
+BookingSchema.index({ bookingNumber: 1 });
+BookingSchema.index({ customer: 1 });
+BookingSchema.index({ business: 1 });
+BookingSchema.index({ 'resource.resourceType': 1, 'resource.resourceId': 1 });
+BookingSchema.index({ bookingType: 1 });
+BookingSchema.index({ status: 1 });
+BookingSchema.index({ 'payment.status': 1 });
+BookingSchema.index({ 'dateTime.startDate': 1 });
+BookingSchema.index({ 'dateTime.endDate': 1 });
+BookingSchema.index({ createdAt: -1 });
+
+// Compound indexes
+BookingSchema.index({ customer: 1, status: 1 });
+BookingSchema.index({ business: 1, status: 1 });
+BookingSchema.index({ 'dateTime.startDate': 1, status: 1 });
+BookingSchema.index({ bookingType: 1, status: 1 });
+
+// Text index for search functionality
+BookingSchema.index({
+  bookingNumber: 'text',
+  'contactInfo.primaryContact.name': 'text',
+  'contactInfo.primaryContact.email': 'text',
+  specialRequests: 'text'
+});
 
 module.exports = mongoose.model('Booking', BookingSchema);
+
