@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const BookingSchema = new mongoose.Schema({
   bookingNumber: {
     type: String,
-    required: true
+    required: false // Auto-generated in pre-save middleware
   },
   business: {
     type: mongoose.Schema.ObjectId,

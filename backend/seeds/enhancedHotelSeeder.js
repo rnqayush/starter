@@ -409,26 +409,46 @@ const enhancedHotelSeeder = async () => {
         const status = statuses[Math.floor(Math.random() * statuses.length)];
         const paymentStatus = status === 'confirmed' ? 'paid' : paymentStatuses[Math.floor(Math.random() * paymentStatuses.length)];
 
+        const customerName = customerNames[customerIndex];
+        const customerEmail = `${customerName.toLowerCase().replace(' ', '.')}@email.com`;
+        const customerPhone = `+1 555 ${String(Math.floor(Math.random() * 10000)).padStart(4, '0')}`;
+
         bookings.push({
           business: hotel.business,
-          customer: {
-            name: customerNames[customerIndex],
-            email: `${customerNames[customerIndex].toLowerCase().replace(' ', '.')}@email.com`,
-            phone: `+1 555 ${String(Math.floor(Math.random() * 10000)).padStart(4, '0')}`
-          },
+          customer: users[customerIndex % users.length]._id, // Reference to User ObjectId
           bookingType: 'hotel',
-          hotelBooking: {
-            hotel: hotel._id,
+          hotel: hotel._id,
+          guestDetails: {
+            primaryGuest: {
+              name: customerName,
+              email: customerEmail,
+              phone: customerPhone
+            },
+            totalGuests: {
+              adults: adults,
+              children: children
+            }
+          },
+          roomDetails: {
             room: room._id,
+            roomType: room.type,
             checkIn: checkInDate,
             checkOut: checkOutDate,
-            guests: { adults, children },
-            roomRate: room.pricing.basePrice,
-            totalNights: nights
+            nights: nights,
+            roomsBooked: 1
           },
-          totalAmount,
-          status,
-          paymentStatus
+          pricing: {
+            baseAmount: room.pricing.basePrice * nights,
+            taxes: Math.round(room.pricing.basePrice * nights * 0.18), // 18% tax
+            serviceFees: Math.round(room.pricing.basePrice * nights * 0.05), // 5% service fee
+            totalAmount: Math.round(room.pricing.basePrice * nights * 1.23) // base + tax + service
+          },
+          payment: {
+            status: paymentStatus,
+            method: 'credit_card',
+            paidAmount: paymentStatus === 'paid' ? Math.round(room.pricing.basePrice * nights * 1.23) : 0
+          },
+          status: status
         });
       }
     }
@@ -458,4 +478,3 @@ const enhancedHotelSeeder = async () => {
 };
 
 module.exports = enhancedHotelSeeder;
-
