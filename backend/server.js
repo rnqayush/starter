@@ -31,6 +31,7 @@ const blogRoutes = require('./routes/blogs');
 const mediaRoutes = require('./routes/media');
 const searchRoutes = require('./routes/search');
 const analyticsRoutes = require('./routes/analytics');
+const seedRoutes = require('./routes/seed');
 
 // Import middleware
 const errorHandler = require('./middleware/errorHandler');
@@ -143,6 +144,10 @@ app.use('/api/blogs', blogRoutes);
 app.use('/api/media', mediaRoutes);
 app.use('/api/search', searchRoutes);
 app.use('/api/analytics', analyticsRoutes);
+app.use('/api/seed', seedRoutes);
+
+// Database stats endpoint (alias for easier access)
+app.use('/api/stats', seedRoutes);
 
 // API Documentation
 if (process.env.NODE_ENV === 'development') {
