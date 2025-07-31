@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const hotelSeeder = require('../seeds/hotelSeeder');
+const enhancedHotelSeeder = require('../seeds/enhancedHotelSeeder');
 
 // Load environment variables
 dotenv.config();
@@ -15,8 +16,17 @@ const seedDatabase = async () => {
 
     console.log('🔗 MongoDB Connected for seeding');
 
-    // Run hotel seeder
-    await hotelSeeder();
+    // Check command line arguments for seeder type
+    const args = process.argv.slice(2);
+    const useEnhanced = args.includes('--enhanced') || args.includes('-e');
+
+    if (useEnhanced) {
+      console.log('🚀 Running enhanced hotel seeder...');
+      await enhancedHotelSeeder();
+    } else {
+      console.log('🏨 Running basic hotel seeder...');
+      await hotelSeeder();
+    }
 
     console.log('✅ Database seeding completed successfully!');
     process.exit(0);
@@ -32,4 +42,3 @@ if (require.main === module) {
 }
 
 module.exports = seedDatabase;
-
