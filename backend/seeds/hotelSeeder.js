@@ -41,6 +41,7 @@ const hotelSeeder = async () => {
     const business = await Business.create({
       name: 'Taj Palace Business',
       slug: 'taj-palace-business',
+      description: 'Luxury hotel business offering world-class hospitality and accommodation services in the heart of New Delhi. Specializing in premium hotel experiences with traditional Indian hospitality and modern amenities.',
       owner: user._id,
       type: 'hotel',
       contact: {
@@ -307,4 +308,3 @@ const hotelSeeder = async () => {
 };
 
 module.exports = hotelSeeder;
-
