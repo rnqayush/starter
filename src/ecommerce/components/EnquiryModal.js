@@ -274,7 +274,8 @@ const SuccessText = styled.p`
 const EnquiryModal = ({ isOpen, onClose, product, userInfo = {} }) => {
   const { showSuccessNotification, showEnquiryNotification } =
     useNotifications();
-  const { user, isAuthenticated } = useAuth();
+  const user = useSelector(selectUser);
+  const isAuthenticated = useSelector(selectIsAuthenticated);
 
   // Use authenticated user data if available, otherwise use passed userInfo
   const userData = isAuthenticated ? user : userInfo;
