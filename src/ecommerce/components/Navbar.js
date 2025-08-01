@@ -739,7 +739,7 @@ const Navbar = ({
 
                 <DropdownButton
                   onClick={() => {
-                    logout();
+                    handleLogout();
                     setIsUserDropdownOpen(false);
                   }}
                 >
