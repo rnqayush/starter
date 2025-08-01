@@ -16,7 +16,12 @@ import {
   FaInstagram,
   FaFacebook,
 } from 'react-icons/fa';
-import { useAuth } from '../../context/AuthContext';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  selectUser,
+  updateProfile,
+  switchRole,
+} from '../../store/slices/authSlice';
 
 const ProfileContainer = styled.div`
   max-width: 800px;
@@ -355,7 +360,16 @@ const SecondaryButton = styled(Button)`
 `;
 
 const UserProfile = ({ onClose }) => {
-  const { user, updateProfile, switchRole } = useAuth();
+  const dispatch = useDispatch();
+  const user = useSelector(selectUser);
+
+  const handleUpdateProfile = updates => {
+    dispatch(updateProfile(updates));
+  };
+
+  const handleSwitchRole = role => {
+    dispatch(switchRole(role));
+  };
   const [activeTab, setActiveTab] = useState('personal');
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
@@ -415,7 +429,7 @@ const UserProfile = ({ onClose }) => {
   };
 
   const handleSave = async () => {
-    const result = await updateProfile({
+    handleUpdateProfile({
       name: formData.name,
       phone: formData.phone,
       profile: {
@@ -427,10 +441,8 @@ const UserProfile = ({ onClose }) => {
       preferences: formData.preferences,
     });
 
-    if (result.success) {
-      setIsEditing(false);
-      // Show success message
-    }
+    setIsEditing(false);
+    // Profile updated successfully
   };
 
   const getUserStats = () => {
@@ -761,7 +773,7 @@ const UserProfile = ({ onClose }) => {
               Join thousands of sellers on our platform and start selling your
               products today!
             </p>
-            <PrimaryButton onClick={() => switchRole('seller')}>
+            <PrimaryButton onClick={() => handleSwitchRole('seller')}>
               <FaStore />
               Switch to Seller Account
             </PrimaryButton>

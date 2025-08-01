@@ -13,7 +13,12 @@ import {
   FaFacebook,
   FaGithub,
 } from 'react-icons/fa';
-import { useAuth } from '../../context/AuthContext';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  loginUser,
+  registerUser,
+  selectAuthLoading,
+} from '../../store/slices/authSlice';
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -338,7 +343,8 @@ const RoleOption = styled.div`
 `;
 
 const AuthModal = ({ isOpen, onClose, onSuccess, defaultTab = 'login' }) => {
-  const { login, register, loading } = useAuth();
+  const dispatch = useDispatch();
+  const loading = useSelector(selectAuthLoading);
   const [activeTab, setActiveTab] = useState(defaultTab);
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -432,12 +438,14 @@ const AuthModal = ({ isOpen, onClose, onSuccess, defaultTab = 'login' }) => {
     try {
       let result;
       if (activeTab === 'login') {
-        result = await login({
-          email: formData.email,
-          password: formData.password,
-        });
+        result = await dispatch(
+          loginUser({
+            email: formData.email,
+            password: formData.password,
+          })
+        );
       } else {
-        result = await register(formData);
+        result = await dispatch(registerUser(formData));
       }
 
       if (result.success) {
@@ -471,11 +479,12 @@ const AuthModal = ({ isOpen, onClose, onSuccess, defaultTab = 'login' }) => {
   const handleSocialLogin = provider => {
     // Simulate social login
     const email = `demo@${provider}.com`;
-    login({
-      email,
-      name: `Demo ${provider.charAt(0).toUpperCase() + provider.slice(1)} User`,
-      role: 'customer',
-    }).then(result => {
+    dispatch(
+      loginUser({
+        email,
+        password: 'demo123', // Mock password for social login
+      })
+    ).then(result => {
       if (result.success) {
         onClose();
       }

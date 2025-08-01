@@ -10,7 +10,11 @@ import {
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
 import { useNotifications } from './NotificationSystem';
-import { useAuth } from '../../context/AuthContext';
+import { useSelector } from 'react-redux';
+import {
+  selectUser,
+  selectIsAuthenticated,
+} from '../../store/slices/authSlice';
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -273,7 +277,8 @@ const SuccessText = styled.p`
 const EnquiryModal = ({ isOpen, onClose, product, userInfo = {} }) => {
   const { showSuccessNotification, showEnquiryNotification } =
     useNotifications();
-  const { user, isAuthenticated } = useAuth();
+  const user = useSelector(selectUser);
+  const isAuthenticated = useSelector(selectIsAuthenticated);
 
   // Use authenticated user data if available, otherwise use passed userInfo
   const userData = isAuthenticated ? user : userInfo;

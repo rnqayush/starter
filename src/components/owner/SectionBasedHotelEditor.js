@@ -41,7 +41,7 @@ import {
   removeAmenityFromCategory,
   selectHasPendingChanges,
 } from '../../store/slices/hotelManagementSlice';
-import { useAppContext } from '../../context/AppContext';
+// import { useAppContext } from '../../context/AppContext'; // Removed - needs Redux migration
 import { getHotelByIdOrSlug, amenitiesList } from '../../DummyData';
 import { Button } from '../shared/Button';
 import { Input } from '../shared/Input';
@@ -705,7 +705,8 @@ const AddAmenityForm = styled.div`
 
 const SectionBasedHotelEditor = ({ setActiveSection }) => {
   const dispatch = useDispatch();
-  const { ownerHotels } = useAppContext();
+  // TODO: Replace with Redux selector
+  const ownerHotels = [];
   const {
     editingHotel,
     hasUnsavedChanges,

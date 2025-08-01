@@ -17,7 +17,8 @@ import {
 import Header from '../shared/Header';
 import { Button } from '../shared/Button';
 import { theme, media } from '../../styles/GlobalStyle';
-import { useAuth } from '../../context/AuthContext';
+import { useSelector } from 'react-redux';
+import { selectIsAuthenticated } from '../../store/slices/authSlice';
 import AuthModal from '../auth/AuthModal';
 import {
   storeCategories,
@@ -815,7 +816,7 @@ const FooterBottom = styled.div`
 
 const PlatformHomePage = () => {
   const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
+  const isAuthenticated = useSelector(selectIsAuthenticated);
   const [showAuthModal, setShowAuthModal] = useState(false);
 
   // Data is now imported from DummyData/platform.json

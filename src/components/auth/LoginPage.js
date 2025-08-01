@@ -1,10 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
 import { theme, media } from '../../styles/GlobalStyle';
 import { Button } from '../shared/Button';
 import { Input } from '../shared/Input';
+import {
+  loginUser,
+  selectAuthLoading,
+  selectAuthError,
+  selectIsAuthenticated,
+  clearError,
+} from '../../store/slices/authSlice';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -314,14 +322,44 @@ const BackToHome = styled(Link)`
   }
 `;
 
+const ErrorMessage = styled.div`
+  background: ${theme.colors.red50};
+  color: ${theme.colors.red600};
+  padding: ${theme.spacing.md};
+  border-radius: ${theme.borderRadius.md};
+  font-size: 0.875rem;
+  margin-bottom: ${theme.spacing.md};
+  border: 1px solid ${theme.colors.red200};
+`;
+
 const LoginPage = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const isLoading = useSelector(selectAuthLoading);
+  const error = useSelector(selectAuthError);
+  const isAuthenticated = useSelector(selectIsAuthenticated);
+
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/');
+    }
+  }, [isAuthenticated, navigate]);
+
+  // Clear error when component mounts
+  useEffect(() => {
+    return () => {
+      if (error) {
+        dispatch(clearError());
+      }
+    };
+  }, [dispatch, error]);
 
   const handleInputChange = e => {
     const { name, value } = e.target;
@@ -333,14 +371,16 @@ const LoginPage = () => {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    setIsLoading(true);
 
-    // Simulate login process
-    setTimeout(() => {
-      setIsLoading(false);
-      // Navigate to dashboard or home page
+    if (error) {
+      dispatch(clearError());
+    }
+
+    const result = await dispatch(loginUser(formData));
+
+    if (result.success) {
       navigate('/');
-    }, 1500);
+    }
   };
 
   const togglePasswordVisibility = () => {
@@ -360,6 +400,8 @@ const LoginPage = () => {
         <Title>Welcome Back</Title>
 
         <Form onSubmit={handleSubmit}>
+          {error && <ErrorMessage>{error}</ErrorMessage>}
+
           <FormGroup>
             <Label htmlFor="email">Email Address</Label>
             <InputContainer>
@@ -374,6 +416,7 @@ const LoginPage = () => {
                 value={formData.email}
                 onChange={handleInputChange}
                 required
+                disabled={isLoading}
               />
             </InputContainer>
           </FormGroup>
@@ -392,6 +435,7 @@ const LoginPage = () => {
                 value={formData.password}
                 onChange={handleInputChange}
                 required
+                disabled={isLoading}
               />
               <PasswordToggle type="button" onClick={togglePasswordVisibility}>
                 {showPassword ? <FaEyeSlash /> : <FaEye />}

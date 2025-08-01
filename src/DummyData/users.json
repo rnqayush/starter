@@ -1,0 +1,187 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "email": "john@example.com",
+      "password": "password123",
+      "name": "John Doe",
+      "phone": "+1234567890",
+      "role": "customer",
+      "avatar": "https://ui-avatars.com/api/?name=John+Doe&background=1e40af&color=fff",
+      "preferences": {
+        "notifications": {
+          "email": true,
+          "sms": false,
+          "push": true
+        },
+        "language": "en",
+        "currency": "USD"
+      },
+      "profile": {
+        "bio": "Software developer and tech enthusiast",
+        "location": "New York, USA",
+        "website": "https://johndoe.dev",
+        "socialLinks": {
+          "twitter": "johndoe",
+          "linkedin": "johndoe"
+        }
+      },
+      "createdAt": "2024-01-15T10:00:00.000Z",
+      "lastLogin": "2024-01-20T14:30:00.000Z"
+    },
+    {
+      "id": 2,
+      "email": "jane@example.com",
+      "password": "password123",
+      "name": "Jane Smith",
+      "phone": "+1234567891",
+      "role": "seller",
+      "avatar": "https://ui-avatars.com/api/?name=Jane+Smith&background=1e40af&color=fff",
+      "preferences": {
+        "notifications": {
+          "email": true,
+          "sms": true,
+          "push": true
+        },
+        "language": "en",
+        "currency": "USD"
+      },
+      "profile": {
+        "bio": "Fashion boutique owner and designer",
+        "location": "Los Angeles, USA",
+        "website": "https://janesfashion.com",
+        "socialLinks": {
+          "instagram": "janesfashion",
+          "facebook": "janesfashion"
+        }
+      },
+      "seller": {
+        "businessName": "Jane's Fashion Boutique",
+        "businessType": "Fashion & Apparel",
+        "verified": true,
+        "rating": 4.8,
+        "totalSales": 15420,
+        "totalProducts": 89,
+        "joinedDate": "2023-08-10T09:00:00.000Z",
+        "settings": {
+          "autoRespond": true,
+          "showLocation": true,
+          "allowReviews": true
+        }
+      },
+      "createdAt": "2023-08-10T09:00:00.000Z",
+      "lastLogin": "2024-01-20T16:45:00.000Z"
+    },
+    {
+      "id": 3,
+      "email": "admin@storebuilder.com",
+      "password": "admin123",
+      "name": "Admin User",
+      "phone": "+1234567892",
+      "role": "admin",
+      "avatar": "https://ui-avatars.com/api/?name=Admin+User&background=dc2626&color=fff",
+      "preferences": {
+        "notifications": {
+          "email": true,
+          "sms": true,
+          "push": true
+        },
+        "language": "en",
+        "currency": "USD"
+      },
+      "profile": {
+        "bio": "Platform administrator",
+        "location": "Remote",
+        "website": "https://storebuilder.com",
+        "socialLinks": {}
+      },
+      "createdAt": "2023-01-01T00:00:00.000Z",
+      "lastLogin": "2024-01-20T18:00:00.000Z"
+    },
+    {
+      "id": 4,
+      "email": "hotel.owner@example.com",
+      "password": "password123",
+      "name": "Hotel Owner",
+      "phone": "+1234567893",
+      "role": "seller",
+      "avatar": "https://ui-avatars.com/api/?name=Hotel+Owner&background=1e40af&color=fff",
+      "preferences": {
+        "notifications": {
+          "email": true,
+          "sms": true,
+          "push": true
+        },
+        "language": "en",
+        "currency": "USD"
+      },
+      "profile": {
+        "bio": "Luxury hotel chain owner",
+        "location": "Miami, USA",
+        "website": "https://luxuryhotels.com",
+        "socialLinks": {
+          "linkedin": "hotelowner"
+        }
+      },
+      "seller": {
+        "businessName": "Luxury Hotels & Resorts",
+        "businessType": "Hotels & Hospitality",
+        "verified": true,
+        "rating": 4.9,
+        "totalSales": 89500,
+        "totalProducts": 12,
+        "joinedDate": "2023-05-15T11:00:00.000Z",
+        "settings": {
+          "autoRespond": true,
+          "showLocation": true,
+          "allowReviews": true
+        }
+      },
+      "createdAt": "2023-05-15T11:00:00.000Z",
+      "lastLogin": "2024-01-20T12:20:00.000Z"
+    },
+    {
+      "id": 5,
+      "email": "car.dealer@example.com",
+      "password": "password123",
+      "name": "Auto Dealer",
+      "phone": "+1234567894",
+      "role": "seller",
+      "avatar": "https://ui-avatars.com/api/?name=Auto+Dealer&background=1e40af&color=fff",
+      "preferences": {
+        "notifications": {
+          "email": true,
+          "sms": false,
+          "push": true
+        },
+        "language": "en",
+        "currency": "USD"
+      },
+      "profile": {
+        "bio": "Premium automobile dealer specializing in luxury vehicles",
+        "location": "Detroit, USA",
+        "website": "https://premiumautos.com",
+        "socialLinks": {
+          "facebook": "premiumautos",
+          "youtube": "premiumautos"
+        }
+      },
+      "seller": {
+        "businessName": "Premium Auto Sales",
+        "businessType": "Automotive",
+        "verified": true,
+        "rating": 4.7,
+        "totalSales": 245000,
+        "totalProducts": 45,
+        "joinedDate": "2023-03-20T08:30:00.000Z",
+        "settings": {
+          "autoRespond": false,
+          "showLocation": true,
+          "allowReviews": true
+        }
+      },
+      "createdAt": "2023-03-20T08:30:00.000Z",
+      "lastLogin": "2024-01-20T09:15:00.000Z"
+    }
+  ]
+}

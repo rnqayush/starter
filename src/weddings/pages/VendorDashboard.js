@@ -45,7 +45,7 @@ import {
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
 import { getWeddingVendorById as getVendorById } from '../../DummyData';
-import { useAuth } from '../../context/AuthContext';
+import { selectUser } from '../../store/slices/authSlice';
 import {
   setEditingVendor,
   initializeVendor,
@@ -688,7 +688,7 @@ const Tab = styled.button.withConfig({
 const VendorDashboard = () => {
   const { vendorSlug } = useParams();
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const user = useSelector(selectUser);
   const dispatch = useDispatch();
 
   // Redux state

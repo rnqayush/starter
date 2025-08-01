@@ -1,4 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
+import authReducer from './slices/authSlice';
 import hotelManagementReducer from './slices/hotelManagementSlice';
 import vendorManagementReducer from './slices/vendorManagementSlice';
 import weddingManagementReducer from './slices/weddingManagementSlice';
@@ -9,6 +10,7 @@ import blogsReducer from './slices/blogsSlice';
 
 export const store = configureStore({
   reducer: {
+    auth: authReducer,
     hotelManagement: hotelManagementReducer,
     vendorManagement: vendorManagementReducer,
     weddingManagement: weddingManagementReducer,

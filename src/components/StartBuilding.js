@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import {
   FaArrowLeft,
@@ -16,6 +17,7 @@ import {
 import { theme, media } from '../styles/GlobalStyle';
 import { Button } from './shared/Button';
 import { websiteTypes, colorOptions } from '../DummyData/index';
+import { selectIsAuthenticated, selectUser } from '../store/slices/authSlice';
 
 const Container = styled.div`
   min-height: 100vh;
@@ -502,9 +504,38 @@ const SummaryValue = styled.span`
   font-weight: 600;
 `;
 
+const AuthPrompt = styled.div`
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  border: 2px solid #f59e0b;
+  border-radius: 16px;
+  padding: ${theme.spacing.xl};
+  text-align: center;
+  margin: ${theme.spacing.xl} 0;
+
+  h3 {
+    color: #92400e;
+    margin: 0 0 ${theme.spacing.md} 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+
+  p {
+    color: #a16207;
+    margin: 0 0 ${theme.spacing.lg} 0;
+    font-size: 1rem;
+  }
+
+  button {
+    margin: 0 ${theme.spacing.sm};
+  }
+`;
+
 const StartBuilding = () => {
   const navigate = useNavigate();
+  const isAuthenticated = useSelector(selectIsAuthenticated);
+  const user = useSelector(selectUser);
   const [currentStep, setCurrentStep] = useState(1);
+  const [showAuthPrompt, setShowAuthPrompt] = useState(false);
   const [formData, setFormData] = useState({
     websiteType: '',
     websiteName: '',
@@ -559,9 +590,24 @@ const StartBuilding = () => {
   };
 
   const handlePublish = () => {
-    // Simulate website creation
+    if (!isAuthenticated) {
+      setShowAuthPrompt(true);
+      return;
+    }
+
+    // Create website for authenticated user
     const slug = formData.websiteName;
+    // Here you would typically save the website data to your backend
+    console.log('Creating website:', { ...formData, userId: user.id });
     navigate(`/${slug}`);
+  };
+
+  const handleLoginRedirect = () => {
+    navigate('/login');
+  };
+
+  const handleRegisterRedirect = () => {
+    navigate('/register');
   };
 
   const handleWebsiteNameChange = e => {
@@ -801,7 +847,37 @@ const StartBuilding = () => {
           </StepIndicator>
         </Header>
 
-        <Content>{renderStepContent()}</Content>
+        <Content>
+          {showAuthPrompt && !isAuthenticated ? (
+            <AuthPrompt>
+              <h3>🔐 Login Required</h3>
+              <p>
+                You need to be logged in to publish your website. Please login
+                or create an account to continue.
+              </p>
+              <ActionButton variant="next" onClick={handleLoginRedirect}>
+                Login
+              </ActionButton>
+              <ActionButton variant="back" onClick={handleRegisterRedirect}>
+                Create Account
+              </ActionButton>
+              <br />
+              <Button
+                variant="text"
+                onClick={() => setShowAuthPrompt(false)}
+                style={{
+                  marginTop: '16px',
+                  color: '#6b7280',
+                  textDecoration: 'underline',
+                }}
+              >
+                Continue without account (limited features)
+              </Button>
+            </AuthPrompt>
+          ) : (
+            renderStepContent()
+          )}
+        </Content>
 
         <Actions>
           <ActionButton
@@ -829,7 +905,9 @@ const StartBuilding = () => {
               disabled={!validateStep()}
             >
               <FaRocket />
-              Publish My Website
+              {isAuthenticated
+                ? 'Publish My Website'
+                : 'Publish My Website (Login Required)'}
             </ActionButton>
           )}
         </Actions>

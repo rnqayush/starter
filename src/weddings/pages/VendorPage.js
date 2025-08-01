@@ -31,7 +31,7 @@ import {
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
 import { getVendorById } from '../../utils/weddingAPI';
-import { useAuth } from '../../context/AuthContext';
+import { selectUser } from '../../store/slices/authSlice';
 import {
   initializeVendor,
   setEditingVendor,
@@ -1635,7 +1635,7 @@ const LoadingSpinner = styled.div`
 const VendorPage = () => {
   const { vendorSlug } = useParams();
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const user = useSelector(selectUser);
   const dispatch = useDispatch();
   const sectionRefs = useRef([]);
   const observerRef = useRef(null);

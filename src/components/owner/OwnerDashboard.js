@@ -20,7 +20,7 @@ import ProfileSettingsPageContent from './ProfileSettingsPageContent';
 import { Card, CardContent, Badge } from '../shared/Card';
 import { Button } from '../shared/Button';
 import { theme, media } from '../../styles/GlobalStyle';
-import { useAppContext } from '../../context/AppContext';
+// import { useAppContext } from '../../context/AppContext'; // Removed - needs Redux migration
 
 const DashboardContainer = styled.div`
   display: flex;
@@ -417,7 +417,9 @@ const PageContent = styled.div`
 `;
 
 const OwnerDashboard = () => {
-  const { ownerHotels = [], bookings = [] } = useAppContext();
+  // TODO: Replace with Redux selectors
+  const ownerHotels = [];
+  const bookings = [];
   const [activeSection, setActiveSection] = useState('dashboard');
 
   const ownerBookings =
