@@ -1063,8 +1063,6 @@ const PlatformHomePage = () => {
           <p>{platformData.footer.bottomText}</p>
         </FooterBottom>
       </Footer>
-
-
     </PageContainer>
   );
 };

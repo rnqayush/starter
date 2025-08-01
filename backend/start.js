@@ -6,15 +6,15 @@ console.log('🚀 Starting StoreBuilder Backend Server...');
 
 const server = spawn('node', ['server.js'], {
   cwd: __dirname,
-  stdio: 'inherit'
+  stdio: 'inherit',
 });
 
-server.on('error', (err) => {
+server.on('error', err => {
   console.error('❌ Failed to start server:', err);
   process.exit(1);
 });
 
-server.on('close', (code) => {
+server.on('close', code => {
   console.log(`🔚 Server process exited with code ${code}`);
 });
 

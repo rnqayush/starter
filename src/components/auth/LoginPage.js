@@ -6,7 +6,11 @@ import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
 import { theme, media } from '../../styles/GlobalStyle';
 import { Button } from '../shared/Button';
 import { Input } from '../shared/Input';
-import { loginUser, clearError, selectAuth } from '../../store/slices/authSlice';
+import {
+  loginUser,
+  clearError,
+  selectAuth,
+} from '../../store/slices/authSlice';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -469,11 +473,7 @@ const LoginPage = () => {
             </ForgotPasswordLink>
           </FormGroup>
 
-          {error && (
-            <ErrorMessage>
-              {error}
-            </ErrorMessage>
-          )}
+          {error && <ErrorMessage>{error}</ErrorMessage>}
 
           <LoginButton type="submit" disabled={loading}>
             {loading ? 'Signing In...' : 'Sign In'}

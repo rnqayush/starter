@@ -2,10 +2,24 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import { FaHotel, FaBars, FaTimes, FaChevronDown, FaUser, FaCog, FaSignOutAlt, FaBell, FaUserShield } from 'react-icons/fa';
+import {
+  FaHotel,
+  FaBars,
+  FaTimes,
+  FaChevronDown,
+  FaUser,
+  FaCog,
+  FaSignOutAlt,
+  FaBell,
+  FaUserShield,
+} from 'react-icons/fa';
 import { theme, media } from '../../styles/GlobalStyle';
 import { Button } from './Button';
-import { selectAuth, logoutUser, restoreUserSession } from '../../store/slices/authSlice';
+import {
+  selectAuth,
+  logoutUser,
+  restoreUserSession,
+} from '../../store/slices/authSlice';
 
 const HeaderContainer = styled.header.withConfig({
   shouldForwardProp: prop => prop !== 'isScrolled' && prop !== 'isInHero',
@@ -660,7 +674,7 @@ const MobileAuthButton = styled(Link)`
 `;
 
 // Helper function to get dashboard path based on business category
-const getDashboardPath = (category) => {
+const getDashboardPath = category => {
   const dashboardRoutes = {
     hotels: '/hoteladmin',
     ecommerce: '/selleradminpanel',
@@ -885,7 +899,8 @@ const Header = ({ isOwnerView = false }) => {
   const closeMobileMenu = () => setMobileMenuOpen(false);
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
   const closeDropdown = () => setDropdownOpen(false);
-  const toggleProfileDropdown = () => setProfileDropdownOpen(!profileDropdownOpen);
+  const toggleProfileDropdown = () =>
+    setProfileDropdownOpen(!profileDropdownOpen);
   const closeProfileDropdown = () => setProfileDropdownOpen(false);
 
   const handleLogout = async () => {
@@ -900,7 +915,10 @@ const Header = ({ isOwnerView = false }) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         closeDropdown();
       }
-      if (profileDropdownRef.current && !profileDropdownRef.current.contains(event.target)) {
+      if (
+        profileDropdownRef.current &&
+        !profileDropdownRef.current.contains(event.target)
+      ) {
         closeProfileDropdown();
       }
     };
@@ -1238,10 +1256,21 @@ const Header = ({ isOwnerView = false }) => {
                     aria-expanded={profileDropdownOpen}
                     aria-haspopup="true"
                   >
-                    <ProfileAvatar src={user?.avatar} alt={`${user?.firstName} ${user?.lastName}`} />
+                    <ProfileAvatar
+                      src={user?.avatar}
+                      alt={`${user?.firstName} ${user?.lastName}`}
+                    />
                     <ProfileInfo>
-                      <ProfileName>{user?.firstName} {user?.lastName}</ProfileName>
-                      <ProfileRole>{user?.role === 'admin' ? 'Administrator' : user?.role === 'business_owner' ? 'Business Owner' : 'Customer'}</ProfileRole>
+                      <ProfileName>
+                        {user?.firstName} {user?.lastName}
+                      </ProfileName>
+                      <ProfileRole>
+                        {user?.role === 'admin'
+                          ? 'Administrator'
+                          : user?.role === 'business_owner'
+                            ? 'Business Owner'
+                            : 'Customer'}
+                      </ProfileRole>
                     </ProfileInfo>
                     <FaChevronDown />
                   </ProfileButton>
@@ -1285,10 +1314,7 @@ const Header = ({ isOwnerView = false }) => {
 
                     <ProfileDropdownDivider />
 
-                    <ProfileDropdownItem
-                      as="button"
-                      onClick={handleLogout}
-                    >
+                    <ProfileDropdownItem as="button" onClick={handleLogout}>
                       <FaSignOutAlt />
                       Sign Out
                     </ProfileDropdownItem>

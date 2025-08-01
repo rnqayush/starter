@@ -17,7 +17,11 @@ import {
 import { theme, media } from '../../styles/GlobalStyle';
 import { Button } from '../shared/Button';
 import { Input } from '../shared/Input';
-import { registerUser, clearError, selectAuth } from '../../store/slices/authSlice';
+import {
+  registerUser,
+  clearError,
+  selectAuth,
+} from '../../store/slices/authSlice';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -375,8 +379,18 @@ const RegisterPage = () => {
     }
 
     // Validate required fields
-    const requiredFields = ['firstName', 'lastName', 'email', 'businessName', 'businessCategory', 'phone', 'address'];
-    const missingFields = requiredFields.filter(field => !formData[field].trim());
+    const requiredFields = [
+      'firstName',
+      'lastName',
+      'email',
+      'businessName',
+      'businessCategory',
+      'phone',
+      'address',
+    ];
+    const missingFields = requiredFields.filter(
+      field => !formData[field].trim()
+    );
 
     if (missingFields.length > 0) {
       setValidationError('Please fill in all required fields');
@@ -640,9 +654,7 @@ const RegisterPage = () => {
           </FormGroup>
 
           {(error || validationError) && (
-            <ErrorMessage>
-              {error || validationError}
-            </ErrorMessage>
+            <ErrorMessage>{error || validationError}</ErrorMessage>
           )}
 
           <RegisterButton type="submit" disabled={loading}>

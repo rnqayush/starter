@@ -17,5 +17,5 @@ loadModels();
 
 module.exports = {
   User,
-  loadModels
+  loadModels,
 };

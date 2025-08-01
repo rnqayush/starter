@@ -1,7 +1,16 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import { FaUser, FaEnvelope, FaPhone, FaMapMarkerAlt, FaGlobe, FaEdit, FaSave, FaTimes } from 'react-icons/fa';
+import {
+  FaUser,
+  FaEnvelope,
+  FaPhone,
+  FaMapMarkerAlt,
+  FaGlobe,
+  FaEdit,
+  FaSave,
+  FaTimes,
+} from 'react-icons/fa';
 import { theme, media } from '../../styles/GlobalStyle';
 import { selectUser, updateUserProfileAPI } from '../../store/slices/authSlice';
 import Header from '../shared/Header';
@@ -30,7 +39,11 @@ const ProfileCard = styled.div`
 `;
 
 const ProfileHeader = styled.div`
-  background: linear-gradient(135deg, ${theme.colors.primary} 0%, ${theme.colors.secondary || theme.colors.primary} 100%);
+  background: linear-gradient(
+    135deg,
+    ${theme.colors.primary} 0%,
+    ${theme.colors.secondary || theme.colors.primary} 100%
+  );
   padding: ${theme.spacing.xxl};
   text-align: center;
   color: ${theme.colors.white};
@@ -234,15 +247,15 @@ const UserProfilePage = () => {
     businessName: user?.businessName || '',
   });
 
-  const handleInputChange = (e) => {
+  const handleInputChange = e => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
-  const handleSave = async (e) => {
+  const handleSave = async e => {
     e.preventDefault();
 
     try {
@@ -282,11 +295,19 @@ const UserProfilePage = () => {
       <ContentContainer>
         <ProfileCard>
           <ProfileHeader>
-            <ProfileAvatar src={user.avatar} alt={`${user.firstName} ${user.lastName}`} />
-            <ProfileName>{user.firstName} {user.lastName}</ProfileName>
+            <ProfileAvatar
+              src={user.avatar}
+              alt={`${user.firstName} ${user.lastName}`}
+            />
+            <ProfileName>
+              {user.firstName} {user.lastName}
+            </ProfileName>
             <ProfileRole>
-              {user.role === 'admin' ? 'Administrator' : 
-               user.role === 'business_owner' ? 'Business Owner' : 'Customer'}
+              {user.role === 'admin'
+                ? 'Administrator'
+                : user.role === 'business_owner'
+                  ? 'Business Owner'
+                  : 'Customer'}
             </ProfileRole>
           </ProfileHeader>
 
@@ -381,7 +402,9 @@ const UserProfilePage = () => {
             ) : (
               <InfoGrid>
                 <InfoItem>
-                  <InfoIcon><FaEnvelope /></InfoIcon>
+                  <InfoIcon>
+                    <FaEnvelope />
+                  </InfoIcon>
                   <InfoContent>
                     <InfoLabel>Email</InfoLabel>
                     <InfoValue>{user.email}</InfoValue>
@@ -389,7 +412,9 @@ const UserProfilePage = () => {
                 </InfoItem>
 
                 <InfoItem>
-                  <InfoIcon><FaPhone /></InfoIcon>
+                  <InfoIcon>
+                    <FaPhone />
+                  </InfoIcon>
                   <InfoContent>
                     <InfoLabel>Phone</InfoLabel>
                     <InfoValue>{user.phone || 'Not provided'}</InfoValue>
@@ -397,7 +422,9 @@ const UserProfilePage = () => {
                 </InfoItem>
 
                 <InfoItem>
-                  <InfoIcon><FaMapMarkerAlt /></InfoIcon>
+                  <InfoIcon>
+                    <FaMapMarkerAlt />
+                  </InfoIcon>
                   <InfoContent>
                     <InfoLabel>Address</InfoLabel>
                     <InfoValue>{user.address || 'Not provided'}</InfoValue>
@@ -407,20 +434,30 @@ const UserProfilePage = () => {
                 {user.role === 'business_owner' && (
                   <>
                     <InfoItem>
-                      <InfoIcon><FaUser /></InfoIcon>
+                      <InfoIcon>
+                        <FaUser />
+                      </InfoIcon>
                       <InfoContent>
                         <InfoLabel>Business Name</InfoLabel>
-                        <InfoValue>{user.businessName || 'Not provided'}</InfoValue>
+                        <InfoValue>
+                          {user.businessName || 'Not provided'}
+                        </InfoValue>
                       </InfoContent>
                     </InfoItem>
 
                     <InfoItem>
-                      <InfoIcon><FaGlobe /></InfoIcon>
+                      <InfoIcon>
+                        <FaGlobe />
+                      </InfoIcon>
                       <InfoContent>
                         <InfoLabel>Website</InfoLabel>
                         <InfoValue>
                           {user.website ? (
-                            <a href={user.website} target="_blank" rel="noopener noreferrer">
+                            <a
+                              href={user.website}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
                               {user.website}
                             </a>
                           ) : (
@@ -431,7 +468,9 @@ const UserProfilePage = () => {
                     </InfoItem>
 
                     <InfoItem>
-                      <InfoIcon><FaUser /></InfoIcon>
+                      <InfoIcon>
+                        <FaUser />
+                      </InfoIcon>
                       <InfoContent>
                         <InfoLabel>Business Category</InfoLabel>
                         <InfoValue style={{ textTransform: 'capitalize' }}>

@@ -21,22 +21,25 @@ A Node.js Express backend API for the StoreBuilder platform, providing authentic
 ### Installation
 
 1. **Install dependencies:**
+
    ```bash
    cd backend
    npm install
    ```
 
 2. **Set up environment variables:**
+
    ```bash
    cp .env.example .env
    # Edit .env with your configuration
    ```
 
 3. **Start the server:**
+
    ```bash
    # Development mode (with nodemon)
    npm run dev
-   
+
    # Production mode
    npm start
    ```
@@ -47,27 +50,28 @@ The server will start on `http://localhost:3001`
 
 ### Authentication (`/api/auth`)
 
-| Method | Endpoint | Description | Access |
-|--------|----------|-------------|---------|
-| POST | `/login` | User login | Public |
-| POST | `/register` | User registration | Public |
-| GET | `/me` | Get current user | Private |
-| POST | `/verify` | Verify JWT token | Private |
-| POST | `/logout` | User logout | Private |
+| Method | Endpoint    | Description       | Access  |
+| ------ | ----------- | ----------------- | ------- |
+| POST   | `/login`    | User login        | Public  |
+| POST   | `/register` | User registration | Public  |
+| GET    | `/me`       | Get current user  | Private |
+| POST   | `/verify`   | Verify JWT token  | Private |
+| POST   | `/logout`   | User logout       | Private |
 
 ### Users (`/api/users`)
 
-| Method | Endpoint | Description | Access |
-|--------|----------|-------------|---------|
-| GET | `/` | Get all users | Admin |
-| GET | `/:id` | Get user by ID | Private |
-| PUT | `/:id` | Update user profile | Private |
-| DELETE | `/:id` | Delete user | Admin |
-| GET | `/admin/stats` | Get user statistics | Admin |
+| Method | Endpoint       | Description         | Access  |
+| ------ | -------------- | ------------------- | ------- |
+| GET    | `/`            | Get all users       | Admin   |
+| GET    | `/:id`         | Get user by ID      | Private |
+| PUT    | `/:id`         | Update user profile | Private |
+| DELETE | `/:id`         | Delete user         | Admin   |
+| GET    | `/admin/stats` | Get user statistics | Admin   |
 
 ## Sample API Responses
 
 ### Login Success
+
 ```json
 {
   "success": true,
@@ -88,6 +92,7 @@ The server will start on `http://localhost:3001`
 ```
 
 ### Error Response
+
 ```json
 {
   "success": false,
@@ -106,12 +111,12 @@ The server will start on `http://localhost:3001`
 
 The system comes with pre-configured users for testing:
 
-| Email | Password | Role |
-|-------|----------|------|
-| admin@storebuilder.com | admin123 | admin |
-| john.doe@hotel.com | hotel123 | business_owner |
-| sarah.smith@shop.com | shop123 | business_owner |
-| customer1@email.com | customer123 | customer |
+| Email                  | Password    | Role           |
+| ---------------------- | ----------- | -------------- |
+| admin@storebuilder.com | admin123    | admin          |
+| john.doe@hotel.com     | hotel123    | business_owner |
+| sarah.smith@shop.com   | shop123     | business_owner |
+| customer1@email.com    | customer123 | customer       |
 
 ## Security Features
 
@@ -144,6 +149,7 @@ RATE_LIMIT_MAX_REQUESTS=100
 ## Development
 
 ### Project Structure
+
 ```
 backend/
 ├── data/           # User data and utilities
@@ -163,11 +169,13 @@ backend/
 ## Health Check
 
 Check if the API is running:
+
 ```bash
 curl http://localhost:3001/health
 ```
 
 Response:
+
 ```json
 {
   "success": true,

@@ -3,6 +3,7 @@
 ## Overview
 
 The StoreBuilder platform now consists of:
+
 - **Frontend**: React app with Redux Toolkit (Port 3000)
 - **Backend**: Node.js Express API with MongoDB (Port 3001)
 - **Database**: MongoDB (localhost:27017) with fallback to in-memory storage
@@ -16,6 +17,7 @@ The backend uses MongoDB for data persistence. While it has a fallback mode, Mon
 #### Install MongoDB
 
 **macOS (using Homebrew):**
+
 ```bash
 brew tap mongodb/brew
 brew install mongodb-community
@@ -23,6 +25,7 @@ brew services start mongodb/brew/mongodb-community
 ```
 
 **Ubuntu/Debian:**
+
 ```bash
 # Import public key and add repository
 wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc | sudo apt-key add -
@@ -36,11 +39,13 @@ sudo systemctl enable mongod
 ```
 
 **Windows:**
+
 1. Download from https://www.mongodb.com/try/download/community
 2. Run installer and follow setup wizard
 3. MongoDB starts automatically as a Windows service
 
 #### Verify MongoDB Installation
+
 ```bash
 # Test connection
 mongosh
@@ -65,6 +70,7 @@ npm run dev
 ```
 
 **Expected startup output:**
+
 - ✅ **With MongoDB**: `MongoDB Connected` + `Successfully seeded X users`
 - ⚠️ **Without MongoDB**: `MongoDB connection failed` + `Falling back to in-memory data store`
 
@@ -85,6 +91,7 @@ The frontend will start on `http://localhost:3000`
 ## Database Integration
 
 ### MongoDB Features (When Available)
+
 - **Data Persistence**: Users persist between server restarts
 - **Password Security**: bcrypt hashing with salt rounds
 - **User Validation**: Comprehensive schema validation
@@ -93,6 +100,7 @@ The frontend will start on `http://localhost:3000`
 - **Account Security**: Login attempt limiting and account locking
 
 ### Fallback Mode (When MongoDB Unavailable)
+
 - **In-Memory Storage**: Users stored in memory (lost on restart)
 - **Demo Data**: Pre-loaded test accounts available
 - **Full API Compatibility**: All endpoints work identically
@@ -103,13 +111,15 @@ The frontend will start on `http://localhost:3000`
 The frontend now uses real API calls instead of mock data:
 
 ### Authentication Endpoints
+
 - `POST /api/auth/login` - User login
-- `POST /api/auth/register` - User registration  
+- `POST /api/auth/register` - User registration
 - `GET /api/auth/me` - Get current user
 - `POST /api/auth/verify` - Verify JWT token
 - `POST /api/auth/logout` - User logout
 
 ### User Management Endpoints
+
 - `GET /api/users` - Get all users (admin only)
 - `GET /api/users/:id` - Get user by ID
 - `PUT /api/users/:id` - Update user profile
@@ -120,43 +130,50 @@ The frontend now uses real API calls instead of mock data:
 
 You can login with these pre-configured accounts:
 
-| Email | Password | Role | Business Category |
-|-------|----------|------|-------------------|
-| admin@storebuilder.com | admin123 | admin | services |
-| john.doe@hotel.com | hotel123 | business_owner | hotels |
-| sarah.smith@shop.com | shop123 | business_owner | ecommerce |
-| mike.johnson@wedding.com | wedding123 | business_owner | weddings |
-| alex.brown@auto.com | auto123 | business_owner | automobiles |
-| customer1@email.com | customer123 | customer | - |
+| Email                    | Password    | Role           | Business Category |
+| ------------------------ | ----------- | -------------- | ----------------- |
+| admin@storebuilder.com   | admin123    | admin          | services          |
+| john.doe@hotel.com       | hotel123    | business_owner | hotels            |
+| sarah.smith@shop.com     | shop123     | business_owner | ecommerce         |
+| mike.johnson@wedding.com | wedding123  | business_owner | weddings          |
+| alex.brown@auto.com      | auto123     | business_owner | automobiles       |
+| customer1@email.com      | customer123 | customer       | -                 |
 
 ## API Response Format
 
 All API responses follow this structure:
 
 ### Success Response
+
 ```json
 {
   "success": true,
   "message": "Operation successful",
   "data": {
-    "user": { /* user object */ },
+    "user": {
+      /* user object */
+    },
     "token": "eyJhbGciOiJIUzI1NiIs..."
   }
 }
 ```
 
 ### Error Response
+
 ```json
 {
   "success": false,
   "message": "Error description",
-  "errors": [/* validation errors if any */]
+  "errors": [
+    /* validation errors if any */
+  ]
 }
 ```
 
 ## Environment Variables
 
 ### Backend (.env in backend folder)
+
 ```bash
 # Server Configuration
 PORT=3001
@@ -175,6 +192,7 @@ CORS_ORIGIN=http://localhost:3000
 ```
 
 ### Frontend (.env in project root)
+
 ```bash
 REACT_APP_API_URL=http://localhost:3001/api
 ```
@@ -214,6 +232,7 @@ curl http://localhost:3001/health
 ```
 
 Expected response:
+
 ```json
 {
   "success": true,
@@ -266,6 +285,7 @@ project/
 ## Support
 
 For issues or questions:
+
 1. Check the logs in both frontend and backend terminals
 2. Verify environment variables are set correctly
 3. Test API endpoints individually

@@ -21,7 +21,7 @@ const protect = async (req, res, next) => {
       if (!req.user) {
         return res.status(401).json({
           success: false,
-          message: 'Not authorized, user not found'
+          message: 'Not authorized, user not found',
         });
       }
 
@@ -29,7 +29,7 @@ const protect = async (req, res, next) => {
       if (!req.user.isActive) {
         return res.status(401).json({
           success: false,
-          message: 'Account is deactivated'
+          message: 'Account is deactivated',
         });
       }
 
@@ -37,25 +37,25 @@ const protect = async (req, res, next) => {
       if (req.user.isLocked) {
         return res.status(423).json({
           success: false,
-          message: 'Account is temporarily locked'
+          message: 'Account is temporarily locked',
         });
       }
 
       next();
     } catch (error) {
       console.error('Auth middleware error:', error);
-      
+
       let message = 'Not authorized, token failed';
-      
+
       if (error.name === 'JsonWebTokenError') {
         message = 'Not authorized, invalid token';
       } else if (error.name === 'TokenExpiredError') {
         message = 'Not authorized, token expired';
       }
-      
+
       res.status(401).json({
         success: false,
-        message
+        message,
       });
     }
   }
@@ -63,7 +63,7 @@ const protect = async (req, res, next) => {
   if (!token) {
     res.status(401).json({
       success: false,
-      message: 'Not authorized, no token provided'
+      message: 'Not authorized, no token provided',
     });
   }
 };
@@ -73,14 +73,14 @@ const authorize = (...roles) => {
     if (!req.user) {
       return res.status(401).json({
         success: false,
-        message: 'Not authorized'
+        message: 'Not authorized',
       });
     }
 
     if (!roles.includes(req.user.role)) {
       return res.status(403).json({
         success: false,
-        message: `User role '${req.user.role}' is not authorized to access this resource`
+        message: `User role '${req.user.role}' is not authorized to access this resource`,
       });
     }
 
@@ -89,12 +89,12 @@ const authorize = (...roles) => {
 };
 
 // Middleware to check specific permissions
-const checkPermission = (permission) => {
+const checkPermission = permission => {
   return (req, res, next) => {
     if (!req.user) {
       return res.status(401).json({
         success: false,
-        message: 'Not authorized'
+        message: 'Not authorized',
       });
     }
 
@@ -107,7 +107,7 @@ const checkPermission = (permission) => {
     if (!req.user.permissions.includes(permission)) {
       return res.status(403).json({
         success: false,
-        message: `Permission '${permission}' required to access this resource`
+        message: `Permission '${permission}' required to access this resource`,
       });
     }
 
@@ -120,7 +120,7 @@ const ownerOrAdmin = (req, res, next) => {
   if (!req.user) {
     return res.status(401).json({
       success: false,
-      message: 'Not authorized'
+      message: 'Not authorized',
     });
   }
 
@@ -131,7 +131,7 @@ const ownerOrAdmin = (req, res, next) => {
   if (!isOwner && !isAdmin) {
     return res.status(403).json({
       success: false,
-      message: 'Not authorized to access this resource'
+      message: 'Not authorized to access this resource',
     });
   }
 

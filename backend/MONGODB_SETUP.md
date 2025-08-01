@@ -7,6 +7,7 @@ You need to have MongoDB installed on your local machine.
 ### Install MongoDB
 
 #### macOS (using Homebrew)
+
 ```bash
 # Install MongoDB Community Edition
 brew tap mongodb/brew
@@ -17,6 +18,7 @@ brew services start mongodb/brew/mongodb-community
 ```
 
 #### Ubuntu/Debian
+
 ```bash
 # Import the public key
 wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc | sudo apt-key add -
@@ -36,6 +38,7 @@ sudo systemctl enable mongod
 ```
 
 #### Windows
+
 1. Download MongoDB Community Server from https://www.mongodb.com/try/download/community
 2. Run the installer and follow the setup wizard
 3. MongoDB should start automatically as a Windows service
@@ -45,11 +48,13 @@ sudo systemctl enable mongod
 ### 1. Start MongoDB (if not running)
 
 **macOS:**
+
 ```bash
 brew services start mongodb/brew/mongodb-community
 ```
 
 **Linux:**
+
 ```bash
 sudo systemctl start mongod
 ```
@@ -162,11 +167,13 @@ curl -X POST http://localhost:3001/api/auth/login \
 For easier database management, you can use:
 
 ### MongoDB Compass (Official GUI)
+
 ```bash
 # Download from: https://www.mongodb.com/products/compass
 ```
 
 ### Studio 3T (Third-party)
+
 ```bash
 # Download from: https://studio3t.com/
 ```
@@ -183,16 +190,19 @@ DB_NAME=storebuilder
 ## Troubleshooting
 
 ### Connection Refused Error
+
 ```
 ❌ MongoDB connection failed: connect ECONNREFUSED 127.0.0.1:27017
 ```
 
 **Solution:** Start MongoDB service
+
 - macOS: `brew services start mongodb/brew/mongodb-community`
 - Linux: `sudo systemctl start mongod`
 - Windows: Start "MongoDB" service
 
 ### Authentication Failed
+
 ```
 ❌ MongoDB connection failed: Authentication failed
 ```
@@ -200,10 +210,13 @@ DB_NAME=storebuilder
 **Solution:** Check if MongoDB requires authentication. For local development, authentication is usually disabled by default.
 
 ### Database Not Created
+
 The database will be created automatically when the first document is inserted. No manual creation needed.
 
 ### Users Not Seeding
+
 If users aren't being seeded:
+
 1. Check if users already exist in the database
 2. Clear the users collection: `db.users.deleteMany({})`
 3. Restart the server
@@ -211,6 +224,7 @@ If users aren't being seeded:
 ## MongoDB Commands
 
 ### View Collections
+
 ```bash
 mongosh
 use storebuilder
@@ -218,21 +232,25 @@ show collections
 ```
 
 ### View Users
+
 ```bash
 db.users.find().pretty()
 ```
 
 ### Count Users
+
 ```bash
 db.users.count()
 ```
 
 ### Clear Users (for testing)
+
 ```bash
 db.users.deleteMany({})
 ```
 
 ### Find User by Email
+
 ```bash
 db.users.findOne({email: "admin@storebuilder.com"})
 ```
@@ -251,6 +269,7 @@ For production deployment:
 ## Data Persistence
 
 Your data will persist between server restarts. The database files are stored in:
+
 - **macOS**: `/usr/local/var/mongodb`
 - **Linux**: `/var/lib/mongodb`
 - **Windows**: `C:\Program Files\MongoDB\Server\6.0\data`

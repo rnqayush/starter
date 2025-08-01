@@ -1,4 +1,5 @@
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api';
+const API_BASE_URL =
+  process.env.REACT_APP_API_URL || 'http://localhost:3001/api';
 
 class AuthAPI {
   constructor() {
@@ -8,7 +9,7 @@ class AuthAPI {
   // Helper method to make HTTP requests
   async request(endpoint, options = {}) {
     const url = `${this.baseURL}${endpoint}`;
-    
+
     const config = {
       headers: {
         'Content-Type': 'application/json',
@@ -88,7 +89,10 @@ class AuthAPI {
       });
     } catch (error) {
       // Even if API call fails, we should clear local storage
-      console.warn('Logout API call failed, but clearing local storage:', error);
+      console.warn(
+        'Logout API call failed, but clearing local storage:',
+        error
+      );
     } finally {
       // Always clear local storage
       localStorage.removeItem('auth_token');

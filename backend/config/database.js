@@ -9,13 +9,13 @@ const connectDB = async () => {
 
     console.log(`🍃 MongoDB Connected: ${conn.connection.host}`);
     console.log(`📊 Database: ${conn.connection.name}`);
-    
+
     // Handle connection events
     mongoose.connection.on('connected', () => {
       console.log('✅ Mongoose connected to MongoDB');
     });
 
-    mongoose.connection.on('error', (err) => {
+    mongoose.connection.on('error', err => {
       console.error('❌ Mongoose connection error:', err);
     });
 
@@ -38,17 +38,17 @@ const connectDB = async () => {
     return conn;
   } catch (error) {
     console.error('❌ MongoDB connection failed:', error.message);
-    
+
     // Log specific connection errors
     if (error.name === 'MongoNetworkError') {
       console.error('💡 Make sure MongoDB is running on your system');
       console.error('💡 Start MongoDB with: mongod --dbpath /path/to/data');
     }
-    
+
     if (error.name === 'MongoParseError') {
       console.error('💡 Check your MONGODB_URI in .env file');
     }
-    
+
     // Exit process with failure
     process.exit(1);
   }
@@ -73,5 +73,5 @@ const isConnected = () => {
 module.exports = {
   connectDB,
   closeDB,
-  isConnected
+  isConnected,
 };
