@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import {
   FaArrowLeft,
@@ -16,6 +17,7 @@ import {
 import { theme, media } from '../styles/GlobalStyle';
 import { Button } from './shared/Button';
 import { websiteTypes, colorOptions } from '../DummyData/index';
+import { selectIsAuthenticated, selectUser } from '../store/slices/authSlice';
 
 const Container = styled.div`
   min-height: 100vh;
@@ -504,6 +506,8 @@ const SummaryValue = styled.span`
 
 const StartBuilding = () => {
   const navigate = useNavigate();
+  const isAuthenticated = useSelector(selectIsAuthenticated);
+  const user = useSelector(selectUser);
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
     websiteType: '',
@@ -559,10 +563,23 @@ const StartBuilding = () => {
   };
 
   const handlePublish = () => {
+    // Check authentication before publishing
+    if (!isAuthenticated) {
+      navigate('/login', { state: { from: '/start-building' } });
+      return;
+    }
+
     // Simulate website creation
     const slug = formData.websiteName;
     navigate(`/${slug}`);
   };
+
+  // Check authentication on component mount
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate('/login', { state: { from: '/start-building' } });
+    }
+  }, [isAuthenticated, navigate]);
 
   const handleWebsiteNameChange = e => {
     const value = e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, '');
