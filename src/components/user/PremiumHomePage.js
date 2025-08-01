@@ -30,7 +30,8 @@ import {
   FaLinkedin,
 } from 'react-icons/fa';
 import { theme, media } from '../../styles/GlobalStyle';
-import { useAuth } from '../../context/AuthContext';
+import { useSelector } from 'react-redux';
+import { selectIsAuthenticated } from '../../store/slices/authSlice';
 import AuthModal from '../auth/AuthModal';
 import Header from '../shared/Header';
 import platformData from '../../DummyData/platform.json';
