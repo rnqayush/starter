@@ -20,7 +20,7 @@ import ProfileSettingsPageContent from './ProfileSettingsPageContent';
 import { Card, CardContent, Badge } from '../shared/Card';
 import { Button } from '../shared/Button';
 import { theme, media } from '../../styles/GlobalStyle';
-import { useAppContext } from '../../context/AppContext';
+// import { useAppContext } from '../../context/AppContext'; // Removed - needs Redux migration
 
 const DashboardContainer = styled.div`
   display: flex;
