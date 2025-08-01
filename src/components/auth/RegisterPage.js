@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import {
   FaEnvelope,
@@ -16,6 +17,7 @@ import {
 import { theme, media } from '../../styles/GlobalStyle';
 import { Button } from '../shared/Button';
 import { Input } from '../shared/Input';
+import { registerUser, clearError, selectAuth } from '../../store/slices/authSlice';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -312,9 +314,12 @@ const BackToHome = styled(Link)`
 
 const RegisterPage = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { loading, error, isAuthenticated } = useSelector(selectAuth);
+
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [validationError, setValidationError] = useState('');
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -339,22 +344,63 @@ const RegisterPage = () => {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    setIsLoading(true);
+    setValidationError('');
 
     // Validate passwords match
     if (formData.password !== formData.confirmPassword) {
-      alert("Passwords don't match!");
-      setIsLoading(false);
+      setValidationError("Passwords don't match!");
       return;
     }
 
-    // Simulate registration process
-    setTimeout(() => {
-      setIsLoading(false);
-      // Navigate to seller dashboard
-      navigate('/seller-dashboard');
-    }, 1500);
+    // Validate password strength
+    if (formData.password.length < 6) {
+      setValidationError('Password must be at least 6 characters long');
+      return;
+    }
+
+    // Validate required fields
+    const requiredFields = ['firstName', 'lastName', 'email', 'businessName', 'businessCategory', 'phone', 'address'];
+    const missingFields = requiredFields.filter(field => !formData[field].trim());
+
+    if (missingFields.length > 0) {
+      setValidationError('Please fill in all required fields');
+      return;
+    }
+
+    const result = await dispatch(registerUser(formData));
+
+    if (result.success) {
+      // Redirect to appropriate dashboard based on business category
+      const user = result.user;
+      const dashboardRoutes = {
+        hotels: '/hoteladmin',
+        ecommerce: '/selleradminpanel',
+        weddings: '/weddingadminpanel',
+        automobiles: '/autoadmindasboard',
+        business: '/adminpanel',
+        services: '/adminpanel',
+        restaurants: '/adminpanel',
+      };
+      const redirectPath = dashboardRoutes[user.businessCategory] || '/';
+      navigate(redirectPath);
+    }
   };
+
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/');
+    }
+  }, [isAuthenticated, navigate]);
+
+  // Clear errors when component unmounts or form changes
+  useEffect(() => {
+    return () => {
+      if (error) {
+        dispatch(clearError());
+      }
+    };
+  }, [dispatch, error]);
 
   const categories = [
     { value: '', label: 'Select Business Category' },
@@ -577,8 +623,14 @@ const RegisterPage = () => {
             </InputContainer>
           </FormGroup>
 
-          <RegisterButton type="submit" disabled={isLoading}>
-            {isLoading ? 'Creating Account...' : 'Create Account'}
+          {(error || validationError) && (
+            <ErrorMessage>
+              {error || validationError}
+            </ErrorMessage>
+          )}
+
+          <RegisterButton type="submit" disabled={loading}>
+            {loading ? 'Creating Account...' : 'Create Account'}
           </RegisterButton>
         </Form>
 
