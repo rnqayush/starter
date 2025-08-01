@@ -1064,11 +1064,7 @@ const PlatformHomePage = () => {
         </FooterBottom>
       </Footer>
 
-      <AuthModal
-        isOpen={showAuthModal}
-        onClose={() => setShowAuthModal(false)}
-        onSuccess={handleAuthSuccess}
-      />
+
     </PageContainer>
   );
 };
