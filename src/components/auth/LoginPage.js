@@ -334,6 +334,7 @@ const BackToHome = styled(Link)`
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useDispatch();
   const { loading, error, isAuthenticated } = useSelector(selectAuth);
 
