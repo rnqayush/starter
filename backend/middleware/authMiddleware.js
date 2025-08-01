@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const { users } = require('../data/users');
+const User = require('../models/User');
 
 const protect = async (req, res, next) => {
   let token;
@@ -15,8 +15,8 @@ const protect = async (req, res, next) => {
       // Verify token
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-      // Get user from the token
-      req.user = users.find(user => user.id === decoded.id);
+      // Get user from the token (exclude password)
+      req.user = await User.findById(decoded.id);
 
       if (!req.user) {
         return res.status(401).json({
@@ -25,12 +25,37 @@ const protect = async (req, res, next) => {
         });
       }
 
+      // Check if user is active
+      if (!req.user.isActive) {
+        return res.status(401).json({
+          success: false,
+          message: 'Account is deactivated'
+        });
+      }
+
+      // Check if account is locked
+      if (req.user.isLocked) {
+        return res.status(423).json({
+          success: false,
+          message: 'Account is temporarily locked'
+        });
+      }
+
       next();
     } catch (error) {
-      console.error(error);
+      console.error('Auth middleware error:', error);
+      
+      let message = 'Not authorized, token failed';
+      
+      if (error.name === 'JsonWebTokenError') {
+        message = 'Not authorized, invalid token';
+      } else if (error.name === 'TokenExpiredError') {
+        message = 'Not authorized, token expired';
+      }
+      
       res.status(401).json({
         success: false,
-        message: 'Not authorized, token failed'
+        message
       });
     }
   }
@@ -38,7 +63,7 @@ const protect = async (req, res, next) => {
   if (!token) {
     res.status(401).json({
       success: false,
-      message: 'Not authorized, no token'
+      message: 'Not authorized, no token provided'
     });
   }
 };
@@ -55,7 +80,7 @@ const authorize = (...roles) => {
     if (!roles.includes(req.user.role)) {
       return res.status(403).json({
         success: false,
-        message: `User role ${req.user.role} is not authorized to access this resource`
+        message: `User role '${req.user.role}' is not authorized to access this resource`
       });
     }
 
@@ -63,7 +88,59 @@ const authorize = (...roles) => {
   };
 };
 
+// Middleware to check specific permissions
+const checkPermission = (permission) => {
+  return (req, res, next) => {
+    if (!req.user) {
+      return res.status(401).json({
+        success: false,
+        message: 'Not authorized'
+      });
+    }
+
+    // Admin has all permissions
+    if (req.user.role === 'admin' || req.user.permissions.includes('all')) {
+      return next();
+    }
+
+    // Check if user has the required permission
+    if (!req.user.permissions.includes(permission)) {
+      return res.status(403).json({
+        success: false,
+        message: `Permission '${permission}' required to access this resource`
+      });
+    }
+
+    next();
+  };
+};
+
+// Middleware to allow users to access only their own data
+const ownerOrAdmin = (req, res, next) => {
+  if (!req.user) {
+    return res.status(401).json({
+      success: false,
+      message: 'Not authorized'
+    });
+  }
+
+  const resourceUserId = req.params.id || req.params.userId;
+  const isOwner = req.user._id.toString() === resourceUserId;
+  const isAdmin = req.user.role === 'admin';
+
+  if (!isOwner && !isAdmin) {
+    return res.status(403).json({
+      success: false,
+      message: 'Not authorized to access this resource'
+    });
+  }
+
+  next();
+};
+
 module.exports = {
   protect,
   authorize,
+  checkPermission,
+  ownerOrAdmin,
 };
