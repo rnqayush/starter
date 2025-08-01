@@ -4,7 +4,8 @@
 
 The StoreBuilder platform now consists of:
 - **Frontend**: React app with Redux Toolkit (Port 3000)
-- **Backend**: Node.js Express API (Port 3001)
+- **Backend**: Node.js Express API with MongoDB (Port 3001)
+- **Database**: MongoDB (localhost:27017) with fallback to in-memory storage
 
 ## Quick Start
 
