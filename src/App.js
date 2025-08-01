@@ -17,6 +17,8 @@ import SingleBlogPage from './components/user/SingleBlogPage';
 import LoginPage from './components/auth/LoginPage';
 import RegisterPage from './components/auth/RegisterPage';
 import StartBuilding from './components/StartBuilding';
+import AuthGuard from './components/auth/AuthGuard';
+import UserProfilePage from './components/user/UserProfilePage';
 
 // Shared Components
 import ScrollToTop from './components/shared/ScrollToTop';
