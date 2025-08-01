@@ -13,7 +13,8 @@ import {
   FaFacebook,
   FaGithub,
 } from 'react-icons/fa';
-import { useAuth } from '../../context/AuthContext';
+import { useSelector, useDispatch } from 'react-redux';
+import { loginUser, registerUser, selectAuthLoading } from '../../store/slices/authSlice';
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -338,7 +339,8 @@ const RoleOption = styled.div`
 `;
 
 const AuthModal = ({ isOpen, onClose, onSuccess, defaultTab = 'login' }) => {
-  const { login, register, loading } = useAuth();
+  const dispatch = useDispatch();
+  const loading = useSelector(selectAuthLoading);
   const [activeTab, setActiveTab] = useState(defaultTab);
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
