@@ -362,25 +362,33 @@ const LoginPage = () => {
     const result = await dispatch(loginUser(formData.email, formData.password));
 
     if (result.success) {
-      // Redirect based on user role
-      const user = result.user;
-      if (user.role === 'admin') {
-        navigate('/');
-      } else if (user.role === 'business_owner') {
-        // Redirect to appropriate dashboard based on business category
-        const dashboardRoutes = {
-          hotels: '/hoteladmin',
-          ecommerce: '/selleradminpanel',
-          weddings: '/weddingadminpanel',
-          automobiles: '/autoadmindasboard',
-          business: '/adminpanel',
-          services: '/adminpanel',
-          restaurants: '/adminpanel',
-        };
-        const redirectPath = dashboardRoutes[user.businessCategory] || '/';
-        navigate(redirectPath);
+      // Check if there's a redirect location
+      const from = location.state?.from;
+
+      if (from) {
+        // If came from a specific page (like start-building), redirect there
+        navigate(from);
       } else {
-        navigate('/');
+        // Otherwise redirect based on user role
+        const user = result.user;
+        if (user.role === 'admin') {
+          navigate('/');
+        } else if (user.role === 'business_owner') {
+          // Redirect to appropriate dashboard based on business category
+          const dashboardRoutes = {
+            hotels: '/hoteladmin',
+            ecommerce: '/selleradminpanel',
+            weddings: '/weddingadminpanel',
+            automobiles: '/autoadmindasboard',
+            business: '/adminpanel',
+            services: '/adminpanel',
+            restaurants: '/adminpanel',
+          };
+          const redirectPath = dashboardRoutes[user.businessCategory] || '/';
+          navigate(redirectPath);
+        } else {
+          navigate('/');
+        }
       }
     }
   };
