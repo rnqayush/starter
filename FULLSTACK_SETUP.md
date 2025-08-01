@@ -7,6 +7,46 @@ The StoreBuilder platform now consists of:
 - **Backend**: Node.js Express API with MongoDB (Port 3001)
 - **Database**: MongoDB (localhost:27017) with fallback to in-memory storage
 
+## Prerequisites
+
+### MongoDB Setup (Recommended)
+
+The backend uses MongoDB for data persistence. While it has a fallback mode, MongoDB is recommended for full functionality.
+
+#### Install MongoDB
+
+**macOS (using Homebrew):**
+```bash
+brew tap mongodb/brew
+brew install mongodb-community
+brew services start mongodb/brew/mongodb-community
+```
+
+**Ubuntu/Debian:**
+```bash
+# Import public key and add repository
+wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc | sudo apt-key add -
+echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/6.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list
+
+# Install and start MongoDB
+sudo apt-get update
+sudo apt-get install -y mongodb-org
+sudo systemctl start mongod
+sudo systemctl enable mongod
+```
+
+**Windows:**
+1. Download from https://www.mongodb.com/try/download/community
+2. Run installer and follow setup wizard
+3. MongoDB starts automatically as a Windows service
+
+#### Verify MongoDB Installation
+```bash
+# Test connection
+mongosh
+# Should connect to: mongodb://127.0.0.1:27017
+```
+
 ## Quick Start
 
 ### 1. Start the Backend API
