@@ -276,6 +276,22 @@ const Divider = styled.div`
   }
 `;
 
+const ErrorMessage = styled.div`
+  background: ${theme.colors.red50 || '#fef2f2'};
+  border: 1px solid ${theme.colors.red200 || '#fecaca'};
+  color: ${theme.colors.red600 || '#dc2626'};
+  padding: ${theme.spacing.md};
+  border-radius: ${theme.borderRadius.md};
+  font-size: 0.875rem;
+  text-align: center;
+  margin-bottom: ${theme.spacing.md};
+
+  ${media.mobile} {
+    font-size: 0.8125rem;
+    padding: ${theme.spacing.sm};
+  }
+`;
+
 const RegisterLink = styled.div`
   text-align: center;
   color: ${theme.colors.gray600};
