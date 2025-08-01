@@ -1,9 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import { FaHotel, FaBars, FaTimes, FaChevronDown } from 'react-icons/fa';
+import { FaHotel, FaBars, FaTimes, FaChevronDown, FaUser, FaCog, FaSignOutAlt, FaBell, FaUserShield } from 'react-icons/fa';
 import { theme, media } from '../../styles/GlobalStyle';
 import { Button } from './Button';
+import { selectAuth, logout, restoreUserSession } from '../../store/slices/authSlice';
 
 const HeaderContainer = styled.header.withConfig({
   shouldForwardProp: prop => prop !== 'isScrolled' && prop !== 'isInHero',
@@ -651,21 +653,37 @@ const MobileMenuOverlay = styled.div.withConfig({
 `;
 
 const Header = ({ isOwnerView = false }) => {
+  const dispatch = useDispatch();
+  const { isAuthenticated, user } = useSelector(selectAuth);
+
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isInHero, setIsInHero] = useState(false);
   const dropdownRef = useRef(null);
+  const profileDropdownRef = useRef(null);
 
   const closeMobileMenu = () => setMobileMenuOpen(false);
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
   const closeDropdown = () => setDropdownOpen(false);
+  const toggleProfileDropdown = () => setProfileDropdownOpen(!profileDropdownOpen);
+  const closeProfileDropdown = () => setProfileDropdownOpen(false);
+
+  const handleLogout = () => {
+    dispatch(logout());
+    closeProfileDropdown();
+    closeMobileMenu();
+  };
 
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = event => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         closeDropdown();
+      }
+      if (profileDropdownRef.current && !profileDropdownRef.current.contains(event.target)) {
+        closeProfileDropdown();
       }
     };
 
@@ -685,6 +703,9 @@ const Header = ({ isOwnerView = false }) => {
         if (dropdownOpen) {
           closeDropdown();
         }
+        if (profileDropdownOpen) {
+          closeProfileDropdown();
+        }
       }
     };
 
@@ -692,7 +713,7 @@ const Header = ({ isOwnerView = false }) => {
     return () => {
       document.removeEventListener('keydown', handleEscapeKey);
     };
-  }, [mobileMenuOpen, dropdownOpen]);
+  }, [mobileMenuOpen, dropdownOpen, profileDropdownOpen]);
 
   // Prevent body scroll when mobile menu is open
   useEffect(() => {
@@ -730,6 +751,16 @@ const Header = ({ isOwnerView = false }) => {
     closeDropdown();
     closeMobileMenu();
   };
+
+  const handleProfileDropdownItemClick = () => {
+    closeProfileDropdown();
+    closeMobileMenu();
+  };
+
+  // Restore user session on component mount
+  useEffect(() => {
+    dispatch(restoreUserSession());
+  }, [dispatch]);
 
   return (
     <>
@@ -934,22 +965,99 @@ const Header = ({ isOwnerView = false }) => {
           </MobileNav>
 
           <UserSection>
-            <LoginButton
-              to="/login"
-              onClick={closeMobileMenu}
-              isScrolled={isScrolled}
-            >
-              Login
-            </LoginButton>
-            <RegisterButton
-              as={Link}
-              to="/register"
-              onClick={closeMobileMenu}
-              isScrolled={isScrolled}
-              style={{ textDecoration: 'none' }}
-            >
-              Register
-            </RegisterButton>
+            {isAuthenticated ? (
+              <>
+                {/* Notification Bell - Hidden on mobile */}
+                <NotificationButton isScrolled={isScrolled}>
+                  <FaBell />
+                  <NotificationBadge>3</NotificationBadge>
+                </NotificationButton>
+
+                {/* Profile Dropdown */}
+                <ProfileDropdownContainer ref={profileDropdownRef}>
+                  <ProfileButton
+                    onClick={toggleProfileDropdown}
+                    isScrolled={isScrolled}
+                    aria-expanded={profileDropdownOpen}
+                    aria-haspopup="true"
+                  >
+                    <ProfileAvatar src={user?.avatar} alt={`${user?.firstName} ${user?.lastName}`} />
+                    <ProfileInfo>
+                      <ProfileName>{user?.firstName} {user?.lastName}</ProfileName>
+                      <ProfileRole>{user?.role === 'admin' ? 'Administrator' : user?.role === 'business_owner' ? 'Business Owner' : 'Customer'}</ProfileRole>
+                    </ProfileInfo>
+                    <FaChevronDown />
+                  </ProfileButton>
+
+                  <ProfileDropdownMenu isOpen={profileDropdownOpen}>
+                    <ProfileDropdownItem
+                      to="/profile"
+                      onClick={handleProfileDropdownItemClick}
+                    >
+                      <FaUser />
+                      My Profile
+                    </ProfileDropdownItem>
+
+                    {user?.role === 'admin' && (
+                      <ProfileDropdownItem
+                        to="/admin"
+                        onClick={handleProfileDropdownItemClick}
+                      >
+                        <FaUserShield />
+                        Admin Panel
+                      </ProfileDropdownItem>
+                    )}
+
+                    {user?.role === 'business_owner' && (
+                      <ProfileDropdownItem
+                        to={getDashboardPath(user?.businessCategory)}
+                        onClick={handleProfileDropdownItemClick}
+                      >
+                        <FaCog />
+                        Dashboard
+                      </ProfileDropdownItem>
+                    )}
+
+                    <ProfileDropdownItem
+                      to="/settings"
+                      onClick={handleProfileDropdownItemClick}
+                    >
+                      <FaCog />
+                      Settings
+                    </ProfileDropdownItem>
+
+                    <ProfileDropdownDivider />
+
+                    <ProfileDropdownItem
+                      as="button"
+                      onClick={handleLogout}
+                    >
+                      <FaSignOutAlt />
+                      Sign Out
+                    </ProfileDropdownItem>
+                  </ProfileDropdownMenu>
+                </ProfileDropdownContainer>
+              </>
+            ) : (
+              <>
+                <LoginButton
+                  to="/login"
+                  onClick={closeMobileMenu}
+                  isScrolled={isScrolled}
+                >
+                  Login
+                </LoginButton>
+                <RegisterButton
+                  as={Link}
+                  to="/register"
+                  onClick={closeMobileMenu}
+                  isScrolled={isScrolled}
+                  style={{ textDecoration: 'none' }}
+                >
+                  Register
+                </RegisterButton>
+              </>
+            )}
 
             <MobileMenuButton
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
