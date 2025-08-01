@@ -437,10 +437,8 @@ const UserProfile = ({ onClose }) => {
       preferences: formData.preferences,
     });
 
-    if (result.success) {
-      setIsEditing(false);
-      // Show success message
-    }
+    setIsEditing(false);
+    // Profile updated successfully
   };
 
   const getUserStats = () => {
