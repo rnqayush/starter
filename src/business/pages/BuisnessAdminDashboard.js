@@ -53,7 +53,7 @@ import {
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
 import { fetchBusinessData } from '../../utils/businessAPI';
-import { useAuth } from '../../context/AuthContext';
+import { selectUser } from '../../store/slices/authSlice';
 import {
   setEditingBusiness,
   initializeBusiness,
