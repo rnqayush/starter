@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { useAuth } from '../../context/AuthContext';
+import { useSelector, useDispatch } from 'react-redux';
+import { selectUser, selectIsAuthenticated, logout } from '../../store/slices/authSlice';
 import AuthModal from '../../components/auth/AuthModal';
 import UserProfile from '../../components/user/UserProfile';
 import {
@@ -558,7 +559,14 @@ const Navbar = ({
   const [authModalTab, setAuthModalTab] = useState('login');
   const navigate = useNavigate();
   const dropdownRef = useRef(null);
-  const { user, isAuthenticated, logout, canAccessSeller } = useAuth();
+  const dispatch = useDispatch();
+  const user = useSelector(selectUser);
+  const isAuthenticated = useSelector(selectIsAuthenticated);
+  const canAccessSeller = user?.role === 'seller' || user?.role === 'admin';
+
+  const handleLogout = () => {
+    dispatch(logout());
+  };
 
   const getBaseUrl = () => `/${storeSlug}`;
 
