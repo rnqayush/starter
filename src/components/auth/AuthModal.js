@@ -473,11 +473,10 @@ const AuthModal = ({ isOpen, onClose, onSuccess, defaultTab = 'login' }) => {
   const handleSocialLogin = provider => {
     // Simulate social login
     const email = `demo@${provider}.com`;
-    login({
+    dispatch(loginUser({
       email,
-      name: `Demo ${provider.charAt(0).toUpperCase() + provider.slice(1)} User`,
-      role: 'customer',
-    }).then(result => {
+      password: 'demo123', // Mock password for social login
+    })).then(result => {
       if (result.success) {
         onClose();
       }
