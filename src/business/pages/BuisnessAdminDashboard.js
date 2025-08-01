@@ -713,7 +713,7 @@ const ItemButton = styled.button`
 const BuisnessAdminDashboard = () => {
   const { businessSlug, slug } = useParams();
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const user = useSelector(selectUser);
   const dispatch = useDispatch();
 
   // Support both businessSlug (legacy routes) and slug (new optimized routes)
