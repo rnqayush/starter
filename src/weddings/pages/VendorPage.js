@@ -31,7 +31,7 @@ import {
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
 import { getVendorById } from '../../utils/weddingAPI';
-import { useAuth } from '../../context/AuthContext';
+import { selectUser } from '../../store/slices/authSlice';
 import {
   initializeVendor,
   setEditingVendor,
