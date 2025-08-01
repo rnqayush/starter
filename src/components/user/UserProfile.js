@@ -356,7 +356,16 @@ const SecondaryButton = styled(Button)`
 `;
 
 const UserProfile = ({ onClose }) => {
-  const { user, updateProfile, switchRole } = useAuth();
+  const dispatch = useDispatch();
+  const user = useSelector(selectUser);
+
+  const handleUpdateProfile = (updates) => {
+    dispatch(updateProfile(updates));
+  };
+
+  const handleSwitchRole = (role) => {
+    dispatch(switchRole(role));
+  };
   const [activeTab, setActiveTab] = useState('personal');
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
