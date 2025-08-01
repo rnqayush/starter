@@ -816,7 +816,7 @@ const FooterBottom = styled.div`
 
 const PlatformHomePage = () => {
   const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
+  const isAuthenticated = useSelector(selectIsAuthenticated);
   const [showAuthModal, setShowAuthModal] = useState(false);
 
   // Data is now imported from DummyData/platform.json
