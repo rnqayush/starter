@@ -14,7 +14,7 @@ import {
   CheckboxItem,
 } from '../shared/Input';
 import { theme } from '../../styles/GlobalStyle';
-import { useAppContext } from '../../context/AppContext';
+// import { useAppContext } from '../../context/AppContext'; // Removed - needs Redux migration
 import { amenitiesList } from '../../DummyData';
 
 const BackButton = styled.button`
@@ -78,7 +78,11 @@ const FormActions = styled.div`
 `;
 
 const AddRoomPageContent = ({ setActiveSection }) => {
-  const { hotels, setHotels, setOwnerHotels, ownerHotels } = useAppContext();
+  // TODO: Replace with Redux selectors and actions
+  const hotels = [];
+  const ownerHotels = [];
+  const setHotels = () => {};
+  const setOwnerHotels = () => {};
 
   const [selectedHotelId, setSelectedHotelId] = useState(
     ownerHotels[0]?.id || ''
