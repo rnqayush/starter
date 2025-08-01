@@ -6,6 +6,8 @@ const morgan = require('morgan');
 const compression = require('compression');
 require('dotenv').config();
 
+const { connectDB } = require('./config/database');
+const { seedUsers } = require('./seeders/userSeeder');
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/users');
 const { errorHandler, notFound } = require('./middleware/errorMiddleware');
