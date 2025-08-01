@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import {
   FaEnvelope,
@@ -16,6 +17,7 @@ import {
 import { theme, media } from '../../styles/GlobalStyle';
 import { Button } from '../shared/Button';
 import { Input } from '../shared/Input';
+import { registerUser, selectAuthLoading, selectAuthError, selectIsAuthenticated, clearError } from '../../store/slices/authSlice';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -310,11 +312,42 @@ const BackToHome = styled(Link)`
   }
 `;
 
+const ErrorMessage = styled.div`
+  background: ${theme.colors.red50};
+  color: ${theme.colors.red600};
+  padding: ${theme.spacing.md};
+  border-radius: ${theme.borderRadius.md};
+  font-size: 0.875rem;
+  margin-bottom: ${theme.spacing.md};
+  border: 1px solid ${theme.colors.red200};
+`;
+
 const RegisterPage = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const isLoading = useSelector(selectAuthLoading);
+  const error = useSelector(selectAuthError);
+  const isAuthenticated = useSelector(selectIsAuthenticated);
+
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [validationError, setValidationError] = useState('');
+
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/');
+    }
+  }, [isAuthenticated, navigate]);
+
+  // Clear error when component mounts
+  useEffect(() => {
+    return () => {
+      if (error) {
+        dispatch(clearError());
+      }
+    };
+  }, [dispatch, error]);
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -323,10 +356,9 @@ const RegisterPage = () => {
     password: '',
     confirmPassword: '',
     businessName: '',
-    businessCategory: '',
+    businessType: '',
     phone: '',
-    address: '',
-    website: '',
+    role: 'seller',
   });
 
   const handleInputChange = e => {
@@ -339,32 +371,52 @@ const RegisterPage = () => {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    setIsLoading(true);
+
+    // Clear previous errors
+    setValidationError('');
+    if (error) {
+      dispatch(clearError());
+    }
 
     // Validate passwords match
     if (formData.password !== formData.confirmPassword) {
-      alert("Passwords don't match!");
-      setIsLoading(false);
+      setValidationError("Passwords don't match!");
       return;
     }
 
-    // Simulate registration process
-    setTimeout(() => {
-      setIsLoading(false);
-      // Navigate to seller dashboard
-      navigate('/seller-dashboard');
-    }, 1500);
+    // Validate password length
+    if (formData.password.length < 6) {
+      setValidationError('Password must be at least 6 characters long!');
+      return;
+    }
+
+    // Prepare user data for registration
+    const userData = {
+      name: `${formData.firstName} ${formData.lastName}`,
+      email: formData.email,
+      password: formData.password,
+      phone: formData.phone,
+      role: formData.role,
+      businessName: formData.businessName,
+      businessType: formData.businessType,
+    };
+
+    const result = await dispatch(registerUser(userData));
+
+    if (result.success) {
+      navigate('/');
+    }
   };
 
-  const categories = [
-    { value: '', label: 'Select Business Category' },
-    { value: 'hotels', label: 'Hotels & Hospitality' },
-    { value: 'ecommerce', label: 'Ecommerce & Retail' },
-    { value: 'weddings', label: 'Weddings & Events' },
-    { value: 'automobiles', label: 'Automobiles & Transport' },
-    { value: 'restaurants', label: 'Restaurants & Food' },
-    { value: 'services', label: 'Professional Services' },
-    { value: 'other', label: 'Other' },
+  const businessTypes = [
+    { value: '', label: 'Select Business Type' },
+    { value: 'Hotels & Hospitality', label: 'Hotels & Hospitality' },
+    { value: 'Ecommerce & Retail', label: 'Ecommerce & Retail' },
+    { value: 'Weddings & Events', label: 'Weddings & Events' },
+    { value: 'Automobiles & Transport', label: 'Automobiles & Transport' },
+    { value: 'Restaurants & Food', label: 'Restaurants & Food' },
+    { value: 'Professional Services', label: 'Professional Services' },
+    { value: 'Other', label: 'Other' },
   ];
 
   return (
@@ -380,6 +432,10 @@ const RegisterPage = () => {
         <Title>Create Account</Title>
 
         <Form onSubmit={handleSubmit}>
+          {(error || validationError) && (
+            <ErrorMessage>{error || validationError}</ErrorMessage>
+          )}
+
           <FormRow>
             <FormGroup>
               <Label htmlFor="firstName">First Name</Label>
@@ -395,6 +451,7 @@ const RegisterPage = () => {
                   value={formData.firstName}
                   onChange={handleInputChange}
                   required
+                  disabled={isLoading}
                 />
               </InputContainer>
             </FormGroup>
@@ -412,6 +469,7 @@ const RegisterPage = () => {
                   value={formData.lastName}
                   onChange={handleInputChange}
                   required
+                  disabled={isLoading}
                 />
               </InputContainer>
             </FormGroup>
@@ -431,6 +489,7 @@ const RegisterPage = () => {
                 value={formData.email}
                 onChange={handleInputChange}
                 required
+                disabled={isLoading}
               />
             </InputContainer>
           </FormGroup>
@@ -450,6 +509,7 @@ const RegisterPage = () => {
                   value={formData.phone}
                   onChange={handleInputChange}
                   required
+                  disabled={isLoading}
                 />
               </InputContainer>
             </FormGroup>
@@ -467,67 +527,36 @@ const RegisterPage = () => {
                   value={formData.businessName}
                   onChange={handleInputChange}
                   required
+                  disabled={isLoading}
                 />
               </InputContainer>
             </FormGroup>
           </FormRow>
 
           <FormGroup>
-            <Label htmlFor="businessCategory">Business Category</Label>
+            <Label htmlFor="businessType">Business Type</Label>
             <InputContainer>
               <InputIcon>
                 <FaShoppingBag />
               </InputIcon>
               <Select
-                id="businessCategory"
-                name="businessCategory"
-                value={formData.businessCategory}
+                id="businessType"
+                name="businessType"
+                value={formData.businessType}
                 onChange={handleInputChange}
                 required
+                disabled={isLoading}
               >
-                {categories.map(category => (
-                  <option key={category.value} value={category.value}>
-                    {category.label}
+                {businessTypes.map(type => (
+                  <option key={type.value} value={type.value}>
+                    {type.label}
                   </option>
                 ))}
               </Select>
             </InputContainer>
           </FormGroup>
 
-          <FormGroup>
-            <Label htmlFor="address">Business Address</Label>
-            <InputContainer>
-              <InputIcon>
-                <FaMapMarkerAlt />
-              </InputIcon>
-              <StyledInput
-                type="text"
-                id="address"
-                name="address"
-                placeholder="Business address"
-                value={formData.address}
-                onChange={handleInputChange}
-                required
-              />
-            </InputContainer>
-          </FormGroup>
 
-          <FormGroup>
-            <Label htmlFor="website">Website (Optional)</Label>
-            <InputContainer>
-              <InputIcon>
-                <FaGlobe />
-              </InputIcon>
-              <StyledInput
-                type="url"
-                id="website"
-                name="website"
-                placeholder="www.example.com"
-                value={formData.website}
-                onChange={handleInputChange}
-              />
-            </InputContainer>
-          </FormGroup>
 
           <FormGroup>
             <Label htmlFor="password">Password</Label>
@@ -543,6 +572,8 @@ const RegisterPage = () => {
                 value={formData.password}
                 onChange={handleInputChange}
                 required
+                disabled={isLoading}
+                minLength={6}
               />
               <PasswordToggle
                 type="button"
@@ -567,6 +598,8 @@ const RegisterPage = () => {
                 value={formData.confirmPassword}
                 onChange={handleInputChange}
                 required
+                disabled={isLoading}
+                minLength={6}
               />
               <PasswordToggle
                 type="button"
