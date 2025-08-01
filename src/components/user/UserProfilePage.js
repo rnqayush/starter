@@ -242,10 +242,22 @@ const UserProfilePage = () => {
     }));
   };
 
-  const handleSave = (e) => {
+  const handleSave = async (e) => {
     e.preventDefault();
-    dispatch(updateUserProfile(formData));
-    setIsEditing(false);
+
+    try {
+      const result = await dispatch(updateUserProfileAPI(user.id, formData));
+
+      if (result.success) {
+        setIsEditing(false);
+      } else {
+        console.error('Profile update failed:', result.error);
+        // You could show an error message to the user here
+      }
+    } catch (error) {
+      console.error('Profile update error:', error);
+      // You could show an error message to the user here
+    }
   };
 
   const handleCancel = () => {
