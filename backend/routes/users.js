@@ -1,51 +1,96 @@
 const express = require('express');
-const { body, validationResult } = require('express-validator');
-const { 
-  getUserById, 
-  getUsersByRole,
-  getActiveUsers,
-  getUsersByBusinessCategory,
-  sanitizeUser,
-  sanitizeUsers,
-  users
-} = require('../data/users');
-const { protect, authorize } = require('../middleware/authMiddleware');
+const { body, validationResult, query } = require('express-validator');
+const User = require('../models/User');
+const { protect, authorize, ownerOrAdmin } = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
 // @desc    Get all users (admin only)
 // @route   GET /api/users
 // @access  Private/Admin
-router.get('/', protect, authorize('admin'), async (req, res) => {
+router.get('/', protect, authorize('admin'), [
+  query('page').optional().isInt({ min: 1 }).withMessage('Page must be a positive integer'),
+  query('limit').optional().isInt({ min: 1, max: 100 }).withMessage('Limit must be between 1 and 100'),
+  query('role').optional().isIn(['admin', 'business_owner', 'customer', 'demo']).withMessage('Invalid role'),
+  query('businessCategory').optional().isIn(['hotels', 'ecommerce', 'weddings', 'automobiles', 'business', 'services', 'restaurants', 'other']).withMessage('Invalid business category'),
+  query('active').optional().isBoolean().withMessage('Active must be true or false'),
+  query('search').optional().isLength({ min: 2 }).withMessage('Search term must be at least 2 characters')
+], async (req, res) => {
   try {
-    const { role, businessCategory, active } = req.query;
-    let filteredUsers = users;
-
-    // Filter by role
-    if (role) {
-      filteredUsers = getUsersByRole(role);
+    // Check for validation errors
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        success: false,
+        message: 'Validation failed',
+        errors: errors.array()
+      });
     }
 
-    // Filter by business category
-    if (businessCategory) {
-      filteredUsers = getUsersByBusinessCategory(businessCategory);
+    const { 
+      page = 1, 
+      limit = 10, 
+      role, 
+      businessCategory, 
+      active, 
+      search,
+      sortBy = 'createdAt',
+      sortOrder = 'desc'
+    } = req.query;
+
+    // Build filter object
+    const filter = {};
+    
+    if (role) filter.role = role;
+    if (businessCategory) filter.businessCategory = businessCategory;
+    if (active !== undefined) filter.isActive = active === 'true';
+    
+    // Add search functionality
+    if (search) {
+      filter.$or = [
+        { firstName: { $regex: search, $options: 'i' } },
+        { lastName: { $regex: search, $options: 'i' } },
+        { email: { $regex: search, $options: 'i' } },
+        { businessName: { $regex: search, $options: 'i' } }
+      ];
     }
 
-    // Filter by active status
-    if (active === 'true') {
-      filteredUsers = getActiveUsers();
-    }
+    // Build sort object
+    const sort = {};
+    sort[sortBy] = sortOrder === 'asc' ? 1 : -1;
+
+    // Calculate pagination
+    const skip = (parseInt(page) - 1) * parseInt(limit);
+
+    // Execute query
+    const [users, totalUsers] = await Promise.all([
+      User.find(filter)
+        .sort(sort)
+        .limit(parseInt(limit))
+        .skip(skip)
+        .lean(),
+      User.countDocuments(filter)
+    ]);
+
+    const totalPages = Math.ceil(totalUsers / parseInt(limit));
 
     res.status(200).json({
       success: true,
       message: 'Users retrieved successfully',
       data: {
-        users: sanitizeUsers(filteredUsers),
-        total: filteredUsers.length,
+        users,
+        pagination: {
+          currentPage: parseInt(page),
+          totalPages,
+          totalUsers,
+          hasNextPage: parseInt(page) < totalPages,
+          hasPrevPage: parseInt(page) > 1
+        },
         filters: {
           role: role || 'all',
           businessCategory: businessCategory || 'all',
-          active: active || 'all'
+          active: active || 'all',
+          search: search || ''
         }
       }
     });
@@ -62,19 +107,19 @@ router.get('/', protect, authorize('admin'), async (req, res) => {
 // @desc    Get user by ID
 // @route   GET /api/users/:id
 // @access  Private
-router.get('/:id', protect, async (req, res) => {
+router.get('/:id', protect, ownerOrAdmin, async (req, res) => {
   try {
     const { id } = req.params;
 
-    // Users can only access their own data unless they're admin
-    if (req.user.role !== 'admin' && req.user.id !== id) {
-      return res.status(403).json({
+    // Validate ObjectId
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+      return res.status(400).json({
         success: false,
-        message: 'Not authorized to access this user data'
+        message: 'Invalid user ID format'
       });
     }
 
-    const user = getUserById(id);
+    const user = await User.findById(id);
     if (!user) {
       return res.status(404).json({
         success: false,
@@ -86,7 +131,7 @@ router.get('/:id', protect, async (req, res) => {
       success: true,
       message: 'User retrieved successfully',
       data: {
-        user: sanitizeUser(user)
+        user: user.toJSON()
       }
     });
 
@@ -102,13 +147,14 @@ router.get('/:id', protect, async (req, res) => {
 // @desc    Update user profile
 // @route   PUT /api/users/:id
 // @access  Private
-router.put('/:id', protect, [
+router.put('/:id', protect, ownerOrAdmin, [
   body('firstName').optional().notEmpty().trim().withMessage('First name cannot be empty'),
   body('lastName').optional().notEmpty().trim().withMessage('Last name cannot be empty'),
   body('phone').optional().isMobilePhone().withMessage('Please provide a valid phone number'),
-  body('address').optional().notEmpty().trim().withMessage('Address cannot be empty'),
+  body('address').optional().trim(),
   body('website').optional().isURL().withMessage('Please provide a valid website URL'),
-  body('businessName').optional().notEmpty().trim().withMessage('Business name cannot be empty')
+  body('businessName').optional().trim(),
+  body('businessCategory').optional().isIn(['hotels', 'ecommerce', 'weddings', 'automobiles', 'business', 'services', 'restaurants', 'other', '']).withMessage('Invalid business category')
 ], async (req, res) => {
   try {
     // Check for validation errors
@@ -123,56 +169,81 @@ router.put('/:id', protect, [
 
     const { id } = req.params;
 
-    // Users can only update their own data unless they're admin
-    if (req.user.role !== 'admin' && req.user.id !== id) {
-      return res.status(403).json({
+    // Validate ObjectId
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+      return res.status(400).json({
         success: false,
-        message: 'Not authorized to update this user data'
+        message: 'Invalid user ID format'
       });
     }
 
-    const userIndex = users.findIndex(user => user.id === id);
-    if (userIndex === -1) {
+    const user = await User.findById(id);
+    if (!user) {
       return res.status(404).json({
         success: false,
         message: 'User not found'
       });
     }
 
-    // Only allow certain fields to be updated
+    // Only allow certain fields to be updated by regular users
     const allowedUpdates = [
       'firstName', 
       'lastName', 
       'phone', 
       'address', 
       'website', 
-      'businessName'
+      'businessName',
+      'businessCategory'
     ];
 
+    // Admin can update additional fields
+    const adminOnlyUpdates = ['role', 'isActive', 'permissions'];
+    
     const updates = {};
     Object.keys(req.body).forEach(key => {
-      if (allowedUpdates.includes(key) && req.body[key] !== undefined) {
-        updates[key] = req.body[key];
+      if (allowedUpdates.includes(key)) {
+        if (req.body[key] !== undefined) {
+          updates[key] = req.body[key];
+        }
+      } else if (adminOnlyUpdates.includes(key) && req.user.role === 'admin') {
+        if (req.body[key] !== undefined) {
+          updates[key] = req.body[key];
+        }
       }
     });
 
-    // Update user data
-    users[userIndex] = {
-      ...users[userIndex],
-      ...updates,
-      lastModified: new Date().toISOString()
-    };
+    // Update user
+    const updatedUser = await User.findByIdAndUpdate(
+      id,
+      { $set: updates },
+      { new: true, runValidators: true }
+    );
 
     res.status(200).json({
       success: true,
       message: 'User profile updated successfully',
       data: {
-        user: sanitizeUser(users[userIndex])
+        user: updatedUser.toJSON()
       }
     });
 
   } catch (error) {
     console.error('Update user error:', error);
+    
+    // Handle validation errors
+    if (error.name === 'ValidationError') {
+      const validationErrors = Object.values(error.errors).map(err => ({
+        field: err.path,
+        message: err.message
+      }));
+      
+      return res.status(400).json({
+        success: false,
+        message: 'Validation failed',
+        errors: validationErrors
+      });
+    }
+    
     res.status(500).json({
       success: false,
       message: 'Server error occurred while updating user'
@@ -187,22 +258,47 @@ router.delete('/:id', protect, authorize('admin'), async (req, res) => {
   try {
     const { id } = req.params;
 
-    const userIndex = users.findIndex(user => user.id === id);
-    if (userIndex === -1) {
+    // Validate ObjectId
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid user ID format'
+      });
+    }
+
+    // Prevent admin from deleting themselves
+    if (id === req.user._id.toString()) {
+      return res.status(400).json({
+        success: false,
+        message: 'Cannot delete your own account'
+      });
+    }
+
+    const user = await User.findById(id);
+    if (!user) {
       return res.status(404).json({
         success: false,
         message: 'User not found'
       });
     }
 
-    // Remove user from array
-    const deletedUser = users.splice(userIndex, 1)[0];
+    // Soft delete instead of hard delete (deactivate user)
+    const deletedUser = await User.findByIdAndUpdate(
+      id,
+      { 
+        $set: { 
+          isActive: false,
+          email: `deleted_${Date.now()}_${user.email}` // Prevent email conflicts
+        }
+      },
+      { new: true }
+    );
 
     res.status(200).json({
       success: true,
-      message: 'User deleted successfully',
+      message: 'User deactivated successfully',
       data: {
-        deletedUser: sanitizeUser(deletedUser)
+        user: deletedUser.toJSON()
       }
     });
 
@@ -216,38 +312,17 @@ router.delete('/:id', protect, authorize('admin'), async (req, res) => {
 });
 
 // @desc    Get user statistics (admin only)
-// @route   GET /api/users/stats
+// @route   GET /api/users/admin/stats
 // @access  Private/Admin
 router.get('/admin/stats', protect, authorize('admin'), async (req, res) => {
   try {
-    const totalUsers = users.length;
-    const activeUsers = getActiveUsers().length;
-    const usersByRole = {
-      admin: getUsersByRole('admin').length,
-      business_owner: getUsersByRole('business_owner').length,
-      customer: getUsersByRole('customer').length,
-      demo: getUsersByRole('demo').length
-    };
-
-    const usersByCategory = {
-      hotels: getUsersByBusinessCategory('hotels').length,
-      ecommerce: getUsersByBusinessCategory('ecommerce').length,
-      weddings: getUsersByBusinessCategory('weddings').length,
-      automobiles: getUsersByBusinessCategory('automobiles').length,
-      business: getUsersByBusinessCategory('business').length,
-      services: getUsersByBusinessCategory('services').length,
-      restaurants: getUsersByBusinessCategory('restaurants').length
-    };
+    const stats = await User.getStats();
 
     res.status(200).json({
       success: true,
       message: 'User statistics retrieved successfully',
       data: {
-        totalUsers,
-        activeUsers,
-        inactiveUsers: totalUsers - activeUsers,
-        usersByRole,
-        usersByCategory,
+        ...stats,
         lastUpdated: new Date().toISOString()
       }
     });
@@ -257,6 +332,54 @@ router.get('/admin/stats', protect, authorize('admin'), async (req, res) => {
     res.status(500).json({
       success: false,
       message: 'Server error occurred while fetching user statistics'
+    });
+  }
+});
+
+// @desc    Search users (admin only)
+// @route   GET /api/users/search
+// @access  Private/Admin
+router.get('/search/:term', protect, authorize('admin'), [
+  query('limit').optional().isInt({ min: 1, max: 50 }).withMessage('Limit must be between 1 and 50')
+], async (req, res) => {
+  try {
+    const { term } = req.params;
+    const { limit = 10 } = req.query;
+
+    if (term.length < 2) {
+      return res.status(400).json({
+        success: false,
+        message: 'Search term must be at least 2 characters long'
+      });
+    }
+
+    const users = await User.find({
+      $or: [
+        { firstName: { $regex: term, $options: 'i' } },
+        { lastName: { $regex: term, $options: 'i' } },
+        { email: { $regex: term, $options: 'i' } },
+        { businessName: { $regex: term, $options: 'i' } }
+      ]
+    })
+    .limit(parseInt(limit))
+    .sort({ createdAt: -1 })
+    .lean();
+
+    res.status(200).json({
+      success: true,
+      message: 'Search completed successfully',
+      data: {
+        users,
+        searchTerm: term,
+        resultsCount: users.length
+      }
+    });
+
+  } catch (error) {
+    console.error('Search users error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Server error occurred while searching users'
     });
   }
 });
