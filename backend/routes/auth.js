@@ -1,11 +1,6 @@
 const express = require('express');
-const bcrypt = require('bcryptjs');
 const { body, validationResult } = require('express-validator');
-const { 
-  getUserByEmail, 
-  users, 
-  sanitizeUser 
-} = require('../data/users');
+const User = require('../models/User');
 const generateToken = require('../utils/generateToken');
 const { protect } = require('../middleware/authMiddleware');
 
@@ -31,12 +26,20 @@ router.post('/login', [
 
     const { email, password } = req.body;
 
-    // Check if user exists
-    const user = getUserByEmail(email);
+    // Find user by email and include password for comparison
+    const user = await User.findByEmail(email);
     if (!user) {
       return res.status(401).json({
         success: false,
         message: 'Invalid email or password'
+      });
+    }
+
+    // Check if account is locked
+    if (user.isLocked) {
+      return res.status(423).json({
+        success: false,
+        message: 'Account temporarily locked due to too many failed login attempts. Please try again later.'
       });
     }
 
@@ -49,26 +52,32 @@ router.post('/login', [
     }
 
     // Check password
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const isPasswordValid = await user.comparePassword(password);
     if (!isPasswordValid) {
+      // Increment login attempts
+      await user.incLoginAttempts();
+      
       return res.status(401).json({
         success: false,
         message: 'Invalid email or password'
       });
     }
 
-    // Update last login time
-    user.lastLogin = new Date().toISOString();
+    // Reset login attempts on successful login
+    await user.resetLoginAttempts();
 
     // Generate token
-    const token = generateToken(user.id);
+    const token = generateToken(user._id);
+
+    // Convert to JSON to remove sensitive fields
+    const userResponse = user.toJSON();
 
     // Send response
     res.status(200).json({
       success: true,
       message: 'Login successful',
       data: {
-        user: sanitizeUser(user),
+        user: userResponse,
         token,
         expiresIn: process.env.JWT_EXPIRE || '24h'
       }
@@ -91,10 +100,11 @@ router.post('/register', [
   body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters'),
   body('firstName').notEmpty().trim().withMessage('First name is required'),
   body('lastName').notEmpty().trim().withMessage('Last name is required'),
-  body('businessName').notEmpty().trim().withMessage('Business name is required'),
-  body('businessCategory').notEmpty().withMessage('Business category is required'),
+  body('businessName').optional().trim(),
+  body('businessCategory').optional().isIn(['hotels', 'ecommerce', 'weddings', 'automobiles', 'business', 'services', 'restaurants', 'other', '']),
   body('phone').optional().isMobilePhone().withMessage('Please provide a valid phone number'),
-  body('address').notEmpty().trim().withMessage('Address is required')
+  body('address').optional().trim(),
+  body('website').optional().isURL().withMessage('Please provide a valid website URL')
 ], async (req, res) => {
   try {
     // Check for validation errors
@@ -120,7 +130,7 @@ router.post('/register', [
     } = req.body;
 
     // Check if user already exists
-    const existingUser = getUserByEmail(email);
+    const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({
         success: false,
@@ -128,41 +138,39 @@ router.post('/register', [
       });
     }
 
-    // Hash password
-    const hashedPassword = await bcrypt.hash(password, 10);
+    // Determine role based on business information
+    const role = businessName && businessCategory ? 'business_owner' : 'customer';
 
     // Create new user
-    const newUser = {
-      id: `user_${Date.now()}`,
+    const userData = {
       email,
-      password: hashedPassword,
+      password,
       firstName,
       lastName,
-      role: 'business_owner',
-      businessName,
-      businessCategory,
+      role,
+      businessName: businessName || '',
+      businessCategory: businessCategory || '',
       phone: phone || '',
-      address,
+      address: address || '',
       website: website || '',
-      avatar: `https://via.placeholder.com/100x100/4F46E5/ffffff?text=${firstName.charAt(0)}${lastName.charAt(0)}`,
       isActive: true,
-      permissions: ['manage_business'],
-      createdAt: new Date().toISOString(),
-      lastLogin: new Date().toISOString()
+      emailVerified: false // In production, you'd send a verification email
     };
 
-    // Add user to the users array (in a real app, this would be saved to database)
-    users.push(newUser);
+    const newUser = await User.create(userData);
 
     // Generate token
-    const token = generateToken(newUser.id);
+    const token = generateToken(newUser._id);
+
+    // Convert to JSON to remove sensitive fields
+    const userResponse = newUser.toJSON();
 
     // Send response
     res.status(201).json({
       success: true,
       message: 'Registration successful',
       data: {
-        user: sanitizeUser(newUser),
+        user: userResponse,
         token,
         expiresIn: process.env.JWT_EXPIRE || '24h'
       }
@@ -170,6 +178,29 @@ router.post('/register', [
 
   } catch (error) {
     console.error('Registration error:', error);
+    
+    // Handle mongoose validation errors
+    if (error.name === 'ValidationError') {
+      const validationErrors = Object.values(error.errors).map(err => ({
+        field: err.path,
+        message: err.message
+      }));
+      
+      return res.status(400).json({
+        success: false,
+        message: 'Validation failed',
+        errors: validationErrors
+      });
+    }
+    
+    // Handle duplicate key errors
+    if (error.code === 11000) {
+      return res.status(400).json({
+        success: false,
+        message: 'An account with this email already exists'
+      });
+    }
+    
     res.status(500).json({
       success: false,
       message: 'Server error occurred during registration'
@@ -182,11 +213,20 @@ router.post('/register', [
 // @access  Private
 router.get('/me', protect, async (req, res) => {
   try {
+    // Get fresh user data from database
+    const user = await User.findById(req.user._id);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found'
+      });
+    }
+
     res.status(200).json({
       success: true,
       message: 'User data retrieved successfully',
       data: {
-        user: sanitizeUser(req.user)
+        user: user.toJSON()
       }
     });
   } catch (error) {
@@ -203,11 +243,20 @@ router.get('/me', protect, async (req, res) => {
 // @access  Private
 router.post('/verify', protect, async (req, res) => {
   try {
+    // Get fresh user data from database
+    const user = await User.findById(req.user._id);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found'
+      });
+    }
+
     res.status(200).json({
       success: true,
       message: 'Token is valid',
       data: {
-        user: sanitizeUser(req.user),
+        user: user.toJSON(),
         isValid: true
       }
     });
@@ -237,6 +286,62 @@ router.post('/logout', protect, async (req, res) => {
     res.status(500).json({
       success: false,
       message: 'Server error occurred during logout'
+    });
+  }
+});
+
+// @desc    Change password
+// @route   PUT /api/auth/change-password
+// @access  Private
+router.put('/change-password', protect, [
+  body('currentPassword').notEmpty().withMessage('Current password is required'),
+  body('newPassword').isLength({ min: 6 }).withMessage('New password must be at least 6 characters')
+], async (req, res) => {
+  try {
+    // Check for validation errors
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        success: false,
+        message: 'Validation failed',
+        errors: errors.array()
+      });
+    }
+
+    const { currentPassword, newPassword } = req.body;
+
+    // Get user with password
+    const user = await User.findById(req.user._id).select('+password');
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found'
+      });
+    }
+
+    // Check current password
+    const isCurrentPasswordValid = await user.comparePassword(currentPassword);
+    if (!isCurrentPasswordValid) {
+      return res.status(400).json({
+        success: false,
+        message: 'Current password is incorrect'
+      });
+    }
+
+    // Update password
+    user.password = newPassword;
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: 'Password changed successfully'
+    });
+
+  } catch (error) {
+    console.error('Change password error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Server error occurred while changing password'
     });
   }
 });
