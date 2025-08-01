@@ -118,8 +118,30 @@ function App() {
                   <Route path="/blogs" element={<BlogsPage />} />
                   <Route path="/blog/:id" element={<SingleBlogPage />} />
                   <Route path="/pricing" element={<PricingPage />} />
-                  <Route path="/login" element={<LoginPage />} />
-                  <Route path="/register" element={<RegisterPage />} />
+                  <Route
+                    path="/login"
+                    element={
+                      <AuthGuard requireAuth={false}>
+                        <LoginPage />
+                      </AuthGuard>
+                    }
+                  />
+                  <Route
+                    path="/register"
+                    element={
+                      <AuthGuard requireAuth={false}>
+                        <RegisterPage />
+                      </AuthGuard>
+                    }
+                  />
+                  <Route
+                    path="/profile"
+                    element={
+                      <AuthGuard requireAuth={true}>
+                        <UserProfilePage />
+                      </AuthGuard>
+                    }
+                  />
                   <Route path="/start-building" element={<StartBuilding />} />
 
                   {/* categories for website examples*/}
