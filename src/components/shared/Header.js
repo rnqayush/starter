@@ -599,6 +599,8 @@ const MobileAuthButton = styled(Link)`
   font-size: 1.125rem;
   min-height: 48px;
   touch-action: manipulation;
+  border: none;
+  cursor: pointer;
 
   &.login {
     color: ${theme.colors.gray700};
@@ -615,7 +617,9 @@ const MobileAuthButton = styled(Link)`
     }
   }
 
-  &.register {
+  &.register,
+  &.dashboard,
+  &.admin {
     color: ${theme.colors.white};
     background: ${theme.colors.primary};
 
@@ -629,7 +633,45 @@ const MobileAuthButton = styled(Link)`
       transform: scale(0.98);
     }
   }
+
+  &.profile {
+    color: ${theme.colors.primary};
+    background: ${theme.colors.primaryLight || theme.colors.gray100};
+    border: 1px solid ${theme.colors.primary};
+
+    &:hover,
+    &:focus {
+      background: ${theme.colors.primary};
+      color: ${theme.colors.white};
+    }
+  }
+
+  &.logout {
+    color: ${theme.colors.red600 || '#dc2626'};
+    background: ${theme.colors.red50 || '#fef2f2'};
+    border: 1px solid ${theme.colors.red200 || '#fecaca'};
+
+    &:hover,
+    &:focus {
+      background: ${theme.colors.red600 || '#dc2626'};
+      color: ${theme.colors.white};
+    }
+  }
 `;
+
+// Helper function to get dashboard path based on business category
+const getDashboardPath = (category) => {
+  const dashboardRoutes = {
+    hotels: '/hoteladmin',
+    ecommerce: '/selleradminpanel',
+    weddings: '/weddingadminpanel',
+    automobiles: '/autoadmindasboard',
+    business: '/adminpanel',
+    services: '/adminpanel',
+    restaurants: '/adminpanel',
+  };
+  return dashboardRoutes[category] || '/';
+};
 
 const MobileMenuOverlay = styled.div.withConfig({
   shouldForwardProp: prop => prop !== 'isOpen',
