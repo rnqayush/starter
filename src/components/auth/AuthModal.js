@@ -434,12 +434,12 @@ const AuthModal = ({ isOpen, onClose, onSuccess, defaultTab = 'login' }) => {
     try {
       let result;
       if (activeTab === 'login') {
-        result = await login({
+        result = await dispatch(loginUser({
           email: formData.email,
           password: formData.password,
-        });
+        }));
       } else {
-        result = await register(formData);
+        result = await dispatch(registerUser(formData));
       }
 
       if (result.success) {
