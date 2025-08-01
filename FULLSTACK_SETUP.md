@@ -82,6 +82,22 @@ npm start
 
 The frontend will start on `http://localhost:3000`
 
+## Database Integration
+
+### MongoDB Features (When Available)
+- **Data Persistence**: Users persist between server restarts
+- **Password Security**: bcrypt hashing with salt rounds
+- **User Validation**: Comprehensive schema validation
+- **Indexing**: Optimized queries on email, role, category
+- **Statistics**: Real-time user analytics and stats
+- **Account Security**: Login attempt limiting and account locking
+
+### Fallback Mode (When MongoDB Unavailable)
+- **In-Memory Storage**: Users stored in memory (lost on restart)
+- **Demo Data**: Pre-loaded test accounts available
+- **Full API Compatibility**: All endpoints work identically
+- **No Setup Required**: Works out of the box for testing
+
 ## API Integration
 
 The frontend now uses real API calls instead of mock data:
