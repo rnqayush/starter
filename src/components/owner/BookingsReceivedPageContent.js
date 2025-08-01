@@ -10,7 +10,7 @@ import {
 import { Card, CardContent, Badge } from '../shared/Card';
 import { Button } from '../shared/Button';
 import { theme } from '../../styles/GlobalStyle';
-import { useAppContext } from '../../context/AppContext';
+// import { useAppContext } from '../../context/AppContext'; // Removed - needs Redux migration
 
 const PageTitle = styled.h1`
   font-size: 2.5rem;
@@ -92,7 +92,10 @@ const EmptyState = styled.div`
 `;
 
 const BookingsReceivedPageContent = () => {
-  const { bookings, setBookings, ownerHotels } = useAppContext();
+  // TODO: Replace with Redux selectors and actions
+  const bookings = [];
+  const ownerHotels = [];
+  const setBookings = () => {};
 
   const ownerBookings = bookings.filter(booking =>
     ownerHotels.some(hotel => hotel.id === booking.hotelId)
