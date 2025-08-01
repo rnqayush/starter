@@ -771,7 +771,7 @@ const UserProfile = ({ onClose }) => {
               Join thousands of sellers on our platform and start selling your
               products today!
             </p>
-            <PrimaryButton onClick={() => switchRole('seller')}>
+            <PrimaryButton onClick={() => handleSwitchRole('seller')}>
               <FaStore />
               Switch to Seller Account
             </PrimaryButton>
