@@ -64,7 +64,11 @@ npm start
 npm run dev
 ```
 
-The backend will start on `http://localhost:3001`
+**Expected startup output:**
+- ✅ **With MongoDB**: `MongoDB Connected` + `Successfully seeded X users`
+- ⚠️ **Without MongoDB**: `MongoDB connection failed` + `Falling back to in-memory data store`
+
+The backend will start on `http://localhost:3001` regardless of MongoDB availability.
 
 ### 2. Start the Frontend
 
