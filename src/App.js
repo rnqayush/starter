@@ -4,8 +4,6 @@ import { useSelector } from 'react-redux';
 
 import styled from 'styled-components';
 import { GlobalStyle } from './styles/GlobalStyle';
-import { AppContext } from './context/AppContext';
-import { AuthProvider } from './context/AuthContext';
 import ErrorBoundary from './components/ErrorBoundary';
 
 // User Components
@@ -62,44 +60,11 @@ const AppContainer = styled.div`
 `;
 
 function App() {
-  const [user, setUser] = useState(null);
-  const [userType, setUserType] = useState('customer'); // 'customer' or 'owner'
-
-  // Get live hotel data from Redux, fallback to static data
-  const liveHotels = useSelector(
-    state => state.hotelManagement?.liveHotels || hotelModuleData
-  );
-  const draftHotels = useSelector(
-    state => state.hotelManagement?.draftHotels || hotelModuleData
-  );
-
-  // For backwards compatibility, provide both live and static data
-  const [hotels, setHotels] = useState(hotelModuleData);
-  const [bookings, setBookings] = useState(hotelBookings);
-  const [ownerHotels, setOwnerHotels] = useState(hotelOwnerData || []);
-
-  const contextValue = {
-    user,
-    setUser,
-    userType,
-    setUserType,
-    hotels: liveHotels, // Use live data from Redux for public pages
-    setHotels,
-    bookings,
-    setBookings,
-    ownerHotels: liveHotels, // Admin should also see current live data for selection
-    setOwnerHotels,
-    // Expose both live and draft data for components that need to distinguish
-    liveHotels,
-    draftHotels,
-  };
 
   return (
     <ErrorBoundary>
-      <AuthProvider>
-        <NotificationProvider>
-          <AppContext.Provider value={contextValue}>
-            <Router>
+      <NotificationProvider>
+        <Router>
               <AppContainer>
                 <GlobalStyle />
                 <ScrollToTop />
@@ -186,10 +151,8 @@ function App() {
                   </Route>
                 </Routes>
               </AppContainer>
-            </Router>
-          </AppContext.Provider>
-        </NotificationProvider>
-      </AuthProvider>
+        </Router>
+      </NotificationProvider>
     </ErrorBoundary>
   );
 }
