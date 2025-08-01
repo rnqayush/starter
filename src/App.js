@@ -65,14 +65,6 @@ function App() {
     dispatch(restoreUserSession());
   }, [dispatch]);
 
-  // Get live hotel data from Redux, fallback to static data
-  const liveHotels = useSelector(
-    state => state.hotelManagement?.liveHotels || hotelModuleData
-  );
-  const draftHotels = useSelector(
-    state => state.hotelManagement?.draftHotels || hotelModuleData
-  );
-
   return (
     <ErrorBoundary>
       <NotificationProvider>
