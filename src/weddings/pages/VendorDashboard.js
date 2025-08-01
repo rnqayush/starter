@@ -688,7 +688,7 @@ const Tab = styled.button.withConfig({
 const VendorDashboard = () => {
   const { vendorSlug } = useParams();
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const user = useSelector(selectUser);
   const dispatch = useDispatch();
 
   // Redux state
