@@ -350,3 +350,29 @@ export const getVendorById = id => {
     getAutomobileVendorById(id)
   );
 };
+
+// User authentication functions
+export const getUserByEmail = email => {
+  return users.find(user => user.email.toLowerCase() === email.toLowerCase());
+};
+
+export const getUserById = id => {
+  return users.find(user => user.id === id);
+};
+
+export const validateUserCredentials = (email, password) => {
+  const user = getUserByEmail(email);
+  return user && user.password === password ? user : null;
+};
+
+export const getUsersByRole = role => {
+  return users.filter(user => user.role === role);
+};
+
+export const getActiveUsers = () => {
+  return users.filter(user => user.isActive === true);
+};
+
+export const getUsersByBusinessCategory = category => {
+  return users.filter(user => user.businessCategory === category);
+};
