@@ -103,7 +103,9 @@ const FormActions = styled.div`
 
 const AddHotelPageContent = () => {
   const navigate = useNavigate();
-  const { setHotels, setOwnerHotels } = useAppContext();
+  // TODO: Replace with Redux actions
+  const setHotels = () => {};
+  const setOwnerHotels = () => {};
 
   const [formData, setFormData] = useState({
     name: '',
