@@ -7,6 +7,7 @@ import { GlobalStyle } from './styles/GlobalStyle';
 import { AppContext } from './context/AppContext';
 import { AuthProvider } from './context/AuthContext';
 import ErrorBoundary from './components/ErrorBoundary';
+import { restoreUserSession } from './store/slices/authSlice';
 
 // User Components
 import PlatformHomePage from './components/user/PlatformHomePage';
