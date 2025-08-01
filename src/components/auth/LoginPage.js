@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
 import { theme, media } from '../../styles/GlobalStyle';
 import { Button } from '../shared/Button';
 import { Input } from '../shared/Input';
+import { loginUser, clearError, selectAuth } from '../../store/slices/authSlice';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -316,12 +318,14 @@ const BackToHome = styled(Link)`
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { loading, error, isAuthenticated } = useSelector(selectAuth);
+
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
 
   const handleInputChange = e => {
     const { name, value } = e.target;
@@ -333,15 +337,52 @@ const LoginPage = () => {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    setIsLoading(true);
 
-    // Simulate login process
-    setTimeout(() => {
-      setIsLoading(false);
-      // Navigate to dashboard or home page
-      navigate('/');
-    }, 1500);
+    if (!formData.email || !formData.password) {
+      return;
+    }
+
+    const result = await dispatch(loginUser(formData.email, formData.password));
+
+    if (result.success) {
+      // Redirect based on user role
+      const user = result.user;
+      if (user.role === 'admin') {
+        navigate('/');
+      } else if (user.role === 'business_owner') {
+        // Redirect to appropriate dashboard based on business category
+        const dashboardRoutes = {
+          hotels: '/hoteladmin',
+          ecommerce: '/selleradminpanel',
+          weddings: '/weddingadminpanel',
+          automobiles: '/autoadmindasboard',
+          business: '/adminpanel',
+          services: '/adminpanel',
+          restaurants: '/adminpanel',
+        };
+        const redirectPath = dashboardRoutes[user.businessCategory] || '/';
+        navigate(redirectPath);
+      } else {
+        navigate('/');
+      }
+    }
   };
+
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/');
+    }
+  }, [isAuthenticated, navigate]);
+
+  // Clear errors when component unmounts or form changes
+  useEffect(() => {
+    return () => {
+      if (error) {
+        dispatch(clearError());
+      }
+    };
+  }, [dispatch, error]);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -402,8 +443,14 @@ const LoginPage = () => {
             </ForgotPasswordLink>
           </FormGroup>
 
-          <LoginButton type="submit" disabled={isLoading}>
-            {isLoading ? 'Signing In...' : 'Sign In'}
+          {error && (
+            <ErrorMessage>
+              {error}
+            </ErrorMessage>
+          )}
+
+          <LoginButton type="submit" disabled={loading}>
+            {loading ? 'Signing In...' : 'Sign In'}
           </LoginButton>
         </Form>
 
