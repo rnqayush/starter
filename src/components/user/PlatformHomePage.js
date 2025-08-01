@@ -843,13 +843,8 @@ const PlatformHomePage = () => {
     if (isAuthenticated) {
       navigate('/start-building');
     } else {
-      setShowAuthModal(true);
+      navigate('/login');
     }
-  };
-
-  const handleAuthSuccess = () => {
-    setShowAuthModal(false);
-    navigate('/start-building');
   };
 
   const handleExploreStores = () => {
