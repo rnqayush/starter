@@ -158,10 +158,19 @@ All API responses follow this structure:
 
 ### Backend (.env in backend folder)
 ```bash
+# Server Configuration
 PORT=3001
 NODE_ENV=development
+
+# Database Configuration
+MONGODB_URI=mongodb://localhost:27017/storebuilder
+DB_NAME=storebuilder
+
+# JWT Configuration
 JWT_SECRET=your_super_secret_jwt_key
 JWT_EXPIRE=24h
+
+# CORS Configuration
 CORS_ORIGIN=http://localhost:3000
 ```
 
