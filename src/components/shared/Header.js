@@ -947,20 +947,59 @@ const Header = ({ isOwnerView = false }) => {
             )}
 
             <MobileAuthButtons>
-              <MobileAuthButton
-                to="/login"
-                className="login"
-                onClick={closeMobileMenu}
-              >
-                Login
-              </MobileAuthButton>
-              <MobileAuthButton
-                to="/register"
-                className="register"
-                onClick={closeMobileMenu}
-              >
-                Register
-              </MobileAuthButton>
+              {isAuthenticated ? (
+                <>
+                  <MobileAuthButton
+                    to="/profile"
+                    className="profile"
+                    onClick={closeMobileMenu}
+                  >
+                    My Profile
+                  </MobileAuthButton>
+                  {user?.role === 'admin' && (
+                    <MobileAuthButton
+                      to="/admin"
+                      className="admin"
+                      onClick={closeMobileMenu}
+                    >
+                      Admin Panel
+                    </MobileAuthButton>
+                  )}
+                  {user?.role === 'business_owner' && (
+                    <MobileAuthButton
+                      to={getDashboardPath(user?.businessCategory)}
+                      className="dashboard"
+                      onClick={closeMobileMenu}
+                    >
+                      Dashboard
+                    </MobileAuthButton>
+                  )}
+                  <MobileAuthButton
+                    as="button"
+                    className="logout"
+                    onClick={handleLogout}
+                  >
+                    Sign Out
+                  </MobileAuthButton>
+                </>
+              ) : (
+                <>
+                  <MobileAuthButton
+                    to="/login"
+                    className="login"
+                    onClick={closeMobileMenu}
+                  >
+                    Login
+                  </MobileAuthButton>
+                  <MobileAuthButton
+                    to="/register"
+                    className="register"
+                    onClick={closeMobileMenu}
+                  >
+                    Register
+                  </MobileAuthButton>
+                </>
+              )}
             </MobileAuthButtons>
           </MobileNav>
 
