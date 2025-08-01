@@ -1,9 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import { FaHotel, FaBars, FaTimes, FaChevronDown } from 'react-icons/fa';
+import { FaHotel, FaBars, FaTimes, FaChevronDown, FaUser, FaSignOutAlt, FaCog } from 'react-icons/fa';
 import { theme, media } from '../../styles/GlobalStyle';
 import { Button } from './Button';
+import { selectUser, selectIsAuthenticated, logout } from '../../store/slices/authSlice';
 
 const HeaderContainer = styled.header.withConfig({
   shouldForwardProp: prop => prop !== 'isScrolled' && prop !== 'isInHero',
@@ -408,6 +410,176 @@ const UserSection = styled.div`
   }
 `;
 
+const ProfileDropdown = styled.div`
+  position: relative;
+  display: inline-block;
+`;
+
+const ProfileButton = styled.button.withConfig({
+  shouldForwardProp: prop => prop !== 'isScrolled',
+})`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: ${props => props.isScrolled ? theme.colors.white : 'rgba(255, 255, 255, 0.1)'};
+  border: ${props => props.isScrolled ? `2px solid ${theme.colors.gray200}` : '2px solid rgba(255, 255, 255, 0.2)'};
+  color: ${props => props.isScrolled ? theme.colors.gray700 : theme.colors.white};
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: ${props => props.isScrolled ? 'none' : 'blur(10px)'};
+  overflow: hidden;
+
+  &:hover {
+    background: ${props => props.isScrolled ? theme.colors.gray50 : 'rgba(255, 255, 255, 0.2)'};
+    border-color: ${props => props.isScrolled ? theme.colors.primary : 'rgba(255, 255, 255, 0.4)'};
+    transform: scale(1.05);
+  }
+
+  &:focus {
+    outline: 2px solid ${theme.colors.primary};
+    outline-offset: 2px;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+
+  ${media.mobile} {
+    display: none;
+  }
+`;
+
+const ProfileMenu = styled.div.withConfig({
+  shouldForwardProp: prop => prop !== 'isOpen',
+})`
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: ${theme.colors.white};
+  border-radius: ${theme.borderRadius.lg};
+  box-shadow: ${theme.shadows.xl};
+  border: 1px solid ${theme.colors.gray200};
+  min-width: 200px;
+  z-index: 1000;
+  opacity: ${props => props.isOpen ? '1' : '0'};
+  visibility: ${props => props.isOpen ? 'visible' : 'hidden'};
+  transform: ${props => props.isOpen ? 'translateY(0)' : 'translateY(-10px)'};
+  transition: all 0.2s ease;
+  margin-top: 8px;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    right: 16px;
+    width: 12px;
+    height: 12px;
+    background: ${theme.colors.white};
+    border: 1px solid ${theme.colors.gray200};
+    border-bottom: none;
+    border-right: none;
+    transform: rotate(45deg);
+  }
+`;
+
+const ProfileMenuItem = styled(Link)`
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.sm};
+  padding: ${theme.spacing.md} ${theme.spacing.lg};
+  color: ${theme.colors.gray700};
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border-bottom: 1px solid ${theme.colors.gray100};
+  font-size: 0.875rem;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    background: ${theme.colors.gray50};
+    color: ${theme.colors.primary};
+  }
+
+  &:first-child {
+    border-top-left-radius: ${theme.borderRadius.lg};
+    border-top-right-radius: ${theme.borderRadius.lg};
+  }
+
+  &:last-child {
+    border-bottom-left-radius: ${theme.borderRadius.lg};
+    border-bottom-right-radius: ${theme.borderRadius.lg};
+  }
+
+  svg {
+    font-size: 1rem;
+  }
+`;
+
+const ProfileMenuButton = styled.button`
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.sm};
+  padding: ${theme.spacing.md} ${theme.spacing.lg};
+  color: ${theme.colors.red600};
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  transition: all 0.2s ease;
+  font-size: 0.875rem;
+  cursor: pointer;
+  border-bottom-left-radius: ${theme.borderRadius.lg};
+  border-bottom-right-radius: ${theme.borderRadius.lg};
+
+  &:hover {
+    background: ${theme.colors.red50};
+    color: ${theme.colors.red700};
+  }
+
+  svg {
+    font-size: 1rem;
+  }
+`;
+
+const UserInfo = styled.div`
+  padding: ${theme.spacing.lg};
+  border-bottom: 1px solid ${theme.colors.gray200};
+  text-align: center;
+`;
+
+const UserName = styled.h4`
+  margin: 0 0 ${theme.spacing.xs} 0;
+  color: ${theme.colors.gray900};
+  font-size: 1rem;
+  font-weight: 600;
+`;
+
+const UserEmail = styled.p`
+  margin: 0;
+  color: ${theme.colors.gray500};
+  font-size: 0.875rem;
+`;
+
+const UserRole = styled.span`
+  display: inline-block;
+  background: ${theme.colors.primaryLight};
+  color: ${theme.colors.primary};
+  padding: 2px 8px;
+  border-radius: ${theme.borderRadius.sm};
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin-top: ${theme.spacing.xs};
+  text-transform: capitalize;
+`;
+
 const LoginButton = styled(Link).withConfig({
   shouldForwardProp: prop => prop !== 'isScrolled',
 })`
@@ -651,21 +823,38 @@ const MobileMenuOverlay = styled.div.withConfig({
 `;
 
 const Header = ({ isOwnerView = false }) => {
+  const dispatch = useDispatch();
+  const user = useSelector(selectUser);
+  const isAuthenticated = useSelector(selectIsAuthenticated);
+
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isInHero, setIsInHero] = useState(false);
   const dropdownRef = useRef(null);
+  const profileDropdownRef = useRef(null);
 
   const closeMobileMenu = () => setMobileMenuOpen(false);
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
   const closeDropdown = () => setDropdownOpen(false);
+  const toggleProfileDropdown = () => setProfileDropdownOpen(!profileDropdownOpen);
+  const closeProfileDropdown = () => setProfileDropdownOpen(false);
+
+  const handleLogout = () => {
+    dispatch(logout());
+    closeProfileDropdown();
+    closeMobileMenu();
+  };
 
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = event => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         closeDropdown();
+      }
+      if (profileDropdownRef.current && !profileDropdownRef.current.contains(event.target)) {
+        closeProfileDropdown();
       }
     };
 
@@ -685,6 +874,9 @@ const Header = ({ isOwnerView = false }) => {
         if (dropdownOpen) {
           closeDropdown();
         }
+        if (profileDropdownOpen) {
+          closeProfileDropdown();
+        }
       }
     };
 
@@ -692,7 +884,7 @@ const Header = ({ isOwnerView = false }) => {
     return () => {
       document.removeEventListener('keydown', handleEscapeKey);
     };
-  }, [mobileMenuOpen, dropdownOpen]);
+  }, [mobileMenuOpen, dropdownOpen, profileDropdownOpen]);
 
   // Prevent body scroll when mobile menu is open
   useEffect(() => {
@@ -728,6 +920,11 @@ const Header = ({ isOwnerView = false }) => {
 
   const handleDropdownItemClick = () => {
     closeDropdown();
+    closeMobileMenu();
+  };
+
+  const handleProfileMenuItemClick = () => {
+    closeProfileDropdown();
     closeMobileMenu();
   };
 
@@ -916,40 +1113,161 @@ const Header = ({ isOwnerView = false }) => {
             )}
 
             <MobileAuthButtons>
-              <MobileAuthButton
-                to="/login"
-                className="login"
-                onClick={closeMobileMenu}
-              >
-                Login
-              </MobileAuthButton>
-              <MobileAuthButton
-                to="/register"
-                className="register"
-                onClick={closeMobileMenu}
-              >
-                Register
-              </MobileAuthButton>
+              {isAuthenticated ? (
+                <>
+                  <div style={{ padding: '16px', borderBottom: '1px solid #e5e7eb', textAlign: 'center' }}>
+                    <h4 style={{ margin: '0 0 8px 0', color: '#111827', fontSize: '16px', fontWeight: 600 }}>
+                      {user?.name}
+                    </h4>
+                    <p style={{ margin: '0', color: '#6b7280', fontSize: '14px' }}>
+                      {user?.email}
+                    </p>
+                    <span style={{
+                      display: 'inline-block',
+                      background: '#dbeafe',
+                      color: '#1e40af',
+                      padding: '2px 8px',
+                      borderRadius: '4px',
+                      fontSize: '12px',
+                      fontWeight: 500,
+                      marginTop: '8px',
+                      textTransform: 'capitalize'
+                    }}>
+                      {user?.role}
+                    </span>
+                  </div>
+                  <MobileAuthButton
+                    to="/profile"
+                    className="login"
+                    onClick={closeMobileMenu}
+                    style={{ justifyContent: 'flex-start', gap: '12px' }}
+                  >
+                    <FaUser />
+                    Profile
+                  </MobileAuthButton>
+                  <MobileAuthButton
+                    to="/settings"
+                    className="login"
+                    onClick={closeMobileMenu}
+                    style={{ justifyContent: 'flex-start', gap: '12px' }}
+                  >
+                    <FaCog />
+                    Settings
+                  </MobileAuthButton>
+                  <button
+                    onClick={handleLogout}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'flex-start',
+                      gap: '12px',
+                      padding: '16px 24px',
+                      borderRadius: '12px',
+                      fontWeight: 600,
+                      textDecoration: 'none',
+                      transition: 'all 0.2s ease',
+                      fontSize: '18px',
+                      minHeight: '48px',
+                      touchAction: 'manipulation',
+                      color: '#dc2626',
+                      background: 'none',
+                      border: 'none',
+                      width: '100%',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    <FaSignOutAlt />
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <>
+                  <MobileAuthButton
+                    to="/login"
+                    className="login"
+                    onClick={closeMobileMenu}
+                  >
+                    Login
+                  </MobileAuthButton>
+                  <MobileAuthButton
+                    to="/register"
+                    className="register"
+                    onClick={closeMobileMenu}
+                  >
+                    Register
+                  </MobileAuthButton>
+                </>
+              )}
             </MobileAuthButtons>
           </MobileNav>
 
           <UserSection>
-            <LoginButton
-              to="/login"
-              onClick={closeMobileMenu}
-              isScrolled={isScrolled}
-            >
-              Login
-            </LoginButton>
-            <RegisterButton
-              as={Link}
-              to="/register"
-              onClick={closeMobileMenu}
-              isScrolled={isScrolled}
-              style={{ textDecoration: 'none' }}
-            >
-              Register
-            </RegisterButton>
+            {isAuthenticated ? (
+              <ProfileDropdown ref={profileDropdownRef}>
+                <ProfileButton
+                  onClick={toggleProfileDropdown}
+                  isScrolled={isScrolled}
+                  aria-expanded={profileDropdownOpen}
+                  aria-haspopup="true"
+                  aria-label="User profile menu"
+                >
+                  {user?.avatar ? (
+                    <img src={user.avatar} alt={user.name} />
+                  ) : (
+                    <FaUser />
+                  )}
+                </ProfileButton>
+                <ProfileMenu isOpen={profileDropdownOpen} role="menu">
+                  <UserInfo>
+                    <UserName>{user?.name}</UserName>
+                    <UserEmail>{user?.email}</UserEmail>
+                    <UserRole>{user?.role}</UserRole>
+                  </UserInfo>
+                  <ProfileMenuItem
+                    to="/profile"
+                    onClick={handleProfileMenuItemClick}
+                    role="menuitem"
+                  >
+                    <FaUser />
+                    Profile
+                  </ProfileMenuItem>
+                  <ProfileMenuItem
+                    to="/settings"
+                    onClick={handleProfileMenuItemClick}
+                    role="menuitem"
+                  >
+                    <FaCog />
+                    Settings
+                  </ProfileMenuItem>
+                  <ProfileMenuButton
+                    onClick={handleLogout}
+                    role="menuitem"
+                  >
+                    <FaSignOutAlt />
+                    Logout
+                  </ProfileMenuButton>
+                </ProfileMenu>
+              </ProfileDropdown>
+            ) : (
+              <>
+                <LoginButton
+                  to="/login"
+                  onClick={closeMobileMenu}
+                  isScrolled={isScrolled}
+                >
+                  Login
+                </LoginButton>
+                <RegisterButton
+                  as={Link}
+                  to="/register"
+                  onClick={closeMobileMenu}
+                  isScrolled={isScrolled}
+                  style={{ textDecoration: 'none' }}
+                >
+                  Register
+                </RegisterButton>
+              </>
+            )}
 
             <MobileMenuButton
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
