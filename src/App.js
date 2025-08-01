@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -22,14 +22,9 @@ import UserProfilePage from './components/user/UserProfilePage';
 import ScrollToTop from './components/shared/ScrollToTop';
 import SmartRouter from './components/SmartRouter';
 
-// Hotel Module
-// Note: HotelModule removed as it's not used in current routing
-
 // Mock data
 import {
   hotels as hotelModuleData,
-  hotelBookings,
-  ownerHotels as hotelOwnerData,
 } from './DummyData';
 
 // Category Landing Pages
