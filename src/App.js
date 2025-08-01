@@ -63,8 +63,14 @@ const AppContainer = styled.div`
 `;
 
 function App() {
+  const dispatch = useDispatch();
   const [user, setUser] = useState(null);
   const [userType, setUserType] = useState('customer'); // 'customer' or 'owner'
+
+  // Initialize authentication session on app load
+  useEffect(() => {
+    dispatch(restoreUserSession());
+  }, [dispatch]);
 
   // Get live hotel data from Redux, fallback to static data
   const liveHotels = useSelector(
