@@ -425,7 +425,7 @@ const UserProfile = ({ onClose }) => {
   };
 
   const handleSave = async () => {
-    const result = await updateProfile({
+    handleUpdateProfile({
       name: formData.name,
       phone: formData.phone,
       profile: {
