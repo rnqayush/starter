@@ -652,6 +652,182 @@ const MobileMenuOverlay = styled.div.withConfig({
   }
 `;
 
+const NotificationButton = styled.button.withConfig({
+  shouldForwardProp: prop => prop !== 'isScrolled',
+})`
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: ${props =>
+    props.isScrolled ? theme.colors.gray700 : 'rgba(255, 255, 255, 0.9)'};
+  font-size: 1.125rem;
+  padding: ${theme.spacing.sm};
+  cursor: pointer;
+  border-radius: ${theme.borderRadius.md};
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: ${props =>
+      props.isScrolled ? theme.colors.gray50 : 'rgba(255, 255, 255, 0.1)'};
+    color: ${props =>
+      props.isScrolled ? theme.colors.primary : theme.colors.white};
+  }
+
+  ${media.mobile} {
+    display: none;
+  }
+`;
+
+const NotificationBadge = styled.span`
+  position: absolute;
+  top: ${theme.spacing.xs};
+  right: ${theme.spacing.xs};
+  background: ${theme.colors.red500 || '#ef4444'};
+  color: ${theme.colors.white};
+  font-size: 0.625rem;
+  font-weight: 600;
+  padding: 0.125rem 0.25rem;
+  border-radius: 50%;
+  min-width: 1rem;
+  height: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const ProfileDropdownContainer = styled.div`
+  position: relative;
+  display: inline-block;
+
+  ${media.mobile} {
+    display: none;
+  }
+`;
+
+const ProfileButton = styled.button.withConfig({
+  shouldForwardProp: prop => prop !== 'isScrolled',
+})`
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.sm};
+  background: none;
+  border: none;
+  color: ${props =>
+    props.isScrolled ? theme.colors.gray700 : 'rgba(255, 255, 255, 0.9)'};
+  cursor: pointer;
+  padding: ${theme.spacing.sm};
+  border-radius: ${theme.borderRadius.md};
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: ${props =>
+      props.isScrolled ? theme.colors.gray50 : 'rgba(255, 255, 255, 0.1)'};
+  }
+
+  svg {
+    font-size: 0.75rem;
+  }
+`;
+
+const ProfileAvatar = styled.img`
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid ${theme.colors.white};
+  box-shadow: ${theme.shadows.sm};
+`;
+
+const ProfileInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+`;
+
+const ProfileName = styled.span`
+  font-weight: 600;
+  font-size: 0.875rem;
+  line-height: 1.2;
+`;
+
+const ProfileRole = styled.span`
+  font-size: 0.75rem;
+  opacity: 0.8;
+  text-transform: capitalize;
+`;
+
+const ProfileDropdownMenu = styled.div.withConfig({
+  shouldForwardProp: prop => prop !== 'isOpen',
+})`
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: ${theme.colors.white};
+  border-radius: ${theme.borderRadius.lg};
+  box-shadow: ${theme.shadows.xl};
+  border: 1px solid ${theme.colors.gray200};
+  min-width: 12rem;
+  z-index: 1000;
+  opacity: ${props => (props.isOpen ? '1' : '0')};
+  visibility: ${props => (props.isOpen ? 'visible' : 'hidden')};
+  transform: translateY(${props => (props.isOpen ? '0' : '-0.625rem')});
+  transition: all 0.2s ease;
+  margin-top: ${theme.spacing.xs};
+`;
+
+const ProfileDropdownItem = styled(Link)`
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.sm};
+  padding: ${theme.spacing.md} ${theme.spacing.lg};
+  color: ${theme.colors.gray700};
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border-bottom: 1px solid ${theme.colors.gray100};
+  font-size: 0.875rem;
+  background: none;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    background: ${theme.colors.gray50};
+    color: ${theme.colors.primary};
+  }
+
+  &:first-child {
+    border-top-left-radius: ${theme.borderRadius.lg};
+    border-top-right-radius: ${theme.borderRadius.lg};
+  }
+
+  &:last-child {
+    border-bottom-left-radius: ${theme.borderRadius.lg};
+    border-bottom-right-radius: ${theme.borderRadius.lg};
+  }
+
+  svg {
+    font-size: 0.875rem;
+    flex-shrink: 0;
+  }
+`;
+
+const ProfileDropdownDivider = styled.div`
+  height: 1px;
+  background: ${theme.colors.gray200};
+  margin: ${theme.spacing.xs} 0;
+`;
+
 const Header = ({ isOwnerView = false }) => {
   const dispatch = useDispatch();
   const { isAuthenticated, user } = useSelector(selectAuth);
