@@ -6,6 +6,7 @@ import businessManagementReducer from './slices/businessManagementSlice';
 import automobileManagementReducer from './slices/automobileManagementSlice';
 import ecommerceManagementReducer from './slices/ecommerceManagementSlice';
 import blogsReducer from './slices/blogsSlice';
+import authReducer from './slices/authSlice';
 
 export const store = configureStore({
   reducer: {
