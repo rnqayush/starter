@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { FaHotel, FaBars, FaTimes, FaChevronDown, FaUser, FaCog, FaSignOutAlt, FaBell, FaUserShield } from 'react-icons/fa';
 import { theme, media } from '../../styles/GlobalStyle';
 import { Button } from './Button';
-import { selectAuth, logout, restoreUserSession } from '../../store/slices/authSlice';
+import { selectAuth, logoutUser, restoreUserSession } from '../../store/slices/authSlice';
 
 const HeaderContainer = styled.header.withConfig({
   shouldForwardProp: prop => prop !== 'isScrolled' && prop !== 'isInHero',
