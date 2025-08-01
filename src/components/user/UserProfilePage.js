@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { FaUser, FaEnvelope, FaPhone, FaMapMarkerAlt, FaGlobe, FaEdit, FaSave, FaTimes } from 'react-icons/fa';
 import { theme, media } from '../../styles/GlobalStyle';
-import { selectUser, updateUserProfile } from '../../store/slices/authSlice';
+import { selectUser, updateUserProfileAPI } from '../../store/slices/authSlice';
 import Header from '../shared/Header';
 
 const PageContainer = styled.div`
