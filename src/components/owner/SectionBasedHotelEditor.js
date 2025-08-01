@@ -705,7 +705,8 @@ const AddAmenityForm = styled.div`
 
 const SectionBasedHotelEditor = ({ setActiveSection }) => {
   const dispatch = useDispatch();
-  const { ownerHotels } = useAppContext();
+  // TODO: Replace with Redux selector
+  const ownerHotels = [];
   const {
     editingHotel,
     hasUnsavedChanges,
