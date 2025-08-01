@@ -14,7 +14,11 @@ import {
   FaGithub,
 } from 'react-icons/fa';
 import { useSelector, useDispatch } from 'react-redux';
-import { loginUser, registerUser, selectAuthLoading } from '../../store/slices/authSlice';
+import {
+  loginUser,
+  registerUser,
+  selectAuthLoading,
+} from '../../store/slices/authSlice';
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -434,10 +438,12 @@ const AuthModal = ({ isOpen, onClose, onSuccess, defaultTab = 'login' }) => {
     try {
       let result;
       if (activeTab === 'login') {
-        result = await dispatch(loginUser({
-          email: formData.email,
-          password: formData.password,
-        }));
+        result = await dispatch(
+          loginUser({
+            email: formData.email,
+            password: formData.password,
+          })
+        );
       } else {
         result = await dispatch(registerUser(formData));
       }
@@ -473,10 +479,12 @@ const AuthModal = ({ isOpen, onClose, onSuccess, defaultTab = 'login' }) => {
   const handleSocialLogin = provider => {
     // Simulate social login
     const email = `demo@${provider}.com`;
-    dispatch(loginUser({
-      email,
-      password: 'demo123', // Mock password for social login
-    })).then(result => {
+    dispatch(
+      loginUser({
+        email,
+        password: 'demo123', // Mock password for social login
+      })
+    ).then(result => {
       if (result.success) {
         onClose();
       }

@@ -2,7 +2,11 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectUser, selectIsAuthenticated, logout } from '../../store/slices/authSlice';
+import {
+  selectUser,
+  selectIsAuthenticated,
+  logout,
+} from '../../store/slices/authSlice';
 import AuthModal from '../../components/auth/AuthModal';
 import UserProfile from '../../components/user/UserProfile';
 import {

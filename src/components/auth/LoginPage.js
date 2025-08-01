@@ -6,7 +6,13 @@ import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
 import { theme, media } from '../../styles/GlobalStyle';
 import { Button } from '../shared/Button';
 import { Input } from '../shared/Input';
-import { loginUser, selectAuthLoading, selectAuthError, selectIsAuthenticated, clearError } from '../../store/slices/authSlice';
+import {
+  loginUser,
+  selectAuthLoading,
+  selectAuthError,
+  selectIsAuthenticated,
+  clearError,
+} from '../../store/slices/authSlice';
 
 const PageContainer = styled.div`
   min-height: 100vh;

@@ -17,7 +17,13 @@ import {
 import { theme, media } from '../../styles/GlobalStyle';
 import { Button } from '../shared/Button';
 import { Input } from '../shared/Input';
-import { registerUser, selectAuthLoading, selectAuthError, selectIsAuthenticated, clearError } from '../../store/slices/authSlice';
+import {
+  registerUser,
+  selectAuthLoading,
+  selectAuthError,
+  selectIsAuthenticated,
+  clearError,
+} from '../../store/slices/authSlice';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -555,8 +561,6 @@ const RegisterPage = () => {
               </Select>
             </InputContainer>
           </FormGroup>
-
-
 
           <FormGroup>
             <Label htmlFor="password">Password</Label>

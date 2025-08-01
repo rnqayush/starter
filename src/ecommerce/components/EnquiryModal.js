@@ -11,7 +11,10 @@ import {
 import { theme } from '../../styles/GlobalStyle';
 import { useNotifications } from './NotificationSystem';
 import { useSelector } from 'react-redux';
-import { selectUser, selectIsAuthenticated } from '../../store/slices/authSlice';
+import {
+  selectUser,
+  selectIsAuthenticated,
+} from '../../store/slices/authSlice';
 
 const ModalOverlay = styled.div`
   position: fixed;

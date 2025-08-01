@@ -852,7 +852,8 @@ const StartBuilding = () => {
             <AuthPrompt>
               <h3>🔐 Login Required</h3>
               <p>
-                You need to be logged in to publish your website. Please login or create an account to continue.
+                You need to be logged in to publish your website. Please login
+                or create an account to continue.
               </p>
               <ActionButton variant="next" onClick={handleLoginRedirect}>
                 Login
@@ -864,7 +865,11 @@ const StartBuilding = () => {
               <Button
                 variant="text"
                 onClick={() => setShowAuthPrompt(false)}
-                style={{ marginTop: '16px', color: '#6b7280', textDecoration: 'underline' }}
+                style={{
+                  marginTop: '16px',
+                  color: '#6b7280',
+                  textDecoration: 'underline',
+                }}
               >
                 Continue without account (limited features)
               </Button>
@@ -900,7 +905,9 @@ const StartBuilding = () => {
               disabled={!validateStep()}
             >
               <FaRocket />
-              {isAuthenticated ? 'Publish My Website' : 'Publish My Website (Login Required)'}
+              {isAuthenticated
+                ? 'Publish My Website'
+                : 'Publish My Website (Login Required)'}
             </ActionButton>
           )}
         </Actions>

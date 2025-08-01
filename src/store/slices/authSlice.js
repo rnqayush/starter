@@ -56,7 +56,7 @@ const authSlice = createSlice({
       state.user = action.payload;
       state.isAuthenticated = true;
       state.error = null;
-      
+
       // Persist to localStorage
       localStorage.setItem('user', JSON.stringify(action.payload));
       localStorage.setItem('isAuthenticated', 'true');
@@ -76,7 +76,7 @@ const authSlice = createSlice({
       state.user = action.payload;
       state.isAuthenticated = true;
       state.error = null;
-      
+
       // Persist to localStorage
       localStorage.setItem('user', JSON.stringify(action.payload));
       localStorage.setItem('isAuthenticated', 'true');
@@ -92,7 +92,7 @@ const authSlice = createSlice({
       state.isAuthenticated = false;
       state.loading = false;
       state.error = null;
-      
+
       // Clear localStorage
       localStorage.removeItem('user');
       localStorage.removeItem('isAuthenticated');
@@ -108,7 +108,7 @@ const authSlice = createSlice({
           ...action.payload,
           lastModified: new Date().toISOString(),
         };
-        
+
         // Update localStorage
         localStorage.setItem('user', JSON.stringify(state.user));
       }
@@ -117,7 +117,7 @@ const authSlice = createSlice({
       if (state.user) {
         const newRole = action.payload;
         state.user.role = newRole;
-        
+
         // Add seller data if switching to seller
         if (newRole === 'seller' && !state.user.seller) {
           state.user.seller = {
@@ -135,7 +135,7 @@ const authSlice = createSlice({
             },
           };
         }
-        
+
         // Update localStorage
         localStorage.setItem('user', JSON.stringify(state.user));
       }
@@ -149,26 +149,26 @@ const authSlice = createSlice({
 // Async thunk actions
 export const loginUser = credentials => async dispatch => {
   dispatch(loginStart());
-  
+
   try {
     // Simulate API call delay
     await new Promise(resolve => setTimeout(resolve, 1000));
-    
+
     // Find user in dummy data
     const user = usersData.users.find(
       u => u.email === credentials.email && u.password === credentials.password
     );
-    
+
     if (!user) {
       throw new Error('Invalid email or password');
     }
-    
+
     // Create user session data
     const userData = {
       ...user,
       lastLogin: new Date().toISOString(),
     };
-    
+
     dispatch(loginSuccess(userData));
     return { success: true, user: userData };
   } catch (error) {
@@ -179,17 +179,17 @@ export const loginUser = credentials => async dispatch => {
 
 export const registerUser = userData => async dispatch => {
   dispatch(registerStart());
-  
+
   try {
     // Simulate API call delay
     await new Promise(resolve => setTimeout(resolve, 1500));
-    
+
     // Check if email already exists
     const existingUser = usersData.users.find(u => u.email === userData.email);
     if (existingUser) {
       throw new Error('Email already exists');
     }
-    
+
     const newUser = {
       id: Date.now(),
       ...userData,
@@ -212,7 +212,7 @@ export const registerUser = userData => async dispatch => {
       createdAt: new Date().toISOString(),
       lastLogin: new Date().toISOString(),
     };
-    
+
     // Add seller data if registering as seller
     if (userData.role === 'seller') {
       newUser.seller = {
@@ -230,7 +230,7 @@ export const registerUser = userData => async dispatch => {
         },
       };
     }
-    
+
     dispatch(registerSuccess(newUser));
     return { success: true, user: newUser };
   } catch (error) {

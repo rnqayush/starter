@@ -2,10 +2,22 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import { FaHotel, FaBars, FaTimes, FaChevronDown, FaUser, FaSignOutAlt, FaCog } from 'react-icons/fa';
+import {
+  FaHotel,
+  FaBars,
+  FaTimes,
+  FaChevronDown,
+  FaUser,
+  FaSignOutAlt,
+  FaCog,
+} from 'react-icons/fa';
 import { theme, media } from '../../styles/GlobalStyle';
 import { Button } from './Button';
-import { selectUser, selectIsAuthenticated, logout } from '../../store/slices/authSlice';
+import {
+  selectUser,
+  selectIsAuthenticated,
+  logout,
+} from '../../store/slices/authSlice';
 
 const HeaderContainer = styled.header.withConfig({
   shouldForwardProp: prop => prop !== 'isScrolled' && prop !== 'isInHero',
@@ -421,20 +433,27 @@ const ProfileButton = styled.button.withConfig({
   display: flex;
   align-items: center;
   justify-content: center;
-  background: ${props => props.isScrolled ? theme.colors.white : 'rgba(255, 255, 255, 0.1)'};
-  border: ${props => props.isScrolled ? `2px solid ${theme.colors.gray200}` : '2px solid rgba(255, 255, 255, 0.2)'};
-  color: ${props => props.isScrolled ? theme.colors.gray700 : theme.colors.white};
+  background: ${props =>
+    props.isScrolled ? theme.colors.white : 'rgba(255, 255, 255, 0.1)'};
+  border: ${props =>
+    props.isScrolled
+      ? `2px solid ${theme.colors.gray200}`
+      : '2px solid rgba(255, 255, 255, 0.2)'};
+  color: ${props =>
+    props.isScrolled ? theme.colors.gray700 : theme.colors.white};
   width: 40px;
   height: 40px;
   border-radius: 50%;
   cursor: pointer;
   transition: all 0.3s ease;
-  backdrop-filter: ${props => props.isScrolled ? 'none' : 'blur(10px)'};
+  backdrop-filter: ${props => (props.isScrolled ? 'none' : 'blur(10px)')};
   overflow: hidden;
 
   &:hover {
-    background: ${props => props.isScrolled ? theme.colors.gray50 : 'rgba(255, 255, 255, 0.2)'};
-    border-color: ${props => props.isScrolled ? theme.colors.primary : 'rgba(255, 255, 255, 0.4)'};
+    background: ${props =>
+      props.isScrolled ? theme.colors.gray50 : 'rgba(255, 255, 255, 0.2)'};
+    border-color: ${props =>
+      props.isScrolled ? theme.colors.primary : 'rgba(255, 255, 255, 0.4)'};
     transform: scale(1.05);
   }
 
@@ -467,9 +486,9 @@ const ProfileMenu = styled.div.withConfig({
   border: 1px solid ${theme.colors.gray200};
   min-width: 200px;
   z-index: 1000;
-  opacity: ${props => props.isOpen ? '1' : '0'};
-  visibility: ${props => props.isOpen ? 'visible' : 'hidden'};
-  transform: ${props => props.isOpen ? 'translateY(0)' : 'translateY(-10px)'};
+  opacity: ${props => (props.isOpen ? '1' : '0')};
+  visibility: ${props => (props.isOpen ? 'visible' : 'hidden')};
+  transform: ${props => (props.isOpen ? 'translateY(0)' : 'translateY(-10px)')};
   transition: all 0.2s ease;
   margin-top: 8px;
 
@@ -838,7 +857,8 @@ const Header = ({ isOwnerView = false }) => {
   const closeMobileMenu = () => setMobileMenuOpen(false);
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
   const closeDropdown = () => setDropdownOpen(false);
-  const toggleProfileDropdown = () => setProfileDropdownOpen(!profileDropdownOpen);
+  const toggleProfileDropdown = () =>
+    setProfileDropdownOpen(!profileDropdownOpen);
   const closeProfileDropdown = () => setProfileDropdownOpen(false);
 
   const handleLogout = () => {
@@ -853,7 +873,10 @@ const Header = ({ isOwnerView = false }) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         closeDropdown();
       }
-      if (profileDropdownRef.current && !profileDropdownRef.current.contains(event.target)) {
+      if (
+        profileDropdownRef.current &&
+        !profileDropdownRef.current.contains(event.target)
+      ) {
         closeProfileDropdown();
       }
     };
@@ -1115,24 +1138,45 @@ const Header = ({ isOwnerView = false }) => {
             <MobileAuthButtons>
               {isAuthenticated ? (
                 <>
-                  <div style={{ padding: '16px', borderBottom: '1px solid #e5e7eb', textAlign: 'center' }}>
-                    <h4 style={{ margin: '0 0 8px 0', color: '#111827', fontSize: '16px', fontWeight: 600 }}>
+                  <div
+                    style={{
+                      padding: '16px',
+                      borderBottom: '1px solid #e5e7eb',
+                      textAlign: 'center',
+                    }}
+                  >
+                    <h4
+                      style={{
+                        margin: '0 0 8px 0',
+                        color: '#111827',
+                        fontSize: '16px',
+                        fontWeight: 600,
+                      }}
+                    >
                       {user?.name}
                     </h4>
-                    <p style={{ margin: '0', color: '#6b7280', fontSize: '14px' }}>
+                    <p
+                      style={{
+                        margin: '0',
+                        color: '#6b7280',
+                        fontSize: '14px',
+                      }}
+                    >
                       {user?.email}
                     </p>
-                    <span style={{
-                      display: 'inline-block',
-                      background: '#dbeafe',
-                      color: '#1e40af',
-                      padding: '2px 8px',
-                      borderRadius: '4px',
-                      fontSize: '12px',
-                      fontWeight: 500,
-                      marginTop: '8px',
-                      textTransform: 'capitalize'
-                    }}>
+                    <span
+                      style={{
+                        display: 'inline-block',
+                        background: '#dbeafe',
+                        color: '#1e40af',
+                        padding: '2px 8px',
+                        borderRadius: '4px',
+                        fontSize: '12px',
+                        fontWeight: 500,
+                        marginTop: '8px',
+                        textTransform: 'capitalize',
+                      }}
+                    >
                       {user?.role}
                     </span>
                   </div>
@@ -1173,7 +1217,7 @@ const Header = ({ isOwnerView = false }) => {
                       background: 'none',
                       border: 'none',
                       width: '100%',
-                      cursor: 'pointer'
+                      cursor: 'pointer',
                     }}
                   >
                     <FaSignOutAlt />
@@ -1239,10 +1283,7 @@ const Header = ({ isOwnerView = false }) => {
                     <FaCog />
                     Settings
                   </ProfileMenuItem>
-                  <ProfileMenuButton
-                    onClick={handleLogout}
-                    role="menuitem"
-                  >
+                  <ProfileMenuButton onClick={handleLogout} role="menuitem">
                     <FaSignOutAlt />
                     Logout
                   </ProfileMenuButton>

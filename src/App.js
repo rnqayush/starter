@@ -60,97 +60,78 @@ const AppContainer = styled.div`
 `;
 
 function App() {
-
   return (
     <ErrorBoundary>
       <NotificationProvider>
         <Router>
-              <AppContainer>
-                <GlobalStyle />
-                <ScrollToTop />
-                <Routes>
-                  {/* Main Platform Routes (Highest Priority) */}
-                  <Route path="/" element={<PlatformHomePage />} />
-                  <Route path="/blogs" element={<BlogsPage />} />
-                  <Route path="/blog/:id" element={<SingleBlogPage />} />
-                  <Route path="/pricing" element={<PricingPage />} />
-                  <Route path="/login" element={<LoginPage />} />
-                  <Route path="/register" element={<RegisterPage />} />
-                  <Route path="/start-building" element={<StartBuilding />} />
+          <AppContainer>
+            <GlobalStyle />
+            <ScrollToTop />
+            <Routes>
+              {/* Main Platform Routes (Highest Priority) */}
+              <Route path="/" element={<PlatformHomePage />} />
+              <Route path="/blogs" element={<BlogsPage />} />
+              <Route path="/blog/:id" element={<SingleBlogPage />} />
+              <Route path="/pricing" element={<PricingPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/register" element={<RegisterPage />} />
+              <Route path="/start-building" element={<StartBuilding />} />
 
-                  {/* categories for website examples*/}
-                  <Route path="/website-examples">
-                    <Route path="hotel" element={<HotelCategoryLanding />} />
-                    <Route
-                      path="wedding"
-                      element={<WeddingCategoryLanding />}
-                    />
-                    <Route
-                      path="ecommerce"
-                      element={<EcommerceCategoryLanding />}
-                    />
-                    <Route
-                      path="automobile"
-                      element={<AutomobileCategoryLanding />}
-                    />
-                    <Route
-                      path="business"
-                      element={<BusinessCategoryLanding />}
-                    />
-                  </Route>
+              {/* categories for website examples*/}
+              <Route path="/website-examples">
+                <Route path="hotel" element={<HotelCategoryLanding />} />
+                <Route path="wedding" element={<WeddingCategoryLanding />} />
+                <Route
+                  path="ecommerce"
+                  element={<EcommerceCategoryLanding />}
+                />
+                <Route
+                  path="automobile"
+                  element={<AutomobileCategoryLanding />}
+                />
+                <Route path="business" element={<BusinessCategoryLanding />} />
+              </Route>
 
-                  {/* Generic slug routes (lowest priority) */}
-                  <Route path="/:slug">
-                    {/* smart router identifies vendor and give homepage of same */}
-                    <Route index element={<SmartRouter />} />
+              {/* Generic slug routes (lowest priority) */}
+              <Route path="/:slug">
+                {/* smart router identifies vendor and give homepage of same */}
+                <Route index element={<SmartRouter />} />
 
-                    {/*  hotel website routes */}
-                    <Route path="hoteladmin" element={<OwnerDashboard />} />
-                    <Route path="rooms" element={<RoomList />} />
-                    <Route path="rooms/:roomId" element={<RoomDetail />} />
-                    <Route path="rooms/booking/:roomId" element={<Booking />} />
-                    <Route
-                      path="bookingconfirmation"
-                      element={<BookingConfirmation />}
-                    />
+                {/*  hotel website routes */}
+                <Route path="hoteladmin" element={<OwnerDashboard />} />
+                <Route path="rooms" element={<RoomList />} />
+                <Route path="rooms/:roomId" element={<RoomDetail />} />
+                <Route path="rooms/booking/:roomId" element={<Booking />} />
+                <Route
+                  path="bookingconfirmation"
+                  element={<BookingConfirmation />}
+                />
 
-                    {/*  Ecommerce website routes */}
+                {/*  Ecommerce website routes */}
 
-                    <Route path="products" element={<ProductList />} />
-                    <Route
-                      path="productdetail/:productId"
-                      element={<ProductDetail />}
-                    />
-                    <Route
-                      path="selleradminpanel"
-                      element={<SellerDashboard />}
-                    />
-                    {/*  Wedding website routes */}
-                    <Route path="portfolio" element={<VendorPortfolio />} />
-                    <Route
-                      path="weddingadminpanel"
-                      element={<VendorDashboard />}
-                    />
-                    {/*  automobile website routes */}
-                    <Route path="vehicles" element={<Vehicles />} />
-                    <Route
-                      path="vehicledetail/:vehicleId"
-                      element={<VehicleDetail />}
-                    />
-                    <Route path="wishlist" element={<Wishlist />} />
-                    <Route
-                      path="autoadmindasboard"
-                      element={<DealerDashboard />}
-                    />
+                <Route path="products" element={<ProductList />} />
+                <Route
+                  path="productdetail/:productId"
+                  element={<ProductDetail />}
+                />
+                <Route path="selleradminpanel" element={<SellerDashboard />} />
+                {/*  Wedding website routes */}
+                <Route path="portfolio" element={<VendorPortfolio />} />
+                <Route path="weddingadminpanel" element={<VendorDashboard />} />
+                {/*  automobile website routes */}
+                <Route path="vehicles" element={<Vehicles />} />
+                <Route
+                  path="vehicledetail/:vehicleId"
+                  element={<VehicleDetail />}
+                />
+                <Route path="wishlist" element={<Wishlist />} />
+                <Route path="autoadmindasboard" element={<DealerDashboard />} />
 
-                    {/*  buisness website routes */}
-                    <Route
-                      path="adminpanel"
-                      element={<BuisnessAdminDashboard />}
-                    />
-                  </Route>
-                </Routes>
-              </AppContainer>
+                {/*  buisness website routes */}
+                <Route path="adminpanel" element={<BuisnessAdminDashboard />} />
+              </Route>
+            </Routes>
+          </AppContainer>
         </Router>
       </NotificationProvider>
     </ErrorBoundary>

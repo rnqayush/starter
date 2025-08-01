@@ -1,7 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { FaUser, FaLock, FaSave, FaSignOutAlt, FaTrashAlt, FaExclamationTriangle } from 'react-icons/fa';
+import {
+  FaUser,
+  FaLock,
+  FaSave,
+  FaSignOutAlt,
+  FaTrashAlt,
+  FaExclamationTriangle,
+} from 'react-icons/fa';
 import { Card, CardContent } from '../shared/Card';
 import { Button } from '../shared/Button';
 import { Input, FormGroup, Label, InputGroup } from '../shared/Input';
@@ -122,8 +129,6 @@ const ConfirmationInput = styled.input`
   }
 `;
 
-
-
 const ProfileSettingsPageContent = () => {
   const navigate = useNavigate();
   // TODO: Replace with Redux selectors and actions
@@ -214,15 +219,15 @@ const ProfileSettingsPageContent = () => {
     }
   };
 
-
-
   const handleDeleteAccount = () => {
     setShowDeleteModal(true);
   };
 
   const confirmDeleteAccount = () => {
     if (deleteConfirmation.toLowerCase() === 'delete account') {
-      alert('Account deleted successfully. You will be redirected to the homepage.');
+      alert(
+        'Account deleted successfully. You will be redirected to the homepage.'
+      );
       setUser(null);
       setUserType(null);
       navigate('/');
@@ -376,12 +381,22 @@ const ProfileSettingsPageContent = () => {
                 Ready to sign out? Click the button below to logout from your
                 account.
               </LogoutText>
-              <div style={{ display: 'flex', gap: theme.spacing.md, justifyContent: 'center' }}>
+              <div
+                style={{
+                  display: 'flex',
+                  gap: theme.spacing.md,
+                  justifyContent: 'center',
+                }}
+              >
                 <Button variant="danger" onClick={handleLogout} size="large">
                   <FaSignOutAlt />
                   Logout
                 </Button>
-                <Button variant="error" onClick={handleDeleteAccount} size="large">
+                <Button
+                  variant="error"
+                  onClick={handleDeleteAccount}
+                  size="large"
+                >
                   <FaTrashAlt />
                   Delete Account
                 </Button>
@@ -394,14 +409,15 @@ const ProfileSettingsPageContent = () => {
       {/* Delete Account Confirmation Modal */}
       {showDeleteModal && (
         <DeleteModal onClick={cancelDeleteAccount}>
-          <ModalContent onClick={(e) => e.stopPropagation()}>
+          <ModalContent onClick={e => e.stopPropagation()}>
             <ModalIcon>
               <FaExclamationTriangle />
             </ModalIcon>
             <ModalTitle>Delete Account</ModalTitle>
             <ModalText>
               <strong>This action cannot be undone!</strong>
-              <br /><br />
+              <br />
+              <br />
               Deleting your account will permanently remove:
               <br />
               • All your hotel data and information
@@ -411,17 +427,25 @@ const ProfileSettingsPageContent = () => {
               • All booking history
               <br />
               • Your personal profile and settings
-              <br /><br />
-              To confirm deletion, please type <strong>"DELETE ACCOUNT"</strong> below:
+              <br />
+              <br />
+              To confirm deletion, please type <strong>
+                "DELETE ACCOUNT"
+              </strong>{' '}
+              below:
             </ModalText>
             <ConfirmationInput
               type="text"
               value={deleteConfirmation}
-              onChange={(e) => setDeleteConfirmation(e.target.value)}
+              onChange={e => setDeleteConfirmation(e.target.value)}
               placeholder="Type DELETE ACCOUNT to confirm"
             />
             <ModalActions>
-              <Button variant="outline" onClick={cancelDeleteAccount} size="large">
+              <Button
+                variant="outline"
+                onClick={cancelDeleteAccount}
+                size="large"
+              >
                 Cancel
               </Button>
               <Button

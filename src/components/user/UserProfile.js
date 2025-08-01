@@ -17,7 +17,11 @@ import {
   FaFacebook,
 } from 'react-icons/fa';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectUser, updateProfile, switchRole } from '../../store/slices/authSlice';
+import {
+  selectUser,
+  updateProfile,
+  switchRole,
+} from '../../store/slices/authSlice';
 
 const ProfileContainer = styled.div`
   max-width: 800px;
@@ -359,11 +363,11 @@ const UserProfile = ({ onClose }) => {
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
 
-  const handleUpdateProfile = (updates) => {
+  const handleUpdateProfile = updates => {
     dispatch(updateProfile(updates));
   };
 
-  const handleSwitchRole = (role) => {
+  const handleSwitchRole = role => {
     dispatch(switchRole(role));
   };
   const [activeTab, setActiveTab] = useState('personal');
