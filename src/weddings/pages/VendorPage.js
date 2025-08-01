@@ -1635,7 +1635,7 @@ const LoadingSpinner = styled.div`
 const VendorPage = () => {
   const { vendorSlug } = useParams();
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const user = useSelector(selectUser);
   const dispatch = useDispatch();
   const sectionRefs = useRef([]);
   const observerRef = useRef(null);
