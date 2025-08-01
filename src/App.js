@@ -4,8 +4,6 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import styled from 'styled-components';
 import { GlobalStyle } from './styles/GlobalStyle';
-import { AppContext } from './context/AppContext';
-import { AuthProvider } from './context/AuthContext';
 import ErrorBoundary from './components/ErrorBoundary';
 import { restoreUserSession } from './store/slices/authSlice';
 
@@ -66,8 +64,6 @@ const AppContainer = styled.div`
 
 function App() {
   const dispatch = useDispatch();
-  const [user, setUser] = useState(null);
-  const [userType, setUserType] = useState('customer'); // 'customer' or 'owner'
 
   // Initialize authentication session on app load
   useEffect(() => {
@@ -82,36 +78,13 @@ function App() {
     state => state.hotelManagement?.draftHotels || hotelModuleData
   );
 
-  // For backwards compatibility, provide both live and static data
-  const [hotels, setHotels] = useState(hotelModuleData);
-  const [bookings, setBookings] = useState(hotelBookings);
-  const [ownerHotels, setOwnerHotels] = useState(hotelOwnerData || []);
-
-  const contextValue = {
-    user,
-    setUser,
-    userType,
-    setUserType,
-    hotels: liveHotels, // Use live data from Redux for public pages
-    setHotels,
-    bookings,
-    setBookings,
-    ownerHotels: liveHotels, // Admin should also see current live data for selection
-    setOwnerHotels,
-    // Expose both live and draft data for components that need to distinguish
-    liveHotels,
-    draftHotels,
-  };
-
   return (
     <ErrorBoundary>
-      <AuthProvider>
-        <NotificationProvider>
-          <AppContext.Provider value={contextValue}>
-            <Router>
-              <AppContainer>
-                <GlobalStyle />
-                <ScrollToTop />
+      <NotificationProvider>
+        <Router>
+          <AppContainer>
+            <GlobalStyle />
+            <ScrollToTop />
                 <Routes>
                   {/* Main Platform Routes (Highest Priority) */}
                   <Route path="/" element={<PlatformHomePage />} />
@@ -218,9 +191,7 @@ function App() {
                 </Routes>
               </AppContainer>
             </Router>
-          </AppContext.Provider>
         </NotificationProvider>
-      </AuthProvider>
     </ErrorBoundary>
   );
 }
