@@ -81,12 +81,31 @@ app.get('/', (req, res) => {
 app.use(notFound);
 app.use(errorHandler);
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`🚀 StoreBuilder API server running on port ${PORT}`);
-  console.log(`📊 Environment: ${process.env.NODE_ENV}`);
-  console.log(`🔗 CORS enabled for: ${process.env.CORS_ORIGIN}`);
-  console.log(`📡 Health check: http://localhost:${PORT}/health`);
-});
+// Connect to MongoDB and start server
+const startServer = async () => {
+  try {
+    // Connect to MongoDB
+    await connectDB();
+
+    // Seed initial users (only if database is empty)
+    await seedUsers();
+
+    // Start server
+    app.listen(PORT, () => {
+      console.log(`🚀 StoreBuilder API server running on port ${PORT}`);
+      console.log(`📊 Environment: ${process.env.NODE_ENV}`);
+      console.log(`🔗 CORS enabled for: ${process.env.CORS_ORIGIN}`);
+      console.log(`📡 Health check: http://localhost:${PORT}/health`);
+      console.log(`💾 Database: MongoDB connected`);
+      console.log(`🎯 Ready to accept requests!`);
+    });
+  } catch (error) {
+    console.error('❌ Failed to start server:', error);
+    process.exit(1);
+  }
+};
+
+// Start the server
+startServer();
 
 module.exports = app;
