@@ -45,7 +45,7 @@ import {
 } from 'react-icons/fa';
 import { theme } from '../../styles/GlobalStyle';
 import { getWeddingVendorById as getVendorById } from '../../DummyData';
-import { useAuth } from '../../context/AuthContext';
+import { selectUser } from '../../store/slices/authSlice';
 import {
   setEditingVendor,
   initializeVendor,
