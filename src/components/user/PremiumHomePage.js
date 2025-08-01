@@ -890,7 +890,7 @@ const SocialLink = styled.a`
 
 const PremiumHomePage = () => {
   const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
+  const isAuthenticated = useSelector(selectIsAuthenticated);
   const [showAuthModal, setShowAuthModal] = useState(false);
 
   const handleGetStarted = () => {
