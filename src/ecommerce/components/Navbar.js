@@ -851,7 +851,7 @@ const Navbar = ({
             <MobileNavLink
               to="#"
               onClick={() => {
-                logout();
+                handleLogout();
                 setIsMenuOpen(false);
               }}
             >
