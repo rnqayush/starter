@@ -55,6 +55,9 @@ export const pricingFAQs = platformData.pricing.faqs || [];
 export const websiteTypes = platformData.websiteTypes || [];
 export const colorOptions = platformData.colorOptions || [];
 
+// Export users data from JSON
+export const users = usersData || [];
+
 // Export utility functions with prefixed names to avoid conflicts
 // Automobile functions - using JSON data directly
 export const getVehiclesByCategory = categoryId => {
