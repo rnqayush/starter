@@ -219,6 +219,18 @@ export const registerUser = userData => async dispatch => {
   }
 };
 
+export const logoutUser = () => async dispatch => {
+  try {
+    await logoutUserAPI();
+    dispatch(logout());
+    return { success: true };
+  } catch (error) {
+    // Still logout locally even if API call fails
+    dispatch(logout());
+    return { success: true };
+  }
+};
+
 // Selectors
 export const selectAuth = state => state.auth;
 export const selectUser = state => state.auth.user;
