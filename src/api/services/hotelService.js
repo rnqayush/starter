@@ -49,7 +49,9 @@ class HotelService {
         }
 
         if (filters.maxPrice) {
-          hotels = hotels.filter(hotel => hotel.startingPrice <= filters.maxPrice);
+          hotels = hotels.filter(
+            hotel => hotel.startingPrice <= filters.maxPrice
+          );
         }
 
         if (filters.amenities && filters.amenities.length > 0) {
@@ -82,7 +84,8 @@ class HotelService {
         await this._simulateDelay(400);
 
         const hotel = hotelData.data.hotel;
-        const matches = hotel.id === parseInt(identifier) || hotel.slug === identifier;
+        const matches =
+          hotel.id === parseInt(identifier) || hotel.slug === identifier;
 
         if (!matches) {
           return this._createAPIResponse(null, false, 'Hotel not found');
@@ -183,7 +186,9 @@ class HotelService {
         return this._createAPIResponse(room);
       }
 
-      const response = await httpClient.get(HOTEL_ENDPOINTS.ROOM(hotelId, roomId));
+      const response = await httpClient.get(
+        HOTEL_ENDPOINTS.ROOM(hotelId, roomId)
+      );
       return response.data;
     } catch (error) {
       throw new Error(`Failed to fetch room: ${error.message}`);
@@ -199,7 +204,9 @@ class HotelService {
         let bookings = [...hotelData.data.bookings];
 
         if (filters.userId) {
-          bookings = bookings.filter(booking => booking.userId === filters.userId);
+          bookings = bookings.filter(
+            booking => booking.userId === filters.userId
+          );
         }
 
         if (filters.hotelId) {
@@ -209,7 +216,9 @@ class HotelService {
         }
 
         if (filters.status) {
-          bookings = bookings.filter(booking => booking.status === filters.status);
+          bookings = bookings.filter(
+            booking => booking.status === filters.status
+          );
         }
 
         return this._createAPIResponse(bookings);
@@ -236,10 +245,17 @@ class HotelService {
           createdAt: new Date().toISOString(),
         };
 
-        return this._createAPIResponse(newBooking, true, 'Booking created successfully');
+        return this._createAPIResponse(
+          newBooking,
+          true,
+          'Booking created successfully'
+        );
       }
 
-      const response = await httpClient.post(HOTEL_ENDPOINTS.BOOKINGS, bookingData);
+      const response = await httpClient.post(
+        HOTEL_ENDPOINTS.BOOKINGS,
+        bookingData
+      );
       return response.data;
     } catch (error) {
       throw new Error(`Failed to create booking: ${error.message}`);
@@ -257,10 +273,17 @@ class HotelService {
           updatedAt: new Date().toISOString(),
         };
 
-        return this._createAPIResponse(updatedBooking, true, 'Booking updated successfully');
+        return this._createAPIResponse(
+          updatedBooking,
+          true,
+          'Booking updated successfully'
+        );
       }
 
-      const response = await httpClient.put(HOTEL_ENDPOINTS.BOOKING(bookingId), bookingData);
+      const response = await httpClient.put(
+        HOTEL_ENDPOINTS.BOOKING(bookingId),
+        bookingData
+      );
       return response.data;
     } catch (error) {
       throw new Error(`Failed to update booking: ${error.message}`);
@@ -278,7 +301,9 @@ class HotelService {
           return this._createAPIResponse([]);
         }
 
-        return this._createAPIResponse(hotel.sections.testimonials.reviews || []);
+        return this._createAPIResponse(
+          hotel.sections.testimonials.reviews || []
+        );
       }
 
       const response = await httpClient.get(HOTEL_ENDPOINTS.REVIEWS(hotelId));
@@ -386,10 +411,17 @@ class HotelService {
           updatedAt: new Date().toISOString(),
         };
 
-        return this._createAPIResponse(updatedHotel, true, 'Hotel updated successfully');
+        return this._createAPIResponse(
+          updatedHotel,
+          true,
+          'Hotel updated successfully'
+        );
       }
 
-      const response = await httpClient.put(HOTEL_ENDPOINTS.HOTEL(hotelId), hotelData);
+      const response = await httpClient.put(
+        HOTEL_ENDPOINTS.HOTEL(hotelId),
+        hotelData
+      );
       return response.data;
     } catch (error) {
       throw new Error(`Failed to update hotel: ${error.message}`);
@@ -399,7 +431,9 @@ class HotelService {
   // Helper functions for backward compatibility
   getHotelByIdOrSlug(identifier) {
     const hotel = hotelData.data.hotel;
-    return hotel.id === parseInt(identifier) || hotel.slug === identifier ? hotel : null;
+    return hotel.id === parseInt(identifier) || hotel.slug === identifier
+      ? hotel
+      : null;
   }
 
   getHotelById(id) {

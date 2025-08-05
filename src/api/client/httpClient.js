@@ -1,12 +1,12 @@
 // Enhanced HTTP Client with interceptors, error handling, and advanced features
-import { 
-  API_CONFIG, 
-  HTTP_STATUS, 
-  ERROR_MESSAGES, 
-  AUTH_CONFIG, 
+import {
+  API_CONFIG,
+  HTTP_STATUS,
+  ERROR_MESSAGES,
+  AUTH_CONFIG,
   FEATURE_FLAGS,
   RETRY_CONFIG,
-  TIMEOUTS 
+  TIMEOUTS,
 } from '../config/config';
 
 // Custom error class for API errors
@@ -30,11 +30,17 @@ export class APIError extends Error {
   }
 
   isAuthError() {
-    return this.status === HTTP_STATUS.UNAUTHORIZED || this.status === HTTP_STATUS.FORBIDDEN;
+    return (
+      this.status === HTTP_STATUS.UNAUTHORIZED ||
+      this.status === HTTP_STATUS.FORBIDDEN
+    );
   }
 
   isValidationError() {
-    return this.status === HTTP_STATUS.BAD_REQUEST || this.status === HTTP_STATUS.UNPROCESSABLE_ENTITY;
+    return (
+      this.status === HTTP_STATUS.BAD_REQUEST ||
+      this.status === HTTP_STATUS.UNPROCESSABLE_ENTITY
+    );
   }
 
   isServerError() {
@@ -100,11 +106,11 @@ class HttpClient {
     this.cache = new RequestCache();
     this.pendingRequests = new Map();
     this.retryCount = new Map();
-    
+
     // Default headers
     this.defaultHeaders = {
       'Content-Type': 'application/json',
-      'Accept': 'application/json',
+      Accept: 'application/json',
       'X-Requested-With': 'XMLHttpRequest',
     };
 
@@ -121,7 +127,7 @@ class HttpClient {
   _setupDefaultInterceptors() {
     // Request interceptor for authentication
     this.addRequestInterceptor(this._authInterceptor.bind(this));
-    
+
     // Request interceptor for logging
     if (FEATURE_FLAGS.enableLogging) {
       this.addRequestInterceptor(this._requestLogInterceptor.bind(this));
@@ -166,10 +172,13 @@ class HttpClient {
   // Request logging interceptor
   async _requestLogInterceptor(config) {
     if (FEATURE_FLAGS.enableLogging) {
-      console.log(`🚀 API Request: ${config.method?.toUpperCase()} ${config.url}`, {
-        headers: config.headers,
-        data: config.body ? JSON.parse(config.body) : null,
-      });
+      console.log(
+        `🚀 API Request: ${config.method?.toUpperCase()} ${config.url}`,
+        {
+          headers: config.headers,
+          data: config.body ? JSON.parse(config.body) : null,
+        }
+      );
     }
     return config;
   }
@@ -210,13 +219,13 @@ class HttpClient {
 
       // Attempt to refresh token
       const newTokens = await this._refreshAuthToken(refreshToken);
-      
+
       if (newTokens) {
         this.setAuthToken(newTokens.token);
         if (newTokens.refreshToken) {
           this.setRefreshToken(newTokens.refreshToken);
         }
-        
+
         // Retry original request
         return this._retryRequest(originalError.config);
       }
@@ -333,17 +342,22 @@ class HttpClient {
     }
 
     // Create error and run error interceptors
-    const errorMessage = data?.message || data?.error || `HTTP ${response.status}: ${response.statusText}`;
+    const errorMessage =
+      data?.message ||
+      data?.error ||
+      `HTTP ${response.status}: ${response.statusText}`;
     const error = new APIError(errorMessage, response.status, data);
     error.config = { url: response.url };
-    
+
     return this._runErrorInterceptors(error);
   }
 
   // Generic request method with retry logic
   async request(endpoint, options = {}) {
-    const url = endpoint.startsWith('http') ? endpoint : `${this.baseURL}${endpoint}`;
-    
+    const url = endpoint.startsWith('http')
+      ? endpoint
+      : `${this.baseURL}${endpoint}`;
+
     // Check cache for GET requests
     if (options.method === 'GET' || !options.method) {
       const cacheKey = this.cache.generateKey(url, 'GET', null);
@@ -385,7 +399,7 @@ class HttpClient {
 
     try {
       const response = await requestPromise;
-      
+
       // Cache GET responses
       if (config.method === 'GET' && FEATURE_FLAGS.enableCaching) {
         const cacheKey = this.cache.generateKey(url, 'GET', null);
@@ -410,7 +424,7 @@ class HttpClient {
         return await this._handleResponse(response);
       } catch (error) {
         lastError = this._createAPIError(error);
-        
+
         if (attempt === maxRetries || !RETRY_CONFIG.retryCondition(lastError)) {
           break;
         }
@@ -426,18 +440,33 @@ class HttpClient {
   // Create appropriate API error
   _createAPIError(error) {
     if (error.name === 'AbortError' || error.name === 'TimeoutError') {
-      return new APIError(ERROR_MESSAGES.TIMEOUT_ERROR, 0, null, 'TIMEOUT_ERROR');
+      return new APIError(
+        ERROR_MESSAGES.TIMEOUT_ERROR,
+        0,
+        null,
+        'TIMEOUT_ERROR'
+      );
     }
-    
+
     if (error instanceof TypeError && error.message.includes('fetch')) {
-      return new APIError(ERROR_MESSAGES.NETWORK_ERROR, 0, null, 'NETWORK_ERROR');
+      return new APIError(
+        ERROR_MESSAGES.NETWORK_ERROR,
+        0,
+        null,
+        'NETWORK_ERROR'
+      );
     }
 
     if (error instanceof APIError) {
       return error;
     }
 
-    return new APIError(error.message || ERROR_MESSAGES.UNKNOWN_ERROR, 0, null, 'UNKNOWN_ERROR');
+    return new APIError(
+      error.message || ERROR_MESSAGES.UNKNOWN_ERROR,
+      0,
+      null,
+      'UNKNOWN_ERROR'
+    );
   }
 
   // Utility delay function
@@ -449,7 +478,7 @@ class HttpClient {
   async get(endpoint, params = {}, options = {}) {
     const queryString = new URLSearchParams(params).toString();
     const url = queryString ? `${endpoint}?${queryString}` : endpoint;
-    
+
     return this.request(url, {
       method: 'GET',
       ...options,

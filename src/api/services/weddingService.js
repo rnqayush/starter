@@ -64,7 +64,11 @@ class WeddingService {
   getVendorsObject() {
     try {
       const data = this._getWeddingData();
-      if (data.vendors && typeof data.vendors === 'object' && !Array.isArray(data.vendors)) {
+      if (
+        data.vendors &&
+        typeof data.vendors === 'object' &&
+        !Array.isArray(data.vendors)
+      ) {
         return data.vendors;
       } else if (Array.isArray(data.vendors)) {
         const vendorsObj = {};
@@ -108,15 +112,33 @@ class WeddingService {
   getDefaultSectionOrder() {
     try {
       const data = this._getWeddingData();
-      return data.defaultSectionOrder || [
-        'hero', 'about-us', 'services-offered', 'recent-work', 'gallery',
-        'packages-pricing', 'testimonials', 'faq', 'contact', 'footer'
-      ];
+      return (
+        data.defaultSectionOrder || [
+          'hero',
+          'about-us',
+          'services-offered',
+          'recent-work',
+          'gallery',
+          'packages-pricing',
+          'testimonials',
+          'faq',
+          'contact',
+          'footer',
+        ]
+      );
     } catch (error) {
       console.error('Error loading default section order:', error);
       return [
-        'hero', 'about-us', 'services-offered', 'recent-work', 'gallery',
-        'packages-pricing', 'testimonials', 'faq', 'contact', 'footer'
+        'hero',
+        'about-us',
+        'services-offered',
+        'recent-work',
+        'gallery',
+        'packages-pricing',
+        'testimonials',
+        'faq',
+        'contact',
+        'footer',
       ];
     }
   }
@@ -125,17 +147,33 @@ class WeddingService {
   getDefaultSectionVisibility() {
     try {
       const data = this._getWeddingData();
-      return data.defaultSectionVisibility || {
-        hero: true, 'about-us': true, 'services-offered': true, 'recent-work': true,
-        gallery: true, 'packages-pricing': true, testimonials: true, faq: true,
-        contact: true, footer: true
-      };
+      return (
+        data.defaultSectionVisibility || {
+          hero: true,
+          'about-us': true,
+          'services-offered': true,
+          'recent-work': true,
+          gallery: true,
+          'packages-pricing': true,
+          testimonials: true,
+          faq: true,
+          contact: true,
+          footer: true,
+        }
+      );
     } catch (error) {
       console.error('Error loading default section visibility:', error);
       return {
-        hero: true, 'about-us': true, 'services-offered': true, 'recent-work': true,
-        gallery: true, 'packages-pricing': true, testimonials: true, faq: true,
-        contact: true, footer: true
+        hero: true,
+        'about-us': true,
+        'services-offered': true,
+        'recent-work': true,
+        gallery: true,
+        'packages-pricing': true,
+        testimonials: true,
+        faq: true,
+        contact: true,
+        footer: true,
       };
     }
   }
@@ -157,7 +195,9 @@ class WeddingService {
       if (this.mockMode) {
         await this._simulateDelay();
         const data = this._getWeddingData();
-        return this._createAPIResponse(this._convertVendorsToArray(data.vendors) || []);
+        return this._createAPIResponse(
+          this._convertVendorsToArray(data.vendors) || []
+        );
       }
 
       const response = await httpClient.get(WEDDING_ENDPOINTS.VENDORS);
@@ -173,7 +213,11 @@ class WeddingService {
       const data = this._getWeddingData();
 
       // Try object format first (new format)
-      if (data.vendors && typeof data.vendors === 'object' && !Array.isArray(data.vendors)) {
+      if (
+        data.vendors &&
+        typeof data.vendors === 'object' &&
+        !Array.isArray(data.vendors)
+      ) {
         return data.vendors[id] || null;
       }
 
@@ -229,7 +273,10 @@ class WeddingService {
         return this.getVendorsByLocation(city, state);
       }
 
-      const url = buildUrlWithParams(WEDDING_ENDPOINTS.VENDORS_BY_LOCATION, { city, state });
+      const url = buildUrlWithParams(WEDDING_ENDPOINTS.VENDORS_BY_LOCATION, {
+        city,
+        state,
+      });
       const response = await httpClient.get(url);
       return response.data;
     } catch (error) {
@@ -292,7 +339,9 @@ class WeddingService {
         return this.searchVendors(query);
       }
 
-      const url = buildUrlWithParams(WEDDING_ENDPOINTS.SEARCH_VENDORS, { q: query });
+      const url = buildUrlWithParams(WEDDING_ENDPOINTS.SEARCH_VENDORS, {
+        q: query,
+      });
       const response = await httpClient.get(url);
       return response.data;
     } catch (error) {
@@ -351,10 +400,17 @@ class WeddingService {
           createdAt: new Date().toISOString(),
         };
 
-        return this._createAPIResponse(newBooking, true, 'Booking created successfully');
+        return this._createAPIResponse(
+          newBooking,
+          true,
+          'Booking created successfully'
+        );
       }
 
-      const response = await httpClient.post(WEDDING_ENDPOINTS.BOOKINGS, bookingData);
+      const response = await httpClient.post(
+        WEDDING_ENDPOINTS.BOOKINGS,
+        bookingData
+      );
       return response.data;
     } catch (error) {
       return this._createAPIResponse(null, false, error.message);
@@ -377,10 +433,17 @@ class WeddingService {
           updatedAt: new Date().toISOString(),
         };
 
-        return this._createAPIResponse(updatedVendor, true, 'Vendor updated successfully');
+        return this._createAPIResponse(
+          updatedVendor,
+          true,
+          'Vendor updated successfully'
+        );
       }
 
-      const response = await httpClient.put(WEDDING_ENDPOINTS.VENDOR(vendorId), updateData);
+      const response = await httpClient.put(
+        WEDDING_ENDPOINTS.VENDOR(vendorId),
+        updateData
+      );
       return response.data;
     } catch (error) {
       return this._createAPIResponse(null, false, error.message);
@@ -403,10 +466,17 @@ class WeddingService {
           updatedAt: new Date().toISOString(),
         };
 
-        return this._createAPIResponse(updatedVendor, true, 'Vendor sections updated successfully');
+        return this._createAPIResponse(
+          updatedVendor,
+          true,
+          'Vendor sections updated successfully'
+        );
       }
 
-      const response = await httpClient.put(WEDDING_ENDPOINTS.VENDOR_SECTIONS(vendorId), sectionsData);
+      const response = await httpClient.put(
+        WEDDING_ENDPOINTS.VENDOR_SECTIONS(vendorId),
+        sectionsData
+      );
       return response.data;
     } catch (error) {
       return this._createAPIResponse(null, false, error.message);
@@ -428,7 +498,8 @@ class WeddingService {
         const stats = {
           vendorId,
           totalBookings: bookings.length,
-          confirmedBookings: bookings.filter(b => b.status === 'confirmed').length,
+          confirmedBookings: bookings.filter(b => b.status === 'confirmed')
+            .length,
           pendingBookings: bookings.filter(b => b.status === 'pending').length,
           totalRevenue: bookings
             .filter(b => b.status === 'confirmed')
@@ -440,7 +511,9 @@ class WeddingService {
         return this._createAPIResponse(stats, true);
       }
 
-      const response = await httpClient.get(WEDDING_ENDPOINTS.VENDOR_STATS(vendorId));
+      const response = await httpClient.get(
+        WEDDING_ENDPOINTS.VENDOR_STATS(vendorId)
+      );
       return response.data;
     } catch (error) {
       return this._createAPIResponse(null, false, error.message);
@@ -481,10 +554,17 @@ class WeddingService {
           updatedAt: new Date().toISOString(),
         };
 
-        return this._createAPIResponse(newVendor, true, 'Wedding website created successfully');
+        return this._createAPIResponse(
+          newVendor,
+          true,
+          'Wedding website created successfully'
+        );
       }
 
-      const response = await httpClient.post(WEDDING_ENDPOINTS.CREATE_WEBSITE, { vendorData, templateId });
+      const response = await httpClient.post(WEDDING_ENDPOINTS.CREATE_WEBSITE, {
+        vendorData,
+        templateId,
+      });
       return response.data;
     } catch (error) {
       return this._createAPIResponse(null, false, error.message);
@@ -502,10 +582,14 @@ const weddingService = new WeddingService();
 
 // Legacy compatibility exports
 export const weddingVendors = weddingService.getStaticWeddingVendors();
-export const getWeddingVendorById = weddingService.getVendorById.bind(weddingService);
-export const getWeddingFeaturedVendors = weddingService.getFeaturedVendors.bind(weddingService);
-export const getWeddingVendorsByLocation = weddingService.getVendorsByLocation.bind(weddingService);
-export const searchWeddingVendors = weddingService.searchVendors.bind(weddingService);
+export const getWeddingVendorById =
+  weddingService.getVendorById.bind(weddingService);
+export const getWeddingFeaturedVendors =
+  weddingService.getFeaturedVendors.bind(weddingService);
+export const getWeddingVendorsByLocation =
+  weddingService.getVendorsByLocation.bind(weddingService);
+export const searchWeddingVendors =
+  weddingService.searchVendors.bind(weddingService);
 
 export { WeddingService };
 export default weddingService;

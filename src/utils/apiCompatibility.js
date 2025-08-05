@@ -2,7 +2,9 @@
 // This file provides backward compatibility for existing imports
 // while allowing gradual migration to the new API structure
 
-console.warn('⚠️  Using compatibility layer for API imports. Please update imports to use the new API structure from src/api/services');
+console.warn(
+  '⚠️  Using compatibility layer for API imports. Please update imports to use the new API structure from src/api/services'
+);
 
 // Re-export all the API services with their legacy names
 export * from '../api/services';

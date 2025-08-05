@@ -36,7 +36,9 @@ class EcommerceService {
         return this._createAPIResponse(ecommerceData);
       }
 
-      const response = await httpClient.get(ECOMMERCE_ENDPOINTS.STORE(vendorSlug));
+      const response = await httpClient.get(
+        ECOMMERCE_ENDPOINTS.STORE(vendorSlug)
+      );
       return response.data;
     } catch (error) {
       throw new Error(`Failed to fetch store data: ${error.message}`);
@@ -54,7 +56,10 @@ class EcommerceService {
         );
       }
 
-      const response = await httpClient.put(ECOMMERCE_ENDPOINTS.STORE(vendorSlug), vendorData);
+      const response = await httpClient.put(
+        ECOMMERCE_ENDPOINTS.STORE(vendorSlug),
+        vendorData
+      );
       return response.data;
     } catch (error) {
       throw new Error(`Failed to update store info: ${error.message}`);
@@ -65,10 +70,16 @@ class EcommerceService {
     try {
       if (this.mockMode) {
         await this._simulateDelay(600);
-        return this._createAPIResponse(null, true, 'Store deleted successfully');
+        return this._createAPIResponse(
+          null,
+          true,
+          'Store deleted successfully'
+        );
       }
 
-      const response = await httpClient.delete(ECOMMERCE_ENDPOINTS.STORE(vendorSlug));
+      const response = await httpClient.delete(
+        ECOMMERCE_ENDPOINTS.STORE(vendorSlug)
+      );
       return response.data;
     } catch (error) {
       throw new Error(`Failed to delete store: ${error.message}`);
@@ -87,7 +98,10 @@ class EcommerceService {
         );
       }
 
-      const response = await httpClient.put(ECOMMERCE_ENDPOINTS.SECTIONS(vendorSlug), { sections });
+      const response = await httpClient.put(
+        ECOMMERCE_ENDPOINTS.SECTIONS(vendorSlug),
+        { sections }
+      );
       return response.data;
     } catch (error) {
       throw new Error(`Failed to update page sections: ${error.message}`);
@@ -105,7 +119,10 @@ class EcommerceService {
         );
       }
 
-      const response = await httpClient.put(ECOMMERCE_ENDPOINTS.SECTION(vendorSlug, sectionId), sectionData);
+      const response = await httpClient.put(
+        ECOMMERCE_ENDPOINTS.SECTION(vendorSlug, sectionId),
+        sectionData
+      );
       return response.data;
     } catch (error) {
       throw new Error(`Failed to update section: ${error.message}`);
@@ -122,11 +139,15 @@ class EcommerceService {
 
         // Apply filters
         if (filters.category && filters.category !== 'all') {
-          products = products.filter(product => product.category === filters.category);
+          products = products.filter(
+            product => product.category === filters.category
+          );
         }
 
         if (filters.availability && filters.availability !== 'all') {
-          products = products.filter(product => product.availability?.status === filters.availability);
+          products = products.filter(
+            product => product.availability?.status === filters.availability
+          );
         }
 
         if (filters.featured === 'true') {
@@ -140,7 +161,10 @@ class EcommerceService {
         return this._createAPIResponse(products);
       }
 
-      const url = buildUrlWithParams(ECOMMERCE_ENDPOINTS.PRODUCTS(vendorSlug), filters);
+      const url = buildUrlWithParams(
+        ECOMMERCE_ENDPOINTS.PRODUCTS(vendorSlug),
+        filters
+      );
       const response = await httpClient.get(url);
       return response.data;
     } catch (error) {
@@ -152,7 +176,9 @@ class EcommerceService {
     try {
       if (this.mockMode) {
         await this._simulateDelay(200);
-        const product = ecommerceData.products?.find(p => p.id === parseInt(productId));
+        const product = ecommerceData.products?.find(
+          p => p.id === parseInt(productId)
+        );
 
         if (!product) {
           throw new Error('Product not found');
@@ -161,7 +187,9 @@ class EcommerceService {
         return this._createAPIResponse(product);
       }
 
-      const response = await httpClient.get(ECOMMERCE_ENDPOINTS.PRODUCT(vendorSlug, productId));
+      const response = await httpClient.get(
+        ECOMMERCE_ENDPOINTS.PRODUCT(vendorSlug, productId)
+      );
       return response.data;
     } catch (error) {
       throw new Error(`Failed to fetch product: ${error.message}`);
@@ -186,7 +214,10 @@ class EcommerceService {
         );
       }
 
-      const response = await httpClient.post(ECOMMERCE_ENDPOINTS.PRODUCTS(vendorSlug), productData);
+      const response = await httpClient.post(
+        ECOMMERCE_ENDPOINTS.PRODUCTS(vendorSlug),
+        productData
+      );
       return response.data;
     } catch (error) {
       throw new Error(`Failed to create product: ${error.message}`);
@@ -210,7 +241,10 @@ class EcommerceService {
         );
       }
 
-      const response = await httpClient.put(ECOMMERCE_ENDPOINTS.PRODUCT(vendorSlug, productId), productData);
+      const response = await httpClient.put(
+        ECOMMERCE_ENDPOINTS.PRODUCT(vendorSlug, productId),
+        productData
+      );
       return response.data;
     } catch (error) {
       throw new Error(`Failed to update product: ${error.message}`);
@@ -221,10 +255,16 @@ class EcommerceService {
     try {
       if (this.mockMode) {
         await this._simulateDelay(400);
-        return this._createAPIResponse(null, true, 'Product deleted successfully');
+        return this._createAPIResponse(
+          null,
+          true,
+          'Product deleted successfully'
+        );
       }
 
-      const response = await httpClient.delete(ECOMMERCE_ENDPOINTS.PRODUCT(vendorSlug, productId));
+      const response = await httpClient.delete(
+        ECOMMERCE_ENDPOINTS.PRODUCT(vendorSlug, productId)
+      );
       return response.data;
     } catch (error) {
       throw new Error(`Failed to delete product: ${error.message}`);
@@ -235,10 +275,17 @@ class EcommerceService {
     try {
       if (this.mockMode) {
         await this._simulateDelay(1000);
-        return this._createAPIResponse(updates, true, 'Products updated successfully');
+        return this._createAPIResponse(
+          updates,
+          true,
+          'Products updated successfully'
+        );
       }
 
-      const response = await httpClient.put(ECOMMERCE_ENDPOINTS.BULK_PRODUCTS(vendorSlug), { updates });
+      const response = await httpClient.put(
+        ECOMMERCE_ENDPOINTS.BULK_PRODUCTS(vendorSlug),
+        { updates }
+      );
       return response.data;
     } catch (error) {
       throw new Error(`Failed to bulk update products: ${error.message}`);
@@ -253,7 +300,9 @@ class EcommerceService {
         return this._createAPIResponse(ecommerceData.categories || []);
       }
 
-      const response = await httpClient.get(ECOMMERCE_ENDPOINTS.CATEGORIES(vendorSlug));
+      const response = await httpClient.get(
+        ECOMMERCE_ENDPOINTS.CATEGORIES(vendorSlug)
+      );
       return response.data;
     } catch (error) {
       throw new Error(`Failed to fetch categories: ${error.message}`);
@@ -277,7 +326,10 @@ class EcommerceService {
         );
       }
 
-      const response = await httpClient.post(ECOMMERCE_ENDPOINTS.CATEGORIES(vendorSlug), categoryData);
+      const response = await httpClient.post(
+        ECOMMERCE_ENDPOINTS.CATEGORIES(vendorSlug),
+        categoryData
+      );
       return response.data;
     } catch (error) {
       throw new Error(`Failed to create category: ${error.message}`);
@@ -295,7 +347,10 @@ class EcommerceService {
         );
       }
 
-      const response = await httpClient.put(ECOMMERCE_ENDPOINTS.CATEGORY(vendorSlug, categoryId), categoryData);
+      const response = await httpClient.put(
+        ECOMMERCE_ENDPOINTS.CATEGORY(vendorSlug, categoryId),
+        categoryData
+      );
       return response.data;
     } catch (error) {
       throw new Error(`Failed to update category: ${error.message}`);
@@ -306,10 +361,16 @@ class EcommerceService {
     try {
       if (this.mockMode) {
         await this._simulateDelay(300);
-        return this._createAPIResponse(null, true, 'Category deleted successfully');
+        return this._createAPIResponse(
+          null,
+          true,
+          'Category deleted successfully'
+        );
       }
 
-      const response = await httpClient.delete(ECOMMERCE_ENDPOINTS.CATEGORY(vendorSlug, categoryId));
+      const response = await httpClient.delete(
+        ECOMMERCE_ENDPOINTS.CATEGORY(vendorSlug, categoryId)
+      );
       return response.data;
     } catch (error) {
       throw new Error(`Failed to delete category: ${error.message}`);
@@ -324,7 +385,10 @@ class EcommerceService {
         return this._createAPIResponse(ecommerceData.orders || []);
       }
 
-      const url = buildUrlWithParams(ECOMMERCE_ENDPOINTS.ORDERS(vendorSlug), filters);
+      const url = buildUrlWithParams(
+        ECOMMERCE_ENDPOINTS.ORDERS(vendorSlug),
+        filters
+      );
       const response = await httpClient.get(url);
       return response.data;
     } catch (error) {
@@ -343,7 +407,10 @@ class EcommerceService {
         );
       }
 
-      const response = await httpClient.put(ECOMMERCE_ENDPOINTS.ORDER_STATUS(vendorSlug, orderId), { status });
+      const response = await httpClient.put(
+        ECOMMERCE_ENDPOINTS.ORDER_STATUS(vendorSlug, orderId),
+        { status }
+      );
       return response.data;
     } catch (error) {
       throw new Error(`Failed to update order status: ${error.message}`);
@@ -358,7 +425,9 @@ class EcommerceService {
         return this._createAPIResponse(ecommerceData.enquiries || []);
       }
 
-      const response = await httpClient.get(ECOMMERCE_ENDPOINTS.ENQUIRIES(vendorSlug));
+      const response = await httpClient.get(
+        ECOMMERCE_ENDPOINTS.ENQUIRIES(vendorSlug)
+      );
       return response.data;
     } catch (error) {
       throw new Error(`Failed to fetch enquiries: ${error.message}`);
@@ -376,7 +445,10 @@ class EcommerceService {
         );
       }
 
-      const apiResponse = await httpClient.post(ECOMMERCE_ENDPOINTS.ENQUIRY_RESPOND(vendorSlug, enquiryId), { response });
+      const apiResponse = await httpClient.post(
+        ECOMMERCE_ENDPOINTS.ENQUIRY_RESPOND(vendorSlug, enquiryId),
+        { response }
+      );
       return apiResponse.data;
     } catch (error) {
       throw new Error(`Failed to respond to enquiry: ${error.message}`);
@@ -391,7 +463,11 @@ class EcommerceService {
         return this._createAPIResponse(ecommerceData.analytics || {});
       }
 
-      const response = await httpClient.get(buildUrlWithParams(ECOMMERCE_ENDPOINTS.ANALYTICS(vendorSlug), { period }));
+      const response = await httpClient.get(
+        buildUrlWithParams(ECOMMERCE_ENDPOINTS.ANALYTICS(vendorSlug), {
+          period,
+        })
+      );
       return response.data;
     } catch (error) {
       throw new Error(`Failed to fetch analytics: ${error.message}`);
@@ -403,10 +479,17 @@ class EcommerceService {
     try {
       if (this.mockMode) {
         await this._simulateDelay(200);
-        return this._createAPIResponse({ productId }, true, 'Added to wishlist');
+        return this._createAPIResponse(
+          { productId },
+          true,
+          'Added to wishlist'
+        );
       }
 
-      const response = await httpClient.post(ECOMMERCE_ENDPOINTS.WISHLIST(vendorSlug), { productId });
+      const response = await httpClient.post(
+        ECOMMERCE_ENDPOINTS.WISHLIST(vendorSlug),
+        { productId }
+      );
       return response.data;
     } catch (error) {
       throw new Error(`Failed to add to wishlist: ${error.message}`);
@@ -417,10 +500,16 @@ class EcommerceService {
     try {
       if (this.mockMode) {
         await this._simulateDelay(200);
-        return this._createAPIResponse({ productId }, true, 'Removed from wishlist');
+        return this._createAPIResponse(
+          { productId },
+          true,
+          'Removed from wishlist'
+        );
       }
 
-      const response = await httpClient.delete(ECOMMERCE_ENDPOINTS.WISHLIST_ITEM(vendorSlug, productId));
+      const response = await httpClient.delete(
+        ECOMMERCE_ENDPOINTS.WISHLIST_ITEM(vendorSlug, productId)
+      );
       return response.data;
     } catch (error) {
       throw new Error(`Failed to remove from wishlist: ${error.message}`);
@@ -452,7 +541,10 @@ class EcommerceService {
       }
 
       const searchParams = { query, ...filters };
-      const url = buildUrlWithParams(ECOMMERCE_ENDPOINTS.SEARCH_PRODUCTS(vendorSlug), searchParams);
+      const url = buildUrlWithParams(
+        ECOMMERCE_ENDPOINTS.SEARCH_PRODUCTS(vendorSlug),
+        searchParams
+      );
       const response = await httpClient.get(url);
       return response.data;
     } catch (error) {
@@ -476,7 +568,10 @@ class EcommerceService {
         );
       }
 
-      const response = await httpClient.post(ECOMMERCE_ENDPOINTS.SYNC(vendorSlug), completeData);
+      const response = await httpClient.post(
+        ECOMMERCE_ENDPOINTS.SYNC(vendorSlug),
+        completeData
+      );
       return response.data;
     } catch (error) {
       throw new Error(`Failed to sync data: ${error.message}`);

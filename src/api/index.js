@@ -2,10 +2,14 @@
 // Central exports for the entire API layer
 
 // Export HTTP client
-export { default as httpClient, HttpClient, APIError } from './client/httpClient';
+export {
+  default as httpClient,
+  HttpClient,
+  APIError,
+} from './client/httpClient';
 
 // Export configuration
-export { 
+export {
   default as apiConfig,
   API_CONFIG,
   HTTP_STATUS,
@@ -15,11 +19,11 @@ export {
   FEATURE_FLAGS,
   isDevelopment,
   isProduction,
-  isTest
+  isTest,
 } from './config/config';
 
 // Export endpoints
-export { 
+export {
   default as API_ENDPOINTS,
   AUTH_ENDPOINTS,
   BUSINESS_ENDPOINTS,
@@ -32,7 +36,7 @@ export {
   MEDIA_ENDPOINTS,
   SYSTEM_ENDPOINTS,
   buildQueryParams,
-  buildUrlWithParams
+  buildUrlWithParams,
 } from './config/endpoints';
 
 // Export all services
@@ -43,7 +47,7 @@ export {
   ecommerceService,
   hotelService,
   weddingService,
-  ecommerceUtils
+  ecommerceUtils,
 } from './services';
 
 // Re-export legacy API functions for backward compatibility

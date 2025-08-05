@@ -255,7 +255,10 @@ class AuthService {
   // Update user profile
   async updateProfile(profileData) {
     try {
-      const response = await httpClient.put(AUTH_ENDPOINTS.PROFILE, profileData);
+      const response = await httpClient.put(
+        AUTH_ENDPOINTS.PROFILE,
+        profileData
+      );
 
       if (response.data?.status === 'success' && response.data?.data) {
         return {

@@ -4,7 +4,7 @@
 // Environment-based configuration
 const getApiConfig = () => {
   const environment = process.env.NODE_ENV || 'development';
-  
+
   const configs = {
     development: {
       baseURL: process.env.REACT_APP_API_URL || 'http://localhost:5000/api',
@@ -36,7 +36,7 @@ export const HTTP_STATUS = {
   CREATED: 201,
   ACCEPTED: 202,
   NO_CONTENT: 204,
-  
+
   // Client Errors
   BAD_REQUEST: 400,
   UNAUTHORIZED: 401,
@@ -46,7 +46,7 @@ export const HTTP_STATUS = {
   CONFLICT: 409,
   UNPROCESSABLE_ENTITY: 422,
   TOO_MANY_REQUESTS: 429,
-  
+
   // Server Errors
   INTERNAL_SERVER_ERROR: 500,
   BAD_GATEWAY: 502,
@@ -67,9 +67,12 @@ export const TIMEOUTS = {
 export const RETRY_CONFIG = {
   maxRetries: 3,
   retryDelay: 1000,
-  retryCondition: (error) => {
+  retryCondition: error => {
     // Retry on network errors or 5xx server errors
-    return !error.response || (error.response.status >= 500 && error.response.status < 600);
+    return (
+      !error.response ||
+      (error.response.status >= 500 && error.response.status < 600)
+    );
   },
 };
 
@@ -119,7 +122,7 @@ export const CONTENT_TYPES = {
 // Common headers
 export const DEFAULT_HEADERS = {
   'Content-Type': CONTENT_TYPES.JSON,
-  'Accept': CONTENT_TYPES.JSON,
+  Accept: CONTENT_TYPES.JSON,
   'X-Requested-With': 'XMLHttpRequest',
 };
 

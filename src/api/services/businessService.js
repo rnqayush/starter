@@ -118,7 +118,9 @@ class BusinessService {
       }
 
       // Real API call
-      const response = await httpClient.get(BUSINESS_ENDPOINTS.BY_SLUG(businessSlug));
+      const response = await httpClient.get(
+        BUSINESS_ENDPOINTS.BY_SLUG(businessSlug)
+      );
       return response.data;
     } catch (error) {
       console.error(`Error fetching business data:`, error);
@@ -138,7 +140,9 @@ class BusinessService {
 
         const business = this._getBusinessDataBySlug(businessSlug);
         if (!business) {
-          throw new Error(`Failed to update business with slug "${businessSlug}"`);
+          throw new Error(
+            `Failed to update business with slug "${businessSlug}"`
+          );
         }
 
         const updatedBusiness = { ...business, ...updatedData };
@@ -156,7 +160,10 @@ class BusinessService {
       }
 
       // Real API call
-      const response = await httpClient.put(BUSINESS_ENDPOINTS.BY_SLUG(businessSlug), updatedData);
+      const response = await httpClient.put(
+        BUSINESS_ENDPOINTS.BY_SLUG(businessSlug),
+        updatedData
+      );
       return response.data;
     } catch (error) {
       console.error(`Error updating business data:`, error);
@@ -179,7 +186,9 @@ class BusinessService {
           throw new Error(`Business with slug "${businessSlug}" not found`);
         }
 
-        const sectionData = sectionName ? businessData[sectionName] : businessData;
+        const sectionData = sectionName
+          ? businessData[sectionName]
+          : businessData;
 
         if (sectionName && !sectionData) {
           throw new Error(
@@ -187,7 +196,10 @@ class BusinessService {
           );
         }
 
-        console.log(`[MOCK API] Successfully fetched section data:`, sectionData);
+        console.log(
+          `[MOCK API] Successfully fetched section data:`,
+          sectionData
+        );
 
         return this._createAPIResponse(
           sectionData,
@@ -197,10 +209,10 @@ class BusinessService {
       }
 
       // Real API call
-      const endpoint = sectionName 
+      const endpoint = sectionName
         ? BUSINESS_ENDPOINTS.SECTION(businessSlug, sectionName)
         : BUSINESS_ENDPOINTS.SECTIONS(businessSlug);
-      
+
       const response = await httpClient.get(endpoint);
       return response.data;
     } catch (error) {
@@ -242,7 +254,7 @@ class BusinessService {
 
       // Real API call
       const response = await httpClient.put(
-        BUSINESS_ENDPOINTS.SECTION(businessSlug, sectionName), 
+        BUSINESS_ENDPOINTS.SECTION(businessSlug, sectionName),
         sectionData
       );
       return response.data;
@@ -256,12 +268,17 @@ class BusinessService {
   async fetchMultipleBusinessData(businessSlugs) {
     try {
       if (this.mockMode) {
-        console.log(`[MOCK API] Fetching multiple business data:`, businessSlugs);
+        console.log(
+          `[MOCK API] Fetching multiple business data:`,
+          businessSlugs
+        );
         await this._simulateDelay(600);
 
         const businessesData = businessSlugs.map(slug => {
           const data = this._getBusinessDataBySlug(slug);
-          return data ? { slug, data } : { slug, data: null, error: 'Not found' };
+          return data
+            ? { slug, data }
+            : { slug, data: null, error: 'Not found' };
         });
 
         console.log(
@@ -277,7 +294,9 @@ class BusinessService {
       }
 
       // Real API call
-      const response = await httpClient.post(BUSINESS_ENDPOINTS.MULTIPLE, { slugs: businessSlugs });
+      const response = await httpClient.post(BUSINESS_ENDPOINTS.MULTIPLE, {
+        slugs: businessSlugs,
+      });
       return response.data;
     } catch (error) {
       console.error(`Error fetching multiple business data:`, error);
@@ -327,11 +346,18 @@ class BusinessService {
 
         console.log(`[MOCK API] Validation result:`, validationResult);
 
-        return this._createAPIResponse(validationResult, true, 'Business data validated');
+        return this._createAPIResponse(
+          validationResult,
+          true,
+          'Business data validated'
+        );
       }
 
       // Real API call
-      const response = await httpClient.post(BUSINESS_ENDPOINTS.VALIDATE(''), businessData);
+      const response = await httpClient.post(
+        BUSINESS_ENDPOINTS.VALIDATE(''),
+        businessData
+      );
       return response.data;
     } catch (error) {
       console.error(`Error validating business data:`, error);
