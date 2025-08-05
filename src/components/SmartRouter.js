@@ -23,6 +23,8 @@ const SmartRouter = () => {
   const [moduleType, setModuleType] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [websiteData, setWebsiteData] = useState(null);
+  const [hotelData, setHotelData] = useState(null);
+  const [error, setError] = useState(null);
 
   // Helper function to determine module type based on slug
   const getModuleTypeFromDummyData = slug => {
@@ -49,6 +51,9 @@ const SmartRouter = () => {
   useEffect(() => {
     const checkWebsiteExists = async () => {
       setIsLoading(true);
+      setError(null);
+      setWebsiteData(null);
+      setHotelData(null);
       
       try {
         // First, try to get website from backend
@@ -56,7 +61,14 @@ const SmartRouter = () => {
         
         if (result.success && result.data) {
           console.log('✅ Found website in backend:', result.data);
-          setWebsiteData(result.data);
+          const website = result.data.website || result.data;
+          setWebsiteData(website);
+          
+          // If hotel data is included in the response, use it
+          if (result.data.hotel) {
+            console.log('✅ Found hotel data in website response:', result.data.hotel);
+            setHotelData(result.data.hotel);
+          }
           
           // Map backend website types to module types
           const typeMapping = {
@@ -67,7 +79,7 @@ const SmartRouter = () => {
             'professional': 'business'
           };
           
-          const detectedType = typeMapping[result.data.websiteType] || result.data.websiteType;
+          const detectedType = typeMapping[website.websiteType] || website.websiteType;
           setModuleType(detectedType);
           setIsLoading(false);
           return;
@@ -104,8 +116,14 @@ const SmartRouter = () => {
 
       // Final fallback: Check dummy data
       const dummyDataType = getModuleTypeFromDummyData(slug);
-      setModuleType(dummyDataType);
-      setIsLoading(false);
+      if (dummyDataType) {
+        setModuleType(dummyDataType);
+        setIsLoading(false);
+      } else {
+        // No data found anywhere
+        setError('Website not found');
+        setIsLoading(false);
+      }
     };
 
     if (slug) {
@@ -152,6 +170,47 @@ const SmartRouter = () => {
     );
   }
 
+  // Show error state
+  if (error) {
+    return (
+      <div
+        style={{
+          padding: '4rem',
+          textAlign: 'center',
+          backgroundColor: '#f8fafc',
+          minHeight: '100vh',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <h1 style={{ fontSize: '3rem', color: '#ef4444', marginBottom: '1rem' }}>
+          404
+        </h1>
+        <h2 style={{ fontSize: '1.5rem', color: '#374151', marginBottom: '1rem' }}>
+          Website Not Found
+        </h2>
+        <p style={{ color: '#6b7280', marginBottom: '2rem' }}>
+          The website "{slug}" doesn't exist or hasn't been published yet.
+        </p>
+        <a
+          href="/"
+          style={{
+            padding: '0.75rem 1.5rem',
+            backgroundColor: '#3b82f6',
+            color: 'white',
+            textDecoration: 'none',
+            borderRadius: '0.5rem',
+            fontWeight: '500',
+          }}
+        >
+          Go Home
+        </a>
+      </div>
+    );
+  }
+
   // If no module found, show 404
   if (!moduleType) {
     return (
@@ -194,7 +253,7 @@ const SmartRouter = () => {
   // Route to appropriate module based on detected type
   switch (moduleType) {
     case 'hotel':
-      return <HotelModule websiteData={websiteData} />;
+      return <HotelModule websiteData={websiteData} hotelData={hotelData} />;
     case 'ecommerce':
       return <EcommerceModule websiteData={websiteData} />;
     case 'automobile':

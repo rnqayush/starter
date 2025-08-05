@@ -228,13 +228,36 @@ class WebsiteController {
       // Increment view count
       await website.incrementViews();
 
+      // Prepare response data
+      let responseData = {
+        website,
+        url: website.getFullUrl(),
+      };
+
+      // If it's a hotel website, also fetch the hotel data
+      if (website.websiteType === 'hotels') {
+        try {
+          const Hotel = require('../models/Hotel');
+          const hotel = await Hotel.findOne({ slug: websiteName })
+            .populate('owner', 'name email')
+            .select('-__v');
+          
+          if (hotel) {
+            responseData.hotel = hotel;
+            console.log('✅ Found hotel data for website:', websiteName);
+          } else {
+            console.log('⚠️ No hotel data found for website:', websiteName);
+          }
+        } catch (hotelError) {
+          console.error('Error fetching hotel data:', hotelError);
+          // Continue without hotel data - frontend will handle fallback
+        }
+      }
+
       res.status(200).json({
         status: 'success',
         message: 'Website retrieved successfully',
-        data: {
-          website,
-          url: website.getFullUrl(),
-        },
+        data: responseData,
       });
     } catch (error) {
       console.error('Get website by name error:', error);
