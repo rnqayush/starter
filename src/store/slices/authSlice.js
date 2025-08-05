@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import usersData from '../../DummyData/users.json';
+import { registerUser as registerUserAPI, loginUser as loginUserAPI, logoutUser as logoutUserAPI } from '../../api/endpoints/auth';
 
 // Helper function to extract name from email
 const getNameFromEmail = email => {
