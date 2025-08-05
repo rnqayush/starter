@@ -33,34 +33,6 @@ export default apiServices;
 // Legacy exports for backward compatibility
 // These match the old file structure for existing components
 
-// Authentication exports (from old src/api/endpoints/auth.js)
-export {
-  registerUser,
-  loginUser,
-  logoutUser,
-  refreshAuthToken,
-  forgotPassword,
-  resetPassword,
-  verifyEmail,
-  resendVerificationEmail,
-} from './authService';
-
-// Business exports (from old src/utils/businessAPI.js)
-export {
-  fetchBusinessData,
-  updateBusinessData,
-  fetchBusinessSection,
-  updateBusinessSection,
-  fetchMultipleBusinessData,
-  validateBusinessData,
-  checkAPIStatus,
-  detectBusinessType,
-  getBusinessTypeConfig,
-} from './businessService';
-
-// Note: These legacy exports are wrappers around the service methods
-// to maintain backward compatibility
-
 // Auth legacy wrappers
 export const registerUser = authService.register.bind(authService);
 export const loginUser = authService.login.bind(authService);
