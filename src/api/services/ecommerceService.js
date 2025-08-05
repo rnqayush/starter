@@ -490,7 +490,7 @@ class EcommerceService {
 }
 
 // Utility functions for working with ecommerce data
-export const ecommerceUtils = {
+const ecommerceUtils = {
   // Product utilities
   formatPrice: (price, currency = 'USD') => {
     return new Intl.NumberFormat('en-US', {
