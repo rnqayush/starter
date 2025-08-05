@@ -532,6 +532,32 @@ const AuthPrompt = styled.div`
   }
 `;
 
+const ErrorMessage = styled.div`
+  background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+  border: 2px solid #ef4444;
+  border-radius: 16px;
+  padding: ${theme.spacing.lg};
+  text-align: center;
+  margin: ${theme.spacing.lg} 0;
+  color: #dc2626;
+  font-weight: 500;
+`;
+
+const LoadingSpinner = styled.div`
+  display: inline-flex;
+  align-items: center;
+  gap: ${theme.spacing.sm};
+
+  svg {
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+`;
+
 const StartBuilding = () => {
   const navigate = useNavigate();
   const isAuthenticated = useSelector(selectIsAuthenticated);
