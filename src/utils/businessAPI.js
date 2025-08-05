@@ -4,17 +4,16 @@
 
 import { businessService } from '../api/services';
 
-// Helper function to get business data by slug
-const getBusinessWebsiteData = slug => {
-  // Map common slugs to the correct data
-  if (slug === 'salon' || slug === 'business') {
-    return businessData.data?.portfolio?.buisness || null;
-  }
-  if (slug === 'freelancer' || slug === 'personal') {
-    return businessData.data?.portfolio?.personal || null;
-  }
-  return null;
-};
+// Re-export all functions from the new business service
+export const getBusinessTypeConfig = businessService.getBusinessTypeConfig.bind(businessService);
+export const detectBusinessType = businessService.detectBusinessType.bind(businessService);
+export const fetchBusinessData = businessService.fetchBusinessData.bind(businessService);
+export const updateBusinessData = businessService.updateBusinessData.bind(businessService);
+export const fetchBusinessSection = businessService.fetchBusinessSection.bind(businessService);
+export const updateBusinessSection = businessService.updateBusinessSection.bind(businessService);
+export const fetchMultipleBusinessData = businessService.fetchMultipleBusinessData.bind(businessService);
+export const validateBusinessData = businessService.validateBusinessData.bind(businessService);
+export const checkAPIStatus = businessService.checkAPIStatus.bind(businessService);
 
 // Helper function to update business data (for demo purposes)
 const updateBusinessWebsiteData = (slug, updatedData) => {
