@@ -4,7 +4,7 @@ import BusinessWebsitePage from './pages/BusinessWebsitePage';
 import FreelancerPortfolioPage from './pages/FreelancerPortfolioPage';
 import { detectBusinessType } from '../api/services';
 
-const BusinessModule = () => {
+const BusinessModule = ({ websiteData }) => {
   const [isPersonalPortfolio, setIsPersonalPortfolio] = useState(false);
   const [loading, setLoading] = useState(true);
   const { slug } = useParams();
@@ -73,9 +73,9 @@ const BusinessModule = () => {
 
   // Render different pages based on the business type detected from slug
   if (isPersonalPortfolio) {
-    return <FreelancerPortfolioPage />;
+    return <FreelancerPortfolioPage websiteData={websiteData} />;
   } else {
-    return <BusinessWebsitePage />;
+    return <BusinessWebsitePage websiteData={websiteData} />;
   }
 };
 

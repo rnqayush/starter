@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import HotelModule from '../hotel';
 import EcommerceModule from '../ecommerce';
@@ -14,14 +14,18 @@ import {
 } from '../DummyData';
 import HotelDetail from '../hotel/pages/HotelDetail';
 import EcommerceMain from '../ecommerce/pages/EcommerceMain';
+import websiteService from '../api/services/websiteService';
 
 const SmartRouter = () => {
   const { slug } = useParams();
   const location = useLocation();
   const path = location.pathname;
+  const [moduleType, setModuleType] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [websiteData, setWebsiteData] = useState(null);
 
   // Helper function to determine module type based on slug
-  const getModuleType = slug => {
+  const getModuleTypeFromDummyData = slug => {
     // Check each data source to determine the module type // api call to find type
     const hotel = getHotelBySlug(slug);
     if (hotel) return 'hotel';
@@ -41,7 +45,112 @@ const SmartRouter = () => {
     return null;
   };
 
-  const moduleType = getModuleType(slug);
+  // Check for website in backend or localStorage
+  useEffect(() => {
+    const checkWebsiteExists = async () => {
+      setIsLoading(true);
+      
+      try {
+        // First, try to get website from backend
+        const result = await websiteService.getByName(slug);
+        
+        if (result.success && result.data) {
+          console.log('✅ Found website in backend:', result.data);
+          setWebsiteData(result.data);
+          
+          // Map backend website types to module types
+          const typeMapping = {
+            'hotels': 'hotel',
+            'ecommerce': 'ecommerce', 
+            'automobiles': 'automobile',
+            'weddings': 'wedding',
+            'professional': 'business'
+          };
+          
+          const detectedType = typeMapping[result.data.websiteType] || result.data.websiteType;
+          setModuleType(detectedType);
+          setIsLoading(false);
+          return;
+        }
+      } catch (error) {
+        console.log('⚠️ Backend not available, checking localStorage and dummy data');
+      }
+
+      // Fallback: Check localStorage for demo websites
+      try {
+        const demoWebsite = localStorage.getItem(`website_${slug}`);
+        if (demoWebsite) {
+          const parsedWebsite = JSON.parse(demoWebsite);
+          console.log('✅ Found demo website in localStorage:', parsedWebsite);
+          setWebsiteData(parsedWebsite);
+          
+          // Map demo website types to module types
+          const typeMapping = {
+            'hotels': 'hotel',
+            'ecommerce': 'ecommerce',
+            'automobiles': 'automobile', 
+            'weddings': 'wedding',
+            'professional': 'business'
+          };
+          
+          const detectedType = typeMapping[parsedWebsite.websiteType] || parsedWebsite.websiteType;
+          setModuleType(detectedType);
+          setIsLoading(false);
+          return;
+        }
+      } catch (error) {
+        console.log('⚠️ Error checking localStorage:', error);
+      }
+
+      // Final fallback: Check dummy data
+      const dummyDataType = getModuleTypeFromDummyData(slug);
+      setModuleType(dummyDataType);
+      setIsLoading(false);
+    };
+
+    if (slug) {
+      checkWebsiteExists();
+    }
+  }, [slug]);
+
+  // Show loading state while checking for website
+  if (isLoading) {
+    return (
+      <div
+        style={{
+          padding: '4rem',
+          textAlign: 'center',
+          backgroundColor: '#f8fafc',
+          minHeight: '100vh',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <div
+          style={{
+            width: '40px',
+            height: '40px',
+            border: '4px solid #e5e7eb',
+            borderTop: '4px solid #3b82f6',
+            borderRadius: '50%',
+            animation: 'spin 1s linear infinite',
+            marginBottom: '1rem',
+          }}
+        ></div>
+        <p style={{ color: '#6b7280' }}>Loading your website...</p>
+        <style>
+          {`
+            @keyframes spin {
+              0% { transform: rotate(0deg); }
+              100% { transform: rotate(360deg); }
+            }
+          `}
+        </style>
+      </div>
+    );
+  }
 
   // If no module found, show 404
   if (!moduleType) {
@@ -85,15 +194,15 @@ const SmartRouter = () => {
   // Route to appropriate module based on detected type
   switch (moduleType) {
     case 'hotel':
-      return <HotelModule />;
+      return <HotelModule websiteData={websiteData} />;
     case 'ecommerce':
-      return <EcommerceModule />;
+      return <EcommerceModule websiteData={websiteData} />;
     case 'automobile':
-      return <AutomobileModule />;
+      return <AutomobileModule websiteData={websiteData} />;
     case 'wedding':
-      return <WeddingModule />;
+      return <WeddingModule websiteData={websiteData} />;
     case 'business':
-      return <BusinessModule />;
+      return <BusinessModule websiteData={websiteData} />;
     default:
       return (
         <div style={{ padding: '4rem', textAlign: 'center' }}>
