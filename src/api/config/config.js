@@ -172,7 +172,7 @@ export const FEATURE_FLAGS = {
   enableRetry: true,
 };
 
-export default {
+const configBundle = {
   API_CONFIG,
   HTTP_STATUS,
   TIMEOUTS,
@@ -190,3 +190,5 @@ export default {
   isProduction,
   isTest,
 };
+
+export default configBundle;
