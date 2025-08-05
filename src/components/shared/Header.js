@@ -861,8 +861,8 @@ const Header = ({ isOwnerView = false }) => {
     setProfileDropdownOpen(!profileDropdownOpen);
   const closeProfileDropdown = () => setProfileDropdownOpen(false);
 
-  const handleLogout = () => {
-    dispatch(logout());
+  const handleLogout = async () => {
+    await dispatch(logoutUser());
     closeProfileDropdown();
     closeMobileMenu();
   };
