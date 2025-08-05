@@ -15,6 +15,7 @@ import {
 import HotelDetail from '../hotel/pages/HotelDetail';
 import EcommerceMain from '../ecommerce/pages/EcommerceMain';
 import websiteService from '../api/services/websiteService';
+import hotelService from '../api/services/hotelService';
 
 const SmartRouter = () => {
   const { slug } = useParams();
@@ -23,6 +24,8 @@ const SmartRouter = () => {
   const [moduleType, setModuleType] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [websiteData, setWebsiteData] = useState(null);
+  const [hotelData, setHotelData] = useState(null);
+  const [error, setError] = useState(null);
 
   // Helper function to determine module type based on slug
   const getModuleTypeFromDummyData = slug => {
@@ -45,20 +48,25 @@ const SmartRouter = () => {
     return null;
   };
 
-  // Check for website in backend or localStorage
+  // Check for website in backend and fetch appropriate data
   useEffect(() => {
-    const checkWebsiteExists = async () => {
+    const loadWebsiteData = async () => {
       setIsLoading(true);
+      setError(null);
+      setWebsiteData(null);
+      setHotelData(null);
       
       try {
-        // First, try to get website from backend
-        const result = await websiteService.getByName(slug);
+        // Step 1: Get website metadata from backend
+        console.log('🔍 Checking for website:', slug);
+        const websiteResult = await websiteService.getByName(slug);
         
-        if (result.success && result.data) {
-          console.log('✅ Found website in backend:', result.data);
-          setWebsiteData(result.data);
+        if (websiteResult.success && websiteResult.data) {
+          const website = websiteResult.data.website || websiteResult.data;
+          console.log('✅ Found website in backend:', website);
+          setWebsiteData(website);
           
-          // Map backend website types to module types
+          // Step 2: Determine module type and fetch specific data
           const typeMapping = {
             'hotels': 'hotel',
             'ecommerce': 'ecommerce', 
@@ -67,13 +75,28 @@ const SmartRouter = () => {
             'professional': 'business'
           };
           
-          const detectedType = typeMapping[result.data.websiteType] || result.data.websiteType;
+          const detectedType = typeMapping[website.websiteType] || website.websiteType;
           setModuleType(detectedType);
+          
+          // Step 3: If it's a hotel website, fetch hotel-specific data
+          if (website.websiteType === 'hotels') {
+            console.log('🏨 Fetching hotel data for:', slug);
+            const hotelResult = await hotelService.getHotel(slug);
+            
+            if (hotelResult.success && hotelResult.data) {
+              console.log('✅ Found hotel data:', hotelResult.data);
+              setHotelData(hotelResult.data);
+            } else {
+              console.log('⚠️ Hotel data not found, will use dummy data fallback');
+              // Don't set error here, let the hotel module handle dummy data
+            }
+          }
+          
           setIsLoading(false);
           return;
         }
       } catch (error) {
-        console.log('⚠️ Backend not available, checking localStorage and dummy data');
+        console.log('⚠️ Backend API error:', error);
       }
 
       // Fallback: Check localStorage for demo websites
@@ -84,7 +107,6 @@ const SmartRouter = () => {
           console.log('✅ Found demo website in localStorage:', parsedWebsite);
           setWebsiteData(parsedWebsite);
           
-          // Map demo website types to module types
           const typeMapping = {
             'hotels': 'hotel',
             'ecommerce': 'ecommerce',
@@ -104,12 +126,18 @@ const SmartRouter = () => {
 
       // Final fallback: Check dummy data
       const dummyDataType = getModuleTypeFromDummyData(slug);
-      setModuleType(dummyDataType);
-      setIsLoading(false);
+      if (dummyDataType) {
+        setModuleType(dummyDataType);
+        setIsLoading(false);
+      } else {
+        // No data found anywhere
+        setError('Website not found');
+        setIsLoading(false);
+      }
     };
 
     if (slug) {
-      checkWebsiteExists();
+      loadWebsiteData();
     }
   }, [slug]);
 
@@ -148,6 +176,47 @@ const SmartRouter = () => {
             }
           `}
         </style>
+      </div>
+    );
+  }
+
+  // Show error state
+  if (error) {
+    return (
+      <div
+        style={{
+          padding: '4rem',
+          textAlign: 'center',
+          backgroundColor: '#f8fafc',
+          minHeight: '100vh',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <h1 style={{ fontSize: '3rem', color: '#ef4444', marginBottom: '1rem' }}>
+          404
+        </h1>
+        <h2 style={{ fontSize: '1.5rem', color: '#374151', marginBottom: '1rem' }}>
+          Website Not Found
+        </h2>
+        <p style={{ color: '#6b7280', marginBottom: '2rem' }}>
+          The website "{slug}" doesn't exist or hasn't been published yet.
+        </p>
+        <a
+          href="/"
+          style={{
+            padding: '0.75rem 1.5rem',
+            backgroundColor: '#3b82f6',
+            color: 'white',
+            textDecoration: 'none',
+            borderRadius: '0.5rem',
+            fontWeight: '500',
+          }}
+        >
+          Go Home
+        </a>
       </div>
     );
   }
@@ -194,7 +263,7 @@ const SmartRouter = () => {
   // Route to appropriate module based on detected type
   switch (moduleType) {
     case 'hotel':
-      return <HotelModule websiteData={websiteData} />;
+      return <HotelModule websiteData={websiteData} hotelData={hotelData} />;
     case 'ecommerce':
       return <EcommerceModule websiteData={websiteData} />;
     case 'automobile':
