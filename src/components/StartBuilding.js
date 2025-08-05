@@ -20,6 +20,7 @@ import { Button } from './shared/Button';
 import { websiteTypes, colorOptions } from '../DummyData/index';
 import { selectIsAuthenticated, selectUser } from '../store/slices/authSlice';
 import websiteService from '../api/services/websiteService';
+import { testBackendConnection } from '../utils/testBackend';
 
 const Container = styled.div`
   min-height: 100vh;
