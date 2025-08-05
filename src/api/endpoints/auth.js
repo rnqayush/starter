@@ -118,25 +118,25 @@ export const logoutUser = async () => {
 // Refresh auth token
 export const refreshAuthToken = async () => {
   try {
-    const refreshToken = localStorage.getItem('refreshToken');
+    const refreshToken = httpClient.getRefreshToken();
 
     if (!refreshToken) {
       throw new Error('No refresh token available');
     }
 
-    const response = await networkManager.post(AUTH_ENDPOINTS.REFRESH_TOKEN, {
+    const response = await httpClient.post(AUTH_ENDPOINTS.REFRESH_TOKEN, {
       refreshToken,
     });
 
-    if (response.status === 'success' && response.data) {
-      const { token, refreshToken: newRefreshToken } = response.data;
+    if (response.data?.status === 'success' && response.data?.data) {
+      const { token, refreshToken: newRefreshToken } = response.data.data;
 
       // Update stored tokens
       if (token) {
-        networkManager.setAuthToken(token);
+        httpClient.setAuthToken(token);
       }
       if (newRefreshToken) {
-        localStorage.setItem('refreshToken', newRefreshToken);
+        httpClient.setRefreshToken(newRefreshToken);
       }
 
       return {
@@ -146,12 +146,12 @@ export const refreshAuthToken = async () => {
       };
     }
 
-    throw new Error(response.message || 'Token refresh failed');
+    throw new Error(response.data?.message || 'Token refresh failed');
   } catch (error) {
     console.error('Token refresh error:', error);
 
     // Clear tokens if refresh fails
-    networkManager.removeAuthToken();
+    httpClient.clearAuth();
 
     return {
       success: false,
