@@ -54,21 +54,21 @@ export const registerUser = async userData => {
 // Login user
 export const loginUser = async credentials => {
   try {
-    const response = await networkManager.post(
+    const response = await httpClient.post(
       AUTH_ENDPOINTS.LOGIN,
       credentials
     );
 
     // Handle successful login response
-    if (response.status === 'success' && response.data) {
-      const { user, token, refreshToken } = response.data;
+    if (response.data?.status === 'success' && response.data?.data) {
+      const { user, token, refreshToken } = response.data.data;
 
       // Store tokens
       if (token) {
-        networkManager.setAuthToken(token);
+        httpClient.setAuthToken(token);
       }
       if (refreshToken) {
-        localStorage.setItem('refreshToken', refreshToken);
+        httpClient.setRefreshToken(refreshToken);
       }
 
       return {
@@ -76,11 +76,11 @@ export const loginUser = async credentials => {
         user,
         token,
         refreshToken,
-        message: response.message,
+        message: response.data.message,
       };
     }
 
-    throw new Error(response.message || 'Login failed');
+    throw new Error(response.data?.message || 'Login failed');
   } catch (error) {
     console.error('Login error:', error);
     return {
