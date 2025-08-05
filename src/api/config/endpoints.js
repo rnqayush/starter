@@ -30,31 +30,11 @@ export const BUSINESS_ENDPOINTS = {
 
 // E-commerce endpoints
 export const ECOMMERCE_ENDPOINTS = {
-  BASE: `${BASE_PATH}/stores`,
-  STORE: slug => `${BASE_PATH}/stores/${slug}`,
-  PRODUCTS: slug => `${BASE_PATH}/stores/${slug}/products`,
-  PRODUCT: (slug, productId) =>
-    `${BASE_PATH}/stores/${slug}/products/${productId}`,
-  CATEGORIES: slug => `${BASE_PATH}/stores/${slug}/categories`,
-  CATEGORY: (slug, categoryId) =>
-    `${BASE_PATH}/stores/${slug}/categories/${categoryId}`,
-  ORDERS: slug => `${BASE_PATH}/stores/${slug}/orders`,
-  ORDER: (slug, orderId) => `${BASE_PATH}/stores/${slug}/orders/${orderId}`,
-  ORDER_STATUS: (slug, orderId) =>
-    `${BASE_PATH}/stores/${slug}/orders/${orderId}/status`,
-  ENQUIRIES: slug => `${BASE_PATH}/stores/${slug}/enquiries`,
-  ENQUIRY_RESPOND: (slug, enquiryId) =>
-    `${BASE_PATH}/stores/${slug}/enquiries/${enquiryId}/respond`,
-  ANALYTICS: slug => `${BASE_PATH}/stores/${slug}/analytics`,
-  WISHLIST: slug => `${BASE_PATH}/stores/${slug}/wishlist`,
-  WISHLIST_ITEM: (slug, productId) =>
-    `${BASE_PATH}/stores/${slug}/wishlist/${productId}`,
-  BULK_PRODUCTS: slug => `${BASE_PATH}/stores/${slug}/products/bulk`,
-  SEARCH_PRODUCTS: slug => `${BASE_PATH}/stores/${slug}/products/search`,
-  SYNC: slug => `${BASE_PATH}/stores/${slug}/sync`,
-  SECTIONS: slug => `${BASE_PATH}/stores/${slug}/sections`,
-  SECTION: (slug, sectionId) =>
-    `${BASE_PATH}/stores/${slug}/sections/${sectionId}`,
+  BASE: `${BASE_PATH}/ecommerce`,
+  STORE: slug => `${BASE_PATH}/ecommerce/${slug}`,
+  PRODUCTS: slug => `${BASE_PATH}/ecommerce/${slug}/products`,
+  PRODUCT: (slug, productId) => `${BASE_PATH}/ecommerce/${slug}/products/${productId}`,
+  START_BUILDING: `${BASE_PATH}/ecommerce/start-building`,
 };
 
 // Hotel endpoints
