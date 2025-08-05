@@ -15,6 +15,8 @@ const generateAvatar = name => {
 
 const initialState = {
   user: null,
+  token: null,
+  refreshToken: null,
   isAuthenticated: false,
   loading: false,
   error: null,
