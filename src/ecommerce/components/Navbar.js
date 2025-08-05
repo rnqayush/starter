@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import {
   selectUser,
   selectIsAuthenticated,
-  logout,
+  logoutUser,
 } from '../../store/slices/authSlice';
 import AuthModal from '../../components/auth/AuthModal';
 import UserProfile from '../../components/user/UserProfile';
