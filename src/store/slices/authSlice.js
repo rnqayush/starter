@@ -1,5 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { registerUser as registerUserAPI, loginUser as loginUserAPI, logoutUser as logoutUserAPI } from '../../api/endpoints/auth';
+import {
+  registerUser as registerUserAPI,
+  loginUser as loginUserAPI,
+  logoutUser as logoutUserAPI,
+} from '../../api/endpoints/auth';
 
 // Helper function to extract name from email
 const getNameFromEmail = email => {
@@ -182,11 +186,13 @@ export const loginUser = credentials => async dispatch => {
     const result = await loginUserAPI(credentials);
 
     if (result.success) {
-      dispatch(loginSuccess({
-        user: result.user,
-        token: result.token,
-        refreshToken: result.refreshToken,
-      }));
+      dispatch(
+        loginSuccess({
+          user: result.user,
+          token: result.token,
+          refreshToken: result.refreshToken,
+        })
+      );
       return { success: true, user: result.user };
     } else {
       throw new Error(result.error);
@@ -204,11 +210,13 @@ export const registerUser = userData => async dispatch => {
     const result = await registerUserAPI(userData);
 
     if (result.success) {
-      dispatch(registerSuccess({
-        user: result.user,
-        token: result.token,
-        refreshToken: result.refreshToken,
-      }));
+      dispatch(
+        registerSuccess({
+          user: result.user,
+          token: result.token,
+          refreshToken: result.refreshToken,
+        })
+      );
       return { success: true, user: result.user };
     } else {
       throw new Error(result.error);

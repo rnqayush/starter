@@ -1,5 +1,6 @@
 // Base API URL
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+const API_BASE_URL =
+  process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 
 // API response status codes
 export const STATUS_CODES = {
@@ -50,12 +51,12 @@ class NetworkManager {
   // Get headers with auth token if available
   getHeaders(customHeaders = {}) {
     const headers = { ...this.defaultHeaders, ...customHeaders };
-    
+
     const token = this.getAuthToken();
     if (token) {
       headers.Authorization = `Bearer ${token}`;
     }
-    
+
     return headers;
   }
 
@@ -77,7 +78,10 @@ class NetworkManager {
     }
 
     // Handle error responses
-    const errorMessage = data?.message || data?.error || `HTTP ${response.status}: ${response.statusText}`;
+    const errorMessage =
+      data?.message ||
+      data?.error ||
+      `HTTP ${response.status}: ${response.statusText}`;
     throw new APIError(errorMessage, response.status, data);
   }
 
@@ -96,7 +100,7 @@ class NetworkManager {
       if (error instanceof APIError) {
         throw error;
       }
-      
+
       // Handle network errors
       throw new APIError(
         'Network error occurred. Please check your connection.',
@@ -110,7 +114,7 @@ class NetworkManager {
   async get(endpoint, params = {}, options = {}) {
     const queryString = new URLSearchParams(params).toString();
     const url = queryString ? `${endpoint}?${queryString}` : endpoint;
-    
+
     return this.request(url, {
       method: 'GET',
       ...options,

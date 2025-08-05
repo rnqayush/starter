@@ -44,10 +44,13 @@ const TestButton = styled.button`
 const ResultContainer = styled.div`
   margin-top: 1rem;
   padding: 1rem;
-  background: ${({ success }) => success ? theme.colors.green50 : theme.colors.red50};
-  border: 1px solid ${({ success }) => success ? theme.colors.green200 : theme.colors.red200};
+  background: ${({ success }) =>
+    success ? theme.colors.green50 : theme.colors.red50};
+  border: 1px solid
+    ${({ success }) => (success ? theme.colors.green200 : theme.colors.red200)};
   border-radius: ${theme.borderRadius.md};
-  color: ${({ success }) => success ? theme.colors.green800 : theme.colors.red800};
+  color: ${({ success }) =>
+    success ? theme.colors.green800 : theme.colors.red800};
 `;
 
 const APITestComponent = () => {
@@ -57,86 +60,85 @@ const APITestComponent = () => {
 
   const testRegistration = async () => {
     setLoading(prev => ({ ...prev, register: true }));
-    
+
     const testData = {
       name: 'Test User',
       email: `test${Date.now()}@example.com`, // Unique email
       password: 'testpassword123',
       phone: '1234567890',
-      role: 'customer'
+      role: 'customer',
     };
 
     try {
       const result = await dispatch(registerUser(testData));
-      setTestResults(prev => ({ 
-        ...prev, 
-        register: { 
-          success: result.success, 
+      setTestResults(prev => ({
+        ...prev,
+        register: {
+          success: result.success,
           message: result.success ? 'Registration successful!' : result.error,
-          data: result
-        }
+          data: result,
+        },
       }));
     } catch (error) {
-      setTestResults(prev => ({ 
-        ...prev, 
-        register: { 
-          success: false, 
+      setTestResults(prev => ({
+        ...prev,
+        register: {
+          success: false,
           message: error.message,
-          data: null
-        }
+          data: null,
+        },
       }));
     }
-    
+
     setLoading(prev => ({ ...prev, register: false }));
   };
 
   const testLogin = async () => {
     setLoading(prev => ({ ...prev, login: true }));
-    
+
     const testData = {
       email: 'dsfs@dfs.com', // Use the email from your example
-      password: 'password123' // You'll need to provide the actual password
+      password: 'password123', // You'll need to provide the actual password
     };
 
     try {
       const result = await dispatch(loginUser(testData));
-      setTestResults(prev => ({ 
-        ...prev, 
-        login: { 
-          success: result.success, 
+      setTestResults(prev => ({
+        ...prev,
+        login: {
+          success: result.success,
           message: result.success ? 'Login successful!' : result.error,
-          data: result
-        }
+          data: result,
+        },
       }));
     } catch (error) {
-      setTestResults(prev => ({ 
-        ...prev, 
-        login: { 
-          success: false, 
+      setTestResults(prev => ({
+        ...prev,
+        login: {
+          success: false,
           message: error.message,
-          data: null
-        }
+          data: null,
+        },
       }));
     }
-    
+
     setLoading(prev => ({ ...prev, login: false }));
   };
 
   return (
     <TestContainer>
       <h2>API Integration Test</h2>
-      <p>Test the registration and login endpoints to verify API integration.</p>
-      
+      <p>
+        Test the registration and login endpoints to verify API integration.
+      </p>
+
       <TestSection>
         <h3>Registration Test</h3>
         <p>Tests the /api/auth/register endpoint with sample data.</p>
-        <TestButton 
-          onClick={testRegistration}
-          disabled={loading.register}
-        >
+        <TestButton onClick={testRegistration} disabled={loading.register}>
           {loading.register ? 'Testing...' : 'Test Registration'}
         </TestButton>
-        
+
         {testResults.register && (
           <ResultContainer success={testResults.register.success}>
             <strong>Result:</strong> {testResults.register.message}
@@ -152,13 +154,10 @@ const APITestComponent = () => {
       <TestSection>
         <h3>Login Test</h3>
         <p>Tests the /api/auth/login endpoint with existing user.</p>
-        <TestButton 
-          onClick={testLogin}
-          disabled={loading.login}
-        >
+        <TestButton onClick={testLogin} disabled={loading.login}>
           {loading.login ? 'Testing...' : 'Test Login'}
         </TestButton>
-        
+
         {testResults.login && (
           <ResultContainer success={testResults.login.success}>
             <strong>Result:</strong> {testResults.login.message}

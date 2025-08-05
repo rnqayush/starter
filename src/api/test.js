@@ -9,13 +9,13 @@ const testRegistrationData = {
   email: 'test@example.com',
   password: 'testpassword123',
   phone: '1234567890',
-  role: 'customer'
+  role: 'customer',
 };
 
 // Test login data
 const testLoginData = {
   email: 'test@example.com',
-  password: 'testpassword123'
+  password: 'testpassword123',
 };
 
 // Function to test registration
@@ -47,16 +47,16 @@ export const testLogin = async () => {
 // Run tests in sequence
 export const runAPITests = async () => {
   console.log('Starting API integration tests...');
-  
+
   // Test registration
   const registrationResult = await testRegistration();
-  
+
   if (registrationResult.success) {
     console.log('✅ Registration test passed');
-    
+
     // Test login
     const loginResult = await testLogin();
-    
+
     if (loginResult.success) {
       console.log('✅ Login test passed');
       console.log('🎉 All API tests passed!');
@@ -66,7 +66,7 @@ export const runAPITests = async () => {
   } else {
     console.log('❌ Registration test failed');
   }
-  
+
   console.log('API integration tests completed.');
 };
 
@@ -75,6 +75,6 @@ if (typeof window !== 'undefined') {
   window.testAPI = {
     testRegistration,
     testLogin,
-    runAPITests
+    runAPITests,
   };
 }
