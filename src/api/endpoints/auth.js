@@ -1,4 +1,4 @@
-import { networkManager } from '../networkManager';
+import httpClient from '../client/httpClient';
 
 // Auth API endpoints
 const AUTH_ENDPOINTS = {
