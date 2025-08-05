@@ -179,26 +179,18 @@ export const loginUser = credentials => async dispatch => {
   dispatch(loginStart());
 
   try {
-    // Simulate API call delay
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    const result = await loginUserAPI(credentials);
 
-    // Find user in dummy data
-    const user = usersData.users.find(
-      u => u.email === credentials.email && u.password === credentials.password
-    );
-
-    if (!user) {
-      throw new Error('Invalid email or password');
+    if (result.success) {
+      dispatch(loginSuccess({
+        user: result.user,
+        token: result.token,
+        refreshToken: result.refreshToken,
+      }));
+      return { success: true, user: result.user };
+    } else {
+      throw new Error(result.error);
     }
-
-    // Create user session data
-    const userData = {
-      ...user,
-      lastLogin: new Date().toISOString(),
-    };
-
-    dispatch(loginSuccess(userData));
-    return { success: true, user: userData };
   } catch (error) {
     dispatch(loginFailure(error.message));
     return { success: false, error: error.message };
