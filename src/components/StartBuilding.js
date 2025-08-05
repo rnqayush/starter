@@ -567,6 +567,7 @@ const StartBuilding = () => {
   const [showAuthPrompt, setShowAuthPrompt] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [backendStatus, setBackendStatus] = useState('unknown');
   const [formData, setFormData] = useState({
     websiteType: '',
     websiteName: '',
