@@ -93,10 +93,10 @@ export const loginUser = async credentials => {
 // Logout user
 export const logoutUser = async () => {
   try {
-    await networkManager.post(AUTH_ENDPOINTS.LOGOUT);
+    await httpClient.post(AUTH_ENDPOINTS.LOGOUT);
 
     // Clear stored tokens
-    networkManager.removeAuthToken();
+    httpClient.clearAuth();
 
     return {
       success: true,
@@ -106,7 +106,7 @@ export const logoutUser = async () => {
     console.error('Logout error:', error);
 
     // Clear tokens even if API call fails
-    networkManager.removeAuthToken();
+    httpClient.clearAuth();
 
     return {
       success: true,
