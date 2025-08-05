@@ -1,26 +1,26 @@
 const mongoose = require('mongoose');
 
 const roomSchema = new mongoose.Schema({
-  id: { type: Number, required: true },
-  name: { type: String, required: true },
-  type: { type: String, required: true },
-  description: { type: String, required: true },
-  price: { type: Number, required: true },
+  id: { type: Number },
+  name: { type: String },
+  type: { type: String },
+  description: { type: String },
+  price: { type: Number },
   originalPrice: { type: Number },
   discount: { type: Number, default: 0 },
-  maxGuests: { type: Number, required: true },
-  bedType: { type: String, required: true },
-  roomSize: { type: String, required: true },
-  image: { type: String, required: true },
+  maxGuests: { type: Number },
+  bedType: { type: String },
+  roomSize: { type: String },
+  image: { type: String },
   images: [{ type: String }],
   amenities: [{ type: String }],
   isAvailable: { type: Boolean, default: true },
-  totalRooms: { type: Number, required: true },
-  availableRooms: { type: Number, required: true },
+  totalRooms: { type: Number },
+  availableRooms: { type: Number },
   features: [
     {
-      icon: { type: String, required: true },
-      name: { type: String, required: true },
+      icon: { type: String },
+      name: { type: String },
     },
   ],
   policies: [{ type: String }],
@@ -33,40 +33,31 @@ const hotelSchema = new mongoose.Schema(
     id: {
       type: Number,
       unique: true,
-      required: true,
     },
     name: {
       type: String,
-      required: true,
     },
     slug: {
       type: String,
       unique: true,
-      required: true,
     },
     location: {
       type: String,
-      required: true,
     },
     address: {
       type: String,
-      required: true,
     },
     city: {
       type: String,
-      required: true,
     },
     pincode: {
       type: String,
-      required: true,
     },
     phone: {
       type: String,
-      required: true,
     },
     email: {
       type: String,
-      required: true,
     },
     website: {
       type: String,
@@ -74,7 +65,6 @@ const hotelSchema = new mongoose.Schema(
     },
     description: {
       type: String,
-      required: true,
     },
     rating: {
       type: Number,
@@ -84,13 +74,11 @@ const hotelSchema = new mongoose.Schema(
     },
     starRating: {
       type: Number,
-      required: true,
       min: 1,
       max: 5,
     },
     image: {
       type: String,
-      required: true,
     },
     images: [
       {
@@ -99,11 +87,9 @@ const hotelSchema = new mongoose.Schema(
     ],
     checkInTime: {
       type: String,
-      required: true,
     },
     checkOutTime: {
       type: String,
-      required: true,
     },
     policies: [
       {
@@ -112,64 +98,59 @@ const hotelSchema = new mongoose.Schema(
     ],
     startingPrice: {
       type: Number,
-      required: true,
     },
     totalRooms: {
       type: Number,
-      required: true,
     },
     availableRooms: {
       type: Number,
-      required: true,
     },
     ownerId: {
       type: String,
-      required: true,
     },
     owner: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
-      required: true,
     },
     sections: {
       hero: {
-        title: { type: String, required: true },
-        subtitle: { type: String, required: true },
-        backgroundImage: { type: String, required: true },
-        ctaText: { type: String, required: true },
+        title: { type: String },
+        subtitle: { type: String },
+        backgroundImage: { type: String },
+        ctaText: { type: String },
         quickInfo: [
           {
-            icon: { type: String, required: true },
-            label: { type: String, required: true },
-            value: { type: String, required: true },
+            icon: { type: String },
+            label: { type: String },
+            value: { type: String },
           },
         ],
       },
       about: {
-        title: { type: String, required: true },
-        description: { type: String, required: true },
+        title: { type: String },
+        description: { type: String },
         features: [
           {
-            icon: { type: String, required: true },
-            title: { type: String, required: true },
-            description: { type: String, required: true },
+            icon: { type: String },
+            title: { type: String },
+            description: { type: String },
           },
         ],
         stats: [
           {
-            number: { type: String, required: true },
-            label: { type: String, required: true },
+            number: { type: String },
+            label: { type: String },
           },
         ],
         images: [{ type: String }],
       },
       amenities: [
         {
-          category: { type: String, required: true },
+          category: { type: String },
           items: [
             {
-              icon: { type: String, required: true },
-              name: { type: String, required: true },
+              icon: { type: String },
+              name: { type: String },
               description: { type: String },
             },
           ],
@@ -177,45 +158,45 @@ const hotelSchema = new mongoose.Schema(
       ],
       dining: [
         {
-          id: { type: Number, required: true },
-          name: { type: String, required: true },
-          type: { type: String, required: true },
-          description: { type: String, required: true },
-          image: { type: String, required: true },
-          cuisine: { type: String, required: true },
-          timings: { type: String, required: true },
-          priceRange: { type: String, required: true },
+          id: { type: Number },
+          name: { type: String },
+          type: { type: String },
+          description: { type: String },
+          image: { type: String },
+          cuisine: { type: String },
+          timings: { type: String },
+          priceRange: { type: String },
           features: [{ type: String }],
           specialties: [{ type: String }],
         },
       ],
       gallery: [
         {
-          id: { type: Number, required: true },
-          title: { type: String, required: true },
-          image: { type: String, required: true },
-          category: { type: String, required: true },
+          id: { type: Number },
+          title: { type: String },
+          image: { type: String },
+          category: { type: String },
         },
       ],
       testimonials: [
         {
-          id: { type: Number, required: true },
-          name: { type: String, required: true },
-          text: { type: String, required: true },
-          rating: { type: Number, required: true, min: 1, max: 5 },
-          avatar: { type: String, required: true },
-          location: { type: String, required: true },
-          stayDate: { type: String, required: true },
+          id: { type: Number },
+          name: { type: String },
+          text: { type: String },
+          rating: { type: Number, min: 1, max: 5 },
+          avatar: { type: String },
+          location: { type: String },
+          stayDate: { type: String },
           verified: { type: Boolean, default: false },
         },
       ],
       contact: {
-        address: { type: String, required: true },
-        city: { type: String, required: true },
-        state: { type: String, required: true },
-        pincode: { type: String, required: true },
-        phone: { type: String, required: true },
-        email: { type: String, required: true },
+        address: { type: String },
+        city: { type: String },
+        state: { type: String },
+        pincode: { type: String },
+        phone: { type: String },
+        email: { type: String },
         website: { type: String },
         socialMedia: {
           facebook: { type: String, default: '' },
@@ -224,15 +205,15 @@ const hotelSchema = new mongoose.Schema(
           linkedin: { type: String, default: '' },
         },
         coordinates: {
-          lat: { type: Number, required: true },
-          lng: { type: Number, required: true },
+          lat: { type: Number },
+          lng: { type: Number },
         },
       },
     },
     rooms: [roomSchema],
     coordinates: {
-      lat: { type: Number, required: true },
-      lng: { type: Number, required: true },
+      lat: { type: Number },
+      lng: { type: Number },
     },
     status: {
       type: String,

@@ -4,7 +4,6 @@ const websiteSchema = new mongoose.Schema(
   {
     websiteName: {
       type: String,
-      required: true,
       unique: true,
       trim: true,
       lowercase: true,
@@ -12,17 +11,15 @@ const websiteSchema = new mongoose.Schema(
     },
     websiteType: {
       type: String,
-      required: true,
       enum: ['weddings', 'hotels', 'ecommerce', 'automobiles', 'professional'],
     },
     owner: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
-      required: true,
     },
     ownerInfo: {
-      name: { type: String, required: true },
-      email: { type: String, required: true },
+      name: { type: String },
+      email: { type: String },
     },
     basicInfo: {
       tagline: { type: String, default: '' },
@@ -36,7 +33,7 @@ const websiteSchema = new mongoose.Schema(
       default: null,
     },
     domain: {
-      subdomain: { type: String, required: true },
+      subdomain: { type: String },
       customDomain: { type: String, default: null },
       ssl: { type: Boolean, default: true },
     },
