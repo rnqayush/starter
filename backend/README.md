@@ -22,22 +22,26 @@ This is the backend server for the multi-industry website builder project.
 ### Installation
 
 1. Navigate to the backend directory:
+
    ```bash
    cd backend
    ```
 
 2. Install dependencies:
+
    ```bash
    npm install
    ```
 
 3. Set up environment variables:
+
    ```bash
    cp .env.example .env
    # Edit .env with your configuration
    ```
 
 4. Start MongoDB (if running locally):
+
    ```bash
    mongod
    ```
@@ -52,6 +56,7 @@ The server will start on http://localhost:5000
 ## API Endpoints
 
 ### Authentication
+
 - `POST /api/auth/register` - Register a new user
 - `POST /api/auth/login` - Login user
 - `POST /api/auth/logout` - Logout user
@@ -59,36 +64,43 @@ The server will start on http://localhost:5000
 - `GET /api/auth/profile` - Get user profile (requires auth)
 
 ### Websites
+
 - `POST /api/websites/start-building` - Create website from start-building form
 - `GET /api/websites/:websiteName` - Get website by name
 - `GET /api/websites/user/websites` - Get user's websites (requires auth)
 
 ### Business
+
 - `GET /api/business` - Get all business templates
 - `GET /api/business/:slug` - Get business by slug
 - `POST /api/business/start-building` - Create business from start-building
 
 ### Hotels
+
 - `GET /api/hotels` - Get all hotels
 - `GET /api/hotels/:identifier` - Get hotel by ID or slug
 - `POST /api/hotels/start-building` - Create hotel from start-building
 
 ### Ecommerce
+
 - `GET /api/ecommerce` - Get all stores
 - `GET /api/ecommerce/:slug` - Get store by slug
 - `POST /api/ecommerce/start-building` - Create store from start-building
 
 ### Automobiles
+
 - `GET /api/automobiles` - Get all dealerships
 - `GET /api/automobiles/:slug` - Get dealership by slug
 - `POST /api/automobiles/start-building` - Create dealership from start-building
 
 ### Weddings
+
 - `GET /api/weddings/vendors` - Get all wedding vendors
 - `GET /api/weddings/vendors/:identifier` - Get vendor by ID or slug
 - `POST /api/weddings/start-building` - Create vendor from start-building
 
 ### Health Check
+
 - `GET /api/health` - Server health status
 
 ## Environment Variables

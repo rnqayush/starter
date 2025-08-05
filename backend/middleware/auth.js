@@ -10,55 +10,60 @@ const authenticate = async (req, res, next) => {
     if (!token) {
       return res.status(401).json({
         status: 'error',
-        message: 'Access token required'
+        message: 'Access token required',
       });
     }
 
     // Verify token
     const decoded = JWTUtils.verifyAccessToken(token);
-    
+
     // Get user from database
-    const user = await User.findById(decoded.userId).select('-password -refreshTokens');
-    
+    const user = await User.findById(decoded.userId).select(
+      '-password -refreshTokens'
+    );
+
     if (!user) {
       return res.status(401).json({
         status: 'error',
-        message: 'User not found'
+        message: 'User not found',
       });
     }
 
     if (!user.isVerified) {
       return res.status(401).json({
         status: 'error',
-        message: 'Please verify your email before accessing this resource'
+        message: 'Please verify your email before accessing this resource',
       });
     }
 
     // Add user to request object
     req.user = user;
     req.userId = user._id;
-    
+
     next();
   } catch (error) {
     console.error('Authentication error:', error);
-    
-    if (error.message === 'Invalid access token' || error.name === 'JsonWebTokenError') {
+
+    if (
+      error.message === 'Invalid access token' ||
+      error.name === 'JsonWebTokenError'
+    ) {
       return res.status(401).json({
         status: 'error',
-        message: 'Invalid access token'
+        message: 'Invalid access token',
       });
     }
-    
+
     if (error.name === 'TokenExpiredError') {
       return res.status(401).json({
         status: 'error',
-        message: 'Access token expired'
+        message: 'Access token expired',
       });
     }
 
     return res.status(500).json({
       status: 'error',
-      message: 'Authentication failed'
+      message: 'Authentication failed',
     });
   }
 };
@@ -75,15 +80,17 @@ const optionalAuthenticate = async (req, res, next) => {
 
     // Verify token
     const decoded = JWTUtils.verifyAccessToken(token);
-    
+
     // Get user from database
-    const user = await User.findById(decoded.userId).select('-password -refreshTokens');
-    
+    const user = await User.findById(decoded.userId).select(
+      '-password -refreshTokens'
+    );
+
     if (user && user.isVerified) {
       req.user = user;
       req.userId = user._id;
     }
-    
+
     next();
   } catch (error) {
     // Don't fail the request, just continue without user
@@ -97,14 +104,14 @@ const authorize = (roles = []) => {
     if (!req.user) {
       return res.status(401).json({
         status: 'error',
-        message: 'Authentication required'
+        message: 'Authentication required',
       });
     }
 
     if (roles.length && !roles.includes(req.user.role)) {
       return res.status(403).json({
         status: 'error',
-        message: 'Insufficient permissions'
+        message: 'Insufficient permissions',
       });
     }
 
@@ -123,5 +130,5 @@ module.exports = {
   optionalAuthenticate,
   authorize,
   adminOnly,
-  vendorOrAdmin
+  vendorOrAdmin,
 };

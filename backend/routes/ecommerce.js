@@ -15,6 +15,10 @@ router.post('/', authenticate, EcommerceController.create);
 router.put('/:slug', authenticate, EcommerceController.update);
 router.delete('/:slug', authenticate, EcommerceController.delete);
 router.get('/user/stores', authenticate, EcommerceController.getUserStores);
-router.post('/start-building', authenticate, EcommerceController.createFromStartBuilding);
+router.post(
+  '/start-building',
+  authenticate,
+  EcommerceController.createFromStartBuilding
+);
 
 module.exports = router;

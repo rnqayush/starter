@@ -6,12 +6,12 @@ class AutomobileController {
   static async getAllDealerships(req, res) {
     try {
       const { location, featured, limit = 10, offset = 0 } = req.query;
-      
+
       let query = { status: 'published' };
       if (location) {
         query.$or = [
           { 'data.vendor.contact.address.city': new RegExp(location, 'i') },
-          { 'data.vendor.contact.address.state': new RegExp(location, 'i') }
+          { 'data.vendor.contact.address.state': new RegExp(location, 'i') },
         ];
       }
       if (featured === 'true') {
@@ -30,7 +30,7 @@ class AutomobileController {
         return res.status(200).json({
           success: true,
           timestamp: new Date().toISOString(),
-          data: automobileDummyData.data
+          data: automobileDummyData.data,
         });
       }
 
@@ -43,14 +43,14 @@ class AutomobileController {
           dealerships: dealerships.map(d => d.data),
           count: dealerships.length,
           total,
-          hasMore: (parseInt(offset) + dealerships.length) < total
-        }
+          hasMore: parseInt(offset) + dealerships.length < total,
+        },
       });
     } catch (error) {
       console.error('Get all automobile dealerships error:', error);
       res.status(500).json({
         status: 'error',
-        message: 'Failed to retrieve automobile dealerships'
+        message: 'Failed to retrieve automobile dealerships',
       });
     }
   }
@@ -59,7 +59,7 @@ class AutomobileController {
   static async getDealership(req, res) {
     try {
       const { slug } = req.params;
-      
+
       let dealership = await Automobile.findOne({ 'data.vendor.slug': slug })
         .populate('data.vendor.owner.mongoUserId', 'name email')
         .select('-__v');
@@ -72,20 +72,20 @@ class AutomobileController {
 
         return res.status(404).json({
           status: 'error',
-          message: 'Dealership not found'
+          message: 'Dealership not found',
         });
       }
 
       res.status(200).json({
         success: dealership.success,
         timestamp: dealership.timestamp,
-        data: dealership.data
+        data: dealership.data,
       });
     } catch (error) {
       console.error('Get automobile dealership error:', error);
       res.status(500).json({
         status: 'error',
-        message: 'Failed to retrieve dealership data'
+        message: 'Failed to retrieve dealership data',
       });
     }
   }
@@ -94,28 +94,41 @@ class AutomobileController {
   static async getDealershipVehicles(req, res) {
     try {
       const { slug } = req.params;
-      const { category, make, condition, featured, limit = 20, offset = 0 } = req.query;
-      
+      const {
+        category,
+        make,
+        condition,
+        featured,
+        limit = 20,
+        offset = 0,
+      } = req.query;
+
       let dealership = await Automobile.findOne({ 'data.vendor.slug': slug });
 
       if (!dealership) {
         // Return dummy data for demo
         if (automobileDummyData.data.vendor.slug === slug) {
           let vehicles = automobileDummyData.data.allVehicles || [];
-          
+
           // Apply filters
           if (category) {
-            vehicles = vehicles.filter(vehicle => 
-              vehicle.category.id === category || vehicle.category.name.toLowerCase().includes(category.toLowerCase())
+            vehicles = vehicles.filter(
+              vehicle =>
+                vehicle.category.id === category ||
+                vehicle.category.name
+                  .toLowerCase()
+                  .includes(category.toLowerCase())
             );
           }
           if (make) {
-            vehicles = vehicles.filter(vehicle => 
+            vehicles = vehicles.filter(vehicle =>
               vehicle.make.toLowerCase().includes(make.toLowerCase())
             );
           }
           if (condition) {
-            vehicles = vehicles.filter(vehicle => vehicle.condition === condition);
+            vehicles = vehicles.filter(
+              vehicle => vehicle.condition === condition
+            );
           }
           if (featured === 'true') {
             vehicles = vehicles.filter(vehicle => vehicle.featured);
@@ -134,27 +147,29 @@ class AutomobileController {
               categories: automobileDummyData.data.allCategories || [],
               count: paginatedVehicles.length,
               total: vehicles.length,
-              hasMore: endIndex < vehicles.length
-            }
+              hasMore: endIndex < vehicles.length,
+            },
           });
         }
 
         return res.status(404).json({
           status: 'error',
-          message: 'Dealership not found'
+          message: 'Dealership not found',
         });
       }
 
       let vehicles = dealership.data.allVehicles || [];
-      
+
       // Apply filters
       if (category) {
-        vehicles = vehicles.filter(vehicle => 
-          vehicle.category.id === category || vehicle.category.name.toLowerCase().includes(category.toLowerCase())
+        vehicles = vehicles.filter(
+          vehicle =>
+            vehicle.category.id === category ||
+            vehicle.category.name.toLowerCase().includes(category.toLowerCase())
         );
       }
       if (make) {
-        vehicles = vehicles.filter(vehicle => 
+        vehicles = vehicles.filter(vehicle =>
           vehicle.make.toLowerCase().includes(make.toLowerCase())
         );
       }
@@ -178,14 +193,14 @@ class AutomobileController {
           categories: dealership.data.allCategories || [],
           count: paginatedVehicles.length,
           total: vehicles.length,
-          hasMore: endIndex < vehicles.length
-        }
+          hasMore: endIndex < vehicles.length,
+        },
       });
     } catch (error) {
       console.error('Get dealership vehicles error:', error);
       res.status(500).json({
         status: 'error',
-        message: 'Failed to retrieve dealership vehicles'
+        message: 'Failed to retrieve dealership vehicles',
       });
     }
   }
@@ -194,46 +209,50 @@ class AutomobileController {
   static async getVehicle(req, res) {
     try {
       const { slug, vehicleId } = req.params;
-      
+
       let dealership = await Automobile.findOne({ 'data.vendor.slug': slug });
 
       if (!dealership) {
         // Return dummy data for demo
         if (automobileDummyData.data.vendor.slug === slug) {
-          const vehicle = automobileDummyData.data.allVehicles?.find(v => v.id === vehicleId);
+          const vehicle = automobileDummyData.data.allVehicles?.find(
+            v => v.id === vehicleId
+          );
           if (vehicle) {
             return res.status(200).json({
               success: true,
               timestamp: new Date().toISOString(),
-              data: vehicle
+              data: vehicle,
             });
           }
         }
 
         return res.status(404).json({
           status: 'error',
-          message: 'Dealership not found'
+          message: 'Dealership not found',
         });
       }
 
-      const vehicle = dealership.data.allVehicles?.find(v => v.id === vehicleId);
+      const vehicle = dealership.data.allVehicles?.find(
+        v => v.id === vehicleId
+      );
       if (!vehicle) {
         return res.status(404).json({
           status: 'error',
-          message: 'Vehicle not found'
+          message: 'Vehicle not found',
         });
       }
 
       res.status(200).json({
         success: true,
         timestamp: new Date().toISOString(),
-        data: vehicle
+        data: vehicle,
       });
     } catch (error) {
       console.error('Get vehicle error:', error);
       res.status(500).json({
         status: 'error',
-        message: 'Failed to retrieve vehicle'
+        message: 'Failed to retrieve vehicle',
       });
     }
   }
@@ -242,7 +261,7 @@ class AutomobileController {
   static async getCategories(req, res) {
     try {
       const { slug } = req.params;
-      
+
       let dealership = await Automobile.findOne({ 'data.vendor.slug': slug });
 
       if (!dealership) {
@@ -251,26 +270,26 @@ class AutomobileController {
           return res.status(200).json({
             success: true,
             timestamp: new Date().toISOString(),
-            data: automobileDummyData.data.allCategories || []
+            data: automobileDummyData.data.allCategories || [],
           });
         }
 
         return res.status(404).json({
           status: 'error',
-          message: 'Dealership not found'
+          message: 'Dealership not found',
         });
       }
 
       res.status(200).json({
         success: true,
         timestamp: new Date().toISOString(),
-        data: dealership.data.allCategories || []
+        data: dealership.data.allCategories || [],
       });
     } catch (error) {
       console.error('Get categories error:', error);
       res.status(500).json({
         status: 'error',
-        message: 'Failed to retrieve categories'
+        message: 'Failed to retrieve categories',
       });
     }
   }
@@ -280,50 +299,54 @@ class AutomobileController {
     try {
       const dealershipData = {
         ...req.body,
-        'data.vendor.owner.mongoUserId': req.userId
+        'data.vendor.owner.mongoUserId': req.userId,
       };
 
       // Generate unique slug if not provided
       if (!dealershipData.data?.vendor?.slug) {
-        const slug = dealershipData.data?.vendor?.name?.toLowerCase()
-          .replace(/[^a-z0-9]/g, '-')
-          .replace(/-+/g, '-')
-          .replace(/^-|-$/g, '') || 'dealership';
-        
+        const slug =
+          dealershipData.data?.vendor?.name
+            ?.toLowerCase()
+            .replace(/[^a-z0-9]/g, '-')
+            .replace(/-+/g, '-')
+            .replace(/^-|-$/g, '') || 'dealership';
+
         if (!dealershipData.data) dealershipData.data = {};
         if (!dealershipData.data.vendor) dealershipData.data.vendor = {};
         dealershipData.data.vendor.slug = slug;
       }
 
       // Ensure unique slug
-      const existingDealership = await Automobile.findOne({ 'data.vendor.slug': dealershipData.data.vendor.slug });
+      const existingDealership = await Automobile.findOne({
+        'data.vendor.slug': dealershipData.data.vendor.slug,
+      });
       if (existingDealership) {
         dealershipData.data.vendor.slug = `${dealershipData.data.vendor.slug}-${Date.now()}`;
       }
 
       const dealership = new Automobile(dealershipData);
       await dealership.save();
-      
+
       await dealership.populate('data.vendor.owner.mongoUserId', 'name email');
 
       res.status(201).json({
         success: true,
         timestamp: new Date().toISOString(),
-        data: dealership.data
+        data: dealership.data,
       });
     } catch (error) {
       console.error('Create automobile dealership error:', error);
-      
+
       if (error.code === 11000) {
         return res.status(400).json({
           status: 'error',
-          message: 'Dealership with this slug already exists'
+          message: 'Dealership with this slug already exists',
         });
       }
 
       res.status(500).json({
         status: 'error',
-        message: 'Failed to create automobile dealership'
+        message: 'Failed to create automobile dealership',
       });
     }
   }
@@ -338,34 +361,37 @@ class AutomobileController {
       if (!dealership) {
         return res.status(404).json({
           status: 'error',
-          message: 'Dealership not found'
+          message: 'Dealership not found',
         });
       }
 
       // Check ownership
-      if (dealership.data.vendor.owner.mongoUserId.toString() !== req.userId.toString()) {
+      if (
+        dealership.data.vendor.owner.mongoUserId.toString() !==
+        req.userId.toString()
+      ) {
         return res.status(403).json({
           status: 'error',
-          message: 'Not authorized to update this dealership'
+          message: 'Not authorized to update this dealership',
         });
       }
 
       // Update dealership
       Object.assign(dealership, updateData);
       await dealership.save();
-      
+
       await dealership.populate('data.vendor.owner.mongoUserId', 'name email');
 
       res.status(200).json({
         success: true,
         timestamp: new Date().toISOString(),
-        data: dealership.data
+        data: dealership.data,
       });
     } catch (error) {
       console.error('Update automobile dealership error:', error);
       res.status(500).json({
         status: 'error',
-        message: 'Failed to update automobile dealership'
+        message: 'Failed to update automobile dealership',
       });
     }
   }
@@ -379,15 +405,18 @@ class AutomobileController {
       if (!dealership) {
         return res.status(404).json({
           status: 'error',
-          message: 'Dealership not found'
+          message: 'Dealership not found',
         });
       }
 
       // Check ownership
-      if (dealership.data.vendor.owner.mongoUserId.toString() !== req.userId.toString()) {
+      if (
+        dealership.data.vendor.owner.mongoUserId.toString() !==
+        req.userId.toString()
+      ) {
         return res.status(403).json({
           status: 'error',
-          message: 'Not authorized to delete this dealership'
+          message: 'Not authorized to delete this dealership',
         });
       }
 
@@ -395,13 +424,13 @@ class AutomobileController {
 
       res.status(200).json({
         status: 'success',
-        message: 'Automobile dealership deleted successfully'
+        message: 'Automobile dealership deleted successfully',
       });
     } catch (error) {
       console.error('Delete automobile dealership error:', error);
       res.status(500).json({
         status: 'error',
-        message: 'Failed to delete automobile dealership'
+        message: 'Failed to delete automobile dealership',
       });
     }
   }
@@ -409,7 +438,9 @@ class AutomobileController {
   // Get user's automobile dealerships
   static async getUserDealerships(req, res) {
     try {
-      const dealerships = await Automobile.find({ 'data.vendor.owner.mongoUserId': req.userId })
+      const dealerships = await Automobile.find({
+        'data.vendor.owner.mongoUserId': req.userId,
+      })
         .populate('data.vendor.owner.mongoUserId', 'name email')
         .sort({ createdAt: -1 })
         .select('-__v');
@@ -419,14 +450,14 @@ class AutomobileController {
         timestamp: new Date().toISOString(),
         data: {
           dealerships: dealerships.map(d => d.data),
-          count: dealerships.length
-        }
+          count: dealerships.length,
+        },
       });
     } catch (error) {
       console.error('Get user automobile dealerships error:', error);
       res.status(500).json({
         status: 'error',
-        message: 'Failed to retrieve user automobile dealerships'
+        message: 'Failed to retrieve user automobile dealerships',
       });
     }
   }
@@ -435,11 +466,11 @@ class AutomobileController {
   static async createFromStartBuilding(req, res) {
     try {
       const { websiteName, websiteType, tagline, themeColor } = req.body;
-      
+
       if (websiteType !== 'automobiles') {
         return res.status(400).json({
           status: 'error',
-          message: 'Invalid website type for automobile'
+          message: 'Invalid website type for automobile',
         });
       }
 
@@ -453,45 +484,47 @@ class AutomobileController {
             name: tagline || automobileDummyData.data.vendor.name,
             owner: {
               ...automobileDummyData.data.vendor.owner,
-              mongoUserId: req.userId
+              mongoUserId: req.userId,
             },
             businessInfo: {
               ...automobileDummyData.data.vendor.businessInfo,
-              description: tagline || automobileDummyData.data.vendor.businessInfo.description
-            }
+              description:
+                tagline ||
+                automobileDummyData.data.vendor.businessInfo.description,
+            },
           },
           allCategories: automobileDummyData.data.allCategories || [],
-          allVehicles: automobileDummyData.data.allVehicles || []
+          allVehicles: automobileDummyData.data.allVehicles || [],
         },
         success: true,
         timestamp: new Date().toISOString(),
-        status: 'published'
+        status: 'published',
       };
 
       const dealership = new Automobile(dealershipData);
       await dealership.save();
-      
+
       await dealership.populate('data.vendor.owner.mongoUserId', 'name email');
 
       res.status(201).json({
         success: true,
         timestamp: new Date().toISOString(),
         message: 'Automobile website created successfully',
-        data: dealership.data
+        data: dealership.data,
       });
     } catch (error) {
       console.error('Create automobile from start-building error:', error);
-      
+
       if (error.code === 11000) {
         return res.status(400).json({
           status: 'error',
-          message: 'Website name already taken'
+          message: 'Website name already taken',
         });
       }
 
       res.status(500).json({
         status: 'error',
-        message: 'Failed to create automobile website'
+        message: 'Failed to create automobile website',
       });
     }
   }

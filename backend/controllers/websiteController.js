@@ -9,22 +9,35 @@ class WebsiteController {
   // Create website from start-building form
   static async createFromStartBuilding(req, res) {
     try {
-      const { websiteName, websiteType, tagline, themeColor, logo, fullPageImage } = req.body;
+      const {
+        websiteName,
+        websiteType,
+        tagline,
+        themeColor,
+        logo,
+        fullPageImage,
+      } = req.body;
 
       // Validate required fields
       if (!websiteName || !websiteType) {
         return res.status(400).json({
           status: 'error',
-          message: 'Website name and type are required'
+          message: 'Website name and type are required',
         });
       }
 
       // Validate website type
-      const validTypes = ['weddings', 'hotels', 'ecommerce', 'automobiles', 'professional'];
+      const validTypes = [
+        'weddings',
+        'hotels',
+        'ecommerce',
+        'automobiles',
+        'professional',
+      ];
       if (!validTypes.includes(websiteType)) {
         return res.status(400).json({
           status: 'error',
-          message: 'Invalid website type'
+          message: 'Invalid website type',
         });
       }
 
@@ -33,7 +46,7 @@ class WebsiteController {
       if (existingWebsite) {
         return res.status(400).json({
           status: 'error',
-          message: 'Website name already taken'
+          message: 'Website name already taken',
         });
       }
 
@@ -44,58 +57,73 @@ class WebsiteController {
       try {
         switch (websiteType) {
           case 'professional':
-            moduleResponse = await BusinessController.createFromStartBuilding({
-              ...req,
-              body: { websiteName, websiteType, tagline, themeColor }
-            }, {
-              status: (code) => ({
-                json: (data) => ({ status: code, data })
-              })
-            });
+            moduleResponse = await BusinessController.createFromStartBuilding(
+              {
+                ...req,
+                body: { websiteName, websiteType, tagline, themeColor },
+              },
+              {
+                status: code => ({
+                  json: data => ({ status: code, data }),
+                }),
+              }
+            );
             break;
 
           case 'hotels':
-            moduleResponse = await HotelController.createFromStartBuilding({
-              ...req,
-              body: { websiteName, websiteType, tagline, themeColor }
-            }, {
-              status: (code) => ({
-                json: (data) => ({ status: code, data })
-              })
-            });
+            moduleResponse = await HotelController.createFromStartBuilding(
+              {
+                ...req,
+                body: { websiteName, websiteType, tagline, themeColor },
+              },
+              {
+                status: code => ({
+                  json: data => ({ status: code, data }),
+                }),
+              }
+            );
             break;
 
           case 'ecommerce':
-            moduleResponse = await EcommerceController.createFromStartBuilding({
-              ...req,
-              body: { websiteName, websiteType, tagline, themeColor }
-            }, {
-              status: (code) => ({
-                json: (data) => ({ status: code, data })
-              })
-            });
+            moduleResponse = await EcommerceController.createFromStartBuilding(
+              {
+                ...req,
+                body: { websiteName, websiteType, tagline, themeColor },
+              },
+              {
+                status: code => ({
+                  json: data => ({ status: code, data }),
+                }),
+              }
+            );
             break;
 
           case 'automobiles':
-            moduleResponse = await AutomobileController.createFromStartBuilding({
-              ...req,
-              body: { websiteName, websiteType, tagline, themeColor }
-            }, {
-              status: (code) => ({
-                json: (data) => ({ status: code, data })
-              })
-            });
+            moduleResponse = await AutomobileController.createFromStartBuilding(
+              {
+                ...req,
+                body: { websiteName, websiteType, tagline, themeColor },
+              },
+              {
+                status: code => ({
+                  json: data => ({ status: code, data }),
+                }),
+              }
+            );
             break;
 
           case 'weddings':
-            moduleResponse = await WeddingController.createFromStartBuilding({
-              ...req,
-              body: { websiteName, websiteType, tagline, themeColor }
-            }, {
-              status: (code) => ({
-                json: (data) => ({ status: code, data })
-              })
-            });
+            moduleResponse = await WeddingController.createFromStartBuilding(
+              {
+                ...req,
+                body: { websiteName, websiteType, tagline, themeColor },
+              },
+              {
+                status: code => ({
+                  json: data => ({ status: code, data }),
+                }),
+              }
+            );
             break;
 
           default:
@@ -119,39 +147,39 @@ class WebsiteController {
         owner: req.userId,
         ownerInfo: {
           name: req.user.name,
-          email: req.user.email
+          email: req.user.email,
         },
         basicInfo: {
           tagline: tagline || '',
           themeColor: themeColor || '#10b981',
           logo: logo || null,
-          fullPageImage: fullPageImage || null
+          fullPageImage: fullPageImage || null,
         },
         publishedData: moduleData ? moduleData._id || moduleData.id : null,
         domain: {
           subdomain: websiteName,
           customDomain: null,
-          ssl: true
+          ssl: true,
         },
         settings: {
           seo: {
             title: tagline || `${websiteName} - ${websiteType}`,
             description: `Professional ${websiteType} website - ${tagline || 'Built with our platform'}`,
-            keywords: [websiteType, 'business', 'website']
+            keywords: [websiteType, 'business', 'website'],
           },
           analytics: {
             googleAnalytics: '',
-            facebookPixel: ''
+            facebookPixel: '',
           },
           social: {
             facebook: '',
             instagram: '',
             twitter: '',
-            linkedin: ''
-          }
+            linkedin: '',
+          },
         },
         status: 'published',
-        publishedAt: new Date()
+        publishedAt: new Date(),
       };
 
       const website = new Website(websiteData);
@@ -165,22 +193,22 @@ class WebsiteController {
         data: {
           website,
           url: website.getFullUrl(),
-          moduleData: moduleData || null
-        }
+          moduleData: moduleData || null,
+        },
       });
     } catch (error) {
       console.error('Create website from start-building error:', error);
-      
+
       if (error.code === 11000) {
         return res.status(400).json({
           status: 'error',
-          message: 'Website name already taken'
+          message: 'Website name already taken',
         });
       }
 
       res.status(500).json({
         status: 'error',
-        message: 'Failed to create website'
+        message: 'Failed to create website',
       });
     }
   }
@@ -197,7 +225,7 @@ class WebsiteController {
       if (!website) {
         return res.status(404).json({
           status: 'error',
-          message: 'Website not found'
+          message: 'Website not found',
         });
       }
 
@@ -209,14 +237,14 @@ class WebsiteController {
         message: 'Website retrieved successfully',
         data: {
           website,
-          url: website.getFullUrl()
-        }
+          url: website.getFullUrl(),
+        },
       });
     } catch (error) {
       console.error('Get website by name error:', error);
       res.status(500).json({
         status: 'error',
-        message: 'Failed to retrieve website'
+        message: 'Failed to retrieve website',
       });
     }
   }
@@ -225,7 +253,7 @@ class WebsiteController {
   static async getAll(req, res) {
     try {
       const { websiteType, status, limit = 10, offset = 0 } = req.query;
-      
+
       let query = {};
       if (websiteType) {
         query.websiteType = websiteType;
@@ -250,14 +278,14 @@ class WebsiteController {
           websites,
           count: websites.length,
           total,
-          hasMore: (parseInt(offset) + websites.length) < total
-        }
+          hasMore: parseInt(offset) + websites.length < total,
+        },
       });
     } catch (error) {
       console.error('Get all websites error:', error);
       res.status(500).json({
         status: 'error',
-        message: 'Failed to retrieve websites'
+        message: 'Failed to retrieve websites',
       });
     }
   }
@@ -276,16 +304,16 @@ class WebsiteController {
         data: {
           websites: websites.map(website => ({
             ...website.toJSON(),
-            url: website.getFullUrl()
+            url: website.getFullUrl(),
           })),
-          count: websites.length
-        }
+          count: websites.length,
+        },
       });
     } catch (error) {
       console.error('Get user websites error:', error);
       res.status(500).json({
         status: 'error',
-        message: 'Failed to retrieve user websites'
+        message: 'Failed to retrieve user websites',
       });
     }
   }
@@ -300,7 +328,7 @@ class WebsiteController {
       if (!website) {
         return res.status(404).json({
           status: 'error',
-          message: 'Website not found'
+          message: 'Website not found',
         });
       }
 
@@ -308,7 +336,7 @@ class WebsiteController {
       if (website.owner.toString() !== req.userId.toString()) {
         return res.status(403).json({
           status: 'error',
-          message: 'Not authorized to update this website'
+          message: 'Not authorized to update this website',
         });
       }
 
@@ -324,14 +352,14 @@ class WebsiteController {
         message: 'Website updated successfully',
         data: {
           website,
-          url: website.getFullUrl()
-        }
+          url: website.getFullUrl(),
+        },
       });
     } catch (error) {
       console.error('Update website error:', error);
       res.status(500).json({
         status: 'error',
-        message: 'Failed to update website'
+        message: 'Failed to update website',
       });
     }
   }
@@ -345,7 +373,7 @@ class WebsiteController {
       if (!website) {
         return res.status(404).json({
           status: 'error',
-          message: 'Website not found'
+          message: 'Website not found',
         });
       }
 
@@ -353,7 +381,7 @@ class WebsiteController {
       if (website.owner.toString() !== req.userId.toString()) {
         return res.status(403).json({
           status: 'error',
-          message: 'Not authorized to delete this website'
+          message: 'Not authorized to delete this website',
         });
       }
 
@@ -361,13 +389,13 @@ class WebsiteController {
 
       res.status(200).json({
         status: 'success',
-        message: 'Website deleted successfully'
+        message: 'Website deleted successfully',
       });
     } catch (error) {
       console.error('Delete website error:', error);
       res.status(500).json({
         status: 'error',
-        message: 'Failed to delete website'
+        message: 'Failed to delete website',
       });
     }
   }
@@ -381,7 +409,8 @@ class WebsiteController {
       if (!/^[a-z0-9-]+$/.test(websiteName)) {
         return res.status(400).json({
           status: 'error',
-          message: 'Website name can only contain lowercase letters, numbers, and hyphens'
+          message:
+            'Website name can only contain lowercase letters, numbers, and hyphens',
         });
       }
 
@@ -393,14 +422,16 @@ class WebsiteController {
         data: {
           websiteName,
           available: isAvailable,
-          message: isAvailable ? 'Website name is available' : 'Website name is already taken'
-        }
+          message: isAvailable
+            ? 'Website name is available'
+            : 'Website name is already taken',
+        },
       });
     } catch (error) {
       console.error('Check website availability error:', error);
       res.status(500).json({
         status: 'error',
-        message: 'Failed to check website availability'
+        message: 'Failed to check website availability',
       });
     }
   }
@@ -414,7 +445,7 @@ class WebsiteController {
       if (!website) {
         return res.status(404).json({
           status: 'error',
-          message: 'Website not found'
+          message: 'Website not found',
         });
       }
 
@@ -422,7 +453,7 @@ class WebsiteController {
       if (website.owner.toString() !== req.userId.toString()) {
         return res.status(403).json({
           status: 'error',
-          message: 'Not authorized to view analytics for this website'
+          message: 'Not authorized to view analytics for this website',
         });
       }
 
@@ -437,14 +468,14 @@ class WebsiteController {
           lastModified: website.lastModified,
           performance: website.performance,
           createdAt: website.createdAt,
-          updatedAt: website.updatedAt
-        }
+          updatedAt: website.updatedAt,
+        },
       });
     } catch (error) {
       console.error('Get website analytics error:', error);
       res.status(500).json({
         status: 'error',
-        message: 'Failed to retrieve website analytics'
+        message: 'Failed to retrieve website analytics',
       });
     }
   }

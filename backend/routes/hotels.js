@@ -14,6 +14,10 @@ router.post('/', authenticate, HotelController.create);
 router.put('/:identifier', authenticate, HotelController.update);
 router.delete('/:identifier', authenticate, HotelController.delete);
 router.get('/user/hotels', authenticate, HotelController.getUserHotels);
-router.post('/start-building', authenticate, HotelController.createFromStartBuilding);
+router.post(
+  '/start-building',
+  authenticate,
+  HotelController.createFromStartBuilding
+);
 
 module.exports = router;

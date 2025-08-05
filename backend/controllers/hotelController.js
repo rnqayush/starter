@@ -6,7 +6,7 @@ class HotelController {
   static async getAllHotels(req, res) {
     try {
       const { city, limit = 10, offset = 0 } = req.query;
-      
+
       let query = { status: 'published' };
       if (city) {
         query.city = new RegExp(city, 'i');
@@ -31,8 +31,8 @@ class HotelController {
             data: {
               hotels: [dummyHotel],
               count: 1,
-              total: 1
-            }
+              total: 1,
+            },
           });
         }
       }
@@ -48,14 +48,14 @@ class HotelController {
           hotels,
           count: hotels.length,
           total,
-          hasMore: (parseInt(offset) + hotels.length) < total
-        }
+          hasMore: parseInt(offset) + hotels.length < total,
+        },
       });
     } catch (error) {
       console.error('Get all hotels error:', error);
       res.status(500).json({
         status: 'error',
-        message: 'Failed to retrieve hotels'
+        message: 'Failed to retrieve hotels',
       });
     }
   }
@@ -64,34 +64,47 @@ class HotelController {
   static async getHotel(req, res) {
     try {
       const { identifier } = req.params;
-      
+
       let hotel;
-      
+
       // Try to find by ID first, then by slug
       if (identifier.match(/^[0-9a-fA-F]{24}$/)) {
-        hotel = await Hotel.findById(identifier).populate('owner', 'name email');
+        hotel = await Hotel.findById(identifier).populate(
+          'owner',
+          'name email'
+        );
       } else if (!isNaN(identifier)) {
-        hotel = await Hotel.findOne({ id: parseInt(identifier) }).populate('owner', 'name email');
+        hotel = await Hotel.findOne({ id: parseInt(identifier) }).populate(
+          'owner',
+          'name email'
+        );
       } else {
-        hotel = await Hotel.findOne({ slug: identifier }).populate('owner', 'name email');
+        hotel = await Hotel.findOne({ slug: identifier }).populate(
+          'owner',
+          'name email'
+        );
       }
 
       // If not found in DB, return dummy data for demo
       if (!hotel) {
         const dummyHotel = hotelDummyData.data?.hotel;
-        if (dummyHotel && (dummyHotel.id.toString() === identifier || dummyHotel.slug === identifier)) {
+        if (
+          dummyHotel &&
+          (dummyHotel.id.toString() === identifier ||
+            dummyHotel.slug === identifier)
+        ) {
           return res.status(200).json({
             status: 'success',
             statusCode: 200,
             message: 'Hotel data retrieved successfully',
             timestamp: new Date().toISOString(),
-            data: dummyHotel
+            data: dummyHotel,
           });
         }
 
         return res.status(404).json({
           status: 'error',
-          message: 'Hotel not found'
+          message: 'Hotel not found',
         });
       }
 
@@ -104,13 +117,13 @@ class HotelController {
         statusCode: 200,
         message: 'Hotel data retrieved successfully',
         timestamp: new Date().toISOString(),
-        data: hotel
+        data: hotel,
       });
     } catch (error) {
       console.error('Get hotel error:', error);
       res.status(500).json({
         status: 'error',
-        message: 'Failed to retrieve hotel data'
+        message: 'Failed to retrieve hotel data',
       });
     }
   }
@@ -119,9 +132,9 @@ class HotelController {
   static async getHotelRooms(req, res) {
     try {
       const { identifier } = req.params;
-      
+
       let hotel;
-      
+
       if (identifier.match(/^[0-9a-fA-F]{24}$/)) {
         hotel = await Hotel.findById(identifier);
       } else if (!isNaN(identifier)) {
@@ -133,7 +146,11 @@ class HotelController {
       if (!hotel) {
         // Return dummy data for demo
         const dummyHotel = hotelDummyData.data?.hotel;
-        if (dummyHotel && (dummyHotel.id.toString() === identifier || dummyHotel.slug === identifier)) {
+        if (
+          dummyHotel &&
+          (dummyHotel.id.toString() === identifier ||
+            dummyHotel.slug === identifier)
+        ) {
           return res.status(200).json({
             status: 'success',
             statusCode: 200,
@@ -144,15 +161,15 @@ class HotelController {
               hotelInfo: {
                 id: dummyHotel.id,
                 name: dummyHotel.name,
-                slug: dummyHotel.slug
-              }
-            }
+                slug: dummyHotel.slug,
+              },
+            },
           });
         }
 
         return res.status(404).json({
           status: 'error',
-          message: 'Hotel not found'
+          message: 'Hotel not found',
         });
       }
 
@@ -166,15 +183,15 @@ class HotelController {
           hotelInfo: {
             id: hotel.id,
             name: hotel.name,
-            slug: hotel.slug
-          }
-        }
+            slug: hotel.slug,
+          },
+        },
       });
     } catch (error) {
       console.error('Get hotel rooms error:', error);
       res.status(500).json({
         status: 'error',
-        message: 'Failed to retrieve hotel rooms'
+        message: 'Failed to retrieve hotel rooms',
       });
     }
   }
@@ -185,7 +202,7 @@ class HotelController {
       const hotelData = {
         ...req.body,
         owner: req.userId,
-        ownerId: req.user._id.toString()
+        ownerId: req.user._id.toString(),
       };
 
       // Generate unique ID and slug if not provided
@@ -195,7 +212,8 @@ class HotelController {
       }
 
       if (!hotelData.slug) {
-        hotelData.slug = hotelData.name.toLowerCase()
+        hotelData.slug = hotelData.name
+          .toLowerCase()
           .replace(/[^a-z0-9]/g, '-')
           .replace(/-+/g, '-')
           .replace(/^-|-$/g, '');
@@ -209,7 +227,7 @@ class HotelController {
 
       const hotel = new Hotel(hotelData);
       await hotel.save();
-      
+
       await hotel.populate('owner', 'name email');
 
       res.status(201).json({
@@ -217,21 +235,21 @@ class HotelController {
         statusCode: 201,
         message: 'Hotel created successfully',
         timestamp: new Date().toISOString(),
-        data: hotel
+        data: hotel,
       });
     } catch (error) {
       console.error('Create hotel error:', error);
-      
+
       if (error.code === 11000) {
         return res.status(400).json({
           status: 'error',
-          message: 'Hotel with this slug or ID already exists'
+          message: 'Hotel with this slug or ID already exists',
         });
       }
 
       res.status(500).json({
         status: 'error',
-        message: 'Failed to create hotel'
+        message: 'Failed to create hotel',
       });
     }
   }
@@ -243,7 +261,7 @@ class HotelController {
       const updateData = req.body;
 
       let hotel;
-      
+
       if (identifier.match(/^[0-9a-fA-F]{24}$/)) {
         hotel = await Hotel.findById(identifier);
       } else if (!isNaN(identifier)) {
@@ -255,7 +273,7 @@ class HotelController {
       if (!hotel) {
         return res.status(404).json({
           status: 'error',
-          message: 'Hotel not found'
+          message: 'Hotel not found',
         });
       }
 
@@ -263,14 +281,14 @@ class HotelController {
       if (hotel.owner.toString() !== req.userId.toString()) {
         return res.status(403).json({
           status: 'error',
-          message: 'Not authorized to update this hotel'
+          message: 'Not authorized to update this hotel',
         });
       }
 
       // Update hotel
       Object.assign(hotel, updateData);
       await hotel.save();
-      
+
       await hotel.populate('owner', 'name email');
 
       res.status(200).json({
@@ -278,13 +296,13 @@ class HotelController {
         statusCode: 200,
         message: 'Hotel updated successfully',
         timestamp: new Date().toISOString(),
-        data: hotel
+        data: hotel,
       });
     } catch (error) {
       console.error('Update hotel error:', error);
       res.status(500).json({
         status: 'error',
-        message: 'Failed to update hotel'
+        message: 'Failed to update hotel',
       });
     }
   }
@@ -295,7 +313,7 @@ class HotelController {
       const { identifier } = req.params;
 
       let hotel;
-      
+
       if (identifier.match(/^[0-9a-fA-F]{24}$/)) {
         hotel = await Hotel.findById(identifier);
       } else if (!isNaN(identifier)) {
@@ -307,7 +325,7 @@ class HotelController {
       if (!hotel) {
         return res.status(404).json({
           status: 'error',
-          message: 'Hotel not found'
+          message: 'Hotel not found',
         });
       }
 
@@ -315,7 +333,7 @@ class HotelController {
       if (hotel.owner.toString() !== req.userId.toString()) {
         return res.status(403).json({
           status: 'error',
-          message: 'Not authorized to delete this hotel'
+          message: 'Not authorized to delete this hotel',
         });
       }
 
@@ -323,13 +341,13 @@ class HotelController {
 
       res.status(200).json({
         status: 'success',
-        message: 'Hotel deleted successfully'
+        message: 'Hotel deleted successfully',
       });
     } catch (error) {
       console.error('Delete hotel error:', error);
       res.status(500).json({
         status: 'error',
-        message: 'Failed to delete hotel'
+        message: 'Failed to delete hotel',
       });
     }
   }
@@ -349,14 +367,14 @@ class HotelController {
         timestamp: new Date().toISOString(),
         data: {
           hotels,
-          count: hotels.length
-        }
+          count: hotels.length,
+        },
       });
     } catch (error) {
       console.error('Get user hotels error:', error);
       res.status(500).json({
         status: 'error',
-        message: 'Failed to retrieve user hotels'
+        message: 'Failed to retrieve user hotels',
       });
     }
   }
@@ -365,21 +383,21 @@ class HotelController {
   static async createFromStartBuilding(req, res) {
     try {
       const { websiteName, websiteType, tagline, themeColor } = req.body;
-      
+
       if (websiteType !== 'hotels') {
         return res.status(400).json({
           status: 'error',
-          message: 'Invalid website type for hotel'
+          message: 'Invalid website type for hotel',
         });
       }
 
       // Get default hotel data structure
       const defaultHotelData = hotelDummyData.data?.hotel;
-      
+
       if (!defaultHotelData) {
         return res.status(500).json({
           status: 'error',
-          message: 'Default hotel template not found'
+          message: 'Default hotel template not found',
         });
       }
 
@@ -395,17 +413,18 @@ class HotelController {
         name: tagline || defaultHotelData.name,
         owner: req.userId,
         ownerId: req.user._id.toString(),
-        status: 'published'
+        status: 'published',
       };
 
       // Update hero section with user's tagline
       if (hotelData.sections && hotelData.sections.hero) {
-        hotelData.sections.hero.title = tagline || hotelData.sections.hero.title;
+        hotelData.sections.hero.title =
+          tagline || hotelData.sections.hero.title;
       }
 
       const hotel = new Hotel(hotelData);
       await hotel.save();
-      
+
       await hotel.populate('owner', 'name email');
 
       res.status(201).json({
@@ -413,21 +432,21 @@ class HotelController {
         statusCode: 201,
         message: 'Hotel website created successfully',
         timestamp: new Date().toISOString(),
-        data: hotel
+        data: hotel,
       });
     } catch (error) {
       console.error('Create hotel from start-building error:', error);
-      
+
       if (error.code === 11000) {
         return res.status(400).json({
           status: 'error',
-          message: 'Website name already taken'
+          message: 'Website name already taken',
         });
       }
 
       res.status(500).json({
         status: 'error',
-        message: 'Failed to create hotel website'
+        message: 'Failed to create hotel website',
       });
     }
   }

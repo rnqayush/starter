@@ -12,7 +12,7 @@ class AuthController {
       if (!name || !email || !password) {
         return res.status(400).json({
           status: 'error',
-          message: 'Name, email, and password are required'
+          message: 'Name, email, and password are required',
         });
       }
 
@@ -21,7 +21,7 @@ class AuthController {
       if (existingUser) {
         return res.status(400).json({
           status: 'error',
-          message: 'User with this email already exists'
+          message: 'User with this email already exists',
         });
       }
 
@@ -30,7 +30,7 @@ class AuthController {
         name,
         email: email.toLowerCase(),
         password,
-        isVerified: true // For demo purposes, auto-verify
+        isVerified: true, // For demo purposes, auto-verify
       });
 
       await user.save();
@@ -39,7 +39,7 @@ class AuthController {
       const { accessToken, refreshToken } = JWTUtils.generateTokens({
         userId: user._id,
         email: user.email,
-        role: user.role
+        role: user.role,
       });
 
       // Store refresh token
@@ -56,14 +56,14 @@ class AuthController {
         data: {
           user: user.toJSON(),
           token: accessToken,
-          refreshToken
-        }
+          refreshToken,
+        },
       });
     } catch (error) {
       console.error('Registration error:', error);
       res.status(500).json({
         status: 'error',
-        message: 'Registration failed'
+        message: 'Registration failed',
       });
     }
   }
@@ -77,7 +77,7 @@ class AuthController {
       if (!email || !password) {
         return res.status(400).json({
           status: 'error',
-          message: 'Email and password are required'
+          message: 'Email and password are required',
         });
       }
 
@@ -86,7 +86,7 @@ class AuthController {
       if (!user) {
         return res.status(401).json({
           status: 'error',
-          message: 'Invalid email or password'
+          message: 'Invalid email or password',
         });
       }
 
@@ -95,7 +95,7 @@ class AuthController {
       if (!isPasswordValid) {
         return res.status(401).json({
           status: 'error',
-          message: 'Invalid email or password'
+          message: 'Invalid email or password',
         });
       }
 
@@ -103,7 +103,7 @@ class AuthController {
       const { accessToken, refreshToken } = JWTUtils.generateTokens({
         userId: user._id,
         email: user.email,
-        role: user.role
+        role: user.role,
       });
 
       // Store refresh token
@@ -120,14 +120,14 @@ class AuthController {
         data: {
           user: user.toJSON(),
           token: accessToken,
-          refreshToken
-        }
+          refreshToken,
+        },
       });
     } catch (error) {
       console.error('Login error:', error);
       res.status(500).json({
         status: 'error',
-        message: 'Login failed'
+        message: 'Login failed',
       });
     }
   }
@@ -143,7 +143,7 @@ class AuthController {
         try {
           const decoded = JWTUtils.verifyAccessToken(token);
           const user = await User.findById(decoded.userId);
-          
+
           if (user) {
             // Remove all refresh tokens (logout from all devices)
             user.refreshTokens = [];
@@ -156,13 +156,13 @@ class AuthController {
 
       res.status(200).json({
         status: 'success',
-        message: 'Logged out successfully'
+        message: 'Logged out successfully',
       });
     } catch (error) {
       console.error('Logout error:', error);
       res.status(500).json({
         status: 'error',
-        message: 'Logout failed'
+        message: 'Logout failed',
       });
     }
   }
@@ -175,39 +175,44 @@ class AuthController {
       if (!refreshToken) {
         return res.status(400).json({
           status: 'error',
-          message: 'Refresh token is required'
+          message: 'Refresh token is required',
         });
       }
 
       // Verify refresh token
       const decoded = JWTUtils.verifyRefreshToken(refreshToken);
-      
+
       // Find user and check if refresh token exists
       const user = await User.findById(decoded.userId);
       if (!user) {
         return res.status(401).json({
           status: 'error',
-          message: 'Invalid refresh token'
+          message: 'Invalid refresh token',
         });
       }
 
-      const tokenExists = user.refreshTokens.some(t => t.token === refreshToken);
+      const tokenExists = user.refreshTokens.some(
+        t => t.token === refreshToken
+      );
       if (!tokenExists) {
         return res.status(401).json({
           status: 'error',
-          message: 'Invalid refresh token'
+          message: 'Invalid refresh token',
         });
       }
 
       // Generate new tokens
-      const { accessToken, refreshToken: newRefreshToken } = JWTUtils.generateTokens({
-        userId: user._id,
-        email: user.email,
-        role: user.role
-      });
+      const { accessToken, refreshToken: newRefreshToken } =
+        JWTUtils.generateTokens({
+          userId: user._id,
+          email: user.email,
+          role: user.role,
+        });
 
       // Replace old refresh token with new one
-      user.refreshTokens = user.refreshTokens.filter(t => t.token !== refreshToken);
+      user.refreshTokens = user.refreshTokens.filter(
+        t => t.token !== refreshToken
+      );
       user.refreshTokens.push({ token: newRefreshToken });
       await user.save();
 
@@ -216,14 +221,14 @@ class AuthController {
         message: 'Tokens refreshed successfully',
         data: {
           token: accessToken,
-          refreshToken: newRefreshToken
-        }
+          refreshToken: newRefreshToken,
+        },
       });
     } catch (error) {
       console.error('Token refresh error:', error);
       res.status(401).json({
         status: 'error',
-        message: 'Invalid refresh token'
+        message: 'Invalid refresh token',
       });
     }
   }
@@ -231,24 +236,26 @@ class AuthController {
   // Get user profile
   static async getProfile(req, res) {
     try {
-      const user = await User.findById(req.userId).select('-password -refreshTokens');
-      
+      const user = await User.findById(req.userId).select(
+        '-password -refreshTokens'
+      );
+
       if (!user) {
         return res.status(404).json({
           status: 'error',
-          message: 'User not found'
+          message: 'User not found',
         });
       }
 
       res.status(200).json({
         status: 'success',
-        data: user.toJSON()
+        data: user.toJSON(),
       });
     } catch (error) {
       console.error('Get profile error:', error);
       res.status(500).json({
         status: 'error',
-        message: 'Failed to get profile'
+        message: 'Failed to get profile',
       });
     }
   }
@@ -257,12 +264,12 @@ class AuthController {
   static async updateProfile(req, res) {
     try {
       const { name, phone, avatar } = req.body;
-      
+
       const user = await User.findById(req.userId);
       if (!user) {
         return res.status(404).json({
           status: 'error',
-          message: 'User not found'
+          message: 'User not found',
         });
       }
 
@@ -276,13 +283,13 @@ class AuthController {
       res.status(200).json({
         status: 'success',
         message: 'Profile updated successfully',
-        data: user.toJSON()
+        data: user.toJSON(),
       });
     } catch (error) {
       console.error('Update profile error:', error);
       res.status(500).json({
         status: 'error',
-        message: 'Failed to update profile'
+        message: 'Failed to update profile',
       });
     }
   }
@@ -295,7 +302,7 @@ class AuthController {
       if (!email) {
         return res.status(400).json({
           status: 'error',
-          message: 'Email is required'
+          message: 'Email is required',
         });
       }
 
@@ -304,13 +311,14 @@ class AuthController {
         // Don't reveal if user exists or not
         return res.status(200).json({
           status: 'success',
-          message: 'If a user with that email exists, a password reset email has been sent'
+          message:
+            'If a user with that email exists, a password reset email has been sent',
         });
       }
 
       // Generate reset token
       const { token, hashedToken } = JWTUtils.generatePasswordResetToken();
-      
+
       user.resetPasswordToken = hashedToken;
       user.resetPasswordExpires = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
       await user.save();
@@ -320,13 +328,13 @@ class AuthController {
 
       res.status(200).json({
         status: 'success',
-        message: 'Password reset email sent'
+        message: 'Password reset email sent',
       });
     } catch (error) {
       console.error('Forgot password error:', error);
       res.status(500).json({
         status: 'error',
-        message: 'Failed to process password reset request'
+        message: 'Failed to process password reset request',
       });
     }
   }
@@ -339,22 +347,22 @@ class AuthController {
       if (!token || !password) {
         return res.status(400).json({
           status: 'error',
-          message: 'Token and new password are required'
+          message: 'Token and new password are required',
         });
       }
 
       // Hash the token to compare with stored hash
       const hashedToken = JWTUtils.hashToken(token);
-      
+
       const user = await User.findOne({
         resetPasswordToken: hashedToken,
-        resetPasswordExpires: { $gt: Date.now() }
+        resetPasswordExpires: { $gt: Date.now() },
       });
 
       if (!user) {
         return res.status(400).json({
           status: 'error',
-          message: 'Invalid or expired reset token'
+          message: 'Invalid or expired reset token',
         });
       }
 
@@ -367,13 +375,13 @@ class AuthController {
 
       res.status(200).json({
         status: 'success',
-        message: 'Password reset successful'
+        message: 'Password reset successful',
       });
     } catch (error) {
       console.error('Reset password error:', error);
       res.status(500).json({
         status: 'error',
-        message: 'Failed to reset password'
+        message: 'Failed to reset password',
       });
     }
   }
@@ -386,20 +394,20 @@ class AuthController {
       if (!token) {
         return res.status(400).json({
           status: 'error',
-          message: 'Verification token is required'
+          message: 'Verification token is required',
         });
       }
 
       // In a real app, you'd verify the token here
       res.status(200).json({
         status: 'success',
-        message: 'Email verified successfully'
+        message: 'Email verified successfully',
       });
     } catch (error) {
       console.error('Email verification error:', error);
       res.status(500).json({
         status: 'error',
-        message: 'Email verification failed'
+        message: 'Email verification failed',
       });
     }
   }
@@ -412,20 +420,20 @@ class AuthController {
       if (!email) {
         return res.status(400).json({
           status: 'error',
-          message: 'Email is required'
+          message: 'Email is required',
         });
       }
 
       // In a real app, you'd resend the verification email here
       res.status(200).json({
         status: 'success',
-        message: 'Verification email sent'
+        message: 'Verification email sent',
       });
     } catch (error) {
       console.error('Resend verification error:', error);
       res.status(500).json({
         status: 'error',
-        message: 'Failed to send verification email'
+        message: 'Failed to send verification email',
       });
     }
   }

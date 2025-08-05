@@ -6,7 +6,7 @@ class EcommerceController {
   static async getAllStores(req, res) {
     try {
       const { category, featured, limit = 10, offset = 0 } = req.query;
-      
+
       let query = { status: 'published' };
       if (category) {
         query['categories.name'] = new RegExp(category, 'i');
@@ -34,8 +34,8 @@ class EcommerceController {
             categories: ecommerceDummyData.categories || [],
             products: ecommerceDummyData.products || [],
             pageContent: ecommerceDummyData.pageContent || {},
-            analytics: ecommerceDummyData.analytics || {}
-          }
+            analytics: ecommerceDummyData.analytics || {},
+          },
         });
       }
 
@@ -50,14 +50,14 @@ class EcommerceController {
           stores,
           count: stores.length,
           total,
-          hasMore: (parseInt(offset) + stores.length) < total
-        }
+          hasMore: parseInt(offset) + stores.length < total,
+        },
       });
     } catch (error) {
       console.error('Get all ecommerce stores error:', error);
       res.status(500).json({
         status: 'error',
-        message: 'Failed to retrieve ecommerce stores'
+        message: 'Failed to retrieve ecommerce stores',
       });
     }
   }
@@ -66,7 +66,7 @@ class EcommerceController {
   static async getStore(req, res) {
     try {
       const { slug } = req.params;
-      
+
       let store = await Ecommerce.findOne({ 'vendor.slug': slug })
         .populate('vendor.owner', 'name email')
         .select('-__v');
@@ -79,13 +79,13 @@ class EcommerceController {
             statusCode: 200,
             message: 'Ecommerce data retrieved successfully',
             timestamp: new Date().toISOString(),
-            data: ecommerceDummyData
+            data: ecommerceDummyData,
           });
         }
 
         return res.status(404).json({
           status: 'error',
-          message: 'Store not found'
+          message: 'Store not found',
         });
       }
 
@@ -94,13 +94,13 @@ class EcommerceController {
         statusCode: 200,
         message: 'Ecommerce data retrieved successfully',
         timestamp: new Date().toISOString(),
-        data: store
+        data: store,
       });
     } catch (error) {
       console.error('Get ecommerce store error:', error);
       res.status(500).json({
         status: 'error',
-        message: 'Failed to retrieve store data'
+        message: 'Failed to retrieve store data',
       });
     }
   }
@@ -110,17 +110,17 @@ class EcommerceController {
     try {
       const { slug } = req.params;
       const { category, featured, limit = 20, offset = 0 } = req.query;
-      
+
       let store = await Ecommerce.findOne({ 'vendor.slug': slug });
 
       if (!store) {
         // Return dummy data for demo
         if (ecommerceDummyData.vendor.slug === slug) {
           let products = ecommerceDummyData.products || [];
-          
+
           // Apply filters
           if (category) {
-            products = products.filter(product => 
+            products = products.filter(product =>
               product.category.toLowerCase().includes(category.toLowerCase())
             );
           }
@@ -142,22 +142,22 @@ class EcommerceController {
               products: paginatedProducts,
               count: paginatedProducts.length,
               total: products.length,
-              hasMore: endIndex < products.length
-            }
+              hasMore: endIndex < products.length,
+            },
           });
         }
 
         return res.status(404).json({
           status: 'error',
-          message: 'Store not found'
+          message: 'Store not found',
         });
       }
 
       let products = store.products || [];
-      
+
       // Apply filters
       if (category) {
-        products = products.filter(product => 
+        products = products.filter(product =>
           product.category.toLowerCase().includes(category.toLowerCase())
         );
       }
@@ -179,14 +179,14 @@ class EcommerceController {
           products: paginatedProducts,
           count: paginatedProducts.length,
           total: products.length,
-          hasMore: endIndex < products.length
-        }
+          hasMore: endIndex < products.length,
+        },
       });
     } catch (error) {
       console.error('Get store products error:', error);
       res.status(500).json({
         status: 'error',
-        message: 'Failed to retrieve store products'
+        message: 'Failed to retrieve store products',
       });
     }
   }
@@ -195,27 +195,29 @@ class EcommerceController {
   static async getProduct(req, res) {
     try {
       const { slug, productId } = req.params;
-      
+
       let store = await Ecommerce.findOne({ 'vendor.slug': slug });
 
       if (!store) {
         // Return dummy data for demo
         if (ecommerceDummyData.vendor.slug === slug) {
-          const product = ecommerceDummyData.products?.find(p => p.id === parseInt(productId));
+          const product = ecommerceDummyData.products?.find(
+            p => p.id === parseInt(productId)
+          );
           if (product) {
             return res.status(200).json({
               status: 'success',
               statusCode: 200,
               message: 'Product retrieved successfully',
               timestamp: new Date().toISOString(),
-              data: product
+              data: product,
             });
           }
         }
 
         return res.status(404).json({
           status: 'error',
-          message: 'Store not found'
+          message: 'Store not found',
         });
       }
 
@@ -223,7 +225,7 @@ class EcommerceController {
       if (!product) {
         return res.status(404).json({
           status: 'error',
-          message: 'Product not found'
+          message: 'Product not found',
         });
       }
 
@@ -232,13 +234,13 @@ class EcommerceController {
         statusCode: 200,
         message: 'Product retrieved successfully',
         timestamp: new Date().toISOString(),
-        data: product
+        data: product,
       });
     } catch (error) {
       console.error('Get product error:', error);
       res.status(500).json({
         status: 'error',
-        message: 'Failed to retrieve product'
+        message: 'Failed to retrieve product',
       });
     }
   }
@@ -248,29 +250,33 @@ class EcommerceController {
     try {
       const storeData = {
         ...req.body,
-        'vendor.owner': req.userId
+        'vendor.owner': req.userId,
       };
 
       // Generate unique slug if not provided
       if (!storeData.vendor?.slug) {
-        const slug = storeData.vendor?.name?.toLowerCase()
-          .replace(/[^a-z0-9]/g, '-')
-          .replace(/-+/g, '-')
-          .replace(/^-|-$/g, '') || 'store';
-        
+        const slug =
+          storeData.vendor?.name
+            ?.toLowerCase()
+            .replace(/[^a-z0-9]/g, '-')
+            .replace(/-+/g, '-')
+            .replace(/^-|-$/g, '') || 'store';
+
         if (!storeData.vendor) storeData.vendor = {};
         storeData.vendor.slug = slug;
       }
 
       // Ensure unique slug
-      const existingStore = await Ecommerce.findOne({ 'vendor.slug': storeData.vendor.slug });
+      const existingStore = await Ecommerce.findOne({
+        'vendor.slug': storeData.vendor.slug,
+      });
       if (existingStore) {
         storeData.vendor.slug = `${storeData.vendor.slug}-${Date.now()}`;
       }
 
       const store = new Ecommerce(storeData);
       await store.save();
-      
+
       await store.populate('vendor.owner', 'name email');
 
       res.status(201).json({
@@ -278,21 +284,21 @@ class EcommerceController {
         statusCode: 201,
         message: 'Ecommerce store created successfully',
         timestamp: new Date().toISOString(),
-        data: store
+        data: store,
       });
     } catch (error) {
       console.error('Create ecommerce store error:', error);
-      
+
       if (error.code === 11000) {
         return res.status(400).json({
           status: 'error',
-          message: 'Store with this slug already exists'
+          message: 'Store with this slug already exists',
         });
       }
 
       res.status(500).json({
         status: 'error',
-        message: 'Failed to create ecommerce store'
+        message: 'Failed to create ecommerce store',
       });
     }
   }
@@ -307,7 +313,7 @@ class EcommerceController {
       if (!store) {
         return res.status(404).json({
           status: 'error',
-          message: 'Store not found'
+          message: 'Store not found',
         });
       }
 
@@ -315,14 +321,14 @@ class EcommerceController {
       if (store.vendor.owner.toString() !== req.userId.toString()) {
         return res.status(403).json({
           status: 'error',
-          message: 'Not authorized to update this store'
+          message: 'Not authorized to update this store',
         });
       }
 
       // Update store
       Object.assign(store, updateData);
       await store.save();
-      
+
       await store.populate('vendor.owner', 'name email');
 
       res.status(200).json({
@@ -330,13 +336,13 @@ class EcommerceController {
         statusCode: 200,
         message: 'Ecommerce store updated successfully',
         timestamp: new Date().toISOString(),
-        data: store
+        data: store,
       });
     } catch (error) {
       console.error('Update ecommerce store error:', error);
       res.status(500).json({
         status: 'error',
-        message: 'Failed to update ecommerce store'
+        message: 'Failed to update ecommerce store',
       });
     }
   }
@@ -350,7 +356,7 @@ class EcommerceController {
       if (!store) {
         return res.status(404).json({
           status: 'error',
-          message: 'Store not found'
+          message: 'Store not found',
         });
       }
 
@@ -358,7 +364,7 @@ class EcommerceController {
       if (store.vendor.owner.toString() !== req.userId.toString()) {
         return res.status(403).json({
           status: 'error',
-          message: 'Not authorized to delete this store'
+          message: 'Not authorized to delete this store',
         });
       }
 
@@ -366,13 +372,13 @@ class EcommerceController {
 
       res.status(200).json({
         status: 'success',
-        message: 'Ecommerce store deleted successfully'
+        message: 'Ecommerce store deleted successfully',
       });
     } catch (error) {
       console.error('Delete ecommerce store error:', error);
       res.status(500).json({
         status: 'error',
-        message: 'Failed to delete ecommerce store'
+        message: 'Failed to delete ecommerce store',
       });
     }
   }
@@ -392,14 +398,14 @@ class EcommerceController {
         timestamp: new Date().toISOString(),
         data: {
           stores,
-          count: stores.length
-        }
+          count: stores.length,
+        },
       });
     } catch (error) {
       console.error('Get user ecommerce stores error:', error);
       res.status(500).json({
         status: 'error',
-        message: 'Failed to retrieve user ecommerce stores'
+        message: 'Failed to retrieve user ecommerce stores',
       });
     }
   }
@@ -408,11 +414,11 @@ class EcommerceController {
   static async createFromStartBuilding(req, res) {
     try {
       const { websiteName, websiteType, tagline, themeColor } = req.body;
-      
+
       if (websiteType !== 'ecommerce') {
         return res.status(400).json({
           status: 'error',
-          message: 'Invalid website type for ecommerce'
+          message: 'Invalid website type for ecommerce',
         });
       }
 
@@ -426,20 +432,21 @@ class EcommerceController {
           owner: req.userId,
           theme: {
             ...ecommerceDummyData.vendor.theme,
-            primaryColor: themeColor || ecommerceDummyData.vendor.theme.primaryColor
-          }
+            primaryColor:
+              themeColor || ecommerceDummyData.vendor.theme.primaryColor,
+          },
         },
         pageContent: ecommerceDummyData.pageContent || {},
         categories: ecommerceDummyData.categories || [],
         products: ecommerceDummyData.products || [],
         analytics: ecommerceDummyData.analytics || {},
         settings: ecommerceDummyData.settings || {},
-        status: 'published'
+        status: 'published',
       };
 
       const store = new Ecommerce(storeData);
       await store.save();
-      
+
       await store.populate('vendor.owner', 'name email');
 
       res.status(201).json({
@@ -447,21 +454,21 @@ class EcommerceController {
         statusCode: 201,
         message: 'Ecommerce website created successfully',
         timestamp: new Date().toISOString(),
-        data: store
+        data: store,
       });
     } catch (error) {
       console.error('Create ecommerce from start-building error:', error);
-      
+
       if (error.code === 11000) {
         return res.status(400).json({
           status: 'error',
-          message: 'Website name already taken'
+          message: 'Website name already taken',
         });
       }
 
       res.status(500).json({
         status: 'error',
-        message: 'Failed to create ecommerce website'
+        message: 'Failed to create ecommerce website',
       });
     }
   }

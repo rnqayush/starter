@@ -15,10 +15,7 @@ const AUTH_ENDPOINTS = {
 // Register user
 export const registerUser = async userData => {
   try {
-    const response = await httpClient.post(
-      AUTH_ENDPOINTS.REGISTER,
-      userData
-    );
+    const response = await httpClient.post(AUTH_ENDPOINTS.REGISTER, userData);
 
     // Handle successful registration response
     if (response.data?.status === 'success' && response.data?.data) {
@@ -54,10 +51,7 @@ export const registerUser = async userData => {
 // Login user
 export const loginUser = async credentials => {
   try {
-    const response = await httpClient.post(
-      AUTH_ENDPOINTS.LOGIN,
-      credentials
-    );
+    const response = await httpClient.post(AUTH_ENDPOINTS.LOGIN, credentials);
 
     // Handle successful login response
     if (response.data?.status === 'success' && response.data?.data) {
@@ -224,10 +218,9 @@ export const verifyEmail = async token => {
 // Resend verification email
 export const resendVerificationEmail = async email => {
   try {
-    const response = await httpClient.post(
-      AUTH_ENDPOINTS.RESEND_VERIFICATION,
-      { email }
-    );
+    const response = await httpClient.post(AUTH_ENDPOINTS.RESEND_VERIFICATION, {
+      email,
+    });
 
     return {
       success: true,

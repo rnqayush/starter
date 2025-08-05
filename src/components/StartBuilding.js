@@ -554,8 +554,12 @@ const LoadingSpinner = styled.div`
   }
 
   @keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
   }
 `;
 
@@ -572,19 +576,25 @@ const BackendStatus = styled.div`
   gap: 6px;
   z-index: 10;
 
-  ${props => props.status === 'connected' && `
+  ${props =>
+    props.status === 'connected' &&
+    `
     background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
     color: #065f46;
     border: 1px solid #10b981;
   `}
 
-  ${props => props.status === 'fallback' && `
+  ${props =>
+    props.status === 'fallback' &&
+    `
     background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
     color: #92400e;
     border: 1px solid #f59e0b;
   `}
 
-  ${props => props.status === 'unknown' && `
+  ${props =>
+    props.status === 'unknown' &&
+    `
     background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
     color: #6b7280;
     border: 1px solid #d1d5db;
@@ -683,23 +693,32 @@ const StartBuilding = () => {
         tagline: formData.tagline,
         themeColor: formData.themeColor,
         logo: formData.logo ? URL.createObjectURL(formData.logo) : null,
-        fullPageImage: formData.fullPageImage ? URL.createObjectURL(formData.fullPageImage) : null,
+        fullPageImage: formData.fullPageImage
+          ? URL.createObjectURL(formData.fullPageImage)
+          : null,
       };
 
       console.log('🚀 Creating website:', websiteData);
 
       try {
-        const result = await websiteService.createFromStartBuilding(websiteData);
+        const result =
+          await websiteService.createFromStartBuilding(websiteData);
 
         if (result.success) {
-          console.log('✅ Website created successfully via backend:', result.data);
+          console.log(
+            '✅ Website created successfully via backend:',
+            result.data
+          );
           navigate(`/${formData.websiteName}`);
           return;
         } else {
           console.log('⚠️ Backend failed, using fallback mode:', result.error);
         }
       } catch (backendError) {
-        console.log('⚠️ Backend not available, using fallback mode:', backendError.message);
+        console.log(
+          '⚠️ Backend not available, using fallback mode:',
+          backendError.message
+        );
       }
 
       // Fallback: Create website without backend (for demo purposes)
@@ -711,15 +730,17 @@ const StartBuilding = () => {
         id: Date.now(),
         createdAt: new Date().toISOString(),
         status: 'demo',
-        owner: user
+        owner: user,
       };
 
-      localStorage.setItem(`website_${formData.websiteName}`, JSON.stringify(demoWebsite));
+      localStorage.setItem(
+        `website_${formData.websiteName}`,
+        JSON.stringify(demoWebsite)
+      );
       console.log('✅ Demo website created successfully!');
 
       // Navigate to the created website
       navigate(`/${formData.websiteName}`);
-
     } catch (error) {
       console.error('❌ Website creation error:', error);
       setError('An unexpected error occurred. Please try again.');
@@ -980,11 +1001,7 @@ const StartBuilding = () => {
         </Header>
 
         <Content>
-          {error && (
-            <ErrorMessage>
-              {error}
-            </ErrorMessage>
-          )}
+          {error && <ErrorMessage>{error}</ErrorMessage>}
 
           {showAuthPrompt && !isAuthenticated ? (
             <AuthPrompt>

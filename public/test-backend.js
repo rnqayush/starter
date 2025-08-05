@@ -10,18 +10,18 @@ fetch('http://localhost:5000/api/health')
     if (data.status === 'success') {
       console.log('✅ Backend Health Check: PASSED');
       console.log('📊 Backend Response:', data);
-      
+
       // Test 2: Register a test user
       const testUser = {
         name: 'Test User',
         email: `test_${Date.now()}@example.com`,
-        password: 'testpassword123'
+        password: 'testpassword123',
       };
-      
+
       return fetch('http://localhost:5000/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(testUser)
+        body: JSON.stringify(testUser),
       });
     } else {
       throw new Error('Backend health check failed');
@@ -32,22 +32,22 @@ fetch('http://localhost:5000/api/health')
     if (data.status === 'success') {
       console.log('✅ User Registration: PASSED');
       console.log('👤 User Data:', data.data.user);
-      
+
       // Test 3: Create website
       const websiteData = {
         websiteName: `test-site-${Date.now()}`,
         websiteType: 'business',
         tagline: 'Test Business',
-        themeColor: '#10b981'
+        themeColor: '#10b981',
       };
-      
+
       return fetch('http://localhost:5000/api/websites/start-building', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${data.data.token}`
+          Authorization: `Bearer ${data.data.token}`,
         },
-        body: JSON.stringify(websiteData)
+        body: JSON.stringify(websiteData),
       });
     } else {
       throw new Error('User registration failed: ' + data.message);
@@ -58,7 +58,9 @@ fetch('http://localhost:5000/api/health')
     if (data.status === 'success') {
       console.log('✅ Website Creation: PASSED');
       console.log('🌐 Website Data:', data.data);
-      console.log('\n🎉 ALL TESTS PASSED! Backend integration is working perfectly!');
+      console.log(
+        '\n🎉 ALL TESTS PASSED! Backend integration is working perfectly!'
+      );
     } else {
       throw new Error('Website creation failed: ' + data.message);
     }

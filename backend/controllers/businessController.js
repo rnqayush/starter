@@ -18,8 +18,8 @@ class BusinessController {
           timestamp: new Date().toISOString(),
           data: {
             businessTemplates: businessDummyData.data.businessTemplates || [],
-            businesses: businessDummyData.data.businesses || {}
-          }
+            businesses: businessDummyData.data.businesses || {},
+          },
         });
       }
 
@@ -30,14 +30,14 @@ class BusinessController {
         timestamp: new Date().toISOString(),
         data: {
           businessTemplates: businesses,
-          count: businesses.length
-        }
+          count: businesses.length,
+        },
       });
     } catch (error) {
       console.error('Get business templates error:', error);
       res.status(500).json({
         status: 'error',
-        message: 'Failed to retrieve business templates'
+        message: 'Failed to retrieve business templates',
       });
     }
   }
@@ -61,7 +61,7 @@ class BusinessController {
               statusCode: 200,
               message: 'Business data retrieved successfully',
               timestamp: new Date().toISOString(),
-              data: portfolioData
+              data: portfolioData,
             });
           }
         }
@@ -74,14 +74,14 @@ class BusinessController {
               statusCode: 200,
               message: 'Business data retrieved successfully',
               timestamp: new Date().toISOString(),
-              data: portfolioData
+              data: portfolioData,
             });
           }
         }
 
         return res.status(404).json({
           status: 'error',
-          message: 'Business not found'
+          message: 'Business not found',
         });
       }
 
@@ -90,13 +90,13 @@ class BusinessController {
         statusCode: 200,
         message: 'Business data retrieved successfully',
         timestamp: new Date().toISOString(),
-        data: business
+        data: business,
       });
     } catch (error) {
       console.error('Get business by slug error:', error);
       res.status(500).json({
         status: 'error',
-        message: 'Failed to retrieve business data'
+        message: 'Failed to retrieve business data',
       });
     }
   }
@@ -106,26 +106,29 @@ class BusinessController {
     try {
       const businessData = {
         ...req.body,
-        owner: req.userId
+        owner: req.userId,
       };
 
       // Generate unique slug if not provided
       if (!businessData.slug) {
-        businessData.slug = businessData.name.toLowerCase()
+        businessData.slug = businessData.name
+          .toLowerCase()
           .replace(/[^a-z0-9]/g, '-')
           .replace(/-+/g, '-')
           .replace(/^-|-$/g, '');
       }
 
       // Ensure unique slug
-      const existingBusiness = await Business.findOne({ slug: businessData.slug });
+      const existingBusiness = await Business.findOne({
+        slug: businessData.slug,
+      });
       if (existingBusiness) {
         businessData.slug = `${businessData.slug}-${Date.now()}`;
       }
 
       const business = new Business(businessData);
       await business.save();
-      
+
       await business.populate('owner', 'name email');
 
       res.status(201).json({
@@ -133,21 +136,21 @@ class BusinessController {
         statusCode: 201,
         message: 'Business created successfully',
         timestamp: new Date().toISOString(),
-        data: business
+        data: business,
       });
     } catch (error) {
       console.error('Create business error:', error);
-      
+
       if (error.code === 11000) {
         return res.status(400).json({
           status: 'error',
-          message: 'Business with this slug already exists'
+          message: 'Business with this slug already exists',
         });
       }
 
       res.status(500).json({
         status: 'error',
-        message: 'Failed to create business'
+        message: 'Failed to create business',
       });
     }
   }
@@ -162,7 +165,7 @@ class BusinessController {
       if (!business) {
         return res.status(404).json({
           status: 'error',
-          message: 'Business not found'
+          message: 'Business not found',
         });
       }
 
@@ -170,14 +173,14 @@ class BusinessController {
       if (business.owner.toString() !== req.userId.toString()) {
         return res.status(403).json({
           status: 'error',
-          message: 'Not authorized to update this business'
+          message: 'Not authorized to update this business',
         });
       }
 
       // Update business
       Object.assign(business, updateData);
       await business.save();
-      
+
       await business.populate('owner', 'name email');
 
       res.status(200).json({
@@ -185,13 +188,13 @@ class BusinessController {
         statusCode: 200,
         message: 'Business updated successfully',
         timestamp: new Date().toISOString(),
-        data: business
+        data: business,
       });
     } catch (error) {
       console.error('Update business error:', error);
       res.status(500).json({
         status: 'error',
-        message: 'Failed to update business'
+        message: 'Failed to update business',
       });
     }
   }
@@ -205,7 +208,7 @@ class BusinessController {
       if (!business) {
         return res.status(404).json({
           status: 'error',
-          message: 'Business not found'
+          message: 'Business not found',
         });
       }
 
@@ -213,7 +216,7 @@ class BusinessController {
       if (business.owner.toString() !== req.userId.toString()) {
         return res.status(403).json({
           status: 'error',
-          message: 'Not authorized to delete this business'
+          message: 'Not authorized to delete this business',
         });
       }
 
@@ -221,13 +224,13 @@ class BusinessController {
 
       res.status(200).json({
         status: 'success',
-        message: 'Business deleted successfully'
+        message: 'Business deleted successfully',
       });
     } catch (error) {
       console.error('Delete business error:', error);
       res.status(500).json({
         status: 'error',
-        message: 'Failed to delete business'
+        message: 'Failed to delete business',
       });
     }
   }
@@ -247,14 +250,14 @@ class BusinessController {
         timestamp: new Date().toISOString(),
         data: {
           businesses,
-          count: businesses.length
-        }
+          count: businesses.length,
+        },
       });
     } catch (error) {
       console.error('Get user businesses error:', error);
       res.status(500).json({
         status: 'error',
-        message: 'Failed to retrieve user businesses'
+        message: 'Failed to retrieve user businesses',
       });
     }
   }
@@ -263,21 +266,21 @@ class BusinessController {
   static async createFromStartBuilding(req, res) {
     try {
       const { websiteName, websiteType, tagline, themeColor } = req.body;
-      
+
       if (websiteType !== 'professional') {
         return res.status(400).json({
           status: 'error',
-          message: 'Invalid website type for business'
+          message: 'Invalid website type for business',
         });
       }
 
       // Get default business data structure
       const defaultBusinessData = businessDummyData.data?.portfolio?.buisness;
-      
+
       if (!defaultBusinessData) {
         return res.status(500).json({
           status: 'error',
-          message: 'Default business template not found'
+          message: 'Default business template not found',
         });
       }
 
@@ -290,12 +293,12 @@ class BusinessController {
         tagline: tagline || defaultBusinessData.tagline,
         primaryColor: themeColor || defaultBusinessData.primaryColor,
         owner: req.userId,
-        status: 'published'
+        status: 'published',
       };
 
       const business = new Business(businessData);
       await business.save();
-      
+
       await business.populate('owner', 'name email');
 
       res.status(201).json({
@@ -303,21 +306,21 @@ class BusinessController {
         statusCode: 201,
         message: 'Business website created successfully',
         timestamp: new Date().toISOString(),
-        data: business
+        data: business,
       });
     } catch (error) {
       console.error('Create business from start-building error:', error);
-      
+
       if (error.code === 11000) {
         return res.status(400).json({
           status: 'error',
-          message: 'Website name already taken'
+          message: 'Website name already taken',
         });
       }
 
       res.status(500).json({
         status: 'error',
-        message: 'Failed to create business website'
+        message: 'Failed to create business website',
       });
     }
   }

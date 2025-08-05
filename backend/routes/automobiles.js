@@ -15,7 +15,15 @@ router.get('/:slug/categories', AutomobileController.getCategories);
 router.post('/', authenticate, AutomobileController.create);
 router.put('/:slug', authenticate, AutomobileController.update);
 router.delete('/:slug', authenticate, AutomobileController.delete);
-router.get('/user/dealerships', authenticate, AutomobileController.getUserDealerships);
-router.post('/start-building', authenticate, AutomobileController.createFromStartBuilding);
+router.get(
+  '/user/dealerships',
+  authenticate,
+  AutomobileController.getUserDealerships
+);
+router.post(
+  '/start-building',
+  authenticate,
+  AutomobileController.createFromStartBuilding
+);
 
 module.exports = router;

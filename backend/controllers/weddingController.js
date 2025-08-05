@@ -4,8 +4,14 @@ class WeddingController {
   // Get all wedding vendors
   static async getAllVendors(req, res) {
     try {
-      const { category, location, featured, limit = 10, offset = 0 } = req.query;
-      
+      const {
+        category,
+        location,
+        featured,
+        limit = 10,
+        offset = 0,
+      } = req.query;
+
       let query = { status: 'published' };
       if (category) {
         query.category = new RegExp(category, 'i');
@@ -14,7 +20,7 @@ class WeddingController {
         query.$or = [
           { city: new RegExp(location, 'i') },
           { state: new RegExp(location, 'i') },
-          { location: new RegExp(location, 'i') }
+          { location: new RegExp(location, 'i') },
         ];
       }
       if (featured === 'true') {
@@ -38,8 +44,8 @@ class WeddingController {
           data: {
             vendors: this.getDummyVendors(),
             count: this.getDummyVendors().length,
-            total: this.getDummyVendors().length
-          }
+            total: this.getDummyVendors().length,
+          },
         });
       }
 
@@ -54,14 +60,14 @@ class WeddingController {
           vendors,
           count: vendors.length,
           total,
-          hasMore: (parseInt(offset) + vendors.length) < total
-        }
+          hasMore: parseInt(offset) + vendors.length < total,
+        },
       });
     } catch (error) {
       console.error('Get all wedding vendors error:', error);
       res.status(500).json({
         status: 'error',
-        message: 'Failed to retrieve wedding vendors'
+        message: 'Failed to retrieve wedding vendors',
       });
     }
   }
@@ -70,18 +76,18 @@ class WeddingController {
   static async getVendor(req, res) {
     try {
       const { identifier } = req.params;
-      
+
       let vendor;
-      
+
       // Try to find by MongoDB ObjectId first, then by custom ID, then by slug
       if (identifier.match(/^[0-9a-fA-F]{24}$/)) {
-        vendor = await WeddingVendor.findById(identifier).populate('owner', 'name email');
+        vendor = await WeddingVendor.findById(identifier).populate(
+          'owner',
+          'name email'
+        );
       } else {
         vendor = await WeddingVendor.findOne({
-          $or: [
-            { id: identifier },
-            { slug: identifier }
-          ]
+          $or: [{ id: identifier }, { slug: identifier }],
         }).populate('owner', 'name email');
       }
 
@@ -94,13 +100,13 @@ class WeddingController {
             statusCode: 200,
             message: 'Wedding vendor retrieved successfully',
             timestamp: new Date().toISOString(),
-            data: dummyVendor
+            data: dummyVendor,
           });
         }
 
         return res.status(404).json({
           status: 'error',
-          message: 'Wedding vendor not found'
+          message: 'Wedding vendor not found',
         });
       }
 
@@ -113,13 +119,13 @@ class WeddingController {
         statusCode: 200,
         message: 'Wedding vendor retrieved successfully',
         timestamp: new Date().toISOString(),
-        data: vendor
+        data: vendor,
       });
     } catch (error) {
       console.error('Get wedding vendor error:', error);
       res.status(500).json({
         status: 'error',
-        message: 'Failed to retrieve wedding vendor'
+        message: 'Failed to retrieve wedding vendor',
       });
     }
   }
@@ -128,17 +134,14 @@ class WeddingController {
   static async getVendorPortfolio(req, res) {
     try {
       const { identifier } = req.params;
-      
+
       let vendor;
-      
+
       if (identifier.match(/^[0-9a-fA-F]{24}$/)) {
         vendor = await WeddingVendor.findById(identifier);
       } else {
         vendor = await WeddingVendor.findOne({
-          $or: [
-            { id: identifier },
-            { slug: identifier }
-          ]
+          $or: [{ id: identifier }, { slug: identifier }],
         });
       }
 
@@ -152,14 +155,14 @@ class WeddingController {
             timestamp: new Date().toISOString(),
             data: {
               portfolio: dummyVendor.portfolio || [],
-              gallery: dummyVendor.pageContent?.gallery || {}
-            }
+              gallery: dummyVendor.pageContent?.gallery || {},
+            },
           });
         }
 
         return res.status(404).json({
           status: 'error',
-          message: 'Wedding vendor not found'
+          message: 'Wedding vendor not found',
         });
       }
 
@@ -170,14 +173,14 @@ class WeddingController {
         timestamp: new Date().toISOString(),
         data: {
           portfolio: vendor.portfolio || [],
-          gallery: vendor.pageContent?.gallery || {}
-        }
+          gallery: vendor.pageContent?.gallery || {},
+        },
       });
     } catch (error) {
       console.error('Get vendor portfolio error:', error);
       res.status(500).json({
         status: 'error',
-        message: 'Failed to retrieve vendor portfolio'
+        message: 'Failed to retrieve vendor portfolio',
       });
     }
   }
@@ -187,7 +190,7 @@ class WeddingController {
     try {
       const vendorData = {
         ...req.body,
-        owner: req.userId
+        owner: req.userId,
       };
 
       // Generate unique ID and slug if not provided
@@ -196,21 +199,24 @@ class WeddingController {
       }
 
       if (!vendorData.slug) {
-        vendorData.slug = vendorData.name.toLowerCase()
+        vendorData.slug = vendorData.name
+          .toLowerCase()
           .replace(/[^a-z0-9]/g, '-')
           .replace(/-+/g, '-')
           .replace(/^-|-$/g, '');
       }
 
       // Ensure unique slug
-      const existingVendor = await WeddingVendor.findOne({ slug: vendorData.slug });
+      const existingVendor = await WeddingVendor.findOne({
+        slug: vendorData.slug,
+      });
       if (existingVendor) {
         vendorData.slug = `${vendorData.slug}-${Date.now()}`;
       }
 
       const vendor = new WeddingVendor(vendorData);
       await vendor.save();
-      
+
       await vendor.populate('owner', 'name email');
 
       res.status(201).json({
@@ -218,21 +224,21 @@ class WeddingController {
         statusCode: 201,
         message: 'Wedding vendor created successfully',
         timestamp: new Date().toISOString(),
-        data: vendor
+        data: vendor,
       });
     } catch (error) {
       console.error('Create wedding vendor error:', error);
-      
+
       if (error.code === 11000) {
         return res.status(400).json({
           status: 'error',
-          message: 'Wedding vendor with this slug or ID already exists'
+          message: 'Wedding vendor with this slug or ID already exists',
         });
       }
 
       res.status(500).json({
         status: 'error',
-        message: 'Failed to create wedding vendor'
+        message: 'Failed to create wedding vendor',
       });
     }
   }
@@ -244,22 +250,19 @@ class WeddingController {
       const updateData = req.body;
 
       let vendor;
-      
+
       if (identifier.match(/^[0-9a-fA-F]{24}$/)) {
         vendor = await WeddingVendor.findById(identifier);
       } else {
         vendor = await WeddingVendor.findOne({
-          $or: [
-            { id: identifier },
-            { slug: identifier }
-          ]
+          $or: [{ id: identifier }, { slug: identifier }],
         });
       }
 
       if (!vendor) {
         return res.status(404).json({
           status: 'error',
-          message: 'Wedding vendor not found'
+          message: 'Wedding vendor not found',
         });
       }
 
@@ -267,14 +270,14 @@ class WeddingController {
       if (vendor.owner.toString() !== req.userId.toString()) {
         return res.status(403).json({
           status: 'error',
-          message: 'Not authorized to update this vendor'
+          message: 'Not authorized to update this vendor',
         });
       }
 
       // Update vendor
       Object.assign(vendor, updateData);
       await vendor.save();
-      
+
       await vendor.populate('owner', 'name email');
 
       res.status(200).json({
@@ -282,13 +285,13 @@ class WeddingController {
         statusCode: 200,
         message: 'Wedding vendor updated successfully',
         timestamp: new Date().toISOString(),
-        data: vendor
+        data: vendor,
       });
     } catch (error) {
       console.error('Update wedding vendor error:', error);
       res.status(500).json({
         status: 'error',
-        message: 'Failed to update wedding vendor'
+        message: 'Failed to update wedding vendor',
       });
     }
   }
@@ -299,22 +302,19 @@ class WeddingController {
       const { identifier } = req.params;
 
       let vendor;
-      
+
       if (identifier.match(/^[0-9a-fA-F]{24}$/)) {
         vendor = await WeddingVendor.findById(identifier);
       } else {
         vendor = await WeddingVendor.findOne({
-          $or: [
-            { id: identifier },
-            { slug: identifier }
-          ]
+          $or: [{ id: identifier }, { slug: identifier }],
         });
       }
 
       if (!vendor) {
         return res.status(404).json({
           status: 'error',
-          message: 'Wedding vendor not found'
+          message: 'Wedding vendor not found',
         });
       }
 
@@ -322,7 +322,7 @@ class WeddingController {
       if (vendor.owner.toString() !== req.userId.toString()) {
         return res.status(403).json({
           status: 'error',
-          message: 'Not authorized to delete this vendor'
+          message: 'Not authorized to delete this vendor',
         });
       }
 
@@ -330,13 +330,13 @@ class WeddingController {
 
       res.status(200).json({
         status: 'success',
-        message: 'Wedding vendor deleted successfully'
+        message: 'Wedding vendor deleted successfully',
       });
     } catch (error) {
       console.error('Delete wedding vendor error:', error);
       res.status(500).json({
         status: 'error',
-        message: 'Failed to delete wedding vendor'
+        message: 'Failed to delete wedding vendor',
       });
     }
   }
@@ -356,14 +356,14 @@ class WeddingController {
         timestamp: new Date().toISOString(),
         data: {
           vendors,
-          count: vendors.length
-        }
+          count: vendors.length,
+        },
       });
     } catch (error) {
       console.error('Get user wedding vendors error:', error);
       res.status(500).json({
         status: 'error',
-        message: 'Failed to retrieve user wedding vendors'
+        message: 'Failed to retrieve user wedding vendors',
       });
     }
   }
@@ -372,11 +372,11 @@ class WeddingController {
   static async createFromStartBuilding(req, res) {
     try {
       const { websiteName, websiteType, tagline, themeColor } = req.body;
-      
+
       if (websiteType !== 'weddings') {
         return res.status(400).json({
           status: 'error',
-          message: 'Invalid website type for wedding'
+          message: 'Invalid website type for wedding',
         });
       }
 
@@ -396,15 +396,17 @@ class WeddingController {
           email: req.user.email,
           phone: req.user.phone || '+1 (555) 123-4567',
           experience: '5+ years',
-          bio: 'Passionate about creating unforgettable wedding experiences.'
+          bio: 'Passionate about creating unforgettable wedding experiences.',
         },
         businessInfo: {
           logo: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=200&q=80',
-          coverImage: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1200&q=80',
-          description: tagline || 'Creating magical moments for your special day.',
+          coverImage:
+            'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1200&q=80',
+          description:
+            tagline || 'Creating magical moments for your special day.',
           establishedYear: new Date().getFullYear() - 5,
           website: '',
-          socialMedia: {}
+          socialMedia: {},
         },
         contact: {
           phone: req.user.phone || '+1 (555) 123-4567',
@@ -415,7 +417,7 @@ class WeddingController {
             city: 'City',
             state: 'State',
             zipCode: '12345',
-            country: 'USA'
+            country: 'USA',
           },
           availability: {
             monday: '9:00 AM - 6:00 PM',
@@ -424,16 +426,24 @@ class WeddingController {
             thursday: '9:00 AM - 6:00 PM',
             friday: '9:00 AM - 6:00 PM',
             saturday: '9:00 AM - 8:00 PM',
-            sunday: '10:00 AM - 4:00 PM'
-          }
+            sunday: '10:00 AM - 4:00 PM',
+          },
         },
-        services: ['Wedding Planning', 'Event Coordination', 'Vendor Management'],
-        specialties: ['Outdoor Weddings', 'Destination Weddings', 'Traditional Ceremonies'],
+        services: [
+          'Wedding Planning',
+          'Event Coordination',
+          'Vendor Management',
+        ],
+        specialties: [
+          'Outdoor Weddings',
+          'Destination Weddings',
+          'Traditional Ceremonies',
+        ],
         serviceAreas: ['Local Area', 'Surrounding Cities'],
         priceRange: {
           min: 1000,
           max: 10000,
-          currency: 'USD'
+          currency: 'USD',
         },
         packages: [
           {
@@ -442,9 +452,13 @@ class WeddingController {
             description: 'Essential wedding planning services',
             price: 2500,
             duration: '3 months',
-            includes: ['Initial consultation', 'Timeline creation', 'Vendor recommendations'],
+            includes: [
+              'Initial consultation',
+              'Timeline creation',
+              'Vendor recommendations',
+            ],
             popular: false,
-            customizable: true
+            customizable: true,
           },
           {
             id: 2,
@@ -452,51 +466,62 @@ class WeddingController {
             description: 'Comprehensive wedding planning',
             price: 5000,
             duration: '6 months',
-            includes: ['Everything in Basic', 'Day-of coordination', 'Setup assistance'],
+            includes: [
+              'Everything in Basic',
+              'Day-of coordination',
+              'Setup assistance',
+            ],
             popular: true,
-            customizable: true
-          }
+            customizable: true,
+          },
         ],
         portfolio: [],
         testimonials: [],
         pageContent: {
           hero: {
             title: tagline || 'Your Dream Wedding Awaits',
-            subtitle: 'Professional wedding planning services to make your special day perfect.',
-            backgroundImage: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1200&q=80',
-            ctaText: 'Get Quote'
+            subtitle:
+              'Professional wedding planning services to make your special day perfect.',
+            backgroundImage:
+              'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1200&q=80',
+            ctaText: 'Get Quote',
           },
           about: {
             title: 'About Us',
-            description: 'We are passionate about creating unforgettable wedding experiences.',
+            description:
+              'We are passionate about creating unforgettable wedding experiences.',
             experience: '5+ years',
             approach: 'Personal and professional approach to every wedding.',
-            whyChooseUs: ['Experienced team', 'Attention to detail', 'Stress-free planning']
+            whyChooseUs: [
+              'Experienced team',
+              'Attention to detail',
+              'Stress-free planning',
+            ],
           },
           gallery: {
             featured: [],
-            categories: []
-          }
+            categories: [],
+          },
         },
         bookingPolicy: {
           advanceBookingDays: 90,
           cancellationPolicy: 'Cancellations must be made 30 days in advance.',
           paymentTerms: '50% deposit required to secure booking.',
-          depositRequired: 50
+          depositRequired: 50,
         },
         analytics: {
           totalViews: 0,
           totalInquiries: 0,
           conversionRate: 0,
           popularPackages: [],
-          peakSeasons: []
+          peakSeasons: [],
         },
-        status: 'published'
+        status: 'published',
       };
 
       const vendor = new WeddingVendor(vendorData);
       await vendor.save();
-      
+
       await vendor.populate('owner', 'name email');
 
       res.status(201).json({
@@ -504,21 +529,21 @@ class WeddingController {
         statusCode: 201,
         message: 'Wedding website created successfully',
         timestamp: new Date().toISOString(),
-        data: vendor
+        data: vendor,
       });
     } catch (error) {
       console.error('Create wedding from start-building error:', error);
-      
+
       if (error.code === 11000) {
         return res.status(400).json({
           status: 'error',
-          message: 'Website name already taken'
+          message: 'Website name already taken',
         });
       }
 
       res.status(500).json({
         status: 'error',
-        message: 'Failed to create wedding website'
+        message: 'Failed to create wedding website',
       });
     }
   }
@@ -541,11 +566,13 @@ class WeddingController {
         priceRange: { min: 3000, max: 15000, currency: 'USD' },
         businessInfo: {
           logo: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=200&q=80',
-          coverImage: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1200&q=80',
-          description: 'Creating unforgettable wedding experiences with attention to every detail.'
+          coverImage:
+            'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1200&q=80',
+          description:
+            'Creating unforgettable wedding experiences with attention to every detail.',
         },
-        totalEvents: 150
-      }
+        totalEvents: 150,
+      },
     ];
   }
 

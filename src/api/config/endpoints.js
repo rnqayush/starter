@@ -28,7 +28,8 @@ export const ECOMMERCE_ENDPOINTS = {
   BASE: `${BASE_PATH}/ecommerce`,
   STORE: slug => `${BASE_PATH}/ecommerce/${slug}`,
   PRODUCTS: slug => `${BASE_PATH}/ecommerce/${slug}/products`,
-  PRODUCT: (slug, productId) => `${BASE_PATH}/ecommerce/${slug}/products/${productId}`,
+  PRODUCT: (slug, productId) =>
+    `${BASE_PATH}/ecommerce/${slug}/products/${productId}`,
   START_BUILDING: `${BASE_PATH}/ecommerce/start-building`,
 };
 
@@ -45,7 +46,8 @@ export const WEDDING_ENDPOINTS = {
   BASE: `${BASE_PATH}/weddings`,
   VENDORS: `${BASE_PATH}/weddings/vendors`,
   VENDOR: identifier => `${BASE_PATH}/weddings/vendors/${identifier}`,
-  VENDOR_PORTFOLIO: identifier => `${BASE_PATH}/weddings/vendors/${identifier}/portfolio`,
+  VENDOR_PORTFOLIO: identifier =>
+    `${BASE_PATH}/weddings/vendors/${identifier}/portfolio`,
   START_BUILDING: `${BASE_PATH}/weddings/start-building`,
 };
 
@@ -54,7 +56,8 @@ export const AUTOMOBILE_ENDPOINTS = {
   BASE: `${BASE_PATH}/automobiles`,
   DEALERSHIP: slug => `${BASE_PATH}/automobiles/${slug}`,
   VEHICLES: slug => `${BASE_PATH}/automobiles/${slug}/vehicles`,
-  VEHICLE: (slug, vehicleId) => `${BASE_PATH}/automobiles/${slug}/vehicles/${vehicleId}`,
+  VEHICLE: (slug, vehicleId) =>
+    `${BASE_PATH}/automobiles/${slug}/vehicles/${vehicleId}`,
   CATEGORIES: slug => `${BASE_PATH}/automobiles/${slug}/categories`,
   START_BUILDING: `${BASE_PATH}/automobiles/start-building`,
 };
@@ -63,7 +66,8 @@ export const AUTOMOBILE_ENDPOINTS = {
 export const WEBSITE_ENDPOINTS = {
   BASE: `${BASE_PATH}/websites`,
   CREATE_FROM_START_BUILDING: `${BASE_PATH}/websites/start-building`,
-  CHECK_AVAILABILITY: websiteName => `${BASE_PATH}/websites/check/${websiteName}`,
+  CHECK_AVAILABILITY: websiteName =>
+    `${BASE_PATH}/websites/check/${websiteName}`,
   BY_NAME: websiteName => `${BASE_PATH}/websites/${websiteName}`,
   USER_WEBSITES: `${BASE_PATH}/websites/user/websites`,
   ANALYTICS: websiteName => `${BASE_PATH}/websites/${websiteName}/analytics`,

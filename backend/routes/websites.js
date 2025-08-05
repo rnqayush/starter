@@ -10,10 +10,18 @@ router.get('/check/:websiteName', WebsiteController.checkAvailability);
 router.get('/:websiteName', WebsiteController.getByName);
 
 // Protected routes
-router.post('/start-building', authenticate, WebsiteController.createFromStartBuilding);
+router.post(
+  '/start-building',
+  authenticate,
+  WebsiteController.createFromStartBuilding
+);
 router.get('/user/websites', authenticate, WebsiteController.getUserWebsites);
 router.put('/:websiteName', authenticate, WebsiteController.update);
 router.delete('/:websiteName', authenticate, WebsiteController.delete);
-router.get('/:websiteName/analytics', authenticate, WebsiteController.getAnalytics);
+router.get(
+  '/:websiteName/analytics',
+  authenticate,
+  WebsiteController.getAnalytics
+);
 
 module.exports = router;

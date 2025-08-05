@@ -8,7 +8,10 @@ class WebsiteService {
   // Create website from start-building form
   async createFromStartBuilding(websiteData) {
     try {
-      const response = await httpClient.post(WEBSITE_ENDPOINTS.CREATE_FROM_START_BUILDING, websiteData);
+      const response = await httpClient.post(
+        WEBSITE_ENDPOINTS.CREATE_FROM_START_BUILDING,
+        websiteData
+      );
 
       if (response.data?.status === 'success' && response.data?.data) {
         return {
@@ -23,7 +26,10 @@ class WebsiteService {
       console.error('Create website from start-building error:', error);
       return {
         success: false,
-        error: error.response?.data?.message || error.message || 'Website creation failed',
+        error:
+          error.response?.data?.message ||
+          error.message ||
+          'Website creation failed',
       };
     }
   }
@@ -31,7 +37,9 @@ class WebsiteService {
   // Check website name availability
   async checkAvailability(websiteName) {
     try {
-      const response = await httpClient.get(WEBSITE_ENDPOINTS.CHECK_AVAILABILITY(websiteName));
+      const response = await httpClient.get(
+        WEBSITE_ENDPOINTS.CHECK_AVAILABILITY(websiteName)
+      );
 
       if (response.data?.status === 'success' && response.data?.data) {
         return {
@@ -45,7 +53,10 @@ class WebsiteService {
       console.error('Check website availability error:', error);
       return {
         success: false,
-        error: error.response?.data?.message || error.message || 'Availability check failed',
+        error:
+          error.response?.data?.message ||
+          error.message ||
+          'Availability check failed',
       };
     }
   }
@@ -53,7 +64,9 @@ class WebsiteService {
   // Get website by name
   async getByName(websiteName) {
     try {
-      const response = await httpClient.get(WEBSITE_ENDPOINTS.BY_NAME(websiteName));
+      const response = await httpClient.get(
+        WEBSITE_ENDPOINTS.BY_NAME(websiteName)
+      );
 
       if (response.data?.status === 'success' && response.data?.data) {
         return {
@@ -67,7 +80,10 @@ class WebsiteService {
       console.error('Get website by name error:', error);
       return {
         success: false,
-        error: error.response?.data?.message || error.message || 'Failed to get website',
+        error:
+          error.response?.data?.message ||
+          error.message ||
+          'Failed to get website',
       };
     }
   }
@@ -89,7 +105,10 @@ class WebsiteService {
       console.error('Get user websites error:', error);
       return {
         success: false,
-        error: error.response?.data?.message || error.message || 'Failed to get user websites',
+        error:
+          error.response?.data?.message ||
+          error.message ||
+          'Failed to get user websites',
       };
     }
   }
@@ -97,7 +116,10 @@ class WebsiteService {
   // Update website
   async update(websiteName, updateData) {
     try {
-      const response = await httpClient.put(WEBSITE_ENDPOINTS.BY_NAME(websiteName), updateData);
+      const response = await httpClient.put(
+        WEBSITE_ENDPOINTS.BY_NAME(websiteName),
+        updateData
+      );
 
       if (response.data?.status === 'success' && response.data?.data) {
         return {
@@ -112,7 +134,10 @@ class WebsiteService {
       console.error('Update website error:', error);
       return {
         success: false,
-        error: error.response?.data?.message || error.message || 'Website update failed',
+        error:
+          error.response?.data?.message ||
+          error.message ||
+          'Website update failed',
       };
     }
   }
@@ -120,7 +145,9 @@ class WebsiteService {
   // Delete website
   async delete(websiteName) {
     try {
-      const response = await httpClient.delete(WEBSITE_ENDPOINTS.BY_NAME(websiteName));
+      const response = await httpClient.delete(
+        WEBSITE_ENDPOINTS.BY_NAME(websiteName)
+      );
 
       if (response.data?.status === 'success') {
         return {
@@ -134,7 +161,10 @@ class WebsiteService {
       console.error('Delete website error:', error);
       return {
         success: false,
-        error: error.response?.data?.message || error.message || 'Website deletion failed',
+        error:
+          error.response?.data?.message ||
+          error.message ||
+          'Website deletion failed',
       };
     }
   }
@@ -142,7 +172,9 @@ class WebsiteService {
   // Get website analytics
   async getAnalytics(websiteName) {
     try {
-      const response = await httpClient.get(WEBSITE_ENDPOINTS.ANALYTICS(websiteName));
+      const response = await httpClient.get(
+        WEBSITE_ENDPOINTS.ANALYTICS(websiteName)
+      );
 
       if (response.data?.status === 'success' && response.data?.data) {
         return {
@@ -156,7 +188,10 @@ class WebsiteService {
       console.error('Get website analytics error:', error);
       return {
         success: false,
-        error: error.response?.data?.message || error.message || 'Failed to get analytics',
+        error:
+          error.response?.data?.message ||
+          error.message ||
+          'Failed to get analytics',
       };
     }
   }
