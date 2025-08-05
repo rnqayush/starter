@@ -384,6 +384,12 @@ const RegisterPage = () => {
       dispatch(clearError());
     }
 
+    // Validate confirm password is provided
+    if (!formData.confirmPassword.trim()) {
+      setValidationError('Please enter confirm password');
+      return;
+    }
+
     // Validate passwords match
     if (formData.password !== formData.confirmPassword) {
       setValidationError("Passwords don't match!");
