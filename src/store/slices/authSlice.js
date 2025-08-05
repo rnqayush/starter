@@ -27,11 +27,15 @@ const initializeFromStorage = () => {
   try {
     const savedUser = localStorage.getItem('user');
     const savedAuth = localStorage.getItem('isAuthenticated');
+    const authToken = localStorage.getItem('authToken');
+    const refreshToken = localStorage.getItem('refreshToken');
 
-    if (savedUser && savedAuth === 'true') {
+    if (savedUser && savedAuth === 'true' && authToken) {
       const parsedUser = JSON.parse(savedUser);
       return {
         user: parsedUser,
+        token: authToken,
+        refreshToken,
         isAuthenticated: true,
         loading: false,
         error: null,
@@ -41,6 +45,8 @@ const initializeFromStorage = () => {
     // Clear corrupted data
     localStorage.removeItem('user');
     localStorage.removeItem('isAuthenticated');
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('refreshToken');
   }
   return initialState;
 };
