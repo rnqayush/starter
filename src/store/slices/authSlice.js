@@ -113,6 +113,8 @@ const authSlice = createSlice({
     },
     logout: state => {
       state.user = null;
+      state.token = null;
+      state.refreshToken = null;
       state.isAuthenticated = false;
       state.loading = false;
       state.error = null;
@@ -120,6 +122,8 @@ const authSlice = createSlice({
       // Clear localStorage
       localStorage.removeItem('user');
       localStorage.removeItem('isAuthenticated');
+      localStorage.removeItem('authToken');
+      localStorage.removeItem('refreshToken');
       localStorage.removeItem('userEnquiries');
       localStorage.removeItem('shopSettings');
       localStorage.removeItem('recentlyViewed');
