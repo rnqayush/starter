@@ -577,6 +577,15 @@ const StartBuilding = () => {
     themeColor: '#10b981',
   });
 
+  // Test backend connection on component mount
+  React.useEffect(() => {
+    const checkBackend = async () => {
+      const result = await testBackendConnection();
+      setBackendStatus(result.success ? 'connected' : 'fallback');
+    };
+    checkBackend();
+  }, []);
+
   // Data is now imported from DummyData/platform.json
 
   // Icon mapping for website types
