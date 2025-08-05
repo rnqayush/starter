@@ -70,7 +70,6 @@ function App() {
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
               <Route path="/start-building" element={<StartBuilding />} />
-              <Route path="/api-test" element={<APITestComponent />} />
 
               {/* categories for website examples*/}
               <Route path="/website-examples">
