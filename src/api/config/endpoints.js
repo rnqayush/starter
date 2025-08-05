@@ -47,22 +47,11 @@ export const HOTEL_ENDPOINTS = {
 
 // Wedding endpoints
 export const WEDDING_ENDPOINTS = {
-  BASE: `${BASE_PATH}/wedding`,
-  VENDORS: `${BASE_PATH}/wedding/vendors`,
-  VENDOR: id => `${BASE_PATH}/wedding/vendors/${id}`,
-  VENDOR_SECTIONS: id => `${BASE_PATH}/wedding/vendors/${id}/sections`,
-  VENDOR_STATS: id => `${BASE_PATH}/wedding/vendors/${id}/stats`,
-  FEATURED_VENDORS: `${BASE_PATH}/wedding/vendors/featured`,
-  SEARCH_VENDORS: `${BASE_PATH}/wedding/vendors/search`,
-  VENDORS_BY_LOCATION: `${BASE_PATH}/wedding/vendors/location`,
-  BOOKINGS: `${BASE_PATH}/wedding/bookings`,
-  BOOKING: bookingId => `${BASE_PATH}/wedding/bookings/${bookingId}`,
-  VENDOR_BOOKINGS: vendorId =>
-    `${BASE_PATH}/wedding/vendors/${vendorId}/bookings`,
-  USER_BOOKINGS: userId => `${BASE_PATH}/wedding/users/${userId}/bookings`,
-  WEBSITE_TEMPLATES: `${BASE_PATH}/wedding/templates`,
-  SECTIONS: `${BASE_PATH}/wedding/sections`,
-  CREATE_WEBSITE: `${BASE_PATH}/wedding/website`,
+  BASE: `${BASE_PATH}/weddings`,
+  VENDORS: `${BASE_PATH}/weddings/vendors`,
+  VENDOR: identifier => `${BASE_PATH}/weddings/vendors/${identifier}`,
+  VENDOR_PORTFOLIO: identifier => `${BASE_PATH}/weddings/vendors/${identifier}/portfolio`,
+  START_BUILDING: `${BASE_PATH}/weddings/start-building`,
 };
 
 // Automobile endpoints
