@@ -201,58 +201,18 @@ export const registerUser = userData => async dispatch => {
   dispatch(registerStart());
 
   try {
-    // Simulate API call delay
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    const result = await registerUserAPI(userData);
 
-    // Check if email already exists
-    const existingUser = usersData.users.find(u => u.email === userData.email);
-    if (existingUser) {
-      throw new Error('Email already exists');
+    if (result.success) {
+      dispatch(registerSuccess({
+        user: result.user,
+        token: result.token,
+        refreshToken: result.refreshToken,
+      }));
+      return { success: true, user: result.user };
+    } else {
+      throw new Error(result.error);
     }
-
-    const newUser = {
-      id: Date.now(),
-      ...userData,
-      avatar: generateAvatar(userData.name),
-      preferences: {
-        notifications: {
-          email: true,
-          sms: false,
-          push: true,
-        },
-        language: 'en',
-        currency: 'USD',
-      },
-      profile: {
-        bio: '',
-        location: '',
-        website: '',
-        socialLinks: {},
-      },
-      createdAt: new Date().toISOString(),
-      lastLogin: new Date().toISOString(),
-    };
-
-    // Add seller data if registering as seller
-    if (userData.role === 'seller') {
-      newUser.seller = {
-        businessName: userData.businessName || `${userData.name}'s Store`,
-        businessType: userData.businessType || 'General',
-        verified: false,
-        rating: 0,
-        totalSales: 0,
-        totalProducts: 0,
-        joinedDate: new Date().toISOString(),
-        settings: {
-          autoRespond: true,
-          showLocation: true,
-          allowReviews: true,
-        },
-      };
-    }
-
-    dispatch(registerSuccess(newUser));
-    return { success: true, user: newUser };
   } catch (error) {
     dispatch(registerFailure(error.message));
     return { success: false, error: error.message };
