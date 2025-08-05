@@ -16,7 +16,7 @@ import { Button } from './Button';
 import {
   selectUser,
   selectIsAuthenticated,
-  logout,
+  logoutUser,
 } from '../../store/slices/authSlice';
 
 const HeaderContainer = styled.header.withConfig({
@@ -861,8 +861,8 @@ const Header = ({ isOwnerView = false }) => {
     setProfileDropdownOpen(!profileDropdownOpen);
   const closeProfileDropdown = () => setProfileDropdownOpen(false);
 
-  const handleLogout = () => {
-    dispatch(logout());
+  const handleLogout = async () => {
+    await dispatch(logoutUser());
     closeProfileDropdown();
     closeMobileMenu();
   };
@@ -1121,7 +1121,7 @@ const Header = ({ isOwnerView = false }) => {
                       onClick={handleDropdownItemClick}
                       role="menuitem"
                     >
-                      💍 Weddings
+                      �� Weddings
                     </DropdownItem>
                     <DropdownItem
                       to="/automobiles"

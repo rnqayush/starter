@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 
 import styled from 'styled-components';
 import { GlobalStyle } from './styles/GlobalStyle';
@@ -22,12 +21,7 @@ import SmartRouter from './components/SmartRouter';
 // Hotel Module
 // Note: HotelModule removed as it's not used in current routing
 
-// Mock data
-import {
-  hotels as hotelModuleData,
-  hotelBookings,
-  ownerHotels as hotelOwnerData,
-} from './DummyData';
+// Mock data - removed unused imports
 
 // Category Landing Pages
 import HotelCategoryLanding from './components/category/HotelCategoryLanding';

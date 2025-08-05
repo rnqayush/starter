@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import {
   selectUser,
   selectIsAuthenticated,
-  logout,
+  logoutUser,
 } from '../../store/slices/authSlice';
 import AuthModal from '../../components/auth/AuthModal';
 import UserProfile from '../../components/user/UserProfile';
@@ -568,8 +568,8 @@ const Navbar = ({
   const isAuthenticated = useSelector(selectIsAuthenticated);
   const canAccessSeller = user?.role === 'seller' || user?.role === 'admin';
 
-  const handleLogout = () => {
-    dispatch(logout());
+  const handleLogout = async () => {
+    await dispatch(logoutUser());
   };
 
   const getBaseUrl = () => `/${storeSlug}`;

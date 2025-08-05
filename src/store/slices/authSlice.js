@@ -1,5 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
-import usersData from '../../DummyData/users.json';
+import {
+  registerUser as registerUserAPI,
+  loginUser as loginUserAPI,
+  logoutUser as logoutUserAPI,
+} from '../../api/endpoints/auth';
 
 // Helper function to extract name from email
 const getNameFromEmail = email => {
@@ -15,6 +19,8 @@ const generateAvatar = name => {
 
 const initialState = {
   user: null,
+  token: null,
+  refreshToken: null,
   isAuthenticated: false,
   loading: false,
   error: null,
@@ -25,11 +31,15 @@ const initializeFromStorage = () => {
   try {
     const savedUser = localStorage.getItem('user');
     const savedAuth = localStorage.getItem('isAuthenticated');
+    const authToken = localStorage.getItem('authToken');
+    const refreshToken = localStorage.getItem('refreshToken');
 
-    if (savedUser && savedAuth === 'true') {
+    if (savedUser && savedAuth === 'true' && authToken) {
       const parsedUser = JSON.parse(savedUser);
       return {
         user: parsedUser,
+        token: authToken,
+        refreshToken,
         isAuthenticated: true,
         loading: false,
         error: null,
@@ -39,6 +49,8 @@ const initializeFromStorage = () => {
     // Clear corrupted data
     localStorage.removeItem('user');
     localStorage.removeItem('isAuthenticated');
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('refreshToken');
   }
   return initialState;
 };
@@ -53,13 +65,21 @@ const authSlice = createSlice({
     },
     loginSuccess: (state, action) => {
       state.loading = false;
-      state.user = action.payload;
+      state.user = action.payload.user;
+      state.token = action.payload.token;
+      state.refreshToken = action.payload.refreshToken;
       state.isAuthenticated = true;
       state.error = null;
 
       // Persist to localStorage
-      localStorage.setItem('user', JSON.stringify(action.payload));
+      localStorage.setItem('user', JSON.stringify(action.payload.user));
       localStorage.setItem('isAuthenticated', 'true');
+      if (action.payload.token) {
+        localStorage.setItem('authToken', action.payload.token);
+      }
+      if (action.payload.refreshToken) {
+        localStorage.setItem('refreshToken', action.payload.refreshToken);
+      }
     },
     loginFailure: (state, action) => {
       state.loading = false;
@@ -73,13 +93,21 @@ const authSlice = createSlice({
     },
     registerSuccess: (state, action) => {
       state.loading = false;
-      state.user = action.payload;
+      state.user = action.payload.user;
+      state.token = action.payload.token;
+      state.refreshToken = action.payload.refreshToken;
       state.isAuthenticated = true;
       state.error = null;
 
       // Persist to localStorage
-      localStorage.setItem('user', JSON.stringify(action.payload));
+      localStorage.setItem('user', JSON.stringify(action.payload.user));
       localStorage.setItem('isAuthenticated', 'true');
+      if (action.payload.token) {
+        localStorage.setItem('authToken', action.payload.token);
+      }
+      if (action.payload.refreshToken) {
+        localStorage.setItem('refreshToken', action.payload.refreshToken);
+      }
     },
     registerFailure: (state, action) => {
       state.loading = false;
@@ -89,6 +117,8 @@ const authSlice = createSlice({
     },
     logout: state => {
       state.user = null;
+      state.token = null;
+      state.refreshToken = null;
       state.isAuthenticated = false;
       state.loading = false;
       state.error = null;
@@ -96,6 +126,8 @@ const authSlice = createSlice({
       // Clear localStorage
       localStorage.removeItem('user');
       localStorage.removeItem('isAuthenticated');
+      localStorage.removeItem('authToken');
+      localStorage.removeItem('refreshToken');
       localStorage.removeItem('userEnquiries');
       localStorage.removeItem('shopSettings');
       localStorage.removeItem('recentlyViewed');
@@ -151,26 +183,20 @@ export const loginUser = credentials => async dispatch => {
   dispatch(loginStart());
 
   try {
-    // Simulate API call delay
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    const result = await loginUserAPI(credentials);
 
-    // Find user in dummy data
-    const user = usersData.users.find(
-      u => u.email === credentials.email && u.password === credentials.password
-    );
-
-    if (!user) {
-      throw new Error('Invalid email or password');
+    if (result.success) {
+      dispatch(
+        loginSuccess({
+          user: result.user,
+          token: result.token,
+          refreshToken: result.refreshToken,
+        })
+      );
+      return { success: true, user: result.user };
+    } else {
+      throw new Error(result.error);
     }
-
-    // Create user session data
-    const userData = {
-      ...user,
-      lastLogin: new Date().toISOString(),
-    };
-
-    dispatch(loginSuccess(userData));
-    return { success: true, user: userData };
   } catch (error) {
     dispatch(loginFailure(error.message));
     return { success: false, error: error.message };
@@ -181,61 +207,35 @@ export const registerUser = userData => async dispatch => {
   dispatch(registerStart());
 
   try {
-    // Simulate API call delay
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    const result = await registerUserAPI(userData);
 
-    // Check if email already exists
-    const existingUser = usersData.users.find(u => u.email === userData.email);
-    if (existingUser) {
-      throw new Error('Email already exists');
+    if (result.success) {
+      dispatch(
+        registerSuccess({
+          user: result.user,
+          token: result.token,
+          refreshToken: result.refreshToken,
+        })
+      );
+      return { success: true, user: result.user };
+    } else {
+      throw new Error(result.error);
     }
-
-    const newUser = {
-      id: Date.now(),
-      ...userData,
-      avatar: generateAvatar(userData.name),
-      preferences: {
-        notifications: {
-          email: true,
-          sms: false,
-          push: true,
-        },
-        language: 'en',
-        currency: 'USD',
-      },
-      profile: {
-        bio: '',
-        location: '',
-        website: '',
-        socialLinks: {},
-      },
-      createdAt: new Date().toISOString(),
-      lastLogin: new Date().toISOString(),
-    };
-
-    // Add seller data if registering as seller
-    if (userData.role === 'seller') {
-      newUser.seller = {
-        businessName: userData.businessName || `${userData.name}'s Store`,
-        businessType: userData.businessType || 'General',
-        verified: false,
-        rating: 0,
-        totalSales: 0,
-        totalProducts: 0,
-        joinedDate: new Date().toISOString(),
-        settings: {
-          autoRespond: true,
-          showLocation: true,
-          allowReviews: true,
-        },
-      };
-    }
-
-    dispatch(registerSuccess(newUser));
-    return { success: true, user: newUser };
   } catch (error) {
     dispatch(registerFailure(error.message));
     return { success: false, error: error.message };
+  }
+};
+
+export const logoutUser = () => async dispatch => {
+  try {
+    await logoutUserAPI();
+    dispatch(logout());
+    return { success: true };
+  } catch (error) {
+    // Still logout locally even if API call fails
+    dispatch(logout());
+    return { success: true };
   }
 };
 
