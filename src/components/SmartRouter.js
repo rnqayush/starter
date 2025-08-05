@@ -59,19 +59,56 @@ const SmartRouter = () => {
         // First, try to get website from backend
         const result = await websiteService.getByName(slug);
         
+        // Handle different response formats from backend based on module type
+        console.log('✅ Found website in backend:', result);
+        
+        // Check if this is a hotel response (has data.hotel structure like hotels.json)
+        if (result.data && result.data.hotel) {
+          console.log('✅ Found hotel data in response:', result.data.hotel);
+          setHotelData(result.data.hotel);
+          setModuleType('hotel');
+          setIsLoading(false);
+          return;
+        }
+        
+        // Check if this is an ecommerce response (has vendor structure like ecommerce.json)
+        if (result.vendor) {
+          console.log('✅ Found ecommerce data in response:', result.vendor);
+          setWebsiteData(result);
+          setModuleType('ecommerce');
+          setIsLoading(false);
+          return;
+        }
+        
+        // Check if this is an automobile response (has success and data.vendor structure like automobiles.json)
+        if (result.success === true && result.data && result.data.vendor) {
+          console.log('✅ Found automobile data in response:', result.data.vendor);
+          setWebsiteData(result);
+          setModuleType('automobile');
+          setIsLoading(false);
+          return;
+        }
+        
+        // Check if this is a wedding response (has data.vendors structure like wedding.json)
+        if (result.data && result.data.vendors) {
+          console.log('✅ Found wedding data in response:', result.data.vendors);
+          setWebsiteData(result);
+          setModuleType('wedding');
+          setIsLoading(false);
+          return;
+        }
+        
+        // Check if this is a business response (has data.portfolio.buisness structure like business.json)
+        if (result.data && result.data.portfolio && result.data.portfolio.buisness) {
+          console.log('✅ Found business data in response:', result.data.portfolio.buisness);
+          setWebsiteData(result);
+          setModuleType('business');
+          setIsLoading(false);
+          return;
+        }
+        
+        // Regular website response (fallback)
         if (result.success && result.data) {
-          console.log('✅ Found website in backend:', result.data);
-          
-          // Check if this is a hotel response (has hotel data structure like hotels.json)
-          if (result.data.hotel) {
-            console.log('✅ Found hotel data in response:', result.data.hotel);
-            setHotelData(result.data.hotel);
-            setModuleType('hotel');
-            setIsLoading(false);
-            return;
-          }
-          
-          // Regular website response
           const website = result.data.website || result.data;
           setWebsiteData(website);
           
