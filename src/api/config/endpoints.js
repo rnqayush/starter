@@ -40,18 +40,9 @@ export const ECOMMERCE_ENDPOINTS = {
 // Hotel endpoints
 export const HOTEL_ENDPOINTS = {
   BASE: `${BASE_PATH}/hotels`,
-  HOTEL: id => `${BASE_PATH}/hotels/${id}`,
-  SEARCH: `${BASE_PATH}/hotels/search`,
-  FEATURED: `${BASE_PATH}/hotels/featured`,
-  BY_CITY: city => `${BASE_PATH}/hotels/city/${city}`,
-  BY_OWNER: ownerId => `${BASE_PATH}/hotels/owner/${ownerId}`,
-  ROOMS: hotelId => `${BASE_PATH}/hotels/${hotelId}/rooms`,
-  ROOM: (hotelId, roomId) => `${BASE_PATH}/hotels/${hotelId}/rooms/${roomId}`,
-  SECTIONS: hotelId => `${BASE_PATH}/hotels/${hotelId}/sections`,
-  REVIEWS: hotelId => `${BASE_PATH}/hotels/${hotelId}/reviews`,
-  BOOKINGS: `${BASE_PATH}/bookings`,
-  BOOKING: bookingId => `${BASE_PATH}/bookings/${bookingId}`,
-  AMENITIES: `${BASE_PATH}/hotels/amenities`,
+  HOTEL: identifier => `${BASE_PATH}/hotels/${identifier}`,
+  ROOMS: identifier => `${BASE_PATH}/hotels/${identifier}/rooms`,
+  START_BUILDING: `${BASE_PATH}/hotels/start-building`,
 };
 
 // Wedding endpoints
