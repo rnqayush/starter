@@ -568,8 +568,8 @@ const Navbar = ({
   const isAuthenticated = useSelector(selectIsAuthenticated);
   const canAccessSeller = user?.role === 'seller' || user?.role === 'admin';
 
-  const handleLogout = () => {
-    dispatch(logout());
+  const handleLogout = async () => {
+    await dispatch(logoutUser());
   };
 
   const getBaseUrl = () => `/${storeSlug}`;
