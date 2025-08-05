@@ -71,6 +71,42 @@ const SmartRouter = () => {
             return;
           }
           
+          // Check if this is an ecommerce response (has vendor structure)
+          if (result.vendor) {
+            console.log('✅ Found ecommerce data in response:', result.vendor);
+            setWebsiteData(result);
+            setModuleType('ecommerce');
+            setIsLoading(false);
+            return;
+          }
+          
+          // Check if this is an automobile response (has success and data.vendor structure)
+          if (result.success === true && result.data && result.data.vendor) {
+            console.log('✅ Found automobile data in response:', result.data.vendor);
+            setWebsiteData(result);
+            setModuleType('automobile');
+            setIsLoading(false);
+            return;
+          }
+          
+          // Check if this is a wedding response (has data.vendors structure)
+          if (result.data && result.data.vendors) {
+            console.log('✅ Found wedding data in response:', result.data.vendors);
+            setWebsiteData(result);
+            setModuleType('wedding');
+            setIsLoading(false);
+            return;
+          }
+          
+          // Check if this is a business response (has data.portfolio.buisness structure)
+          if (result.data && result.data.portfolio && result.data.portfolio.buisness) {
+            console.log('✅ Found business data in response:', result.data.portfolio.buisness);
+            setWebsiteData(result);
+            setModuleType('business');
+            setIsLoading(false);
+            return;
+          }
+          
           // Regular website response
           const website = result.data.website || result.data;
           setWebsiteData(website);
