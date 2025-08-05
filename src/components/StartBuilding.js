@@ -593,17 +593,43 @@ const StartBuilding = () => {
     }
   };
 
-  const handlePublish = () => {
+  const handlePublish = async () => {
     if (!isAuthenticated) {
       setShowAuthPrompt(true);
       return;
     }
 
-    // Create website for authenticated user
-    const slug = formData.websiteName;
-    // Here you would typically save the website data to your backend
-    console.log('Creating website:', { ...formData, userId: user.id });
-    navigate(`/${slug}`);
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      // Create website for authenticated user
+      const websiteData = {
+        websiteName: formData.websiteName,
+        websiteType: formData.websiteType,
+        tagline: formData.tagline,
+        themeColor: formData.themeColor,
+        logo: formData.logo ? URL.createObjectURL(formData.logo) : null,
+        fullPageImage: formData.fullPageImage ? URL.createObjectURL(formData.fullPageImage) : null,
+      };
+
+      console.log('Creating website:', websiteData);
+
+      const result = await websiteService.createFromStartBuilding(websiteData);
+
+      if (result.success) {
+        console.log('Website created successfully:', result.data);
+        // Navigate to the created website
+        navigate(`/${formData.websiteName}`);
+      } else {
+        setError(result.error || 'Failed to create website');
+      }
+    } catch (error) {
+      console.error('Website creation error:', error);
+      setError('An unexpected error occurred. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleLoginRedirect = () => {
