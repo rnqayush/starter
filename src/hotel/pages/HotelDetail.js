@@ -1173,25 +1173,13 @@ const HotelDetail = ({ websiteData, hotelData }) => {
           console.log('✅ Fetched hotel data from API:', response.data);
           setHotel(response.data);
         } else {
-          // Final fallback: Use static dummy data
-          console.log('⚠️ API failed, using dummy data');
-          const staticHotel = hotelJsonData.data.hotel;
-          if (staticHotel && (staticHotel.slug === slug || staticHotel.id.toString() === slug)) {
-            setHotel(staticHotel);
-          } else {
-            setError('Hotel not found');
-          }
+          console.log('❌ No hotel data found - showing page not found');
+          setError('Hotel not found');
         }
       } catch (error) {
         console.error('Error fetching hotel data:', error);
-        // Fallback to dummy data on error
-        const staticHotel = hotelJsonData.data.hotel;
-        if (staticHotel) {
-          console.log('⚠️ Error occurred, using dummy data as fallback');
-          setHotel(staticHotel);
-        } else {
-          setError('Failed to load hotel data');
-        }
+        console.log('❌ Error occurred - showing page not found');
+        setError('Failed to load hotel data');
       } finally {
         setLoading(false);
       }
@@ -1244,12 +1232,32 @@ const HotelDetail = ({ websiteData, hotelData }) => {
             alignItems: 'center',
             height: '100vh',
             gap: '20px',
+            textAlign: 'center',
+            padding: '2rem',
           }}
         >
-          <h2>Hotel not found</h2>
-          <p>
-            The hotel you're looking for doesn't exist or couldn't be loaded.
+          <h1 style={{ fontSize: '3rem', color: '#ef4444', marginBottom: '1rem' }}>
+            404
+          </h1>
+          <h2 style={{ fontSize: '1.5rem', color: '#374151', marginBottom: '1rem' }}>
+            Hotel Not Found
+          </h2>
+          <p style={{ color: '#6b7280', marginBottom: '2rem', maxWidth: '500px' }}>
+            The hotel "{slug}" doesn't exist or hasn't been published yet. Please check the URL or contact support.
           </p>
+          <a
+            href="/"
+            style={{
+              padding: '0.75rem 1.5rem',
+              backgroundColor: '#3b82f6',
+              color: 'white',
+              textDecoration: 'none',
+              borderRadius: '0.5rem',
+              fontWeight: '500',
+            }}
+          >
+            Go Home
+          </a>
         </div>
         <HotelFooter />
       </PageContainer>
