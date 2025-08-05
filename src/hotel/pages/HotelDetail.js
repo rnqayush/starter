@@ -1115,7 +1115,7 @@ const iconComponents = {
   FaEnvelope,
 };
 
-const HotelDetail = () => {
+const HotelDetail = ({ websiteData, hotelData }) => {
   const { slug } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -1149,37 +1149,56 @@ const HotelDetail = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        // First check if we have updated hotel data in Redux state
-        const updatedHotel = hotels.find(h => h.slug === slug);
+        // First priority: Use hotelData passed from SmartRouter
+        if (hotelData) {
+          console.log('✅ Using hotel data from SmartRouter:', hotelData);
+          setHotel(hotelData);
+          setLoading(false);
+          return;
+        }
 
+        // Second priority: Check if we have updated hotel data in Redux state
+        const updatedHotel = hotels.find(h => h.slug === slug);
         if (updatedHotel) {
-          // Use updated hotel data from Redux (includes admin changes)
+          console.log('✅ Using hotel data from Redux:', updatedHotel);
           setHotel(updatedHotel);
+          setLoading(false);
+          return;
+        }
+
+        // Third priority: Fetch from API
+        console.log('🔍 Fetching hotel data from API for slug:', slug);
+        const response = await fetchHotelById(slug);
+        if (response.success) {
+          console.log('✅ Fetched hotel data from API:', response.data);
+          setHotel(response.data);
         } else {
-          // Fetch from API
-          const response = await fetchHotelById(slug);
-          if (response.success) {
-            setHotel(response.data);
+          // Final fallback: Use static dummy data
+          console.log('⚠️ API failed, using dummy data');
+          const staticHotel = hotelJsonData.data.hotel;
+          if (staticHotel && (staticHotel.slug === slug || staticHotel.id.toString() === slug)) {
+            setHotel(staticHotel);
           } else {
-            // Fallback to static data
-            const staticHotel = hotelJsonData.data.hotel;
-            if (staticHotel && staticHotel.slug === slug) {
-              setHotel(staticHotel);
-            } else {
-              setError('Hotel not found');
-            }
+            setError('Hotel not found');
           }
         }
       } catch (error) {
         console.error('Error fetching hotel data:', error);
-        setError('Failed to load hotel data');
+        // Fallback to dummy data on error
+        const staticHotel = hotelJsonData.data.hotel;
+        if (staticHotel) {
+          console.log('⚠️ Error occurred, using dummy data as fallback');
+          setHotel(staticHotel);
+        } else {
+          setError('Failed to load hotel data');
+        }
       } finally {
         setLoading(false);
       }
     };
 
     fetchData();
-  }, [slug, hotels]);
+  }, [slug, hotels, hotelData]);
 
   const scrollToNextSection = () => {
     const nextSection = document.querySelector('[data-section="about"]');
