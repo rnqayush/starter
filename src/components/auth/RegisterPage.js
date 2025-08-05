@@ -401,6 +401,7 @@ const RegisterPage = () => {
       name: `${formData.firstName} ${formData.lastName}`,
       email: formData.email,
       password: formData.password,
+      confirmPassword: formData.confirmPassword,
       phone: formData.phone,
       role: formData.role,
       businessName: formData.businessName,
