@@ -964,12 +964,21 @@ const StartBuilding = () => {
             <ActionButton
               variant="publish"
               onClick={handlePublish}
-              disabled={!validateStep()}
+              disabled={!validateStep() || isLoading}
             >
-              <FaRocket />
-              {isAuthenticated
-                ? 'Publish My Website'
-                : 'Publish My Website (Login Required)'}
+              {isLoading ? (
+                <LoadingSpinner>
+                  <FaSpinner />
+                  Creating Website...
+                </LoadingSpinner>
+              ) : (
+                <>
+                  <FaRocket />
+                  {isAuthenticated
+                    ? 'Publish My Website'
+                    : 'Publish My Website (Login Required)'}
+                </>
+              )}
             </ActionButton>
           )}
         </Actions>
