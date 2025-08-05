@@ -27,6 +27,7 @@ export const apiServices = {
   ecommerce: ecommerceService,
   hotel: hotelService,
   wedding: weddingService,
+  website: websiteService,
 };
 
 // Default export for easy importing
