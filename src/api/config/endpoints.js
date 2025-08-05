@@ -20,12 +20,7 @@ export const AUTH_ENDPOINTS = {
 export const BUSINESS_ENDPOINTS = {
   BASE: `${BASE_PATH}/business`,
   BY_SLUG: slug => `${BASE_PATH}/business/${slug}`,
-  SECTIONS: slug => `${BASE_PATH}/business/${slug}/sections`,
-  SECTION: (slug, section) =>
-    `${BASE_PATH}/business/${slug}/sections/${section}`,
-  VALIDATE: slug => `${BASE_PATH}/business/${slug}/validate`,
-  MULTIPLE: `${BASE_PATH}/business/multiple`,
-  STATUS: `${BASE_PATH}/business/status`,
+  START_BUILDING: `${BASE_PATH}/business/start-building`,
 };
 
 // E-commerce endpoints
