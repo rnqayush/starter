@@ -61,14 +61,19 @@ const SmartRouter = () => {
         
         if (result.success && result.data) {
           console.log('✅ Found website in backend:', result.data);
+          
+          // Check if this is a hotel response (has hotel data structure)
+          if (result.data.hotel) {
+            console.log('✅ Found hotel data in response:', result.data.hotel);
+            setHotelData(result.data.hotel);
+            setModuleType('hotel');
+            setIsLoading(false);
+            return;
+          }
+          
+          // Regular website response
           const website = result.data.website || result.data;
           setWebsiteData(website);
-          
-          // If hotel data is included in the response, use it
-          if (result.data.hotel) {
-            console.log('✅ Found hotel data in website response:', result.data.hotel);
-            setHotelData(result.data.hotel);
-          }
           
           // Map backend website types to module types
           const typeMapping = {

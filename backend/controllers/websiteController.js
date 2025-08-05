@@ -234,7 +234,7 @@ class WebsiteController {
         url: website.getFullUrl(),
       };
 
-      // If it's a hotel website, also fetch the hotel data
+      // If it's a hotel website, also fetch the hotel data and format it like hotels.json
       if (website.websiteType === 'hotels') {
         try {
           const Hotel = require('../models/Hotel');
@@ -243,8 +243,71 @@ class WebsiteController {
             .select('-__v');
           
           if (hotel) {
-            responseData.hotel = hotel;
+            // Format the response to match hotels.json structure exactly
+            responseData = {
+              status: 'success',
+              statusCode: 200,
+              message: 'Hotel data retrieved successfully',
+              timestamp: new Date().toISOString(),
+              data: {
+                hotel: {
+                  id: hotel._id,
+                  name: hotel.name,
+                  slug: hotel.slug,
+                  location: hotel.location,
+                  address: hotel.address,
+                  city: hotel.city,
+                  pincode: hotel.pincode,
+                  phone: hotel.phone,
+                  email: hotel.email,
+                  website: hotel.website,
+                  description: hotel.description,
+                  rating: hotel.rating,
+                  starRating: hotel.starRating,
+                  image: hotel.image,
+                  images: hotel.images || [],
+                  checkInTime: hotel.checkInTime,
+                  checkOutTime: hotel.checkOutTime,
+                  policies: hotel.policies || [],
+                  startingPrice: hotel.startingPrice,
+                  totalRooms: hotel.totalRooms,
+                  availableRooms: hotel.availableRooms,
+                  ownerId: hotel.owner?._id || hotel.ownerId,
+                  sections: hotel.sections || {},
+                  sectionOrder: hotel.sectionOrder || [],
+                  sectionVisibility: hotel.sectionVisibility || {},
+                  rooms: hotel.rooms || []
+                },
+                bookings: [], // Empty for now, can be populated later if needed
+                amenitiesList: [
+                  { "id": "wifi", "name": "WiFi", "icon": "📶" },
+                  { "id": "ac", "name": "Air Conditioning", "icon": "❄️" },
+                  { "id": "pool", "name": "Swimming Pool", "icon": "🏊" },
+                  { "id": "spa", "name": "Spa", "icon": "🧖" },
+                  { "id": "gym", "name": "Fitness Center", "icon": "💪" },
+                  { "id": "restaurant", "name": "Restaurant", "icon": "🍽️" },
+                  { "id": "parking", "name": "Parking", "icon": "🚗" },
+                  { "id": "pet", "name": "Pet Friendly", "icon": "🐕" },
+                  { "id": "breakfast", "name": "Breakfast", "icon": "🥐" },
+                  { "id": "room-service", "name": "Room Service", "icon": "🛎️" },
+                  { "id": "tv", "name": "Television", "icon": "📺" },
+                  { "id": "minibar", "name": "Mini Bar", "icon": "🍷" },
+                  { "id": "balcony", "name": "Balcony", "icon": "🏔️" },
+                  { "id": "garden", "name": "Garden", "icon": "🌿" },
+                  { "id": "heater", "name": "Heater", "icon": "🔥" }
+                ]
+              },
+              meta: {
+                totalRecords: 1,
+                requestId: `req_${Date.now()}`,
+                version: "1.0",
+                responseTime: "120ms"
+              }
+            };
             console.log('✅ Found hotel data for website:', websiteName);
+            
+            // Return the hotel-formatted response directly
+            return res.status(200).json(responseData);
           } else {
             console.log('⚠️ No hotel data found for website:', websiteName);
           }
