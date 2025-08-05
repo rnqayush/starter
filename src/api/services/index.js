@@ -7,6 +7,7 @@ import businessService from './businessService';
 import ecommerceService, { ecommerceUtils } from './ecommerceService';
 import hotelService from './hotelService';
 import weddingService from './weddingService';
+import websiteService from './websiteService';
 
 // Export individual services
 export {
@@ -15,6 +16,7 @@ export {
   ecommerceService,
   hotelService,
   weddingService,
+  websiteService,
   ecommerceUtils,
 };
 
@@ -25,6 +27,7 @@ export const apiServices = {
   ecommerce: ecommerceService,
   hotel: hotelService,
   wedding: weddingService,
+  website: websiteService,
 };
 
 // Default export for easy importing

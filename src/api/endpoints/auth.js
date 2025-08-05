@@ -1,4 +1,4 @@
-import { networkManager } from '../networkManager';
+import httpClient from '../client/httpClient';
 
 // Auth API endpoints
 const AUTH_ENDPOINTS = {
@@ -15,21 +15,18 @@ const AUTH_ENDPOINTS = {
 // Register user
 export const registerUser = async userData => {
   try {
-    const response = await networkManager.post(
-      AUTH_ENDPOINTS.REGISTER,
-      userData
-    );
+    const response = await httpClient.post(AUTH_ENDPOINTS.REGISTER, userData);
 
     // Handle successful registration response
-    if (response.status === 'success' && response.data) {
-      const { user, token, refreshToken } = response.data;
+    if (response.data?.status === 'success' && response.data?.data) {
+      const { user, token, refreshToken } = response.data.data;
 
       // Store tokens
       if (token) {
-        networkManager.setAuthToken(token);
+        httpClient.setAuthToken(token);
       }
       if (refreshToken) {
-        localStorage.setItem('refreshToken', refreshToken);
+        httpClient.setRefreshToken(refreshToken);
       }
 
       return {
@@ -37,11 +34,11 @@ export const registerUser = async userData => {
         user,
         token,
         refreshToken,
-        message: response.message,
+        message: response.data.message,
       };
     }
 
-    throw new Error(response.message || 'Registration failed');
+    throw new Error(response.data?.message || 'Registration failed');
   } catch (error) {
     console.error('Registration error:', error);
     return {
@@ -54,21 +51,18 @@ export const registerUser = async userData => {
 // Login user
 export const loginUser = async credentials => {
   try {
-    const response = await networkManager.post(
-      AUTH_ENDPOINTS.LOGIN,
-      credentials
-    );
+    const response = await httpClient.post(AUTH_ENDPOINTS.LOGIN, credentials);
 
     // Handle successful login response
-    if (response.status === 'success' && response.data) {
-      const { user, token, refreshToken } = response.data;
+    if (response.data?.status === 'success' && response.data?.data) {
+      const { user, token, refreshToken } = response.data.data;
 
       // Store tokens
       if (token) {
-        networkManager.setAuthToken(token);
+        httpClient.setAuthToken(token);
       }
       if (refreshToken) {
-        localStorage.setItem('refreshToken', refreshToken);
+        httpClient.setRefreshToken(refreshToken);
       }
 
       return {
@@ -76,11 +70,11 @@ export const loginUser = async credentials => {
         user,
         token,
         refreshToken,
-        message: response.message,
+        message: response.data.message,
       };
     }
 
-    throw new Error(response.message || 'Login failed');
+    throw new Error(response.data?.message || 'Login failed');
   } catch (error) {
     console.error('Login error:', error);
     return {
@@ -93,10 +87,10 @@ export const loginUser = async credentials => {
 // Logout user
 export const logoutUser = async () => {
   try {
-    await networkManager.post(AUTH_ENDPOINTS.LOGOUT);
+    await httpClient.post(AUTH_ENDPOINTS.LOGOUT);
 
     // Clear stored tokens
-    networkManager.removeAuthToken();
+    httpClient.clearAuth();
 
     return {
       success: true,
@@ -106,7 +100,7 @@ export const logoutUser = async () => {
     console.error('Logout error:', error);
 
     // Clear tokens even if API call fails
-    networkManager.removeAuthToken();
+    httpClient.clearAuth();
 
     return {
       success: true,
@@ -118,25 +112,25 @@ export const logoutUser = async () => {
 // Refresh auth token
 export const refreshAuthToken = async () => {
   try {
-    const refreshToken = localStorage.getItem('refreshToken');
+    const refreshToken = httpClient.getRefreshToken();
 
     if (!refreshToken) {
       throw new Error('No refresh token available');
     }
 
-    const response = await networkManager.post(AUTH_ENDPOINTS.REFRESH_TOKEN, {
+    const response = await httpClient.post(AUTH_ENDPOINTS.REFRESH_TOKEN, {
       refreshToken,
     });
 
-    if (response.status === 'success' && response.data) {
-      const { token, refreshToken: newRefreshToken } = response.data;
+    if (response.data?.status === 'success' && response.data?.data) {
+      const { token, refreshToken: newRefreshToken } = response.data.data;
 
       // Update stored tokens
       if (token) {
-        networkManager.setAuthToken(token);
+        httpClient.setAuthToken(token);
       }
       if (newRefreshToken) {
-        localStorage.setItem('refreshToken', newRefreshToken);
+        httpClient.setRefreshToken(newRefreshToken);
       }
 
       return {
@@ -146,12 +140,12 @@ export const refreshAuthToken = async () => {
       };
     }
 
-    throw new Error(response.message || 'Token refresh failed');
+    throw new Error(response.data?.message || 'Token refresh failed');
   } catch (error) {
     console.error('Token refresh error:', error);
 
     // Clear tokens if refresh fails
-    networkManager.removeAuthToken();
+    httpClient.clearAuth();
 
     return {
       success: false,
@@ -163,13 +157,13 @@ export const refreshAuthToken = async () => {
 // Forgot password
 export const forgotPassword = async email => {
   try {
-    const response = await networkManager.post(AUTH_ENDPOINTS.FORGOT_PASSWORD, {
+    const response = await httpClient.post(AUTH_ENDPOINTS.FORGOT_PASSWORD, {
       email,
     });
 
     return {
       success: true,
-      message: response.message || 'Password reset email sent',
+      message: response.data?.message || 'Password reset email sent',
     };
   } catch (error) {
     console.error('Forgot password error:', error);
@@ -183,14 +177,14 @@ export const forgotPassword = async email => {
 // Reset password
 export const resetPassword = async (token, newPassword) => {
   try {
-    const response = await networkManager.post(AUTH_ENDPOINTS.RESET_PASSWORD, {
+    const response = await httpClient.post(AUTH_ENDPOINTS.RESET_PASSWORD, {
       token,
       password: newPassword,
     });
 
     return {
       success: true,
-      message: response.message || 'Password reset successful',
+      message: response.data?.message || 'Password reset successful',
     };
   } catch (error) {
     console.error('Reset password error:', error);
@@ -204,13 +198,13 @@ export const resetPassword = async (token, newPassword) => {
 // Verify email
 export const verifyEmail = async token => {
   try {
-    const response = await networkManager.post(AUTH_ENDPOINTS.VERIFY_EMAIL, {
+    const response = await httpClient.post(AUTH_ENDPOINTS.VERIFY_EMAIL, {
       token,
     });
 
     return {
       success: true,
-      message: response.message || 'Email verified successfully',
+      message: response.data?.message || 'Email verified successfully',
     };
   } catch (error) {
     console.error('Email verification error:', error);
@@ -224,14 +218,13 @@ export const verifyEmail = async token => {
 // Resend verification email
 export const resendVerificationEmail = async email => {
   try {
-    const response = await networkManager.post(
-      AUTH_ENDPOINTS.RESEND_VERIFICATION,
-      { email }
-    );
+    const response = await httpClient.post(AUTH_ENDPOINTS.RESEND_VERIFICATION, {
+      email,
+    });
 
     return {
       success: true,
-      message: response.message || 'Verification email sent',
+      message: response.data?.message || 'Verification email sent',
     };
   } catch (error) {
     console.error('Resend verification error:', error);

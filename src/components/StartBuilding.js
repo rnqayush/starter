@@ -13,11 +13,14 @@ import {
   FaShoppingCart,
   FaCar,
   FaBriefcase,
+  FaSpinner,
 } from 'react-icons/fa';
 import { theme, media } from '../styles/GlobalStyle';
 import { Button } from './shared/Button';
 import { websiteTypes, colorOptions } from '../DummyData/index';
 import { selectIsAuthenticated, selectUser } from '../store/slices/authSlice';
+import websiteService from '../api/services/websiteService';
+import { testBackendConnection } from '../utils/testBackend';
 
 const Container = styled.div`
   min-height: 100vh;
@@ -530,12 +533,90 @@ const AuthPrompt = styled.div`
   }
 `;
 
+const ErrorMessage = styled.div`
+  background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+  border: 2px solid #ef4444;
+  border-radius: 16px;
+  padding: ${theme.spacing.lg};
+  text-align: center;
+  margin: ${theme.spacing.lg} 0;
+  color: #dc2626;
+  font-weight: 500;
+`;
+
+const LoadingSpinner = styled.div`
+  display: inline-flex;
+  align-items: center;
+  gap: ${theme.spacing.sm};
+
+  svg {
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+`;
+
+const BackendStatus = styled.div`
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  padding: 8px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  z-index: 10;
+
+  ${props =>
+    props.status === 'connected' &&
+    `
+    background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+    color: #065f46;
+    border: 1px solid #10b981;
+  `}
+
+  ${props =>
+    props.status === 'fallback' &&
+    `
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    color: #92400e;
+    border: 1px solid #f59e0b;
+  `}
+
+  ${props =>
+    props.status === 'unknown' &&
+    `
+    background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+    color: #6b7280;
+    border: 1px solid #d1d5db;
+  `}
+
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+`;
+
 const StartBuilding = () => {
   const navigate = useNavigate();
   const isAuthenticated = useSelector(selectIsAuthenticated);
   const user = useSelector(selectUser);
   const [currentStep, setCurrentStep] = useState(1);
   const [showAuthPrompt, setShowAuthPrompt] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [backendStatus, setBackendStatus] = useState('unknown');
   const [formData, setFormData] = useState({
     websiteType: '',
     websiteName: '',
@@ -544,6 +625,15 @@ const StartBuilding = () => {
     tagline: '',
     themeColor: '#10b981',
   });
+
+  // Test backend connection on component mount
+  React.useEffect(() => {
+    const checkBackend = async () => {
+      const result = await testBackendConnection();
+      setBackendStatus(result.success ? 'connected' : 'fallback');
+    };
+    checkBackend();
+  }, []);
 
   // Data is now imported from DummyData/platform.json
 
@@ -564,10 +654,7 @@ const StartBuilding = () => {
       case 1:
         return formData.websiteType !== '';
       case 2:
-        return (
-          formData.websiteName !== '' &&
-          /^[a-z0-9-]+$/.test(formData.websiteName)
-        );
+        return formData.websiteName !== '';
       case 3:
         return true; // Confirmation step
       default:
@@ -589,17 +676,77 @@ const StartBuilding = () => {
     }
   };
 
-  const handlePublish = () => {
+  const handlePublish = async () => {
     if (!isAuthenticated) {
       setShowAuthPrompt(true);
       return;
     }
 
-    // Create website for authenticated user
-    const slug = formData.websiteName;
-    // Here you would typically save the website data to your backend
-    console.log('Creating website:', { ...formData, userId: user.id });
-    navigate(`/${slug}`);
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      // Create website for authenticated user
+      const websiteData = {
+        websiteName: formData.websiteName,
+        websiteType: formData.websiteType,
+        tagline: formData.tagline,
+        themeColor: formData.themeColor,
+        logo: formData.logo ? URL.createObjectURL(formData.logo) : null,
+        fullPageImage: formData.fullPageImage
+          ? URL.createObjectURL(formData.fullPageImage)
+          : null,
+      };
+
+      console.log('🚀 Creating website:', websiteData);
+
+      try {
+        const result =
+          await websiteService.createFromStartBuilding(websiteData);
+
+        if (result.success) {
+          console.log(
+            '✅ Website created successfully via backend:',
+            result.data
+          );
+          navigate(`/${formData.websiteName}`);
+          return;
+        } else {
+          console.log('⚠️ Backend failed, using fallback mode:', result.error);
+        }
+      } catch (backendError) {
+        console.log(
+          '⚠️ Backend not available, using fallback mode:',
+          backendError.message
+        );
+      }
+
+      // Fallback: Create website without backend (for demo purposes)
+      console.log('🔄 Creating website in demo mode...');
+
+      // Store website data in localStorage for demo
+      const demoWebsite = {
+        ...websiteData,
+        id: Date.now(),
+        createdAt: new Date().toISOString(),
+        status: 'demo',
+        owner: user,
+      };
+
+      localStorage.setItem(
+        `website_${formData.websiteName}`,
+        JSON.stringify(demoWebsite)
+      );
+      console.log('✅ Demo website created successfully!');
+
+      // Navigate to the created website
+      navigate(`/${formData.websiteName}`);
+    } catch (error) {
+      console.error('❌ Website creation error:', error);
+      setError('An unexpected error occurred. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleLoginRedirect = () => {
@@ -824,6 +971,12 @@ const StartBuilding = () => {
 
   return (
     <Container>
+      <BackendStatus status={backendStatus}>
+        <div className="status-dot"></div>
+        {backendStatus === 'connected' && 'Backend Connected'}
+        {backendStatus === 'fallback' && 'Demo Mode'}
+        {backendStatus === 'unknown' && 'Checking...'}
+      </BackendStatus>
       <StepperCard>
         <ProgressBar>
           <ProgressFill progress={progress} />
@@ -848,6 +1001,8 @@ const StartBuilding = () => {
         </Header>
 
         <Content>
+          {error && <ErrorMessage>{error}</ErrorMessage>}
+
           {showAuthPrompt && !isAuthenticated ? (
             <AuthPrompt>
               <h3>🔐 Login Required</h3>
@@ -902,12 +1057,21 @@ const StartBuilding = () => {
             <ActionButton
               variant="publish"
               onClick={handlePublish}
-              disabled={!validateStep()}
+              disabled={!validateStep() || isLoading}
             >
-              <FaRocket />
-              {isAuthenticated
-                ? 'Publish My Website'
-                : 'Publish My Website (Login Required)'}
+              {isLoading ? (
+                <LoadingSpinner>
+                  <FaSpinner />
+                  Creating Website...
+                </LoadingSpinner>
+              ) : (
+                <>
+                  <FaRocket />
+                  {isAuthenticated
+                    ? 'Publish My Website'
+                    : 'Publish My Website (Login Required)'}
+                </>
+              )}
             </ActionButton>
           )}
         </Actions>
