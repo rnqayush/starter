@@ -538,6 +538,8 @@ const StartBuilding = () => {
   const user = useSelector(selectUser);
   const [currentStep, setCurrentStep] = useState(1);
   const [showAuthPrompt, setShowAuthPrompt] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [formData, setFormData] = useState({
     websiteType: '',
     websiteName: '',
