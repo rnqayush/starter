@@ -13,11 +13,13 @@ import {
   FaShoppingCart,
   FaCar,
   FaBriefcase,
+  FaSpinner,
 } from 'react-icons/fa';
 import { theme, media } from '../styles/GlobalStyle';
 import { Button } from './shared/Button';
 import { websiteTypes, colorOptions } from '../DummyData/index';
 import { selectIsAuthenticated, selectUser } from '../store/slices/authSlice';
+import websiteService from '../api/services/websiteService';
 
 const Container = styled.div`
   min-height: 100vh;
