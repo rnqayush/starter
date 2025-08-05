@@ -403,7 +403,9 @@ const AuthModal = ({ isOpen, onClose, onSuccess, defaultTab = 'login' }) => {
         newErrors.phone = 'Phone number is required';
       }
 
-      if (formData.password !== formData.confirmPassword) {
+      if (!formData.confirmPassword.trim()) {
+        newErrors.confirmPassword = 'Please enter confirm password';
+      } else if (formData.password !== formData.confirmPassword) {
         newErrors.confirmPassword = "Passwords don't match";
       }
 
