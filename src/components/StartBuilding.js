@@ -904,6 +904,12 @@ const StartBuilding = () => {
         </Header>
 
         <Content>
+          {error && (
+            <ErrorMessage>
+              {error}
+            </ErrorMessage>
+          )}
+
           {showAuthPrompt && !isAuthenticated ? (
             <AuthPrompt>
               <h3>🔐 Login Required</h3>
