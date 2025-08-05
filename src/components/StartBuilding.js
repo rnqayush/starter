@@ -594,10 +594,7 @@ const StartBuilding = () => {
       case 1:
         return formData.websiteType !== '';
       case 2:
-        return (
-          formData.websiteName !== '' &&
-          /^[a-z0-9-]+$/.test(formData.websiteName)
-        );
+        return formData.websiteName !== '';
       case 3:
         return true; // Confirmation step
       default:
