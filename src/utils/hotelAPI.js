@@ -31,7 +31,7 @@ export const getStaticAmenitiesData = hotelService.getStaticAmenitiesData.bind(h
 export const getOwnerHotels = hotelService.getOwnerHotels.bind(hotelService);
 
 // Default export
-export default {
+const hotelAPIBundle = {
   fetchHotels,
   fetchHotelById,
   fetchHotelSections,
@@ -53,3 +53,5 @@ export default {
   getStaticAmenitiesData,
   getOwnerHotels,
 };
+
+export default hotelAPIBundle;
