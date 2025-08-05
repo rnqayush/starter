@@ -11,7 +11,9 @@ export const ecommerceAPI = ecommerceService;
 export { ecommerceUtils };
 
 // Default export
-export default {
+const ecommerceAPIBundle = {
   ecommerceAPI,
   ecommerceUtils,
 };
+
+export default ecommerceAPIBundle;
