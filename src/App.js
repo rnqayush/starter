@@ -13,7 +13,6 @@ import SingleBlogPage from './components/user/SingleBlogPage';
 import LoginPage from './components/auth/LoginPage';
 import RegisterPage from './components/auth/RegisterPage';
 import StartBuilding from './components/StartBuilding';
-import APITestComponent from './components/APITestComponent';
 
 // Shared Components
 import ScrollToTop from './components/shared/ScrollToTop';
