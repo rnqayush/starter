@@ -61,13 +61,21 @@ const authSlice = createSlice({
     },
     loginSuccess: (state, action) => {
       state.loading = false;
-      state.user = action.payload;
+      state.user = action.payload.user;
+      state.token = action.payload.token;
+      state.refreshToken = action.payload.refreshToken;
       state.isAuthenticated = true;
       state.error = null;
 
       // Persist to localStorage
-      localStorage.setItem('user', JSON.stringify(action.payload));
+      localStorage.setItem('user', JSON.stringify(action.payload.user));
       localStorage.setItem('isAuthenticated', 'true');
+      if (action.payload.token) {
+        localStorage.setItem('authToken', action.payload.token);
+      }
+      if (action.payload.refreshToken) {
+        localStorage.setItem('refreshToken', action.payload.refreshToken);
+      }
     },
     loginFailure: (state, action) => {
       state.loading = false;
