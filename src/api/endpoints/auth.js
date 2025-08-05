@@ -163,13 +163,13 @@ export const refreshAuthToken = async () => {
 // Forgot password
 export const forgotPassword = async email => {
   try {
-    const response = await networkManager.post(AUTH_ENDPOINTS.FORGOT_PASSWORD, {
+    const response = await httpClient.post(AUTH_ENDPOINTS.FORGOT_PASSWORD, {
       email,
     });
 
     return {
       success: true,
-      message: response.message || 'Password reset email sent',
+      message: response.data?.message || 'Password reset email sent',
     };
   } catch (error) {
     console.error('Forgot password error:', error);
@@ -183,14 +183,14 @@ export const forgotPassword = async email => {
 // Reset password
 export const resetPassword = async (token, newPassword) => {
   try {
-    const response = await networkManager.post(AUTH_ENDPOINTS.RESET_PASSWORD, {
+    const response = await httpClient.post(AUTH_ENDPOINTS.RESET_PASSWORD, {
       token,
       password: newPassword,
     });
 
     return {
       success: true,
-      message: response.message || 'Password reset successful',
+      message: response.data?.message || 'Password reset successful',
     };
   } catch (error) {
     console.error('Reset password error:', error);
@@ -204,13 +204,13 @@ export const resetPassword = async (token, newPassword) => {
 // Verify email
 export const verifyEmail = async token => {
   try {
-    const response = await networkManager.post(AUTH_ENDPOINTS.VERIFY_EMAIL, {
+    const response = await httpClient.post(AUTH_ENDPOINTS.VERIFY_EMAIL, {
       token,
     });
 
     return {
       success: true,
-      message: response.message || 'Email verified successfully',
+      message: response.data?.message || 'Email verified successfully',
     };
   } catch (error) {
     console.error('Email verification error:', error);
@@ -224,14 +224,14 @@ export const verifyEmail = async token => {
 // Resend verification email
 export const resendVerificationEmail = async email => {
   try {
-    const response = await networkManager.post(
+    const response = await httpClient.post(
       AUTH_ENDPOINTS.RESEND_VERIFICATION,
       { email }
     );
 
     return {
       success: true,
-      message: response.message || 'Verification email sent',
+      message: response.data?.message || 'Verification email sent',
     };
   } catch (error) {
     console.error('Resend verification error:', error);
