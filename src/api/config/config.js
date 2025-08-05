@@ -10,7 +10,7 @@ const getApiConfig = () => {
       baseURL: process.env.REACT_APP_API_URL || 'http://localhost:5000/api',
       timeout: 10000,
       withCredentials: false,
-      enableMocking: true, // Enable fake API responses in development
+      enableMocking: false, // Use real backend instead of fake responses
     },
     production: {
       baseURL: process.env.REACT_APP_API_URL || 'https://api.yourdomain.com',
