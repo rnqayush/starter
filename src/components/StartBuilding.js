@@ -950,6 +950,12 @@ const StartBuilding = () => {
 
   return (
     <Container>
+      <BackendStatus status={backendStatus}>
+        <div className="status-dot"></div>
+        {backendStatus === 'connected' && 'Backend Connected'}
+        {backendStatus === 'fallback' && 'Demo Mode'}
+        {backendStatus === 'unknown' && 'Checking...'}
+      </BackendStatus>
       <StepperCard>
         <ProgressBar>
           <ProgressFill progress={progress} />
