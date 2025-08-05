@@ -1,8 +1,7 @@
 // Centralized API endpoints configuration
 // All API endpoint URLs are defined here for easy maintenance
 
-const API_VERSION = 'v1';
-const BASE_PATH = `/api/${API_VERSION}`;
+const BASE_PATH = `/api`;
 
 // Authentication endpoints
 export const AUTH_ENDPOINTS = {
