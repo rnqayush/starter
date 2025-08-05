@@ -234,85 +234,317 @@ class WebsiteController {
         url: website.getFullUrl(),
       };
 
-      // If it's a hotel website, fetch hotel data and format response to match hotels.json exactly
-      if (website.websiteType === 'hotels') {
-        try {
-          const Hotel = require('../models/Hotel');
-          const hotel = await Hotel.findOne({ slug: websiteName })
-            .populate('owner', 'name email')
-            .select('-__v');
-          
-          if (hotel) {
-            console.log('✅ Found hotel data for website:', websiteName);
+      // Handle different website types with their specific data formats to match JSON files exactly
+      switch (website.websiteType) {
+        case 'hotels':
+          try {
+            const Hotel = require('../models/Hotel');
+            const hotel = await Hotel.findOne({ slug: websiteName })
+              .populate('owner', 'name email')
+              .select('-__v');
             
-            // Return response in exact hotels.json format
-            return res.status(200).json({
-              status: 'success',
-              statusCode: 200,
-              message: 'Hotel data retrieved successfully',
-              timestamp: new Date().toISOString(),
-              data: {
-                hotel: {
-                  id: hotel._id,
-                  name: hotel.name,
-                  slug: hotel.slug,
-                  location: hotel.location,
-                  address: hotel.address,
-                  city: hotel.city,
-                  pincode: hotel.pincode,
-                  phone: hotel.phone,
-                  email: hotel.email,
-                  website: hotel.website,
-                  description: hotel.description,
-                  rating: hotel.rating,
-                  starRating: hotel.starRating,
-                  image: hotel.image,
-                  images: hotel.images || [],
-                  checkInTime: hotel.checkInTime,
-                  checkOutTime: hotel.checkOutTime,
-                  policies: hotel.policies || [],
-                  startingPrice: hotel.startingPrice,
-                  totalRooms: hotel.totalRooms,
-                  availableRooms: hotel.availableRooms,
-                  ownerId: hotel.owner?._id || hotel.ownerId,
-                  sections: hotel.sections || {},
-                  sectionOrder: hotel.sectionOrder || [],
-                  sectionVisibility: hotel.sectionVisibility || {},
-                  rooms: hotel.rooms || []
+            if (hotel) {
+              console.log('✅ Found hotel data for website:', websiteName);
+              
+              // Return response in exact hotels.json format
+              return res.status(200).json({
+                status: 'success',
+                statusCode: 200,
+                message: 'Hotel data retrieved successfully',
+                timestamp: new Date().toISOString(),
+                data: {
+                  hotel: {
+                    id: hotel._id,
+                    name: hotel.name,
+                    slug: hotel.slug,
+                    location: hotel.location,
+                    address: hotel.address,
+                    city: hotel.city,
+                    pincode: hotel.pincode,
+                    phone: hotel.phone,
+                    email: hotel.email,
+                    website: hotel.website,
+                    description: hotel.description,
+                    rating: hotel.rating,
+                    starRating: hotel.starRating,
+                    image: hotel.image,
+                    images: hotel.images || [],
+                    checkInTime: hotel.checkInTime,
+                    checkOutTime: hotel.checkOutTime,
+                    policies: hotel.policies || [],
+                    startingPrice: hotel.startingPrice,
+                    totalRooms: hotel.totalRooms,
+                    availableRooms: hotel.availableRooms,
+                    ownerId: hotel.owner?._id || hotel.ownerId,
+                    sections: hotel.sections || {},
+                    sectionOrder: hotel.sectionOrder || [],
+                    sectionVisibility: hotel.sectionVisibility || {},
+                    rooms: hotel.rooms || []
+                  },
+                  bookings: [],
+                  amenitiesList: [
+                    { "id": "wifi", "name": "WiFi", "icon": "📶" },
+                    { "id": "ac", "name": "Air Conditioning", "icon": "❄️" },
+                    { "id": "pool", "name": "Swimming Pool", "icon": "🏊" },
+                    { "id": "spa", "name": "Spa", "icon": "🧖" },
+                    { "id": "gym", "name": "Fitness Center", "icon": "💪" },
+                    { "id": "restaurant", "name": "Restaurant", "icon": "🍽️" },
+                    { "id": "parking", "name": "Parking", "icon": "🚗" },
+                    { "id": "pet", "name": "Pet Friendly", "icon": "🐕" },
+                    { "id": "breakfast", "name": "Breakfast", "icon": "🥐" },
+                    { "id": "room-service", "name": "Room Service", "icon": "🛎️" },
+                    { "id": "tv", "name": "Television", "icon": "📺" },
+                    { "id": "minibar", "name": "Mini Bar", "icon": "🍷" },
+                    { "id": "balcony", "name": "Balcony", "icon": "🏔️" },
+                    { "id": "garden", "name": "Garden", "icon": "🌿" },
+                    { "id": "heater", "name": "Heater", "icon": "🔥" }
+                  ]
                 },
-                bookings: [], // Empty for now, can be populated later if needed
-                amenitiesList: [
-                  { "id": "wifi", "name": "WiFi", "icon": "📶" },
-                  { "id": "ac", "name": "Air Conditioning", "icon": "❄️" },
-                  { "id": "pool", "name": "Swimming Pool", "icon": "🏊" },
-                  { "id": "spa", "name": "Spa", "icon": "🧖" },
-                  { "id": "gym", "name": "Fitness Center", "icon": "💪" },
-                  { "id": "restaurant", "name": "Restaurant", "icon": "🍽️" },
-                  { "id": "parking", "name": "Parking", "icon": "🚗" },
-                  { "id": "pet", "name": "Pet Friendly", "icon": "🐕" },
-                  { "id": "breakfast", "name": "Breakfast", "icon": "🥐" },
-                  { "id": "room-service", "name": "Room Service", "icon": "🛎️" },
-                  { "id": "tv", "name": "Television", "icon": "📺" },
-                  { "id": "minibar", "name": "Mini Bar", "icon": "🍷" },
-                  { "id": "balcony", "name": "Balcony", "icon": "🏔️" },
-                  { "id": "garden", "name": "Garden", "icon": "🌿" },
-                  { "id": "heater", "name": "Heater", "icon": "🔥" }
-                ]
-              },
-              meta: {
-                totalRecords: 1,
-                requestId: `req_${Date.now()}`,
-                version: "1.0",
-                responseTime: "120ms"
-              }
-            });
-          } else {
-            console.log('⚠️ No hotel data found for website:', websiteName);
+                meta: {
+                  totalRecords: 1,
+                  requestId: `req_${Date.now()}`,
+                  version: "1.0",
+                  responseTime: "120ms"
+                }
+              });
+            }
+          } catch (error) {
+            console.error('Error fetching hotel data:', error);
           }
-        } catch (hotelError) {
-          console.error('Error fetching hotel data:', hotelError);
-          // Continue without hotel data - frontend will handle fallback
-        }
+          break;
+
+        case 'ecommerce':
+          try {
+            const Ecommerce = require('../models/Ecommerce');
+            const ecommerce = await Ecommerce.findOne({ slug: websiteName })
+              .populate('owner', 'name email')
+              .select('-__v');
+            
+            if (ecommerce) {
+              console.log('✅ Found ecommerce data for website:', websiteName);
+              
+              // Return response in exact ecommerce.json format
+              return res.status(200).json({
+                vendor: {
+                  id: ecommerce.slug,
+                  slug: ecommerce.slug,
+                  name: ecommerce.name,
+                  category: 'ecommerce',
+                  businessInfo: {
+                    logo: ecommerce.logo,
+                    description: ecommerce.description,
+                    phone: ecommerce.phone,
+                    email: ecommerce.email,
+                    website: ecommerce.website,
+                    address: ecommerce.address || {
+                      street: ecommerce.address?.street || '',
+                      city: ecommerce.city || '',
+                      state: ecommerce.state || '',
+                      zipCode: ecommerce.zipCode || '',
+                      coordinates: ecommerce.coordinates || { lat: 37.7749, lng: -122.4194 }
+                    },
+                    hours: ecommerce.hours || {}
+                  },
+                  ownerInfo: {
+                    name: ecommerce.owner?.name || 'Owner',
+                    email: ecommerce.owner?.email || ecommerce.email,
+                    phone: ecommerce.phone,
+                    since: ecommerce.createdAt ? new Date(ecommerce.createdAt).getFullYear().toString() : '2024'
+                  },
+                  rating: ecommerce.rating || 4.5,
+                  reviewCount: ecommerce.reviewCount || 0,
+                  theme: ecommerce.theme || {
+                    primaryColor: '#1e40af',
+                    secondaryColor: '#3b82f6',
+                    backgroundColor: '#f8fafc',
+                    textColor: '#1f2937'
+                  },
+                  featured: ecommerce.featured || false,
+                  verified: ecommerce.verified || true,
+                  lastUpdated: new Date().toISOString()
+                },
+                pageContent: ecommerce.pageContent || { sections: [] }
+              });
+            }
+          } catch (error) {
+            console.error('Error fetching ecommerce data:', error);
+          }
+          break;
+
+        case 'automobiles':
+          try {
+            const Automobile = require('../models/Automobile');
+            const automobile = await Automobile.findOne({ slug: websiteName })
+              .populate('owner', 'name email')
+              .select('-__v');
+            
+            if (automobile) {
+              console.log('✅ Found automobile data for website:', websiteName);
+              
+              // Return response in exact automobiles.json format
+              return res.status(200).json({
+                success: true,
+                timestamp: new Date().toISOString(),
+                data: {
+                  vendor: {
+                    id: automobile.slug,
+                    name: automobile.name,
+                    slug: automobile.slug,
+                    category: 'automobiles',
+                    status: 'active',
+                    verified: automobile.verified || true,
+                    owner: {
+                      id: automobile.owner?._id || 'owner_001',
+                      name: automobile.owner?.name || 'Owner',
+                      email: automobile.owner?.email || automobile.email,
+                      phone: automobile.phone,
+                      avatar: automobile.owner?.avatar || '',
+                      businessLicense: automobile.businessLicense || 'DEALER-LIC-2024-001',
+                      joinedDate: automobile.createdAt || new Date().toISOString(),
+                      verified: true,
+                      permissions: [
+                        'manage_inventory',
+                        'manage_content',
+                        'view_analytics',
+                        'manage_orders'
+                      ]
+                    },
+                    businessInfo: {
+                      logo: automobile.logo,
+                      coverImage: automobile.coverImage,
+                      description: automobile.description,
+                      establishedYear: automobile.establishedYear || new Date().getFullYear(),
+                      licenseNumber: automobile.licenseNumber || 'DEALER-2024-001',
+                      taxId: automobile.taxId || 'TAX-ID-001',
+                      website: automobile.website,
+                      socialMedia: automobile.socialMedia || {},
+                      quickLinks: automobile.quickLinks || []
+                    },
+                    contactInfo: automobile.contactInfo || {},
+                    businessHours: automobile.businessHours || {},
+                    services: automobile.services || [],
+                    vehicles: automobile.vehicles || []
+                  }
+                }
+              });
+            }
+          } catch (error) {
+            console.error('Error fetching automobile data:', error);
+          }
+          break;
+
+        case 'weddings':
+          try {
+            const Wedding = require('../models/Wedding');
+            const wedding = await Wedding.findOne({ slug: websiteName })
+              .populate('owner', 'name email')
+              .select('-__v');
+            
+            if (wedding) {
+              console.log('✅ Found wedding data for website:', websiteName);
+              
+              // Return response in exact wedding.json format
+              return res.status(200).json({
+                status: 'success',
+                statusCode: 200,
+                message: 'Wedding vendor data retrieved successfully',
+                timestamp: new Date().toISOString(),
+                data: {
+                  vendors: {
+                    [wedding.slug]: {
+                      id: wedding.slug,
+                      name: wedding.name,
+                      category: 'weddings',
+                      logo: wedding.logo,
+                      image: wedding.image,
+                      heroVideo: wedding.heroVideo,
+                      tagline: wedding.tagline,
+                      rating: wedding.rating || 4.5,
+                      reviewCount: wedding.reviewCount || 0,
+                      address: wedding.address,
+                      city: wedding.city,
+                      state: wedding.state,
+                      zipCode: wedding.zipCode,
+                      coordinates: wedding.coordinates || { lat: 37.7749, lng: -122.4194 },
+                      distance: wedding.distance || 0,
+                      description: wedding.description,
+                      aboutUs: wedding.aboutUs || {},
+                      services: wedding.services || [],
+                      portfolio: wedding.portfolio || [],
+                      packages: wedding.packages || [],
+                      testimonials: wedding.testimonials || [],
+                      contact: wedding.contact || {},
+                      availability: wedding.availability || {},
+                      socialMedia: wedding.socialMedia || {}
+                    }
+                  }
+                }
+              });
+            }
+          } catch (error) {
+            console.error('Error fetching wedding data:', error);
+          }
+          break;
+
+        case 'professional':
+          try {
+            const Business = require('../models/Business');
+            const business = await Business.findOne({ slug: websiteName })
+              .populate('owner', 'name email')
+              .select('-__v');
+            
+            if (business) {
+              console.log('✅ Found business data for website:', websiteName);
+              
+              // Return response in exact business.json format
+              return res.status(200).json({
+                status: 'success',
+                statusCode: 200,
+                message: 'Business website data retrieved successfully',
+                timestamp: new Date().toISOString(),
+                data: {
+                  isPersonalPortfolio: false,
+                  portfolio: {
+                    buisness: {
+                      id: business.slug,
+                      name: business.name,
+                      slug: business.slug,
+                      type: 'business',
+                      category: business.category || 'Professional Services',
+                      primaryColor: business.primaryColor || '#e91e63',
+                      secondaryColor: business.secondaryColor || '#f8bbd9',
+                      logo: business.logo,
+                      image: business.image,
+                      tagline: business.tagline,
+                      rating: business.rating || 4.5,
+                      reviewCount: business.reviewCount || 0,
+                      address: business.address,
+                      city: business.city,
+                      state: business.state,
+                      zipCode: business.zipCode,
+                      coordinates: business.coordinates || { lat: 37.7749, lng: -122.4194 },
+                      description: business.description,
+                      features: business.features || [],
+                      hero: business.hero || {},
+                      about: business.about || {},
+                      services: business.services || [],
+                      portfolio: business.portfolio || [],
+                      testimonials: business.testimonials || [],
+                      contact: business.contact || {},
+                      team: business.team || []
+                    }
+                  }
+                }
+              });
+            }
+          } catch (error) {
+            console.error('Error fetching business data:', error);
+          }
+          break;
+
+        default:
+          console.log('⚠️ Unknown website type:', website.websiteType);
+          break;
       }
 
       // Regular website response for non-hotel websites
