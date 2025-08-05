@@ -55,74 +55,70 @@ class WebsiteController {
       let moduleResponse = null;
 
       try {
+        // Create a mock response object that captures the data
+        let capturedData = null;
+        let capturedStatus = null;
+        
+        const mockRes = {
+          status: (code) => {
+            capturedStatus = code;
+            return {
+              json: (data) => {
+                capturedData = data;
+                return { status: code, data };
+              }
+            };
+          }
+        };
+
         switch (websiteType) {
           case 'professional':
-            moduleResponse = await BusinessController.createFromStartBuilding(
+            await BusinessController.createFromStartBuilding(
               {
                 ...req,
                 body: { websiteName, websiteType, tagline, themeColor },
               },
-              {
-                status: code => ({
-                  json: data => ({ status: code, data }),
-                }),
-              }
+              mockRes
             );
             break;
 
           case 'hotels':
-            moduleResponse = await HotelController.createFromStartBuilding(
+            await HotelController.createFromStartBuilding(
               {
                 ...req,
                 body: { websiteName, websiteType, tagline, themeColor },
               },
-              {
-                status: code => ({
-                  json: data => ({ status: code, data }),
-                }),
-              }
+              mockRes
             );
             break;
 
           case 'ecommerce':
-            moduleResponse = await EcommerceController.createFromStartBuilding(
+            await EcommerceController.createFromStartBuilding(
               {
                 ...req,
                 body: { websiteName, websiteType, tagline, themeColor },
               },
-              {
-                status: code => ({
-                  json: data => ({ status: code, data }),
-                }),
-              }
+              mockRes
             );
             break;
 
           case 'automobiles':
-            moduleResponse = await AutomobileController.createFromStartBuilding(
+            await AutomobileController.createFromStartBuilding(
               {
                 ...req,
                 body: { websiteName, websiteType, tagline, themeColor },
               },
-              {
-                status: code => ({
-                  json: data => ({ status: code, data }),
-                }),
-              }
+              mockRes
             );
             break;
 
           case 'weddings':
-            moduleResponse = await WeddingController.createFromStartBuilding(
+            await WeddingController.createFromStartBuilding(
               {
                 ...req,
                 body: { websiteName, websiteType, tagline, themeColor },
               },
-              {
-                status: code => ({
-                  json: data => ({ status: code, data }),
-                }),
-              }
+              mockRes
             );
             break;
 
@@ -130,11 +126,11 @@ class WebsiteController {
             throw new Error('Unsupported website type');
         }
 
-        if (moduleResponse && moduleResponse.status !== 201) {
+        if (capturedStatus !== 201) {
           throw new Error('Failed to create module data');
         }
 
-        moduleData = moduleResponse.data;
+        moduleData = capturedData ? capturedData.data : null;
       } catch (moduleError) {
         console.error('Module creation error:', moduleError);
         // Continue with website creation even if module creation fails
