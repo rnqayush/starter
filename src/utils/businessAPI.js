@@ -1,8 +1,8 @@
-// Fake API service to simulate API calls for business data
-// This mimics what would be real API calls to a backend service
+// Legacy API file - now uses the new API structure
+// This file is maintained for backward compatibility
+// Please use src/api/services/businessService for new code
 
-// Import the business data directly
-import businessData from '../DummyData/business.json';
+import { businessService } from '../api/services';
 
 // Helper function to get business data by slug
 const getBusinessWebsiteData = slug => {
