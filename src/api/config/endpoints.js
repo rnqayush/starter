@@ -94,14 +94,24 @@ export const WEDDING_ENDPOINTS = {
   CREATE_WEBSITE: `${BASE_PATH}/wedding/website`,
 };
 
-// Automobile endpoints (if needed in future)
+// Automobile endpoints
 export const AUTOMOBILE_ENDPOINTS = {
   BASE: `${BASE_PATH}/automobiles`,
-  VEHICLES: `${BASE_PATH}/automobiles/vehicles`,
-  VEHICLE: id => `${BASE_PATH}/automobiles/vehicles/${id}`,
-  CATEGORIES: `${BASE_PATH}/automobiles/categories`,
-  DEALERS: `${BASE_PATH}/automobiles/dealers`,
-  DEALER: id => `${BASE_PATH}/automobiles/dealers/${id}`,
+  DEALERSHIP: slug => `${BASE_PATH}/automobiles/${slug}`,
+  VEHICLES: slug => `${BASE_PATH}/automobiles/${slug}/vehicles`,
+  VEHICLE: (slug, vehicleId) => `${BASE_PATH}/automobiles/${slug}/vehicles/${vehicleId}`,
+  CATEGORIES: slug => `${BASE_PATH}/automobiles/${slug}/categories`,
+  START_BUILDING: `${BASE_PATH}/automobiles/start-building`,
+};
+
+// Website endpoints for start-building functionality
+export const WEBSITE_ENDPOINTS = {
+  BASE: `${BASE_PATH}/websites`,
+  CREATE_FROM_START_BUILDING: `${BASE_PATH}/websites/start-building`,
+  CHECK_AVAILABILITY: websiteName => `${BASE_PATH}/websites/check/${websiteName}`,
+  BY_NAME: websiteName => `${BASE_PATH}/websites/${websiteName}`,
+  USER_WEBSITES: `${BASE_PATH}/websites/user/websites`,
+  ANALYTICS: websiteName => `${BASE_PATH}/websites/${websiteName}/analytics`,
 };
 
 // User management endpoints
