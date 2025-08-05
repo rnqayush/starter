@@ -40,7 +40,7 @@ export const getWeddingVendorsByLocation = weddingService.getVendorsByLocation.b
 export const searchWeddingVendors = weddingService.searchVendors.bind(weddingService);
 
 // Default export
-export default {
+const weddingAPIBundle = {
   getStaticWeddingVendors,
   getStaticWeddingBookings,
   getVendorById,
@@ -71,3 +71,5 @@ export default {
   getWeddingVendorsByLocation,
   searchWeddingVendors,
 };
+
+export default weddingAPIBundle;
