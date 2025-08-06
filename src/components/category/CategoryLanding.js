@@ -358,14 +358,25 @@ const CategoryLanding = ({
             with our professional templates and features.
           </CTADescription>
           <DemoButtonsContainer>
-            <DemoButton gradient={gradient} onClick={handleDemoClick}>
+            <DemoButton
+              gradient={gradient}
+              onClick={(e) => {
+                console.log('[CategoryLanding] Primary button click event:', e);
+                handleDemoClick();
+              }}
+              style={{ cursor: 'pointer', pointerEvents: 'auto' }}
+            >
               {demoButtonText}
               <FaExternalLinkAlt />
             </DemoButton>
             {secondaryDemoUrl && secondaryDemoButtonText && (
               <SecondaryDemoButton
                 gradient={gradient}
-                onClick={handleSecondaryDemoClick}
+                onClick={(e) => {
+                  console.log('[CategoryLanding] Secondary button click event:', e);
+                  handleSecondaryDemoClick();
+                }}
+                style={{ cursor: 'pointer', pointerEvents: 'auto' }}
               >
                 {secondaryDemoButtonText}
                 <FaExternalLinkAlt />
