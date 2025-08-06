@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { FaUpload, FaCheck } from 'react-icons/fa';
-import { Card, CardContent } from '../../../components/shared/Card';
-import { Button } from '../../../components/shared/Button';
+import { Card, CardContent } from '../../../../components/shared/Card';
+import { Button } from '../../../../components/shared/Button';
 import {
   Input,
   FormGroup,
