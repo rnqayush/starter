@@ -2,7 +2,6 @@ import { createSlice } from '@reduxjs/toolkit';
 import { hotels } from '../../DummyData';
 import hotelJsonData from '../../DummyData/hotels.json';
 import {
-  createEntityState,
   createEditingState,
   createEntityReducers,
   createEditingReducers,
