@@ -29,14 +29,14 @@ import {
   FaBars,
   FaTimes,
 } from 'react-icons/fa';
-import { theme } from '../../styles/GlobalStyle';
-import { getVendorById } from '../../utils/weddingAPI';
-import { selectUser } from '../../store/slices/authSlice';
+import { theme } from '../../../styles/GlobalStyle';
+import { getVendorById } from '../../../utils/weddingAPI';
+import { selectUser } from '../../../store/slices/authSlice';
 import {
   initializeVendor,
   setEditingVendor,
   loadVendorFromJson,
-} from '../../store/slices/weddingManagementSlice';
+} from '../../../store/slices/weddingManagementSlice';
 
 // Keyframe animations
 const fadeInUp = keyframes`
