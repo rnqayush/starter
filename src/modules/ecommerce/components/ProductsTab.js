@@ -8,8 +8,8 @@ import {
   FaPlus,
   FaEye,
 } from 'react-icons/fa';
-import { theme } from '../../styles/GlobalStyle';
-import { ecommerceProducts } from '../../DummyData';
+import { theme } from '../../../styles/GlobalStyle';
+import { ecommerceProducts } from '../../../DummyData';
 
 const ProductsContainer = styled.div`
   background: ${theme.colors.white};
