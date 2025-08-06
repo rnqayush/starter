@@ -1124,7 +1124,10 @@ const FreelancerPortfolioPage = () => {
   // FORCE LOAD FREELANCER DATA if currentBusiness is null
   if (!currentBusiness) {
     currentBusiness = businessData.data.portfolio.personal; // Direct freelancer data
-    console.log('[FreelancerPortfolioPage] Force loading freelancer data:', currentBusiness);
+    console.log(
+      '[FreelancerPortfolioPage] Force loading freelancer data:',
+      currentBusiness
+    );
   }
 
   // Handle navbar visibility on scroll
@@ -1200,7 +1203,10 @@ const FreelancerPortfolioPage = () => {
       extractedSlug = 'freelancer';
     }
 
-    console.log('[FreelancerPortfolioPage] Direct data injection for slug:', extractedSlug);
+    console.log(
+      '[FreelancerPortfolioPage] Direct data injection for slug:',
+      extractedSlug
+    );
 
     // Direct data injection - no API calls, guaranteed to work
     let freelancerDataToUse = null;
@@ -1222,7 +1228,10 @@ const FreelancerPortfolioPage = () => {
     }
 
     if (freelancerDataToUse) {
-      console.log('[FreelancerPortfolioPage] Direct data loaded:', freelancerDataToUse);
+      console.log(
+        '[FreelancerPortfolioPage] Direct data loaded:',
+        freelancerDataToUse
+      );
 
       // Initialize Redux state with business data
       dispatch(
