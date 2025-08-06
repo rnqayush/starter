@@ -16,7 +16,7 @@ import {
   FaShoppingBag,
   FaUser,
 } from 'react-icons/fa';
-import { theme } from '../../styles/GlobalStyle';
+import { theme } from '../../../styles/GlobalStyle';
 
 // Notification Context
 const NotificationContext = createContext();
