@@ -1182,8 +1182,8 @@ const FreelancerPortfolioPage = () => {
         dispatch(setLoading(true));
         dispatch(clearError());
 
-        // For freelancer portfolio, use 'personal' or 'freelancer' slug
-        const extractedSlug = 'personal'; // Always load personal/freelancer data
+        // For freelancer portfolio, use 'freelancer' slug to match business.json structure
+        const extractedSlug = 'freelancer'; // Always load freelancer data
 
         // Check if we already have business data in Redux
         const existingBusiness = businesses.find(
