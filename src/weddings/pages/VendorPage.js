@@ -1632,7 +1632,7 @@ const LoadingSpinner = styled.div`
   }
 `;
 
-const VendorPage = () => {
+const VendorPage = ({ websiteData }) => {
   const { vendorSlug } = useParams();
   const navigate = useNavigate();
   const user = useSelector(selectUser);
@@ -1644,6 +1644,10 @@ const VendorPage = () => {
   const currentPath = window.location.pathname;
   const pathSegments = currentPath.split('/').filter(Boolean);
   const vendorId = vendorSlug || pathSegments[pathSegments.length - 1];
+
+  // Debug logging for websiteData prop
+  console.log("🔍 VendorPage received websiteData:", websiteData);
+  console.log("🔍 VendorPage vendorId:", vendorId);
 
   // Get vendor data from Redux store for real-time updates
   const { vendors, editingVendor } = useSelector(
@@ -1671,24 +1675,45 @@ const VendorPage = () => {
       setLoading(true);
       let vendorData = null;
 
-      // Priority 1: Use editing vendor data for real-time updates during editing
-      if (editingVendor && editingVendor.id === vendorId) {
+      // Priority 0: Use websiteData prop from backend API response (highest priority)
+      if (websiteData && websiteData.data && websiteData.data.vendors) {
+        console.log("🔍 VendorPage: websiteData.data.vendors structure:", websiteData.data.vendors);
+        
+        // Find vendor by vendorId in the vendors object
+        const vendorKey = Object.keys(websiteData.data.vendors).find(key => 
+          key === vendorId || websiteData.data.vendors[key].id === vendorId
+        );
+        
+        if (vendorKey) {
+          vendorData = websiteData.data.vendors[vendorKey];
+          console.log("✅ VendorPage: Found vendor data from websiteData:", vendorData);
+        } else {
+          console.log("⚠️ VendorPage: Vendor not found in websiteData.data.vendors for vendorId:", vendorId);
+          console.log("Available vendor keys:", Object.keys(websiteData.data.vendors));
+        }
+      } else {
+        console.log("⚠️ VendorPage: websiteData not available or missing vendors structure");
+        console.log("websiteData:", websiteData);
+      }
+
+      // Priority 1: Use editing vendor data for real-time updates during editing (only if not found in websiteData)
+      if (!vendorData && editingVendor && editingVendor.id === vendorId) {
         vendorData = editingVendor;
         console.log(
-          'VendorPage: Using editing vendor data for real-time updates:',
+          "VendorPage: Using editing vendor data for real-time updates:",
           editingVendor
         );
       }
-      // Priority 2: Use saved vendor data from Redux vendors array
-      else if (vendors && vendors.length > 0) {
+      // Priority 2: Use saved vendor data from Redux vendors array (only if not found in websiteData or editing)
+      else if (!vendorData && vendors && vendors.length > 0) {
         vendorData = vendors.find(v => v.id === vendorId);
         console.log(
-          'VendorPage: Using saved vendor data from Redux:',
+          "VendorPage: Using saved vendor data from Redux:",
           vendorData
         );
       }
 
-      // Priority 3: Load from wedding.json and initialize Redux
+      // Priority 3: Load from wedding.json and initialize Redux (only if not found in higher priorities)
       if (!vendorData) {
         try {
           // Load vendor from JSON into Redux state
@@ -1697,19 +1722,20 @@ const VendorPage = () => {
           // Try to get the vendor data after loading into Redux
           vendorData = getVendorById(vendorId);
           console.log(
-            'VendorPage: Loaded vendor data from wedding.json:',
+            "VendorPage: Loaded vendor data from wedding.json:",
             vendorData
           );
         } catch (error) {
-          console.error('VendorPage: Error loading vendor data:', error);
+          console.error("VendorPage: Error loading vendor from JSON:", error);
         }
       }
 
       if (vendorData) {
         setVendor(vendorData);
-        console.log('VendorPage: Set vendor data successfully:', vendorData);
+        console.log("VendorPage: Final vendor data set:", vendorData);
       } else {
-        console.warn('VendorPage: No vendor data found for ID:', vendorId);
+        console.error("VendorPage: No vendor data found for ID:", vendorId);
+        setVendor(null);
       }
 
       setLoading(false);
