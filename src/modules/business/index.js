@@ -72,9 +72,13 @@ const BusinessModule = () => {
   }
 
   // Render different pages based on the business type detected from slug
+  console.log('[BusinessModule] Rendering with isPersonalPortfolio:', isPersonalPortfolio);
+
   if (isPersonalPortfolio) {
+    console.log('[BusinessModule] Rendering FreelancerPortfolioPage');
     return <FreelancerPortfolioPage />;
   } else {
+    console.log('[BusinessModule] Rendering BusinessWebsitePage');
     return <BusinessWebsitePage />;
   }
 };
