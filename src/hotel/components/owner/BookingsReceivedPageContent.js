@@ -7,8 +7,8 @@ import {
   FaCalendarAlt,
   FaUsers,
 } from 'react-icons/fa';
-import { Card, CardContent, Badge } from '../shared/Card';
-import { Button } from '../shared/Button';
+import { Card, CardContent, Badge } from '../../../components/shared/Card';
+import { Button } from '../../../components/shared/Button';
 import { theme } from '../../../styles/GlobalStyle';
 // import { useAppContext } from '../../context/AppContext'; // Removed - needs Redux migration
 

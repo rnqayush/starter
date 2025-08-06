@@ -9,9 +9,9 @@ import {
   FaTrashAlt,
   FaExclamationTriangle,
 } from 'react-icons/fa';
-import { Card, CardContent } from '../shared/Card';
-import { Button } from '../shared/Button';
-import { Input, FormGroup, Label, InputGroup } from '../shared/Input';
+import { Card, CardContent } from '../../../components/shared/Card';
+import { Button } from '../../../components/shared/Button';
+import { Input, FormGroup, Label, InputGroup } from '../../../components/shared/Input';
 import { theme } from '../../../styles/GlobalStyle';
 // import { useAppContext } from '../../context/AppContext'; // Removed - needs Redux migration
 

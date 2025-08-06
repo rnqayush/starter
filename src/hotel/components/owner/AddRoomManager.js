@@ -20,8 +20,8 @@ import {
   publishChanges,
 } from '../../store/slices/hotelManagementSlice';
 import { getHotelByIdOrSlug } from '../../DummyData';
-import { Button } from '../shared/Button';
-import { Input } from '../shared/Input';
+import { Button } from '../../../components/shared/Button';
+import { Input } from '../../../components/shared/Input';
 
 const Container = styled.div`
   padding: ${theme.spacing.xl};

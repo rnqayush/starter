@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { FaArrowLeft } from 'react-icons/fa';
-import { Card, CardContent } from '../shared/Card';
-import { Button } from '../shared/Button';
+import { Card, CardContent } from '../../../components/shared/Card';
+import { Button } from '../../../components/shared/Button';
 import {
   Input,
   FormGroup,
@@ -12,7 +12,7 @@ import {
   InputGroup,
   CheckboxGroup,
   CheckboxItem,
-} from '../shared/Input';
+} from '../../../components/shared/Input';
 import { theme } from '../../../styles/GlobalStyle';
 // import { useAppContext } from '../../context/AppContext'; // Removed - needs Redux migration
 import { amenitiesList } from '../../DummyData';

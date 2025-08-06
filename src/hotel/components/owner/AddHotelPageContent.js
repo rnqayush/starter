@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { FaUpload, FaCheck } from 'react-icons/fa';
-import { Card, CardContent } from '../shared/Card';
-import { Button } from '../shared/Button';
+import { Card, CardContent } from '../../../components/shared/Card';
+import { Button } from '../../../components/shared/Button';
 import {
   Input,
   FormGroup,
@@ -13,7 +13,7 @@ import {
   InputGroup,
   CheckboxGroup,
   CheckboxItem,
-} from '../shared/Input';
+} from '../../../components/shared/Input';
 import { theme, media } from '../../../styles/GlobalStyle';
 // import { useAppContext } from '../../context/AppContext'; // Removed - needs Redux migration
 import { amenitiesList } from '../../DummyData';
