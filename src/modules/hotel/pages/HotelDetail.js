@@ -24,7 +24,7 @@ import {
   FaQuoteLeft,
   FaArrowRight,
 } from 'react-icons/fa';
-import { theme } from '../../styles/GlobalStyle';
+import { theme } from '../../../styles/GlobalStyle';
 import HotelNavbar from '../components/HotelNavbar';
 import HotelFooter from '../components/HotelFooter';
 
@@ -32,9 +32,9 @@ import {
   fetchHotelById,
   fetchHotelSections,
   fetchHotelReviews,
-} from '../../utils/hotelAPI';
-import { loadHotelData } from '../../store/slices/hotelManagementSlice';
-import hotelJsonData from '../../DummyData/hotels.json';
+} from '../../../utils/hotelAPI';
+import { loadHotelData } from '../../../store/slices/hotelManagementSlice';
+import hotelJsonData from '../../../DummyData/hotels.json';
 
 // Animations
 const fadeInUp = keyframes`
