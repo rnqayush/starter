@@ -1,5 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import usersData from '../../DummyData/users.json';
+import { createLoadingState, createLoadingReducers } from '../utils/sliceUtils';
 
 // Helper function to extract name from email
 const getNameFromEmail = email => {
@@ -16,8 +17,7 @@ const generateAvatar = name => {
 const initialState = {
   user: null,
   isAuthenticated: false,
-  loading: false,
-  error: null,
+  ...createLoadingState(),
 };
 
 // Initialize state from localStorage if available
@@ -43,55 +43,116 @@ const initializeFromStorage = () => {
   return initialState;
 };
 
+// Async thunks for authentication
+export const loginUser = createAsyncThunk(
+  'auth/login',
+  async (credentials, { rejectWithValue }) => {
+    try {
+      // Simulate API call delay
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      // Find user in dummy data
+      const user = usersData.users.find(
+        u => u.email === credentials.email && u.password === credentials.password
+      );
+
+      if (!user) {
+        throw new Error('Invalid email or password');
+      }
+
+      // Create user session data
+      const userData = {
+        ...user,
+        lastLogin: new Date().toISOString(),
+      };
+
+      // Persist to localStorage
+      localStorage.setItem('user', JSON.stringify(userData));
+      localStorage.setItem('isAuthenticated', 'true');
+
+      return userData;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const registerUser = createAsyncThunk(
+  'auth/register',
+  async (userData, { rejectWithValue }) => {
+    try {
+      // Simulate API call delay
+      await new Promise(resolve => setTimeout(resolve, 1500));
+
+      // Check if email already exists
+      const existingUser = usersData.users.find(u => u.email === userData.email);
+      if (existingUser) {
+        throw new Error('Email already exists');
+      }
+
+      const newUser = {
+        id: Date.now(),
+        ...userData,
+        avatar: generateAvatar(userData.name),
+        preferences: {
+          notifications: {
+            email: true,
+            sms: false,
+            push: true,
+          },
+          language: 'en',
+          currency: 'USD',
+        },
+        profile: {
+          bio: '',
+          location: '',
+          website: '',
+          socialLinks: {},
+        },
+        createdAt: new Date().toISOString(),
+        lastLogin: new Date().toISOString(),
+      };
+
+      // Add seller data if registering as seller
+      if (userData.role === 'seller') {
+        newUser.seller = {
+          businessName: userData.businessName || `${userData.name}'s Store`,
+          businessType: userData.businessType || 'General',
+          verified: false,
+          rating: 0,
+          totalSales: 0,
+          totalProducts: 0,
+          joinedDate: new Date().toISOString(),
+          settings: {
+            autoRespond: true,
+            showLocation: true,
+            allowReviews: true,
+          },
+        };
+      }
+
+      // Persist to localStorage
+      localStorage.setItem('user', JSON.stringify(newUser));
+      localStorage.setItem('isAuthenticated', 'true');
+
+      return newUser;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 const authSlice = createSlice({
   name: 'auth',
   initialState: initializeFromStorage(),
   reducers: {
-    loginStart: state => {
-      state.loading = true;
-      state.error = null;
-    },
-    loginSuccess: (state, action) => {
-      state.loading = false;
-      state.user = action.payload;
-      state.isAuthenticated = true;
-      state.error = null;
-
-      // Persist to localStorage
-      localStorage.setItem('user', JSON.stringify(action.payload));
-      localStorage.setItem('isAuthenticated', 'true');
-    },
-    loginFailure: (state, action) => {
-      state.loading = false;
-      state.error = action.payload;
-      state.user = null;
-      state.isAuthenticated = false;
-    },
-    registerStart: state => {
-      state.loading = true;
-      state.error = null;
-    },
-    registerSuccess: (state, action) => {
-      state.loading = false;
-      state.user = action.payload;
-      state.isAuthenticated = true;
-      state.error = null;
-
-      // Persist to localStorage
-      localStorage.setItem('user', JSON.stringify(action.payload));
-      localStorage.setItem('isAuthenticated', 'true');
-    },
-    registerFailure: (state, action) => {
-      state.loading = false;
-      state.error = action.payload;
-      state.user = null;
-      state.isAuthenticated = false;
-    },
+    ...createLoadingReducers(),
     logout: state => {
       state.user = null;
       state.isAuthenticated = false;
       state.loading = false;
       state.error = null;
+      state.success = false;
 
       // Clear localStorage
       localStorage.removeItem('user');
@@ -140,104 +201,50 @@ const authSlice = createSlice({
         localStorage.setItem('user', JSON.stringify(state.user));
       }
     },
-    clearError: state => {
-      state.error = null;
-    },
+  },
+  extraReducers: (builder) => {
+    builder
+      // Login
+      .addCase(loginUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(loginUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload;
+        state.isAuthenticated = true;
+        state.error = null;
+        state.success = true;
+      })
+      .addCase(loginUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+        state.user = null;
+        state.isAuthenticated = false;
+        state.success = false;
+      })
+      // Register
+      .addCase(registerUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(registerUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload;
+        state.isAuthenticated = true;
+        state.error = null;
+        state.success = true;
+      })
+      .addCase(registerUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+        state.user = null;
+        state.isAuthenticated = false;
+        state.success = false;
+      });
   },
 });
 
-// Async thunk actions
-export const loginUser = credentials => async dispatch => {
-  dispatch(loginStart());
-
-  try {
-    // Simulate API call delay
-    await new Promise(resolve => setTimeout(resolve, 1000));
-
-    // Find user in dummy data
-    const user = usersData.users.find(
-      u => u.email === credentials.email && u.password === credentials.password
-    );
-
-    if (!user) {
-      throw new Error('Invalid email or password');
-    }
-
-    // Create user session data
-    const userData = {
-      ...user,
-      lastLogin: new Date().toISOString(),
-    };
-
-    dispatch(loginSuccess(userData));
-    return { success: true, user: userData };
-  } catch (error) {
-    dispatch(loginFailure(error.message));
-    return { success: false, error: error.message };
-  }
-};
-
-export const registerUser = userData => async dispatch => {
-  dispatch(registerStart());
-
-  try {
-    // Simulate API call delay
-    await new Promise(resolve => setTimeout(resolve, 1500));
-
-    // Check if email already exists
-    const existingUser = usersData.users.find(u => u.email === userData.email);
-    if (existingUser) {
-      throw new Error('Email already exists');
-    }
-
-    const newUser = {
-      id: Date.now(),
-      ...userData,
-      avatar: generateAvatar(userData.name),
-      preferences: {
-        notifications: {
-          email: true,
-          sms: false,
-          push: true,
-        },
-        language: 'en',
-        currency: 'USD',
-      },
-      profile: {
-        bio: '',
-        location: '',
-        website: '',
-        socialLinks: {},
-      },
-      createdAt: new Date().toISOString(),
-      lastLogin: new Date().toISOString(),
-    };
-
-    // Add seller data if registering as seller
-    if (userData.role === 'seller') {
-      newUser.seller = {
-        businessName: userData.businessName || `${userData.name}'s Store`,
-        businessType: userData.businessType || 'General',
-        verified: false,
-        rating: 0,
-        totalSales: 0,
-        totalProducts: 0,
-        joinedDate: new Date().toISOString(),
-        settings: {
-          autoRespond: true,
-          showLocation: true,
-          allowReviews: true,
-        },
-      };
-    }
-
-    dispatch(registerSuccess(newUser));
-    return { success: true, user: newUser };
-  } catch (error) {
-    dispatch(registerFailure(error.message));
-    return { success: false, error: error.message };
-  }
-};
 
 // Selectors
 export const selectAuth = state => state.auth;
@@ -259,16 +266,13 @@ export const selectDisplayName = state => {
 };
 
 export const {
-  loginStart,
-  loginSuccess,
-  loginFailure,
-  registerStart,
-  registerSuccess,
-  registerFailure,
+  setLoading,
+  setError,
+  clearError,
+  setSuccess,
   logout,
   updateProfile,
   switchRole,
-  clearError,
 } = authSlice.actions;
 
 export default authSlice.reducer;
