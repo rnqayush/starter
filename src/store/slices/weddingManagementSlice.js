@@ -5,11 +5,8 @@ import {
   getVendorById,
 } from '../../utils/weddingAPI';
 import {
-  createEntityState,
-  createEditingState,
   createFilterState,
   createEntityReducers,
-  createEditingReducers,
   createFilterReducers,
 } from '../utils/sliceUtils';
 
