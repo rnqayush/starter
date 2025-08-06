@@ -42,7 +42,10 @@ const BusinessModule = () => {
           // Force the appropriate page to load even if businessInfo is null
           if (currentSlug === 'salon' || currentSlug === 'business') {
             setIsPersonalPortfolio(false);
-          } else if (currentSlug === 'freelancer' || currentSlug === 'personal') {
+          } else if (
+            currentSlug === 'freelancer' ||
+            currentSlug === 'personal'
+          ) {
             setIsPersonalPortfolio(true);
           }
         }
@@ -79,7 +82,10 @@ const BusinessModule = () => {
   }
 
   // Render different pages based on the business type detected from slug
-  console.log('[BusinessModule] Rendering with isPersonalPortfolio:', isPersonalPortfolio);
+  console.log(
+    '[BusinessModule] Rendering with isPersonalPortfolio:',
+    isPersonalPortfolio
+  );
 
   if (isPersonalPortfolio) {
     console.log('[BusinessModule] Rendering FreelancerPortfolioPage');

@@ -11,11 +11,16 @@ const getBusinessWebsiteData = slug => {
 
   // Ensure businessData is properly loaded
   if (!businessData || !businessData.data || !businessData.data.portfolio) {
-    console.error('[getBusinessWebsiteData] Business data structure is invalid');
+    console.error(
+      '[getBusinessWebsiteData] Business data structure is invalid'
+    );
     return null;
   }
 
-  console.log('[getBusinessWebsiteData] Available portfolio data:', businessData.data.portfolio);
+  console.log(
+    '[getBusinessWebsiteData] Available portfolio data:',
+    businessData.data.portfolio
+  );
 
   // Map common slugs to the correct data
   if (slug === 'salon' || slug === 'business') {
@@ -108,7 +113,10 @@ export const detectBusinessType = businessSlug => {
   console.log('[detectBusinessType] Retrieved business data:', business);
 
   if (!business) {
-    console.log('[detectBusinessType] No business data found for slug:', businessSlug);
+    console.log(
+      '[detectBusinessType] No business data found for slug:',
+      businessSlug
+    );
     return null;
   }
 
