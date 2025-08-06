@@ -383,7 +383,7 @@ const BusinessWebsitePage = () => {
     };
 
     fetchData();
-  }, [actualSlug, location.pathname, dispatch]);
+  }, [actualSlug, location.pathname, dispatch, businesses]);
 
   const handleBackToList = () => {
     navigate('/business-websites');
