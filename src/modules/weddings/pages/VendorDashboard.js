@@ -1424,13 +1424,14 @@ const VendorDashboard = () => {
 
       // Update the editing vendor in Redux for real-time preview
       dispatch(setEditingVendor(updatedVendor.id));
-      Object.keys(updatedVendor).forEach(key => {
-        if (key !== 'id') {
-          dispatch(
-            updateVendorField({ field: key, value: updatedVendor[key] })
-          );
-        }
-      });
+      // DISABLED: Multiple dispatch calls were causing infinite loops
+      // Object.keys(updatedVendor).forEach(key => {
+      //   if (key !== 'id') {
+      //     dispatch(
+      //       updateVendorField({ field: key, value: updatedVendor[key] })
+      //     );
+      //   }
+      // });
 
       setSaved(true);
       setChangedSections(new Set());
