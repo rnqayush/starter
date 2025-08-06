@@ -1,6 +1,7 @@
 /**
  * Reusable utilities for Redux slices to maintain consistency and reduce complexity
  */
+import { createAsyncThunk } from '@reduxjs/toolkit';
 
 // Standard initial states for common patterns
 export const createLoadingState = () => ({
