@@ -23,9 +23,9 @@ import {
   publishChanges,
   discardChanges,
   clearEditingHotel,
-} from '../../../store/slices/hotelManagementSlice';
-import { theme, media } from '../../../styles/GlobalStyle';
-import { Button } from '../../../components/shared/Button';
+} from '../../../../store/slices/hotelManagementSlice';
+import { theme, media } from '../../../../styles/GlobalStyle';
+import { Button } from '../../../../components/shared/Button';
 
 const SidebarContainer = styled.aside.withConfig({
   shouldForwardProp: prop => prop !== 'isOpen',
