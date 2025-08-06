@@ -15,11 +15,7 @@ import {
 } from '../utils/hotelAPI';
 import hotelAPI from '../utils/hotelAPI';
 
-// Debug logging for business data
-console.log('[DummyData] businessData loaded:', businessData);
-console.log('[DummyData] businessData.data:', businessData.data);
-console.log('[DummyData] businessData.data.portfolio:', businessData.data?.portfolio);
-console.log('[DummyData] businessData.data.portfolio.buisness:', businessData.data?.portfolio?.buisness);
+// Business data loaded successfully
 
 // Export data arrays/objects from JSON
 export const automobileCategories =
