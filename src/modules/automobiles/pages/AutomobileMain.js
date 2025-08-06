@@ -8,7 +8,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import VehicleCard from '../components/VehicleCard';
 import CategoryCard from '../components/CategoryCard';
-import BackToTop from '../ecommerce/components/BackToTop';
+import BackToTop from '../../ecommerce/components/BackToTop';
 import {
   fetchAutomobileData,
   selectVendor,
