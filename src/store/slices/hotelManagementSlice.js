@@ -336,6 +336,10 @@ export const {
   resetState,
 } = hotelManagementSlice.actions;
 
+// Legacy action aliases for backward compatibility
+export const saveChanges = saveHotelChanges;
+export const discardChanges = discardHotelChanges;
+
 // Selectors
 export const selectHotels = (state) => state.hotelManagement.hotels;
 export const selectSelectedHotel = (state) => state.hotelManagement.selectedHotel;
