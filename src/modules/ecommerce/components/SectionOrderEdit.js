@@ -10,7 +10,7 @@ import {
   FaEye,
   FaEyeSlash,
 } from 'react-icons/fa';
-import { theme } from '../../styles/GlobalStyle';
+import { theme } from '../../../styles/GlobalStyle';
 import {
   selectPageSections,
   selectLoading,
