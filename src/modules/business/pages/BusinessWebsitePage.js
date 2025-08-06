@@ -396,7 +396,14 @@ const BusinessWebsitePage = () => {
     );
   }
 
-  if (error || !currentBusiness) {
+  // FORCE LOAD SALON DATA if currentBusiness is null
+  let businessToShow = currentBusiness;
+  if (!currentBusiness) {
+    businessToShow = businessData.data.portfolio.buisness; // Direct salon data
+    console.log('[BusinessWebsitePage] Force loading salon data:', businessToShow);
+  }
+
+  if (error || !businessToShow) {
     return (
       <PageContainer>
         <div style={{ padding: '4rem', textAlign: 'center' }}>
@@ -715,7 +722,7 @@ const BusinessWebsitePage = () => {
                         color: currentBusiness.primaryColor,
                       }}
                     >
-                      🖼️
+                      ����️
                     </div>
                     <div style={{ padding: '1.5rem' }}>
                       <div
