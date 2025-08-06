@@ -8,13 +8,13 @@ import {
   FaComment,
   FaCheck,
 } from 'react-icons/fa';
-import { theme } from '../../styles/GlobalStyle';
+import { theme } from '../../../styles/GlobalStyle';
 import { useNotifications } from './NotificationSystem';
 import { useSelector } from 'react-redux';
 import {
   selectUser,
   selectIsAuthenticated,
-} from '../../store/slices/authSlice';
+} from '../../../store/slices/authSlice';
 
 const ModalOverlay = styled.div`
   position: fixed;
