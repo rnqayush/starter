@@ -11,7 +11,7 @@ import {
   FaMapMarkerAlt,
   FaClock,
 } from 'react-icons/fa';
-import { theme } from '../../styles/GlobalStyle';
+import { theme } from '../../../styles/GlobalStyle';
 
 const FooterContainer = styled.footer.withConfig({
   shouldForwardProp: prop => !['backgroundColor', 'textColor'].includes(prop),
