@@ -16,7 +16,7 @@ import {
   FaInbox,
   FaBell,
 } from 'react-icons/fa';
-import { theme } from '../../styles/GlobalStyle';
+import { theme } from '../../../styles/GlobalStyle';
 
 const Container = styled.div`
   display: flex;
