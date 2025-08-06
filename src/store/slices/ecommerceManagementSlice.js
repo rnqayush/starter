@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import ecommerceData from '../../DummyData/ecommerce.json';
 import {
-  createEntityState,
   createEditingState,
   createFilterState,
   createPaginationState,
