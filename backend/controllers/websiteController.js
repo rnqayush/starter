@@ -436,9 +436,21 @@ class WebsiteController {
         case 'weddings':
           try {
             const { WeddingVendor } = require('../models/Wedding');
-            const wedding = await WeddingVendor.findOne({ slug: websiteName })
-              .populate('owner', 'name email')
-              .select('-__v');
+            
+            // First try to find by publishedData relationship
+            let wedding = null;
+            if (website.publishedData) {
+              wedding = await WeddingVendor.findById(website.publishedData)
+                .populate('owner', 'name email')
+                .select('-__v');
+            }
+            
+            // Fallback: try to find by slug if publishedData relationship doesn't exist
+            if (!wedding) {
+              wedding = await WeddingVendor.findOne({ slug: websiteName })
+                .populate('owner', 'name email')
+                .select('-__v');
+            }
             
             if (wedding) {
               console.log('✅ Found wedding vendor data for website:', websiteName);
@@ -559,7 +571,13 @@ class WebsiteController {
                 }
               });
             } else {
-              console.log('⚠️ No wedding vendor found for slug:', websiteName);
+              console.log('⚠️ No wedding vendor found for website:', websiteName);
+              console.log('Website publishedData:', website.publishedData);
+              console.log('Tried slug lookup for:', websiteName);
+              
+              // Additional debugging: check if any wedding vendors exist
+              const allWeddings = await WeddingVendor.find({}).select('slug name id').limit(5);
+              console.log('Available wedding vendors:', allWeddings);
             }
           } catch (error) {
             console.error('Error fetching wedding vendor data:', error);
