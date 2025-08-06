@@ -21,6 +21,7 @@ import { websiteTypes, colorOptions } from '../DummyData/index';
 import { selectIsAuthenticated, selectUser } from '../store/slices/authSlice';
 import websiteService from '../api/services/websiteService';
 import { testBackendConnection } from '../utils/testBackend';
+import APIDebugger from '../utils/apiDebugger';
 
 const Container = styled.div`
   min-height: 100vh;
@@ -700,25 +701,34 @@ const StartBuilding = () => {
 
       console.log('🚀 Creating website:', websiteData);
 
+      // First, run API diagnostic to check backend health
+      console.log('🔍 Running API diagnostic before creating website...');
+      const diagnostic = await APIDebugger.runFullDiagnostic();
+      
+      if (!diagnostic.backendConnection.success) {
+        console.error('❌ Backend connection failed:', diagnostic.backendConnection.error);
+        alert(`Backend connection failed: ${diagnostic.backendConnection.error}\n\nPlease ensure the backend server is running on port 5000.`);
+        return;
+      }
+
       try {
-        const result =
-          await websiteService.createFromStartBuilding(websiteData);
+        // Log the API request details
+        APIDebugger.logRequestDetails('POST', '/api/websites/start-building', websiteData);
+        
+        const result = await websiteService.createFromStartBuilding(websiteData);
 
         if (result.success) {
-          console.log(
-            '✅ Website created successfully via backend:',
-            result.data
-          );
+          console.log('✅ Website created successfully via backend:', result.data);
           navigate(`/${formData.websiteName}`);
           return;
         } else {
-          console.log('⚠️ Backend failed, using fallback mode:', result.error);
+          console.error('⚠️ Backend failed:', result.error);
+          alert(`Website creation failed: ${result.error}\n\nPlease check the backend logs for more details.`);
         }
       } catch (backendError) {
-        console.log(
-          '⚠️ Backend not available, using fallback mode:',
-          backendError.message
-        );
+        console.error('❌ Backend error:', backendError);
+        alert(`Backend error: ${backendError.message}\n\nPlease ensure the backend server is running and accessible.`);
+        return;
       }
 
       // Fallback: Create website without backend (for demo purposes)

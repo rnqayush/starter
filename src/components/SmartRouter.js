@@ -59,58 +59,12 @@ const SmartRouter = () => {
         // First, try to get website from backend
         const result = await websiteService.getByName(slug);
         
-        // Handle different response formats from backend based on module type
+        // Simplified: Use websiteType from backend response
         console.log('✅ Found website in backend:', result);
         
-        // Check if this is a hotel response (has data.hotel structure like hotels.json)
-        if (result.data && result.data.hotel) {
-          console.log('✅ Found hotel data in response:', result.data.hotel);
-          setHotelData(result.data.hotel);
-          setModuleType('hotel');
-          setIsLoading(false);
-          return;
-        }
-        
-        // Check if this is an ecommerce response (has vendor structure like ecommerce.json)
-        if (result.vendor) {
-          console.log('✅ Found ecommerce data in response:', result.vendor);
-          setWebsiteData(result);
-          setModuleType('ecommerce');
-          setIsLoading(false);
-          return;
-        }
-        
-        // Check if this is an automobile response (has success and data.vendor structure like automobiles.json)
-        if (result.success === true && result.data && result.data.vendor) {
-          console.log('✅ Found automobile data in response:', result.data.vendor);
-          setWebsiteData(result);
-          setModuleType('automobile');
-          setIsLoading(false);
-          return;
-        }
-        
-        // Check if this is a wedding response (has data.vendors structure like wedding.json)
-        if (result.data && result.data.vendors) {
-          console.log('✅ Found wedding data in response:', result.data.vendors);
-          setWebsiteData(result);
-          setModuleType('wedding');
-          setIsLoading(false);
-          return;
-        }
-        
-        // Check if this is a business response (has data.portfolio.buisness structure like business.json)
-        if (result.data && result.data.portfolio && result.data.portfolio.buisness) {
-          console.log('✅ Found business data in response:', result.data.portfolio.buisness);
-          setWebsiteData(result);
-          setModuleType('business');
-          setIsLoading(false);
-          return;
-        }
-        
-        // Regular website response (fallback)
-        if (result.success && result.data) {
-          const website = result.data.website || result.data;
-          setWebsiteData(website);
+        // Backend now returns websiteType in the response
+        if (result.websiteType) {
+          console.log('✅ Website type from backend:', result.websiteType);
           
           // Map backend website types to module types
           const typeMapping = {
@@ -121,7 +75,34 @@ const SmartRouter = () => {
             'professional': 'business'
           };
           
-          const detectedType = typeMapping[website.websiteType] || website.websiteType;
+          const moduleType = typeMapping[result.websiteType] || 'business';
+          
+          // Set appropriate data based on module type
+          if (moduleType === 'hotel' && result.data && result.data.hotel) {
+            setHotelData(result.data.hotel);
+          } else {
+            setWebsiteData(result);
+          }
+          
+          setModuleType(moduleType);
+          setIsLoading(false);
+          return;
+        }
+        
+        // Fallback for old response format
+        if (result.success && result.data) {
+          const website = result.data.website || result.data;
+          setWebsiteData(website);
+          
+          const typeMapping = {
+            'hotels': 'hotel',
+            'ecommerce': 'ecommerce', 
+            'automobiles': 'automobile',
+            'weddings': 'wedding',
+            'professional': 'business'
+          };
+          
+          const detectedType = typeMapping[website.websiteType] || 'business';
           setModuleType(detectedType);
           setIsLoading(false);
           return;
