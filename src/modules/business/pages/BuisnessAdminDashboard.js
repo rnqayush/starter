@@ -833,87 +833,13 @@ const BuisnessAdminDashboard = () => {
   };
 
   // Helper function to immediately update Redux editing business
+  // DISABLED: This function was causing infinite loops due to circular dependencies
+  // Real-time preview is now handled only on explicit save actions
   const updateEditingBusinessInRedux = useCallback(() => {
-    if (!editingBusiness) return;
-
-    try {
-      // Create updated business object with current form data
-      const updatedBusiness = {
-        ...editingBusiness,
-        logo: heroData.logo, // Update logo from hero data
-        navigation: {
-          ...editingBusiness.navigation,
-          logo: heroData.logo, // Also update navigation logo
-        },
-        hero: heroData,
-        about: {
-          ...aboutData,
-          stats: statisticsData,
-        },
-        services: servicesData,
-        team: teamData,
-        portfolio: portfolioData,
-        skills: skillsData,
-        experience: experienceData,
-        gallery: galleryData,
-        packages: packagesData,
-        testimonials: testimonialsData,
-        reviews: reviewsData,
-        faq: faqData,
-        contact: contactData,
-        businessHours: businessHoursData,
-        customSections: customSectionsData,
-        sectionOrder: sectionOrderData,
-        sectionVisibility: sectionVisibility,
-        ui: uiContentData,
-      };
-
-      // Update Redux with the current form data for real-time preview
-      Object.keys(updatedBusiness).forEach(key => {
-        if (
-          key !== 'id' &&
-          JSON.stringify(updatedBusiness[key]) !==
-            JSON.stringify(editingBusiness[key])
-        ) {
-          dispatch(
-            updateBusinessField({ field: key, value: updatedBusiness[key] })
-          );
-        }
-      });
-
-      console.log(
-        'Real-time preview: Updated editing business in Redux',
-        updatedBusiness
-      );
-    } catch (error) {
-      console.error(
-        'Error updating editing business for real-time preview:',
-        error
-      );
-    }
-  }, [
-    editingBusiness,
-    heroData,
-    aboutData,
-    statisticsData,
-    servicesData,
-    teamData,
-    portfolioData,
-    skillsData,
-    experienceData,
-    galleryData,
-    packagesData,
-    testimonialsData,
-    reviewsData,
-    faqData,
-    contactData,
-    businessHoursData,
-    customSectionsData,
-    sectionOrderData,
-    sectionVisibility,
-    uiContentData,
-    dispatch
-  ]);
+    // Disabled to prevent infinite loops
+    console.log('Real-time preview disabled to prevent infinite loops');
+    return;
+  }, []);
 
   // Auto-update Redux when UI content changes for real-time preview
   // Using useRef to prevent infinite loops
