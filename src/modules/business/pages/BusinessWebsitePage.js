@@ -19,6 +19,7 @@ import {
 } from 'react-icons/fa';
 import { theme } from '../../../styles/GlobalStyle';
 import { fetchBusinessData } from '../../../utils/businessAPI';
+import businessData from '../../../DummyData/business.json';
 import {
   initializeBusinessData,
   setBusinessType,
