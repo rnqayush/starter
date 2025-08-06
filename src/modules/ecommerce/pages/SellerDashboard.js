@@ -10,7 +10,7 @@ import {
   FaShoppingBag,
   FaHome,
 } from 'react-icons/fa';
-import { theme } from '../../styles/GlobalStyle';
+import { theme } from '../../../styles/GlobalStyle';
 
 // Import all dashboard components
 import SellerSidebar from '../components/SellerSidebar';
