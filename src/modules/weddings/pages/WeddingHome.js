@@ -890,13 +890,8 @@ const WeddingHome = () => {
     };
   }, [mobileMenuOpen]);
 
-  useEffect(() => {
-    initializeLocation();
-  }, [initializeLocation]);
-
-  useEffect(() => {
-    applyFilters();
-  }, [applyFilters]);
+  // Removed useEffect hooks that caused infinite loops
+  // initializeLocation and applyFilters are called directly where needed
 
   if (loading) {
     return (
