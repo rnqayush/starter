@@ -23,7 +23,7 @@ import {
 import { getHotelByIdOrSlug } from '../../../../DummyData';
 import { Button } from '../../../../components/shared/Button';
 import { Input } from '../../../../components/shared/Input';
-import { Card, CardContent } from '../../../components/shared/Card';
+import { Card, CardContent } from '../../../../components/shared/Card';
 
 const Container = styled.div`
   padding: ${theme.spacing.xl};
