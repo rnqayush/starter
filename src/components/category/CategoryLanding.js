@@ -357,10 +357,7 @@ const CategoryLanding = ({
           <DemoButtonsContainer>
             <DemoButton
               gradient={gradient}
-              onClick={(e) => {
-                console.log('[CategoryLanding] Primary button click event:', e);
-                handleDemoClick();
-              }}
+              onClick={handleDemoClick}
               style={{ cursor: 'pointer', pointerEvents: 'auto' }}
             >
               {demoButtonText}
