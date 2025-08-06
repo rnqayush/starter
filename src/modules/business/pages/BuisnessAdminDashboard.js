@@ -833,7 +833,7 @@ const BuisnessAdminDashboard = () => {
   };
 
   // Helper function to immediately update Redux editing business
-  const updateEditingBusinessInRedux = () => {
+  const updateEditingBusinessInRedux = useCallback(() => {
     if (!editingBusiness) return;
 
     try {
@@ -891,7 +891,29 @@ const BuisnessAdminDashboard = () => {
         error
       );
     }
-  };
+  }, [
+    editingBusiness,
+    heroData,
+    aboutData,
+    statisticsData,
+    servicesData,
+    teamData,
+    portfolioData,
+    skillsData,
+    experienceData,
+    galleryData,
+    packagesData,
+    testimonialsData,
+    reviewsData,
+    faqData,
+    contactData,
+    businessHoursData,
+    customSectionsData,
+    sectionOrderData,
+    sectionVisibility,
+    uiContentData,
+    dispatch
+  ]);
 
   // Auto-update Redux when UI content changes for real-time preview
   // Using useRef to prevent infinite loops
