@@ -294,7 +294,7 @@ const FooterSectionEdit = () => {
           `© ${new Date().getFullYear()} ${vendor?.name || 'Your Store'}. All rights reserved.`,
       });
     }
-  }, [section, vendor]);
+  }, [JSON.stringify(section), JSON.stringify(vendor)]); // Use stringified to prevent reference changes
 
   const handleInputChange = (field, value) => {
     setSectionData(prev => ({
