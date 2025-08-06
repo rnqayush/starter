@@ -5,7 +5,6 @@ import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { GlobalStyle } from './styles/GlobalStyle';
 import ErrorBoundary from './components/ErrorBoundary';
-
 // User Components
 import PlatformHomePage from './components/user/PlatformHomePage';
 import PricingPage from './components/user/PricingPage';
