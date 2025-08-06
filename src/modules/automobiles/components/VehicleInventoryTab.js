@@ -333,7 +333,8 @@ const VehicleInventoryTab = ({ dealer }) => {
     // Category filter
     if (categoryFilter) {
       filtered = filtered.filter(
-        vehicle => (vehicle.category?.slug || vehicle.category) === categoryFilter
+        vehicle =>
+          (vehicle.category?.slug || vehicle.category) === categoryFilter
       );
     }
 
@@ -412,7 +413,9 @@ const VehicleInventoryTab = ({ dealer }) => {
     newVehicles: vehicleList.filter(v => v.condition === 'new').length,
   };
 
-  const categories = [...new Set(vehicleList.map(v => v.category?.slug || v.category))];
+  const categories = [
+    ...new Set(vehicleList.map(v => v.category?.slug || v.category)),
+  ];
   const conditions = [...new Set(vehicleList.map(v => v.condition))];
 
   return (
@@ -449,7 +452,10 @@ const VehicleInventoryTab = ({ dealer }) => {
             <option value="">All Categories</option>
             {categories.map(category => (
               <option key={category} value={category}>
-                {(typeof category === 'string' ? category : category?.name || category?.slug || 'Unknown')
+                {(typeof category === 'string'
+                  ? category
+                  : category?.name || category?.slug || 'Unknown'
+                )
                   .replace('-', ' ')
                   .replace(/\b\w/g, l => l.toUpperCase())}
               </option>
@@ -537,7 +543,12 @@ const VehicleInventoryTab = ({ dealer }) => {
                       </VehicleInfo>
                     </TableCell>
                     <TableCell>
-                      {(vehicle.category?.name || vehicle.category?.slug || vehicle.category || 'Unknown')
+                      {(
+                        vehicle.category?.name ||
+                        vehicle.category?.slug ||
+                        vehicle.category ||
+                        'Unknown'
+                      )
                         .replace('-', ' ')
                         .replace(/\b\w/g, l => l.toUpperCase())}
                     </TableCell>

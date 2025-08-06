@@ -4,25 +4,43 @@ const path = require('path');
 // Define import path mappings
 const importMappings = [
   // Style imports
-  { from: "import { theme } from '../../styles/GlobalStyle';", to: "import { theme } from '../../../styles/GlobalStyle';" },
-  { from: 'import styled from \'styled-components\';', to: 'import styled from \'styled-components\';' }, // no change
-  { from: "from '../../styles/GlobalStyle'", to: "from '../../../styles/GlobalStyle'" },
-  
+  {
+    from: "import { theme } from '../../styles/GlobalStyle';",
+    to: "import { theme } from '../../../styles/GlobalStyle';",
+  },
+  {
+    from: "import styled from 'styled-components';",
+    to: "import styled from 'styled-components';",
+  }, // no change
+  {
+    from: "from '../../styles/GlobalStyle'",
+    to: "from '../../../styles/GlobalStyle'",
+  },
+
   // Store/Redux imports
   { from: "from '../../store/slices/", to: "from '../../../store/slices/" },
-  
+
   // DummyData imports
   { from: "from '../../DummyData'", to: "from '../../../DummyData'" },
   { from: "from '../../DummyData/", to: "from '../../../DummyData/" },
-  
+
   // Utils imports
   { from: "from '../../utils/", to: "from '../../../utils/" },
-  
+
   // Shared components imports
-  { from: "from '../../components/shared/", to: "from '../../../components/shared/" },
-  { from: "from '../../components/auth/", to: "from '../../../components/auth/" },
-  { from: "from '../../components/user/", to: "from '../../../components/user/" },
-  
+  {
+    from: "from '../../components/shared/",
+    to: "from '../../../components/shared/",
+  },
+  {
+    from: "from '../../components/auth/",
+    to: "from '../../../components/auth/",
+  },
+  {
+    from: "from '../../components/user/",
+    to: "from '../../../components/user/",
+  },
+
   // Cross-module imports (within modules folder)
   { from: "from '../../ecommerce/", to: "from '../ecommerce/" },
   { from: "from '../../hotel/", to: "from '../hotel/" },
@@ -35,14 +53,17 @@ function fixImportsInFile(filePath) {
   try {
     let content = fs.readFileSync(filePath, 'utf8');
     let modified = false;
-    
+
     importMappings.forEach(mapping => {
       if (content.includes(mapping.from)) {
-        content = content.replace(new RegExp(mapping.from.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), mapping.to);
+        content = content.replace(
+          new RegExp(mapping.from.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'),
+          mapping.to
+        );
         modified = true;
       }
     });
-    
+
     if (modified) {
       fs.writeFileSync(filePath, content);
       console.log(`Fixed imports in: ${filePath}`);
@@ -58,11 +79,11 @@ function fixImportsInFile(filePath) {
 function processDirectory(dirPath) {
   const items = fs.readdirSync(dirPath);
   let totalFixed = 0;
-  
+
   items.forEach(item => {
     const itemPath = path.join(dirPath, item);
     const stat = fs.statSync(itemPath);
-    
+
     if (stat.isDirectory()) {
       totalFixed += processDirectory(itemPath);
     } else if (item.endsWith('.js') || item.endsWith('.jsx')) {
@@ -71,7 +92,7 @@ function processDirectory(dirPath) {
       }
     }
   });
-  
+
   return totalFixed;
 }
 

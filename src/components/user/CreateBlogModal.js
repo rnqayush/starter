@@ -14,7 +14,11 @@ import {
   FaPlus,
 } from 'react-icons/fa';
 import { theme, media } from '../../styles/GlobalStyle';
-import { createBlog, hideCreateBlogModal, clearCreateBlogError } from '../../store/slices/blogsSlice';
+import {
+  createBlog,
+  hideCreateBlogModal,
+  clearCreateBlogError,
+} from '../../store/slices/blogsSlice';
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -75,7 +79,11 @@ const ModalHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(240, 147, 251, 0.05));
+  background: linear-gradient(
+    135deg,
+    rgba(102, 126, 234, 0.05),
+    rgba(240, 147, 251, 0.05)
+  );
   border-radius: ${theme.borderRadius.xl} ${theme.borderRadius.xl} 0 0;
 
   h2 {
@@ -90,7 +98,7 @@ const ModalHeader = styled.div`
 
   ${media.mobile} {
     padding: ${theme.spacing.lg};
-    
+
     h2 {
       font-size: 1.5rem;
     }
@@ -247,7 +255,11 @@ const TagInput = styled.input`
 `;
 
 const Tag = styled.span`
-  background: linear-gradient(135deg, ${theme.colors.primary}, ${theme.colors.secondary});
+  background: linear-gradient(
+    135deg,
+    ${theme.colors.primary},
+    ${theme.colors.secondary}
+  );
   color: ${theme.colors.white};
   padding: ${theme.spacing.xs} ${theme.spacing.sm};
   border-radius: ${theme.borderRadius.full};
@@ -296,7 +308,11 @@ const FormRow = styled.div`
 `;
 
 const ErrorMessage = styled.div`
-  background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(220, 38, 38, 0.1));
+  background: linear-gradient(
+    135deg,
+    rgba(239, 68, 68, 0.1),
+    rgba(220, 38, 38, 0.1)
+  );
   border: 1px solid rgba(239, 68, 68, 0.3);
   color: ${theme.colors.error};
   padding: ${theme.spacing.md};
@@ -308,9 +324,16 @@ const ErrorMessage = styled.div`
   animation: shake 0.5s ease-in-out;
 
   @keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-5px); }
-    75% { transform: translateX(5px); }
+    0%,
+    100% {
+      transform: translateX(0);
+    }
+    25% {
+      transform: translateX(-5px);
+    }
+    75% {
+      transform: translateX(5px);
+    }
   }
 `;
 
@@ -352,7 +375,12 @@ const Button = styled.button`
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.3),
+      transparent
+    );
     transition: left 0.5s ease;
   }
 
@@ -361,7 +389,11 @@ const Button = styled.button`
   }
 
   &.primary {
-    background: linear-gradient(135deg, ${theme.colors.primary}, ${theme.colors.secondary});
+    background: linear-gradient(
+      135deg,
+      ${theme.colors.primary},
+      ${theme.colors.secondary}
+    );
     color: ${theme.colors.white};
     box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
 
@@ -396,7 +428,7 @@ const Button = styled.button`
 
 const CharacterCount = styled.div`
   font-size: 0.8rem;
-  color: ${props => props.isOver ? theme.colors.error : theme.colors.gray500};
+  color: ${props => (props.isOver ? theme.colors.error : theme.colors.gray500)};
   text-align: right;
   margin-top: ${theme.spacing.xs};
 `;
@@ -411,7 +443,11 @@ const ContentSection = styled.div`
   padding: ${theme.spacing.lg};
   border: 2px solid ${theme.colors.gray200};
   border-radius: ${theme.borderRadius.lg};
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.02), rgba(240, 147, 251, 0.02));
+  background: linear-gradient(
+    135deg,
+    rgba(102, 126, 234, 0.02),
+    rgba(240, 147, 251, 0.02)
+  );
   position: relative;
   transition: all 0.3s ease;
   animation: slideIn 0.4s ease-out;
@@ -455,7 +491,11 @@ const SectionTitle = styled.h4`
 `;
 
 const RemoveSectionButton = styled.button`
-  background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(220, 38, 38, 0.1));
+  background: linear-gradient(
+    135deg,
+    rgba(239, 68, 68, 0.1),
+    rgba(220, 38, 38, 0.1)
+  );
   border: 1px solid rgba(239, 68, 68, 0.3);
   color: ${theme.colors.error};
   padding: ${theme.spacing.xs} ${theme.spacing.sm};
@@ -468,7 +508,11 @@ const RemoveSectionButton = styled.button`
   gap: ${theme.spacing.xs};
 
   &:hover {
-    background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(220, 38, 38, 0.2));
+    background: linear-gradient(
+      135deg,
+      rgba(239, 68, 68, 0.2),
+      rgba(220, 38, 38, 0.2)
+    );
     border-color: rgba(239, 68, 68, 0.5);
     transform: scale(1.05);
   }
@@ -481,7 +525,11 @@ const RemoveSectionButton = styled.button`
 `;
 
 const AddSectionButton = styled.button`
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(240, 147, 251, 0.1));
+  background: linear-gradient(
+    135deg,
+    rgba(102, 126, 234, 0.1),
+    rgba(240, 147, 251, 0.1)
+  );
   border: 2px dashed ${theme.colors.primary};
   color: ${theme.colors.primary};
   padding: ${theme.spacing.lg};
@@ -505,12 +553,21 @@ const AddSectionButton = styled.button`
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.1), transparent);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(102, 126, 234, 0.1),
+      transparent
+    );
     transition: left 0.5s ease;
   }
 
   &:hover {
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.15), rgba(240, 147, 251, 0.15));
+    background: linear-gradient(
+      135deg,
+      rgba(102, 126, 234, 0.15),
+      rgba(240, 147, 251, 0.15)
+    );
     border-color: ${theme.colors.secondary};
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
@@ -526,7 +583,11 @@ const AddSectionButton = styled.button`
   }
 
   @keyframes bounce {
-    0%, 20%, 50%, 80%, 100% {
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
       transform: translateY(0);
     }
     40% {
@@ -540,22 +601,25 @@ const AddSectionButton = styled.button`
 
 const CreateBlogModal = () => {
   const dispatch = useDispatch();
-  const { categories, createBlogLoading, createBlogError, showCreateBlogModal } = useSelector(state => state.blogs);
-  
+  const {
+    categories,
+    createBlogLoading,
+    createBlogError,
+    showCreateBlogModal,
+  } = useSelector(state => state.blogs);
+
   const [formData, setFormData] = useState({
     title: '',
     excerpt: '',
-    contentSections: [
-      { heading: '', description: '' }
-    ],
+    contentSections: [{ heading: '', description: '' }],
     authorName: '',
     authorBio: '',
     authorAvatar: '',
     category: '',
     image: '',
-    tags: []
+    tags: [],
   });
-  
+
   const [tagInput, setTagInput] = useState('');
   const [errors, setErrors] = useState({});
 
@@ -565,23 +629,23 @@ const CreateBlogModal = () => {
     }
   }, [createBlogError]);
 
-  const handleInputChange = (e) => {
+  const handleInputChange = e => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
-    
+
     // Clear error when user starts typing
     if (errors[name]) {
       setErrors(prev => ({
         ...prev,
-        [name]: ''
+        [name]: '',
       }));
     }
   };
 
-  const handleTagInputKeyPress = (e) => {
+  const handleTagInputKeyPress = e => {
     if (e.key === 'Enter' || e.key === ',') {
       e.preventDefault();
       addTag();
@@ -593,96 +657,105 @@ const CreateBlogModal = () => {
     if (tag && !formData.tags.includes(tag) && formData.tags.length < 10) {
       setFormData(prev => ({
         ...prev,
-        tags: [...prev.tags, tag]
+        tags: [...prev.tags, tag],
       }));
       setTagInput('');
     }
   };
 
-  const removeTag = (tagToRemove) => {
+  const removeTag = tagToRemove => {
     setFormData(prev => ({
       ...prev,
-      tags: prev.tags.filter(tag => tag !== tagToRemove)
+      tags: prev.tags.filter(tag => tag !== tagToRemove),
     }));
   };
 
   const handleContentSectionChange = (index, field, value) => {
     setFormData(prev => ({
       ...prev,
-      contentSections: prev.contentSections.map((section, i) => 
+      contentSections: prev.contentSections.map((section, i) =>
         i === index ? { ...section, [field]: value } : section
-      )
+      ),
     }));
   };
 
   const addContentSection = () => {
     setFormData(prev => ({
       ...prev,
-      contentSections: [...prev.contentSections, { heading: '', description: '' }]
+      contentSections: [
+        ...prev.contentSections,
+        { heading: '', description: '' },
+      ],
     }));
   };
 
-  const removeContentSection = (index) => {
+  const removeContentSection = index => {
     if (formData.contentSections.length > 1) {
       setFormData(prev => ({
         ...prev,
-        contentSections: prev.contentSections.filter((_, i) => i !== index)
+        contentSections: prev.contentSections.filter((_, i) => i !== index),
       }));
     }
   };
 
   const validateForm = () => {
     const newErrors = {};
-    
+
     if (!formData.title.trim()) newErrors.title = 'Title is required';
     if (!formData.excerpt.trim()) newErrors.excerpt = 'Excerpt is required';
-    if (!formData.authorName.trim()) newErrors.authorName = 'Author name is required';
+    if (!formData.authorName.trim())
+      newErrors.authorName = 'Author name is required';
     if (!formData.category) newErrors.category = 'Category is required';
-    if (!formData.image.trim()) newErrors.image = 'Featured image URL is required';
-    
-    if (formData.title.length > 100) newErrors.title = 'Title must be less than 100 characters';
-    if (formData.excerpt.length > 300) newErrors.excerpt = 'Excerpt must be less than 300 characters';
-    
+    if (!formData.image.trim())
+      newErrors.image = 'Featured image URL is required';
+
+    if (formData.title.length > 100)
+      newErrors.title = 'Title must be less than 100 characters';
+    if (formData.excerpt.length > 300)
+      newErrors.excerpt = 'Excerpt must be less than 300 characters';
+
     // Validate content sections
-    const hasValidContent = formData.contentSections.some(section => 
-      section.heading.trim() || section.description.trim()
+    const hasValidContent = formData.contentSections.some(
+      section => section.heading.trim() || section.description.trim()
     );
-    if (!hasValidContent) newErrors.contentSections = 'At least one content section with heading or description is required';
-    
+    if (!hasValidContent)
+      newErrors.contentSections =
+        'At least one content section with heading or description is required';
+
     // Check individual sections
     formData.contentSections.forEach((section, index) => {
       if (section.heading.trim() && section.heading.length > 100) {
-        newErrors[`section_${index}_heading`] = 'Heading must be less than 100 characters';
+        newErrors[`section_${index}_heading`] =
+          'Heading must be less than 100 characters';
       }
       if (section.description.trim() && section.description.length < 20) {
-        newErrors[`section_${index}_description`] = 'Description must be at least 20 characters';
+        newErrors[`section_${index}_description`] =
+          'Description must be at least 20 characters';
       }
     });
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
-    
+
     if (!validateForm()) return;
-    
+
     try {
       await dispatch(createBlog(formData)).unwrap();
       // Reset form
       setFormData({
         title: '',
         excerpt: '',
-        contentSections: [
-          { heading: '', description: '' }
-        ],
+        contentSections: [{ heading: '', description: '' }],
         authorName: '',
         authorBio: '',
         authorAvatar: '',
         category: '',
         image: '',
-        tags: []
+        tags: [],
       });
       setTagInput('');
       setErrors({});
@@ -700,7 +773,7 @@ const CreateBlogModal = () => {
   if (!showCreateBlogModal) return null;
 
   return (
-    <ModalOverlay onClick={(e) => e.target === e.currentTarget && handleClose()}>
+    <ModalOverlay onClick={e => e.target === e.currentTarget && handleClose()}>
       <ModalContainer>
         <ModalHeader>
           <h2>
@@ -726,12 +799,19 @@ const CreateBlogModal = () => {
                 placeholder="Enter an engaging blog title..."
                 value={formData.title}
                 onChange={handleInputChange}
-                style={{ borderColor: errors.title ? theme.colors.error : undefined }}
+                style={{
+                  borderColor: errors.title ? theme.colors.error : undefined,
+                }}
               />
               <CharacterCount isOver={formData.title.length > 100}>
                 {formData.title.length}/100
               </CharacterCount>
-              {errors.title && <ErrorMessage><FaExclamationTriangle />{errors.title}</ErrorMessage>}
+              {errors.title && (
+                <ErrorMessage>
+                  <FaExclamationTriangle />
+                  {errors.title}
+                </ErrorMessage>
+              )}
             </FormGroup>
 
             <FormGroup>
@@ -745,12 +825,19 @@ const CreateBlogModal = () => {
                 placeholder="Write a compelling excerpt that summarizes your blog post..."
                 value={formData.excerpt}
                 onChange={handleInputChange}
-                style={{ borderColor: errors.excerpt ? theme.colors.error : undefined }}
+                style={{
+                  borderColor: errors.excerpt ? theme.colors.error : undefined,
+                }}
               />
               <CharacterCount isOver={formData.excerpt.length > 300}>
                 {formData.excerpt.length}/300
               </CharacterCount>
-              {errors.excerpt && <ErrorMessage><FaExclamationTriangle />{errors.excerpt}</ErrorMessage>}
+              {errors.excerpt && (
+                <ErrorMessage>
+                  <FaExclamationTriangle />
+                  {errors.excerpt}
+                </ErrorMessage>
+              )}
             </FormGroup>
 
             <FormGroup>
@@ -785,8 +872,18 @@ const CreateBlogModal = () => {
                         type="text"
                         placeholder="Enter section heading (optional)"
                         value={section.heading}
-                        onChange={(e) => handleContentSectionChange(index, 'heading', e.target.value)}
-                        style={{ borderColor: errors[`section_${index}_heading`] ? theme.colors.error : undefined }}
+                        onChange={e =>
+                          handleContentSectionChange(
+                            index,
+                            'heading',
+                            e.target.value
+                          )
+                        }
+                        style={{
+                          borderColor: errors[`section_${index}_heading`]
+                            ? theme.colors.error
+                            : undefined,
+                        }}
                       />
                       <CharacterCount isOver={section.heading.length > 100}>
                         {section.heading.length}/100
@@ -807,11 +904,27 @@ const CreateBlogModal = () => {
                         id={`description-${index}`}
                         placeholder="Write the content for this section..."
                         value={section.description}
-                        onChange={(e) => handleContentSectionChange(index, 'description', e.target.value)}
-                        style={{ borderColor: errors[`section_${index}_description`] ? theme.colors.error : undefined }}
+                        onChange={e =>
+                          handleContentSectionChange(
+                            index,
+                            'description',
+                            e.target.value
+                          )
+                        }
+                        style={{
+                          borderColor: errors[`section_${index}_description`]
+                            ? theme.colors.error
+                            : undefined,
+                        }}
                       />
-                      <CharacterCount isOver={section.description.length > 0 && section.description.length < 20}>
-                        {section.description.length} characters {section.description.length > 0 ? '(minimum 20)' : ''}
+                      <CharacterCount
+                        isOver={
+                          section.description.length > 0 &&
+                          section.description.length < 20
+                        }
+                      >
+                        {section.description.length} characters{' '}
+                        {section.description.length > 0 ? '(minimum 20)' : ''}
                       </CharacterCount>
                       {errors[`section_${index}_description`] && (
                         <ErrorMessage>
@@ -849,9 +962,18 @@ const CreateBlogModal = () => {
                   placeholder="Your name"
                   value={formData.authorName}
                   onChange={handleInputChange}
-                  style={{ borderColor: errors.authorName ? theme.colors.error : undefined }}
+                  style={{
+                    borderColor: errors.authorName
+                      ? theme.colors.error
+                      : undefined,
+                  }}
                 />
-                {errors.authorName && <ErrorMessage><FaExclamationTriangle />{errors.authorName}</ErrorMessage>}
+                {errors.authorName && (
+                  <ErrorMessage>
+                    <FaExclamationTriangle />
+                    {errors.authorName}
+                  </ErrorMessage>
+                )}
               </FormGroup>
 
               <FormGroup>
@@ -896,7 +1018,11 @@ const CreateBlogModal = () => {
                   name="category"
                   value={formData.category}
                   onChange={handleInputChange}
-                  style={{ borderColor: errors.category ? theme.colors.error : undefined }}
+                  style={{
+                    borderColor: errors.category
+                      ? theme.colors.error
+                      : undefined,
+                  }}
                 >
                   <option value="">Select a category</option>
                   {categories.map(category => (
@@ -905,7 +1031,12 @@ const CreateBlogModal = () => {
                     </option>
                   ))}
                 </Select>
-                {errors.category && <ErrorMessage><FaExclamationTriangle />{errors.category}</ErrorMessage>}
+                {errors.category && (
+                  <ErrorMessage>
+                    <FaExclamationTriangle />
+                    {errors.category}
+                  </ErrorMessage>
+                )}
               </FormGroup>
 
               <FormGroup>
@@ -920,9 +1051,16 @@ const CreateBlogModal = () => {
                   placeholder="https://example.com/image.jpg"
                   value={formData.image}
                   onChange={handleInputChange}
-                  style={{ borderColor: errors.image ? theme.colors.error : undefined }}
+                  style={{
+                    borderColor: errors.image ? theme.colors.error : undefined,
+                  }}
                 />
-                {errors.image && <ErrorMessage><FaExclamationTriangle />{errors.image}</ErrorMessage>}
+                {errors.image && (
+                  <ErrorMessage>
+                    <FaExclamationTriangle />
+                    {errors.image}
+                  </ErrorMessage>
+                )}
               </FormGroup>
             </FormRow>
 
@@ -942,16 +1080,14 @@ const CreateBlogModal = () => {
                 ))}
                 <TagInput
                   type="text"
-                  placeholder={formData.tags.length === 0 ? "Add tags..." : ""}
+                  placeholder={formData.tags.length === 0 ? 'Add tags...' : ''}
                   value={tagInput}
-                  onChange={(e) => setTagInput(e.target.value)}
+                  onChange={e => setTagInput(e.target.value)}
                   onKeyPress={handleTagInputKeyPress}
                   onBlur={addTag}
                 />
               </TagsInput>
-              <CharacterCount>
-                {formData.tags.length}/10 tags
-              </CharacterCount>
+              <CharacterCount>{formData.tags.length}/10 tags</CharacterCount>
             </FormGroup>
 
             {errors.submit && (
@@ -967,9 +1103,9 @@ const CreateBlogModal = () => {
           <Button type="button" className="secondary" onClick={handleClose}>
             Cancel
           </Button>
-          <Button 
-            type="submit" 
-            className="primary" 
+          <Button
+            type="submit"
+            className="primary"
             onClick={handleSubmit}
             disabled={createBlogLoading}
           >
