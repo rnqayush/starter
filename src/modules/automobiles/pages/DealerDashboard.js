@@ -185,7 +185,7 @@ const DealerDashboard = () => {
       // If no dealer found, redirect to dealer listing
       navigate('/auto-dealers');
     }
-  }, [location.pathname, navigate, dispatch, vendor]);
+  }, [location.pathname, navigate, dispatch]);
 
   // Handle save changes - publish to main state and save to API
   const handleSaveChanges = async () => {
