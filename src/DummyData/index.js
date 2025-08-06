@@ -169,27 +169,17 @@ export const searchAutomobileVendors = searchTerm => {
 
 // Business functions - updated to use new JSON structure
 export const getBusinessTemplate = slug => {
-  console.log('[getBusinessTemplate] Looking for slug:', slug);
-  console.log('[getBusinessTemplate] businessData:', businessData);
-
   // Handle salon/business slug -> map to business data
   if (slug === 'salon' || slug === 'business') {
-    // Note: JSON has 'buisness' spelling (typo), using correct key
-    const result = businessData.data?.portfolio?.buisness || null;
-    console.log('[getBusinessTemplate] Salon/business result:', result);
-    return result;
+    return businessData.data?.portfolio?.buisness || null;
   }
   // Handle freelancer/personal slug -> map to personal data
   if (slug === 'freelancer' || slug === 'personal') {
-    const result = businessData.data?.portfolio?.personal || null;
-    console.log('[getBusinessTemplate] Freelancer/personal result:', result);
-    return result;
+    return businessData.data?.portfolio?.personal || null;
   }
 
   // Fallback to old businesses structure if it exists
-  const fallback = businesses[slug] || null;
-  console.log('[getBusinessTemplate] Fallback result:', fallback);
-  return fallback;
+  return businesses[slug] || null;
 };
 
 export const getBusinessWebsiteData = slug => {
