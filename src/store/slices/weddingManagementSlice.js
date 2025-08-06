@@ -4,24 +4,37 @@ import {
   getStaticWeddingBookings,
   getVendorById,
 } from '../../utils/weddingAPI';
+import {
+  createEntityState,
+  createEditingState,
+  createFilterState,
+  createEntityReducers,
+  createEditingReducers,
+  createFilterReducers,
+} from '../utils/sliceUtils';
 
+// Initial state
 const initialState = {
   // Vendor management
   vendors: getStaticWeddingVendors(),
-  editingVendor: null,
-  originalVendor: null,
-  vendorChanges: {},
-  hasUnsavedVendorChanges: false,
-  activeVendorId: null,
-
+  selectedVendor: null,
+  
   // Booking management
   bookings: getStaticWeddingBookings(),
-  editingBooking: null,
+  selectedBooking: null,
+  
+  // Vendor editing state
+  vendorEditing: null,
+  vendorOriginal: null,
+  vendorChanges: {},
+  hasVendorChanges: false,
+  
+  // Booking editing state
+  bookingEditing: null,
   bookingChanges: {},
-  hasUnsavedBookingChanges: false,
-  activeBookingId: null,
+  hasBookingChanges: false,
 
-  // UI state
+  // Section visibility
   sectionVisibility: {
     hero: true,
     'about-us': true,
@@ -35,316 +48,39 @@ const initialState = {
   },
   customSectionVisibility: {},
 
-  // Loading states
-  loading: {
-    vendors: false,
-    bookings: false,
-    updating: false,
-    saving: false,
-  },
-
-  // Error states
-  errors: {
-    vendors: null,
-    bookings: null,
-    updating: null,
-    saving: null,
-  },
-
-  // Filter and search state
-  filters: {
+  // Filters
+  filters: createFilterState({
     city: '',
     state: '',
     featured: false,
-    searchQuery: '',
     category: '',
-  },
+  }),
 
-  // Real-time updates flag
+  // Settings
   realTimeUpdates: true,
+
+  // Loading and error states
+  loading: false,
+  error: null,
+  success: false,
 };
 
 const weddingManagementSlice = createSlice({
   name: 'weddingManagement',
   initialState,
   reducers: {
-    // Vendor management actions
-    setEditingVendor: (state, action) => {
-      const vendorId = action.payload;
-      let vendor = state.vendors.find(v => v.id === vendorId);
+    // Standard reducers
+    ...createEntityReducers(),
+    ...createFilterReducers(),
 
-      if (!vendor) {
-        console.warn(`Vendor with id ${vendorId} not found in Redux state`);
-        state.editingVendor = null;
-        state.originalVendor = null;
-      } else {
-        state.editingVendor = { ...vendor };
-        state.originalVendor = { ...vendor };
-      }
-
-      state.activeVendorId = vendorId;
-      state.vendorChanges = {};
-      state.hasUnsavedVendorChanges = false;
+    // Vendor management
+    setVendors: (state, action) => {
+      state.vendors = action.payload;
     },
 
-    updateVendorField: (state, action) => {
-      const { field, value } = action.payload;
-      if (state.editingVendor) {
-        state.editingVendor[field] = value;
-        state.vendorChanges[field] = {
-          old: state.originalVendor[field],
-          new: value,
-        };
-        state.hasUnsavedVendorChanges = true;
-
-        // If real-time updates are enabled, immediately update the vendor in the vendors array
-        if (state.realTimeUpdates) {
-          const vendorIndex = state.vendors.findIndex(
-            v => v.id === state.editingVendor.id
-          );
-          if (vendorIndex !== -1) {
-            state.vendors[vendorIndex] = { ...state.editingVendor };
-          }
-        }
-      }
-    },
-
-    updateVendorImage: (state, action) => {
-      const { field, url } = action.payload;
-      if (state.editingVendor) {
-        state.editingVendor[field] = url;
-        state.vendorChanges[field] = {
-          old: state.originalVendor[field],
-          new: url,
-        };
-        state.hasUnsavedVendorChanges = true;
-
-        // Real-time update
-        if (state.realTimeUpdates) {
-          const vendorIndex = state.vendors.findIndex(
-            v => v.id === state.editingVendor.id
-          );
-          if (vendorIndex !== -1) {
-            state.vendors[vendorIndex][field] = url;
-          }
-        }
-      }
-    },
-
-    updateVendorGallery: (state, action) => {
-      if (state.editingVendor) {
-        state.editingVendor.gallery = action.payload;
-        state.vendorChanges.gallery = {
-          old: state.originalVendor.gallery,
-          new: action.payload,
-        };
-        state.hasUnsavedVendorChanges = true;
-
-        // Real-time update
-        if (state.realTimeUpdates) {
-          const vendorIndex = state.vendors.findIndex(
-            v => v.id === state.editingVendor.id
-          );
-          if (vendorIndex !== -1) {
-            state.vendors[vendorIndex].gallery = action.payload;
-          }
-        }
-      }
-    },
-
-    updateServices: (state, action) => {
-      if (state.editingVendor) {
-        state.editingVendor.services = action.payload;
-        state.vendorChanges.services = {
-          old: state.originalVendor.services,
-          new: action.payload,
-        };
-        state.hasUnsavedVendorChanges = true;
-
-        // Real-time update
-        if (state.realTimeUpdates) {
-          const vendorIndex = state.vendors.findIndex(
-            v => v.id === state.editingVendor.id
-          );
-          if (vendorIndex !== -1) {
-            state.vendors[vendorIndex].services = action.payload;
-          }
-        }
-      }
-    },
-
-    updateTestimonials: (state, action) => {
-      if (state.editingVendor) {
-        state.editingVendor.testimonials = action.payload;
-        state.vendorChanges.testimonials = {
-          old: state.originalVendor.testimonials,
-          new: action.payload,
-        };
-        state.hasUnsavedVendorChanges = true;
-
-        // Real-time update
-        if (state.realTimeUpdates) {
-          const vendorIndex = state.vendors.findIndex(
-            v => v.id === state.editingVendor.id
-          );
-          if (vendorIndex !== -1) {
-            state.vendors[vendorIndex].testimonials = action.payload;
-          }
-        }
-      }
-    },
-
-    updatePackages: (state, action) => {
-      if (state.editingVendor) {
-        state.editingVendor.packages = action.payload;
-        state.vendorChanges.packages = {
-          old: state.originalVendor.packages,
-          new: action.payload,
-        };
-        state.hasUnsavedVendorChanges = true;
-
-        // Real-time update
-        if (state.realTimeUpdates) {
-          const vendorIndex = state.vendors.findIndex(
-            v => v.id === state.editingVendor.id
-          );
-          if (vendorIndex !== -1) {
-            state.vendors[vendorIndex].packages = action.payload;
-          }
-        }
-      }
-    },
-
-    updateRecentWork: (state, action) => {
-      if (state.editingVendor) {
-        state.editingVendor.locationPortfolio = action.payload;
-        state.vendorChanges.locationPortfolio = {
-          old: state.originalVendor.locationPortfolio,
-          new: action.payload,
-        };
-        state.hasUnsavedVendorChanges = true;
-
-        // Real-time update
-        if (state.realTimeUpdates) {
-          const vendorIndex = state.vendors.findIndex(
-            v => v.id === state.editingVendor.id
-          );
-          if (vendorIndex !== -1) {
-            state.vendors[vendorIndex].locationPortfolio = action.payload;
-          }
-        }
-      }
-    },
-
-    updateCustomSections: (state, action) => {
-      if (state.editingVendor) {
-        state.editingVendor.customSections = action.payload;
-        state.vendorChanges.customSections = {
-          old: state.originalVendor.customSections || [],
-          new: action.payload,
-        };
-        state.hasUnsavedVendorChanges = true;
-
-        // Real-time update
-        if (state.realTimeUpdates) {
-          const vendorIndex = state.vendors.findIndex(
-            v => v.id === state.editingVendor.id
-          );
-          if (vendorIndex !== -1) {
-            state.vendors[vendorIndex].customSections = action.payload;
-          }
-        }
-      }
-    },
-
-    updateFooterData: (state, action) => {
-      if (state.editingVendor) {
-        const { footerData } = action.payload;
-
-        // Update footer-related fields in editing vendor
-        state.editingVendor.footerColumns = footerData.columns;
-        state.editingVendor.footerCopyright = footerData.copyrightText;
-        state.editingVendor.footerBackgroundColor = footerData.backgroundColor;
-        state.editingVendor.footerTextColor = footerData.textColor;
-        state.editingVendor.footerDescription = footerData.description;
-
-        // Update social links (they can be used in both contact and footer sections)
-        state.editingVendor.socialLinks = footerData.socialLinks;
-
-        // Track changes
-        state.vendorChanges.footerColumns = {
-          old: state.originalVendor.footerColumns || [],
-          new: footerData.columns,
-        };
-        state.vendorChanges.footerCopyright = {
-          old: state.originalVendor.footerCopyright || '',
-          new: footerData.copyrightText,
-        };
-        state.vendorChanges.footerBackgroundColor = {
-          old: state.originalVendor.footerBackgroundColor || '#1f2937',
-          new: footerData.backgroundColor,
-        };
-        state.vendorChanges.footerTextColor = {
-          old: state.originalVendor.footerTextColor || '#ffffff',
-          new: footerData.textColor,
-        };
-        state.vendorChanges.socialLinks = {
-          old: state.originalVendor.socialLinks || {},
-          new: footerData.socialLinks,
-        };
-
-        state.hasUnsavedVendorChanges = true;
-
-        // Real-time update
-        if (state.realTimeUpdates) {
-          const vendorIndex = state.vendors.findIndex(
-            v => v.id === state.editingVendor.id
-          );
-          if (vendorIndex !== -1) {
-            state.vendors[vendorIndex].footerColumns = footerData.columns;
-            state.vendors[vendorIndex].footerCopyright =
-              footerData.copyrightText;
-            state.vendors[vendorIndex].footerBackgroundColor =
-              footerData.backgroundColor;
-            state.vendors[vendorIndex].footerTextColor = footerData.textColor;
-            state.vendors[vendorIndex].footerDescription =
-              footerData.description;
-            state.vendors[vendorIndex].socialLinks = footerData.socialLinks;
-          }
-        }
-      }
-    },
-
-    saveVendorChanges: state => {
-      if (state.editingVendor && state.hasUnsavedVendorChanges) {
-        const vendorIndex = state.vendors.findIndex(
-          v => v.id === state.editingVendor.id
-        );
-        if (vendorIndex !== -1) {
-          state.vendors[vendorIndex] = { ...state.editingVendor };
-        }
-        state.originalVendor = { ...state.editingVendor };
-        state.vendorChanges = {};
-        state.hasUnsavedVendorChanges = false;
-      }
-    },
-
-    discardVendorChanges: state => {
-      if (state.originalVendor) {
-        state.editingVendor = { ...state.originalVendor };
-        state.vendorChanges = {};
-        state.hasUnsavedVendorChanges = false;
-
-        // Revert real-time changes if they were applied
-        if (state.realTimeUpdates) {
-          const vendorIndex = state.vendors.findIndex(
-            v => v.id === state.originalVendor.id
-          );
-          if (vendorIndex !== -1) {
-            state.vendors[vendorIndex] = { ...state.originalVendor };
-          }
-        }
-      }
+    selectVendor: (state, action) => {
+      const id = action.payload;
+      state.selectedVendor = state.vendors.find(v => v.id === id) || null;
     },
 
     initializeVendor: (state, action) => {
@@ -356,12 +92,185 @@ const weddingManagementSlice = createSlice({
       }
     },
 
-    clearEditingVendor: state => {
-      state.editingVendor = null;
-      state.originalVendor = null;
+    loadVendorFromJson: (state, action) => {
+      const vendorId = action.payload;
+      const existingVendor = state.vendors.find(v => v.id === vendorId);
+
+      if (!existingVendor) {
+        try {
+          const vendorData = getVendorById(vendorId);
+          if (vendorData) {
+            state.vendors.push(vendorData);
+          }
+        } catch (error) {
+          console.error('Error loading vendor from JSON:', error);
+        }
+      }
+    },
+
+    refreshVendors: (state) => {
+      state.vendors = getStaticWeddingVendors();
+    },
+
+    // Vendor editing
+    setEditingVendor: (state, action) => {
+      const vendorId = action.payload;
+      const vendor = state.vendors.find(v => v.id === vendorId);
+
+      if (vendor) {
+        state.vendorEditing = { ...vendor };
+        state.vendorOriginal = { ...vendor };
+        state.vendorChanges = {};
+        state.hasVendorChanges = false;
+      } else {
+        console.warn(`Vendor with id ${vendorId} not found in Redux state`);
+        state.vendorEditing = null;
+        state.vendorOriginal = null;
+      }
+    },
+
+    updateVendorField: (state, action) => {
+      const { field, value } = action.payload;
+      
+      if (state.vendorEditing) {
+        state.vendorEditing[field] = value;
+        state.vendorChanges[field] = {
+          old: state.vendorOriginal?.[field],
+          new: value,
+        };
+        state.hasVendorChanges = true;
+
+        // Real-time update if enabled
+        if (state.realTimeUpdates) {
+          const vendorIndex = state.vendors.findIndex(v => v.id === state.vendorEditing.id);
+          if (vendorIndex !== -1) {
+            state.vendors[vendorIndex] = { ...state.vendorEditing };
+          }
+        }
+      }
+    },
+
+    updateVendorImage: (state, action) => {
+      const { field, url } = action.payload;
+      
+      if (state.vendorEditing) {
+        state.vendorEditing[field] = url;
+        state.vendorChanges[field] = {
+          old: state.vendorOriginal?.[field],
+          new: url,
+        };
+        state.hasVendorChanges = true;
+
+        // Real-time update
+        if (state.realTimeUpdates) {
+          const vendorIndex = state.vendors.findIndex(v => v.id === state.vendorEditing.id);
+          if (vendorIndex !== -1) {
+            state.vendors[vendorIndex][field] = url;
+          }
+        }
+      }
+    },
+
+    // Content management
+    updateVendorContent: (state, action) => {
+      const { contentType, data } = action.payload;
+      
+      if (state.vendorEditing) {
+        state.vendorEditing[contentType] = data;
+        state.vendorChanges[contentType] = {
+          old: state.vendorOriginal?.[contentType],
+          new: data,
+        };
+        state.hasVendorChanges = true;
+
+        // Real-time update
+        if (state.realTimeUpdates) {
+          const vendorIndex = state.vendors.findIndex(v => v.id === state.vendorEditing.id);
+          if (vendorIndex !== -1) {
+            state.vendors[vendorIndex][contentType] = data;
+          }
+        }
+      }
+    },
+
+    updateFooterData: (state, action) => {
+      const { footerData } = action.payload;
+      
+      if (state.vendorEditing) {
+        // Update footer-related fields
+        state.vendorEditing.footerColumns = footerData.columns;
+        state.vendorEditing.footerCopyright = footerData.copyrightText;
+        state.vendorEditing.footerBackgroundColor = footerData.backgroundColor;
+        state.vendorEditing.footerTextColor = footerData.textColor;
+        state.vendorEditing.footerDescription = footerData.description;
+        state.vendorEditing.socialLinks = footerData.socialLinks;
+
+        // Track changes
+        state.vendorChanges.footerColumns = {
+          old: state.vendorOriginal?.footerColumns || [],
+          new: footerData.columns,
+        };
+        state.vendorChanges.socialLinks = {
+          old: state.vendorOriginal?.socialLinks || {},
+          new: footerData.socialLinks,
+        };
+        
+        state.hasVendorChanges = true;
+
+        // Real-time update
+        if (state.realTimeUpdates) {
+          const vendorIndex = state.vendors.findIndex(v => v.id === state.vendorEditing.id);
+          if (vendorIndex !== -1) {
+            Object.assign(state.vendors[vendorIndex], {
+              footerColumns: footerData.columns,
+              footerCopyright: footerData.copyrightText,
+              footerBackgroundColor: footerData.backgroundColor,
+              footerTextColor: footerData.textColor,
+              footerDescription: footerData.description,
+              socialLinks: footerData.socialLinks,
+            });
+          }
+        }
+      }
+    },
+
+    // Save vendor changes
+    saveVendorChanges: (state) => {
+      if (state.vendorEditing && state.hasVendorChanges) {
+        const vendorIndex = state.vendors.findIndex(v => v.id === state.vendorEditing.id);
+        
+        if (vendorIndex !== -1) {
+          state.vendors[vendorIndex] = { ...state.vendorEditing };
+        }
+        
+        state.vendorOriginal = { ...state.vendorEditing };
+        state.vendorChanges = {};
+        state.hasVendorChanges = false;
+        state.success = true;
+      }
+    },
+
+    discardVendorChanges: (state) => {
+      if (state.vendorOriginal) {
+        state.vendorEditing = { ...state.vendorOriginal };
+        state.vendorChanges = {};
+        state.hasVendorChanges = false;
+
+        // Revert real-time changes
+        if (state.realTimeUpdates) {
+          const vendorIndex = state.vendors.findIndex(v => v.id === state.vendorOriginal.id);
+          if (vendorIndex !== -1) {
+            state.vendors[vendorIndex] = { ...state.vendorOriginal };
+          }
+        }
+      }
+    },
+
+    clearEditingVendor: (state) => {
+      state.vendorEditing = null;
+      state.vendorOriginal = null;
       state.vendorChanges = {};
-      state.hasUnsavedVendorChanges = false;
-      state.activeVendorId = null;
+      state.hasVendorChanges = false;
     },
 
     // Section visibility management
@@ -369,95 +278,97 @@ const weddingManagementSlice = createSlice({
       const { section } = action.payload;
       state.sectionVisibility[section] = !state.sectionVisibility[section];
 
-      // Also update the editing vendor's sectionVisibility
-      if (state.editingVendor) {
-        if (!state.editingVendor.sectionVisibility) {
-          state.editingVendor.sectionVisibility = {
-            ...state.sectionVisibility,
-          };
+      // Update the editing vendor's sectionVisibility
+      if (state.vendorEditing) {
+        if (!state.vendorEditing.sectionVisibility) {
+          state.vendorEditing.sectionVisibility = { ...state.sectionVisibility };
         }
-        state.editingVendor.sectionVisibility[section] =
-          state.sectionVisibility[section];
+        state.vendorEditing.sectionVisibility[section] = state.sectionVisibility[section];
+        
         state.vendorChanges.sectionVisibility = {
-          old: state.originalVendor?.sectionVisibility || {},
-          new: state.editingVendor.sectionVisibility,
+          old: state.vendorOriginal?.sectionVisibility || {},
+          new: state.vendorEditing.sectionVisibility,
         };
 
         // Real-time update
         if (state.realTimeUpdates) {
-          const vendorIndex = state.vendors.findIndex(
-            v => v.id === state.editingVendor.id
-          );
+          const vendorIndex = state.vendors.findIndex(v => v.id === state.vendorEditing.id);
           if (vendorIndex !== -1) {
-            state.vendors[vendorIndex].sectionVisibility =
-              state.editingVendor.sectionVisibility;
+            state.vendors[vendorIndex].sectionVisibility = state.vendorEditing.sectionVisibility;
           }
         }
+        
+        state.hasVendorChanges = true;
       }
-
-      state.hasUnsavedVendorChanges = true;
     },
 
     updateCustomSectionVisibility: (state, action) => {
       const { sectionId, visible } = action.payload;
       state.customSectionVisibility[sectionId] = visible;
 
-      if (state.editingVendor) {
-        if (!state.editingVendor.customSectionVisibility) {
-          state.editingVendor.customSectionVisibility = {};
+      if (state.vendorEditing) {
+        if (!state.vendorEditing.customSectionVisibility) {
+          state.vendorEditing.customSectionVisibility = {};
         }
-        state.editingVendor.customSectionVisibility[sectionId] = visible;
+        state.vendorEditing.customSectionVisibility[sectionId] = visible;
 
         // Real-time update
         if (state.realTimeUpdates) {
-          const vendorIndex = state.vendors.findIndex(
-            v => v.id === state.editingVendor.id
-          );
+          const vendorIndex = state.vendors.findIndex(v => v.id === state.vendorEditing.id);
           if (vendorIndex !== -1) {
             if (!state.vendors[vendorIndex].customSectionVisibility) {
               state.vendors[vendorIndex].customSectionVisibility = {};
             }
-            state.vendors[vendorIndex].customSectionVisibility[sectionId] =
-              visible;
+            state.vendors[vendorIndex].customSectionVisibility[sectionId] = visible;
           }
         }
-
-        state.hasUnsavedVendorChanges = true;
+        
+        state.hasVendorChanges = true;
       }
     },
 
-    // Booking management actions
+    // Booking management
+    setBookings: (state, action) => {
+      state.bookings = action.payload;
+    },
+
+    selectBooking: (state, action) => {
+      const id = action.payload;
+      state.selectedBooking = state.bookings.find(b => b.id === id) || null;
+    },
+
     setEditingBooking: (state, action) => {
       const bookingId = action.payload;
       const booking = state.bookings.find(b => b.id === bookingId);
 
       if (booking) {
-        state.editingBooking = { ...booking };
-        state.activeBookingId = bookingId;
+        state.bookingEditing = { ...booking };
         state.bookingChanges = {};
-        state.hasUnsavedBookingChanges = false;
+        state.hasBookingChanges = false;
       }
     },
 
     updateBookingField: (state, action) => {
       const { field, value } = action.payload;
-      if (state.editingBooking) {
-        state.editingBooking[field] = value;
+      
+      if (state.bookingEditing) {
+        state.bookingEditing[field] = value;
         state.bookingChanges[field] = value;
-        state.hasUnsavedBookingChanges = true;
+        state.hasBookingChanges = true;
       }
     },
 
-    saveBookingChanges: state => {
-      if (state.editingBooking && state.hasUnsavedBookingChanges) {
-        const bookingIndex = state.bookings.findIndex(
-          b => b.id === state.editingBooking.id
-        );
+    saveBookingChanges: (state) => {
+      if (state.bookingEditing && state.hasBookingChanges) {
+        const bookingIndex = state.bookings.findIndex(b => b.id === state.bookingEditing.id);
+        
         if (bookingIndex !== -1) {
-          state.bookings[bookingIndex] = { ...state.editingBooking };
+          state.bookings[bookingIndex] = { ...state.bookingEditing };
         }
+        
         state.bookingChanges = {};
-        state.hasUnsavedBookingChanges = false;
+        state.hasBookingChanges = false;
+        state.success = true;
       }
     },
 
@@ -471,127 +382,140 @@ const weddingManagementSlice = createSlice({
       state.bookings.push(newBooking);
     },
 
-    // Filter and search actions
-    updateFilters: (state, action) => {
-      state.filters = { ...state.filters, ...action.payload };
-    },
-
-    clearFilters: state => {
-      state.filters = {
-        city: '',
-        state: '',
-        featured: false,
-        searchQuery: '',
-        category: '',
-      };
+    refreshBookings: (state) => {
+      state.bookings = getStaticWeddingBookings();
     },
 
     // Settings
-    toggleRealTimeUpdates: state => {
+    toggleRealTimeUpdates: (state) => {
       state.realTimeUpdates = !state.realTimeUpdates;
     },
 
-    // Loading and error states
-    setLoading: (state, action) => {
-      const { type, loading } = action.payload;
-      state.loading[type] = loading;
-    },
-
-    setError: (state, action) => {
-      const { type, error } = action.payload;
-      state.errors[type] = error;
-    },
-
-    clearError: (state, action) => {
-      const { type } = action.payload;
-      state.errors[type] = null;
-    },
-
-    clearAllErrors: state => {
-      state.errors = {
-        vendors: null,
-        bookings: null,
-        updating: null,
-        saving: null,
-      };
-    },
-
-    // Load vendor from JSON and add to Redux if not exists
-    loadVendorFromJson: (state, action) => {
-      const vendorId = action.payload;
-      const existingVendor = state.vendors.find(v => v.id === vendorId);
-
-      if (!existingVendor) {
-        try {
-          const vendorData = getVendorById(vendorId);
-          if (vendorData) {
-            state.vendors.push(vendorData);
-            console.log(
-              'Redux: Loaded vendor from JSON and added to state:',
-              vendorData
-            );
-          }
-        } catch (error) {
-          console.error('Redux: Error loading vendor from JSON:', error);
-        }
-      }
-    },
-
-    // Data refresh
-    refreshVendors: state => {
-      state.vendors = getStaticWeddingVendors();
-    },
-
-    refreshBookings: state => {
-      state.bookings = getStaticWeddingBookings();
-    },
+    // Reset state
+    resetState: () => initialState,
   },
 });
 
+// Export actions
 export const {
-  // Vendor management
+  // Standard actions
+  setLoading,
+  setError,
+  clearError,
+  setSuccess,
+  setSearchQuery,
+  setFilters,
+  clearFilters,
+
+  // Vendor actions
+  setVendors,
+  selectVendor,
+  initializeVendor,
+  loadVendorFromJson,
+  refreshVendors,
+
+  // Vendor editing actions
   setEditingVendor,
   updateVendorField,
   updateVendorImage,
-  updateVendorGallery,
-  updateServices,
-  updateTestimonials,
-  updatePackages,
-  updateRecentWork,
-  updateCustomSections,
+  updateVendorContent,
   updateFooterData,
   saveVendorChanges,
   discardVendorChanges,
-  initializeVendor,
   clearEditingVendor,
-  loadVendorFromJson,
 
   // Section visibility
   toggleSectionVisibility,
   updateCustomSectionVisibility,
 
-  // Booking management
+  // Booking actions
+  setBookings,
+  selectBooking,
   setEditingBooking,
   updateBookingField,
   saveBookingChanges,
   addBooking,
-
-  // Filters and search
-  updateFilters,
-  clearFilters,
+  refreshBookings,
 
   // Settings
   toggleRealTimeUpdates,
 
-  // Loading and errors
-  setLoading,
-  setError,
-  clearError,
-  clearAllErrors,
-
-  // Data refresh
-  refreshVendors,
-  refreshBookings,
+  // Utility actions
+  resetState,
 } = weddingManagementSlice.actions;
+
+// Selectors
+export const selectVendors = (state) => state.weddingManagement.vendors;
+export const selectSelectedVendor = (state) => state.weddingManagement.selectedVendor;
+export const selectEditingVendor = (state) => state.weddingManagement.vendorEditing;
+export const selectVendorOriginal = (state) => state.weddingManagement.vendorOriginal;
+export const selectHasVendorChanges = (state) => state.weddingManagement.hasVendorChanges;
+export const selectVendorChanges = (state) => state.weddingManagement.vendorChanges;
+
+export const selectBookings = (state) => state.weddingManagement.bookings;
+export const selectSelectedBooking = (state) => state.weddingManagement.selectedBooking;
+export const selectEditingBooking = (state) => state.weddingManagement.bookingEditing;
+export const selectHasBookingChanges = (state) => state.weddingManagement.hasBookingChanges;
+
+export const selectSectionVisibility = (state) => state.weddingManagement.sectionVisibility;
+export const selectCustomSectionVisibility = (state) => state.weddingManagement.customSectionVisibility;
+export const selectFilters = (state) => state.weddingManagement.filters;
+export const selectRealTimeUpdates = (state) => state.weddingManagement.realTimeUpdates;
+
+export const selectLoading = (state) => state.weddingManagement.loading;
+export const selectError = (state) => state.weddingManagement.error;
+export const selectSuccess = (state) => state.weddingManagement.success;
+
+// Complex selectors
+export const selectVendorById = (vendorId) => (state) =>
+  state.weddingManagement.vendors.find(vendor => vendor.id === vendorId);
+
+export const selectVendorsByCategory = (category) => (state) =>
+  state.weddingManagement.vendors.filter(vendor => vendor.category === category);
+
+export const selectFeaturedVendors = (state) =>
+  state.weddingManagement.vendors.filter(vendor => vendor.featured);
+
+export const selectFilteredVendors = (state) => {
+  const { vendors, filters } = state.weddingManagement;
+  let filtered = [...vendors];
+
+  // Apply filters
+  if (filters.city) {
+    filtered = filtered.filter(vendor => 
+      vendor.location?.city?.toLowerCase().includes(filters.city.toLowerCase())
+    );
+  }
+
+  if (filters.state) {
+    filtered = filtered.filter(vendor => 
+      vendor.location?.state?.toLowerCase().includes(filters.state.toLowerCase())
+    );
+  }
+
+  if (filters.category) {
+    filtered = filtered.filter(vendor => vendor.category === filters.category);
+  }
+
+  if (filters.featured) {
+    filtered = filtered.filter(vendor => vendor.featured);
+  }
+
+  if (filters.searchQuery) {
+    const query = filters.searchQuery.toLowerCase();
+    filtered = filtered.filter(vendor =>
+      vendor.name?.toLowerCase().includes(query) ||
+      vendor.description?.toLowerCase().includes(query) ||
+      vendor.category?.toLowerCase().includes(query)
+    );
+  }
+
+  return filtered;
+};
+
+export const selectVisibleSections = (state) =>
+  Object.entries(state.weddingManagement.sectionVisibility)
+    .filter(([_, visible]) => visible)
+    .map(([section, _]) => section);
 
 export default weddingManagementSlice.reducer;
