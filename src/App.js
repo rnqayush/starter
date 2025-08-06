@@ -9,8 +9,8 @@ import ErrorBoundary from './components/ErrorBoundary';
 // User Components
 import PlatformHomePage from './components/user/PlatformHomePage';
 import PricingPage from './components/user/PricingPage';
-import { BlogsPage } from './modules/blogs';
-import { SingleBlogPage } from './modules/blogs';
+import BlogsPage from './components/user/BlogsPage';
+import SingleBlogPage from './components/user/SingleBlogPage';
 import LoginPage from './components/auth/LoginPage';
 import RegisterPage from './components/auth/RegisterPage';
 import StartBuilding from './components/StartBuilding';
