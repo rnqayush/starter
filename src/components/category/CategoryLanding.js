@@ -366,10 +366,7 @@ const CategoryLanding = ({
             {secondaryDemoUrl && secondaryDemoButtonText && (
               <SecondaryDemoButton
                 gradient={gradient}
-                onClick={(e) => {
-                  console.log('[CategoryLanding] Secondary button click event:', e);
-                  handleSecondaryDemoClick();
-                }}
+                onClick={handleSecondaryDemoClick}
                 style={{ cursor: 'pointer', pointerEvents: 'auto' }}
               >
                 {secondaryDemoButtonText}
