@@ -396,7 +396,7 @@ const FooterSectionEdit = ({ dealer }) => {
         customText: businessInfo.description || '',
       }));
     }
-  }, [sections, vendor]);
+  }, [JSON.stringify(sections), JSON.stringify(vendor)]); // Use stringified to prevent reference changes
 
   const updateContent = (field, value) => {
     setSectionContent(prev => ({
