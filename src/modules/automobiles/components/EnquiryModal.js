@@ -9,7 +9,7 @@ import {
   FaCheck,
   FaCar,
 } from 'react-icons/fa';
-import { theme } from '../../styles/GlobalStyle';
+import { theme } from '../../../styles/GlobalStyle';
 
 const ModalOverlay = styled.div`
   position: fixed;

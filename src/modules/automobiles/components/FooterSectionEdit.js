@@ -10,13 +10,13 @@ import {
   FaPlus,
   FaTrash,
 } from 'react-icons/fa';
-import { theme } from '../../styles/GlobalStyle';
+import { theme } from '../../../styles/GlobalStyle';
 import {
   selectPageSections,
   selectVendor,
   selectLoading,
   updateSectionContent,
-} from '../../store/slices/automobileManagementSlice';
+} from '../../../store/slices/automobileManagementSlice';
 
 const Container = styled.div`
   background: ${theme.colors.white};
