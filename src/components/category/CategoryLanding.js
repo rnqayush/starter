@@ -291,10 +291,12 @@ const CategoryLanding = ({
   };
 
   const handleDemoClick = () => {
+    console.log('[CategoryLanding] Demo button clicked, navigating to:', demoUrl);
     navigate(demoUrl);
   };
 
   const handleSecondaryDemoClick = () => {
+    console.log('[CategoryLanding] Secondary demo button clicked, navigating to:', secondaryDemoUrl);
     navigate(secondaryDemoUrl);
   };
 
