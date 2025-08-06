@@ -517,7 +517,7 @@ const EcommerceMain = () => {
     if (!vendor || (vendor.slug !== slug && !hasUnsavedChanges)) {
       dispatch(fetchEcommerceData({ vendorSlug: slug }));
     }
-  }, [location.pathname, navigate, dispatch, vendor, hasUnsavedChanges]);
+  }, [location.pathname, navigate, dispatch]);
 
   const handleBackToStores = () => {
     navigate('/ecommerce-stores');
