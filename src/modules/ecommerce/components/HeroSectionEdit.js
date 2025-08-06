@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { FaImage, FaEdit, FaEye } from 'react-icons/fa';
-import { theme } from '../../styles/GlobalStyle';
+import { theme } from '../../../styles/GlobalStyle';
 import FormField from './shared/FormField';
 import {
   selectSectionById,
   updateSectionContent,
   selectVendor,
-} from '../../store/slices/ecommerceManagementSlice';
+} from '../../../store/slices/ecommerceManagementSlice';
 
 const SectionContainer = styled.div`
   background: ${theme.colors.white};
