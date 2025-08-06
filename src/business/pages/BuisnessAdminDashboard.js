@@ -51,9 +51,9 @@ import {
   FaCalendarAlt,
   FaRandom,
 } from 'react-icons/fa';
-import { theme } from '../../../styles/GlobalStyle';
-import { fetchBusinessData } from '../../../utils/businessAPI';
-import { selectUser } from '../../../store/slices/authSlice';
+import { theme } from '../../styles/GlobalStyle';
+import { fetchBusinessData } from '../../utils/businessAPI';
+import { selectUser } from '../../store/slices/authSlice';
 import {
   setEditingBusiness,
   initializeBusiness,
@@ -77,7 +77,7 @@ import {
   setLoading,
   setError,
   clearError,
-} from '../../../store/slices/businessManagementSlice';
+} from '../../store/slices/businessManagementSlice';
 
 const DashboardContainer = styled.div`
   min-height: 100vh;

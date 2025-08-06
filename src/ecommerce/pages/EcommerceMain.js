@@ -2,34 +2,34 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import styled, { createGlobalStyle } from 'styled-components';
-import { FaArrowRight, FaCar, FaHome, FaSpinner } from 'react-icons/fa';
-import { theme } from '../../../styles/GlobalStyle';
+import { FaArrowRight, FaShoppingBag, FaHome, FaSpinner } from 'react-icons/fa';
+import { theme } from '../../styles/GlobalStyle';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import VehicleCard from '../components/VehicleCard';
+import ProductCard from '../components/ProductCard';
 import CategoryCard from '../components/CategoryCard';
-import BackToTop from '../ecommerce/components/BackToTop';
+import BackToTop from '../components/BackToTop';
 import {
-  fetchAutomobileData,
+  fetchEcommerceData,
   selectVendor,
   selectCategories,
-  selectVehicles,
-  selectFeaturedVehicles,
-  selectOnSaleVehicles,
+  selectProducts,
+  selectFeaturedProducts,
+  selectOnSaleProducts,
   selectLoading,
   selectError,
   selectPageSections,
   selectHasUnsavedChanges,
   clearError,
-} from '../../../store/slices/automobileManagementSlice';
+} from '../../store/slices/ecommerceManagementSlice';
 
 // Dynamic theme styles that override global styles
 const DynamicGlobalStyle = createGlobalStyle`
   :root {
-    --dealer-primary: ${props => props.primaryColor || theme.colors.primary};
-    --dealer-secondary: ${props => props.secondaryColor || theme.colors.secondary};
-    --dealer-background: ${props => props.backgroundColor || theme.colors.gray50};
-    --dealer-text: ${props => props.textColor || theme.colors.gray900};
+    --store-primary: ${props => props.primaryColor || theme.colors.primary};
+    --store-secondary: ${props => props.secondaryColor || theme.colors.secondary};
+    --store-background: ${props => props.backgroundColor || theme.colors.gray50};
+    --store-text: ${props => props.textColor || theme.colors.gray900};
   }
 `;
 
@@ -126,8 +126,8 @@ const HeroSection = styled.section.withConfig({
   background:
     linear-gradient(
       135deg,
-      ${props => props.primaryColor || '#1f2937'}dd 0%,
-      ${props => props.secondaryColor || '#374151'}dd 100%
+      ${props => props.primaryColor || '#667eea'}dd 0%,
+      ${props => props.secondaryColor || '#764ba2'}dd 100%
     ),
     ${props => (props.heroImage ? `url("${props.heroImage}")` : 'none')};
   background-size: cover;
@@ -168,7 +168,7 @@ const HeroContent = styled.div`
   width: 100%;
 `;
 
-const DealerHeader = styled.div`
+const StoreHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -182,7 +182,7 @@ const DealerHeader = styled.div`
   }
 `;
 
-const DealerLogo = styled.img`
+const StoreLogo = styled.img`
   width: 120px;
   height: 120px;
   border-radius: ${theme.borderRadius.xl};
@@ -471,7 +471,7 @@ const BreadcrumbNav = styled.nav`
   }
 `;
 
-const AutomobileMain = () => {
+const EcommerceMain = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -479,16 +479,16 @@ const AutomobileMain = () => {
   // Redux selectors - single source of truth
   const vendor = useSelector(selectVendor);
   const categories = useSelector(selectCategories);
-  const vehicles = useSelector(selectVehicles);
-  const featuredVehicles = useSelector(selectFeaturedVehicles);
-  const onSaleVehicles = useSelector(selectOnSaleVehicles);
+  const products = useSelector(selectProducts);
+  const featuredProducts = useSelector(selectFeaturedProducts);
+  const onSaleProducts = useSelector(selectOnSaleProducts);
   const loading = useSelector(selectLoading);
   const error = useSelector(selectError);
   const pageSections = useSelector(selectPageSections);
 
   const [vendorSlug, setVendorSlug] = useState(null);
 
-  const getBaseUrl = () => (vendor ? `/${vendor.slug}` : '/automobiles');
+  const getBaseUrl = () => (vendor ? `/${vendor.slug}` : '/ecommerce');
 
   // Get hasUnsavedChanges outside the useEffect
   const hasUnsavedChanges = useSelector(selectHasUnsavedChanges);
@@ -498,35 +498,35 @@ const AutomobileMain = () => {
     const path = location.pathname;
     let slug = null;
 
-    if (path !== '/automobiles') {
+    if (path !== '/ecommerce') {
       const pathSegments = path.split('/').filter(Boolean);
       slug = pathSegments[0];
     }
 
-    // If no vendor slug found, redirect to dealer listing
+    // If no vendor slug found, redirect to store listing
     if (!slug) {
-      navigate('/auto-dealers');
+      navigate('/ecommerce-stores');
       return;
     }
 
     setVendorSlug(slug);
 
-    // Only fetch automobile data if we don't have vendor data or if slug changed
-    // This prevents overriding real-time updates from dealer dashboard
+    // Only fetch ecommerce data if we don't have vendor data or if slug changed
+    // This prevents overriding real-time updates from seller dashboard
     // Also check if we have unsaved changes to avoid overriding
     if (!vendor || (vendor.slug !== slug && !hasUnsavedChanges)) {
-      dispatch(fetchAutomobileData({ vendorSlug: slug }));
+      dispatch(fetchEcommerceData({ vendorSlug: slug }));
     }
   }, [location.pathname, navigate, dispatch, vendor, hasUnsavedChanges]);
 
-  const handleBackToDealers = () => {
-    navigate('/auto-dealers');
+  const handleBackToStores = () => {
+    navigate('/ecommerce-stores');
   };
 
   const handleRetry = () => {
     if (vendorSlug) {
       dispatch(clearError());
-      dispatch(fetchAutomobileData({ vendorSlug, forceRefresh: true }));
+      dispatch(fetchEcommerceData({ vendorSlug, forceRefresh: true }));
     }
   };
 
@@ -540,7 +540,7 @@ const AutomobileMain = () => {
     return (
       <LoadingContainer>
         <LoadingSpinner />
-        <LoadingText>Loading dealership information...</LoadingText>
+        <LoadingText>Loading store information...</LoadingText>
       </LoadingContainer>
     );
   }
@@ -563,45 +563,45 @@ const AutomobileMain = () => {
   if (!vendor) {
     return (
       <ErrorContainer>
-        <ErrorTitle>Dealer Not Found</ErrorTitle>
+        <ErrorTitle>Store Not Found</ErrorTitle>
         <ErrorText>
-          The dealer you're looking for doesn't exist or may have been removed.
+          The store you're looking for doesn't exist or may have been removed.
         </ErrorText>
-        <ErrorButton onClick={handleBackToDealers}>
-          <FaCar />
-          Browse Dealers
+        <ErrorButton onClick={handleBackToStores}>
+          <FaShoppingBag />
+          Browse Stores
         </ErrorButton>
       </ErrorContainer>
     );
   }
 
-  const dealerTheme = vendor.theme || {};
+  const storeTheme = vendor.theme || {};
 
   return (
     <>
       <DynamicGlobalStyle
-        primaryColor={dealerTheme.primaryColor}
-        secondaryColor={dealerTheme.secondaryColor}
-        backgroundColor={dealerTheme.backgroundColor}
-        textColor={dealerTheme.textColor}
+        primaryColor={storeTheme.primaryColor}
+        secondaryColor={storeTheme.secondaryColor}
+        backgroundColor={storeTheme.backgroundColor}
+        textColor={storeTheme.textColor}
       />
 
-      <PageContainer backgroundColor={dealerTheme.backgroundColor}>
-        <BackButton onClick={handleBackToDealers}>
+      <PageContainer backgroundColor={storeTheme.backgroundColor}>
+        <BackButton onClick={handleBackToStores}>
           <FaHome />
-          Back to Dealers
+          Back to Stores
         </BackButton>
 
         <Navbar
-          dealerName={vendor.name}
-          dealerLogo={vendor.businessInfo.logo}
-          dealerSlug={vendor.slug}
-          theme={dealerTheme}
+          storeName={vendor.name}
+          storeLogo={vendor.businessInfo?.logo}
+          storeSlug={vendor.slug}
+          theme={storeTheme}
         />
 
         <Breadcrumb>
           <BreadcrumbNav>
-            <Link to="/auto-dealers">All Dealers</Link>
+            <Link to="/ecommerce-stores">All Stores</Link>
             <span className="separator">›</span>
             <span className="current">{vendor.name}</span>
           </BreadcrumbNav>
@@ -616,50 +616,52 @@ const AutomobileMain = () => {
               return (
                 <HeroSection
                   key="hero"
-                  primaryColor={dealerTheme.primaryColor}
-                  secondaryColor={dealerTheme.secondaryColor}
+                  primaryColor={storeTheme.primaryColor}
+                  secondaryColor={storeTheme.secondaryColor}
                   heroImage={
                     sectionConfig.backgroundImage ||
                     sectionConfig.content?.backgroundImage
                   }
                 >
                   <HeroContent>
-                    <DealerHeader>
-                      <DealerLogo
-                        src={vendor.businessInfo.logo}
-                        alt={`${vendor.name} logo`}
-                      />
+                    <StoreHeader>
+                      {vendor.businessInfo?.logo && (
+                        <StoreLogo
+                          src={vendor.businessInfo?.logo}
+                          alt={`${vendor.name} logo`}
+                        />
+                      )}
                       <div>
                         <HeroTitle>
                           {sectionConfig.title || sectionConfig.content?.title}
                         </HeroTitle>
                       </div>
-                    </DealerHeader>
+                    </StoreHeader>
                     <HeroSubtitle>
                       {sectionConfig.subtitle ||
                         sectionConfig.content?.subtitle}
                     </HeroSubtitle>
                     <HeroActions>
                       <HeroButton
-                        primaryColor={dealerTheme.primaryColor}
-                        onClick={() => navigate(`${getBaseUrl()}/vehicles`)}
+                        primaryColor={storeTheme.primaryColor}
+                        onClick={() => navigate(`${getBaseUrl()}/products`)}
                       >
-                        <FaCar />
+                        <FaShoppingBag />
                         {sectionConfig.primaryButtonText ||
                           sectionConfig.content?.primaryButtonText ||
-                          'Browse Vehicles'}
+                          'Shop Products'}
                       </HeroButton>
                       <HeroButton
                         className="secondary"
                         onClick={() =>
                           navigate(
-                            `${getBaseUrl()}/vehicles?category=${categories[0]?.slug || 'all'}`
+                            `${getBaseUrl()}/products?category=${categories[0]?.slug || 'all'}`
                           )
                         }
                       >
                         {sectionConfig.secondaryButtonText ||
                           sectionConfig.content?.secondaryButtonText ||
-                          'View Categories'}
+                          'Browse Categories'}
                         <FaArrowRight />
                       </HeroButton>
                     </HeroActions>
@@ -682,15 +684,15 @@ const AutomobileMain = () => {
                 <Section key="categories">
                   <Container>
                     <SectionHeader>
-                      <SectionTitle textColor={dealerTheme.textColor}>
+                      <SectionTitle textColor={storeTheme.textColor}>
                         {sectionConfig.title ||
                           sectionConfig.content?.title ||
-                          'Browse by Category'}
+                          'Shop by Category'}
                       </SectionTitle>
                       <SectionSubtitle>
                         {sectionConfig.subtitle ||
                           sectionConfig.content?.subtitle ||
-                          'Explore our diverse range of vehicles'}
+                          'Explore our diverse range of products'}
                       </SectionSubtitle>
                     </SectionHeader>
                     <Grid minWidth="280px">
@@ -698,7 +700,7 @@ const AutomobileMain = () => {
                         <CategoryCard
                           key={category.id}
                           category={category}
-                          dealerSlug={vendor.slug}
+                          storeSlug={vendor.slug}
                         />
                       ))}
                     </Grid>
@@ -707,43 +709,41 @@ const AutomobileMain = () => {
               );
 
             case 'featured':
-              // Use embedded vehicles if available, otherwise use global vehicles
-              const featuredVehicleIds =
-                sectionConfig.vehicleIds ||
-                sectionConfig.content?.vehicleIds ||
+              // Use embedded products if available, otherwise use global products
+              const featuredProductIds =
+                sectionConfig.productIds ||
+                sectionConfig.content?.productIds ||
                 [];
-              const featuredVehiclesToShow =
-                featuredVehicleIds.length > 0
-                  ? vehicles.filter(vehicle =>
-                      featuredVehicleIds.includes(vehicle.id)
+              const featuredProductsToShow =
+                featuredProductIds.length > 0
+                  ? products.filter(product =>
+                      featuredProductIds.includes(product.id)
                     )
-                  : featuredVehicles.slice(0, 4);
+                  : featuredProducts.slice(0, 4);
               return (
                 <Section
                   key="featured"
-                  background={
-                    dealerTheme.backgroundColor || theme.colors.gray50
-                  }
+                  background={storeTheme.backgroundColor || theme.colors.gray50}
                 >
                   <Container>
                     <SectionHeader>
-                      <SectionTitle textColor={dealerTheme.textColor}>
+                      <SectionTitle textColor={storeTheme.textColor}>
                         {sectionConfig.title ||
                           sectionConfig.content?.title ||
-                          'Featured Vehicles'}
+                          'Featured Products'}
                       </SectionTitle>
                       <SectionSubtitle>
                         {sectionConfig.subtitle ||
                           sectionConfig.content?.subtitle ||
-                          'Handpicked vehicles that customers love the most'}
+                          'Handpicked products that customers love the most'}
                       </SectionSubtitle>
                     </SectionHeader>
                     <Grid>
-                      {featuredVehiclesToShow.map(vehicle => (
-                        <VehicleCard
-                          key={vehicle.id}
-                          vehicle={vehicle}
-                          dealerSlug={vendor.slug}
+                      {featuredProductsToShow.map(product => (
+                        <ProductCard
+                          key={product.id}
+                          product={product}
+                          storeSlug={vendor.slug}
                         />
                       ))}
                     </Grid>
@@ -752,26 +752,26 @@ const AutomobileMain = () => {
               );
 
             case 'special-offers':
-              // Use embedded vehicles if available, otherwise use global vehicles
-              const specialOfferVehicleIds =
-                sectionConfig.vehicleIds ||
-                sectionConfig.content?.vehicleIds ||
+              // Use embedded products if available, otherwise use global products
+              const specialOfferProductIds =
+                sectionConfig.productIds ||
+                sectionConfig.content?.productIds ||
                 [];
-              const specialOfferVehicles =
-                specialOfferVehicleIds.length > 0
-                  ? vehicles.filter(vehicle =>
-                      specialOfferVehicleIds.includes(vehicle.id)
+              const specialOfferProducts =
+                specialOfferProductIds.length > 0
+                  ? products.filter(product =>
+                      specialOfferProductIds.includes(product.id)
                     )
-                  : onSaleVehicles.slice(0, 4);
-              if (specialOfferVehicles.length === 0) return null;
+                  : onSaleProducts.slice(0, 4);
+              if (specialOfferProducts.length === 0) return null;
               return (
                 <Section key="special-offers">
                   <Container>
                     <SectionHeader>
-                      <SectionTitle textColor={dealerTheme.textColor}>
+                      <SectionTitle textColor={storeTheme.textColor}>
                         {sectionConfig.title ||
                           sectionConfig.content?.title ||
-                          '🔥 Special Offers'}
+                          '🔥 Hot Deals'}
                       </SectionTitle>
                       <SectionSubtitle>
                         {sectionConfig.subtitle ||
@@ -780,11 +780,11 @@ const AutomobileMain = () => {
                       </SectionSubtitle>
                     </SectionHeader>
                     <Grid>
-                      {specialOfferVehicles.map(vehicle => (
-                        <VehicleCard
-                          key={vehicle.id}
-                          vehicle={vehicle}
-                          dealerSlug={vendor.slug}
+                      {specialOfferProducts.map(product => (
+                        <ProductCard
+                          key={product.id}
+                          product={product}
+                          storeSlug={vendor.slug}
                         />
                       ))}
                     </Grid>
@@ -796,9 +796,9 @@ const AutomobileMain = () => {
               return (
                 <Footer
                   key="footer"
-                  dealerSlug={vendor.slug}
-                  dealer={vendor}
-                  theme={dealerTheme}
+                  storeSlug={vendor.slug}
+                  store={vendor}
+                  theme={storeTheme}
                   content={sectionConfig.content || sectionConfig}
                 />
               );
@@ -810,7 +810,7 @@ const AutomobileMain = () => {
                   <Section key={sectionConfig.id}>
                     <Container>
                       <SectionHeader>
-                        <SectionTitle textColor={dealerTheme.textColor}>
+                        <SectionTitle textColor={storeTheme.textColor}>
                           {sectionConfig.name || sectionConfig.content?.title}
                         </SectionTitle>
                         <SectionSubtitle>
@@ -818,20 +818,20 @@ const AutomobileMain = () => {
                             sectionConfig.content?.subtitle}
                         </SectionSubtitle>
                       </SectionHeader>
-                      {/* Render selected vehicles for custom section */}
-                      {sectionConfig.content?.vehicleIds &&
-                      sectionConfig.content.vehicleIds.length > 0 ? (
+                      {/* Render selected products for custom section */}
+                      {sectionConfig.content?.productIds &&
+                      sectionConfig.content.productIds.length > 0 ? (
                         <Grid>
-                          {sectionConfig.content.vehicleIds
-                            .map(vehicleId =>
-                              vehicles.find(v => v.id === vehicleId)
+                          {sectionConfig.content.productIds
+                            .map(productId =>
+                              products.find(p => p.id === productId)
                             )
                             .filter(Boolean)
-                            .map(vehicle => (
-                              <VehicleCard
-                                key={vehicle.id}
-                                vehicle={vehicle}
-                                dealerSlug={vendor.slug}
+                            .map(product => (
+                              <ProductCard
+                                key={product.id}
+                                product={product}
+                                storeSlug={vendor.slug}
                               />
                             ))}
                         </Grid>
@@ -845,7 +845,7 @@ const AutomobileMain = () => {
                             color: theme.colors.gray600,
                           }}
                         >
-                          <p>No vehicles selected for this custom section.</p>
+                          <p>No products selected for this custom section.</p>
                         </div>
                       )}
                     </Container>
@@ -861,4 +861,4 @@ const AutomobileMain = () => {
   );
 };
 
-export default AutomobileMain;
+export default EcommerceMain;
