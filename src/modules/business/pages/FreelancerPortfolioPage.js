@@ -1116,10 +1116,16 @@ const FreelancerPortfolioPage = () => {
   } = useSelector(state => state.businessManagement);
 
   // Get the current business data (prioritize editing business for real-time updates)
-  const currentBusiness =
+  let currentBusiness =
     editingBusiness && editingBusiness.slug === actualSlug
       ? editingBusiness
       : businesses.find(b => b.slug === actualSlug);
+
+  // FORCE LOAD FREELANCER DATA if currentBusiness is null
+  if (!currentBusiness) {
+    currentBusiness = businessData.data.portfolio.personal; // Direct freelancer data
+    console.log('[FreelancerPortfolioPage] Force loading freelancer data:', currentBusiness);
+  }
 
   // Handle navbar visibility on scroll
   useEffect(() => {
