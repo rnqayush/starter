@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { FaExclamationTriangle, FaSave, FaUndo } from 'react-icons/fa';
-import { theme } from '../../styles/GlobalStyle';
+import { theme } from '../../../styles/GlobalStyle';
 import EnhancedDealerSidebar from '../components/EnhancedDealerSidebar';
 import DashboardTab from '../components/DashboardTab';
 import SectionOrderEdit from '../components/SectionOrderEdit';
@@ -37,7 +37,7 @@ import {
   selectApiReadyData,
   selectNeedsSyncCheck,
   discardTempChanges,
-} from '../../store/slices/automobileManagementSlice';
+} from '../../../store/slices/automobileManagementSlice';
 
 const DashboardContainer = styled.div`
   display: flex;

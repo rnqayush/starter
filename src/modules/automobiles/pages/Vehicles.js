@@ -10,11 +10,11 @@ import {
   FaHome,
   FaSpinner,
 } from 'react-icons/fa';
-import { theme } from '../../styles/GlobalStyle';
+import { theme } from '../../../styles/GlobalStyle';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import VehicleCard from '../components/VehicleCard';
-import BackToTop from '../../ecommerce/components/BackToTop';
+import BackToTop from '../ecommerce/components/BackToTop';
 import {
   fetchAutomobileData,
   setFilters,
@@ -27,7 +27,7 @@ import {
   selectFilters,
   selectAvailableFilters,
   clearError,
-} from '../../store/slices/automobileManagementSlice';
+} from '../../../store/slices/automobileManagementSlice';
 
 const PageContainer = styled.div`
   min-height: 100vh;
