@@ -17,7 +17,7 @@ import {
   FaPrint,
   FaTools,
 } from 'react-icons/fa';
-import { theme } from '../../styles/GlobalStyle';
+import { theme } from '../../../styles/GlobalStyle';
 
 const Container = styled.div`
   background: ${theme.colors.white};
