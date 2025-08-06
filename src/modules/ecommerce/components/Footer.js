@@ -15,7 +15,7 @@ import {
   FaTruck,
   FaUndoAlt,
 } from 'react-icons/fa';
-import { theme } from '../../styles/GlobalStyle';
+import { theme } from '../../../styles/GlobalStyle';
 
 const FooterContainer = styled.footer`
   background: ${theme.colors.gray900};
