@@ -328,6 +328,13 @@ const BusinessWebsitePage = () => {
           extractedSlug = pathSegments[0];
         }
 
+        // If still no slug, default to 'salon' for business data
+        if (!extractedSlug) {
+          extractedSlug = 'salon';
+        }
+
+        console.log('[BusinessWebsitePage] Using slug:', extractedSlug);
+
         // Check if we already have business data in Redux
         const existingBusiness = businesses.find(b => b.slug === extractedSlug);
         if (existingBusiness) {
