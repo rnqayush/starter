@@ -362,4 +362,11 @@ export const selectBlogsByCategory = (category) => (state) =>
 export const selectBlogsByAuthor = (authorName) => (state) =>
   state.blogs.blogs.filter(blog => blog.author.name === authorName);
 
+// Legacy action aliases for backward compatibility
+export const setSearchTerm = setSearchQuery;
+export const setSelectedCategory = setCategory;
+export const showCreateBlogModal = showCreateModal;
+export const hideCreateBlogModal = hideCreateModal;
+export const clearCreateBlogError = clearCreateError;
+
 export default blogsSlice.reducer;
