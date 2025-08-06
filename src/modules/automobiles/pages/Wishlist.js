@@ -2,15 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { FaHeart, FaHome, FaTrash } from 'react-icons/fa';
-import { theme } from '../../styles/GlobalStyle';
+import { theme } from '../../../styles/GlobalStyle';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import VehicleCard from '../components/VehicleCard';
-import BackToTop from '../../ecommerce/components/BackToTop';
+import BackToTop from '../ecommerce/components/BackToTop';
 import {
   getVehicleById,
   getAutomobileVendorByIdOrSlug as getVendorByIdOrSlug,
-} from '../../DummyData';
+} from '../../../DummyData';
 
 const PageContainer = styled.div`
   min-height: 100vh;
