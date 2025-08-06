@@ -6,13 +6,22 @@ import businessData from '../DummyData/business.json';
 
 // Helper function to get business data by slug
 const getBusinessWebsiteData = slug => {
+  console.log('[getBusinessWebsiteData] Looking for slug:', slug);
+  console.log('[getBusinessWebsiteData] Available data:', businessData.data?.portfolio);
+
   // Map common slugs to the correct data
   if (slug === 'salon' || slug === 'business') {
-    return businessData.data?.portfolio?.buisness || null;
+    const result = businessData.data?.portfolio?.buisness || null;
+    console.log('[getBusinessWebsiteData] Business result:', result);
+    return result;
   }
   if (slug === 'freelancer' || slug === 'personal') {
-    return businessData.data?.portfolio?.personal || null;
+    const result = businessData.data?.portfolio?.personal || null;
+    console.log('[getBusinessWebsiteData] Freelancer result:', result);
+    return result;
   }
+
+  console.log('[getBusinessWebsiteData] No match found for slug:', slug);
   return null;
 };
 
