@@ -822,8 +822,8 @@ const BuisnessAdminDashboard = () => {
     // Mark changes as unsaved in Redux
     dispatch(markUnsavedChanges());
 
-    // Immediately update Redux editing business for real-time preview
-    updateEditingBusinessInRedux();
+    // DISABLED: Real-time preview was causing infinite loops
+    // updateEditingBusinessInRedux();
   };
 
   // Handle section visibility toggle - using Redux action
@@ -1190,8 +1190,8 @@ const BuisnessAdminDashboard = () => {
     console.log('handleSaveChanges called');
 
     try {
-      // Update editing business with current form data for real-time preview
-      updateEditingBusinessInRedux();
+      // DISABLED: Real-time preview was causing infinite loops
+      // updateEditingBusinessInRedux();
 
       setSaved(true);
       setChangedSections(new Set());
