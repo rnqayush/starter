@@ -21,7 +21,7 @@ import {
   selectPageSections,
   selectHasUnsavedChanges,
   clearError,
-} from '../../store/slices/ecommerceManagementSlice';
+} from '../../../store/slices/ecommerceManagementSlice';
 
 // Dynamic theme styles that override global styles
 const DynamicGlobalStyle = createGlobalStyle`
