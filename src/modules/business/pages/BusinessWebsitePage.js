@@ -402,14 +402,7 @@ const BusinessWebsitePage = () => {
     );
   }
 
-  // FORCE LOAD SALON DATA if currentBusiness is null
-  let businessToShow = currentBusiness;
-  if (!currentBusiness) {
-    businessToShow = businessData.data.portfolio.buisness; // Direct salon data
-    console.log('[BusinessWebsitePage] Force loading salon data:', businessToShow);
-  }
-
-  if (error || !businessToShow) {
+  if (error || !currentBusiness) {
     return (
       <PageContainer>
         <div style={{ padding: '4rem', textAlign: 'center' }}>
