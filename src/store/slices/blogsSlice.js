@@ -316,6 +316,13 @@ export const {
   showCreateModal,
   hideCreateModal,
   clearCreateError,
+
+  // Legacy action aliases for backward compatibility
+  setSearchTerm: setSearchQuery,
+  setSelectedCategory: setCategory,
+  showCreateBlogModal: showCreateModal,
+  hideCreateBlogModal: hideCreateModal,
+  clearCreateBlogError: clearCreateError,
   
   // Interaction actions
   likeBlog,
