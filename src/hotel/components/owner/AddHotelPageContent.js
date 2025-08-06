@@ -16,7 +16,7 @@ import {
 } from '../../../components/shared/Input';
 import { theme, media } from '../../../styles/GlobalStyle';
 // import { useAppContext } from '../../context/AppContext'; // Removed - needs Redux migration
-import { amenitiesList } from '../../DummyData';
+import { amenitiesList } from '../../../DummyData';
 
 const PageHeader = styled.div`
   margin-bottom: ${theme.spacing.xxl};

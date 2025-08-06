@@ -42,7 +42,7 @@ import {
   selectHasPendingChanges,
 } from '../../../store/slices/hotelManagementSlice';
 // import { useAppContext } from '../../context/AppContext'; // Removed - needs Redux migration
-import { getHotelByIdOrSlug, amenitiesList } from '../../DummyData';
+import { getHotelByIdOrSlug, amenitiesList } from '../../../DummyData';
 import { Button } from '../../../components/shared/Button';
 import { Input } from '../../../components/shared/Input';
 

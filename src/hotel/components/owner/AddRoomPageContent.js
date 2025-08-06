@@ -15,7 +15,7 @@ import {
 } from '../../../components/shared/Input';
 import { theme } from '../../../styles/GlobalStyle';
 // import { useAppContext } from '../../context/AppContext'; // Removed - needs Redux migration
-import { amenitiesList } from '../../DummyData';
+import { amenitiesList } from '../../../DummyData';
 
 const BackButton = styled.button`
   display: inline-flex;

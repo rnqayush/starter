@@ -19,7 +19,7 @@ import {
   saveChanges,
   publishChanges,
 } from '../../../store/slices/hotelManagementSlice';
-import { getHotelByIdOrSlug } from '../../DummyData';
+import { getHotelByIdOrSlug } from '../../../DummyData';
 import { Button } from '../../../components/shared/Button';
 import { Input } from '../../../components/shared/Input';
 
