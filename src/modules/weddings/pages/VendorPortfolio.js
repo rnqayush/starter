@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
@@ -539,7 +539,7 @@ const VendorPortfolio = () => {
     }));
   };
 
-  const handleKeyPress = e => {
+  const handleKeyPress = useCallback(e => {
     if (e.key === 'Escape') {
       if (imageViewer.open) {
         closeImageViewer();
@@ -550,12 +550,12 @@ const VendorPortfolio = () => {
       if (e.key === 'ArrowLeft') prevImage();
       if (e.key === 'ArrowRight') nextImage();
     }
-  };
+  }, [imageViewer.open, selectedPortfolio, closeImageViewer, closePortfolioModal, prevImage, nextImage]);
 
   useEffect(() => {
     document.addEventListener('keydown', handleKeyPress);
     return () => document.removeEventListener('keydown', handleKeyPress);
-  }, [imageViewer.open, selectedPortfolio]);
+  }, [handleKeyPress]);
 
   if (loading) {
     return (
