@@ -10,7 +10,7 @@ import {
   FaToggleOn,
   FaToggleOff,
 } from 'react-icons/fa';
-import { theme } from '../../styles/GlobalStyle';
+import { theme } from '../../../styles/GlobalStyle';
 import FormField from './shared/FormField';
 import {
   selectSectionById,
