@@ -11,7 +11,7 @@ import {
   FaToggleOff,
   FaSearch,
 } from 'react-icons/fa';
-import { theme } from '../../styles/GlobalStyle';
+import { theme } from '../../../styles/GlobalStyle';
 import FormField from './shared/FormField';
 import {
   selectPageSections,
