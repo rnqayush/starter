@@ -432,6 +432,28 @@ export const selectWishlist = (state) => state.automobileManagement.wishlist;
 export const selectRecentlyViewed = (state) => state.automobileManagement.recentlyViewed;
 export const selectEnquiries = (state) => state.automobileManagement.enquiries;
 
+// Legacy selectors for backward compatibility
+export const selectHasUnsavedChanges = (state) => state.automobileManagement.hasChanges;
+export const selectTempChanges = (state) => state.automobileManagement.changes;
+export const selectVehicleLoading = (state) => state.automobileManagement.vehicleLoading || state.automobileManagement.loading;
+export const selectAvailableFilters = (state) => ({
+  categories: state.automobileManagement.categories.map(c => c.slug),
+  makes: [...new Set(state.automobileManagement.vehicles.map(v => v.make))],
+  years: [...new Set(state.automobileManagement.vehicles.map(v => v.year))],
+  conditions: [...new Set(state.automobileManagement.vehicles.map(v => v.condition))],
+  priceRange: {
+    min: Math.min(...state.automobileManagement.vehicles.map(v => v.pricing?.price || 0)),
+    max: Math.max(...state.automobileManagement.vehicles.map(v => v.pricing?.price || 0)),
+  },
+});
+export const selectApiReadyData = (state) => ({
+  vendor: state.automobileManagement.vendor,
+  vehicles: state.automobileManagement.vehicles,
+  categories: state.automobileManagement.categories,
+  pageContent: state.automobileManagement.pageContent,
+});
+export const selectNeedsSyncCheck = () => ({ needsSync: false });
+
 // Complex selectors
 export const selectFeaturedVehicles = (state) =>
   state.automobileManagement.vehicles.filter(vehicle => vehicle.featured);
