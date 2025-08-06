@@ -1179,7 +1179,7 @@ const HotelDetail = () => {
     };
 
     fetchData();
-  }, [slug, hotels]);
+  }, [slug]);
 
   const scrollToNextSection = () => {
     const nextSection = document.querySelector('[data-section="about"]');
