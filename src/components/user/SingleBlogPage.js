@@ -114,7 +114,8 @@ const CategoryBadge = styled.div`
   animation: pulse 2s infinite;
 
   @keyframes pulse {
-    0%, 100% {
+    0%,
+    100% {
       transform: scale(1);
     }
     50% {
@@ -137,7 +138,8 @@ const BlogTitle = styled.h1`
   animation: shimmer 3s ease-in-out infinite;
 
   @keyframes shimmer {
-    0%, 100% {
+    0%,
+    100% {
       background-position: 0% 50%;
     }
     50% {
@@ -334,7 +336,7 @@ const ShareButton = styled.button`
   &.twitter {
     background: linear-gradient(135deg, #1da1f2, #0d8bd9);
     color: white;
-    
+
     &:hover {
       transform: translateY(-3px) scale(1.1);
       box-shadow: 0 8px 20px rgba(29, 161, 242, 0.4);
@@ -344,7 +346,7 @@ const ShareButton = styled.button`
   &.facebook {
     background: linear-gradient(135deg, #4267b2, #365899);
     color: white;
-    
+
     &:hover {
       transform: translateY(-3px) scale(1.1);
       box-shadow: 0 8px 20px rgba(66, 103, 178, 0.4);
@@ -354,7 +356,7 @@ const ShareButton = styled.button`
   &.linkedin {
     background: linear-gradient(135deg, #0077b5, #005885);
     color: white;
-    
+
     &:hover {
       transform: translateY(-3px) scale(1.1);
       box-shadow: 0 8px 20px rgba(0, 119, 181, 0.4);
@@ -364,7 +366,7 @@ const ShareButton = styled.button`
   &.copy {
     background: linear-gradient(135deg, #6b7280, #4b5563);
     color: white;
-    
+
     &:hover {
       transform: translateY(-3px) scale(1.1);
       box-shadow: 0 8px 20px rgba(107, 114, 128, 0.4);
@@ -378,7 +380,12 @@ const ShareButton = styled.button`
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.3),
+      transparent
+    );
     transition: left 0.5s ease;
   }
 
@@ -414,7 +421,11 @@ const BlogContent = styled.div`
       top: 0;
       bottom: 0;
       width: 4px;
-      background: linear-gradient(135deg, ${theme.colors.primary}, ${theme.colors.secondary});
+      background: linear-gradient(
+        135deg,
+        ${theme.colors.primary},
+        ${theme.colors.secondary}
+      );
       border-radius: 2px;
     }
   }
@@ -431,13 +442,14 @@ const BlogContent = styled.div`
     text-align: justify;
   }
 
-  ul, ol {
+  ul,
+  ol {
     margin: ${theme.spacing.lg} 0;
     padding-left: ${theme.spacing.xl};
 
     li {
       margin-bottom: ${theme.spacing.sm};
-      
+
       strong {
         color: ${theme.colors.primary};
       }
@@ -445,7 +457,11 @@ const BlogContent = styled.div`
   }
 
   blockquote {
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(240, 147, 251, 0.05));
+    background: linear-gradient(
+      135deg,
+      rgba(102, 126, 234, 0.05),
+      rgba(240, 147, 251, 0.05)
+    );
     border-left: 4px solid ${theme.colors.primary};
     padding: ${theme.spacing.lg};
     margin: ${theme.spacing.xl} 0;
@@ -501,7 +517,11 @@ const TagsList = styled.div`
 `;
 
 const Tag = styled.span`
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(240, 147, 251, 0.1));
+  background: linear-gradient(
+    135deg,
+    rgba(102, 126, 234, 0.1),
+    rgba(240, 147, 251, 0.1)
+  );
   color: ${theme.colors.primary};
   padding: ${theme.spacing.xs} ${theme.spacing.md};
   border-radius: ${theme.borderRadius.full};
@@ -512,7 +532,11 @@ const Tag = styled.span`
   cursor: pointer;
 
   &:hover {
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.15), rgba(240, 147, 251, 0.15));
+    background: linear-gradient(
+      135deg,
+      rgba(102, 126, 234, 0.15),
+      rgba(240, 147, 251, 0.15)
+    );
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
   }
@@ -549,8 +573,12 @@ const LoadingSpinner = styled.div`
   }
 
   @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
   }
 `;
 
@@ -558,13 +586,13 @@ const NotFound = styled.div`
   text-align: center;
   padding: ${theme.spacing.xxl};
   color: ${theme.colors.gray600};
-  
+
   h2 {
     font-size: 2rem;
     margin-bottom: ${theme.spacing.lg};
     color: ${theme.colors.gray800};
   }
-  
+
   p {
     font-size: 1.1rem;
     margin-bottom: ${theme.spacing.xl};
@@ -585,12 +613,16 @@ const SingleBlogPage = () => {
       try {
         // Simulate API call
         await new Promise(resolve => setTimeout(resolve, 800));
-        
+
         if (blogsData.status === 'success' && blogsData.data) {
-          const foundBlog = blogsData.data.blogs.find(b => b.id === parseInt(id));
+          const foundBlog = blogsData.data.blogs.find(
+            b => b.id === parseInt(id)
+          );
           if (foundBlog) {
             setBlog(foundBlog);
-            const foundCategory = blogsData.data.categories.find(c => c.name === foundBlog.category);
+            const foundCategory = blogsData.data.categories.find(
+              c => c.name === foundBlog.category
+            );
             setCategory(foundCategory);
           }
         }
@@ -604,19 +636,28 @@ const SingleBlogPage = () => {
     loadBlog();
   }, [id]);
 
-  const handleShare = (platform) => {
+  const handleShare = platform => {
     const url = window.location.href;
     const title = blog?.title || '';
-    
+
     switch (platform) {
       case 'twitter':
-        window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`, '_blank');
+        window.open(
+          `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`,
+          '_blank'
+        );
         break;
       case 'facebook':
-        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
+        window.open(
+          `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
+          '_blank'
+        );
         break;
       case 'linkedin':
-        window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`, '_blank');
+        window.open(
+          `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`,
+          '_blank'
+        );
         break;
       case 'copy':
         navigator.clipboard.writeText(url).then(() => {
@@ -629,28 +670,47 @@ const SingleBlogPage = () => {
     }
   };
 
-  const formatDate = (dateString) => {
+  const formatDate = dateString => {
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
-      day: 'numeric'
+      day: 'numeric',
     });
   };
 
-  const renderContent = (content) => {
-    return content.split('\n').map((paragraph, index) => {
-      if (paragraph.startsWith('## ')) {
-        return <h2 key={index}>{paragraph.replace('## ', '')}</h2>;
-      } else if (paragraph.startsWith('### ')) {
-        return <h3 key={index}>{paragraph.replace('### ', '')}</h3>;
-      } else if (paragraph.startsWith('- ')) {
-        return <li key={index}>{paragraph.replace('- ', '').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}</li>;
-      } else if (paragraph.trim() === '') {
-        return null;
-      } else {
-        return <p key={index} dangerouslySetInnerHTML={{ __html: paragraph.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') }} />;
-      }
-    }).filter(Boolean);
+  const renderContent = content => {
+    return content
+      .split('\n')
+      .map((paragraph, index) => {
+        if (paragraph.startsWith('## ')) {
+          return <h2 key={index}>{paragraph.replace('## ', '')}</h2>;
+        } else if (paragraph.startsWith('### ')) {
+          return <h3 key={index}>{paragraph.replace('### ', '')}</h3>;
+        } else if (paragraph.startsWith('- ')) {
+          return (
+            <li key={index}>
+              {paragraph
+                .replace('- ', '')
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}
+            </li>
+          );
+        } else if (paragraph.trim() === '') {
+          return null;
+        } else {
+          return (
+            <p
+              key={index}
+              dangerouslySetInnerHTML={{
+                __html: paragraph.replace(
+                  /\*\*(.*?)\*\*/g,
+                  '<strong>$1</strong>'
+                ),
+              }}
+            />
+          );
+        }
+      })
+      .filter(Boolean);
   };
 
   if (loading) {
@@ -674,8 +734,18 @@ const SingleBlogPage = () => {
           </BackButton>
           <NotFound>
             <h2>Blog Not Found</h2>
-            <p>The blog post you're looking for doesn't exist or has been removed.</p>
-            <Link to="/blogs" style={{ color: theme.colors.primary, textDecoration: 'none', fontWeight: 600 }}>
+            <p>
+              The blog post you're looking for doesn't exist or has been
+              removed.
+            </p>
+            <Link
+              to="/blogs"
+              style={{
+                color: theme.colors.primary,
+                textDecoration: 'none',
+                fontWeight: 600,
+              }}
+            >
               Return to Blogs
             </Link>
           </NotFound>
@@ -698,9 +768,9 @@ const SingleBlogPage = () => {
               {category.name}
             </CategoryBadge>
           )}
-          
+
           <BlogTitle>{blog.title}</BlogTitle>
-          
+
           <BlogMeta>
             <AuthorInfo>
               <AuthorAvatar src={blog.author.avatar} alt={blog.author.name} />
@@ -709,22 +779,22 @@ const SingleBlogPage = () => {
                 <p>{blog.author.bio}</p>
               </AuthorDetails>
             </AuthorInfo>
-            
+
             <MetaItem>
               <FaCalendarAlt />
               {formatDate(blog.publishedAt)}
             </MetaItem>
-            
+
             <MetaItem>
               <FaClock />
               {blog.readTime}
             </MetaItem>
-            
+
             <MetaItem>
               <FaEye />
               {blog.views.toLocaleString()} views
             </MetaItem>
-            
+
             <MetaItem>
               <FaHeart />
               {blog.likes} likes
@@ -738,24 +808,37 @@ const SingleBlogPage = () => {
           <ShareLabel>
             <FaShare /> Share this article:
           </ShareLabel>
-          <ShareButton className="twitter" onClick={() => handleShare('twitter')}>
+          <ShareButton
+            className="twitter"
+            onClick={() => handleShare('twitter')}
+          >
             <FaTwitter />
           </ShareButton>
-          <ShareButton className="facebook" onClick={() => handleShare('facebook')}>
+          <ShareButton
+            className="facebook"
+            onClick={() => handleShare('facebook')}
+          >
             <FaFacebook />
           </ShareButton>
-          <ShareButton className="linkedin" onClick={() => handleShare('linkedin')}>
+          <ShareButton
+            className="linkedin"
+            onClick={() => handleShare('linkedin')}
+          >
             <FaLinkedin />
           </ShareButton>
           <ShareButton className="copy" onClick={() => handleShare('copy')}>
             <FaCopy />
           </ShareButton>
-          {copySuccess && <span style={{ color: theme.colors.success, fontSize: '0.9rem' }}>Link copied!</span>}
+          {copySuccess && (
+            <span style={{ color: theme.colors.success, fontSize: '0.9rem' }}>
+              Link copied!
+            </span>
+          )}
         </ShareSection>
 
         <BlogContent>
           {renderContent(blog.content)}
-          
+
           <TagsSection>
             <TagsLabel>
               <FaTag /> Tags:
@@ -773,4 +856,3 @@ const SingleBlogPage = () => {
 };
 
 export default SingleBlogPage;
-

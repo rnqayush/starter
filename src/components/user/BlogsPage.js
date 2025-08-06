@@ -53,21 +53,26 @@ const PageContainer = styled.div`
     right: -50%;
     width: 100%;
     height: 100%;
-    background: radial-gradient(circle, rgba(102, 126, 234, 0.03) 0%, transparent 70%);
+    background: radial-gradient(
+      circle,
+      rgba(102, 126, 234, 0.03) 0%,
+      transparent 70%
+    );
     animation: float 8s ease-in-out infinite;
     pointer-events: none;
     z-index: 0;
   }
 
   @keyframes float {
-    0%, 100% { 
-      transform: translate(0, 0) rotate(0deg); 
+    0%,
+    100% {
+      transform: translate(0, 0) rotate(0deg);
     }
-    33% { 
-      transform: translate(30px, -30px) rotate(120deg); 
+    33% {
+      transform: translate(30px, -30px) rotate(120deg);
     }
-    66% { 
-      transform: translate(-20px, 20px) rotate(240deg); 
+    66% {
+      transform: translate(-20px, 20px) rotate(240deg);
     }
   }
 `;
@@ -96,17 +101,38 @@ const PageHeader = styled.div`
   animation: gradientShift 8s ease-in-out infinite;
 
   @keyframes gradientShift {
-    0%, 100% {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    0%,
+    100% {
+      background: linear-gradient(
+        135deg,
+        #667eea 0%,
+        #764ba2 50%,
+        #f093fb 100%
+      );
     }
     25% {
-      background: linear-gradient(135deg, #f093fb 0%, #667eea 50%, #764ba2 100%);
+      background: linear-gradient(
+        135deg,
+        #f093fb 0%,
+        #667eea 50%,
+        #764ba2 100%
+      );
     }
     50% {
-      background: linear-gradient(135deg, #764ba2 0%, #f093fb 50%, #667eea 100%);
+      background: linear-gradient(
+        135deg,
+        #764ba2 0%,
+        #f093fb 50%,
+        #667eea 100%
+      );
     }
     75% {
-      background: linear-gradient(135deg, #667eea 0%, #f093fb 50%, #764ba2 100%);
+      background: linear-gradient(
+        135deg,
+        #667eea 0%,
+        #f093fb 50%,
+        #764ba2 100%
+      );
     }
   }
 
@@ -129,18 +155,31 @@ const PageHeader = styled.div`
     left: -50%;
     width: 200%;
     height: 200%;
-    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    background: radial-gradient(
+      circle,
+      rgba(255, 255, 255, 0.1) 0%,
+      transparent 70%
+    );
     animation: rotate 20s linear infinite;
   }
 
   @keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-10px); }
+    0%,
+    100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
   }
 
   @keyframes rotate {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
   }
 
   ${media.mobile} {
@@ -160,11 +199,14 @@ const PageTitle = styled.h1`
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  animation: shimmer 3s ease-in-out infinite, slideInDown 1s ease-out;
+  animation:
+    shimmer 3s ease-in-out infinite,
+    slideInDown 1s ease-out;
   text-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
 
   @keyframes shimmer {
-    0%, 100% {
+    0%,
+    100% {
       background-position: 0% 50%;
     }
     50% {
@@ -237,7 +279,11 @@ const HeroActions = styled.div`
 `;
 
 const CreateBlogButton = styled.button`
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.2),
+    rgba(255, 255, 255, 0.1)
+  );
   backdrop-filter: blur(10px);
   border: 2px solid rgba(255, 255, 255, 0.3);
   color: ${theme.colors.white};
@@ -261,7 +307,12 @@ const CreateBlogButton = styled.button`
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.3),
+      transparent
+    );
     transition: left 0.5s ease;
   }
 
@@ -269,7 +320,11 @@ const CreateBlogButton = styled.button`
     transform: translateY(-3px) scale(1.05);
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
     border-color: rgba(255, 255, 255, 0.5);
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.2));
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.3),
+      rgba(255, 255, 255, 0.2)
+    );
 
     &::before {
       left: 100%;
@@ -286,7 +341,11 @@ const CreateBlogButton = styled.button`
   }
 
   @keyframes bounce {
-    0%, 20%, 50%, 80%, 100% {
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
       transform: translateY(0);
     }
     40% {
@@ -328,7 +387,12 @@ const FilterSection = styled.div`
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.4),
+      transparent
+    );
     animation: shimmerEffect 3s infinite;
   }
 
@@ -383,9 +447,10 @@ const SearchInput = styled.input`
   &:focus {
     outline: none;
     border-color: ${theme.colors.primary};
-    box-shadow: 0 0 0 3px ${theme.colors.primary}20, 
-                0 8px 25px rgba(0, 0, 0, 0.1),
-                inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    box-shadow:
+      0 0 0 3px ${theme.colors.primary}20,
+      0 8px 25px rgba(0, 0, 0, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.6);
     transform: translateY(-2px);
     background: linear-gradient(145deg, #ffffff, #ffffff);
   }
@@ -510,15 +575,33 @@ const BlogCard = styled.article`
   backdrop-filter: blur(10px);
   animation: fadeInUp 0.6s ease-out both;
 
-  &:nth-child(1) { animation-delay: 0.1s; }
-  &:nth-child(2) { animation-delay: 0.2s; }
-  &:nth-child(3) { animation-delay: 0.3s; }
-  &:nth-child(4) { animation-delay: 0.4s; }
-  &:nth-child(5) { animation-delay: 0.5s; }
-  &:nth-child(6) { animation-delay: 0.6s; }
-  &:nth-child(7) { animation-delay: 0.7s; }
-  &:nth-child(8) { animation-delay: 0.8s; }
-  &:nth-child(9) { animation-delay: 0.9s; }
+  &:nth-child(1) {
+    animation-delay: 0.1s;
+  }
+  &:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+  &:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+  &:nth-child(4) {
+    animation-delay: 0.4s;
+  }
+  &:nth-child(5) {
+    animation-delay: 0.5s;
+  }
+  &:nth-child(6) {
+    animation-delay: 0.6s;
+  }
+  &:nth-child(7) {
+    animation-delay: 0.7s;
+  }
+  &:nth-child(8) {
+    animation-delay: 0.8s;
+  }
+  &:nth-child(9) {
+    animation-delay: 0.9s;
+  }
 
   @keyframes fadeInUp {
     0% {
@@ -538,7 +621,11 @@ const BlogCard = styled.article`
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.1),
+      rgba(255, 255, 255, 0.05)
+    );
     opacity: 0;
     transition: opacity 0.3s ease;
     z-index: 1;
@@ -547,9 +634,10 @@ const BlogCard = styled.article`
 
   &:hover {
     transform: translateY(-12px) scale(1.02);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1), 
-                0 8px 16px rgba(0, 0, 0, 0.08),
-                0 0 0 1px rgba(255, 255, 255, 0.05);
+    box-shadow:
+      0 20px 40px rgba(0, 0, 0, 0.1),
+      0 8px 16px rgba(0, 0, 0, 0.08),
+      0 0 0 1px rgba(255, 255, 255, 0.05);
     border-color: rgba(255, 255, 255, 0.3);
 
     &::before {
@@ -637,12 +725,15 @@ const FeaturedBadge = styled.div`
   letter-spacing: 0.5px;
   z-index: 3;
   box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
-  animation: pulse 2s infinite, slideInLeft 0.6s ease-out;
+  animation:
+    pulse 2s infinite,
+    slideInLeft 0.6s ease-out;
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.2);
 
   @keyframes pulse {
-    0%, 100% {
+    0%,
+    100% {
       transform: scale(1);
       box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
     }
@@ -836,7 +927,12 @@ const Tag = styled.span`
 `;
 
 const ReadMoreButton = styled.button`
-  background: linear-gradient(135deg, ${theme.colors.primary}, ${theme.colors.secondary}, #667eea);
+  background: linear-gradient(
+    135deg,
+    ${theme.colors.primary},
+    ${theme.colors.secondary},
+    #667eea
+  );
   color: ${theme.colors.white};
   border: none;
   padding: ${theme.spacing.sm} ${theme.spacing.lg};
@@ -859,15 +955,26 @@ const ReadMoreButton = styled.button`
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.3),
+      transparent
+    );
     transition: left 0.5s ease;
   }
 
   &:hover {
     transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4), 
-                0 4px 8px rgba(0, 0, 0, 0.1);
-    background: linear-gradient(135deg, #667eea, ${theme.colors.primary}, ${theme.colors.secondary});
+    box-shadow:
+      0 8px 20px rgba(102, 126, 234, 0.4),
+      0 4px 8px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(
+      135deg,
+      #667eea,
+      ${theme.colors.primary},
+      ${theme.colors.secondary}
+    );
 
     &::before {
       left: 100%;
@@ -932,8 +1039,12 @@ const LoadingSpinner = styled.div`
   }
 
   @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
   }
 `;
 
@@ -954,15 +1065,15 @@ const BlogsPage = () => {
     dispatch(loadBlogs());
   }, [dispatch]);
 
-  const handleSearchChange = (e) => {
+  const handleSearchChange = e => {
     dispatch(setSearchTerm(e.target.value));
   };
 
-  const handleCategoryChange = (e) => {
+  const handleCategoryChange = e => {
     dispatch(setSelectedCategory(e.target.value));
   };
 
-  const handleSortChange = (e) => {
+  const handleSortChange = e => {
     dispatch(setSortBy(e.target.value));
   };
 
@@ -974,15 +1085,15 @@ const BlogsPage = () => {
     dispatch(showCreateBlogModal());
   };
 
-  const formatDate = (dateString) => {
+  const formatDate = dateString => {
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
-      day: 'numeric'
+      day: 'numeric',
     });
   };
 
-  const getCategoryColor = (categoryName) => {
+  const getCategoryColor = categoryName => {
     const category = categories.find(cat => cat.name === categoryName);
     return category ? category.color : theme.colors.primary;
   };
@@ -1005,7 +1116,8 @@ const BlogsPage = () => {
         <PageHeader>
           <PageTitle>Our Blog</PageTitle>
           <PageSubtitle>
-            Discover insights, tips, and strategies to grow your business and stay ahead in the digital world
+            Discover insights, tips, and strategies to grow your business and
+            stay ahead in the digital world
           </PageSubtitle>
           <HeroActions>
             <CreateBlogButton onClick={handleCreateBlog}>
@@ -1039,10 +1151,7 @@ const BlogsPage = () => {
               ))}
             </CategoryFilter>
 
-            <SortFilter
-              value={sortBy}
-              onChange={handleSortChange}
-            >
+            <SortFilter value={sortBy} onChange={handleSortChange}>
               <option value="newest">Newest First</option>
               <option value="oldest">Oldest First</option>
               <option value="popular">Most Popular</option>
@@ -1080,7 +1189,10 @@ const BlogsPage = () => {
                 <BlogContent>
                   <BlogMeta>
                     <AuthorInfo>
-                      <AuthorAvatar src={blog.author.avatar} alt={blog.author.name} />
+                      <AuthorAvatar
+                        src={blog.author.avatar}
+                        alt={blog.author.name}
+                      />
                       <AuthorDetails>
                         <AuthorName>{blog.author.name}</AuthorName>
                         <AuthorBio>{blog.author.bio}</AuthorBio>
@@ -1109,14 +1221,21 @@ const BlogsPage = () => {
                       ))}
                     </BlogTags>
 
-                    <Link to={`/blog/${blog.id}`} style={{ textDecoration: 'none' }}>
-                      <ReadMoreButton>
-                        Read More
-                      </ReadMoreButton>
+                    <Link
+                      to={`/blog/${blog.id}`}
+                      style={{ textDecoration: 'none' }}
+                    >
+                      <ReadMoreButton>Read More</ReadMoreButton>
                     </Link>
                   </BlogFooter>
 
-                  <BlogStats style={{ marginTop: theme.spacing.md, paddingTop: theme.spacing.md, borderTop: `1px solid ${theme.colors.gray100}` }}>
+                  <BlogStats
+                    style={{
+                      marginTop: theme.spacing.md,
+                      paddingTop: theme.spacing.md,
+                      borderTop: `1px solid ${theme.colors.gray100}`,
+                    }}
+                  >
                     <StatItem>
                       <FaEye />
                       {blog.views.toLocaleString()} views

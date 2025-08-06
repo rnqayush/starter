@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-
 import styled from 'styled-components';
 import { GlobalStyle } from './styles/GlobalStyle';
 import ErrorBoundary from './components/ErrorBoundary';
-
 // User Components
 import PlatformHomePage from './components/user/PlatformHomePage';
 import PricingPage from './components/user/PricingPage';
@@ -37,22 +35,22 @@ import AutomobileCategoryLanding from './components/category/AutomobileCategoryL
 import BusinessCategoryLanding from './components/category/BusinessCategoryLanding';
 
 // Store Listing Pages
-import OwnerDashboard from './components/owner/OwnerDashboard';
-import RoomDetail from './hotel/pages/RoomDetail';
-import Booking from './hotel/pages/Booking';
-import BookingConfirmation from './hotel/pages/BookingConfirmation';
-import { NotificationProvider } from './ecommerce/components/NotificationSystem';
-import RoomList from './hotel/pages/RoomList';
-import ProductDetail from './ecommerce/pages/ProductDetail';
-import ProductList from './ecommerce/pages/ProductList';
-import SellerDashboard from './ecommerce/pages/SellerDashboard';
-import VendorPortfolio from './weddings/pages/VendorPortfolio';
-import VendorDashboard from './weddings/pages/VendorDashboard';
-import Vehicles from './automobiles/pages/Vehicles';
-import VehicleDetail from './automobiles/pages/VehicleDetail';
-import DealerDashboard from './automobiles/pages/DealerDashboard';
-import Wishlist from './automobiles/pages/Wishlist';
-import BuisnessAdminDashboard from './business/pages/BuisnessAdminDashboard';
+import OwnerDashboard from './modules/hotel/components/owner/OwnerDashboard';
+import RoomDetail from './modules/hotel/pages/RoomDetail';
+import Booking from './modules/hotel/pages/Booking';
+import BookingConfirmation from './modules/hotel/pages/BookingConfirmation';
+import { NotificationProvider } from './modules/ecommerce/components/NotificationSystem';
+import RoomList from './modules/hotel/pages/RoomList';
+import ProductDetail from './modules/ecommerce/pages/ProductDetail';
+import ProductList from './modules/ecommerce/pages/ProductList';
+import SellerDashboard from './modules/ecommerce/pages/SellerDashboard';
+import VendorPortfolio from './modules/weddings/pages/VendorPortfolio';
+import VendorDashboard from './modules/weddings/pages/VendorDashboard';
+import Vehicles from './modules/automobiles/pages/Vehicles';
+import VehicleDetail from './modules/automobiles/pages/VehicleDetail';
+import DealerDashboard from './modules/automobiles/pages/DealerDashboard';
+import Wishlist from './modules/automobiles/pages/Wishlist';
+import BuisnessAdminDashboard from './modules/business/pages/BuisnessAdminDashboard';
 
 const AppContainer = styled.div`
   min-height: 100vh;
