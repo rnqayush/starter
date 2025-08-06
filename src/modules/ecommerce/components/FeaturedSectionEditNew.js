@@ -16,7 +16,7 @@ import {
   updateSectionContent,
   selectVendor,
   selectProducts,
-} from '../../store/slices/ecommerceManagementSlice';
+} from '../../../store/slices/ecommerceManagementSlice';
 
 const SectionContainer = styled.div`
   background: ${theme.colors.white};
