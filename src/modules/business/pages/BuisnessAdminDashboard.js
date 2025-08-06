@@ -847,21 +847,23 @@ const BuisnessAdminDashboard = () => {
   const statisticsRef = useRef();
 
   useEffect(() => {
-    // Only update if the data actually changed (deep comparison)
+    // DISABLED: Real-time preview was causing infinite loops
+    // Only update the ref for tracking purposes
     if (editingBusiness && uiContentData &&
         JSON.stringify(uiContentData) !== JSON.stringify(uiContentRef.current)) {
       uiContentRef.current = uiContentData;
-      updateEditingBusinessInRedux();
+      // updateEditingBusinessInRedux(); // Disabled to prevent infinite loops
     }
   }, [uiContentData, editingBusiness]);
 
   // Auto-update Redux when statistics data changes for real-time preview
   useEffect(() => {
-    // Only update if the data actually changed (deep comparison)
+    // DISABLED: Real-time preview was causing infinite loops
+    // Only update the ref for tracking purposes
     if (editingBusiness && statisticsData &&
         JSON.stringify(statisticsData) !== JSON.stringify(statisticsRef.current)) {
       statisticsRef.current = statisticsData;
-      updateEditingBusinessInRedux();
+      // updateEditingBusinessInRedux(); // Disabled to prevent infinite loops
     }
   }, [statisticsData, editingBusiness]);
 
