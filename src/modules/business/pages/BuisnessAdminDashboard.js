@@ -51,7 +51,7 @@ import {
   FaCalendarAlt,
   FaRandom,
 } from 'react-icons/fa';
-import { theme } from '../../styles/GlobalStyle';
+import { theme } from '../../../styles/GlobalStyle';
 import { fetchBusinessData } from '../../utils/businessAPI';
 import { selectUser } from '../../store/slices/authSlice';
 import {
