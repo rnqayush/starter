@@ -11,8 +11,8 @@ import {
   FaTimes,
   FaBed,
 } from 'react-icons/fa';
-import { theme, media } from '../../styles/GlobalStyle';
-import { getHotelByIdOrSlug } from '../../DummyData';
+import { theme, media } from '../../../styles/GlobalStyle';
+import { getHotelByIdOrSlug } from '../../../DummyData';
 
 const NavbarContainer = styled.nav.withConfig({
   shouldForwardProp: prop => prop !== 'isScrolled',
