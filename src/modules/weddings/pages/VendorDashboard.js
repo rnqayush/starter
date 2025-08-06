@@ -873,17 +873,13 @@ const VendorDashboard = () => {
 
         console.log('Custom section visibility updated:', newVisibility);
 
-        // Immediately update Redux for real-time preview
-        if (editingVendor) {
-          setTimeout(() => {
-            dispatch(
-              updateVendorField({
-                field: 'customSectionVisibility',
-                value: newVisibility,
-              })
-            );
-          }, 0);
-        }
+        // DISABLED: Real-time updates were causing infinite loops
+        // if (editingVendor) {
+        //   dispatch(updateVendorField({
+        //     field: 'customSectionVisibility',
+        //     value: newVisibility,
+        //   }));
+        // }
 
         return newVisibility;
       });
