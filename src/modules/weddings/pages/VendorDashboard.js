@@ -893,16 +893,13 @@ const VendorDashboard = () => {
         console.log('Section visibility updated:', newVisibility);
 
         // Immediately update Redux for real-time preview
-        if (editingVendor) {
-          setTimeout(() => {
-            dispatch(
-              updateVendorField({
-                field: 'sectionVisibility',
-                value: newVisibility,
-              })
-            );
-          }, 0);
-        }
+        // DISABLED: Real-time updates were causing infinite loops
+        // if (editingVendor) {
+        //   dispatch(updateVendorField({
+        //     field: 'sectionVisibility',
+        //     value: newVisibility,
+        //   }));
+        // }
 
         return newVisibility;
       });
@@ -5049,7 +5046,7 @@ https://example.com/image2.jpg"
                 marginBottom: theme.spacing.lg,
               }}
             >
-              ⚠️
+              ⚠��
             </div>
             <h2
               style={{
