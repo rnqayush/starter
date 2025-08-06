@@ -890,8 +890,10 @@ const WeddingHome = () => {
     };
   }, [mobileMenuOpen]);
 
-  // Removed useEffect hooks that caused infinite loops
-  // initializeLocation and applyFilters are called directly where needed
+  // Initialize location on component mount only
+  useEffect(() => {
+    initializeLocation();
+  }, []); // Empty dependency array - runs only once on mount
 
   if (loading) {
     return (
