@@ -10,10 +10,10 @@ import {
   FaBarcode,
   FaTag,
 } from 'react-icons/fa';
-import { theme } from '../../styles/GlobalStyle';
+import { theme } from '../../../styles/GlobalStyle';
 import FormField from './shared/FormField';
-import { Button } from '../../components/shared/Button';
-import { ecommerceCategories } from '../../DummyData';
+import { Button } from '../../../components/shared/Button';
+import { ecommerceCategories } from '../../../DummyData';
 
 const FormContainer = styled.div`
   max-width: 1000px;

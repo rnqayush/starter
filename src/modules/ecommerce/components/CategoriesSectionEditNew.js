@@ -9,14 +9,14 @@ import {
   FaArrowUp,
   FaArrowDown,
 } from 'react-icons/fa';
-import { theme } from '../../styles/GlobalStyle';
+import { theme } from '../../../styles/GlobalStyle';
 import FormField from './shared/FormField';
 import {
   selectSectionById,
   updateSectionContent,
   selectVendor,
   selectCategories,
-} from '../../store/slices/ecommerceManagementSlice';
+} from '../../../store/slices/ecommerceManagementSlice';
 
 const SectionContainer = styled.div`
   background: ${theme.colors.white};
