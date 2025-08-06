@@ -15,7 +15,7 @@ import {
   FaCheckCircle,
   FaStar,
 } from 'react-icons/fa';
-import { theme, media } from '../../styles/GlobalStyle';
+import { theme, media } from '../../../styles/GlobalStyle';
 
 const Card = styled.div`
   background: ${theme.colors.white};
