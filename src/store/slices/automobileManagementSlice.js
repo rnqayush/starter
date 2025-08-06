@@ -522,4 +522,21 @@ export const selectFilteredVehicles = (state) => {
   return filtered;
 };
 
+// Legacy action aliases for backward compatibility
+export const updateSectionContent = updatePageSection;
+export const updatePageSections = reorderSections;
+export const publishPageContent = publishChanges;
+export const updateSectionVisibility = (sectionId, visible) => (dispatch) => {
+  dispatch(updatePageSection({ sectionId, updates: { visible } }));
+};
+export const addCustomSection = (sectionData) => (dispatch) => {
+  dispatch(updatePageSection({ sectionId: sectionData.id, updates: sectionData }));
+};
+export const removeCustomSection = (sectionId) => (dispatch) => {
+  dispatch(updatePageSection({ sectionId, updates: { visible: false } }));
+};
+export const discardTempChanges = discardChanges;
+export const saveAndPublishChanges = publishChanges;
+export const saveCompleteData = saveVehicleData;
+
 export default automobileManagementSlice.reducer;
