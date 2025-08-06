@@ -37,7 +37,7 @@ import AutomobileCategoryLanding from './components/category/AutomobileCategoryL
 import BusinessCategoryLanding from './components/category/BusinessCategoryLanding';
 
 // Store Listing Pages
-import OwnerDashboard from './components/owner/OwnerDashboard';
+import OwnerDashboard from './hotel/components/owner/OwnerDashboard';
 import RoomDetail from './hotel/pages/RoomDetail';
 import Booking from './hotel/pages/Booking';
 import BookingConfirmation from './hotel/pages/BookingConfirmation';
