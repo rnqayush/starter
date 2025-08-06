@@ -4,6 +4,12 @@
 import automobileData from './automobiles.json';
 import ecommerceData from './ecommerce.json';
 import businessData from './business.json';
+
+// Immediate test
+console.log('[DummyData] businessData loaded:', businessData);
+console.log('[DummyData] businessData.data:', businessData.data);
+console.log('[DummyData] businessData.data.portfolio:', businessData.data?.portfolio);
+console.log('[DummyData] businessData.data.portfolio.buisness:', businessData.data?.portfolio?.buisness);
 import * as WeddingData from '../utils/weddingAPI';
 import platformData from './platform.json';
 // Hotel data now comes from hotels.json via hotelAPI
