@@ -390,6 +390,7 @@ const BusinessWebsitePage = () => {
     }
 
     dispatch(setLoading(false));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [actualSlug, location.pathname]); // Removed dispatch to prevent infinite loops
 
   const handleBackToList = () => {
@@ -730,7 +731,7 @@ const BusinessWebsitePage = () => {
                         color: currentBusiness.primaryColor,
                       }}
                     >
-                      ����️
+                      ������
                     </div>
                     <div style={{ padding: '1.5rem' }}>
                       <div
