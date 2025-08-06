@@ -25,7 +25,7 @@ import {
   setSortBy,
   clearFilters,
   showCreateBlogModal,
-} from '../../store/slices/blogsSlice';
+} from '../../../store/slices/blogsSlice';
 
 const PageContainer = styled.div`
   min-height: 100vh;
