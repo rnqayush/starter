@@ -3,12 +3,12 @@ import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import styled, { createGlobalStyle } from 'styled-components';
 import { FaArrowRight, FaCar, FaHome, FaSpinner } from 'react-icons/fa';
-import { theme } from '../../styles/GlobalStyle';
+import { theme } from '../../../styles/GlobalStyle';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import VehicleCard from '../components/VehicleCard';
 import CategoryCard from '../components/CategoryCard';
-import BackToTop from '../../ecommerce/components/BackToTop';
+import BackToTop from '../ecommerce/components/BackToTop';
 import {
   fetchAutomobileData,
   selectVendor,
@@ -21,7 +21,7 @@ import {
   selectPageSections,
   selectHasUnsavedChanges,
   clearError,
-} from '../../store/slices/automobileManagementSlice';
+} from '../../../store/slices/automobileManagementSlice';
 
 // Dynamic theme styles that override global styles
 const DynamicGlobalStyle = createGlobalStyle`
