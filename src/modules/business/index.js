@@ -34,10 +34,20 @@ const BusinessModule = () => {
           const isFreelancerSlug =
             currentSlug === 'freelancer' || currentSlug === 'personal';
           setIsPersonalPortfolio(isFreelancerSlug);
-          console.log('[BusinessModule] Fallback detection:', {
+          console.log('[BusinessModule] Fallback detection used for:', {
             slug: currentSlug,
             isFreelancer: isFreelancerSlug,
           });
+
+          // Force the appropriate page to load even if businessInfo is null
+          if (currentSlug === 'salon' || currentSlug === 'business') {
+            setIsPersonalPortfolio(false);
+          } else if (
+            currentSlug === 'freelancer' ||
+            currentSlug === 'personal'
+          ) {
+            setIsPersonalPortfolio(true);
+          }
         }
       } catch (error) {
         console.error(
@@ -72,9 +82,16 @@ const BusinessModule = () => {
   }
 
   // Render different pages based on the business type detected from slug
+  console.log(
+    '[BusinessModule] Rendering with isPersonalPortfolio:',
+    isPersonalPortfolio
+  );
+
   if (isPersonalPortfolio) {
+    console.log('[BusinessModule] Rendering FreelancerPortfolioPage');
     return <FreelancerPortfolioPage />;
   } else {
+    console.log('[BusinessModule] Rendering BusinessWebsitePage');
     return <BusinessWebsitePage />;
   }
 };

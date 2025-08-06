@@ -829,6 +829,15 @@ const VendorDashboard = () => {
     backgroundColor: '#1f2937',
     textColor: '#ffffff',
   });
+
+  // Contact information state
+  const [contactData, setContactData] = useState({
+    email: '',
+    phone: '',
+    website: '',
+    address: '',
+  });
+
   const [showDeleteAccountModal, setShowDeleteAccountModal] = useState(false);
 
   // Track changes in a section
@@ -864,17 +873,13 @@ const VendorDashboard = () => {
 
         console.log('Custom section visibility updated:', newVisibility);
 
-        // Immediately update Redux for real-time preview
-        if (editingVendor) {
-          setTimeout(() => {
-            dispatch(
-              updateVendorField({
-                field: 'customSectionVisibility',
-                value: newVisibility,
-              })
-            );
-          }, 0);
-        }
+        // DISABLED: Real-time updates were causing infinite loops
+        // if (editingVendor) {
+        //   dispatch(updateVendorField({
+        //     field: 'customSectionVisibility',
+        //     value: newVisibility,
+        //   }));
+        // }
 
         return newVisibility;
       });
@@ -888,16 +893,13 @@ const VendorDashboard = () => {
         console.log('Section visibility updated:', newVisibility);
 
         // Immediately update Redux for real-time preview
-        if (editingVendor) {
-          setTimeout(() => {
-            dispatch(
-              updateVendorField({
-                field: 'sectionVisibility',
-                value: newVisibility,
-              })
-            );
-          }, 0);
-        }
+        // DISABLED: Real-time updates were causing infinite loops
+        // if (editingVendor) {
+        //   dispatch(updateVendorField({
+        //     field: 'sectionVisibility',
+        //     value: newVisibility,
+        //   }));
+        // }
 
         return newVisibility;
       });
@@ -1002,18 +1004,18 @@ const VendorDashboard = () => {
         socialLinks: footerData.socialLinks,
       };
 
-      // Update Redux with the current form data for real-time preview
-      Object.keys(updatedVendor).forEach(key => {
-        if (
-          key !== 'id' &&
-          JSON.stringify(updatedVendor[key]) !==
-            JSON.stringify(editingVendor[key])
-        ) {
-          dispatch(
-            updateVendorField({ field: key, value: updatedVendor[key] })
-          );
-        }
-      });
+      // DISABLED: Real-time preview updates were causing infinite loops
+      // Object.keys(updatedVendor).forEach(key => {
+      //   if (
+      //     key !== 'id' &&
+      //     JSON.stringify(updatedVendor[key]) !==
+      //       JSON.stringify(editingVendor[key])
+      //   ) {
+      //     dispatch(
+      //       updateVendorField({ field: key, value: updatedVendor[key] })
+      //     );
+      //   }
+      // });
 
       console.log(
         'Real-time preview: Updated editing vendor in Redux',
@@ -1126,6 +1128,14 @@ const VendorDashboard = () => {
         tagline: vendorData.tagline || '',
         image: vendorData.image || '',
         imageFile: null,
+      });
+
+      // Initialize contact data
+      setContactData({
+        email: vendorData.email || '',
+        phone: vendorData.phone || '',
+        website: vendorData.website || '',
+        address: vendorData.address || '',
       });
 
       setAboutUsData({
@@ -1414,13 +1424,14 @@ const VendorDashboard = () => {
 
       // Update the editing vendor in Redux for real-time preview
       dispatch(setEditingVendor(updatedVendor.id));
-      Object.keys(updatedVendor).forEach(key => {
-        if (key !== 'id') {
-          dispatch(
-            updateVendorField({ field: key, value: updatedVendor[key] })
-          );
-        }
-      });
+      // DISABLED: Multiple dispatch calls were causing infinite loops
+      // Object.keys(updatedVendor).forEach(key => {
+      //   if (key !== 'id') {
+      //     dispatch(
+      //       updateVendorField({ field: key, value: updatedVendor[key] })
+      //     );
+      //   }
+      // });
 
       setSaved(true);
       setChangedSections(new Set());
@@ -1732,8 +1743,8 @@ const VendorDashboard = () => {
           [field]: e.target.result,
           [`${field}File`]: file,
         }));
-        // Trigger real-time updates for other image uploads
-        setTimeout(() => updateEditingVendorInRedux(), 100);
+        // DISABLED: Real-time updates were causing infinite loops
+        // setTimeout(() => updateEditingVendorInRedux(), 100);
       }
     };
     reader.readAsDataURL(file);
@@ -1763,8 +1774,8 @@ const VendorDashboard = () => {
     );
     // Track section change to enable save button
     trackSectionChange('services-offered');
-    // Automatically trigger real-time updates
-    setTimeout(() => updateEditingVendorInRedux(), 100);
+    // DISABLED: Real-time updates were causing infinite loops
+    // setTimeout(() => updateEditingVendorInRedux(), 100);
   };
 
   const deleteService = id => {
@@ -1794,8 +1805,8 @@ const VendorDashboard = () => {
     setRecentWorkData(prev =>
       prev.map(work => (work.id === id ? { ...work, [field]: value } : work))
     );
-    // Automatically trigger real-time updates
-    setTimeout(() => updateEditingVendorInRedux(), 100);
+    // DISABLED: Real-time updates were causing infinite loops
+    // setTimeout(() => updateEditingVendorInRedux(), 100);
   };
 
   const deleteRecentWork = id => {
@@ -1935,8 +1946,8 @@ const VendorDashboard = () => {
     });
     trackSectionChange('custom-sections');
 
-    // Automatically trigger real-time updates
-    setTimeout(() => updateEditingVendorInRedux(), 100);
+    // DISABLED: Real-time updates were causing infinite loops
+    // setTimeout(() => updateEditingVendorInRedux(), 100);
   };
 
   const addCustomSectionCard = () => {
@@ -1991,8 +2002,8 @@ const VendorDashboard = () => {
         },
       },
     }));
-    // Automatically trigger real-time updates
-    setTimeout(() => updateEditingVendorInRedux(), 100);
+    // DISABLED: Real-time updates were causing infinite loops
+    // setTimeout(() => updateEditingVendorInRedux(), 100);
   };
 
   const removeGalleryImage = (category, imageIndex) => {
@@ -2008,8 +2019,8 @@ const VendorDashboard = () => {
         },
       },
     }));
-    // Automatically trigger real-time updates
-    setTimeout(() => updateEditingVendorInRedux(), 100);
+    // DISABLED: Real-time updates were causing infinite loops
+    // setTimeout(() => updateEditingVendorInRedux(), 100);
   };
 
   const renderContent = () => {
@@ -3603,8 +3614,13 @@ const VendorDashboard = () => {
                   <FormLabel>Email Address</FormLabel>
                   <FormInput
                     type="email"
-                    value={vendor?.email || ''}
-                    onChange={e => trackSectionChange('settings')}
+                    value={contactData.email}
+                    onChange={e => {
+                      const newEmail = e.target.value;
+                      setContactData(prev => ({ ...prev, email: newEmail }));
+                      setVendor(prev => ({ ...prev, email: newEmail }));
+                      trackSectionChange('settings');
+                    }}
                     placeholder="business@example.com"
                   />
                 </FormGroup>
@@ -3612,8 +3628,13 @@ const VendorDashboard = () => {
                   <FormLabel>Phone Number</FormLabel>
                   <FormInput
                     type="tel"
-                    value={vendor?.phone || ''}
-                    onChange={e => trackSectionChange('settings')}
+                    value={contactData.phone}
+                    onChange={e => {
+                      const newPhone = e.target.value;
+                      setContactData(prev => ({ ...prev, phone: newPhone }));
+                      setVendor(prev => ({ ...prev, phone: newPhone }));
+                      trackSectionChange('settings');
+                    }}
                     placeholder="+1 (555) 123-4567"
                   />
                 </FormGroup>
@@ -3621,16 +3642,32 @@ const VendorDashboard = () => {
                   <FormLabel>Website URL</FormLabel>
                   <FormInput
                     type="url"
-                    value={vendor?.website || ''}
-                    onChange={e => trackSectionChange('settings')}
+                    value={contactData.website}
+                    onChange={e => {
+                      const newWebsite = e.target.value;
+                      setContactData(prev => ({
+                        ...prev,
+                        website: newWebsite,
+                      }));
+                      setVendor(prev => ({ ...prev, website: newWebsite }));
+                      trackSectionChange('settings');
+                    }}
                     placeholder="https://example.com"
                   />
                 </FormGroup>
                 <FormGroup style={{ gridColumn: '1 / -1' }}>
                   <FormLabel>Business Address</FormLabel>
                   <FormTextarea
-                    value={vendor?.address || ''}
-                    onChange={e => trackSectionChange('settings')}
+                    value={contactData.address}
+                    onChange={e => {
+                      const newAddress = e.target.value;
+                      setContactData(prev => ({
+                        ...prev,
+                        address: newAddress,
+                      }));
+                      setVendor(prev => ({ ...prev, address: newAddress }));
+                      trackSectionChange('settings');
+                    }}
                     placeholder="Enter your complete business address..."
                     rows={3}
                   />
@@ -5010,7 +5047,7 @@ https://example.com/image2.jpg"
                 marginBottom: theme.spacing.lg,
               }}
             >
-              ⚠️
+              ⚠��
             </div>
             <h2
               style={{

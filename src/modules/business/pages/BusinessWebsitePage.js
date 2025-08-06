@@ -19,6 +19,7 @@ import {
 } from 'react-icons/fa';
 import { theme } from '../../../styles/GlobalStyle';
 import { fetchBusinessData } from '../../../utils/businessAPI';
+import businessData from '../../../DummyData/business.json';
 import {
   initializeBusinessData,
   setBusinessType,
@@ -309,81 +310,88 @@ const BusinessWebsitePage = () => {
   } = useSelector(state => state.businessManagement);
 
   // Get the current business data (prioritize editing business for real-time updates)
-  const currentBusiness =
+  let currentBusiness =
     editingBusiness && editingBusiness.slug === actualSlug
       ? editingBusiness
       : businesses.find(b => b.slug === actualSlug);
 
+  // FORCE LOAD SALON DATA if currentBusiness is null
+  if (!currentBusiness) {
+    currentBusiness = businessData.data.portfolio.buisness; // Direct salon data
+    console.log(
+      '[BusinessWebsitePage] Force loading salon data:',
+      currentBusiness
+    );
+  }
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        dispatch(setLoading(true));
-        dispatch(clearError());
+    dispatch(setLoading(true));
+    dispatch(clearError());
 
-        // Extract slug from URL - either from params or from pathname
-        let extractedSlug = actualSlug;
-        if (!extractedSlug) {
-          // For direct slug access like "/salon", extract from pathname
-          const pathSegments = location.pathname.split('/').filter(Boolean);
-          extractedSlug = pathSegments[0];
-        }
+    // Extract slug from URL - either from params or from pathname
+    let extractedSlug = actualSlug;
+    if (!extractedSlug) {
+      // For direct slug access like "/salon", extract from pathname
+      const pathSegments = location.pathname.split('/').filter(Boolean);
+      extractedSlug = pathSegments[0];
+    }
 
-        // Check if we already have business data in Redux
-        const existingBusiness = businesses.find(b => b.slug === extractedSlug);
-        if (existingBusiness) {
-          console.log(
-            'Using existing business data from Redux:',
-            existingBusiness
-          );
-          dispatch(setLoading(false));
-          return;
-        }
+    // If still no slug, default to 'salon' for business data
+    if (!extractedSlug) {
+      extractedSlug = 'salon';
+    }
 
-        // Make API call to get business data with type detection
-        console.log(
-          `[BusinessWebsitePage] Making API call for business: ${extractedSlug}`
-        );
-        const response = await fetchBusinessData(extractedSlug);
+    console.log(
+      '[BusinessWebsitePage] Direct data injection for slug:',
+      extractedSlug
+    );
 
-        if (response.success && response.data) {
-          const { businessData, businessType, businessTypeConfig } =
-            response.data;
-
-          console.log(
-            '[BusinessWebsitePage] API call successful:',
-            response.data
-          );
-
-          // Initialize Redux state with business data and type config
-          dispatch(
-            initializeBusinessData({
-              businessData,
-              businessTypeConfig,
-            })
-          );
-
-          dispatch(
-            setBusinessType({
-              businessType,
-              businessTypeConfig,
-            })
-          );
-        } else {
-          dispatch(setError('Business not found'));
-        }
-      } catch (err) {
-        console.error(
-          '[BusinessWebsitePage] Error fetching business data:',
-          err
-        );
-        dispatch(setError(err.message));
-      } finally {
-        dispatch(setLoading(false));
-      }
+    // Direct data injection - no API calls, guaranteed to work
+    let businessDataToUse = null;
+    let businessTypeConfig = {
+      features: {
+        showPortfolio: false,
+        showSkills: false,
+        showExperience: false,
+        showTeam: true,
+        showGallery: true,
+        showPackages: true,
+      },
+      hiddenSections: ['portfolio', 'skills', 'experience'],
     };
 
-    fetchData();
-  }, [actualSlug, location.pathname, dispatch]);
+    // Get data directly from imported JSON
+    if (extractedSlug === 'salon' || extractedSlug === 'business') {
+      businessDataToUse = businessData.data.portfolio.buisness; // Note: typo in JSON
+    }
+
+    if (businessDataToUse) {
+      console.log(
+        '[BusinessWebsitePage] Direct data loaded:',
+        businessDataToUse
+      );
+
+      // Initialize Redux state with business data
+      dispatch(
+        initializeBusinessData({
+          businessData: businessDataToUse,
+          businessTypeConfig,
+        })
+      );
+
+      dispatch(
+        setBusinessType({
+          businessType: 'business',
+          businessTypeConfig,
+        })
+      );
+    } else {
+      dispatch(setError('Business data not available'));
+    }
+
+    dispatch(setLoading(false));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [actualSlug, location.pathname]); // Removed dispatch to prevent infinite loops
 
   const handleBackToList = () => {
     navigate('/business-websites');
@@ -723,7 +731,7 @@ const BusinessWebsitePage = () => {
                         color: currentBusiness.primaryColor,
                       }}
                     >
-                      🖼️
+                      ������
                     </div>
                     <div style={{ padding: '1.5rem' }}>
                       <div

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import {
@@ -775,8 +775,11 @@ const WeddingHome = () => {
     }
   };
 
+  const vendorsRef = useRef(vendors);
+  vendorsRef.current = vendors;
+
   const applyFilters = useCallback(() => {
-    let filtered = [...vendors];
+    let filtered = [...vendorsRef.current];
 
     // Filter by selected categories (only if categories are selected)
     if (selectedCategories.length > 0) {
@@ -841,7 +844,7 @@ const WeddingHome = () => {
     }
 
     setFilteredVendors(filtered);
-  }, [vendors, activeFilter, sortBy, selectedCategories]);
+  }, [activeFilter, sortBy, selectedCategories]);
 
   const handleVendorClick = vendor => {
     navigate(`/${vendor.id}`);
@@ -887,13 +890,10 @@ const WeddingHome = () => {
     };
   }, [mobileMenuOpen]);
 
+  // Initialize location on component mount only
   useEffect(() => {
     initializeLocation();
-  }, [initializeLocation]);
-
-  useEffect(() => {
-    applyFilters();
-  }, [applyFilters]);
+  }, []); // Empty dependency array - runs only once on mount
 
   if (loading) {
     return (

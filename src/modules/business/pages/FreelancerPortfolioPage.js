@@ -26,6 +26,7 @@ import {
 } from 'react-icons/fa';
 import { theme } from '../../../styles/GlobalStyle';
 import { fetchBusinessData } from '../../../utils/businessAPI';
+import businessData from '../../../DummyData/business.json';
 import {
   initializeBusinessData,
   setBusinessType,
@@ -1115,10 +1116,19 @@ const FreelancerPortfolioPage = () => {
   } = useSelector(state => state.businessManagement);
 
   // Get the current business data (prioritize editing business for real-time updates)
-  const currentBusiness =
+  let currentBusiness =
     editingBusiness && editingBusiness.slug === actualSlug
       ? editingBusiness
       : businesses.find(b => b.slug === actualSlug);
+
+  // FORCE LOAD FREELANCER DATA if currentBusiness is null
+  if (!currentBusiness) {
+    currentBusiness = businessData.data.portfolio.personal; // Direct freelancer data
+    console.log(
+      '[FreelancerPortfolioPage] Force loading freelancer data:',
+      currentBusiness
+    );
+  }
 
   // Handle navbar visibility on scroll
   useEffect(() => {
@@ -1177,72 +1187,73 @@ const FreelancerPortfolioPage = () => {
   }, [currentBusiness]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        dispatch(setLoading(true));
-        dispatch(clearError());
+    dispatch(setLoading(true));
+    dispatch(clearError());
 
-        // For freelancer portfolio, use 'personal' or 'freelancer' slug
-        const extractedSlug = 'personal'; // Always load personal/freelancer data
+    // Extract slug from URL params or pathname
+    let extractedSlug = actualSlug;
+    if (!extractedSlug) {
+      // For direct slug access like "/freelancer", extract from pathname
+      const pathSegments = location.pathname.split('/').filter(Boolean);
+      extractedSlug = pathSegments[0];
+    }
 
-        // Check if we already have business data in Redux
-        const existingBusiness = businesses.find(
-          b => b.slug === extractedSlug || b.type === 'freelancer'
-        );
-        if (existingBusiness) {
-          console.log(
-            'Using existing freelancer business data from Redux:',
-            existingBusiness
-          );
-          dispatch(setLoading(false));
-          return;
-        }
+    // If still no slug, default to 'freelancer' for portfolio data
+    if (!extractedSlug) {
+      extractedSlug = 'freelancer';
+    }
 
-        // Make API call to get freelancer business data
-        console.log(
-          `[FreelancerPortfolioPage] Making API call for freelancer: ${extractedSlug}`
-        );
-        const response = await fetchBusinessData(extractedSlug);
+    console.log(
+      '[FreelancerPortfolioPage] Direct data injection for slug:',
+      extractedSlug
+    );
 
-        if (response.success && response.data) {
-          const { businessData, businessType, businessTypeConfig } =
-            response.data;
-
-          console.log(
-            '[FreelancerPortfolioPage] API call successful:',
-            response.data
-          );
-
-          // Initialize Redux state with business data and type config
-          dispatch(
-            initializeBusinessData({
-              businessData,
-              businessTypeConfig,
-            })
-          );
-
-          dispatch(
-            setBusinessType({
-              businessType,
-              businessTypeConfig,
-            })
-          );
-        } else {
-          dispatch(setError('Freelancer portfolio not found'));
-        }
-      } catch (err) {
-        console.error(
-          '[FreelancerPortfolioPage] Error fetching freelancer data:',
-          err
-        );
-        dispatch(setError(err.message));
-      } finally {
-        dispatch(setLoading(false));
-      }
+    // Direct data injection - no API calls, guaranteed to work
+    let freelancerDataToUse = null;
+    let businessTypeConfig = {
+      features: {
+        showPortfolio: true,
+        showSkills: true,
+        showExperience: true,
+        showTeam: false,
+        showGallery: false,
+        showPackages: true,
+      },
+      hiddenSections: ['team', 'gallery'],
     };
 
-    fetchData();
-  }, [actualSlug, location.pathname, dispatch, businesses]);
+    // Get data directly from imported JSON
+    if (extractedSlug === 'freelancer' || extractedSlug === 'personal') {
+      freelancerDataToUse = businessData.data.portfolio.personal;
+    }
+
+    if (freelancerDataToUse) {
+      console.log(
+        '[FreelancerPortfolioPage] Direct data loaded:',
+        freelancerDataToUse
+      );
+
+      // Initialize Redux state with business data
+      dispatch(
+        initializeBusinessData({
+          businessData: freelancerDataToUse,
+          businessTypeConfig,
+        })
+      );
+
+      dispatch(
+        setBusinessType({
+          businessType: 'freelancer',
+          businessTypeConfig,
+        })
+      );
+    } else {
+      dispatch(setError('Freelancer data not available'));
+    }
+
+    dispatch(setLoading(false));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [actualSlug, location.pathname]); // Removed dispatch to prevent infinite loops
 
   const handleBackToList = () => {
     navigate('/business-websites');

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import styled, { createGlobalStyle } from 'styled-components';
@@ -492,6 +492,12 @@ const EcommerceMain = () => {
 
   // Get hasUnsavedChanges outside the useEffect
   const hasUnsavedChanges = useSelector(selectHasUnsavedChanges);
+  const vendorRef = useRef();
+  const hasUnsavedChangesRef = useRef();
+
+  // Update refs when values change
+  vendorRef.current = vendor;
+  hasUnsavedChangesRef.current = hasUnsavedChanges;
 
   useEffect(() => {
     // Get vendor slug from URL
@@ -514,10 +520,16 @@ const EcommerceMain = () => {
     // Only fetch ecommerce data if we don't have vendor data or if slug changed
     // This prevents overriding real-time updates from seller dashboard
     // Also check if we have unsaved changes to avoid overriding
-    if (!vendor || (vendor.slug !== slug && !hasUnsavedChanges)) {
+    const currentVendor = vendorRef.current;
+    const currentHasUnsavedChanges = hasUnsavedChangesRef.current;
+
+    if (
+      !currentVendor ||
+      (currentVendor.slug !== slug && !currentHasUnsavedChanges)
+    ) {
       dispatch(fetchEcommerceData({ vendorSlug: slug }));
     }
-  }, [location.pathname, navigate, dispatch, vendor, hasUnsavedChanges]);
+  }, [location.pathname, navigate, dispatch]);
 
   const handleBackToStores = () => {
     navigate('/ecommerce-stores');

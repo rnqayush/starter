@@ -286,16 +286,38 @@ const CategoryLanding = ({
 }) => {
   const navigate = useNavigate();
 
+  // Props received for CategoryLanding
+
   const handleBack = () => {
     navigate('/');
   };
 
   const handleDemoClick = () => {
-    navigate(demoUrl);
+    console.log(
+      '[CategoryLanding] Demo button clicked, navigating to:',
+      demoUrl
+    );
+    try {
+      navigate(demoUrl);
+    } catch (error) {
+      console.error('[CategoryLanding] Navigation error:', error);
+      // Fallback to direct window navigation
+      window.location.href = demoUrl;
+    }
   };
 
   const handleSecondaryDemoClick = () => {
-    navigate(secondaryDemoUrl);
+    console.log(
+      '[CategoryLanding] Secondary demo button clicked, navigating to:',
+      secondaryDemoUrl
+    );
+    try {
+      navigate(secondaryDemoUrl);
+    } catch (error) {
+      console.error('[CategoryLanding] Secondary navigation error:', error);
+      // Fallback to direct window navigation
+      window.location.href = secondaryDemoUrl;
+    }
   };
 
   return (
@@ -339,7 +361,11 @@ const CategoryLanding = ({
             with our professional templates and features.
           </CTADescription>
           <DemoButtonsContainer>
-            <DemoButton gradient={gradient} onClick={handleDemoClick}>
+            <DemoButton
+              gradient={gradient}
+              onClick={handleDemoClick}
+              style={{ cursor: 'pointer', pointerEvents: 'auto' }}
+            >
               {demoButtonText}
               <FaExternalLinkAlt />
             </DemoButton>
@@ -347,6 +373,7 @@ const CategoryLanding = ({
               <SecondaryDemoButton
                 gradient={gradient}
                 onClick={handleSecondaryDemoClick}
+                style={{ cursor: 'pointer', pointerEvents: 'auto' }}
               >
                 {secondaryDemoButtonText}
                 <FaExternalLinkAlt />

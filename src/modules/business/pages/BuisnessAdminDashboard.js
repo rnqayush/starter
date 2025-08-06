@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
@@ -822,8 +822,8 @@ const BuisnessAdminDashboard = () => {
     // Mark changes as unsaved in Redux
     dispatch(markUnsavedChanges());
 
-    // Immediately update Redux editing business for real-time preview
-    updateEditingBusinessInRedux();
+    // DISABLED: Real-time preview was causing infinite loops
+    // updateEditingBusinessInRedux();
   };
 
   // Handle section visibility toggle - using Redux action
@@ -833,79 +833,32 @@ const BuisnessAdminDashboard = () => {
   };
 
   // Helper function to immediately update Redux editing business
-  const updateEditingBusinessInRedux = () => {
-    if (!editingBusiness) return;
-
-    try {
-      // Create updated business object with current form data
-      const updatedBusiness = {
-        ...editingBusiness,
-        logo: heroData.logo, // Update logo from hero data
-        navigation: {
-          ...editingBusiness.navigation,
-          logo: heroData.logo, // Also update navigation logo
-        },
-        hero: heroData,
-        about: {
-          ...aboutData,
-          stats: statisticsData,
-        },
-        services: servicesData,
-        team: teamData,
-        portfolio: portfolioData,
-        skills: skillsData,
-        experience: experienceData,
-        gallery: galleryData,
-        packages: packagesData,
-        testimonials: testimonialsData,
-        reviews: reviewsData,
-        faq: faqData,
-        contact: contactData,
-        businessHours: businessHoursData,
-        customSections: customSectionsData,
-        sectionOrder: sectionOrderData,
-        sectionVisibility: sectionVisibility,
-        ui: uiContentData,
-      };
-
-      // Update Redux with the current form data for real-time preview
-      Object.keys(updatedBusiness).forEach(key => {
-        if (
-          key !== 'id' &&
-          JSON.stringify(updatedBusiness[key]) !==
-            JSON.stringify(editingBusiness[key])
-        ) {
-          dispatch(
-            updateBusinessField({ field: key, value: updatedBusiness[key] })
-          );
-        }
-      });
-
-      console.log(
-        'Real-time preview: Updated editing business in Redux',
-        updatedBusiness
-      );
-    } catch (error) {
-      console.error(
-        'Error updating editing business for real-time preview:',
-        error
-      );
-    }
-  };
+  // DISABLED: This function was causing infinite loops due to circular dependencies
+  // Real-time preview is now handled only on explicit save actions
+  const updateEditingBusinessInRedux = useCallback(() => {
+    // Disabled to prevent infinite loops
+    console.log('Real-time preview disabled to prevent infinite loops');
+    return;
+  }, []);
 
   // Auto-update Redux when UI content changes for real-time preview
-  useEffect(() => {
-    if (editingBusiness && uiContentData) {
-      updateEditingBusinessInRedux();
-    }
-  }, [uiContentData]);
+  // Using useRef to prevent infinite loops
+  const uiContentRef = useRef();
+  const statisticsRef = useRef();
 
-  // Auto-update Redux when statistics data changes for real-time preview
-  useEffect(() => {
-    if (editingBusiness && statisticsData) {
-      updateEditingBusinessInRedux();
-    }
-  }, [statisticsData]);
+  // DISABLED: Real-time preview was causing infinite loops and expensive JSON.stringify
+  // useEffect(() => {
+  //   if (editingBusiness && uiContentData) {
+  //     uiContentRef.current = uiContentData;
+  //   }
+  // }, [uiContentData, editingBusiness]);
+
+  // DISABLED: Real-time preview was causing infinite loops and expensive JSON.stringify
+  // useEffect(() => {
+  //   if (editingBusiness && statisticsData) {
+  //     statisticsRef.current = statisticsData;
+  //   }
+  // }, [statisticsData, editingBusiness]);
 
   const navigationItems = [
     {
@@ -1230,8 +1183,8 @@ const BuisnessAdminDashboard = () => {
     console.log('handleSaveChanges called');
 
     try {
-      // Update editing business with current form data for real-time preview
-      updateEditingBusinessInRedux();
+      // DISABLED: Real-time preview was causing infinite loops
+      // updateEditingBusinessInRedux();
 
       setSaved(true);
       setChangedSections(new Set());

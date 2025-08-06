@@ -1,10 +1,18 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import ecommerceData from '../../DummyData/ecommerce.json';
-import { ecommerceAPI } from '../../utils/ecommerceAPI';
+import {
+  createEditingState,
+  createFilterState,
+  createPaginationState,
+  createEntityReducers,
+  createEditingReducers,
+  createFilterReducers,
+  createPaginationReducers,
+} from '../utils/sliceUtils';
 
-// Async thunks for API operations
+// Async thunks
 export const fetchEcommerceData = createAsyncThunk(
-  'ecommerceManagement/fetchData',
+  'ecommerce/fetchData',
   async (
     { vendorSlug, forceRefresh = false },
     { getState, rejectWithValue }
@@ -12,17 +20,13 @@ export const fetchEcommerceData = createAsyncThunk(
     try {
       const state = getState().ecommerceManagement;
 
-      // If we already have data for this vendor and not forcing refresh, return current data
+      // Return cached data if available and not forcing refresh
       if (state.vendor?.slug === vendorSlug && !forceRefresh) {
         return state;
       }
 
-      // For demo purposes, simulate API call with static data
+      // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 500));
-
-      // In a real app, this would fetch from API
-      // const response = await ecommerceAPI.getVendorData(vendorSlug);
-
       return ecommerceData;
     } catch (error) {
       return rejectWithValue(error.message || 'Failed to fetch ecommerce data');
@@ -31,21 +35,15 @@ export const fetchEcommerceData = createAsyncThunk(
 );
 
 export const saveEcommerceData = createAsyncThunk(
-  'ecommerceManagement/saveData',
-  async (dataToSave, { getState, rejectWithValue }) => {
+  'ecommerce/saveData',
+  async (dataToSave, { rejectWithValue }) => {
     try {
-      const state = getState().ecommerceManagement;
-
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
-
-      // In a real app, this would save to API
-      // const response = await ecommerceAPI.saveVendorData(state.vendor.slug, dataToSave);
 
       return {
         ...dataToSave,
         lastSaved: new Date().toISOString(),
-        isDataPersisted: true,
       };
     } catch (error) {
       return rejectWithValue(error.message || 'Failed to save ecommerce data');
@@ -54,20 +52,14 @@ export const saveEcommerceData = createAsyncThunk(
 );
 
 export const publishChanges = createAsyncThunk(
-  'ecommerceManagement/publishChanges',
-  async (_, { getState, rejectWithValue }) => {
+  'ecommerce/publishChanges',
+  async (_, { rejectWithValue }) => {
     try {
-      const state = getState().ecommerceManagement;
-
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 800));
 
-      // In a real app, this would publish to API
-      // const response = await ecommerceAPI.publishChanges(state.vendor.slug);
-
       return {
         lastPublished: new Date().toISOString(),
-        isDataPersisted: true,
       };
     } catch (error) {
       return rejectWithValue(error.message || 'Failed to publish changes');
@@ -77,10 +69,9 @@ export const publishChanges = createAsyncThunk(
 
 // Wishlist operations
 export const addToWishlist = createAsyncThunk(
-  'ecommerceManagement/addToWishlist',
-  async (productId, { getState, rejectWithValue }) => {
+  'ecommerce/addToWishlist',
+  async (productId, { rejectWithValue }) => {
     try {
-      // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 200));
       return productId;
     } catch (error) {
@@ -90,10 +81,9 @@ export const addToWishlist = createAsyncThunk(
 );
 
 export const removeFromWishlist = createAsyncThunk(
-  'ecommerceManagement/removeFromWishlist',
-  async (productId, { getState, rejectWithValue }) => {
+  'ecommerce/removeFromWishlist',
+  async (productId, { rejectWithValue }) => {
     try {
-      // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 200));
       return productId;
     } catch (error) {
@@ -108,6 +98,7 @@ const initialState = {
   vendor: null,
   categories: [],
   products: [],
+  selectedProduct: null,
 
   // Page content management
   pageContent: {
@@ -116,36 +107,29 @@ const initialState = {
     lastPublished: null,
   },
 
-  // Temporary changes tracking
-  tempChanges: {},
-  hasUnsavedChanges: false,
-  isDataPersisted: true,
+  // Editing state
+  ...createEditingState(),
 
   // User interactions
   wishlist: [],
   recentlyViewed: [],
 
-  // UI state
-  filters: {
+  // Filters and pagination
+  filters: createFilterState({
     category: null,
     priceRange: [0, 1000],
     availability: 'all',
-    sortBy: 'featured',
-  },
-  pagination: {
-    currentPage: 1,
-    itemsPerPage: 12,
-    totalItems: 0,
-    totalPages: 0,
-  },
+  }),
+  pagination: createPaginationState(),
 
-  // API state
+  // Loading states
   loading: false,
-  error: null,
   saving: false,
   publishing: false,
+  error: null,
+  success: false,
 
-  // Analytics
+  // Analytics and orders
   analytics: null,
   orders: [],
   enquiries: [],
@@ -155,29 +139,109 @@ const ecommerceManagementSlice = createSlice({
   name: 'ecommerceManagement',
   initialState,
   reducers: {
-    // Clear error
-    clearError: state => {
-      state.error = null;
+    // Standard reducers
+    ...createEntityReducers(),
+    ...createEditingReducers(),
+    ...createFilterReducers(),
+    ...createPaginationReducers(),
+
+    // Core data management
+    setVendor: (state, action) => {
+      state.vendor = action.payload;
     },
 
-    // Section management
-    updateSection: (state, action) => {
+    setCategories: (state, action) => {
+      state.categories = action.payload;
+    },
+
+    setProducts: (state, action) => {
+      state.products = action.payload;
+    },
+
+    selectProduct: (state, action) => {
+      const id = action.payload;
+      state.selectedProduct = state.products.find(p => p.id === id) || null;
+    },
+
+    // Product management
+    addProduct: (state, action) => {
+      const newProduct = {
+        ...action.payload,
+        id: Date.now(),
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+      state.products.push(newProduct);
+      state.hasChanges = true;
+    },
+
+    updateProduct: (state, action) => {
+      const { id, updates } = action.payload;
+      const index = state.products.findIndex(p => p.id === id);
+
+      if (index !== -1) {
+        state.products[index] = {
+          ...state.products[index],
+          ...updates,
+          updatedAt: new Date().toISOString(),
+        };
+        state.hasChanges = true;
+      }
+    },
+
+    deleteProduct: (state, action) => {
+      const id = action.payload;
+      state.products = state.products.filter(p => p.id !== id);
+      state.hasChanges = true;
+    },
+
+    // Category management
+    addCategory: (state, action) => {
+      const newCategory = {
+        ...action.payload,
+        id: Date.now(),
+      };
+      state.categories.push(newCategory);
+      state.hasChanges = true;
+    },
+
+    updateCategory: (state, action) => {
+      const { id, updates } = action.payload;
+      const index = state.categories.findIndex(c => c.id === id);
+
+      if (index !== -1) {
+        state.categories[index] = { ...state.categories[index], ...updates };
+        state.hasChanges = true;
+      }
+    },
+
+    deleteCategory: (state, action) => {
+      const id = action.payload;
+      state.categories = state.categories.filter(c => c.id !== id);
+      state.hasChanges = true;
+    },
+
+    // Vendor management
+    updateVendorInfo: (state, action) => {
+      if (state.vendor) {
+        state.vendor = { ...state.vendor, ...action.payload };
+        state.hasChanges = true;
+      }
+    },
+
+    // Page content management
+    updatePageSection: (state, action) => {
       const { sectionId, updates } = action.payload;
       const sectionIndex = state.pageContent.sections.findIndex(
         s => s.id === sectionId
       );
 
       if (sectionIndex !== -1) {
-        // Update the section
-        Object.assign(state.pageContent.sections[sectionIndex], updates);
-
-        // Track changes
-        if (!state.tempChanges.sections) {
-          state.tempChanges.sections = {};
-        }
-        state.tempChanges.sections[sectionId] = updates;
-        state.hasUnsavedChanges = true;
-        state.isDataPersisted = false;
+        state.pageContent.sections[sectionIndex] = {
+          ...state.pageContent.sections[sectionIndex],
+          ...updates,
+        };
+        state.hasChanges = true;
       }
     },
 
@@ -188,29 +252,17 @@ const ecommerceManagementSlice = createSlice({
       );
 
       if (sectionIndex !== -1) {
-        // Update the section content
         if (!state.pageContent.sections[sectionIndex].content) {
           state.pageContent.sections[sectionIndex].content = {};
         }
+
         Object.assign(
           state.pageContent.sections[sectionIndex].content,
           contentUpdates
         );
-
-        // Also update root level properties for backward compatibility
         Object.assign(state.pageContent.sections[sectionIndex], contentUpdates);
 
-        // Track changes
-        if (!state.tempChanges.sections) {
-          state.tempChanges.sections = {};
-        }
-        if (!state.tempChanges.sections[sectionId]) {
-          state.tempChanges.sections[sectionId] = {};
-        }
-        Object.assign(state.tempChanges.sections[sectionId], contentUpdates);
-
-        state.hasUnsavedChanges = true;
-        state.isDataPersisted = false;
+        state.hasChanges = true;
       }
     },
 
@@ -222,153 +274,26 @@ const ecommerceManagementSlice = createSlice({
 
       if (sectionIndex !== -1) {
         state.pageContent.sections[sectionIndex].visible = visible;
-        state.hasUnsavedChanges = true;
-        state.isDataPersisted = false;
+        state.hasChanges = true;
       }
     },
 
     reorderSections: (state, action) => {
       state.pageContent.sections = action.payload;
-      state.hasUnsavedChanges = true;
-      state.isDataPersisted = false;
-
-      // Track the change
-      state.tempChanges['sections.order'] = 'Section order changed';
-    },
-
-    // Product management
-    addProduct: (state, action) => {
-      const newProduct = {
-        ...action.payload,
-        id: Date.now(), // In real app, this would be handled by backend
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      };
-      state.products.push(newProduct);
-      state.hasUnsavedChanges = true;
-      state.isDataPersisted = false;
-    },
-
-    updateProduct: (state, action) => {
-      const { productId, updates } = action.payload;
-      const productIndex = state.products.findIndex(p => p.id === productId);
-
-      if (productIndex !== -1) {
-        state.products[productIndex] = {
-          ...state.products[productIndex],
-          ...updates,
-          updatedAt: new Date().toISOString(),
-        };
-        state.hasUnsavedChanges = true;
-        state.isDataPersisted = false;
-      }
-    },
-
-    deleteProduct: (state, action) => {
-      const productId = action.payload;
-      state.products = state.products.filter(p => p.id !== productId);
-      state.hasUnsavedChanges = true;
-      state.isDataPersisted = false;
-    },
-
-    // Category management
-    addCategory: (state, action) => {
-      const newCategory = {
-        ...action.payload,
-        id: Date.now(),
-      };
-      state.categories.push(newCategory);
-      state.hasUnsavedChanges = true;
-      state.isDataPersisted = false;
-    },
-
-    updateCategory: (state, action) => {
-      const { categoryId, updates } = action.payload;
-      const categoryIndex = state.categories.findIndex(
-        c => c.id === categoryId
-      );
-
-      if (categoryIndex !== -1) {
-        Object.assign(state.categories[categoryIndex], updates);
-        state.hasUnsavedChanges = true;
-        state.isDataPersisted = false;
-      }
-    },
-
-    deleteCategory: (state, action) => {
-      const categoryId = action.payload;
-      state.categories = state.categories.filter(c => c.id !== categoryId);
-      state.hasUnsavedChanges = true;
-      state.isDataPersisted = false;
-    },
-
-    // Vendor management
-    updateVendorInfo: (state, action) => {
-      if (state.vendor) {
-        Object.assign(state.vendor, action.payload);
-        state.hasUnsavedChanges = true;
-        state.isDataPersisted = false;
-      }
-    },
-
-    // Filters and pagination
-    setFilters: (state, action) => {
-      Object.assign(state.filters, action.payload);
-    },
-
-    setPagination: (state, action) => {
-      Object.assign(state.pagination, action.payload);
-    },
-
-    // Recently viewed
-    addToRecentlyViewed: (state, action) => {
-      const productId = action.payload;
-      state.recentlyViewed = state.recentlyViewed.filter(
-        id => id !== productId
-      );
-      state.recentlyViewed.unshift(productId);
-      state.recentlyViewed = state.recentlyViewed.slice(0, 10); // Keep only last 10
-    },
-
-    // Section management
-    updatePageSections: (state, action) => {
-      state.pageContent.sections = action.payload;
-      state.hasUnsavedChanges = true;
-      state.isDataPersisted = false;
-    },
-
-    publishPageContent: (state, action) => {
-      state.pageContent.sections = action.payload || state.pageContent.sections;
-      state.pageContent.lastPublished = new Date().toISOString();
-      state.hasUnsavedChanges = false;
-      state.isDataPersisted = true;
-    },
-
-    updateSectionVisibility: (state, action) => {
-      const { sectionId, visible } = action.payload;
-      const section = state.pageContent.sections.find(s => s.id === sectionId);
-      if (section) {
-        section.visible = visible;
-        state.hasUnsavedChanges = true;
-        state.isDataPersisted = false;
-
-        // Track the change
-        const path = `sections.${sectionId}.visible`;
-        state.tempChanges[path] = visible ? 'Section shown' : 'Section hidden';
-      }
+      state.hasChanges = true;
     },
 
     addCustomSection: (state, action) => {
       const newSection = action.payload;
 
-      // Insert the section before footer or at the end
+      // Insert before footer or at the end
       const footerIndex = state.pageContent.sections.findIndex(
         s => s.id === 'footer'
       );
+
       if (footerIndex !== -1) {
         state.pageContent.sections.splice(footerIndex, 0, newSection);
-
-        // Update orders to maintain proper sequence
+        // Update orders
         state.pageContent.sections.forEach((section, index) => {
           section.order = index + 1;
         });
@@ -376,42 +301,81 @@ const ecommerceManagementSlice = createSlice({
         state.pageContent.sections.push(newSection);
       }
 
-      state.hasUnsavedChanges = true;
-      state.isDataPersisted = false;
-
-      // Track the change
-      const path = `sections.${newSection.id}`;
-      state.tempChanges[path] = 'Added custom section';
+      state.hasChanges = true;
     },
 
     removeCustomSection: (state, action) => {
       const sectionId = action.payload;
-
       state.pageContent.sections = state.pageContent.sections.filter(
-        section => section.id !== sectionId
+        s => s.id !== sectionId
       );
 
-      // Update orders to maintain proper sequence
+      // Update orders
       state.pageContent.sections.forEach((section, index) => {
         section.order = index + 1;
       });
 
-      state.hasUnsavedChanges = true;
-      state.isDataPersisted = false;
+      state.hasChanges = true;
+    },
 
-      // Track the change
-      const path = `sections.${sectionId}`;
-      state.tempChanges[path] = 'Removed custom section';
+    // Recently viewed
+    addToRecentlyViewed: (state, action) => {
+      const productId = action.payload;
+
+      // Remove if already exists
+      state.recentlyViewed = state.recentlyViewed.filter(
+        id => id !== productId
+      );
+
+      // Add to beginning
+      state.recentlyViewed.unshift(productId);
+
+      // Keep only last 10
+      state.recentlyViewed = state.recentlyViewed.slice(0, 10);
+    },
+
+    // Wishlist management
+    toggleWishlist: (state, action) => {
+      const productId = action.payload;
+      const index = state.wishlist.indexOf(productId);
+
+      if (index === -1) {
+        state.wishlist.push(productId);
+      } else {
+        state.wishlist.splice(index, 1);
+      }
+    },
+
+    // Orders and enquiries
+    addOrder: (state, action) => {
+      const order = {
+        id: `order_${Date.now()}`,
+        ...action.payload,
+        status: 'pending',
+        createdAt: new Date().toISOString(),
+      };
+      state.orders.unshift(order);
+    },
+
+    addEnquiry: (state, action) => {
+      const enquiry = {
+        id: `enquiry_${Date.now()}`,
+        ...action.payload,
+        status: 'pending',
+        submittedAt: new Date().toISOString(),
+      };
+      state.enquiries.unshift(enquiry);
     },
 
     // Reset changes
     discardChanges: state => {
-      // This would need to restore from a backup or refetch data
-      state.tempChanges = {};
-      state.hasUnsavedChanges = false;
-      state.isDataPersisted = true;
+      state.hasChanges = false;
     },
+
+    // Reset state
+    resetState: () => initialState,
   },
+
   extraReducers: builder => {
     builder
       // Fetch ecommerce data
@@ -433,13 +397,14 @@ const ecommerceManagementSlice = createSlice({
         state.recentlyViewed = data.recentlyViewed || [];
         state.filters = { ...state.filters, ...data.filters };
         state.pagination = { ...state.pagination, ...data.pagination };
-        state.hasUnsavedChanges = data.hasUnsavedChanges || false;
-        state.isDataPersisted = data.isDataPersisted !== false;
-        state.tempChanges = data.tempChanges || {};
+        state.hasChanges = data.hasChanges || false;
+        state.error = null;
+        state.success = true;
       })
       .addCase(fetchEcommerceData.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+        state.success = false;
       })
 
       // Save ecommerce data
@@ -449,9 +414,8 @@ const ecommerceManagementSlice = createSlice({
       })
       .addCase(saveEcommerceData.fulfilled, (state, action) => {
         state.saving = false;
-        state.hasUnsavedChanges = false;
-        state.isDataPersisted = true;
-        state.tempChanges = {};
+        state.hasChanges = false;
+        state.success = true;
         if (action.payload.lastSaved) {
           state.pageContent.lastSaved = action.payload.lastSaved;
         }
@@ -469,6 +433,7 @@ const ecommerceManagementSlice = createSlice({
       .addCase(publishChanges.fulfilled, (state, action) => {
         state.publishing = false;
         state.pageContent.lastPublished = action.payload.lastPublished;
+        state.success = true;
       })
       .addCase(publishChanges.rejected, (state, action) => {
         state.publishing = false;
@@ -491,43 +456,74 @@ const ecommerceManagementSlice = createSlice({
 
 // Export actions
 export const {
+  // Standard actions
+  setLoading,
+  setError,
   clearError,
-  updateSection,
-  updateSectionContent,
-  toggleSectionVisibility,
-  reorderSections,
-  updatePageSections,
-  publishPageContent,
-  updateSectionVisibility,
-  addCustomSection,
-  removeCustomSection,
+  setSuccess,
+  setSearchQuery,
+  setSortBy,
+  setFilters,
+  clearFilters,
+  setPage,
+  setItemsPerPage,
+
+  // Core data actions
+  setVendor,
+  setCategories,
+  setProducts,
+  selectProduct,
+
+  // Product actions
   addProduct,
   updateProduct,
   deleteProduct,
+
+  // Category actions
   addCategory,
   updateCategory,
   deleteCategory,
+
+  // Vendor actions
   updateVendorInfo,
-  setFilters,
-  setPagination,
+
+  // Page content actions
+  updatePageSection,
+  updateSectionContent,
+  toggleSectionVisibility,
+  reorderSections,
+  addCustomSection,
+  removeCustomSection,
+
+  // User interaction actions
   addToRecentlyViewed,
+  toggleWishlist,
+  addOrder,
+  addEnquiry,
+
+  // Utility actions
   discardChanges,
+  resetState,
 } = ecommerceManagementSlice.actions;
+
+// Legacy action aliases for backward compatibility
+export const updateSectionVisibility = toggleSectionVisibility;
+export const updatePageSections = reorderSections;
+export const publishPageContent = publishChanges;
 
 // Selectors
 export const selectVendor = state => state.ecommerceManagement.vendor;
 export const selectCategories = state => state.ecommerceManagement.categories;
 export const selectProducts = state => state.ecommerceManagement.products;
+export const selectSelectedProduct = state =>
+  state.ecommerceManagement.selectedProduct;
 export const selectPageSections = state =>
   state.ecommerceManagement.pageContent.sections;
 export const selectLoading = state => state.ecommerceManagement.loading;
-export const selectError = state => state.ecommerceManagement.error;
 export const selectSaving = state => state.ecommerceManagement.saving;
 export const selectPublishing = state => state.ecommerceManagement.publishing;
-export const selectHasUnsavedChanges = state =>
-  state.ecommerceManagement.hasUnsavedChanges;
-export const selectIsDataPersisted = state =>
-  state.ecommerceManagement.isDataPersisted;
+export const selectError = state => state.ecommerceManagement.error;
+export const selectHasChanges = state => state.ecommerceManagement.hasChanges;
 export const selectWishlist = state => state.ecommerceManagement.wishlist;
 export const selectRecentlyViewed = state =>
   state.ecommerceManagement.recentlyViewed;
@@ -536,6 +532,13 @@ export const selectPagination = state => state.ecommerceManagement.pagination;
 export const selectAnalytics = state => state.ecommerceManagement.analytics;
 export const selectOrders = state => state.ecommerceManagement.orders;
 export const selectEnquiries = state => state.ecommerceManagement.enquiries;
+
+// Legacy selectors for backward compatibility
+export const selectHasUnsavedChanges = selectHasChanges;
+export const selectIsDataPersisted = state =>
+  !state.ecommerceManagement.hasChanges;
+export const selectSectionById = sectionId => state =>
+  state.ecommerceManagement.pageContent.sections.find(s => s.id === sectionId);
 
 // Complex selectors
 export const selectFeaturedProducts = state =>
@@ -549,10 +552,8 @@ export const selectProductsByCategory = categorySlug => state =>
     product => product.category === categorySlug
   );
 
-export const selectSectionById = sectionId => state =>
-  state.ecommerceManagement.pageContent.sections.find(
-    section => section.id === sectionId
-  );
+export const selectProductById = productId => state =>
+  state.ecommerceManagement.products.find(product => product.id === productId);
 
 export const selectIsInWishlist = productId => state =>
   state.ecommerceManagement.wishlist.includes(productId);
@@ -581,6 +582,17 @@ export const selectFilteredProducts = state => {
   if (filters.availability && filters.availability !== 'all') {
     filtered = filtered.filter(
       product => product.availability?.status === filters.availability
+    );
+  }
+
+  // Apply search
+  if (filters.searchQuery) {
+    const query = filters.searchQuery.toLowerCase();
+    filtered = filtered.filter(
+      product =>
+        product.name?.toLowerCase().includes(query) ||
+        product.description?.toLowerCase().includes(query) ||
+        product.tags?.some(tag => tag.toLowerCase().includes(query))
     );
   }
 
@@ -617,12 +629,4 @@ export const selectFilteredProducts = state => {
   return filtered;
 };
 
-export const selectSectionContent = sectionId => state => {
-  const section = state.ecommerceManagement.pageContent.sections.find(
-    s => s.id === sectionId
-  );
-  return section?.content || {};
-};
-
-// Export reducer
 export default ecommerceManagementSlice.reducer;

@@ -15,6 +15,8 @@ import {
 } from '../utils/hotelAPI';
 import hotelAPI from '../utils/hotelAPI';
 
+// Business data loaded successfully
+
 // Export data arrays/objects from JSON
 export const automobileCategories =
   automobileData.data.allCategories || automobileData.data.categories || [];

@@ -6,13 +6,36 @@ import businessData from '../DummyData/business.json';
 
 // Helper function to get business data by slug
 const getBusinessWebsiteData = slug => {
+  console.log('[getBusinessWebsiteData] Looking for slug:', slug);
+  console.log('[getBusinessWebsiteData] businessData:', businessData);
+
+  // Ensure businessData is properly loaded
+  if (!businessData || !businessData.data || !businessData.data.portfolio) {
+    console.error(
+      '[getBusinessWebsiteData] Business data structure is invalid'
+    );
+    return null;
+  }
+
+  console.log(
+    '[getBusinessWebsiteData] Available portfolio data:',
+    businessData.data.portfolio
+  );
+
   // Map common slugs to the correct data
   if (slug === 'salon' || slug === 'business') {
-    return businessData.data?.portfolio?.buisness || null;
+    // Note: JSON has 'buisness' spelling (typo), so we use that key
+    const result = businessData.data.portfolio.buisness || null;
+    console.log('[getBusinessWebsiteData] Business result:', result);
+    return result;
   }
   if (slug === 'freelancer' || slug === 'personal') {
-    return businessData.data?.portfolio?.personal || null;
+    const result = businessData.data.portfolio.personal || null;
+    console.log('[getBusinessWebsiteData] Freelancer result:', result);
+    return result;
   }
+
+  console.log('[getBusinessWebsiteData] No match found for slug:', slug);
   return null;
 };
 
@@ -84,8 +107,18 @@ export const getBusinessTypeConfig = businessType => {
  * @returns {object} - Enhanced business data with type info
  */
 export const detectBusinessType = businessSlug => {
+  console.log('[detectBusinessType] Input slug:', businessSlug);
+
   const business = getBusinessWebsiteData(businessSlug);
-  if (!business) return null;
+  console.log('[detectBusinessType] Retrieved business data:', business);
+
+  if (!business) {
+    console.log(
+      '[detectBusinessType] No business data found for slug:',
+      businessSlug
+    );
+    return null;
+  }
 
   // Map slug to business type
   let businessType = business.type || 'business';
@@ -95,15 +128,20 @@ export const detectBusinessType = businessSlug => {
     businessType = 'business';
   }
 
+  console.log('[detectBusinessType] Determined business type:', businessType);
+
   const businessTypeConfig = getBusinessTypeConfig(businessType);
 
-  return {
+  const result = {
     businessData: business,
     businessType,
     businessTypeConfig,
     isFreelancer: businessType === 'freelancer',
     isBusiness: businessType === 'business',
   };
+
+  console.log('[detectBusinessType] Final result:', result);
+  return result;
 };
 
 /**

@@ -20,6 +20,8 @@ const SmartRouter = () => {
   const location = useLocation();
   const path = location.pathname;
 
+  // SmartRouter logic
+
   // Helper function to determine module type based on slug
   const getModuleType = slug => {
     // Check each data source to determine the module type // api call to find type
