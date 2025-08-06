@@ -15,13 +15,13 @@ import {
   FaLinkedin,
   FaYoutube,
 } from 'react-icons/fa';
-import { theme } from '../../styles/GlobalStyle';
+import { theme } from '../../../styles/GlobalStyle';
 import FormField from './shared/FormField';
 import {
   selectSectionById,
   updateSectionContent,
   selectVendor,
-} from '../../store/slices/ecommerceManagementSlice';
+} from '../../../store/slices/ecommerceManagementSlice';
 
 const SectionContainer = styled.div`
   background: ${theme.colors.white};
