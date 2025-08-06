@@ -894,18 +894,28 @@ const BuisnessAdminDashboard = () => {
   };
 
   // Auto-update Redux when UI content changes for real-time preview
+  // Using useRef to prevent infinite loops
+  const uiContentRef = useRef();
+  const statisticsRef = useRef();
+
   useEffect(() => {
-    if (editingBusiness && uiContentData) {
+    // Only update if the data actually changed (deep comparison)
+    if (editingBusiness && uiContentData &&
+        JSON.stringify(uiContentData) !== JSON.stringify(uiContentRef.current)) {
+      uiContentRef.current = uiContentData;
       updateEditingBusinessInRedux();
     }
-  }, [uiContentData]);
+  }, [uiContentData, editingBusiness]);
 
   // Auto-update Redux when statistics data changes for real-time preview
   useEffect(() => {
-    if (editingBusiness && statisticsData) {
+    // Only update if the data actually changed (deep comparison)
+    if (editingBusiness && statisticsData &&
+        JSON.stringify(statisticsData) !== JSON.stringify(statisticsRef.current)) {
+      statisticsRef.current = statisticsData;
       updateEditingBusinessInRedux();
     }
-  }, [statisticsData]);
+  }, [statisticsData, editingBusiness]);
 
   const navigationItems = [
     {
@@ -4560,7 +4570,7 @@ const BuisnessAdminDashboard = () => {
                     hero: '����',
                     'about-us': '👥',
                     'services-offered': '⚙️',
-                    portfolio: '💼',
+                    portfolio: '��',
                     skills: '🎯',
                     experience: '📄',
                     team: '👨‍👩‍👧‍👦',
