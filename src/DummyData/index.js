@@ -172,6 +172,7 @@ export const getBusinessTemplate = slug => {
 
   // Handle salon/business slug -> map to business data
   if (slug === 'salon' || slug === 'business') {
+    // Note: JSON has 'buisness' spelling (typo), using correct key
     const result = businessData.data?.portfolio?.buisness || null;
     console.log('[getBusinessTemplate] Salon/business result:', result);
     return result;
