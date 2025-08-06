@@ -1,10 +1,10 @@
 import React from 'react';
 import { useParams, useLocation } from 'react-router-dom';
-import HotelModule from '../hotel';
-import EcommerceModule from '../ecommerce';
-import AutomobileModule from '../automobiles';
-import WeddingModule from '../weddings';
-import BusinessModule from '../business';
+import HotelModule from '../modules/hotel';
+import EcommerceModule from '../modules/ecommerce';
+import AutomobileModule from '../modules/automobiles';
+import WeddingModule from '../modules/weddings';
+import BusinessModule from '../modules/business';
 import {
   getHotelBySlug,
   getVendorBySlug,
