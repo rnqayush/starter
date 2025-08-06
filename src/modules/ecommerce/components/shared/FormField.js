@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { theme, media } from '../../../styles/GlobalStyle';
+import { theme, media } from '../../../../styles/GlobalStyle';
 
 const FieldContainer = styled.div`
   margin-bottom: ${theme.spacing.lg};
