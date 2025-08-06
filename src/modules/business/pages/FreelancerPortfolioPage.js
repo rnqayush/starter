@@ -1182,8 +1182,20 @@ const FreelancerPortfolioPage = () => {
         dispatch(setLoading(true));
         dispatch(clearError());
 
-        // For freelancer portfolio, use 'freelancer' slug to match business.json structure
-        const extractedSlug = 'freelancer'; // Always load freelancer data
+        // Extract slug from URL params or pathname
+        let extractedSlug = actualSlug;
+        if (!extractedSlug) {
+          // For direct slug access like "/freelancer", extract from pathname
+          const pathSegments = location.pathname.split('/').filter(Boolean);
+          extractedSlug = pathSegments[0];
+        }
+
+        // If still no slug, default to 'freelancer' for portfolio data
+        if (!extractedSlug) {
+          extractedSlug = 'freelancer';
+        }
+
+        console.log('[FreelancerPortfolioPage] Using slug:', extractedSlug);
 
         // Check if we already have business data in Redux
         const existingBusiness = businesses.find(
