@@ -17,7 +17,7 @@ import AddRoomManager from './AddRoomManager';
 import AllRoomsManager from './AllRoomsManager';
 import BookingsReceivedPageContent from './BookingsReceivedPageContent';
 import ProfileSettingsPageContent from './ProfileSettingsPageContent';
-import { Card, CardContent, Badge } from '../../../components/shared/Card';
+import { Card, CardContent, Badge } from '../../../../components/shared/Card';
 import { Button } from '../../../components/shared/Button';
 import { theme, media } from '../../../styles/GlobalStyle';
 // import { useAppContext } from '../../context/AppContext'; // Removed - needs Redux migration
