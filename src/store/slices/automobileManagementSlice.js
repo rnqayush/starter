@@ -393,30 +393,7 @@ export const {
   // Utility actions
   resetState,
 
-  // Legacy action aliases for backward compatibility
-  updateSectionContent: updatePageSection,
-  updatePageSections: reorderSections,
-  publishPageContent: publishChanges,
-  addCustomSection: addPageSection,
-  removeCustomSection: removePageSection,
-  updateSectionVisibility: toggleSectionVisibility,
-  discardTempChanges: discardChanges,
-  saveAndPublishChanges: publishChanges,
-  saveCompleteData: saveVehicleData,
 } = automobileManagementSlice.actions;
-
-// Add missing actions that were in the old slice
-export const addPageSection = (sectionData) => (dispatch) => {
-  dispatch(updatePageSection({ sectionId: sectionData.id, updates: sectionData }));
-};
-
-export const removePageSection = (sectionId) => (dispatch) => {
-  dispatch(updatePageSection({ sectionId, updates: { visible: false } }));
-};
-
-export const toggleSectionVisibility = (sectionId, visible) => (dispatch) => {
-  dispatch(updatePageSection({ sectionId, updates: { visible } }));
-};
 
 // Selectors
 export const selectAutomobileData = (state) => state.automobileManagement;
