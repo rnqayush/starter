@@ -59,13 +59,14 @@ const SmartRouter = () => {
         // First, try to get website from backend
         const result = await websiteService.getByName(slug);
         
-        // Enhanced debugging for wedding websites
         console.log('🔍 SmartRouter: Backend response for slug:', slug);
         console.log('📦 Full backend result:', JSON.stringify(result, null, 2));
         
-        // Backend now returns websiteType in the response
-        if (result.websiteType) {
-          console.log('✅ Website type from backend:', result.websiteType);
+        // Check if the API call was successful
+        if (result.success && result.data) {
+          const websiteData = result.data;
+          console.log('✅ Website data found:', websiteData);
+          console.log('✅ Website type:', websiteData.websiteType);
           
           // Map backend website types to module types
           const typeMapping = {
@@ -76,44 +77,18 @@ const SmartRouter = () => {
             'professional': 'business'
           };
           
-          const moduleType = typeMapping[result.websiteType] || 'business';
+          const moduleType = typeMapping[websiteData.websiteType] || 'business';
           console.log('🎯 Mapped module type:', moduleType);
           
-          // Set appropriate data based on module type
-          if (moduleType === 'hotel' && result.data && result.data.hotel) {
-            console.log('🏨 Setting hotel data');
-            setHotelData(result.data.hotel);
-          } else if (moduleType === 'wedding' && result.data) {
-            console.log('💒 Setting wedding data:', result.data);
-            setWebsiteData(result);
-          } else {
-            console.log('📄 Setting general website data');
-            setWebsiteData(result);
-          }
-          
+          // Set the website data and module type
+          setWebsiteData(websiteData);
           setModuleType(moduleType);
           setIsLoading(false);
           return;
         }
         
-        // Fallback for old response format
-        if (result.success && result.data) {
-          const website = result.data.website || result.data;
-          setWebsiteData(website);
-          
-          const typeMapping = {
-            'hotels': 'hotel',
-            'ecommerce': 'ecommerce', 
-            'automobiles': 'automobile',
-            'weddings': 'wedding',
-            'professional': 'business'
-          };
-          
-          const detectedType = typeMapping[website.websiteType] || 'business';
-          setModuleType(detectedType);
-          setIsLoading(false);
-          return;
-        }
+        // If not successful, throw error to trigger fallback
+        throw new Error(result.error || 'Website not found in backend');
       } catch (error) {
         console.error('❌ Backend error in SmartRouter:', error);
         console.log('⚠️ Backend not available, checking localStorage and dummy data');
