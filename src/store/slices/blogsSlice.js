@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import blogsData from '../../DummyData/blogs.json';
 import {
-  createEntityState,
   createFilterState,
   createEntityReducers,
   createFilterReducers,
