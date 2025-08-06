@@ -841,7 +841,7 @@ const WeddingHome = () => {
     }
 
     setFilteredVendors(filtered);
-  }, [vendors, activeFilter, sortBy, selectedCategories]);
+  }, [activeFilter, sortBy, selectedCategories]);
 
   const handleVendorClick = vendor => {
     navigate(`/${vendor.id}`);
