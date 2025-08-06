@@ -829,6 +829,15 @@ const VendorDashboard = () => {
     backgroundColor: '#1f2937',
     textColor: '#ffffff',
   });
+
+  // Contact information state
+  const [contactData, setContactData] = useState({
+    email: '',
+    phone: '',
+    website: '',
+    address: '',
+  });
+
   const [showDeleteAccountModal, setShowDeleteAccountModal] = useState(false);
 
   // Track changes in a section
