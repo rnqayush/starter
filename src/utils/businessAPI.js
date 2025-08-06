@@ -93,8 +93,15 @@ export const getBusinessTypeConfig = businessType => {
  * @returns {object} - Enhanced business data with type info
  */
 export const detectBusinessType = businessSlug => {
+  console.log('[detectBusinessType] Input slug:', businessSlug);
+
   const business = getBusinessWebsiteData(businessSlug);
-  if (!business) return null;
+  console.log('[detectBusinessType] Retrieved business data:', business);
+
+  if (!business) {
+    console.log('[detectBusinessType] No business data found for slug:', businessSlug);
+    return null;
+  }
 
   // Map slug to business type
   let businessType = business.type || 'business';
@@ -104,15 +111,20 @@ export const detectBusinessType = businessSlug => {
     businessType = 'business';
   }
 
+  console.log('[detectBusinessType] Determined business type:', businessType);
+
   const businessTypeConfig = getBusinessTypeConfig(businessType);
 
-  return {
+  const result = {
     businessData: business,
     businessType,
     businessTypeConfig,
     isFreelancer: businessType === 'freelancer',
     isBusiness: businessType === 'business',
   };
+
+  console.log('[detectBusinessType] Final result:', result);
+  return result;
 };
 
 /**
