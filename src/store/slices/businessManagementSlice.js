@@ -241,6 +241,11 @@ const businessManagementSlice = createSlice({
       return !isHiddenSection;
     },
 
+    // Additional legacy reducers for compatibility
+    markUnsavedChanges: (state) => {
+      state.hasChanges = true;
+    },
+
     // Reset state
     resetState: () => initialState,
   },
