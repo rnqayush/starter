@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSearchParams, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { FaTh, FaList, FaTimes } from 'react-icons/fa';
-import { theme } from '../../styles/GlobalStyle';
+import { theme } from '../../../styles/GlobalStyle';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ProductCard from '../components/ProductCard';
@@ -12,7 +12,7 @@ import {
   ecommerceCategories as categories,
   getProductsByCategory,
   getEcommerceVendorByIdOrSlug as getVendorByIdOrSlug,
-} from '../../DummyData';
+} from '../../../DummyData';
 
 const PageContainer = styled.div`
   min-height: 100vh;
