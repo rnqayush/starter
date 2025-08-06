@@ -9,7 +9,7 @@ import {
   FaTimes,
   FaEye,
 } from 'react-icons/fa';
-import { theme } from '../../styles/GlobalStyle';
+import { theme } from '../../../styles/GlobalStyle';
 import {
   selectPageSections,
   selectVehicles,
@@ -18,7 +18,7 @@ import {
   updatePageSections,
   removeCustomSection,
   updateSectionContent,
-} from '../../store/slices/automobileManagementSlice';
+} from '../../../store/slices/automobileManagementSlice';
 
 const Container = styled.div`
   background: ${theme.colors.white};

@@ -9,11 +9,11 @@ import {
   FaTimes,
   FaTag,
 } from 'react-icons/fa';
-import { theme } from '../../styles/GlobalStyle';
+import { theme } from '../../../styles/GlobalStyle';
 import {
   selectCategories,
   selectLoading,
-} from '../../store/slices/automobileManagementSlice';
+} from '../../../store/slices/automobileManagementSlice';
 
 const Container = styled.div`
   background: ${theme.colors.white};
