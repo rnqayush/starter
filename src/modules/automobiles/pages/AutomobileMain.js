@@ -21,7 +21,7 @@ import {
   selectPageSections,
   selectHasUnsavedChanges,
   clearError,
-} from '../../store/slices/automobileManagementSlice';
+} from '../../../store/slices/automobileManagementSlice';
 
 // Dynamic theme styles that override global styles
 const DynamicGlobalStyle = createGlobalStyle`
