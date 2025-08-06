@@ -853,19 +853,12 @@ const BuisnessAdminDashboard = () => {
   //   }
   // }, [uiContentData, editingBusiness]);
 
-  // Auto-update Redux when statistics data changes for real-time preview
-  useEffect(() => {
-    // DISABLED: Real-time preview was causing infinite loops
-    // Only update the ref for tracking purposes
-    if (
-      editingBusiness &&
-      statisticsData &&
-      JSON.stringify(statisticsData) !== JSON.stringify(statisticsRef.current)
-    ) {
-      statisticsRef.current = statisticsData;
-      // updateEditingBusinessInRedux(); // Disabled to prevent infinite loops
-    }
-  }, [statisticsData, editingBusiness]);
+  // DISABLED: Real-time preview was causing infinite loops and expensive JSON.stringify
+  // useEffect(() => {
+  //   if (editingBusiness && statisticsData) {
+  //     statisticsRef.current = statisticsData;
+  //   }
+  // }, [statisticsData, editingBusiness]);
 
   const navigationItems = [
     {
