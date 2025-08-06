@@ -302,7 +302,7 @@ const SpecialOffersSectionEdit = ({ dealer }) => {
         vehicleIds: onSaleVehicleIds,
       }));
     }
-  }, [sections, vehicles, vendor]);
+  }, [JSON.stringify(sections), JSON.stringify(vehicles), JSON.stringify(vendor)]); // Use stringified to prevent reference changes
 
   const updateContent = (field, value) => {
     // Update local state for immediate UI update
