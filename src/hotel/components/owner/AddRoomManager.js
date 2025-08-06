@@ -12,7 +12,7 @@ import {
   FaUndo,
   FaGift,
 } from 'react-icons/fa';
-import { theme } from '../../styles/GlobalStyle';
+import { theme } from '../../../styles/GlobalStyle';
 import {
   addRoom,
   setEditingHotel,

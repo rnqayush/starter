@@ -12,7 +12,7 @@ import {
 import { Card, CardContent } from '../shared/Card';
 import { Button } from '../shared/Button';
 import { Input, FormGroup, Label, InputGroup } from '../shared/Input';
-import { theme } from '../../styles/GlobalStyle';
+import { theme } from '../../../styles/GlobalStyle';
 // import { useAppContext } from '../../context/AppContext'; // Removed - needs Redux migration
 
 const PageTitle = styled.h1`

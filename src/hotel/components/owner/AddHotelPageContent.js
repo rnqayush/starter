@@ -14,7 +14,7 @@ import {
   CheckboxGroup,
   CheckboxItem,
 } from '../shared/Input';
-import { theme, media } from '../../styles/GlobalStyle';
+import { theme, media } from '../../../styles/GlobalStyle';
 // import { useAppContext } from '../../context/AppContext'; // Removed - needs Redux migration
 import { amenitiesList } from '../../DummyData';
 

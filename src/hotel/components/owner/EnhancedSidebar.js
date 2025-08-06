@@ -24,7 +24,7 @@ import {
   discardChanges,
   clearEditingHotel,
 } from '../../store/slices/hotelManagementSlice';
-import { theme, media } from '../../styles/GlobalStyle';
+import { theme, media } from '../../../styles/GlobalStyle';
 import { Button } from '../shared/Button';
 
 const SidebarContainer = styled.aside.withConfig({

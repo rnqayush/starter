@@ -13,7 +13,7 @@ import {
   CheckboxGroup,
   CheckboxItem,
 } from '../shared/Input';
-import { theme } from '../../styles/GlobalStyle';
+import { theme } from '../../../styles/GlobalStyle';
 // import { useAppContext } from '../../context/AppContext'; // Removed - needs Redux migration
 import { amenitiesList } from '../../DummyData';
 

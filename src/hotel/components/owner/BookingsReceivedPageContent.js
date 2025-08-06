@@ -9,7 +9,7 @@ import {
 } from 'react-icons/fa';
 import { Card, CardContent, Badge } from '../shared/Card';
 import { Button } from '../shared/Button';
-import { theme } from '../../styles/GlobalStyle';
+import { theme } from '../../../styles/GlobalStyle';
 // import { useAppContext } from '../../context/AppContext'; // Removed - needs Redux migration
 
 const PageTitle = styled.h1`

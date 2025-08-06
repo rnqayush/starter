@@ -21,7 +21,7 @@ import {
   FaVideo,
   FaTable,
 } from 'react-icons/fa';
-import { theme } from '../../styles/GlobalStyle';
+import { theme } from '../../../styles/GlobalStyle';
 import {
   setEditingHotel,
   updateHotelField,
