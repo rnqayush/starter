@@ -1004,18 +1004,18 @@ const VendorDashboard = () => {
         socialLinks: footerData.socialLinks,
       };
 
-      // Update Redux with the current form data for real-time preview
-      Object.keys(updatedVendor).forEach(key => {
-        if (
-          key !== 'id' &&
-          JSON.stringify(updatedVendor[key]) !==
-            JSON.stringify(editingVendor[key])
-        ) {
-          dispatch(
-            updateVendorField({ field: key, value: updatedVendor[key] })
-          );
-        }
-      });
+      // DISABLED: Real-time preview updates were causing infinite loops
+      // Object.keys(updatedVendor).forEach(key => {
+      //   if (
+      //     key !== 'id' &&
+      //     JSON.stringify(updatedVendor[key]) !==
+      //       JSON.stringify(editingVendor[key])
+      //   ) {
+      //     dispatch(
+      //       updateVendorField({ field: key, value: updatedVendor[key] })
+      //     );
+      //   }
+      // });
 
       console.log(
         'Real-time preview: Updated editing vendor in Redux',
