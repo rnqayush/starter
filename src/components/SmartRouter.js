@@ -20,6 +20,14 @@ const SmartRouter = () => {
   const location = useLocation();
   const path = location.pathname;
 
+  // Immediate test
+  console.log('[SmartRouter] Current slug:', slug);
+  console.log('[SmartRouter] Current pathname:', location.pathname);
+
+  // Test business template detection
+  const testBusinessTemplate = getBusinessTemplate('salon');
+  console.log('[SmartRouter] Test salon detection:', testBusinessTemplate);
+
   // Helper function to determine module type based on slug
   const getModuleType = slug => {
     // Check each data source to determine the module type // api call to find type
