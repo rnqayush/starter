@@ -310,10 +310,16 @@ const BusinessWebsitePage = () => {
   } = useSelector(state => state.businessManagement);
 
   // Get the current business data (prioritize editing business for real-time updates)
-  const currentBusiness =
+  let currentBusiness =
     editingBusiness && editingBusiness.slug === actualSlug
       ? editingBusiness
       : businesses.find(b => b.slug === actualSlug);
+
+  // FORCE LOAD SALON DATA if currentBusiness is null
+  if (!currentBusiness) {
+    currentBusiness = businessData.data.portfolio.buisness; // Direct salon data
+    console.log('[BusinessWebsitePage] Force loading salon data:', currentBusiness);
+  }
 
   useEffect(() => {
     dispatch(setLoading(true));
