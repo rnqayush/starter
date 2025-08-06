@@ -286,6 +286,11 @@ const CategoryLanding = ({
 }) => {
   const navigate = useNavigate();
 
+  console.log('[CategoryLanding] Props received:', {
+    category, demoUrl, secondaryDemoUrl,
+    demoButtonText, secondaryDemoButtonText
+  });
+
   const handleBack = () => {
     navigate('/');
   };
