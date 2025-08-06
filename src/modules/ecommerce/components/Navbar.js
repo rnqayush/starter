@@ -6,9 +6,9 @@ import {
   selectUser,
   selectIsAuthenticated,
   logout,
-} from '../../store/slices/authSlice';
-import AuthModal from '../../components/auth/AuthModal';
-import UserProfile from '../../components/user/UserProfile';
+} from '../../../store/slices/authSlice';
+import AuthModal from '../../../components/auth/AuthModal';
+import UserProfile from '../../../components/user/UserProfile';
 import {
   FaShoppingCart,
   FaUser,
@@ -22,7 +22,7 @@ import {
   FaHeart,
   FaBell,
 } from 'react-icons/fa';
-import { theme } from '../../styles/GlobalStyle';
+import { theme } from '../../../styles/GlobalStyle';
 
 const NavbarContainer = styled.nav`
   background: ${theme.colors.white};
