@@ -10,13 +10,13 @@ import {
   FaSortAmountUp,
   FaSortAmountDown,
 } from 'react-icons/fa';
-import { theme } from '../../styles/GlobalStyle';
+import { theme } from '../../../styles/GlobalStyle';
 import {
   automobileVehicles as vehicles,
   getVehicleAvailabilityStatus as getAvailabilityStatus,
   getVehicleAvailabilityLabel as getAvailabilityLabel,
   getVehicleAvailabilityColor as getAvailabilityColor,
-} from '../../DummyData';
+} from '../../../DummyData';
 
 const InventoryContainer = styled.div`
   background: ${theme.colors.white};

@@ -10,13 +10,13 @@ import {
   FaGasPump,
   FaRoad,
 } from 'react-icons/fa';
-import { theme, media } from '../../styles/GlobalStyle';
+import { theme, media } from '../../../styles/GlobalStyle';
 import EnquiryModal from './EnquiryModal';
 import {
   addToWishlist,
   removeFromWishlist,
   selectIsInWishlist,
-} from '../../store/slices/automobileManagementSlice';
+} from '../../../store/slices/automobileManagementSlice';
 
 const Card = styled.div`
   background: ${theme.colors.white};
