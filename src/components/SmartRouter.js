@@ -12,8 +12,8 @@ import {
   getVendorById,
   getBusinessTemplate,
 } from '../DummyData';
-import HotelDetail from '../hotel/pages/HotelDetail';
-import EcommerceMain from '../ecommerce/pages/EcommerceMain';
+import HotelDetail from '../modules/hotel/pages/HotelDetail';
+import EcommerceMain from '../modules/ecommerce/pages/EcommerceMain';
 
 const SmartRouter = () => {
   const { slug } = useParams();
