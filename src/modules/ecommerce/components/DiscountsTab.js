@@ -12,7 +12,7 @@ import {
   FaCalendarAlt,
   FaUsers,
 } from 'react-icons/fa';
-import { theme } from '../../styles/GlobalStyle';
+import { theme } from '../../../styles/GlobalStyle';
 import Modal from './shared/Modal';
 import FormField from './shared/FormField';
 import { Button } from '../../components/shared/Button';
