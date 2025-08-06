@@ -3651,7 +3651,10 @@ const VendorDashboard = () => {
                     value={contactData.website}
                     onChange={e => {
                       const newWebsite = e.target.value;
-                      setContactData(prev => ({ ...prev, website: newWebsite }));
+                      setContactData(prev => ({
+                        ...prev,
+                        website: newWebsite,
+                      }));
                       setVendor(prev => ({ ...prev, website: newWebsite }));
                       trackSectionChange('settings');
                     }}
@@ -3664,7 +3667,10 @@ const VendorDashboard = () => {
                     value={contactData.address}
                     onChange={e => {
                       const newAddress = e.target.value;
-                      setContactData(prev => ({ ...prev, address: newAddress }));
+                      setContactData(prev => ({
+                        ...prev,
+                        address: newAddress,
+                      }));
                       setVendor(prev => ({ ...prev, address: newAddress }));
                       trackSectionChange('settings');
                     }}

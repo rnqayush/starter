@@ -10,14 +10,14 @@ const initialState = {
   // Core data
   businesses: [],
   businessTypes: [],
-  
+
   // Editing state
   ...createEditingState(),
-  
+
   // Business type configuration
   businessType: null,
   businessTypeConfig: null,
-  
+
   // Section visibility
   sectionVisibility: {
     hero: true,
@@ -34,7 +34,7 @@ const initialState = {
     contact: true,
     footer: true,
   },
-  
+
   // Loading and error states
   loading: false,
   error: null,
@@ -144,9 +144,9 @@ const businessManagementSlice = createSlice({
         if (!state.editing.sections[section]) {
           state.editing.sections[section] = {};
         }
-        
+
         state.editing.sections[section][field] = value;
-        
+
         const changeKey = `sections.${section}.${field}`;
         state.changes[changeKey] = {
           old: state.original?.sections?.[section]?.[field],
@@ -175,7 +175,9 @@ const businessManagementSlice = createSlice({
 
       // Check if section is allowed for current business type
       if (state.businessTypeConfig?.hiddenSections?.includes(section)) {
-        console.warn(`Section "${section}" is not available for business type "${state.businessType}"`);
+        console.warn(
+          `Section "${section}" is not available for business type "${state.businessType}"`
+        );
         return;
       }
 
@@ -186,8 +188,9 @@ const businessManagementSlice = createSlice({
         if (!state.editing.sectionVisibility) {
           state.editing.sectionVisibility = { ...state.sectionVisibility };
         }
-        state.editing.sectionVisibility[section] = state.sectionVisibility[section];
-        
+        state.editing.sectionVisibility[section] =
+          state.sectionVisibility[section];
+
         state.changes.sectionVisibility = {
           old: state.original?.sectionVisibility || {},
           new: state.editing.sectionVisibility,
@@ -197,17 +200,19 @@ const businessManagementSlice = createSlice({
     },
 
     // Save and publish
-    saveBusiness: (state) => {
+    saveBusiness: state => {
       if (state.editing && state.hasChanges) {
-        const businessIndex = state.businesses.findIndex(b => b.id === state.editing.id);
-        
+        const businessIndex = state.businesses.findIndex(
+          b => b.id === state.editing.id
+        );
+
         if (businessIndex !== -1) {
           state.businesses[businessIndex] = { ...state.editing };
         } else {
           // Add new business if it doesn't exist
           state.businesses.push({ ...state.editing });
         }
-        
+
         state.original = { ...state.editing };
         state.changes = {};
         state.hasChanges = false;
@@ -215,7 +220,7 @@ const businessManagementSlice = createSlice({
       }
     },
 
-    discardBusinessChanges: (state) => {
+    discardBusinessChanges: state => {
       if (state.original) {
         state.editing = { ...state.original };
         state.changes = {};
@@ -223,7 +228,7 @@ const businessManagementSlice = createSlice({
       }
     },
 
-    clearEditingBusiness: (state) => {
+    clearEditingBusiness: state => {
       state.editing = null;
       state.original = null;
       state.changes = {};
@@ -233,15 +238,16 @@ const businessManagementSlice = createSlice({
     // Section availability check
     isSectionAvailable: (state, action) => {
       const { section } = action.payload;
-      
+
       if (!state.businessTypeConfig) return true;
-      
-      const isHiddenSection = state.businessTypeConfig.hiddenSections?.includes(section);
+
+      const isHiddenSection =
+        state.businessTypeConfig.hiddenSections?.includes(section);
       return !isHiddenSection;
     },
 
     // Additional legacy reducers for compatibility
-    markUnsavedChanges: (state) => {
+    markUnsavedChanges: state => {
       state.hasChanges = true;
     },
 
@@ -257,12 +263,12 @@ export const {
   setError,
   clearError,
   setSuccess,
-  
+
   // Business actions
   setBusinesses,
   initializeBusiness,
   setBusinessType,
-  
+
   // Editing actions
   setEditingBusiness,
   updateBusinessField,
@@ -271,11 +277,11 @@ export const {
   saveBusiness,
   discardBusinessChanges,
   clearEditingBusiness,
-  
+
   // Section management
   toggleSectionVisibility,
   isSectionAvailable,
-  
+
   // Legacy actions
   markUnsavedChanges,
 
@@ -289,36 +295,43 @@ export const toggleBusinessSectionVisibility = toggleSectionVisibility;
 export const initializeBusinessData = initializeBusiness;
 
 // Selectors
-export const selectBusinesses = (state) => state.businessManagement.businesses;
-export const selectEditingBusiness = (state) => state.businessManagement.editing;
-export const selectBusinessType = (state) => state.businessManagement.businessType;
-export const selectBusinessTypeConfig = (state) => state.businessManagement.businessTypeConfig;
-export const selectSectionVisibility = (state) => state.businessManagement.sectionVisibility;
-export const selectHasChanges = (state) => state.businessManagement.hasChanges;
-export const selectChanges = (state) => state.businessManagement.changes;
-export const selectLoading = (state) => state.businessManagement.loading;
-export const selectError = (state) => state.businessManagement.error;
-export const selectSuccess = (state) => state.businessManagement.success;
+export const selectBusinesses = state => state.businessManagement.businesses;
+export const selectEditingBusiness = state => state.businessManagement.editing;
+export const selectBusinessType = state =>
+  state.businessManagement.businessType;
+export const selectBusinessTypeConfig = state =>
+  state.businessManagement.businessTypeConfig;
+export const selectSectionVisibility = state =>
+  state.businessManagement.sectionVisibility;
+export const selectHasChanges = state => state.businessManagement.hasChanges;
+export const selectChanges = state => state.businessManagement.changes;
+export const selectLoading = state => state.businessManagement.loading;
+export const selectError = state => state.businessManagement.error;
+export const selectSuccess = state => state.businessManagement.success;
 
 // Complex selectors
-export const selectBusinessById = (businessId) => (state) =>
-  state.businessManagement.businesses.find(business => business.id === businessId);
+export const selectBusinessById = businessId => state =>
+  state.businessManagement.businesses.find(
+    business => business.id === businessId
+  );
 
-export const selectBusinessesByType = (businessType) => (state) =>
-  state.businessManagement.businesses.filter(business => business.type === businessType);
+export const selectBusinessesByType = businessType => state =>
+  state.businessManagement.businesses.filter(
+    business => business.type === businessType
+  );
 
-export const selectVisibleSections = (state) =>
+export const selectVisibleSections = state =>
   Object.entries(state.businessManagement.sectionVisibility)
     .filter(([_, visible]) => visible)
     .map(([section, _]) => section);
 
-export const selectAvailableSections = (state) => {
+export const selectAvailableSections = state => {
   const { sectionVisibility, businessTypeConfig } = state.businessManagement;
-  
+
   if (!businessTypeConfig?.hiddenSections) {
     return Object.keys(sectionVisibility);
   }
-  
+
   return Object.keys(sectionVisibility).filter(
     section => !businessTypeConfig.hiddenSections.includes(section)
   );

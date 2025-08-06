@@ -539,18 +539,28 @@ const VendorPortfolio = () => {
     }));
   }, []);
 
-  const handleKeyPress = useCallback(e => {
-    if (e.key === 'Escape') {
-      if (imageViewer.open) {
-        closeImageViewer();
-      } else if (selectedPortfolio) {
-        closePortfolioModal();
+  const handleKeyPress = useCallback(
+    e => {
+      if (e.key === 'Escape') {
+        if (imageViewer.open) {
+          closeImageViewer();
+        } else if (selectedPortfolio) {
+          closePortfolioModal();
+        }
+      } else if (imageViewer.open) {
+        if (e.key === 'ArrowLeft') prevImage();
+        if (e.key === 'ArrowRight') nextImage();
       }
-    } else if (imageViewer.open) {
-      if (e.key === 'ArrowLeft') prevImage();
-      if (e.key === 'ArrowRight') nextImage();
-    }
-  }, [imageViewer.open, selectedPortfolio, closeImageViewer, closePortfolioModal, prevImage, nextImage]);
+    },
+    [
+      imageViewer.open,
+      selectedPortfolio,
+      closeImageViewer,
+      closePortfolioModal,
+      prevImage,
+      nextImage,
+    ]
+  );
 
   useEffect(() => {
     document.addEventListener('keydown', handleKeyPress);

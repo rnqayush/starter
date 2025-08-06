@@ -12,7 +12,10 @@ import {
 // Async thunks
 export const fetchAutomobileData = createAsyncThunk(
   'automobile/fetchData',
-  async ({ vendorSlug, forceRefresh = false }, { getState, rejectWithValue }) => {
+  async (
+    { vendorSlug, forceRefresh = false },
+    { getState, rejectWithValue }
+  ) => {
     try {
       const state = getState().automobileManagement;
 
@@ -36,10 +39,10 @@ export const fetchVehicleDetails = createAsyncThunk(
   async ({ vehicleId }, { getState, rejectWithValue }) => {
     try {
       const state = getState().automobileManagement;
-      
+
       // Find vehicle in existing data
       let vehicle = state.vehicles.find(v => v.id === parseInt(vehicleId));
-      
+
       if (!vehicle) {
         // Fetch from API if not found
         const response = await import('../../DummyData/automobiles.json');
@@ -117,7 +120,7 @@ const initialState = {
 
   // Editing state
   ...createEditingState(),
-  
+
   // User interactions
   wishlist: [],
   recentlyViewed: [],
@@ -212,8 +215,10 @@ const automobileManagementSlice = createSlice({
     // Page content management
     updatePageSection: (state, action) => {
       const { sectionId, updates } = action.payload;
-      const sectionIndex = state.pageContent.sections.findIndex(s => s.id === sectionId);
-      
+      const sectionIndex = state.pageContent.sections.findIndex(
+        s => s.id === sectionId
+      );
+
       if (sectionIndex !== -1) {
         state.pageContent.sections[sectionIndex] = {
           ...state.pageContent.sections[sectionIndex],
@@ -228,7 +233,7 @@ const automobileManagementSlice = createSlice({
       state.hasChanges = true;
     },
 
-    publishChanges: (state) => {
+    publishChanges: state => {
       state.pageContent.lastPublished = new Date().toISOString();
       state.hasChanges = false;
     },
@@ -237,7 +242,7 @@ const automobileManagementSlice = createSlice({
     toggleWishlist: (state, action) => {
       const vehicleId = action.payload;
       const index = state.wishlist.indexOf(vehicleId);
-      
+
       if (index === -1) {
         state.wishlist.push(vehicleId);
       } else {
@@ -248,13 +253,15 @@ const automobileManagementSlice = createSlice({
     // Recently viewed
     addToRecentlyViewed: (state, action) => {
       const vehicleId = action.payload;
-      
+
       // Remove if already exists
-      state.recentlyViewed = state.recentlyViewed.filter(id => id !== vehicleId);
-      
+      state.recentlyViewed = state.recentlyViewed.filter(
+        id => id !== vehicleId
+      );
+
       // Add to beginning
       state.recentlyViewed.unshift(vehicleId);
-      
+
       // Keep only last 10
       state.recentlyViewed = state.recentlyViewed.slice(0, 10);
     },
@@ -274,17 +281,17 @@ const automobileManagementSlice = createSlice({
     resetState: () => initialState,
   },
 
-  extraReducers: (builder) => {
+  extraReducers: builder => {
     builder
       // Fetch automobile data
-      .addCase(fetchAutomobileData.pending, (state) => {
+      .addCase(fetchAutomobileData.pending, state => {
         state.loading = true;
         state.error = null;
       })
       .addCase(fetchAutomobileData.fulfilled, (state, action) => {
         state.loading = false;
         const data = action.payload.data || action.payload;
-        
+
         state.vendor = data.vendor;
         state.categories = data.allCategories || data.categories || [];
         state.vehicles = data.allVehicles || data.vehicles || [];
@@ -292,7 +299,7 @@ const automobileManagementSlice = createSlice({
         state.customerReviews = data.customerReviews || [];
         state.financing = data.financing;
         state.pageContent.sections = data.pageSections || [];
-        
+
         state.error = null;
         state.success = true;
       })
@@ -303,7 +310,7 @@ const automobileManagementSlice = createSlice({
       })
 
       // Fetch vehicle details
-      .addCase(fetchVehicleDetails.pending, (state) => {
+      .addCase(fetchVehicleDetails.pending, state => {
         state.vehicleLoading = true;
         state.error = null;
       })
@@ -318,11 +325,11 @@ const automobileManagementSlice = createSlice({
       })
 
       // Save data
-      .addCase(saveVehicleData.pending, (state) => {
+      .addCase(saveVehicleData.pending, state => {
         state.saving = true;
         state.error = null;
       })
-      .addCase(saveVehicleData.fulfilled, (state) => {
+      .addCase(saveVehicleData.fulfilled, state => {
         state.saving = false;
         state.hasChanges = false;
         state.success = true;
@@ -366,63 +373,74 @@ export const {
   clearFilters,
   setPage,
   setItemsPerPage,
-  
+
   // Vehicle actions
   setVehicles,
   addVehicle,
   updateVehicle,
   deleteVehicle,
-  
+
   // Category actions
   setCategories,
   addCategory,
   updateCategory,
   deleteCategory,
-  
+
   // Page content actions
   updatePageSection,
   reorderSections,
   publishChanges,
-  
+
   // User interaction actions
   toggleWishlist,
   addToRecentlyViewed,
   addEnquiry,
-  
+
   // Utility actions
   resetState,
-
 } = automobileManagementSlice.actions;
 
 // Selectors
-export const selectAutomobileData = (state) => state.automobileManagement;
-export const selectVendor = (state) => state.automobileManagement.vendor;
-export const selectCategories = (state) => state.automobileManagement.categories;
-export const selectVehicles = (state) => state.automobileManagement.vehicles;
-export const selectSelectedVehicle = (state) => state.automobileManagement.selectedVehicle;
-export const selectPageSections = (state) => state.automobileManagement.pageContent.sections;
-export const selectLoading = (state) => state.automobileManagement.loading;
-export const selectError = (state) => state.automobileManagement.error;
-export const selectFilters = (state) => state.automobileManagement.filters;
-export const selectWishlist = (state) => state.automobileManagement.wishlist;
-export const selectRecentlyViewed = (state) => state.automobileManagement.recentlyViewed;
-export const selectEnquiries = (state) => state.automobileManagement.enquiries;
+export const selectAutomobileData = state => state.automobileManagement;
+export const selectVendor = state => state.automobileManagement.vendor;
+export const selectCategories = state => state.automobileManagement.categories;
+export const selectVehicles = state => state.automobileManagement.vehicles;
+export const selectSelectedVehicle = state =>
+  state.automobileManagement.selectedVehicle;
+export const selectPageSections = state =>
+  state.automobileManagement.pageContent.sections;
+export const selectLoading = state => state.automobileManagement.loading;
+export const selectError = state => state.automobileManagement.error;
+export const selectFilters = state => state.automobileManagement.filters;
+export const selectWishlist = state => state.automobileManagement.wishlist;
+export const selectRecentlyViewed = state =>
+  state.automobileManagement.recentlyViewed;
+export const selectEnquiries = state => state.automobileManagement.enquiries;
 
 // Legacy selectors for backward compatibility
-export const selectHasUnsavedChanges = (state) => state.automobileManagement.hasChanges;
-export const selectTempChanges = (state) => state.automobileManagement.changes;
-export const selectVehicleLoading = (state) => state.automobileManagement.vehicleLoading || state.automobileManagement.loading;
-export const selectAvailableFilters = (state) => ({
+export const selectHasUnsavedChanges = state =>
+  state.automobileManagement.hasChanges;
+export const selectTempChanges = state => state.automobileManagement.changes;
+export const selectVehicleLoading = state =>
+  state.automobileManagement.vehicleLoading ||
+  state.automobileManagement.loading;
+export const selectAvailableFilters = state => ({
   categories: state.automobileManagement.categories.map(c => c.slug),
   makes: [...new Set(state.automobileManagement.vehicles.map(v => v.make))],
   years: [...new Set(state.automobileManagement.vehicles.map(v => v.year))],
-  conditions: [...new Set(state.automobileManagement.vehicles.map(v => v.condition))],
+  conditions: [
+    ...new Set(state.automobileManagement.vehicles.map(v => v.condition)),
+  ],
   priceRange: {
-    min: Math.min(...state.automobileManagement.vehicles.map(v => v.pricing?.price || 0)),
-    max: Math.max(...state.automobileManagement.vehicles.map(v => v.pricing?.price || 0)),
+    min: Math.min(
+      ...state.automobileManagement.vehicles.map(v => v.pricing?.price || 0)
+    ),
+    max: Math.max(
+      ...state.automobileManagement.vehicles.map(v => v.pricing?.price || 0)
+    ),
   },
 });
-export const selectApiReadyData = (state) => ({
+export const selectApiReadyData = state => ({
   vendor: state.automobileManagement.vendor,
   vehicles: state.automobileManagement.vehicles,
   categories: state.automobileManagement.categories,
@@ -431,28 +449,36 @@ export const selectApiReadyData = (state) => ({
 export const selectNeedsSyncCheck = () => ({ needsSync: false });
 
 // Complex selectors
-export const selectFeaturedVehicles = (state) =>
+export const selectFeaturedVehicles = state =>
   state.automobileManagement.vehicles.filter(vehicle => vehicle.featured);
 
-export const selectOnSaleVehicles = (state) =>
-  state.automobileManagement.vehicles.filter(vehicle => vehicle.pricing?.onSale);
+export const selectOnSaleVehicles = state =>
+  state.automobileManagement.vehicles.filter(
+    vehicle => vehicle.pricing?.onSale
+  );
 
-export const selectVehiclesByCategory = (categorySlug) => (state) =>
-  state.automobileManagement.vehicles.filter(vehicle => vehicle.category?.slug === categorySlug);
+export const selectVehiclesByCategory = categorySlug => state =>
+  state.automobileManagement.vehicles.filter(
+    vehicle => vehicle.category?.slug === categorySlug
+  );
 
-export const selectVehicleById = (vehicleId) => (state) =>
-  state.automobileManagement.vehicles.find(vehicle => vehicle.id === parseInt(vehicleId));
+export const selectVehicleById = vehicleId => state =>
+  state.automobileManagement.vehicles.find(
+    vehicle => vehicle.id === parseInt(vehicleId)
+  );
 
-export const selectIsInWishlist = (vehicleId) => (state) =>
+export const selectIsInWishlist = vehicleId => state =>
   state.automobileManagement.wishlist.includes(parseInt(vehicleId));
 
-export const selectFilteredVehicles = (state) => {
+export const selectFilteredVehicles = state => {
   const { vehicles, filters } = state.automobileManagement;
   let filtered = [...vehicles];
 
   // Apply filters
   if (filters.category) {
-    filtered = filtered.filter(vehicle => vehicle.category?.slug === filters.category);
+    filtered = filtered.filter(
+      vehicle => vehicle.category?.slug === filters.category
+    );
   }
 
   if (filters.make) {
@@ -464,7 +490,9 @@ export const selectFilteredVehicles = (state) => {
   }
 
   if (filters.condition) {
-    filtered = filtered.filter(vehicle => vehicle.condition === filters.condition);
+    filtered = filtered.filter(
+      vehicle => vehicle.condition === filters.condition
+    );
   }
 
   if (filters.priceRange) {
@@ -476,11 +504,12 @@ export const selectFilteredVehicles = (state) => {
 
   if (filters.searchQuery) {
     const query = filters.searchQuery.toLowerCase();
-    filtered = filtered.filter(vehicle =>
-      vehicle.name?.toLowerCase().includes(query) ||
-      vehicle.make?.toLowerCase().includes(query) ||
-      vehicle.model?.toLowerCase().includes(query) ||
-      vehicle.description?.toLowerCase().includes(query)
+    filtered = filtered.filter(
+      vehicle =>
+        vehicle.name?.toLowerCase().includes(query) ||
+        vehicle.make?.toLowerCase().includes(query) ||
+        vehicle.model?.toLowerCase().includes(query) ||
+        vehicle.description?.toLowerCase().includes(query)
     );
   }
 
@@ -525,13 +554,15 @@ export const selectFilteredVehicles = (state) => {
 export const updateSectionContent = updatePageSection;
 export const updatePageSections = reorderSections;
 export const publishPageContent = publishChanges;
-export const updateSectionVisibility = (sectionId, visible) => (dispatch) => {
+export const updateSectionVisibility = (sectionId, visible) => dispatch => {
   dispatch(updatePageSection({ sectionId, updates: { visible } }));
 };
-export const addCustomSection = (sectionData) => (dispatch) => {
-  dispatch(updatePageSection({ sectionId: sectionData.id, updates: sectionData }));
+export const addCustomSection = sectionData => dispatch => {
+  dispatch(
+    updatePageSection({ sectionId: sectionData.id, updates: sectionData })
+  );
 };
-export const removeCustomSection = (sectionId) => (dispatch) => {
+export const removeCustomSection = sectionId => dispatch => {
   dispatch(updatePageSection({ sectionId, updates: { visible: false } }));
 };
 export const discardTempChanges = discardChanges;

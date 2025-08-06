@@ -318,7 +318,10 @@ const BusinessWebsitePage = () => {
   // FORCE LOAD SALON DATA if currentBusiness is null
   if (!currentBusiness) {
     currentBusiness = businessData.data.portfolio.buisness; // Direct salon data
-    console.log('[BusinessWebsitePage] Force loading salon data:', currentBusiness);
+    console.log(
+      '[BusinessWebsitePage] Force loading salon data:',
+      currentBusiness
+    );
   }
 
   useEffect(() => {
@@ -338,7 +341,10 @@ const BusinessWebsitePage = () => {
       extractedSlug = 'salon';
     }
 
-    console.log('[BusinessWebsitePage] Direct data injection for slug:', extractedSlug);
+    console.log(
+      '[BusinessWebsitePage] Direct data injection for slug:',
+      extractedSlug
+    );
 
     // Direct data injection - no API calls, guaranteed to work
     let businessDataToUse = null;
@@ -360,7 +366,10 @@ const BusinessWebsitePage = () => {
     }
 
     if (businessDataToUse) {
-      console.log('[BusinessWebsitePage] Direct data loaded:', businessDataToUse);
+      console.log(
+        '[BusinessWebsitePage] Direct data loaded:',
+        businessDataToUse
+      );
 
       // Initialize Redux state with business data
       dispatch(

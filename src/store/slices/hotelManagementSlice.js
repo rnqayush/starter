@@ -17,10 +17,10 @@ const initialState = {
   // Live data (what users see)
   hotels: initialHotels,
   selectedHotel: null,
-  
+
   // Editing state
   ...createEditingState(),
-  
+
   // Section visibility
   sectionVisibility: {
     hero: true,
@@ -32,10 +32,10 @@ const initialState = {
     testimonials: true,
     footer: true,
   },
-  
+
   // Publishing state
   lastPublished: null,
-  
+
   // Loading and error states
   loading: false,
   error: null,
@@ -92,7 +92,7 @@ const hotelManagementSlice = createSlice({
     // Field updates
     updateHotelField: (state, action) => {
       const { field, value, section } = action.payload;
-      
+
       if (state.editing) {
         if (section) {
           // Update nested section field
@@ -102,9 +102,9 @@ const hotelManagementSlice = createSlice({
           if (!state.editing.sections[section]) {
             state.editing.sections[section] = {};
           }
-          
+
           state.editing.sections[section][field] = value;
-          
+
           const changeKey = `sections.${section}.${field}`;
           state.changes[changeKey] = {
             old: state.original?.sections?.[section]?.[field],
@@ -118,7 +118,7 @@ const hotelManagementSlice = createSlice({
             new: value,
           };
         }
-        
+
         state.hasChanges = true;
       }
     },
@@ -126,7 +126,7 @@ const hotelManagementSlice = createSlice({
     // Image management
     updateHotelImage: (state, action) => {
       const { index, url } = action.payload;
-      
+
       if (state.editing) {
         if (index === 'main') {
           state.editing.image = url;
@@ -161,7 +161,9 @@ const hotelManagementSlice = createSlice({
 
     removeHotelImage: (state, action) => {
       if (state.editing) {
-        const newImages = (state.editing.images || []).filter((_, index) => index !== action.payload);
+        const newImages = (state.editing.images || []).filter(
+          (_, index) => index !== action.payload
+        );
         state.editing.images = newImages;
         state.changes.images = {
           old: state.original?.images,
@@ -174,7 +176,7 @@ const hotelManagementSlice = createSlice({
     // Content management
     updateHotelContent: (state, action) => {
       const { contentType, data } = action.payload;
-      
+
       if (state.editing) {
         state.editing[contentType] = data;
         state.changes[contentType] = {
@@ -200,10 +202,12 @@ const hotelManagementSlice = createSlice({
 
     updateRoom: (state, action) => {
       const { roomId, updates } = action.payload;
-      
+
       if (state.editing && state.editing.rooms) {
-        const roomIndex = state.editing.rooms.findIndex(room => room.id === roomId);
-        
+        const roomIndex = state.editing.rooms.findIndex(
+          room => room.id === roomId
+        );
+
         if (roomIndex !== -1) {
           state.editing.rooms[roomIndex] = {
             ...state.editing.rooms[roomIndex],
@@ -220,7 +224,9 @@ const hotelManagementSlice = createSlice({
 
     removeRoom: (state, action) => {
       if (state.editing && state.editing.rooms) {
-        const newRooms = state.editing.rooms.filter(room => room.id !== action.payload);
+        const newRooms = state.editing.rooms.filter(
+          room => room.id !== action.payload
+        );
         state.editing.rooms = newRooms;
         state.changes.rooms = {
           old: state.original?.rooms,
@@ -240,8 +246,9 @@ const hotelManagementSlice = createSlice({
         if (!state.editing.sectionVisibility) {
           state.editing.sectionVisibility = { ...state.sectionVisibility };
         }
-        state.editing.sectionVisibility[section] = state.sectionVisibility[section];
-        
+        state.editing.sectionVisibility[section] =
+          state.sectionVisibility[section];
+
         state.changes.sectionVisibility = {
           old: state.original?.sectionVisibility || {},
           new: state.editing.sectionVisibility,
@@ -251,14 +258,16 @@ const hotelManagementSlice = createSlice({
     },
 
     // Save and publish
-    saveHotelChanges: (state) => {
+    saveHotelChanges: state => {
       if (state.editing && state.hasChanges) {
-        const hotelIndex = state.hotels.findIndex(h => h.id === state.editing.id);
-        
+        const hotelIndex = state.hotels.findIndex(
+          h => h.id === state.editing.id
+        );
+
         if (hotelIndex !== -1) {
           state.hotels[hotelIndex] = { ...state.editing };
         }
-        
+
         state.original = { ...state.editing };
         state.changes = {};
         state.hasChanges = false;
@@ -266,10 +275,12 @@ const hotelManagementSlice = createSlice({
       }
     },
 
-    publishChanges: (state) => {
+    publishChanges: state => {
       if (state.editing) {
-        const hotelIndex = state.hotels.findIndex(h => h.id === state.editing.id);
-        
+        const hotelIndex = state.hotels.findIndex(
+          h => h.id === state.editing.id
+        );
+
         if (hotelIndex !== -1) {
           state.hotels[hotelIndex] = { ...state.editing };
           state.original = { ...state.editing };
@@ -280,7 +291,7 @@ const hotelManagementSlice = createSlice({
       }
     },
 
-    discardHotelChanges: (state) => {
+    discardHotelChanges: state => {
       if (state.original) {
         state.editing = { ...state.original };
         state.changes = {};
@@ -288,7 +299,7 @@ const hotelManagementSlice = createSlice({
       }
     },
 
-    clearEditingHotel: (state) => {
+    clearEditingHotel: state => {
       state.editing = null;
       state.original = null;
       state.changes = {};
@@ -307,12 +318,12 @@ export const {
   setError,
   clearError,
   setSuccess,
-  
+
   // Hotel actions
   loadHotelData,
   setHotels,
   selectHotel,
-  
+
   // Editing actions
   setEditingHotel,
   updateHotelField,
@@ -327,10 +338,10 @@ export const {
   publishChanges,
   discardHotelChanges,
   clearEditingHotel,
-  
+
   // Section management
   toggleSectionVisibility,
-  
+
   // Utility actions
   resetState,
 } = hotelManagementSlice.actions;
@@ -340,30 +351,34 @@ export const saveChanges = saveHotelChanges;
 export const discardChanges = discardHotelChanges;
 
 // Selectors
-export const selectHotels = (state) => state.hotelManagement.hotels;
-export const selectSelectedHotel = (state) => state.hotelManagement.selectedHotel;
-export const selectEditingHotel = (state) => state.hotelManagement.editing;
-export const selectSectionVisibility = (state) => state.hotelManagement.sectionVisibility;
-export const selectHasChanges = (state) => state.hotelManagement.hasChanges;
-export const selectChanges = (state) => state.hotelManagement.changes;
-export const selectLoading = (state) => state.hotelManagement.loading;
-export const selectError = (state) => state.hotelManagement.error;
-export const selectSuccess = (state) => state.hotelManagement.success;
-export const selectLastPublished = (state) => state.hotelManagement.lastPublished;
+export const selectHotels = state => state.hotelManagement.hotels;
+export const selectSelectedHotel = state => state.hotelManagement.selectedHotel;
+export const selectEditingHotel = state => state.hotelManagement.editing;
+export const selectSectionVisibility = state =>
+  state.hotelManagement.sectionVisibility;
+export const selectHasChanges = state => state.hotelManagement.hasChanges;
+export const selectChanges = state => state.hotelManagement.changes;
+export const selectLoading = state => state.hotelManagement.loading;
+export const selectError = state => state.hotelManagement.error;
+export const selectSuccess = state => state.hotelManagement.success;
+export const selectLastPublished = state => state.hotelManagement.lastPublished;
 
 // Complex selectors
-export const selectHotelById = (hotelId) => (state) =>
+export const selectHotelById = hotelId => state =>
   state.hotelManagement.hotels.find(hotel => hotel.id === hotelId);
 
-export const selectHotelBySlug = (slug) => (state) =>
-  state.hotelManagement.hotels.find(hotel => hotel.slug === slug || hotel.id === parseInt(slug));
+export const selectHotelBySlug = slug => state =>
+  state.hotelManagement.hotels.find(
+    hotel => hotel.slug === slug || hotel.id === parseInt(slug)
+  );
 
-export const selectVisibleSections = (state) =>
+export const selectVisibleSections = state =>
   Object.entries(state.hotelManagement.sectionVisibility)
     .filter(([_, visible]) => visible)
     .map(([section, _]) => section);
 
 export const selectHasPendingChanges = (state, hotelId) =>
-  state.hotelManagement.editing?.id === hotelId && state.hotelManagement.hasChanges;
+  state.hotelManagement.editing?.id === hotelId &&
+  state.hotelManagement.hasChanges;
 
 export default hotelManagementSlice.reducer;

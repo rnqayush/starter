@@ -15,17 +15,17 @@ const initialState = {
   // Vendor management
   vendors: getStaticWeddingVendors(),
   selectedVendor: null,
-  
+
   // Booking management
   bookings: getStaticWeddingBookings(),
   selectedBooking: null,
-  
+
   // Vendor editing state
   vendorEditing: null,
   vendorOriginal: null,
   vendorChanges: {},
   hasVendorChanges: false,
-  
+
   // Booking editing state
   bookingEditing: null,
   bookingChanges: {},
@@ -105,7 +105,7 @@ const weddingManagementSlice = createSlice({
       }
     },
 
-    refreshVendors: (state) => {
+    refreshVendors: state => {
       state.vendors = getStaticWeddingVendors();
     },
 
@@ -128,7 +128,7 @@ const weddingManagementSlice = createSlice({
 
     updateVendorField: (state, action) => {
       const { field, value } = action.payload;
-      
+
       if (state.vendorEditing) {
         state.vendorEditing[field] = value;
         state.vendorChanges[field] = {
@@ -139,7 +139,9 @@ const weddingManagementSlice = createSlice({
 
         // Real-time update if enabled
         if (state.realTimeUpdates) {
-          const vendorIndex = state.vendors.findIndex(v => v.id === state.vendorEditing.id);
+          const vendorIndex = state.vendors.findIndex(
+            v => v.id === state.vendorEditing.id
+          );
           if (vendorIndex !== -1) {
             state.vendors[vendorIndex] = { ...state.vendorEditing };
           }
@@ -149,7 +151,7 @@ const weddingManagementSlice = createSlice({
 
     updateVendorImage: (state, action) => {
       const { field, url } = action.payload;
-      
+
       if (state.vendorEditing) {
         state.vendorEditing[field] = url;
         state.vendorChanges[field] = {
@@ -160,7 +162,9 @@ const weddingManagementSlice = createSlice({
 
         // Real-time update
         if (state.realTimeUpdates) {
-          const vendorIndex = state.vendors.findIndex(v => v.id === state.vendorEditing.id);
+          const vendorIndex = state.vendors.findIndex(
+            v => v.id === state.vendorEditing.id
+          );
           if (vendorIndex !== -1) {
             state.vendors[vendorIndex][field] = url;
           }
@@ -171,7 +175,7 @@ const weddingManagementSlice = createSlice({
     // Content management
     updateVendorContent: (state, action) => {
       const { contentType, data } = action.payload;
-      
+
       if (state.vendorEditing) {
         state.vendorEditing[contentType] = data;
         state.vendorChanges[contentType] = {
@@ -182,7 +186,9 @@ const weddingManagementSlice = createSlice({
 
         // Real-time update
         if (state.realTimeUpdates) {
-          const vendorIndex = state.vendors.findIndex(v => v.id === state.vendorEditing.id);
+          const vendorIndex = state.vendors.findIndex(
+            v => v.id === state.vendorEditing.id
+          );
           if (vendorIndex !== -1) {
             state.vendors[vendorIndex][contentType] = data;
           }
@@ -192,7 +198,7 @@ const weddingManagementSlice = createSlice({
 
     updateFooterData: (state, action) => {
       const { footerData } = action.payload;
-      
+
       if (state.vendorEditing) {
         // Update footer-related fields
         state.vendorEditing.footerColumns = footerData.columns;
@@ -211,12 +217,14 @@ const weddingManagementSlice = createSlice({
           old: state.vendorOriginal?.socialLinks || {},
           new: footerData.socialLinks,
         };
-        
+
         state.hasVendorChanges = true;
 
         // Real-time update
         if (state.realTimeUpdates) {
-          const vendorIndex = state.vendors.findIndex(v => v.id === state.vendorEditing.id);
+          const vendorIndex = state.vendors.findIndex(
+            v => v.id === state.vendorEditing.id
+          );
           if (vendorIndex !== -1) {
             Object.assign(state.vendors[vendorIndex], {
               footerColumns: footerData.columns,
@@ -232,14 +240,16 @@ const weddingManagementSlice = createSlice({
     },
 
     // Save vendor changes
-    saveVendorChanges: (state) => {
+    saveVendorChanges: state => {
       if (state.vendorEditing && state.hasVendorChanges) {
-        const vendorIndex = state.vendors.findIndex(v => v.id === state.vendorEditing.id);
-        
+        const vendorIndex = state.vendors.findIndex(
+          v => v.id === state.vendorEditing.id
+        );
+
         if (vendorIndex !== -1) {
           state.vendors[vendorIndex] = { ...state.vendorEditing };
         }
-        
+
         state.vendorOriginal = { ...state.vendorEditing };
         state.vendorChanges = {};
         state.hasVendorChanges = false;
@@ -247,7 +257,7 @@ const weddingManagementSlice = createSlice({
       }
     },
 
-    discardVendorChanges: (state) => {
+    discardVendorChanges: state => {
       if (state.vendorOriginal) {
         state.vendorEditing = { ...state.vendorOriginal };
         state.vendorChanges = {};
@@ -255,7 +265,9 @@ const weddingManagementSlice = createSlice({
 
         // Revert real-time changes
         if (state.realTimeUpdates) {
-          const vendorIndex = state.vendors.findIndex(v => v.id === state.vendorOriginal.id);
+          const vendorIndex = state.vendors.findIndex(
+            v => v.id === state.vendorOriginal.id
+          );
           if (vendorIndex !== -1) {
             state.vendors[vendorIndex] = { ...state.vendorOriginal };
           }
@@ -263,7 +275,7 @@ const weddingManagementSlice = createSlice({
       }
     },
 
-    clearEditingVendor: (state) => {
+    clearEditingVendor: state => {
       state.vendorEditing = null;
       state.vendorOriginal = null;
       state.vendorChanges = {};
@@ -278,10 +290,13 @@ const weddingManagementSlice = createSlice({
       // Update the editing vendor's sectionVisibility
       if (state.vendorEditing) {
         if (!state.vendorEditing.sectionVisibility) {
-          state.vendorEditing.sectionVisibility = { ...state.sectionVisibility };
+          state.vendorEditing.sectionVisibility = {
+            ...state.sectionVisibility,
+          };
         }
-        state.vendorEditing.sectionVisibility[section] = state.sectionVisibility[section];
-        
+        state.vendorEditing.sectionVisibility[section] =
+          state.sectionVisibility[section];
+
         state.vendorChanges.sectionVisibility = {
           old: state.vendorOriginal?.sectionVisibility || {},
           new: state.vendorEditing.sectionVisibility,
@@ -289,12 +304,15 @@ const weddingManagementSlice = createSlice({
 
         // Real-time update
         if (state.realTimeUpdates) {
-          const vendorIndex = state.vendors.findIndex(v => v.id === state.vendorEditing.id);
+          const vendorIndex = state.vendors.findIndex(
+            v => v.id === state.vendorEditing.id
+          );
           if (vendorIndex !== -1) {
-            state.vendors[vendorIndex].sectionVisibility = state.vendorEditing.sectionVisibility;
+            state.vendors[vendorIndex].sectionVisibility =
+              state.vendorEditing.sectionVisibility;
           }
         }
-        
+
         state.hasVendorChanges = true;
       }
     },
@@ -311,15 +329,18 @@ const weddingManagementSlice = createSlice({
 
         // Real-time update
         if (state.realTimeUpdates) {
-          const vendorIndex = state.vendors.findIndex(v => v.id === state.vendorEditing.id);
+          const vendorIndex = state.vendors.findIndex(
+            v => v.id === state.vendorEditing.id
+          );
           if (vendorIndex !== -1) {
             if (!state.vendors[vendorIndex].customSectionVisibility) {
               state.vendors[vendorIndex].customSectionVisibility = {};
             }
-            state.vendors[vendorIndex].customSectionVisibility[sectionId] = visible;
+            state.vendors[vendorIndex].customSectionVisibility[sectionId] =
+              visible;
           }
         }
-        
+
         state.hasVendorChanges = true;
       }
     },
@@ -347,7 +368,7 @@ const weddingManagementSlice = createSlice({
 
     updateBookingField: (state, action) => {
       const { field, value } = action.payload;
-      
+
       if (state.bookingEditing) {
         state.bookingEditing[field] = value;
         state.bookingChanges[field] = value;
@@ -355,14 +376,16 @@ const weddingManagementSlice = createSlice({
       }
     },
 
-    saveBookingChanges: (state) => {
+    saveBookingChanges: state => {
       if (state.bookingEditing && state.hasBookingChanges) {
-        const bookingIndex = state.bookings.findIndex(b => b.id === state.bookingEditing.id);
-        
+        const bookingIndex = state.bookings.findIndex(
+          b => b.id === state.bookingEditing.id
+        );
+
         if (bookingIndex !== -1) {
           state.bookings[bookingIndex] = { ...state.bookingEditing };
         }
-        
+
         state.bookingChanges = {};
         state.hasBookingChanges = false;
         state.success = true;
@@ -379,12 +402,12 @@ const weddingManagementSlice = createSlice({
       state.bookings.push(newBooking);
     },
 
-    refreshBookings: (state) => {
+    refreshBookings: state => {
       state.bookings = getStaticWeddingBookings();
     },
 
     // Settings
-    toggleRealTimeUpdates: (state) => {
+    toggleRealTimeUpdates: state => {
       state.realTimeUpdates = !state.realTimeUpdates;
     },
 
@@ -442,51 +465,66 @@ export const {
 } = weddingManagementSlice.actions;
 
 // Selectors
-export const selectVendors = (state) => state.weddingManagement.vendors;
-export const selectSelectedVendor = (state) => state.weddingManagement.selectedVendor;
-export const selectEditingVendor = (state) => state.weddingManagement.vendorEditing;
-export const selectVendorOriginal = (state) => state.weddingManagement.vendorOriginal;
-export const selectHasVendorChanges = (state) => state.weddingManagement.hasVendorChanges;
-export const selectVendorChanges = (state) => state.weddingManagement.vendorChanges;
+export const selectVendors = state => state.weddingManagement.vendors;
+export const selectSelectedVendor = state =>
+  state.weddingManagement.selectedVendor;
+export const selectEditingVendor = state =>
+  state.weddingManagement.vendorEditing;
+export const selectVendorOriginal = state =>
+  state.weddingManagement.vendorOriginal;
+export const selectHasVendorChanges = state =>
+  state.weddingManagement.hasVendorChanges;
+export const selectVendorChanges = state =>
+  state.weddingManagement.vendorChanges;
 
-export const selectBookings = (state) => state.weddingManagement.bookings;
-export const selectSelectedBooking = (state) => state.weddingManagement.selectedBooking;
-export const selectEditingBooking = (state) => state.weddingManagement.bookingEditing;
-export const selectHasBookingChanges = (state) => state.weddingManagement.hasBookingChanges;
+export const selectBookings = state => state.weddingManagement.bookings;
+export const selectSelectedBooking = state =>
+  state.weddingManagement.selectedBooking;
+export const selectEditingBooking = state =>
+  state.weddingManagement.bookingEditing;
+export const selectHasBookingChanges = state =>
+  state.weddingManagement.hasBookingChanges;
 
-export const selectSectionVisibility = (state) => state.weddingManagement.sectionVisibility;
-export const selectCustomSectionVisibility = (state) => state.weddingManagement.customSectionVisibility;
-export const selectFilters = (state) => state.weddingManagement.filters;
-export const selectRealTimeUpdates = (state) => state.weddingManagement.realTimeUpdates;
+export const selectSectionVisibility = state =>
+  state.weddingManagement.sectionVisibility;
+export const selectCustomSectionVisibility = state =>
+  state.weddingManagement.customSectionVisibility;
+export const selectFilters = state => state.weddingManagement.filters;
+export const selectRealTimeUpdates = state =>
+  state.weddingManagement.realTimeUpdates;
 
-export const selectLoading = (state) => state.weddingManagement.loading;
-export const selectError = (state) => state.weddingManagement.error;
-export const selectSuccess = (state) => state.weddingManagement.success;
+export const selectLoading = state => state.weddingManagement.loading;
+export const selectError = state => state.weddingManagement.error;
+export const selectSuccess = state => state.weddingManagement.success;
 
 // Complex selectors
-export const selectVendorById = (vendorId) => (state) =>
+export const selectVendorById = vendorId => state =>
   state.weddingManagement.vendors.find(vendor => vendor.id === vendorId);
 
-export const selectVendorsByCategory = (category) => (state) =>
-  state.weddingManagement.vendors.filter(vendor => vendor.category === category);
+export const selectVendorsByCategory = category => state =>
+  state.weddingManagement.vendors.filter(
+    vendor => vendor.category === category
+  );
 
-export const selectFeaturedVendors = (state) =>
+export const selectFeaturedVendors = state =>
   state.weddingManagement.vendors.filter(vendor => vendor.featured);
 
-export const selectFilteredVendors = (state) => {
+export const selectFilteredVendors = state => {
   const { vendors, filters } = state.weddingManagement;
   let filtered = [...vendors];
 
   // Apply filters
   if (filters.city) {
-    filtered = filtered.filter(vendor => 
+    filtered = filtered.filter(vendor =>
       vendor.location?.city?.toLowerCase().includes(filters.city.toLowerCase())
     );
   }
 
   if (filters.state) {
-    filtered = filtered.filter(vendor => 
-      vendor.location?.state?.toLowerCase().includes(filters.state.toLowerCase())
+    filtered = filtered.filter(vendor =>
+      vendor.location?.state
+        ?.toLowerCase()
+        .includes(filters.state.toLowerCase())
     );
   }
 
@@ -500,17 +538,18 @@ export const selectFilteredVendors = (state) => {
 
   if (filters.searchQuery) {
     const query = filters.searchQuery.toLowerCase();
-    filtered = filtered.filter(vendor =>
-      vendor.name?.toLowerCase().includes(query) ||
-      vendor.description?.toLowerCase().includes(query) ||
-      vendor.category?.toLowerCase().includes(query)
+    filtered = filtered.filter(
+      vendor =>
+        vendor.name?.toLowerCase().includes(query) ||
+        vendor.description?.toLowerCase().includes(query) ||
+        vendor.category?.toLowerCase().includes(query)
     );
   }
 
   return filtered;
 };
 
-export const selectVisibleSections = (state) =>
+export const selectVisibleSections = state =>
   Object.entries(state.weddingManagement.sectionVisibility)
     .filter(([_, visible]) => visible)
     .map(([section, _]) => section);

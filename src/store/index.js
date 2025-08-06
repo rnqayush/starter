@@ -1,9 +1,9 @@
 /**
  * Redux Store Configuration
- * 
+ *
  * This file configures the Redux store with all application slices.
  * All slices follow standardized patterns using shared utilities for consistency.
- * 
+ *
  * Structure:
  * - Core: Authentication and user management
  * - Content: Blogs and content management
@@ -30,7 +30,7 @@ export const store = configureStore({
     // Core application state
     auth: authReducer,
     blogs: blogsReducer,
-    
+
     // Business module state
     automobileManagement: automobileManagementReducer,
     businessManagement: businessManagementReducer,
@@ -39,17 +39,17 @@ export const store = configureStore({
     vendorManagement: vendorManagementReducer,
     weddingManagement: weddingManagementReducer,
   },
-  
-  middleware: (getDefaultMiddleware) =>
+
+  middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       // Configure serializable state check
       serializableCheck: {
         // Actions to ignore (useful for persistence libraries)
         ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE'],
-        
+
         // Paths in actions to ignore
         ignoredActionsPaths: ['payload.timestamp', 'payload.error', 'meta.arg'],
-        
+
         // Paths in state to ignore (for complex objects)
         ignoredPaths: [
           // Editing objects (often contain complex nested data)
@@ -66,7 +66,7 @@ export const store = configureStore({
           'weddingManagement.vendorEditing',
           'weddingManagement.vendorOriginal',
           'weddingManagement.bookingEditing',
-          
+
           // Large data arrays that might contain non-serializable data
           'automobileManagement.vehicles',
           'ecommerceManagement.products',
@@ -75,16 +75,16 @@ export const store = configureStore({
           'weddingManagement.bookings',
         ],
       },
-      
+
       // Enable immutability check in development
       immutableCheck: {
         warnAfter: 128, // Warn if state mutations take longer than 128ms
       },
-      
+
       // Enable thunk for async actions
       thunk: true,
     }),
-  
+
   // Enable Redux DevTools in development
   devTools: process.env.NODE_ENV !== 'production',
 });
@@ -121,9 +121,9 @@ export const getInitialState = () => {
 };
 
 // Helper selectors for common state access
-export const selectIsAuthenticated = (state) => state.auth.isAuthenticated;
-export const selectCurrentUser = (state) => state.auth.user;
-export const selectIsLoading = (state) => {
+export const selectIsAuthenticated = state => state.auth.isAuthenticated;
+export const selectCurrentUser = state => state.auth.user;
+export const selectIsLoading = state => {
   return (
     state.auth.loading ||
     state.blogs.loading ||

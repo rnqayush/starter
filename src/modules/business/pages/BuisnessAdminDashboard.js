@@ -849,8 +849,11 @@ const BuisnessAdminDashboard = () => {
   useEffect(() => {
     // DISABLED: Real-time preview was causing infinite loops
     // Only update the ref for tracking purposes
-    if (editingBusiness && uiContentData &&
-        JSON.stringify(uiContentData) !== JSON.stringify(uiContentRef.current)) {
+    if (
+      editingBusiness &&
+      uiContentData &&
+      JSON.stringify(uiContentData) !== JSON.stringify(uiContentRef.current)
+    ) {
       uiContentRef.current = uiContentData;
       // updateEditingBusinessInRedux(); // Disabled to prevent infinite loops
     }
@@ -860,8 +863,11 @@ const BuisnessAdminDashboard = () => {
   useEffect(() => {
     // DISABLED: Real-time preview was causing infinite loops
     // Only update the ref for tracking purposes
-    if (editingBusiness && statisticsData &&
-        JSON.stringify(statisticsData) !== JSON.stringify(statisticsRef.current)) {
+    if (
+      editingBusiness &&
+      statisticsData &&
+      JSON.stringify(statisticsData) !== JSON.stringify(statisticsRef.current)
+    ) {
       statisticsRef.current = statisticsData;
       // updateEditingBusinessInRedux(); // Disabled to prevent infinite loops
     }

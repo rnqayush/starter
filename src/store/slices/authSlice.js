@@ -53,7 +53,8 @@ export const loginUser = createAsyncThunk(
 
       // Find user in dummy data
       const user = usersData.users.find(
-        u => u.email === credentials.email && u.password === credentials.password
+        u =>
+          u.email === credentials.email && u.password === credentials.password
       );
 
       if (!user) {
@@ -85,7 +86,9 @@ export const registerUser = createAsyncThunk(
       await new Promise(resolve => setTimeout(resolve, 1500));
 
       // Check if email already exists
-      const existingUser = usersData.users.find(u => u.email === userData.email);
+      const existingUser = usersData.users.find(
+        u => u.email === userData.email
+      );
       if (existingUser) {
         throw new Error('Email already exists');
       }
@@ -202,10 +205,10 @@ const authSlice = createSlice({
       }
     },
   },
-  extraReducers: (builder) => {
+  extraReducers: builder => {
     builder
       // Login
-      .addCase(loginUser.pending, (state) => {
+      .addCase(loginUser.pending, state => {
         state.loading = true;
         state.error = null;
       })
@@ -224,7 +227,7 @@ const authSlice = createSlice({
         state.success = false;
       })
       // Register
-      .addCase(registerUser.pending, (state) => {
+      .addCase(registerUser.pending, state => {
         state.loading = true;
         state.error = null;
       })
@@ -244,7 +247,6 @@ const authSlice = createSlice({
       });
   },
 });
-
 
 // Selectors
 export const selectAuth = state => state.auth;

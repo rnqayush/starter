@@ -293,7 +293,10 @@ const CategoryLanding = ({
   };
 
   const handleDemoClick = () => {
-    console.log('[CategoryLanding] Demo button clicked, navigating to:', demoUrl);
+    console.log(
+      '[CategoryLanding] Demo button clicked, navigating to:',
+      demoUrl
+    );
     try {
       navigate(demoUrl);
     } catch (error) {
@@ -304,7 +307,10 @@ const CategoryLanding = ({
   };
 
   const handleSecondaryDemoClick = () => {
-    console.log('[CategoryLanding] Secondary demo button clicked, navigating to:', secondaryDemoUrl);
+    console.log(
+      '[CategoryLanding] Secondary demo button clicked, navigating to:',
+      secondaryDemoUrl
+    );
     try {
       navigate(secondaryDemoUrl);
     } catch (error) {

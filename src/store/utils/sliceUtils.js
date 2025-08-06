@@ -45,17 +45,17 @@ export const createLoadingReducers = () => ({
       state.error = null;
     }
   },
-  
+
   setError: (state, action) => {
     state.loading = false;
     state.error = action.payload;
     state.success = false;
   },
-  
-  clearError: (state) => {
+
+  clearError: state => {
     state.error = null;
   },
-  
+
   setSuccess: (state, action) => {
     state.loading = false;
     state.success = action.payload;
@@ -65,13 +65,13 @@ export const createLoadingReducers = () => ({
 
 export const createEntityReducers = () => ({
   ...createLoadingReducers(),
-  
+
   setItems: (state, action) => {
     state.items = action.payload;
     state.loading = false;
     state.error = null;
   },
-  
+
   addItem: (state, action) => {
     const newItem = {
       ...action.payload,
@@ -81,7 +81,7 @@ export const createEntityReducers = () => ({
     };
     state.items.push(newItem);
   },
-  
+
   updateItem: (state, action) => {
     const { id, updates } = action.payload;
     const index = state.items.findIndex(item => item.id === id);
@@ -93,18 +93,18 @@ export const createEntityReducers = () => ({
       };
     }
   },
-  
+
   removeItem: (state, action) => {
     const id = action.payload;
     state.items = state.items.filter(item => item.id !== id);
   },
-  
+
   selectItem: (state, action) => {
     const id = action.payload;
     state.selectedItem = state.items.find(item => item.id === id) || null;
   },
-  
-  clearSelection: (state) => {
+
+  clearSelection: state => {
     state.selectedItem = null;
   },
 });
@@ -117,7 +117,7 @@ export const createEditingReducers = () => ({
     state.hasChanges = false;
     state.changes = {};
   },
-  
+
   updateField: (state, action) => {
     const { field, value } = action.payload;
     if (state.editing) {
@@ -129,13 +129,13 @@ export const createEditingReducers = () => ({
       state.hasChanges = true;
     }
   },
-  
+
   updateNestedField: (state, action) => {
     const { path, value } = action.payload;
     if (state.editing) {
       const pathArray = path.split('.');
       let target = state.editing;
-      
+
       // Navigate to parent object
       for (let i = 0; i < pathArray.length - 1; i++) {
         if (!target[pathArray[i]]) {
@@ -143,11 +143,11 @@ export const createEditingReducers = () => ({
         }
         target = target[pathArray[i]];
       }
-      
+
       // Set value
       const finalKey = pathArray[pathArray.length - 1];
       target[finalKey] = value;
-      
+
       state.changes[path] = {
         old: getNestedValue(state.original, path),
         new: value,
@@ -155,24 +155,24 @@ export const createEditingReducers = () => ({
       state.hasChanges = true;
     }
   },
-  
-  saveChanges: (state) => {
+
+  saveChanges: state => {
     if (state.editing && state.hasChanges) {
       state.original = { ...state.editing };
       state.changes = {};
       state.hasChanges = false;
     }
   },
-  
-  discardChanges: (state) => {
+
+  discardChanges: state => {
     if (state.original) {
       state.editing = { ...state.original };
       state.changes = {};
       state.hasChanges = false;
     }
   },
-  
-  clearEditing: (state) => {
+
+  clearEditing: state => {
     state.editing = null;
     state.original = null;
     state.changes = {};
@@ -184,20 +184,20 @@ export const createFilterReducers = () => ({
   setSearchQuery: (state, action) => {
     state.searchQuery = action.payload;
   },
-  
+
   setSortBy: (state, action) => {
     state.sortBy = action.payload;
   },
-  
+
   setSortOrder: (state, action) => {
     state.sortOrder = action.payload;
   },
-  
+
   setFilters: (state, action) => {
     Object.assign(state, action.payload);
   },
-  
-  clearFilters: (state) => {
+
+  clearFilters: state => {
     state.searchQuery = '';
     state.sortBy = 'updated';
     state.sortOrder = 'desc';
@@ -208,12 +208,12 @@ export const createPaginationReducers = () => ({
   setPage: (state, action) => {
     state.currentPage = action.payload;
   },
-  
+
   setItemsPerPage: (state, action) => {
     state.itemsPerPage = action.payload;
     state.currentPage = 1; // Reset to first page
   },
-  
+
   setPagination: (state, action) => {
     Object.assign(state, action.payload);
   },
@@ -296,11 +296,11 @@ export const createAsyncThunks = (name, api) => {
 };
 
 // Standard extra reducers for async thunks
-export const createAsyncExtraReducers = (thunks) => (builder) => {
+export const createAsyncExtraReducers = thunks => builder => {
   // Fetch items
   if (thunks.fetchItems) {
     builder
-      .addCase(thunks.fetchItems.pending, (state) => {
+      .addCase(thunks.fetchItems.pending, state => {
         state.loading = true;
         state.error = null;
       })
@@ -318,7 +318,7 @@ export const createAsyncExtraReducers = (thunks) => (builder) => {
   // Fetch single item
   if (thunks.fetchItem) {
     builder
-      .addCase(thunks.fetchItem.pending, (state) => {
+      .addCase(thunks.fetchItem.pending, state => {
         state.loading = true;
         state.error = null;
       })
@@ -336,7 +336,7 @@ export const createAsyncExtraReducers = (thunks) => (builder) => {
   // Create item
   if (thunks.createItem) {
     builder
-      .addCase(thunks.createItem.pending, (state) => {
+      .addCase(thunks.createItem.pending, state => {
         state.loading = true;
         state.error = null;
       })
@@ -355,13 +355,15 @@ export const createAsyncExtraReducers = (thunks) => (builder) => {
   // Update item
   if (thunks.updateItem) {
     builder
-      .addCase(thunks.updateItem.pending, (state) => {
+      .addCase(thunks.updateItem.pending, state => {
         state.loading = true;
         state.error = null;
       })
       .addCase(thunks.updateItem.fulfilled, (state, action) => {
         state.loading = false;
-        const index = state.items.findIndex(item => item.id === action.payload.id);
+        const index = state.items.findIndex(
+          item => item.id === action.payload.id
+        );
         if (index !== -1) {
           state.items[index] = action.payload;
         }
@@ -377,7 +379,7 @@ export const createAsyncExtraReducers = (thunks) => (builder) => {
   // Delete item
   if (thunks.deleteItem) {
     builder
-      .addCase(thunks.deleteItem.pending, (state) => {
+      .addCase(thunks.deleteItem.pending, state => {
         state.loading = true;
         state.error = null;
       })
@@ -395,25 +397,25 @@ export const createAsyncExtraReducers = (thunks) => (builder) => {
 };
 
 // Common selectors
-export const createEntitySelectors = (selectSlice) => ({
-  selectItems: (state) => selectSlice(state).items,
-  selectSelectedItem: (state) => selectSlice(state).selectedItem,
-  selectLoading: (state) => selectSlice(state).loading,
-  selectError: (state) => selectSlice(state).error,
-  selectSuccess: (state) => selectSlice(state).success,
-  selectItemById: (id) => (state) => 
+export const createEntitySelectors = selectSlice => ({
+  selectItems: state => selectSlice(state).items,
+  selectSelectedItem: state => selectSlice(state).selectedItem,
+  selectLoading: state => selectSlice(state).loading,
+  selectError: state => selectSlice(state).error,
+  selectSuccess: state => selectSlice(state).success,
+  selectItemById: id => state =>
     selectSlice(state).items.find(item => item.id === id),
 });
 
-export const createEditingSelectors = (selectSlice) => ({
-  selectEditing: (state) => selectSlice(state).editing,
-  selectOriginal: (state) => selectSlice(state).original,
-  selectHasChanges: (state) => selectSlice(state).hasChanges,
-  selectChanges: (state) => selectSlice(state).changes,
+export const createEditingSelectors = selectSlice => ({
+  selectEditing: state => selectSlice(state).editing,
+  selectOriginal: state => selectSlice(state).original,
+  selectHasChanges: state => selectSlice(state).hasChanges,
+  selectChanges: state => selectSlice(state).changes,
 });
 
-export const createFilterSelectors = (selectSlice) => ({
-  selectSearchQuery: (state) => selectSlice(state).searchQuery,
-  selectSortBy: (state) => selectSlice(state).sortBy,
-  selectSortOrder: (state) => selectSlice(state).sortOrder,
+export const createFilterSelectors = selectSlice => ({
+  selectSearchQuery: state => selectSlice(state).searchQuery,
+  selectSortBy: state => selectSlice(state).sortBy,
+  selectSortOrder: state => selectSlice(state).sortOrder,
 });

@@ -13,7 +13,10 @@ import {
 // Async thunks
 export const fetchEcommerceData = createAsyncThunk(
   'ecommerce/fetchData',
-  async ({ vendorSlug, forceRefresh = false }, { getState, rejectWithValue }) => {
+  async (
+    { vendorSlug, forceRefresh = false },
+    { getState, rejectWithValue }
+  ) => {
     try {
       const state = getState().ecommerceManagement;
 
@@ -37,7 +40,7 @@ export const saveEcommerceData = createAsyncThunk(
     try {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
-      
+
       return {
         ...dataToSave,
         lastSaved: new Date().toISOString(),
@@ -54,7 +57,7 @@ export const publishChanges = createAsyncThunk(
     try {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 800));
-      
+
       return {
         lastPublished: new Date().toISOString(),
       };
@@ -229,7 +232,9 @@ const ecommerceManagementSlice = createSlice({
     // Page content management
     updatePageSection: (state, action) => {
       const { sectionId, updates } = action.payload;
-      const sectionIndex = state.pageContent.sections.findIndex(s => s.id === sectionId);
+      const sectionIndex = state.pageContent.sections.findIndex(
+        s => s.id === sectionId
+      );
 
       if (sectionIndex !== -1) {
         state.pageContent.sections[sectionIndex] = {
@@ -242,23 +247,30 @@ const ecommerceManagementSlice = createSlice({
 
     updateSectionContent: (state, action) => {
       const { sectionId, contentUpdates } = action.payload;
-      const sectionIndex = state.pageContent.sections.findIndex(s => s.id === sectionId);
+      const sectionIndex = state.pageContent.sections.findIndex(
+        s => s.id === sectionId
+      );
 
       if (sectionIndex !== -1) {
         if (!state.pageContent.sections[sectionIndex].content) {
           state.pageContent.sections[sectionIndex].content = {};
         }
-        
-        Object.assign(state.pageContent.sections[sectionIndex].content, contentUpdates);
+
+        Object.assign(
+          state.pageContent.sections[sectionIndex].content,
+          contentUpdates
+        );
         Object.assign(state.pageContent.sections[sectionIndex], contentUpdates);
-        
+
         state.hasChanges = true;
       }
     },
 
     toggleSectionVisibility: (state, action) => {
       const { sectionId, visible } = action.payload;
-      const sectionIndex = state.pageContent.sections.findIndex(s => s.id === sectionId);
+      const sectionIndex = state.pageContent.sections.findIndex(
+        s => s.id === sectionId
+      );
 
       if (sectionIndex !== -1) {
         state.pageContent.sections[sectionIndex].visible = visible;
@@ -275,8 +287,10 @@ const ecommerceManagementSlice = createSlice({
       const newSection = action.payload;
 
       // Insert before footer or at the end
-      const footerIndex = state.pageContent.sections.findIndex(s => s.id === 'footer');
-      
+      const footerIndex = state.pageContent.sections.findIndex(
+        s => s.id === 'footer'
+      );
+
       if (footerIndex !== -1) {
         state.pageContent.sections.splice(footerIndex, 0, newSection);
         // Update orders
@@ -292,26 +306,30 @@ const ecommerceManagementSlice = createSlice({
 
     removeCustomSection: (state, action) => {
       const sectionId = action.payload;
-      state.pageContent.sections = state.pageContent.sections.filter(s => s.id !== sectionId);
-      
+      state.pageContent.sections = state.pageContent.sections.filter(
+        s => s.id !== sectionId
+      );
+
       // Update orders
       state.pageContent.sections.forEach((section, index) => {
         section.order = index + 1;
       });
-      
+
       state.hasChanges = true;
     },
 
     // Recently viewed
     addToRecentlyViewed: (state, action) => {
       const productId = action.payload;
-      
+
       // Remove if already exists
-      state.recentlyViewed = state.recentlyViewed.filter(id => id !== productId);
-      
+      state.recentlyViewed = state.recentlyViewed.filter(
+        id => id !== productId
+      );
+
       // Add to beginning
       state.recentlyViewed.unshift(productId);
-      
+
       // Keep only last 10
       state.recentlyViewed = state.recentlyViewed.slice(0, 10);
     },
@@ -320,7 +338,7 @@ const ecommerceManagementSlice = createSlice({
     toggleWishlist: (state, action) => {
       const productId = action.payload;
       const index = state.wishlist.indexOf(productId);
-      
+
       if (index === -1) {
         state.wishlist.push(productId);
       } else {
@@ -350,7 +368,7 @@ const ecommerceManagementSlice = createSlice({
     },
 
     // Reset changes
-    discardChanges: (state) => {
+    discardChanges: state => {
       state.hasChanges = false;
     },
 
@@ -358,10 +376,10 @@ const ecommerceManagementSlice = createSlice({
     resetState: () => initialState,
   },
 
-  extraReducers: (builder) => {
+  extraReducers: builder => {
     builder
       // Fetch ecommerce data
-      .addCase(fetchEcommerceData.pending, (state) => {
+      .addCase(fetchEcommerceData.pending, state => {
         state.loading = true;
         state.error = null;
       })
@@ -390,7 +408,7 @@ const ecommerceManagementSlice = createSlice({
       })
 
       // Save ecommerce data
-      .addCase(saveEcommerceData.pending, (state) => {
+      .addCase(saveEcommerceData.pending, state => {
         state.saving = true;
         state.error = null;
       })
@@ -408,7 +426,7 @@ const ecommerceManagementSlice = createSlice({
       })
 
       // Publish changes
-      .addCase(publishChanges.pending, (state) => {
+      .addCase(publishChanges.pending, state => {
         state.publishing = true;
         state.error = null;
       })
@@ -494,53 +512,61 @@ export const updatePageSections = reorderSections;
 export const publishPageContent = publishChanges;
 
 // Selectors
-export const selectVendor = (state) => state.ecommerceManagement.vendor;
-export const selectCategories = (state) => state.ecommerceManagement.categories;
-export const selectProducts = (state) => state.ecommerceManagement.products;
-export const selectSelectedProduct = (state) => state.ecommerceManagement.selectedProduct;
-export const selectPageSections = (state) => state.ecommerceManagement.pageContent.sections;
-export const selectLoading = (state) => state.ecommerceManagement.loading;
-export const selectSaving = (state) => state.ecommerceManagement.saving;
-export const selectPublishing = (state) => state.ecommerceManagement.publishing;
-export const selectError = (state) => state.ecommerceManagement.error;
-export const selectHasChanges = (state) => state.ecommerceManagement.hasChanges;
-export const selectWishlist = (state) => state.ecommerceManagement.wishlist;
-export const selectRecentlyViewed = (state) => state.ecommerceManagement.recentlyViewed;
-export const selectFilters = (state) => state.ecommerceManagement.filters;
-export const selectPagination = (state) => state.ecommerceManagement.pagination;
-export const selectAnalytics = (state) => state.ecommerceManagement.analytics;
-export const selectOrders = (state) => state.ecommerceManagement.orders;
-export const selectEnquiries = (state) => state.ecommerceManagement.enquiries;
+export const selectVendor = state => state.ecommerceManagement.vendor;
+export const selectCategories = state => state.ecommerceManagement.categories;
+export const selectProducts = state => state.ecommerceManagement.products;
+export const selectSelectedProduct = state =>
+  state.ecommerceManagement.selectedProduct;
+export const selectPageSections = state =>
+  state.ecommerceManagement.pageContent.sections;
+export const selectLoading = state => state.ecommerceManagement.loading;
+export const selectSaving = state => state.ecommerceManagement.saving;
+export const selectPublishing = state => state.ecommerceManagement.publishing;
+export const selectError = state => state.ecommerceManagement.error;
+export const selectHasChanges = state => state.ecommerceManagement.hasChanges;
+export const selectWishlist = state => state.ecommerceManagement.wishlist;
+export const selectRecentlyViewed = state =>
+  state.ecommerceManagement.recentlyViewed;
+export const selectFilters = state => state.ecommerceManagement.filters;
+export const selectPagination = state => state.ecommerceManagement.pagination;
+export const selectAnalytics = state => state.ecommerceManagement.analytics;
+export const selectOrders = state => state.ecommerceManagement.orders;
+export const selectEnquiries = state => state.ecommerceManagement.enquiries;
 
 // Legacy selectors for backward compatibility
 export const selectHasUnsavedChanges = selectHasChanges;
-export const selectIsDataPersisted = (state) => !state.ecommerceManagement.hasChanges;
-export const selectSectionById = (sectionId) => (state) =>
+export const selectIsDataPersisted = state =>
+  !state.ecommerceManagement.hasChanges;
+export const selectSectionById = sectionId => state =>
   state.ecommerceManagement.pageContent.sections.find(s => s.id === sectionId);
 
 // Complex selectors
-export const selectFeaturedProducts = (state) =>
+export const selectFeaturedProducts = state =>
   state.ecommerceManagement.products.filter(product => product.featured);
 
-export const selectOnSaleProducts = (state) =>
+export const selectOnSaleProducts = state =>
   state.ecommerceManagement.products.filter(product => product.pricing?.onSale);
 
-export const selectProductsByCategory = (categorySlug) => (state) =>
-  state.ecommerceManagement.products.filter(product => product.category === categorySlug);
+export const selectProductsByCategory = categorySlug => state =>
+  state.ecommerceManagement.products.filter(
+    product => product.category === categorySlug
+  );
 
-export const selectProductById = (productId) => (state) =>
+export const selectProductById = productId => state =>
   state.ecommerceManagement.products.find(product => product.id === productId);
 
-export const selectIsInWishlist = (productId) => (state) =>
+export const selectIsInWishlist = productId => state =>
   state.ecommerceManagement.wishlist.includes(productId);
 
-export const selectFilteredProducts = (state) => {
+export const selectFilteredProducts = state => {
   const { products, filters } = state.ecommerceManagement;
   let filtered = [...products];
 
   // Apply category filter
   if (filters.category && filters.category !== 'all') {
-    filtered = filtered.filter(product => product.category === filters.category);
+    filtered = filtered.filter(
+      product => product.category === filters.category
+    );
   }
 
   // Apply price filter
@@ -554,29 +580,38 @@ export const selectFilteredProducts = (state) => {
 
   // Apply availability filter
   if (filters.availability && filters.availability !== 'all') {
-    filtered = filtered.filter(product => product.availability?.status === filters.availability);
+    filtered = filtered.filter(
+      product => product.availability?.status === filters.availability
+    );
   }
 
   // Apply search
   if (filters.searchQuery) {
     const query = filters.searchQuery.toLowerCase();
-    filtered = filtered.filter(product =>
-      product.name?.toLowerCase().includes(query) ||
-      product.description?.toLowerCase().includes(query) ||
-      product.tags?.some(tag => tag.toLowerCase().includes(query))
+    filtered = filtered.filter(
+      product =>
+        product.name?.toLowerCase().includes(query) ||
+        product.description?.toLowerCase().includes(query) ||
+        product.tags?.some(tag => tag.toLowerCase().includes(query))
     );
   }
 
   // Apply sorting
   switch (filters.sortBy) {
     case 'price_low':
-      filtered.sort((a, b) => (a.pricing?.price || 0) - (b.pricing?.price || 0));
+      filtered.sort(
+        (a, b) => (a.pricing?.price || 0) - (b.pricing?.price || 0)
+      );
       break;
     case 'price_high':
-      filtered.sort((a, b) => (b.pricing?.price || 0) - (a.pricing?.price || 0));
+      filtered.sort(
+        (a, b) => (b.pricing?.price || 0) - (a.pricing?.price || 0)
+      );
       break;
     case 'rating':
-      filtered.sort((a, b) => (b.reviews?.rating || 0) - (a.reviews?.rating || 0));
+      filtered.sort(
+        (a, b) => (b.reviews?.rating || 0) - (a.reviews?.rating || 0)
+      );
       break;
     case 'newest':
       filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));

@@ -523,7 +523,10 @@ const EcommerceMain = () => {
     const currentVendor = vendorRef.current;
     const currentHasUnsavedChanges = hasUnsavedChangesRef.current;
 
-    if (!currentVendor || (currentVendor.slug !== slug && !currentHasUnsavedChanges)) {
+    if (
+      !currentVendor ||
+      (currentVendor.slug !== slug && !currentHasUnsavedChanges)
+    ) {
       dispatch(fetchEcommerceData({ vendorSlug: slug }));
     }
   }, [location.pathname, navigate, dispatch]);

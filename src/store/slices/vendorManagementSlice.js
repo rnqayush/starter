@@ -11,10 +11,10 @@ import {
 const initialState = {
   // Core data
   vendors: getStaticWeddingVendors(),
-  
+
   // Editing state
   ...createEditingState(),
-  
+
   // Section visibility
   sectionVisibility: {
     hero: true,
@@ -26,7 +26,7 @@ const initialState = {
     packages: true,
     customSections: true,
   },
-  
+
   // Loading and error states
   loading: false,
   error: null,
@@ -187,8 +187,9 @@ const vendorManagementSlice = createSlice({
         if (!state.editing.sectionVisibility) {
           state.editing.sectionVisibility = { ...state.sectionVisibility };
         }
-        state.editing.sectionVisibility[section] = state.sectionVisibility[section];
-        
+        state.editing.sectionVisibility[section] =
+          state.sectionVisibility[section];
+
         state.changes.sectionVisibility = {
           old: state.original?.sectionVisibility || {},
           new: state.editing.sectionVisibility,
@@ -198,14 +199,16 @@ const vendorManagementSlice = createSlice({
     },
 
     // Save and publish
-    saveVendor: (state) => {
+    saveVendor: state => {
       if (state.editing && state.hasChanges) {
-        const vendorIndex = state.vendors.findIndex(v => v.id === state.editing.id);
-        
+        const vendorIndex = state.vendors.findIndex(
+          v => v.id === state.editing.id
+        );
+
         if (vendorIndex !== -1) {
           state.vendors[vendorIndex] = { ...state.editing };
         }
-        
+
         state.original = { ...state.editing };
         state.changes = {};
         state.hasChanges = false;
@@ -213,7 +216,7 @@ const vendorManagementSlice = createSlice({
       }
     },
 
-    discardVendorChanges: (state) => {
+    discardVendorChanges: state => {
       if (state.original) {
         state.editing = { ...state.original };
         state.changes = {};
@@ -221,7 +224,7 @@ const vendorManagementSlice = createSlice({
       }
     },
 
-    clearEditingVendor: (state) => {
+    clearEditingVendor: state => {
       state.editing = null;
       state.original = null;
       state.changes = {};
@@ -240,11 +243,11 @@ export const {
   setError,
   clearError,
   setSuccess,
-  
+
   // Vendor actions
   setVendors,
   initializeVendor,
-  
+
   // Editing actions
   setEditingVendor,
   updateVendorField,
@@ -259,35 +262,36 @@ export const {
   saveVendor,
   discardVendorChanges,
   clearEditingVendor,
-  
+
   // Section management
   toggleSectionVisibility,
-  
+
   // Utility actions
   resetState,
 } = vendorManagementSlice.actions;
 
 // Selectors
-export const selectVendors = (state) => state.vendorManagement.vendors;
-export const selectEditingVendor = (state) => state.vendorManagement.editing;
-export const selectSectionVisibility = (state) => state.vendorManagement.sectionVisibility;
-export const selectHasChanges = (state) => state.vendorManagement.hasChanges;
-export const selectChanges = (state) => state.vendorManagement.changes;
-export const selectLoading = (state) => state.vendorManagement.loading;
-export const selectError = (state) => state.vendorManagement.error;
-export const selectSuccess = (state) => state.vendorManagement.success;
+export const selectVendors = state => state.vendorManagement.vendors;
+export const selectEditingVendor = state => state.vendorManagement.editing;
+export const selectSectionVisibility = state =>
+  state.vendorManagement.sectionVisibility;
+export const selectHasChanges = state => state.vendorManagement.hasChanges;
+export const selectChanges = state => state.vendorManagement.changes;
+export const selectLoading = state => state.vendorManagement.loading;
+export const selectError = state => state.vendorManagement.error;
+export const selectSuccess = state => state.vendorManagement.success;
 
 // Complex selectors
-export const selectVendorById = (vendorId) => (state) =>
+export const selectVendorById = vendorId => state =>
   state.vendorManagement.vendors.find(vendor => vendor.id === vendorId);
 
-export const selectVendorsByCategory = (category) => (state) =>
+export const selectVendorsByCategory = category => state =>
   state.vendorManagement.vendors.filter(vendor => vendor.category === category);
 
-export const selectFeaturedVendors = (state) =>
+export const selectFeaturedVendors = state =>
   state.vendorManagement.vendors.filter(vendor => vendor.featured);
 
-export const selectVisibleSections = (state) =>
+export const selectVisibleSections = state =>
   Object.entries(state.vendorManagement.sectionVisibility)
     .filter(([_, visible]) => visible)
     .map(([section, _]) => section);
