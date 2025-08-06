@@ -25,7 +25,7 @@ import {
   FaList,
   FaSort,
 } from 'react-icons/fa';
-import { theme, media } from '../../styles/GlobalStyle';
+import { theme, media } from '../../../styles/GlobalStyle';
 
 const SidebarContainer = styled.div.withConfig({
   shouldForwardProp: prop => prop !== 'isOpen',
