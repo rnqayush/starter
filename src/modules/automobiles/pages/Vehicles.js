@@ -14,7 +14,7 @@ import { theme } from '../../../styles/GlobalStyle';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import VehicleCard from '../components/VehicleCard';
-import BackToTop from '../ecommerce/components/BackToTop';
+import BackToTop from '../../ecommerce/components/BackToTop';
 import {
   fetchAutomobileData,
   setFilters,
