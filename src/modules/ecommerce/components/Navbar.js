@@ -22,7 +22,7 @@ import {
   FaHeart,
   FaBell,
 } from 'react-icons/fa';
-import { theme } from '../../styles/GlobalStyle';
+import { theme } from '../../../styles/GlobalStyle';
 
 const NavbarContainer = styled.nav`
   background: ${theme.colors.white};
