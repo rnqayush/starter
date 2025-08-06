@@ -1137,6 +1137,14 @@ const VendorDashboard = () => {
         imageFile: null,
       });
 
+      // Initialize contact data
+      setContactData({
+        email: vendorData.email || '',
+        phone: vendorData.phone || '',
+        website: vendorData.website || '',
+        address: vendorData.address || '',
+      });
+
       setAboutUsData({
         description: vendorData.aboutUs?.text || vendorData.description || '',
         mission: vendorData.mission || '',
