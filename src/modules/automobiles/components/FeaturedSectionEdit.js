@@ -295,7 +295,7 @@ const FeaturedSectionEdit = ({ dealer }) => {
         vehicleIds: featuredVehicleIds,
       }));
     }
-  }, [JSON.stringify(sections), JSON.stringify(vehicles), JSON.stringify(vendor)]); // Use stringified to prevent reference changes
+  }, []); // Removed dependencies to prevent infinite loops from JSON.stringify
 
   const updateContent = (field, value) => {
     // Update local state for immediate UI update
