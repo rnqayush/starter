@@ -313,12 +313,8 @@ const SellerDashboard = () => {
 
   // Show unsaved changes warning
   useEffect(() => {
-    if (hasUnsavedChanges && !showUnsavedWarning) {
-      setShowUnsavedWarning(true);
-    } else if (!hasUnsavedChanges && showUnsavedWarning) {
-      setShowUnsavedWarning(false);
-    }
-  }, [hasUnsavedChanges, showUnsavedWarning]);
+    setShowUnsavedWarning(hasUnsavedChanges);
+  }, [hasUnsavedChanges]);
 
   const handleSaveChanges = async () => {
     try {
