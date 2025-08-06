@@ -15,9 +15,9 @@ import {
   FaPlus,
   FaPen,
 } from 'react-icons/fa';
-import { theme, media } from '../../styles/GlobalStyle';
-import Header from '../shared/Header';
-import CreateBlogModal from './CreateBlogModal';
+import { theme, media } from '../../../styles/GlobalStyle';
+import Header from '../../../components/shared/Header';
+import CreateBlogModal from '../components/CreateBlogModal';
 import {
   loadBlogs,
   setSearchTerm,
