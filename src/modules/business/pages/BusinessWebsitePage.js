@@ -381,7 +381,7 @@ const BusinessWebsitePage = () => {
     }
 
     dispatch(setLoading(false));
-  }, [actualSlug, location.pathname, dispatch]);
+  }, [actualSlug, location.pathname]); // Removed dispatch to prevent infinite loops
 
   const handleBackToList = () => {
     navigate('/business-websites');
