@@ -513,6 +513,12 @@ export const selectAnalytics = (state) => state.ecommerceManagement.analytics;
 export const selectOrders = (state) => state.ecommerceManagement.orders;
 export const selectEnquiries = (state) => state.ecommerceManagement.enquiries;
 
+// Legacy selectors for backward compatibility
+export const selectHasUnsavedChanges = selectHasChanges;
+export const selectIsDataPersisted = (state) => !state.ecommerceManagement.hasChanges;
+export const selectSectionById = (sectionId) => (state) =>
+  state.ecommerceManagement.pageContent.sections.find(s => s.id === sectionId);
+
 // Complex selectors
 export const selectFeaturedProducts = (state) =>
   state.ecommerceManagement.products.filter(product => product.featured);
