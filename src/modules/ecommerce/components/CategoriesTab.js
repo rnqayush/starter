@@ -8,10 +8,10 @@ import {
   FaGripVertical,
   FaFolder,
 } from 'react-icons/fa';
-import { theme } from '../../styles/GlobalStyle';
+import { theme } from '../../../styles/GlobalStyle';
 import Modal from './shared/Modal';
 import FormField from './shared/FormField';
-import { Button } from '../../components/shared/Button';
+import { Button } from '../../../components/shared/Button';
 
 const CategoriesContainer = styled.div`
   background: ${theme.colors.white};
