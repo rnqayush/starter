@@ -489,6 +489,11 @@ export const {
   resetState,
 } = ecommerceManagementSlice.actions;
 
+// Legacy action aliases for backward compatibility
+export const updateSectionVisibility = toggleSectionVisibility;
+export const updatePageSections = reorderSections;
+export const publishPageContent = publishChanges;
+
 // Selectors
 export const selectVendor = (state) => state.ecommerceManagement.vendor;
 export const selectCategories = (state) => state.ecommerceManagement.categories;
