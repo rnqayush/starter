@@ -3620,8 +3620,13 @@ const VendorDashboard = () => {
                   <FormLabel>Email Address</FormLabel>
                   <FormInput
                     type="email"
-                    value={vendor?.email || ''}
-                    onChange={e => trackSectionChange('settings')}
+                    value={contactData.email}
+                    onChange={e => {
+                      const newEmail = e.target.value;
+                      setContactData(prev => ({ ...prev, email: newEmail }));
+                      setVendor(prev => ({ ...prev, email: newEmail }));
+                      trackSectionChange('settings');
+                    }}
                     placeholder="business@example.com"
                   />
                 </FormGroup>
@@ -3629,8 +3634,13 @@ const VendorDashboard = () => {
                   <FormLabel>Phone Number</FormLabel>
                   <FormInput
                     type="tel"
-                    value={vendor?.phone || ''}
-                    onChange={e => trackSectionChange('settings')}
+                    value={contactData.phone}
+                    onChange={e => {
+                      const newPhone = e.target.value;
+                      setContactData(prev => ({ ...prev, phone: newPhone }));
+                      setVendor(prev => ({ ...prev, phone: newPhone }));
+                      trackSectionChange('settings');
+                    }}
                     placeholder="+1 (555) 123-4567"
                   />
                 </FormGroup>
@@ -3638,16 +3648,26 @@ const VendorDashboard = () => {
                   <FormLabel>Website URL</FormLabel>
                   <FormInput
                     type="url"
-                    value={vendor?.website || ''}
-                    onChange={e => trackSectionChange('settings')}
+                    value={contactData.website}
+                    onChange={e => {
+                      const newWebsite = e.target.value;
+                      setContactData(prev => ({ ...prev, website: newWebsite }));
+                      setVendor(prev => ({ ...prev, website: newWebsite }));
+                      trackSectionChange('settings');
+                    }}
                     placeholder="https://example.com"
                   />
                 </FormGroup>
                 <FormGroup style={{ gridColumn: '1 / -1' }}>
                   <FormLabel>Business Address</FormLabel>
                   <FormTextarea
-                    value={vendor?.address || ''}
-                    onChange={e => trackSectionChange('settings')}
+                    value={contactData.address}
+                    onChange={e => {
+                      const newAddress = e.target.value;
+                      setContactData(prev => ({ ...prev, address: newAddress }));
+                      setVendor(prev => ({ ...prev, address: newAddress }));
+                      trackSectionChange('settings');
+                    }}
                     placeholder="Enter your complete business address..."
                     rows={3}
                   />
