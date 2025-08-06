@@ -225,7 +225,7 @@ const CategoriesSectionEdit = ({ dealer }) => {
       }, 100);
       return () => clearTimeout(timeout);
     }
-  }, [localChanges, hasChanges]);
+  }, [hasChanges]); // Removed localChanges to prevent infinite loops
 
   if (loading) {
     return (
