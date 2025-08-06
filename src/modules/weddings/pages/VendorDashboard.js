@@ -1732,8 +1732,8 @@ const VendorDashboard = () => {
           [field]: e.target.result,
           [`${field}File`]: file,
         }));
-        // Trigger real-time updates for other image uploads
-        setTimeout(() => updateEditingVendorInRedux(), 100);
+        // DISABLED: Real-time updates were causing infinite loops
+        // setTimeout(() => updateEditingVendorInRedux(), 100);
       }
     };
     reader.readAsDataURL(file);
@@ -1763,8 +1763,8 @@ const VendorDashboard = () => {
     );
     // Track section change to enable save button
     trackSectionChange('services-offered');
-    // Automatically trigger real-time updates
-    setTimeout(() => updateEditingVendorInRedux(), 100);
+    // DISABLED: Real-time updates were causing infinite loops
+    // setTimeout(() => updateEditingVendorInRedux(), 100);
   };
 
   const deleteService = id => {
@@ -1794,8 +1794,8 @@ const VendorDashboard = () => {
     setRecentWorkData(prev =>
       prev.map(work => (work.id === id ? { ...work, [field]: value } : work))
     );
-    // Automatically trigger real-time updates
-    setTimeout(() => updateEditingVendorInRedux(), 100);
+    // DISABLED: Real-time updates were causing infinite loops
+    // setTimeout(() => updateEditingVendorInRedux(), 100);
   };
 
   const deleteRecentWork = id => {
@@ -1935,8 +1935,8 @@ const VendorDashboard = () => {
     });
     trackSectionChange('custom-sections');
 
-    // Automatically trigger real-time updates
-    setTimeout(() => updateEditingVendorInRedux(), 100);
+    // DISABLED: Real-time updates were causing infinite loops
+    // setTimeout(() => updateEditingVendorInRedux(), 100);
   };
 
   const addCustomSectionCard = () => {
@@ -1991,8 +1991,8 @@ const VendorDashboard = () => {
         },
       },
     }));
-    // Automatically trigger real-time updates
-    setTimeout(() => updateEditingVendorInRedux(), 100);
+    // DISABLED: Real-time updates were causing infinite loops
+    // setTimeout(() => updateEditingVendorInRedux(), 100);
   };
 
   const removeGalleryImage = (category, imageIndex) => {
@@ -2008,8 +2008,8 @@ const VendorDashboard = () => {
         },
       },
     }));
-    // Automatically trigger real-time updates
-    setTimeout(() => updateEditingVendorInRedux(), 100);
+    // DISABLED: Real-time updates were causing infinite loops
+    // setTimeout(() => updateEditingVendorInRedux(), 100);
   };
 
   const renderContent = () => {
