@@ -42,9 +42,11 @@ const SmartRouter = () => {
   };
 
   const moduleType = getModuleType(slug);
+  console.log('[SmartRouter] Slug detected:', slug, 'Module type:', moduleType);
 
   // If no module found, show 404
   if (!moduleType) {
+    console.log('[SmartRouter] No module found for slug:', slug);
     return (
       <div
         style={{
