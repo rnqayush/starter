@@ -297,12 +297,24 @@ const CategoryLanding = ({
 
   const handleDemoClick = () => {
     console.log('[CategoryLanding] Demo button clicked, navigating to:', demoUrl);
-    navigate(demoUrl);
+    try {
+      navigate(demoUrl);
+    } catch (error) {
+      console.error('[CategoryLanding] Navigation error:', error);
+      // Fallback to direct window navigation
+      window.location.href = demoUrl;
+    }
   };
 
   const handleSecondaryDemoClick = () => {
     console.log('[CategoryLanding] Secondary demo button clicked, navigating to:', secondaryDemoUrl);
-    navigate(secondaryDemoUrl);
+    try {
+      navigate(secondaryDemoUrl);
+    } catch (error) {
+      console.error('[CategoryLanding] Secondary navigation error:', error);
+      // Fallback to direct window navigation
+      window.location.href = secondaryDemoUrl;
+    }
   };
 
   return (
