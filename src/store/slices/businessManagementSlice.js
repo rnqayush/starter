@@ -277,9 +277,17 @@ export const {
   toggleSectionVisibility,
   isSectionAvailable,
   
+  // Legacy actions
+  markUnsavedChanges,
+
   // Utility actions
   resetState,
 } = businessManagementSlice.actions;
+
+// Legacy action aliases for backward compatibility
+export const saveBusinessChanges = saveBusiness;
+export const toggleBusinessSectionVisibility = toggleSectionVisibility;
+export const initializeBusinessData = initializeBusiness;
 
 // Selectors
 export const selectBusinesses = (state) => state.businessManagement.businesses;
