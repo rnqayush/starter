@@ -775,8 +775,11 @@ const WeddingHome = () => {
     }
   };
 
+  const vendorsRef = useRef(vendors);
+  vendorsRef.current = vendors;
+
   const applyFilters = useCallback(() => {
-    let filtered = [...vendors];
+    let filtered = [...vendorsRef.current];
 
     // Filter by selected categories (only if categories are selected)
     if (selectedCategories.length > 0) {
