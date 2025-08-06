@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import BusinessWebsitePage from './pages/BusinessWebsitePage';
 import FreelancerPortfolioPage from './pages/FreelancerPortfolioPage';
-import { detectBusinessType } from '../utils/businessAPI';
+import { detectBusinessType } from '../../utils/businessAPI';
 
 const BusinessModule = () => {
   const [isPersonalPortfolio, setIsPersonalPortfolio] = useState(false);
