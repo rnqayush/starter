@@ -6,8 +6,8 @@ import {
   FaChartLine,
   FaDownload,
 } from 'react-icons/fa';
-import { theme } from '../../styles/GlobalStyle';
-import { sellerDashboardData } from '../../DummyData';
+import { theme } from '../../../styles/GlobalStyle';
+import { sellerDashboardData } from '../../../DummyData';
 const { categoryRevenueData, bestSellingProducts, salesTrendData } =
   sellerDashboardData;
 
