@@ -7,16 +7,24 @@ import businessData from '../DummyData/business.json';
 // Helper function to get business data by slug
 const getBusinessWebsiteData = slug => {
   console.log('[getBusinessWebsiteData] Looking for slug:', slug);
-  console.log('[getBusinessWebsiteData] Available data:', businessData.data?.portfolio);
+  console.log('[getBusinessWebsiteData] businessData:', businessData);
+
+  // Ensure businessData is properly loaded
+  if (!businessData || !businessData.data || !businessData.data.portfolio) {
+    console.error('[getBusinessWebsiteData] Business data structure is invalid');
+    return null;
+  }
+
+  console.log('[getBusinessWebsiteData] Available portfolio data:', businessData.data.portfolio);
 
   // Map common slugs to the correct data
   if (slug === 'salon' || slug === 'business') {
-    const result = businessData.data?.portfolio?.buisness || null;
+    const result = businessData.data.portfolio.buisness || null;  // Note: 'buisness' spelling in JSON
     console.log('[getBusinessWebsiteData] Business result:', result);
     return result;
   }
   if (slug === 'freelancer' || slug === 'personal') {
-    const result = businessData.data?.portfolio?.personal || null;
+    const result = businessData.data.portfolio.personal || null;
     console.log('[getBusinessWebsiteData] Freelancer result:', result);
     return result;
   }
