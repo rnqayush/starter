@@ -19,7 +19,8 @@ const getBusinessWebsiteData = slug => {
 
   // Map common slugs to the correct data
   if (slug === 'salon' || slug === 'business') {
-    const result = businessData.data.portfolio.buisness || null;  // Note: 'buisness' spelling in JSON
+    // Note: JSON has 'buisness' spelling (typo), so we use that key
+    const result = businessData.data.portfolio.buisness || null;
     console.log('[getBusinessWebsiteData] Business result:', result);
     return result;
   }
