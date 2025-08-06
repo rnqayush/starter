@@ -14,8 +14,8 @@ import {
   FaStar,
   FaHeart,
 } from 'react-icons/fa';
-import { theme } from '../../styles/GlobalStyle';
-import { getWeddingVendorById as getVendorById } from '../../DummyData';
+import { theme } from '../../../styles/GlobalStyle';
+import { getWeddingVendorById as getVendorById } from '../../../DummyData';
 
 const PageContainer = styled.div`
   min-height: 100vh;

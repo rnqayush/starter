@@ -52,8 +52,8 @@ import {
   FaRandom,
 } from 'react-icons/fa';
 import { theme } from '../../../styles/GlobalStyle';
-import { fetchBusinessData } from '../../utils/businessAPI';
-import { selectUser } from '../../store/slices/authSlice';
+import { fetchBusinessData } from '../../../utils/businessAPI';
+import { selectUser } from '../../../store/slices/authSlice';
 import {
   setEditingBusiness,
   initializeBusiness,
@@ -77,7 +77,7 @@ import {
   setLoading,
   setError,
   clearError,
-} from '../../store/slices/businessManagementSlice';
+} from '../../../store/slices/businessManagementSlice';
 
 const DashboardContainer = styled.div`
   min-height: 100vh;
@@ -4557,7 +4557,7 @@ const BuisnessAdminDashboard = () => {
                 const isVisible = sectionVisibility[sectionId];
                 const sectionIcon =
                   {
-                    hero: '🏠',
+                    hero: '����',
                     'about-us': '👥',
                     'services-offered': '⚙️',
                     portfolio: '💼',
