@@ -59,8 +59,9 @@ const SmartRouter = () => {
         // First, try to get website from backend
         const result = await websiteService.getByName(slug);
         
-        // Simplified: Use websiteType from backend response
-        console.log('✅ Found website in backend:', result);
+        // Enhanced debugging for wedding websites
+        console.log('🔍 SmartRouter: Backend response for slug:', slug);
+        console.log('📦 Full backend result:', JSON.stringify(result, null, 2));
         
         // Backend now returns websiteType in the response
         if (result.websiteType) {
@@ -76,11 +77,17 @@ const SmartRouter = () => {
           };
           
           const moduleType = typeMapping[result.websiteType] || 'business';
+          console.log('🎯 Mapped module type:', moduleType);
           
           // Set appropriate data based on module type
           if (moduleType === 'hotel' && result.data && result.data.hotel) {
+            console.log('🏨 Setting hotel data');
             setHotelData(result.data.hotel);
+          } else if (moduleType === 'wedding' && result.data) {
+            console.log('💒 Setting wedding data:', result.data);
+            setWebsiteData(result);
           } else {
+            console.log('📄 Setting general website data');
             setWebsiteData(result);
           }
           
@@ -108,7 +115,15 @@ const SmartRouter = () => {
           return;
         }
       } catch (error) {
+        console.error('❌ Backend error in SmartRouter:', error);
         console.log('⚠️ Backend not available, checking localStorage and dummy data');
+        
+        // If it's a wedding website, set error to show proper message
+        if (error.message && error.message.includes('404')) {
+          setError(`Website "${slug}" not found. Please check if the website exists and is published.`);
+          setIsLoading(false);
+          return;
+        }
       }
 
       // Fallback: Check localStorage for demo websites
@@ -274,22 +289,33 @@ const SmartRouter = () => {
   }
 
   // Route to appropriate module based on detected type
+  console.log('🚀 SmartRouter: Rendering module type:', moduleType);
+  console.log('📊 Current state - websiteData:', websiteData ? 'present' : 'null');
+  console.log('📊 Current state - hotelData:', hotelData ? 'present' : 'null');
+  
   switch (moduleType) {
     case 'hotel':
+      console.log('🏨 Rendering HotelModule');
       return <HotelModule websiteData={websiteData} hotelData={hotelData} />;
     case 'ecommerce':
+      console.log('🛒 Rendering EcommerceModule');
       return <EcommerceModule websiteData={websiteData} />;
     case 'automobile':
+      console.log('🚗 Rendering AutomobileModule');
       return <AutomobileModule websiteData={websiteData} />;
     case 'wedding':
+      console.log('💒 Rendering WeddingModule with data:', websiteData);
       return <WeddingModule websiteData={websiteData} />;
     case 'business':
+      console.log('💼 Rendering BusinessModule');
       return <BusinessModule websiteData={websiteData} />;
     default:
+      console.error('❌ Unknown module type:', moduleType);
       return (
         <div style={{ padding: '4rem', textAlign: 'center' }}>
           <h2>Page not found</h2>
           <p>The page you're looking for doesn't exist.</p>
+          <p>Module type: {moduleType}</p>
         </div>
       );
   }
