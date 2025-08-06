@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-
 import styled from 'styled-components';
 import { GlobalStyle } from './styles/GlobalStyle';
 import ErrorBoundary from './components/ErrorBoundary';
