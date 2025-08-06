@@ -23,7 +23,7 @@ import {
   publishChanges,
   discardChanges,
   clearEditingHotel,
-} from '../../store/slices/hotelManagementSlice';
+} from '../../../store/slices/hotelManagementSlice';
 import { theme, media } from '../../../styles/GlobalStyle';
 import { Button } from '../../../components/shared/Button';
 

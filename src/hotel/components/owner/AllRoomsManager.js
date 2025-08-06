@@ -19,7 +19,7 @@ import {
   updateRoom,
   removeRoom,
   setEditingHotel,
-} from '../../store/slices/hotelManagementSlice';
+} from '../../../store/slices/hotelManagementSlice';
 import { getHotelByIdOrSlug } from '../../DummyData';
 import { Button } from '../../../components/shared/Button';
 import { Input } from '../../../components/shared/Input';

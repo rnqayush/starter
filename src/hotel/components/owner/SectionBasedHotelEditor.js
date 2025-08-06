@@ -40,7 +40,7 @@ import {
   addAmenityToCategory,
   removeAmenityFromCategory,
   selectHasPendingChanges,
-} from '../../store/slices/hotelManagementSlice';
+} from '../../../store/slices/hotelManagementSlice';
 // import { useAppContext } from '../../context/AppContext'; // Removed - needs Redux migration
 import { getHotelByIdOrSlug, amenitiesList } from '../../DummyData';
 import { Button } from '../../../components/shared/Button';
