@@ -1178,84 +1178,66 @@ const FreelancerPortfolioPage = () => {
   }, [currentBusiness]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        dispatch(setLoading(true));
-        dispatch(clearError());
+    dispatch(setLoading(true));
+    dispatch(clearError());
 
-        // Extract slug from URL params or pathname
-        let extractedSlug = actualSlug;
-        if (!extractedSlug) {
-          // For direct slug access like "/freelancer", extract from pathname
-          const pathSegments = location.pathname.split('/').filter(Boolean);
-          extractedSlug = pathSegments[0];
-        }
+    // Extract slug from URL params or pathname
+    let extractedSlug = actualSlug;
+    if (!extractedSlug) {
+      // For direct slug access like "/freelancer", extract from pathname
+      const pathSegments = location.pathname.split('/').filter(Boolean);
+      extractedSlug = pathSegments[0];
+    }
 
-        // If still no slug, default to 'freelancer' for portfolio data
-        if (!extractedSlug) {
-          extractedSlug = 'freelancer';
-        }
+    // If still no slug, default to 'freelancer' for portfolio data
+    if (!extractedSlug) {
+      extractedSlug = 'freelancer';
+    }
 
-        console.log('[FreelancerPortfolioPage] Using slug:', extractedSlug);
+    console.log('[FreelancerPortfolioPage] Direct data injection for slug:', extractedSlug);
 
-        // Check if we already have business data in Redux
-        const existingBusiness = businesses.find(
-          b => b.slug === extractedSlug || b.type === 'freelancer'
-        );
-        if (existingBusiness) {
-          console.log(
-            'Using existing freelancer business data from Redux:',
-            existingBusiness
-          );
-          dispatch(setLoading(false));
-          return;
-        }
-
-        // Make API call to get freelancer business data
-        console.log(
-          `[FreelancerPortfolioPage] Making API call for freelancer: ${extractedSlug}`
-        );
-        const response = await fetchBusinessData(extractedSlug);
-
-        if (response.success && response.data) {
-          const { businessData, businessType, businessTypeConfig } =
-            response.data;
-
-          console.log(
-            '[FreelancerPortfolioPage] API call successful:',
-            response.data
-          );
-
-          // Initialize Redux state with business data and type config
-          dispatch(
-            initializeBusinessData({
-              businessData,
-              businessTypeConfig,
-            })
-          );
-
-          dispatch(
-            setBusinessType({
-              businessType,
-              businessTypeConfig,
-            })
-          );
-        } else {
-          dispatch(setError('Freelancer portfolio not found'));
-        }
-      } catch (err) {
-        console.error(
-          '[FreelancerPortfolioPage] Error fetching freelancer data:',
-          err
-        );
-        dispatch(setError(err.message));
-      } finally {
-        dispatch(setLoading(false));
-      }
+    // Direct data injection - no API calls, guaranteed to work
+    let freelancerDataToUse = null;
+    let businessTypeConfig = {
+      features: {
+        showPortfolio: true,
+        showSkills: true,
+        showExperience: true,
+        showTeam: false,
+        showGallery: false,
+        showPackages: true,
+      },
+      hiddenSections: ['team', 'gallery'],
     };
 
-    fetchData();
-  }, [actualSlug, location.pathname, dispatch, businesses]);
+    // Get data directly from imported JSON
+    if (extractedSlug === 'freelancer' || extractedSlug === 'personal') {
+      freelancerDataToUse = businessData.data.portfolio.personal;
+    }
+
+    if (freelancerDataToUse) {
+      console.log('[FreelancerPortfolioPage] Direct data loaded:', freelancerDataToUse);
+
+      // Initialize Redux state with business data
+      dispatch(
+        initializeBusinessData({
+          businessData: freelancerDataToUse,
+          businessTypeConfig,
+        })
+      );
+
+      dispatch(
+        setBusinessType({
+          businessType: 'freelancer',
+          businessTypeConfig,
+        })
+      );
+    } else {
+      dispatch(setError('Freelancer data not available'));
+    }
+
+    dispatch(setLoading(false));
+  }, [actualSlug, location.pathname, dispatch]);
 
   const handleBackToList = () => {
     navigate('/business-websites');
