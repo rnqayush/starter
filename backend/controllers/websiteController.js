@@ -435,15 +435,27 @@ class WebsiteController {
 
         case 'weddings':
           try {
-            const Wedding = require('../models/Wedding');
-            const wedding = await Wedding.findOne({ slug: websiteName })
-              .populate('owner', 'name email')
-              .select('-__v');
+            const { WeddingVendor } = require('../models/Wedding');
+            
+            // First try to find by publishedData relationship
+            let wedding = null;
+            if (website.publishedData) {
+              wedding = await WeddingVendor.findById(website.publishedData)
+                .populate('owner', 'name email')
+                .select('-__v');
+            }
+            
+            // Fallback: try to find by slug if publishedData relationship doesn't exist
+            if (!wedding) {
+              wedding = await WeddingVendor.findOne({ slug: websiteName })
+                .populate('owner', 'name email')
+                .select('-__v');
+            }
             
             if (wedding) {
-              console.log('✅ Found wedding data for website:', websiteName);
+              console.log('✅ Found wedding vendor data for website:', websiteName);
               
-              // Return response in exact wedding.json format
+              // Return response in exact wedding.json format matching the model structure
               return res.status(200).json({
                 status: 'success',
                 statusCode: 200,
@@ -452,37 +464,124 @@ class WebsiteController {
                 data: {
                   vendors: {
                     [wedding.slug]: {
-                      id: wedding.slug,
+                      id: wedding.id || wedding.slug,
                       name: wedding.name,
-                      category: 'weddings',
-                      logo: wedding.logo,
-                      image: wedding.image,
-                      heroVideo: wedding.heroVideo,
-                      tagline: wedding.tagline,
+                      category: wedding.category || 'weddings',
+                      subcategory: wedding.subcategory,
+                      logo: wedding.businessInfo?.logo,
+                      image: wedding.businessInfo?.coverImage,
+                      heroVideo: wedding.pageContent?.hero?.backgroundImage,
+                      tagline: wedding.pageContent?.hero?.subtitle,
                       rating: wedding.rating || 4.5,
                       reviewCount: wedding.reviewCount || 0,
-                      address: wedding.address,
-                      city: wedding.city,
-                      state: wedding.state,
-                      zipCode: wedding.zipCode,
+                      address: wedding.contact?.address?.street || wedding.location,
+                      city: wedding.city || wedding.contact?.address?.city,
+                      state: wedding.state || wedding.contact?.address?.state,
+                      zipCode: wedding.contact?.address?.zipCode,
                       coordinates: wedding.coordinates || { lat: 37.7749, lng: -122.4194 },
-                      distance: wedding.distance || 0,
-                      description: wedding.description,
-                      aboutUs: wedding.aboutUs || {},
-                      services: wedding.services || [],
-                      portfolio: wedding.portfolio || [],
-                      packages: wedding.packages || [],
-                      testimonials: wedding.testimonials || [],
-                      contact: wedding.contact || {},
+                      distance: 0,
+                      description: wedding.businessInfo?.description,
+                      aboutUs: {
+                        text: wedding.pageContent?.about?.description || wedding.ownerInfo?.bio,
+                        experience: wedding.ownerInfo?.experience,
+                        completedWeddings: wedding.totalEvents ? `${wedding.totalEvents}+` : '0+',
+                        satisfiedCouples: wedding.reviewCount ? `${wedding.reviewCount}` : '0',
+                        experienceVisible: true,
+                        weddingsVisible: true,
+                        couplesVisible: true,
+                        approach: wedding.pageContent?.about?.approach,
+                        whyChooseUs: wedding.pageContent?.about?.whyChooseUs || []
+                      },
+                      services: wedding.services?.map((service, index) => ({
+                        id: `service-${index + 1}`,
+                        name: service,
+                        description: `Professional ${service} services`,
+                        icon: '💍',
+                        price: 'Contact for pricing'
+                      })) || [],
+                      specialties: wedding.specialties || wedding.services || [],
+                      gallery: {
+                        featured: wedding.pageContent?.gallery?.featured || [],
+                        categories: wedding.pageContent?.gallery?.categories || []
+                      },
+                      portfolio: wedding.portfolio?.map(item => ({
+                        id: item.id,
+                        title: item.title,
+                        image: item.image,
+                        category: item.category,
+                        description: item.description,
+                        date: item.date,
+                        client: item.client,
+                        featured: item.featured
+                      })) || [],
+                      packages: wedding.packages?.map(pkg => ({
+                        id: pkg.id,
+                        name: pkg.name,
+                        description: pkg.description,
+                        price: pkg.price,
+                        duration: pkg.duration,
+                        includes: pkg.includes,
+                        popular: pkg.popular,
+                        customizable: pkg.customizable
+                      })) || [],
+                      testimonials: wedding.testimonials?.map(testimonial => ({
+                        id: testimonial.id,
+                        name: testimonial.name,
+                        text: testimonial.text,
+                        rating: testimonial.rating,
+                        avatar: testimonial.avatar,
+                        location: testimonial.location,
+                        weddingDate: testimonial.weddingDate,
+                        verified: testimonial.verified
+                      })) || [],
+                      contact: {
+                        phone: wedding.contact?.phone,
+                        email: wedding.contact?.email,
+                        whatsapp: wedding.contact?.whatsapp,
+                        address: wedding.contact?.address,
+                        availability: wedding.contact?.availability
+                      },
                       availability: wedding.availability || {},
-                      socialMedia: wedding.socialMedia || {}
+                      socialMedia: wedding.businessInfo?.socialMedia || {},
+                      priceRange: wedding.priceRange,
+                      serviceAreas: wedding.serviceAreas || [],
+                      featured: wedding.featured,
+                      verified: wedding.verified,
+                      awards: wedding.awards || [],
+                      certifications: wedding.certifications || [],
+                      insurance: wedding.insurance,
+                      bookingPolicy: wedding.bookingPolicy,
+                      ownerInfo: {
+                        name: wedding.ownerInfo?.name || wedding.owner?.name,
+                        email: wedding.ownerInfo?.email || wedding.owner?.email,
+                        phone: wedding.ownerInfo?.phone,
+                        experience: wedding.ownerInfo?.experience,
+                        bio: wedding.ownerInfo?.bio
+                      },
+                      businessInfo: wedding.businessInfo,
+                      pageContent: wedding.pageContent,
+                      settings: wedding.settings,
+                      analytics: wedding.analytics,
+                      status: wedding.status,
+                      isActive: wedding.isActive,
+                      createdAt: wedding.createdAt,
+                      updatedAt: wedding.updatedAt
                     }
                   }
                 }
               });
+            } else {
+              console.log('⚠️ No wedding vendor found for website:', websiteName);
+              console.log('Website publishedData:', website.publishedData);
+              console.log('Tried slug lookup for:', websiteName);
+              
+              // Additional debugging: check if any wedding vendors exist
+              const allWeddings = await WeddingVendor.find({}).select('slug name id').limit(5);
+              console.log('Available wedding vendors:', allWeddings);
             }
           } catch (error) {
-            console.error('Error fetching wedding data:', error);
+            console.error('Error fetching wedding vendor data:', error);
+            console.error('Error details:', error.message);
           }
           break;
 
