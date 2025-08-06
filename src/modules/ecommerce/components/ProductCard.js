@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { FaStar, FaHeart, FaEnvelope } from 'react-icons/fa';
-import { theme, media } from '../../styles/GlobalStyle';
+import { theme, media } from '../../../styles/GlobalStyle';
 import EnquiryModal from './EnquiryModal';
 import {
   getProductAvailabilityStatus as getAvailabilityStatus,
   getProductAvailabilityLabel as getAvailabilityLabel,
   getProductAvailabilityColor as getAvailabilityColor,
-} from '../../DummyData';
+} from '../../../DummyData';
 
 const Card = styled.div`
   background: ${theme.colors.white};
