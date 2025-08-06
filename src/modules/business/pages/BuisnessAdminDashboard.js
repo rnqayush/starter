@@ -927,7 +927,7 @@ const BuisnessAdminDashboard = () => {
       uiContentRef.current = uiContentData;
       updateEditingBusinessInRedux();
     }
-  }, [uiContentData, editingBusiness]);
+  }, [uiContentData, editingBusiness, updateEditingBusinessInRedux]);
 
   // Auto-update Redux when statistics data changes for real-time preview
   useEffect(() => {
@@ -937,7 +937,7 @@ const BuisnessAdminDashboard = () => {
       statisticsRef.current = statisticsData;
       updateEditingBusinessInRedux();
     }
-  }, [statisticsData, editingBusiness]);
+  }, [statisticsData, editingBusiness, updateEditingBusinessInRedux]);
 
   const navigationItems = [
     {
